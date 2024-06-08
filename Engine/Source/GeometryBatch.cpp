@@ -20,7 +20,6 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 	for (int i = 0; i < NUM_BUFFERS; ++i)
 	{
 		mSsboModelMatricesData[i] = nullptr;
-		mSsboIndicesData[i] = nullptr;
 	}
 	memset(mSync, 0, sizeof(mSync)*NUM_BUFFERS);
 
@@ -146,19 +145,15 @@ void GeometryBatch::RecreatePersistentSsbos()
 	glDeleteBuffers(1, &mSsboIndices);
 	glGenBuffers(1, &mSsboIndices);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboIndices);
-	size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
-	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
-	mSsboIndicesData[0] = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
-	for (int i = 1; i < NUM_BUFFERS; ++i)
-	{
-		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
-	}
+	size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4);
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size, nullptr, flags);
+	mSsboIndicesData = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size, flags));
 
-	//TODO: Move and correct
 	int i = 0;
 	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 	{
 		it->second.baseInstance = i;
+		mSsboIndicesData[i] = it->second.bMaterialIdx;
 		++i;
 	}
 
@@ -216,6 +211,7 @@ void GeometryBatch::RecreateVboAndEbo()
 
 void GeometryBatch::RecreateMaterials()
 {
+	//TODO: fer un glMapBuffer !!!
 	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), sizeof(float)*3);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * materialSize, nullptr, GL_STATIC_DRAW);
@@ -381,6 +377,15 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 	return true;
 }
 
+//unsigned int GeometryBatch::GetCommandsSSBO()
+//{
+//	unsigned int retId;
+//	glGenBuffers(1, &retId);
+//	glBindBuffer(GL_SHADER_STORAGE_BUFFER, retId);
+//	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshRendererComponents.size(), nullptr, GL_DYNAMIC_DRAW);
+//	return retId;
+//}
+
 bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
 {
 	if (mMeshComponents.find(component.GetID()) == mMeshComponents.end())
@@ -417,8 +422,6 @@ bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
 	{
 		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 	}
-
-	memcpy(mSsboIndicesData[idx] + bComp.baseInstance, &bComp.bMaterialIdx, sizeof(uint32_t));
 	
 	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, bRes.firstIndex, bRes.baseVertex, bComp.baseInstance);
 	mComandsMap[component.GetID()] = mCommands.back();
@@ -459,8 +462,8 @@ void GeometryBatch::Draw()
 	unsigned int structSize = ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
-	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
+	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices);
 	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
 
 	//CleanUp
