@@ -61,9 +61,9 @@ void ButtonComponent::Save(JsonObject& obj) const
     Component::Save(obj);
 }
 
-void ButtonComponent::Load(const JsonObject& data)
+void ButtonComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::Load(data);
+    Component::Load(data, uidPointerMap);
 }
 
 

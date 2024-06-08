@@ -45,9 +45,9 @@ void CanvasComponent::Save(JsonObject& obj)const
 	obj.AddFloats("Size", mSize.ptr(), 2);
 }
 
-void CanvasComponent::Load(const JsonObject& data)
+void CanvasComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 	
 	float size[2];
 	data.GetFloats("Size", size);

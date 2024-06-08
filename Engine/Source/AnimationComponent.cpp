@@ -373,8 +373,8 @@ void AnimationComponent::Save(JsonObject& obj) const
 	obj.AddInt("ModelUID", mModelUid);
 }
 
-void AnimationComponent::Load(const JsonObject& data)
+void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);	
+	Component::Load(data, uidPointerMap);	
 	SetModelUUID(data.GetInt("ModelUID"));
 }
