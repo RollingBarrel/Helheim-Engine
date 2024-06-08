@@ -61,9 +61,9 @@ void Transform2DComponent::Save(JsonObject& obj) const
 	obj.AddFloats("Pivot", mPivot.ptr(), 2);
 }
 
-void Transform2DComponent::Load(const JsonObject& data)
+void Transform2DComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	float pos[3];
 	data.GetFloats("Position", pos);

@@ -6,6 +6,7 @@
 #include "ModuleOpenGL.h"
 #include "GameObject.h"
 #include "ModuleFileSystem.h"
+#include "MeshRendererComponent.h"
 #include <regex>
 
 static void AddSuffix(GameObject& gameObject)
@@ -164,7 +165,16 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				std::unordered_set<GameObject*> selectAfter;
 				for (GameObject* object : FilterMarked()) 
 				{
-					GameObject* gameObject = new GameObject(*object, object->GetParent());
+					std::unordered_map<const GameObject*, GameObject*> originalToNew;
+					std::vector<MeshRendererComponent*>mRenderers;
+					GameObject* gameObject = new GameObject(*object, object->GetParent(), &originalToNew, &mRenderers);
+					for (MeshRendererComponent* mRend : mRenderers)
+					{
+						if (mRend->HasSkinning())
+						{
+							mRend->UpdateSkeletonObjects(originalToNew);
+						}
+					}
 					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
 					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();

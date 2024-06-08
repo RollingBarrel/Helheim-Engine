@@ -1,6 +1,7 @@
 #pragma once
 #include "Globals.h"
 #include "Archive.h"
+#include <unordered_map>
 
 enum class ENGINE_API ComponentType : unsigned int
 {
@@ -24,7 +25,7 @@ public:
 	virtual Component* Clone(GameObject* owner) const = 0;
 
 	virtual void Save(JsonObject& obj) const;
-	virtual void Load(const JsonObject& data);
+	virtual void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	ComponentType GetType() const { return mType; }
 	GameObject* GetOwner() const { return mOwner; }

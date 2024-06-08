@@ -11,7 +11,7 @@ void Component::Save(JsonObject& obj) const
 	obj.AddBool("IsEnabled", IsEnabled());
 }
 
-void Component::Load(const JsonObject& data)
+void Component::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	//mID = data.GetInt("ID");
 	mType = (ComponentType) data.GetInt("ComponentType");

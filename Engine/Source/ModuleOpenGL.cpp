@@ -927,17 +927,17 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
-void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchAddMesh(const MeshRendererComponent& mesh)
 {
 	mBatchManager.AddMeshComponent(mesh);
 }
 
-void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchRemoveMesh(const MeshRendererComponent& mesh)
 {
 	mBatchManager.RemoveMeshComponent(mesh);
 }
 
-void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 {
 	mBatchManager.EditMaterial(mesh);
 }
@@ -948,7 +948,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//scene
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.AddCommand(mesh);
+		assert(mesh);
+		mBatchManager.AddCommand(*mesh);
 	}
 	
 	//Shadows
@@ -982,7 +983,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
 		for (const MeshRendererComponent* mesh : meshInFrustum)
 		{
-			mBatchManager.AddCommand(mesh);
+			assert(mesh);
+			mBatchManager.AddCommand(*mesh);
 		}	
 	}
 
@@ -1004,7 +1006,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 		for (const MeshRendererComponent* mesh : meshInFrustum)
 		{
-			mBatchManager.AddCommand(mesh);
+			assert(mesh);
+			mBatchManager.AddCommand(*mesh);
 		}
 
 		
@@ -1039,7 +1042,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	mBatchManager.CleanUpCommands();
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.AddCommand(mesh);
+		mBatchManager.AddCommand(*mesh);
 	}
 	//GaometryPass
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
@@ -1101,7 +1104,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		{
 			if (sMesh->GetOwner()->GetID() == object->GetID())
 			{
-				mBatchManager.AddCommand(sMesh);
+				mBatchManager.AddCommand(*sMesh);
 				break;
 			}
 		}

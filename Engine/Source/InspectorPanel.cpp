@@ -429,7 +429,7 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 void InspectorPanel::DrawComponents(GameObject* object) 
 {
-	for (auto component : object->mComponents) 
+	for (Component* component : object->mComponents) 
 	{
 		ImGui::PushID(component->mID);
 		//DragAndDropTarget(object, component);
@@ -450,7 +450,7 @@ void InspectorPanel::DrawComponents(GameObject* object)
 			switch (component->GetType()) 
 			{
 				case ComponentType::MESHRENDERER:
-					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
+					DrawMeshRendererComponent(*reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				case ComponentType::AIAGENT:
 					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
@@ -588,7 +588,7 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 }
 
-void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
+void InspectorPanel::DrawMeshRendererComponent(const MeshRendererComponent& component) 
 {
 	ImGui::SeparatorText("Material");
 
@@ -654,9 +654,9 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 
 }
 
-void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
+void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderComponent)
 {
-	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent.GetResourceMaterial());
 
 	if (material)
 	{

@@ -14,17 +14,17 @@ AnimationClip::AnimationClip(unsigned int animationUID)
 };
 
 
-AnimationStateMachine::AnimationStateMachine(std::vector<unsigned int> animationUids)
+AnimationStateMachine::AnimationStateMachine(const std::vector<unsigned int>& animationUids)
 {
 
-	for (const auto& resourceAnimation : animationUids)
+	for (const unsigned int resourceAnimation : animationUids)
 	{
-		mClips.push_back(AnimationClip(resourceAnimation));
+		mClips.emplace_back(resourceAnimation);
 	}
 	ResourceAnimation* anim = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(animationUids[0], Resource::Type::Animation));
 
 
-	mStates.push_back(AnimationState(mClips[0].mName, "default", 0.0, anim->GetDuration()));
+	mStates.emplace_back(mClips[0].mName, "default", 0.0, anim->GetDuration());
 }
 
 AnimationStateMachine::~AnimationStateMachine()
@@ -38,7 +38,7 @@ AnimationStateMachine::~AnimationStateMachine()
 void AnimationStateMachine::AddClip(unsigned int animationUID)
 {
 
-	mClips.push_back(AnimationClip(animationUID));
+	mClips.emplace_back(animationUID);
 
 }
 

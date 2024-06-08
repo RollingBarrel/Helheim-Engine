@@ -56,7 +56,7 @@ private:
 	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
-	void DrawMeshRendererComponent(MeshRendererComponent* component);
+	void DrawMeshRendererComponent(const MeshRendererComponent& component);
 	void DrawAIAgentComponent(AIAgentComponent* component);
 	void DrawImageComponent(ImageComponent* component);
 	void DrawCanvasComponent(CanvasComponent* component);
@@ -73,7 +73,7 @@ private:
 
 	//void DragAndDropSource(Component* component);
 	//void DragAndDropTarget(GameObject* object, Component* target);
-	void MaterialVariables(MeshRendererComponent* renderComponent);
+	void MaterialVariables(const MeshRendererComponent& renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
 	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;

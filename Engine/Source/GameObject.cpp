@@ -59,25 +59,37 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 	}
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent)
+GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride)
+	mEulerAngles(original.mEulerAngles), mRotation(original.mRotation), mLocalRotation(original.mLocalRotation), mLocalEulerAngles(original.mLocalEulerAngles),
+	mPosition(original.mPosition), mLocalPosition(original.mLocalPosition), mScale(original.mScale), mLocalScale(original.mLocalScale), 
+	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight),
+	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
 	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
 	{
-		mComponents.push_back(component->Clone(this));
+		Component* cloned = component->Clone(this);
+		mComponents.push_back(cloned);
+		if (meshRendererComps && cloned->GetType() == ComponentType::MESHRENDERER)
+		{
+			meshRendererComps->push_back(reinterpret_cast<MeshRendererComponent*>(cloned));
+		}
 	}
 
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
-		GameObject* gameObject = new GameObject(*child, this);
+		GameObject* gameObject = new GameObject(*child, this, originalToNew, meshRendererComps);
 		AddChild(gameObject);
 	}
-	
+
+	if (originalToNew)
+	{
+		(*originalToNew)[&original] = this;
+	}
 }
 
 GameObject::~GameObject()
@@ -149,7 +161,7 @@ AABB GameObject::GetAABB()
 
 void GameObject::SetTag(const std::string& tag) 
 {
-	App->GetScene()->DeleteFromTagMap(tag, this);
+	App->GetScene()->DeleteFromTagMap(mTag, this);
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
 }
@@ -456,6 +468,21 @@ void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Compone
 	}
 }
 
+void GameObject::GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const
+{
+	MeshRendererComponent* gameObjectComponent = reinterpret_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
+
+	if (gameObjectComponent)
+	{
+		componentVector.push_back(gameObjectComponent);
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		child->GetMeshesInChildren(componentVector);
+	}
+}
+
 template<typename T>
 T* GameObject::GetComponentInParent() const
 {
@@ -546,7 +573,7 @@ void GameObject::Save(JsonObject& obj) const
 	}
 }
 
-void GameObject::Load(const JsonObject& jsonObject)
+void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	mIsEnabled = jsonObject.GetBool("Enabled");
 	float pos[3]; 
@@ -563,15 +590,19 @@ void GameObject::Load(const JsonObject& jsonObject)
 	mPrefabId = jsonObject.GetInt("PrefabUid");
 	mPrefabOverride = jsonObject.GetBool("OverridePrefab");
 	mIsDynamic = jsonObject.GetBool("Dynamic");
+	uidPointerMap[mUid] = this;
+}
 
+void GameObject::LoadComponents(const JsonObject& jsonObject, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
+{
 	// Load components
 	JsonArray components = jsonObject.GetJsonArray("Components");
 	for (unsigned int i = 0; i < components.Size(); ++i)
 	{
 		JsonObject componentData = components.GetJsonObject(i);
-		ComponentType cType = (ComponentType) componentData.GetInt("ComponentType");
+		ComponentType cType = (ComponentType)componentData.GetInt("ComponentType");
 		Component* component = this->CreateComponent(cType);
-		component->Load(componentData);
+		component->Load(componentData, uidPointerMap);
 	}
 }
 
