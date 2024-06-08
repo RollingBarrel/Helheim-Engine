@@ -501,10 +501,16 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::DeleteComponents()
 {
-	for (std::vector<Component*>::const_iterator it = mComponentsToDelete.cbegin(); it > mComponentsToDelete.cend(); ++it)
+	for (std::vector<Component*>::iterator deletIt = mComponentsToDelete.begin(); deletIt != mComponentsToDelete.end(); ++deletIt)
 	{
-		mComponents.erase(it);
-		delete *it;
+		for (std::vector<Component*>::iterator compIt = mComponents.begin(); compIt != mComponentsToDelete.end(); ++compIt)
+		{
+			if ((*compIt)->GetType() == (*deletIt)->GetType())
+			{
+				mComponents.erase(compIt);
+				break;
+			}
+		}
 	}
 	mComponentsToDelete.clear();
 }

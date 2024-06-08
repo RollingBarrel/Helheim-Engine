@@ -21,6 +21,6 @@ private:
 	GameObject* mBattleAreaGO = nullptr;
 	BattleArea* mBattleArea = nullptr;
 	//Collider
-	BoxColliderComponent* mCollider;
+	BoxColliderComponent* mCollider=nullptr;
 };
 

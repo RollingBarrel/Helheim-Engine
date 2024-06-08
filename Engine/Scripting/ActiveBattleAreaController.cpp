@@ -16,6 +16,10 @@ ActiveBattleAreaController::ActiveBattleAreaController(GameObject* owner): Scrip
 {
 }
 
+ActiveBattleAreaController::~ActiveBattleAreaController()
+{
+}
+
 
 
 void ActiveBattleAreaController::Start()
@@ -25,15 +29,27 @@ void ActiveBattleAreaController::Start()
         ScriptComponent* script = static_cast<ScriptComponent*>(mBattleAreaGO->GetComponent(ComponentType::SCRIPT));
         mBattleArea = static_cast<BattleArea*>(script->GetScriptInstance());
     }
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ActiveBattleAreaController::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+}
+
+void ActiveBattleAreaController::Update()
+{
 }
 
 void ActiveBattleAreaController::OnCollisionEnter(CollisionData* collisionData)
 {
-    collisionData->collidedWith->GetTag()->GetID()
+    if (collisionData->collidedWith->GetTag().compare("Player") == 0)
+    {
+        GameManager::GetInstance()->SetActiveBattleArea(mBattleArea);
+        LOG("PLAYER COLLISION");
+        mBattleArea = nullptr;
+
+
+    }
 }
 
 
-void ActiveBattleAreaController::SetActiveBattleArea() const
-{
-    GameManager::GetInstance()->SetActiveBattleArea(mBattleArea);
-}
