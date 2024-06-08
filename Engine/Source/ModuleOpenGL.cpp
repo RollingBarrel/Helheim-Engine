@@ -1011,7 +1011,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	meshInFrustum.clear();
 	mBatchManager.CleanUpCommands();
 
-	//Shadows
+	//Shadow Maps
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
@@ -1063,7 +1063,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	{
 		mBatchManager.AddCommand(*mesh);
 	}
-	//GaometryPass
+	//Geometry Pass
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glDisable(GL_BLEND);
 	glEnable(GL_STENCIL_TEST);
@@ -1073,7 +1073,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glUseProgram(mPbrGeoPassProgramId);
 	mBatchManager.Draw();
 
-	//DecalPass
+	//Decal Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mSkyVao);
@@ -1129,6 +1129,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+
 	//Highlight
 	mBatchManager.CleanUpCommands();
 	for (const GameObject* object : mHighlightedObjects)
@@ -1143,7 +1144,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		}
 	}
 
-	//Higlight pass
+	//Higlight Pass
 	glClear(GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);

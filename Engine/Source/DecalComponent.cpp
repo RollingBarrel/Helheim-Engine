@@ -11,9 +11,11 @@ DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentTy
 	App->GetOpenGL()->AddDecal(*this);
 }
 
-DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL)
+DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL), 
+mDiffuseName(other.mDiffuseName), mDiffuseTexture(other.mDiffuseTexture), mSpecularName(other.mSpecularName), mSpecularTexture(other.mSpecularTexture),
+mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture)
 {
-
+	App->GetOpenGL()->AddDecal(*this);
 }
 
 DecalComponent::~DecalComponent()
