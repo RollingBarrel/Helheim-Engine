@@ -22,8 +22,7 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
-Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), 
-mIsLifetimeRandom(original.mIsLifetimeRandom), mLifetime(original.mLifetime), mMaxLifetime(original.mMaxLifetime),
+Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mLifetime(original.mLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize)
@@ -178,8 +177,8 @@ void ParticleSystemComponent::Update()
 		}
         else
         {
-            mParticles[i]->SetSpeed(mSpeedCurve.GetValue(dt, mParticles[i]->GetInitialSpeed()));
-            mParticles[i]->SetSize(mSizeCurve.GetValue(dt, mParticles[i]->GetInitialSize()));
+            mParticles[i]->SetSpeed(mSpeedCurve.CalculateValue(dt, mParticles[i]->GetInitialSpeed()));
+            mParticles[i]->SetSize(mSizeCurve.CalculateValue(dt, mParticles[i]->GetInitialSize()));
             mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
         }
 	}
@@ -205,9 +204,9 @@ void ParticleSystemComponent::Update()
 
             // Create the particle and sets its speed and size 
             // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, CalculateRandomLifetime());
-            particle->SetInitialSpeed(mSpeedCurve.CalculateInitialValue());
-            particle->SetInitialSize(mSizeCurve.CalculateInitialValue());
+            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom());
+            particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
+            particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
             
 			mParticles.push_back(particle);
 		}
@@ -218,20 +217,6 @@ void ParticleSystemComponent::SetImage(unsigned int resourceId)
 {
     mResourceId = resourceId;
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
-}
-
-float ParticleSystemComponent::CalculateRandomLifetime() const
-{
-    if (mIsLifetimeRandom)
-    {
-        //std::srand(static_cast<unsigned int>(std::time(nullptr)));
-        float random_value = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-        return random_value * (mMaxLifetime - mLifetime) + mLifetime;
-    }
-    else
-    {
-        return mLifetime;
-    }
 }
 
 void ParticleSystemComponent::Reset()
@@ -254,9 +239,7 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddInt("MaxParticles", mMaxParticles);
     obj.AddBool("Looping", mLooping);
     obj.AddBool("StretchedBillboard", mStretchedBillboard);  
-    obj.AddBool("IsLifetimeRandom", mIsLifetimeRandom);
-    obj.AddFloat("Lifetime", mLifetime);
-    obj.AddFloat("MaxLifetime", mMaxLifetime);
+    mLifetime.Save(obj);
 
     obj.AddInt("ShapeType", static_cast<int>(mShapeType));
     obj.AddFloat("ShapeRadius", mShapeRadius);
@@ -286,9 +269,7 @@ void ParticleSystemComponent::Load(const JsonObject& data)
     mMaxParticles = data.GetInt("MaxParticles");
     mLooping = data.GetBool("Looping");
     mStretchedBillboard = data.GetBool("StretchedBillboard");
-    mIsLifetimeRandom = data.GetBool("IsLifetimeRandom");
-    mLifetime = data.GetFloat("Lifetime");
-    mMaxLifetime = data.GetFloat("MaxLifetime");
+    mLifetime.Load(data);
     mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
     mShapeRadius = data.GetFloat("ShapeRadius");
     mShapeAngle = data.GetFloat("ShapeAngle");

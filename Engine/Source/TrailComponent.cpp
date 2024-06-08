@@ -2,22 +2,38 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
-#include "Trail.h"
+#include "Application.h"
+#include "ModuleOpenGL.h"
+#include "ModuleCamera.h"
+#include "CameraComponent.h"
+#include "ResourceTexture.h"
+#include "ModuleResource.h"
+#include "glew.h"
+#include "MathGeoLib.h"
+
+#define POSITION_LOCATION 0
+#define TEXCOORD_LOCATION 1
+#define COLOR_LOCATION 2
+
+#define VBO_FLOAT_SIZE 9 // number of floats for every vertex 3 (position) + 2 (texcoord) + 4 (color)
 
 TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::TRAIL)
 {
-    mTrail = new Trail();
+    Init();
 }
 
 TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::TRAIL), 
-mResourceId(original.mResourceId), mFileName(original.mFileName), mTrail(new Trail(*original.mTrail)),
-mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance)
+mResourceId(original.mResourceId), mFileName(original.mFileName),
+mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance),
+mPoints(original.mPoints), mGradient(ColorGradient(original.mGradient)), mWidth(original.mWidth),
+mFixedDirection(original.mFixedDirection), mTrailTime(original.mTrailTime), mDirection(original.mDirection), mMaxLifeTime(original.mMaxLifeTime)
 {
+    Init();
 }
 
 TrailComponent::~TrailComponent()
 {
-    delete mTrail;
+    App->GetOpenGL()->RemoveTrail(this);
 }
 
 Component* TrailComponent::Clone(GameObject* owner) const
@@ -27,46 +43,178 @@ Component* TrailComponent::Clone(GameObject* owner) const
 
 void TrailComponent::Init()
 {
-    mTrail->Init();
+    float3 position = mOwner->GetPosition();
+    float3 rotation = RotationToVector(mOwner->GetRotation());
+
+    mPoints.push_front(TrailPoint({ position, rotation, mTrailTime }));
+    mPoints.push_front(TrailPoint({ position, rotation, mTrailTime }));
+
+
     SetImage(mResourceId);
+
+    glGenVertexArrays(1, &mVAO);
+    glGenBuffers(1, &mVBO);
+    glBindVertexArray(mVAO);
+    // fill mesh buffer
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+
+    // Enable the attribute for vertex positions
+    glEnableVertexAttribArray(POSITION_LOCATION);
+    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    // Enable the attribute for texture coordinates
+    glEnableVertexAttribArray(TEXCOORD_LOCATION);
+    glVertexAttribPointer(TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    // Enable the attribute for vertex color
+    glEnableVertexAttribArray(COLOR_LOCATION);
+    glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(5 * sizeof(float)));
+
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    App->GetOpenGL()->AddTrail(this);
 }
 
-void TrailComponent::Draw() 
+void TrailComponent::Draw() const
 {
     if (IsEnabled()) 
     {
-        mTrail->Draw();
+        if (mPoints.size() <= 2) return;
+        unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
+        glDepthMask(GL_FALSE);
+        glDisable(GL_CULL_FACE);
+        glEnable(GL_BLEND);									// Enable Blending
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
+        auto cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
+        float4x4 projection = cam->GetViewProjectionMatrix();
+        float3 up = cam->GetFrustum().up;
+        float3 norm = cam->GetFrustum().front;
+        float3 right = up.Cross(norm).Normalized();
+        glUseProgram(programId);
+        glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+        glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+        byte* ptr = static_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+        int testSize = 0;
+        float3 nextPoint = mPoints[0].position;
+        float3 position;
+        float3 direction;
+        mWidth.GetValue().CalculateInitialValue();
+        for (int i = 0; i < mPoints.size()+1; ++i)
+        {
+            if (i < 1)
+            {
+                position = mOwner->GetPosition();
+            }
+            else
+            {
+                position = mPoints[i-1].position;
+            }
+
+            float dp = (static_cast<float>(i) / (mPoints.size()));
+            // The last point uses the direction of the previous
+            // because there is no next point to calculate the direction
+            if (!mFixedDirection and i < mPoints.size())
+            {
+                nextPoint = mPoints[i].position;
+                if (i > 1 or (nextPoint - position).Length() > 0.0001f) 
+                {
+                    direction = (nextPoint - position).Normalized();
+                    direction = direction.Cross(norm).Normalized();
+                }
+                else if (mPoints.size() > 2)
+                {
+                    nextPoint = mPoints[i+1].position;
+                    direction = (nextPoint - position).Normalized();
+                    direction = direction.Cross(norm).Normalized();
+                }
+                else
+                {
+                    direction = RotationToVector(mOwner->GetRotation());
+                }
+                
+            }
+            else if (mFixedDirection)
+            {
+                direction = mPoints[i - 1].direction.Normalized();
+            }
+            float3 topPointPos = position + direction * mWidth.CalculateValue(dp, mWidth.GetValue().GetInitialValue()) * 0.5f;
+            float3 botPointPos = position - direction * mWidth.CalculateValue(dp, mWidth.GetValue().GetInitialValue()) * 0.5f;
+            float2 topPointTexCoord = float2(dp, 1);
+            float2 botPointTexCoord = float2(dp, 0);
+            float4 color = mGradient.CalculateColor(dp);
+
+            // Copiar botPoint
+            memcpy(ptr, botPointPos.ptr(), sizeof(float3));
+            ptr += sizeof(float3);
+            memcpy(ptr, botPointTexCoord.ptr(), sizeof(float2));
+            ptr += sizeof(float2);
+            memcpy(ptr, color.ptr(), sizeof(float4));
+            ptr += sizeof(float4);
+            // Copiar topPoint
+            memcpy(ptr, topPointPos.ptr(), sizeof(float3));
+            ptr += sizeof(float3);
+            memcpy(ptr, topPointTexCoord.ptr(), sizeof(float2));
+            ptr += sizeof(float2);
+            memcpy(ptr, color.ptr(), sizeof(float4));
+            ptr += sizeof(float4);
+        }
+
+        glUnmapBuffer(GL_ARRAY_BUFFER);
+        glBindVertexArray(mVAO);
+
+        glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
+        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
+
+        glBindTexture(GL_TEXTURE_2D, 0);
+        glBindVertexArray(0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glUseProgram(0);
+        glDisable(GL_BLEND);
+        glDepthMask(GL_TRUE);
+        glEnable(GL_CULL_FACE);
     }
 }
 
 void TrailComponent::Update()
 {
-    //Init(); // THIS IS HORRIBLE HELP ME FIND A SOLUTION
     if (IsEnabled())
-    {        
-        float3 position, scale;
-        Quat rotation;
-        mOwner->GetWorldTransform().Decompose(position, rotation, scale);
-        const float3 lastPosition = mTrail->GetLastPosition();
+    {
+        float3 position = mOwner->GetPosition();
+        Quat rotation = mOwner->GetRotation();
+        const float3 lastPosition = mPoints.begin()->position;
+
         const float dposition = position.DistanceSq(lastPosition);
-        if (mTrail->GetSize() <= 0 || dposition >= mMinDistance * mMinDistance && mTrail->GetSize() < mMaxPoints)
+        if (mPoints.size() <= 1 || dposition >= mMinDistance && mPoints.size() < mMaxPoints)
         {
-            mTrail->AddTrailPositions(position, rotation);
+            mPoints.push_front(TrailPoint{ position, RotationToVector(rotation), mTrailTime });
         }
-        mTrail->Update();
+        //*(mPoints.begin()) = TrailPoint{ mOwner->GetPosition(), lastRotation, mTrailTime };
+        mTrailTime += App->GetDt();
+        if (mPoints.size() > 2 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().creationTime) >= mMaxLifeTime)
+        {
+            mPoints.pop_back();
+        }
     }
+}
+
+float3 TrailComponent::RotationToVector(Quat rotation) const
+{
+    rotation.Normalize();
+    Quat rotatedQuat = rotation * Quat(0, mDirection.x, mDirection.y, mDirection.z) * rotation.Inverted();
+    float3 rotatedVector(rotatedQuat.x, rotatedQuat.y, rotatedQuat.z);
+    return rotatedVector.Normalized();
 }
 
 void TrailComponent::SetImage(unsigned int resourceId)
 {
     mResourceId = resourceId;
     auto image = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
-    mTrail->SetImage(image);
+    mImage = image;
 }
 
 void TrailComponent::Reset()
 {
-    delete mTrail;
     *this = TrailComponent(mOwner);
 }
 
@@ -76,7 +224,13 @@ void TrailComponent::Save(JsonObject& obj) const
     obj.AddInt("Image", mResourceId);
     obj.AddInt("MaxPoints", mMaxPoints);
     obj.AddFloat("MinDistance", mMinDistance);
-    mTrail->Save(obj);
+    obj.AddFloat("MaxLifeTime", mMaxLifeTime);
+
+    obj.AddNewJsonObject("Width");
+    mWidth.Save(obj);
+
+    obj.AddNewJsonObject("Gradient");
+    mGradient.Save(obj);
 }
 
 void TrailComponent::Load(const JsonObject& data)
@@ -84,20 +238,25 @@ void TrailComponent::Load(const JsonObject& data)
     Component::Load(data);
     mResourceId = data.GetInt("Image");
     SetImage(mResourceId);
-    mMaxPoints = data.GetInt("MasPoints");
+    mMaxPoints = data.GetInt("MaxPoints");
     mMinDistance = data.GetFloat("MinDistance");    
-    mTrail->Load(data);
-    Init();
+    mMaxLifeTime = data.GetFloat("MaxLifeTime");
+
+    JsonObject width = data.GetJsonObject("Width");
+    mWidth.Load(width);
+
+    JsonObject gradient = data.GetJsonObject("Gradient");
+    mWidth.Load(gradient);
 }
 
 void TrailComponent::Enable()
 {
-    App->GetOpenGL()->AddTrail(mTrail);
-    Init(); // THIS IS HORRIBLE HELP ME FIND A SOLUTION
+    App->GetOpenGL()->AddTrail(this);
+    Init();
 }
 
 void TrailComponent::Disable()
 {
-    App->GetOpenGL()->RemoveTrail(mTrail);
-    mTrail->Clear();
+    App->GetOpenGL()->RemoveTrail(this);
+    mPoints.clear();
 }

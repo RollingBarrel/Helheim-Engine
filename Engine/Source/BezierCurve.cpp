@@ -4,15 +4,9 @@ BezierCurve::BezierCurve()
 {
 }
 
-float BezierCurve::GetValue(float dt, float initialValue) const
+float BezierCurve::CalculateValue(float dt, const float initialValue) const
 {
     return mIsCurve ? initialValue + (CurveValue(dt) * mFactor) : initialValue;
-}
-
-float BezierCurve::CalculateInitialValue()
-{
-    CalculateRandomValue();
-    return mInitialValue;
 }
 
 void BezierCurve::spline(const float* key, int num, int dim, float t, float* v) const
@@ -81,26 +75,10 @@ float BezierCurve::CurveValue(float p) const
     return mPoints[left].y + (mPoints[left + 1].y - mPoints[left].y) * d;
 }
 
-float BezierCurve::CalculateRandomValue()
-{
-    if (mIsValueRandom)
-    {
-        float random_value = static_cast<float>(std::rand()) / static_cast<float>(RAND_MAX);
-        mInitialValue = random_value * (mMaxValue - mValue) + mValue;
-    }
-    else
-    {
-        mInitialValue = mValue;
-    }
-    return mInitialValue;
-}
-
 void BezierCurve::Save(JsonObject& obj) const
 {
     //TODO: Test
-    obj.AddBool("IsValueRandom", mIsValueRandom);
-    obj.AddFloat("Value", mValue);
-    obj.AddFloat("MaxValue", mMaxValue);
+    mValue.Save(obj);
     obj.AddBool("IsCurve", mIsCurve);
     obj.AddFloat("Factor", mFactor);
 
@@ -115,10 +93,7 @@ void BezierCurve::Save(JsonObject& obj) const
 
 void BezierCurve::Load(const JsonObject& data)
 {
-     //TODO: Test   
-    mIsValueRandom = data.GetBool("IsValueRandom");
-    mValue = data.GetFloat("Value");
-    mMaxValue = data.GetFloat("MaxValue");
+    mValue.Load(data);
     mFactor = data.GetFloat("Factor");
     mIsCurve = data.GetBool("IsCurve");
 

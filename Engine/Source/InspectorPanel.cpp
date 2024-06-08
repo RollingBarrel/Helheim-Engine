@@ -44,7 +44,7 @@
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
-#include "Trail.h"
+#include "TrailComponent.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -1582,7 +1582,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	DrawRandomFloat(component->mIsLifetimeRandom, component->mLifetime, component->mMaxLifetime, "Lifetime");
+	DrawRandomFloat(component->mLifetime, "Lifetime");
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1799,13 +1799,13 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
 	ImGui::Text("Fixed Direction");
 	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+	ImGui::Checkbox("##FixedDirection", &(component->mFixedDirection));
 
-	if (component->mTrail->mFixedDirection) 
+	if (component->mFixedDirection) 
 	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
-		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+		ImGui::DragFloat3("##TrailDirection", component->mDirection.ptr());
 	}
 
 	ImGui::Text("Minimum distance");
@@ -1814,10 +1814,10 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 	ImGui::Text("Lifetime");
 	ImGui::SameLine();
-	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
 
 	ImGui::Separator();
-	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+	DrawBezierCurve(&(component->mWidth), "Width");
 	
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint"))
@@ -1826,7 +1826,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->mTrail->mImage;
+		ResourceTexture* image = component->mImage;
 
 		if (image)
 		{
@@ -1867,7 +1867,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(1);
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
-		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
+		bool updated = ImGui::GradientEditor(component->mGradient, draggingMark, selectedMark);
 	}
 }
 
@@ -1876,7 +1876,7 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	std::string label = cLabel;
 	ImGui::Text(cLabel);
 	std::string initial = "Initial " + label;
-	DrawRandomFloat(curve->mIsValueRandom, curve->mValue, curve->mMaxValue, initial.c_str());
+	DrawRandomFloat(curve->mValue, initial.c_str());
 
 	ImGui::Text("%s Curved", cLabel);
 	ImGui::SameLine();
@@ -1896,20 +1896,20 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	}
 }
 
-void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, const char* cLabel) const
+void InspectorPanel::DrawRandomFloat(RandomFloat& value, const char* cLabel) const
 {
 	std::string label = cLabel;
 	ImGui::Text("%s Rand", cLabel);
 	ImGui::SameLine();
 	std::string asCurve = "##" + label + "Rand";
-	ImGui::Checkbox(asCurve.c_str(), &isRand);
+	ImGui::Checkbox(asCurve.c_str(), &value.mIsRand);
 	ImGui::SameLine();
 	float itemWidth = ImGui::GetWindowWidth() / 4.0f; // Por ejemplo, un cuarto del ancho de la ventana
-	if (!isRand)
+	if (!value.mIsRand)
 	{
 		std::string min = "##Min " + label;
 		ImGui::PushItemWidth(itemWidth*2); // Establece el ancho para el DragFloat
-		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::DragFloat(min.c_str(), &value.mMin);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 	}
 	else
@@ -1918,7 +1918,7 @@ void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, con
 		std::string min = "##Min " + label;
 		ImGui::SameLine();
 		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
-		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::DragFloat(min.c_str(), &value.mMin);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 
 		ImGui::SameLine();
@@ -1926,7 +1926,7 @@ void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, con
 		ImGui::SameLine();
 		std::string max = "##Max " + label;
 		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
-		ImGui::DragFloat(max.c_str(), &maxV);
+		ImGui::DragFloat(max.c_str(), &value.mMax);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 
 	}

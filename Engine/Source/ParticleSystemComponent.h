@@ -5,6 +5,7 @@
 #include "ColorGradient.h"
 #include "BlendMode.h"
 #include "MathConstants.h"
+#include "RandomFloat.h"
 
 class ResourceTexture;
 class Particle;
@@ -46,7 +47,6 @@ public:
 private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
-	float CalculateRandomLifetime() const;
 
 	ResourceTexture* mImage = nullptr;
 	unsigned int mResourceId = 452546727; // Default particle texture
@@ -58,9 +58,7 @@ private:
 	float mDelay = 0.0f;
 	float mDuration = 5.0f;
 
-	bool mIsLifetimeRandom;
-	float mLifetime;
-	float mMaxLifetime;
+	RandomFloat mLifetime;
 
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();
