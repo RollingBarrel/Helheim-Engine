@@ -32,10 +32,154 @@
                         "ComponentType": 19,
                         "IsEnabled": true,
                         "DiffuseID": 1608476329,
-                        "DiffuseName": "diffuse_green.tga",
+                        "DiffuseName": "",
                         "SpecularID": 2022236665,
-                        "SpecularName": "specular_green.tga",
+                        "SpecularName": "",
                         "NormalName": ""
+                    }
+                ]
+            },
+            {
+                "UID": 798288026,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    5.449999809265137,
+                    1.0,
+                    5.300000190734863
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 830801033,
+                "ParentUID": 798288026,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 844934096,
+                "ParentUID": 830801033,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1382070208,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    2.7065348625183107,
+                    0.0
+                ],
+                "Rotation": [
+                    0.6977083683013916,
+                    0.0,
+                    0.0,
+                    0.7163819670677185
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.0,
+                            2.7065348625183107,
+                            0.0,
+                            50.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -0.9996513724327087,
+                            0.026406049728393556,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.7880107760429382
+                        ],
+                        "Range": 15.0,
+                        "CastShadow": false,
+                        "Bias": 0.000009999999747378752
                     }
                 ]
             }

@@ -31,6 +31,7 @@ class SpotLightComponent;
 class Trail;
 class ParticleSystemComponent;
 class CameraComponent;
+class DecalComponent;
 struct PointLight;
 struct SpotLight;
 struct SDL_Texture;
@@ -110,6 +111,9 @@ public:
 	void AddHighLight(const GameObject& gameObject);
 	void RemoveHighLight(const GameObject& gameObject);
 
+	void AddDecal(const DecalComponent& decal);
+	void RemoveDecal(const DecalComponent& decal);
+
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
@@ -187,7 +191,8 @@ private:
 	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
 	OpenGLBuffer* mShadowsBuffer = nullptr;
 
-
+	//Decals
+	std::vector<const DecalComponent*> mDecalComponents;
 
 
 	//Lighting uniforms

@@ -2,12 +2,13 @@
 #include "Application.h"
 
 #include "ModuleResource.h"
+#include "ModuleOpenGL.h"
 
 #include "ResourceTexture.h"
 
 DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentType::DECAL)
 {
-
+	App->GetOpenGL()->AddDecal(*this);
 }
 
 DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL)
@@ -52,9 +53,9 @@ void DecalComponent::Save(JsonObject& obj) const
 
 }
 
-void DecalComponent::Load(const JsonObject& data)
+void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 	
 	if (data.HasMember("DiffuseID"))
 	{
@@ -84,4 +85,14 @@ void DecalComponent::Load(const JsonObject& data)
 	}
 
 	
+}
+
+void DecalComponent::Enable()
+{
+	App->GetOpenGL()->AddDecal(*this);
+}
+
+void DecalComponent::Disable()
+{
+	App->GetOpenGL()->RemoveDecal(*this);
 }

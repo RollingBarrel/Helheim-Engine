@@ -15,6 +15,7 @@
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ParticleSystemComponent.h"
+#include "DecalComponent.h"
 
 #include "Quadtree.h"
 #include "BatchManager.h"
@@ -248,9 +249,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
-	sourcesPaths[1] = "PassThroughPixel.glsl";
-	mDepthPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "DecalPass_Vertex.glsl";
+	sourcesPaths[1] = "DecalPass_Fragment.glsl";
+	DecalPassProgramId= CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 
 
@@ -316,6 +317,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	//Draw the skybox
 	if (mEnvironmentTextureId != 0)
 	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 		glUseProgram(mSkyBoxProgramId);
@@ -325,6 +327,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 		glUseProgram(0);
+		glPopDebugGroup();
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -413,6 +416,23 @@ void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
 				}
 			}
 			meshComponents;
+		}
+	}
+}
+
+void ModuleOpenGL::AddDecal(const DecalComponent& decal)
+{
+	mDecalComponents.push_back(&decal);
+}
+
+void ModuleOpenGL::RemoveDecal(const DecalComponent& decal)
+{
+	for (std::vector<const DecalComponent*>::const_iterator it = mDecalComponents.cbegin(); it != mDecalComponents.cend(); ++it)
+	{
+		if (decal.GetID() == (*it)->GetID())
+		{
+			mDecalComponents.erase(it);
+			break;
 		}
 	}
 }
@@ -533,47 +553,47 @@ void ModuleOpenGL::InitSkybox()
 {
 
 	float skyboxVertices[] = {
-	   -1.0f,  1.0f, -1.0f,
-	   -1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-	   -1.0f,  1.0f, -1.0f,
-
-	   -1.0f, -1.0f,  1.0f,
-	   -1.0f, -1.0f, -1.0f,
-	   -1.0f,  1.0f, -1.0f,
-	   -1.0f,  1.0f, -1.0f,
-	   -1.0f,  1.0f,  1.0f,
-	   -1.0f, -1.0f,  1.0f,
-
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-
-	   -1.0f, -1.0f,  1.0f,
-	   -1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
-	   -1.0f, -1.0f,  1.0f,
-
-	   -1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-	   -1.0f,  1.0f,  1.0f,
-	   -1.0f,  1.0f, -1.0f,
-
-	   -1.0f, -1.0f, -1.0f,
-	   -1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-	   -1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+			   		  
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,
+			   		  
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+			   		  
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,
+			   		  
+	   -0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f, -0.5f,
+			   		  
+	   -0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f
 	};
 
 	glGenVertexArrays(1, &mSkyVao);
@@ -992,6 +1012,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	mBatchManager.CleanUpCommands();
 
 	//Shadows
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
@@ -1026,17 +1047,15 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
 
 		mBatchManager.Draw();
-		
-		
 	}
+
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 	SceneFramebufferResized();
 	BindSceneFramebuffer();
-
+	glPopDebugGroup();
 
 
 	mBatchManager.CleanUpCommands();
@@ -1053,6 +1072,20 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glStencilMask(0xFF);
 	glUseProgram(mPbrGeoPassProgramId);
 	mBatchManager.Draw();
+
+	//DecalPass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
+	glUseProgram(DecalPassProgramId);
+	glBindVertexArray(mSkyVao);
+	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
+	{
+		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+	
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glPopDebugGroup();
 
 	//Lighting Pass
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -1084,7 +1117,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(0xFF);
 
-	//particles
+	//Particles
 	glActiveTexture(GL_TEXTURE0);
 	for (const ParticleSystemComponent* partSys : mParticleSystems)
 	{

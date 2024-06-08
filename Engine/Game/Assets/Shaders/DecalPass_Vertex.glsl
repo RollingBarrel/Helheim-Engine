@@ -2,10 +2,11 @@
 
 layout(location = 0) in vec3 inPos;
 
-out vec3 sPos
+out vec3 sPos;
+
+layout(location = 1) uniform mat4 model;
 
 layout(std140, binding = 0) uniform CameraMatrices{
-	mat4 model;
 	mat4 view;
 	mat4 proj;
 };
