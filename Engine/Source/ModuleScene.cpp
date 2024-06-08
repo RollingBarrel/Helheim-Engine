@@ -255,7 +255,6 @@ void ModuleScene::Load(const char* sceneName)
 		mRoot->RecalculateMatrices();
 		mQuadtreeRoot->UpdateTree();
 
-		LoadGameObjectsIntoScripts();
 		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
 	}
@@ -337,7 +336,7 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameO
 			}
 		}
 
-		LoadGameObjectsIntoScripts();
+		//LoadGameObjectsIntoScripts(); DOES NOT EXIST NOW
 		App->GetScriptManager()->StartScripts();
 		
 	}
@@ -462,16 +461,6 @@ void ModuleScene::DuplicateGameObjects()
 	}
 
 	mGameObjectsToDuplicate.clear();
-}
-
-void ModuleScene::LoadGameObjectsIntoScripts()
-{
-	for (std::pair<unsigned int, GameObject**> pair : mGameObjectsToLoadIntoScripts)
-	{
-		*(pair.second) = Find(pair.first);
-	}
-
-	mGameObjectsToLoadIntoScripts.clear();
 }
 
 #pragma endregion

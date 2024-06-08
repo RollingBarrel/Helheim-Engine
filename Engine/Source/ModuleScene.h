@@ -41,7 +41,6 @@ public:
 	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
 	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
-	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) { mGameObjectsToLoadIntoScripts.push_back(pair); }
 
 	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
 
@@ -75,7 +74,6 @@ public:
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
-	void LoadGameObjectsIntoScripts();
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
@@ -84,7 +82,6 @@ private:
 	std::vector<GameObject*> mSceneGO;
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	std::vector<std::pair<unsigned int, GameObject**>> mGameObjectsToLoadIntoScripts;
 	std::unordered_map<std::string, std::vector<GameObject*>> mGameObjectsByTags;
 
 	// Quadtree

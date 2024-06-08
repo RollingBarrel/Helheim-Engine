@@ -130,17 +130,20 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 	}
 
 	JsonArray scriptData = data.GetJsonArray("ScriptVariables");
-	if (mScript && (scriptData.Size() > 0))
+	if (mScript)
 	{
 		for (unsigned int i = 0; i < scriptData.Size(); ++i)
 		{
 			JsonObject data = scriptData.GetJsonObject(i);
-			const char* name = data.GetString("VariableName").c_str();
+			std::string name = data.GetString("VariableName");
 			const std::vector<Member*> members = mScript->GetMembers();
-			for (const Member* member : members)
+			bool toFind = true;
+			for(std::vector<Member*>::const_iterator it = members.cbegin(); toFind && it != members.cend(); ++it)
 			{
-				if (strcmp(member->mName, name) == 0)
+				const Member* member = *it;
+				if (strcmp(member->mName, name.c_str()) == 0)
 				{
+					toFind = false;
 					switch ((MemberType)data.GetInt("MemberType"))
 					{
 					case MemberType::INT:
@@ -164,7 +167,7 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 						int  UID = data.GetInt("VariableData");
 						if (UID != -1) 
 						{
-							App->GetScene()->AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**>(UID, reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset))));
+							*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
 						}
 						break;
 					}
