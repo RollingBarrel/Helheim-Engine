@@ -166,46 +166,70 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Grenade.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\GrenadeState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\IdleState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MoveState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ReloadState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SpecialState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\State.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SwitchState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
-    <ClInclude Include="Level1AManager.h" />
-    <ClInclude Include="MainMenuManager.h" />
+    <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AimState.cpp" />
+    <ClCompile Include="AttackState.cpp" />
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="GrenadeState.cpp" />
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="Grenade.cpp" />
+    <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="ItemShield.cpp" />
     <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuManager.cpp" />
     <ClCompile Include="MeleeWeapon.cpp" />
+    <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Pistol.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="RangeWeapon.cpp" />
+    <ClCompile Include="ReloadState.cpp" />
+    <ClCompile Include="SpecialState.cpp" />
+    <ClCompile Include="State.cpp" />
+    <ClCompile Include="StateMachineTest.cpp" />
+    <ClCompile Include="SwitchState.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>

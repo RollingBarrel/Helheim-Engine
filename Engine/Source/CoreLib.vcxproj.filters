@@ -426,6 +426,7 @@
     <ClCompile Include="BezierCurve.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -437,15 +438,6 @@
     </ClCompile>
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="AnimationStateMachine.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="ResourceStateMachine.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveLoadStateMachine.cpp">
-      <Filter>Importers</Filter>
     </ClCompile>
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
@@ -1061,6 +1053,7 @@
     <ClInclude Include="BezierCurve.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1924,15 +1917,6 @@
     </ClInclude>
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="AnimationStateMachine.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="ResourceStateMachine.h">
-      <Filter>Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="SaveLoadStateMachine.h">
-      <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>

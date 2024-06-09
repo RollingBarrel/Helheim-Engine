@@ -117,9 +117,9 @@ void BoxColliderComponent::Save(JsonObject& obj) const
 	obj.AddBool("FreezeRotation", mFreezeRotation);
 }
 
-void BoxColliderComponent::Load(const JsonObject& data)
+void BoxColliderComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data);
+	Component::Load(data, uidPointerMap);
 
 	float center[3];
 	data.GetFloats("Center", center);

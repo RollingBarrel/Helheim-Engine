@@ -79,9 +79,9 @@ void TrailComponent::Save(JsonObject& obj) const
     mTrail->Save(obj);
 }
 
-void TrailComponent::Load(const JsonObject& data)
+void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::Load(data);
+    Component::Load(data, uidPointerMap);
     mResourceId = data.GetInt("Image");
     SetImage(mResourceId);
     mMaxPoints = data.GetInt("MasPoints");

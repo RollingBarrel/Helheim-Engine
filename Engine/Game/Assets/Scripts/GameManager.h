@@ -10,6 +10,9 @@ class GameManager : public Script
 {
     FRIEND(GameManager)
 public:
+    GameManager(GameObject* owner); 
+    ~GameManager();
+
     static GameManager* GetInstance(); 
 
     void Awake();
@@ -20,9 +23,12 @@ public:
     HudController* GetHud() { return mHudController; };
 
     void LoadLevel(const char* LevelName);
+
+    void Victory();
+    void GameOver();
+
 private:
-    GameManager(GameObject* owner); 
-    ~GameManager();
+
 
     static GameManager* mInstance;
     

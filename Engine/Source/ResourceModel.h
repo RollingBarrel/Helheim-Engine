@@ -1,8 +1,7 @@
 #pragma once
 #include "Resource.h"
-
 #include <vector>
-#include <string>
+#include <unordered_map>
 
 #include "float3.h"
 #include "float4x4.h"
@@ -30,7 +29,8 @@ struct ModelNode
 
 	std::vector<std::pair<unsigned int, unsigned int>> mUids;
 
-	int mParentIndex = -1;
+	int mParentVecIdx = -1;
+	int mGltfId = -1;
 
 	bool mHasTransform = false;
 
@@ -50,10 +50,7 @@ public:
 	ResourceModel(unsigned int uid);
 
 	const std::vector<ModelNode>& GetNodes() { return modelNodes; }
-
-	std::vector<unsigned int> mAnimationUids;
-
 	std::vector<ModelNode> modelNodes;
-
-	std::vector<std::pair<std::string, float4x4>> mInvBindMatrices;
+	std::vector<unsigned int> mAnimationUids;
+	std::vector<std::vector<std::pair<unsigned int, float4x4>>> mInvBindMatrices;
 };

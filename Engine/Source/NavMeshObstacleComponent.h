@@ -12,7 +12,7 @@ public:
 	void Reset();
 	Component* Clone(GameObject* owner) const override;
 	void Save(JsonObject& obj) const override;
-	void Load(const JsonObject& data) override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 	float GetRadius() {
 		return mRadius;
