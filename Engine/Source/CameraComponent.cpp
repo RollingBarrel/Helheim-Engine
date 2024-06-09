@@ -94,7 +94,6 @@ void CameraComponent::SetFOV(float value)
     mFrustum.horizontalFov = math::DegToRad(value);
     mFrustum.verticalFov = 2.f * atanf(tanf(mFrustum.horizontalFov * 0.5f) * (1.0f / mAspectRatio));
     App->GetOpenGL()->SetOpenGlCameraUniforms();
-
 }
 
 void CameraComponent::SetAspectRatio(float value)
@@ -122,7 +121,7 @@ void CameraComponent::Save(JsonObject& obj) const
     Component::Save(obj);
 
     obj.AddFloat("AspectRatio", mAspectRatio);
-    obj.AddFloat("FieldOfView", mFrustum.verticalFov);
+    obj.AddFloat("FieldOfView", math::RadToDeg(mFrustum.verticalFov));
     obj.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
     obj.AddFloat("FarPlane", mFrustum.farPlaneDistance);
     obj.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);
@@ -134,7 +133,6 @@ void CameraComponent::Load(const JsonObject& data, const std::unordered_map<unsi
     if (data.HasMember("AspectRatio"))
     {
         mAspectRatio = data.GetFloat("AspectRatio");
-        SetAspectRatio(mAspectRatio);
     }
     if (data.HasMember("FieldOfView"))
     {
@@ -143,12 +141,10 @@ void CameraComponent::Load(const JsonObject& data, const std::unordered_map<unsi
     if (data.HasMember("NearPlane"))
     {
         mFrustum.nearPlaneDistance = data.GetFloat("NearPlane");
-        SetNearPlane(mFrustum.nearPlaneDistance);
     }
     if (data.HasMember("FarPlane"))
     {
-        mFrustum.farPlaneDistance = data.GetFloat("FarPlane");
-        SetFarPlane(mFrustum.farPlaneDistance);
+        mFrustum.farPlaneDistance = data.GetFloat("FarPlane"); 
     }
 
     if (data.HasMember("IsOrtographic"))
