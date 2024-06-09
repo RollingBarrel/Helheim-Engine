@@ -49,6 +49,15 @@ unsigned int DecalComponent::GetNormalId() const
 	return 0;
 }
 
+unsigned int DecalComponent::GetEmisiveId() const
+{
+	if (mEmisiveTexture)
+	{
+		return mEmisiveTexture->GetOpenGLId();
+	}
+	return 0;
+}
+
 void DecalComponent::Update()
 {
 }
@@ -65,21 +74,26 @@ void DecalComponent::Save(JsonObject& obj) const
 	if (mDiffuseTexture)
 	{
 		obj.AddInt("DiffuseID", mDiffuseTexture->GetUID());
+		obj.AddString("DiffuseName", mDiffuseName.c_str());
 	}
-	obj.AddString("DiffuseName", mDiffuseName.c_str());
 	
 	if (mSpecularTexture)
 	{
 		obj.AddInt("SpecularID", mSpecularTexture->GetUID());
+		obj.AddString("SpecularName", mSpecularName.c_str());
 	}
-	obj.AddString("SpecularName", mSpecularName.c_str());
-
+	
 	if (mNormalTexture)
 	{
 		obj.AddInt("NormalID", mNormalTexture->GetUID());
+		obj.AddString("NormalName", mNormalName.c_str());
 	}
-	obj.AddString("NormalName", mNormalName.c_str());
-
+	
+	if (mEmisiveTexture)
+	{
+		obj.AddInt("EmisiveID", mEmisiveTexture->GetUID());
+		obj.AddString("EmisiveName", mEmisiveName.c_str());
+	}
 }
 
 void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -102,7 +116,7 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		mSpecularTexture->GenerateMipmaps();
 		if (data.HasMember("SpecularName"))
 		{
-			mDiffuseName = data.GetString("SpecularName");
+			mSpecularName = data.GetString("SpecularName");
 		}
 	}
 	
@@ -112,10 +126,19 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		mNormalTexture->GenerateMipmaps();
 		if (data.HasMember("NormalName"))
 		{
-			mDiffuseName = data.GetString("NormalName");
+			mNormalName = data.GetString("NormalName");
 		}
 	}
 
+	if (data.HasMember("EmisiveID"))
+	{
+		mEmisiveTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("EmisiveID"), Resource::Type::Texture);
+		mEmisiveTexture->GenerateMipmaps();
+		if (data.HasMember("EmisiveName"))
+		{
+			mEmisiveName = data.GetString("EmisiveName");
+		}
+	}
 	
 }
 

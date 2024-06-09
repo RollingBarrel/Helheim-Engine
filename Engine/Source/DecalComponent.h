@@ -9,6 +9,7 @@ class DecalComponent : public Component
 	friend class InspectorPanel;
 public:
 	DecalComponent() = delete;
+	DecalComponent(const DecalComponent& other) = delete;
 	explicit DecalComponent(GameObject* owner);
 	DecalComponent(const DecalComponent& other, GameObject* owner);
 	~DecalComponent();
@@ -18,10 +19,12 @@ public:
 	unsigned int GetDiffuseId() const;
 	unsigned int GetSpecularId() const;
 	unsigned int GetNormalId() const;
+	unsigned int GetEmisiveId() const;
 
 	bool HasDiffuse() const{ return mDiffuseTexture; };
 	bool HasSpecular() const { return mSpecularTexture; };
 	bool HasNormal() const { return mNormalTexture; };
+	bool HasEmisive() const { return mEmisiveTexture; };
 
 	void Reset() override {}
 	void Update() override;
@@ -37,10 +40,12 @@ private:
 	ResourceTexture* mDiffuseTexture = nullptr;
 	ResourceTexture* mSpecularTexture = nullptr;
 	ResourceTexture* mNormalTexture = nullptr;
+	ResourceTexture* mEmisiveTexture = nullptr;
 
 	std::string mDiffuseName = "";
 	std::string mSpecularName = "";
 	std::string mNormalName = "";
+	std::string mEmisiveName = "";
 
 };
 

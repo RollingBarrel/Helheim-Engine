@@ -1161,40 +1161,81 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, mGColDepth);
+
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	
 	
 	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().ViewMatrix().Inverted();
 
 	//const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	GLenum att1[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, att1);
+	
+	
+
+	//TODO: Decals without textures draws black;
+	
 
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
 
-	glUniformMatrix4fv(10, 1, GL_TRUE, viewMatrix.ptr());
+	glUniformMatrix4fv(13, 1, GL_TRUE, viewMatrix.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
-		glActiveTexture(GL_TEXTURE4);
+		GLenum channels[4] = { GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+		int numberOfChannels = 0;
+
+		if (mDecalComponents[i]->HasDiffuse())
+		{
+			channels[numberOfChannels] = GL_COLOR_ATTACHMENT0;
+			numberOfChannels++;
+		}
+		
+		if (mDecalComponents[i]->HasSpecular())
+		{
+			channels[numberOfChannels] = GL_COLOR_ATTACHMENT1;
+			numberOfChannels++;
+		}
+
+		if (mDecalComponents[i]->HasNormal())
+		{
+			channels[numberOfChannels] = GL_COLOR_ATTACHMENT2;
+			numberOfChannels++;
+		}
+
+		if (mDecalComponents[i]->HasEmisive())
+		{
+			channels[numberOfChannels] = GL_COLOR_ATTACHMENT4;
+			numberOfChannels++;
+		}
+
+		 //GL_COLOR_ATTACHMENT4
+		glDrawBuffers(numberOfChannels, channels);
+
+		
+		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
 
-		glActiveTexture(GL_TEXTURE5);
+		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
 
-		glActiveTexture(GL_TEXTURE6);
+		glActiveTexture(GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
 
-		glUniform1i(7, mDecalComponents[i]->HasDiffuse());
-		glUniform1i(8, mDecalComponents[i]->HasSpecular());
-		glUniform1i(9, mDecalComponents[i]->HasNormal());
+		glActiveTexture(GL_TEXTURE8);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetEmisiveId());
+
+		glUniform1i(9, mDecalComponents[i]->HasDiffuse());
+		glUniform1i(10, mDecalComponents[i]->HasSpecular());
+		glUniform1i(11, mDecalComponents[i]->HasNormal());
+		glUniform1i(12, mDecalComponents[i]->HasEmisive());
 
 		float4x4 inverseModel = mDecalComponents[i]->GetOwner()->GetWorldTransform();
 		inverseModel.InverseColOrthogonal();
 
-		glUniformMatrix4fv(11, 1, GL_TRUE, inverseModel.ptr());
+		glUniformMatrix4fv(14, 1, GL_TRUE, inverseModel.ptr());
 		
 
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());

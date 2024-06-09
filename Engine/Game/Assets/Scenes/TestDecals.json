@@ -9,7 +9,7 @@
                 "Enabled": true,
                 "Translation": [
                     0.0,
-                    2.4804763793945314,
+                    5.540368556976318,
                     0.0
                 ],
                 "Rotation": [
@@ -19,8 +19,8 @@
                     1.0
                 ],
                 "Scale": [
-                    2.0,
-                    2.0,
+                    8.0,
+                    8.0,
                     2.0
                 ],
                 "Tag": "Untagged",
@@ -35,7 +35,8 @@
                         "DiffuseName": "",
                         "SpecularID": 2022236665,
                         "SpecularName": "",
-                        "NormalName": ""
+                        "NormalID": 1466974184,
+                        "NormalName": "normal.tga"
                     }
                 ]
             },
@@ -137,7 +138,7 @@
                 "Enabled": true,
                 "Translation": [
                     0.0,
-                    2.466416358947754,
+                    0.0,
                     0.0
                 ],
                 "Rotation": [
@@ -147,8 +148,8 @@
                     1.0
                 ],
                 "Scale": [
-                    0.5,
-                    0.5,
+                    50.0,
+                    50.0,
                     0.5
                 ],
                 "Tag": "Untagged",

@@ -1861,14 +1861,14 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 
 	unsigned int imageSize = 50;
 
-	ResourceTexture** textures[3] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture };
-	std::string* fileNames[3] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName };
-	const char* names[3] = { "Diffuse Texture", "Specular Texture", "Normal Map" };
+	ResourceTexture** textures[4] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture, &component->mEmisiveTexture };
+	std::string* fileNames[4] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName, &component->mEmisiveName };
+	const char* names[4] = { "Diffuse Texture", "Specular Texture", "Normal Map", "Emisive Texture"};
 
 	if (ImGui::BeginTable("1", 2, ImGuiTableFlags_BordersInnerV))
 	{
 
-		for (int i = 0; i < 3; ++i)
+		for (int i = 0; i < 4; ++i)
 		{
 			ImGui::BeginGroup();
 			ImGui::TableNextRow();
@@ -1911,6 +1911,7 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 					if (resource && (resource->GetType() == Resource::Type::Texture))
 					{
 						(*textures[i]) = reinterpret_cast<ResourceTexture*>(resource);
+						(*textures[i])->GenerateMipmaps();
 						(*fileNames[i]) = asset->mName;
 					}
 				}
