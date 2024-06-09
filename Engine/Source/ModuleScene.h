@@ -41,6 +41,7 @@ public:
 	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
 	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
+	void SwitchGameObjectsFromScene(GameObject* first, GameObject* second);
 
 	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
 

@@ -19,6 +19,7 @@ StateType AimState::HandleInput()
     if (mPlayerController->GetGrenadeCooldown() >= mGrenadeTimer &&
         App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN)
     {
+        mGrenadeTimer = 0;
         return StateType::GRENADE;
     }
 
@@ -26,6 +27,7 @@ StateType AimState::HandleInput()
     if (mPlayerController->GetAttackCooldown() >= mAttackTimer &&
         App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
     {
+        mAttackTimer = 0;
         return StateType::ATTACK;
     }
 
@@ -33,6 +35,7 @@ StateType AimState::HandleInput()
     if (mPlayerController->GetSpecialAttackCooldown() >= mSpecialAttackTimer &&
         App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
+        mSpecialAttackTimer = 0;
         return StateType::SPECIAL;
     }
 
@@ -40,6 +43,7 @@ StateType AimState::HandleInput()
     if (mPlayerController->GetSwitchCooldown() >= mSwitchTimer &&
         App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
     {
+        mSwitchTimer = 0;
         return StateType::SWITCH;
     }
 

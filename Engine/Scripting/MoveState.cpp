@@ -11,7 +11,7 @@
 MoveState::MoveState(PlayerController* player) : State(player)
 {
     mMoveDirection = float3::zero;
-    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetFront().Cross(float3::unitY).Normalized();
+    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
 }
 
 MoveState::~MoveState()
@@ -122,7 +122,7 @@ void MoveState::DoAnimation()
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
 
-        mPlayerController->SetAnimation(animation, 0.1f);
+        mPlayerController->SetAnimation(animation, 0.3f);
     }
 }
 

@@ -533,7 +533,7 @@ void GameObject::DeleteComponents()
 {
 	for (std::vector<Component*>::iterator deletIt = mComponentsToDelete.begin(); deletIt != mComponentsToDelete.end(); ++deletIt)
 	{
-		for (std::vector<Component*>::iterator compIt = mComponents.begin(); compIt != mComponentsToDelete.end(); ++compIt)
+		for (std::vector<Component*>::iterator compIt = mComponents.begin(); compIt != mComponents.end(); ++compIt)
 		{
 			if ((*compIt)->GetType() == (*deletIt)->GetType())
 			{

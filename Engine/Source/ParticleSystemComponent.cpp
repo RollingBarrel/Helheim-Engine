@@ -276,28 +276,42 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
 {
     //TODO REDOOO
     Component::Load(data, uidPointerMap);
-    mResourceId = data.GetInt("Image");
-    SetImage(mResourceId);
-    mDelay = data.GetFloat("Delay");
-    mDuration = data.GetFloat("Duration");
-    mEmissionRate = data.GetFloat("EmissionRate");
-    mMaxParticles = data.GetInt("MaxParticles");
-    mLooping = data.GetBool("Looping");
-    mStretchedBillboard = data.GetBool("StretchedBillboard");
-    mIsLifetimeRandom = data.GetBool("IsLifetimeRandom");
-    mLifetime = data.GetFloat("Lifetime");
-    mMaxLifetime = data.GetFloat("MaxLifetime");
-    mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
-    mShapeRadius = data.GetFloat("ShapeRadius");
-    mShapeAngle = data.GetFloat("ShapeAngle");
-    float size[3];
-    data.GetFloats("ShapeSize", size);
-    mBlendMode = data.GetInt("BlendMode");
 
-    JsonObject sizeObj = data.GetJsonObject("SizeCurve"); 
-    mSizeCurve.Load(sizeObj);
-    JsonObject speedObj = data.GetJsonObject("SpeedCurve");
-    mSizeCurve.Load(speedObj);
+    if (data.HasMember("Image"))
+    {
+        mResourceId = data.GetInt("Image");
+        SetImage(mResourceId);
+    }
+
+    if (data.HasMember("Delay")) mDelay = data.GetFloat("Delay");
+    if (data.HasMember("Duration")) mDuration = data.GetFloat("Duration");
+    if (data.HasMember("EmissionRate")) mEmissionRate = data.GetFloat("EmissionRate");
+    if (data.HasMember("MaxParticles")) mMaxParticles = data.GetInt("MaxParticles");
+    if (data.HasMember("Looping")) mLooping = data.GetBool("Looping");
+    if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
+    if (data.HasMember("IsLifetimeRandom")) mIsLifetimeRandom = data.GetBool("IsLifetimeRandom");
+    if (data.HasMember("Lifetime")) mLifetime = data.GetFloat("Lifetime");
+    if (data.HasMember("MaxLifetime")) mMaxLifetime = data.GetFloat("MaxLifetime");
+    if (data.HasMember("ShapeType")) mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
+    if (data.HasMember("ShapeRadius")) mShapeRadius = data.GetFloat("ShapeRadius");
+    if (data.HasMember("ShapeAngle")) mShapeAngle = data.GetFloat("ShapeAngle");
+    if (data.HasMember("ShapeSize"))
+    {
+        float size[3];
+        data.GetFloats("ShapeSize", size);
+    }
+    if (data.HasMember("BlendMode")) mBlendMode = data.GetInt("BlendMode");
+
+    if (data.HasMember("SizeCurve")) 
+    {
+        JsonObject sizeObj = data.GetJsonObject("SizeCurve");
+        mSizeCurve.Load(sizeObj);
+    }
+    if (data.HasMember("SpeedCurve"))
+    {
+        JsonObject speedObj = data.GetJsonObject("SpeedCurve");
+        mSizeCurve.Load(speedObj);
+    }
     mColorGradient.Load(data);  
 }
 

@@ -262,14 +262,18 @@ void AudioSourceComponent::Load(const JsonObject& data, const std::unordered_map
 {
 	Component::Load(data, uidPointerMap);
 
-	SetEventByName(data.GetString("EventName").c_str());
+	if(data.HasMember("EventName"))
+		SetEventByName(data.GetString("EventName").c_str());
 
 	UpdateParameters();
 
-	JsonArray arr = data.GetJsonArray("ParametersVariables");
-	for (unsigned int i = 0; i < arr.Size(); ++i)
+	if (data.HasMember("ParametersVariables"))
 	{
-		UpdateParameterValueByIndex(arr.GetInt(i), arr.GetFloat(i+1));
+		JsonArray arr = data.GetJsonArray("ParametersVariables");
+		for (unsigned int i = 0; i < arr.Size(); ++i)
+		{
+			UpdateParameterValueByIndex(arr.GetInt(i), arr.GetFloat(i + 1));
+		}
 	}
 }
 
