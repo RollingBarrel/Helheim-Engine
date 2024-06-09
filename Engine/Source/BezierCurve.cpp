@@ -77,7 +77,8 @@ float BezierCurve::CurveValue(float p) const
 
 void BezierCurve::Save(JsonObject& obj) const
 {
-    mValue.Save(obj);
+    JsonObject value = obj.AddNewJsonObject("Value");
+    mValue.Save(value);
     obj.AddBool("IsCurve", mIsCurve);
     obj.AddFloat("Factor", mFactor);
 
@@ -92,7 +93,6 @@ void BezierCurve::Save(JsonObject& obj) const
 
 void BezierCurve::Load(const JsonObject& data)
 {
-    mValue.Load(data);
     mFactor = data.GetFloat("Factor");
     mIsCurve = data.GetBool("IsCurve");
 
@@ -105,4 +105,6 @@ void BezierCurve::Load(const JsonObject& data)
         pointObj.GetFloats("Point", point);
         mPoints.push_back(float2(point));    
     }
+    JsonObject value = data.GetJsonObject("Value");
+    mValue.Load(value);
 }

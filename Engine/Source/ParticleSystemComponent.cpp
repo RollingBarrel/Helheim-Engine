@@ -184,7 +184,7 @@ void ParticleSystemComponent::Update()
 	}
     if (!mLooping and mEmitterTime - mDelay > mDuration) return;
 
-	if (mEmitterDeltaTime > 1 / mEmissionRate)
+	while (mEmitterDeltaTime > 1 / mEmissionRate)
 	{
 		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
 		if (mParticles.size() < mMaxParticles)
@@ -238,13 +238,18 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddFloat("EmissionRate", mEmissionRate);
     obj.AddInt("MaxParticles", mMaxParticles);
     obj.AddBool("Looping", mLooping);
-    obj.AddBool("StretchedBillboard", mStretchedBillboard);  
-    mLifetime.Save(obj);
+    obj.AddBool("StretchedBillboard", mStretchedBillboard);
+    obj.AddFloat("StretchedRatio", mStretchedRatio);
+    JsonObject lifetime = obj.AddNewJsonObject("Lifetime");
+    mLifetime.Save(lifetime);
 
     obj.AddInt("ShapeType", static_cast<int>(mShapeType));
     obj.AddFloat("ShapeRadius", mShapeRadius);
     obj.AddFloat("ShapeAngle", mShapeAngle);
     obj.AddFloats("ShapeSize", mShapeSize.ptr(), 3);
+    obj.AddFloat("ShapeRandAngle", mShapeRandAngle);
+    obj.AddBool("ShapeIsRandAngle", mIsShapeAngleRand);
+    obj.AddBool("ShapeInvertedDir", mShapeInverseDir);
 
     obj.AddInt("BlendMode", mBlendMode);
 
@@ -269,18 +274,25 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     mMaxParticles = data.GetInt("MaxParticles");
     mLooping = data.GetBool("Looping");
     mStretchedBillboard = data.GetBool("StretchedBillboard");
-    mLifetime.Load(data);
+    mStretchedRatio = data.GetFloat("StretchedRatio");
+    JsonObject lifetime = data.GetJsonObject("Lifetime");
+    mLifetime.Load(lifetime);
     mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
     mShapeRadius = data.GetFloat("ShapeRadius");
     mShapeAngle = data.GetFloat("ShapeAngle");
     float size[3];
     data.GetFloats("ShapeSize", size);
+    mShapeSize = float3(size[0], size[1], size[2]);
+    mIsShapeAngleRand = data.GetBool("ShapeIsRandAngle");
+    mShapeRandAngle = data.GetFloat("ShapeRandAngle");
+    mShapeInverseDir = data.GetBool("ShapeInvertedDir");
+
     mBlendMode = data.GetInt("BlendMode");
 
     JsonObject sizeObj = data.GetJsonObject("SizeCurve"); 
     mSizeCurve.Load(sizeObj);
     JsonObject speedObj = data.GetJsonObject("SpeedCurve");
-    mSizeCurve.Load(speedObj);
+    mSpeedCurve.Load(speedObj);
     mColorGradient.Load(data);  
 }
 

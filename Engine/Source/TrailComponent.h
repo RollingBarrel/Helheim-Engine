@@ -41,7 +41,7 @@ private:
 	void SetFileName(const char* fileName) { mFileName = fileName; }
 	float3 RotationToVector(Quat rotation) const;
 
-	unsigned int mResourceId = 452546727; // Default particle texture
+	unsigned int mResourceId = 148626881; // Default particle texture
 	const char* mFileName = nullptr;
 
 	float mMinDistance = 0.1f;

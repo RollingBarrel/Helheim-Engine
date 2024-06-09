@@ -134,7 +134,14 @@ void TrailComponent::Draw() const
             }
             else if (mFixedDirection)
             {
-                direction = mPoints[i - 1].direction.Normalized();
+                if (i == 0)
+                {
+                    direction = mPoints[i].direction.Normalized();
+                }
+                else
+                {
+                    direction = mPoints[i - 1].direction.Normalized();
+                }
             }
             float3 topPointPos = position + direction * mWidth.CalculateValue(dp, mWidth.GetValue().GetInitialValue()) * 0.5f;
             float3 botPointPos = position - direction * mWidth.CalculateValue(dp, mWidth.GetValue().GetInitialValue()) * 0.5f;
@@ -225,12 +232,14 @@ void TrailComponent::Save(JsonObject& obj) const
     obj.AddInt("MaxPoints", mMaxPoints);
     obj.AddFloat("MinDistance", mMinDistance);
     obj.AddFloat("MaxLifeTime", mMaxLifeTime);
+    obj.AddBool("IsFixedDirection", mFixedDirection);
+    obj.AddFloats("IsFixedDirection", mDirection.ptr(), 3);
 
-    obj.AddNewJsonObject("Width");
-    mWidth.Save(obj);
+    JsonObject width = obj.AddNewJsonObject("Width");
+    mWidth.Save(width);
 
-    obj.AddNewJsonObject("Gradient");
-    mGradient.Save(obj);
+    JsonObject gradient = obj.AddNewJsonObject("Gradient");
+    mGradient.Save(gradient);
 }
 
 void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -241,12 +250,18 @@ void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsig
     mMaxPoints = data.GetInt("MaxPoints");
     mMinDistance = data.GetFloat("MinDistance");    
     mMaxLifeTime = data.GetFloat("MaxLifeTime");
+    mFixedDirection = data.GetBool("IsFixedDirection");
+    float dir[3];
+    data.GetFloats("Direction", dir);
+    mDirection = float3(dir[0], dir[1], dir[2]);
+
+    JsonObject gradient = data.GetJsonObject("Gradient");
+    mGradient.Load(gradient);
 
     JsonObject width = data.GetJsonObject("Width");
     mWidth.Load(width);
 
-    JsonObject gradient = data.GetJsonObject("Gradient");
-    mWidth.Load(gradient);
+
 }
 
 void TrailComponent::Enable()
