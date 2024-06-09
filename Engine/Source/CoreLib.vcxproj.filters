@@ -150,9 +150,6 @@
     <ClCompile Include="ResourceAnimation.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
-    <ClCompile Include="ResourceObject.cpp">
-      <Filter>Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Resource.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
@@ -442,6 +439,12 @@
       <Filter>Resources</Filter>
     </ClCompile>
     <ClCompile Include="SaveLoadStateMachine.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceScene.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadScene.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1923,6 +1926,12 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="SaveLoadStateMachine.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceScene.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadScene.h">
       <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
