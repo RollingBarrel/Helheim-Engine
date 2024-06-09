@@ -75,7 +75,7 @@ void AnimationSMPanel::LoadConfig()
 
     }
     ed::Config config;
-    std::string jsonFile = (mStateMachine->GetName() + ".json");
+    std::string jsonFile = (/*mStateMachine->GetName()*/ + "Simple.json");
     config.SettingsFile = jsonFile.c_str();
     mEditorContext = ed::CreateEditor(&config);
 
