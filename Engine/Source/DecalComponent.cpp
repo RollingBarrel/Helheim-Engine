@@ -89,6 +89,7 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	if (data.HasMember("DiffuseID"))
 	{
 		mDiffuseTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("DiffuseID"), Resource::Type::Texture);
+		mDiffuseTexture->GenerateMipmaps();
 		if (data.HasMember("DiffuseName"))
 		{
 			mDiffuseName = data.GetString("DiffuseName");
@@ -98,6 +99,7 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	if (data.HasMember("SpecularID"))
 	{
 		mSpecularTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("SpecularID"), Resource::Type::Texture);
+		mSpecularTexture->GenerateMipmaps();
 		if (data.HasMember("SpecularName"))
 		{
 			mDiffuseName = data.GetString("SpecularName");
@@ -107,6 +109,7 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	if (data.HasMember("NormalID"))
 	{
 		mNormalTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("NormalID"), Resource::Type::Texture);
+		mNormalTexture->GenerateMipmaps();
 		if (data.HasMember("NormalName"))
 		{
 			mDiffuseName = data.GetString("NormalName");

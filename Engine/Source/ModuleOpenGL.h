@@ -192,6 +192,9 @@ private:
 	OpenGLBuffer* mShadowsBuffer = nullptr;
 
 	//Decals
+	unsigned int mDecalsVao = 0;
+	unsigned int mDecalsVbo = 0;
+	void InitDecals();
 	std::vector<const DecalComponent*> mDecalComponents;
 
 

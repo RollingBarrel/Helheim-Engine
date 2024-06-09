@@ -9,7 +9,7 @@
                 "Enabled": true,
                 "Translation": [
                     0.0,
-                    0.0,
+                    2.4804763793945314,
                     0.0
                 ],
                 "Rotation": [
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    2.0,
+                    2.0,
+                    2.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -131,20 +131,74 @@
                 ]
             },
             {
-                "UID": 1382070208,
+                "UID": 569066853,
                 "ParentUID": 1,
-                "Name": "GameObject",
+                "Name": "Cube",
                 "Enabled": true,
                 "Translation": [
                     0.0,
-                    2.7065348625183107,
+                    2.466416358947754,
                     0.0
                 ],
                 "Rotation": [
-                    0.6977083683013916,
                     0.0,
                     0.0,
-                    0.7163819670677185
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 609864759,
+                "ParentUID": 569066853,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 624137064,
+                "ParentUID": 609864759,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
@@ -157,29 +211,13 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ComponentType": 2,
+                        "ComponentType": 0,
                         "IsEnabled": true,
-                        "Position": [
-                            0.0,
-                            2.7065348625183107,
-                            0.0,
-                            50.0
-                        ],
-                        "Direction": [
-                            0.0,
-                            -0.9996513724327087,
-                            0.026406049728393556,
-                            0.9063077569007874
-                        ],
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.7880107760429382
-                        ],
-                        "Range": 15.0,
-                        "CastShadow": false,
-                        "Bias": 0.000009999999747378752
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
                     }
                 ]
             }

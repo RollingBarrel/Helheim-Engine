@@ -260,6 +260,7 @@ bool ModuleOpenGL::Init()
 	SetOpenGlCameraUniforms();
 
 	InitSkybox();
+	InitDecals();
 
 	//Lighting uniforms
 	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
@@ -699,6 +700,78 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	return ret;
 }
 
+void ModuleOpenGL::InitDecals()
+{
+	float decalsVertices[] = {
+	   -0.5f,  0.5f, -0.5f,
+	   0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+		
+		0.5f, -0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+	   
+
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+	   
+
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   
+
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+		
+
+		0.5f,  0.5f,  0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		
+
+	   -0.5f, -0.5f,  0.5f,
+	    0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+		
+
+		0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+	   
+
+	   -0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+	    0.5f,  0.5f, -0.5f,
+		
+
+		0.5f,  0.5f,  0.5f,
+	    -0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f,  0.5f,
+	   
+
+	   -0.5f, -0.5f, -0.5f,
+	    0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+		
+		0.5f, -0.5f, -0.5f,
+	    0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+		
+	};
+
+	glGenVertexArrays(1, &mDecalsVao);
+	glGenBuffers(1, &mDecalsVbo);
+	glBindVertexArray(mDecalsVao);
+	glBindBuffer(GL_ARRAY_BUFFER, mDecalsVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(decalsVertices), decalsVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glBindVertexArray(0);
+}
+
 void ModuleOpenGL::BakeEnvironmentBRDF(unsigned int width, unsigned int height)
 {
 	if (mEnvBRDFTexId != 0)
@@ -1082,36 +1155,60 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-
+	
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
-	
 
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	
+	
+	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().ViewMatrix().Inverted();
+
+	//const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
+	GLenum att1[2] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, att1);
+
+	glDisable(GL_STENCIL_TEST);
+	glDepthMask(0x00);
 	glUseProgram(DecalPassProgramId);
-	glBindVertexArray(mSkyVao);
+	glBindVertexArray(mDecalsVao);
+
+	glUniformMatrix4fv(10, 1, GL_TRUE, viewMatrix.ptr());
+
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
-		glActiveTexture(GL_TEXTURE3);
+		glActiveTexture(GL_TEXTURE4);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
 
-		glActiveTexture(GL_TEXTURE4);
+		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
 
-		glActiveTexture(GL_TEXTURE5);
+		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
 
-		glUniform1i(6, mDecalComponents[i]->HasDiffuse());
-		glUniform1i(7, mDecalComponents[i]->HasSpecular());
-		glUniform1i(8, mDecalComponents[i]->HasNormal());
-		glUniformMatrix4fv(9, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().Inverted().ptr());
+		glUniform1i(7, mDecalComponents[i]->HasDiffuse());
+		glUniform1i(8, mDecalComponents[i]->HasSpecular());
+		glUniform1i(9, mDecalComponents[i]->HasNormal());
+
+		float4x4 inverseModel = mDecalComponents[i]->GetOwner()->GetWorldTransform();
+		inverseModel.InverseColOrthogonal();
+
+		glUniformMatrix4fv(11, 1, GL_TRUE, inverseModel.ptr());
+		
 
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
-	
+	glDepthMask(0xFF);
+	glEnable(GL_STENCIL_TEST);
+
 	glBindVertexArray(0);
 	glUseProgram(0);
 	glPopDebugGroup();
+
+	const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(6, att2);
 
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");

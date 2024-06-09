@@ -695,6 +695,9 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             //DrawCube(focusGameObject->GetPosition().ptr(), focusGameObject->GetScale().x, focusGameObject->GetScale().y, focusGameObject->GetScale().z, float3(0.8f, 0.8f, 0.8f));
             OBB obb = OBB(AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f)));
             obb.Transform(focusGameObject->GetWorldTransform());
+            //dd::arrow(focusGameObject->GetPosition(), focusGameObject->GetPosition() + focusGameObject->GetFront(), float3(0.5f, 0.5f, 0.5f), 5.0f);
+            //dd::flush();
+            dd::line(focusGameObject->GetPosition(), focusGameObject->GetPosition() - focusGameObject->GetFront(), float3(0.5f, 0.5f, 0.5f), 5.0f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
             
         }
