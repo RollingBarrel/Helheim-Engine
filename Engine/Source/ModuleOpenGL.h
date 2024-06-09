@@ -92,6 +92,7 @@ public:
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
@@ -160,6 +161,7 @@ private:
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
+	unsigned int mSelectCommandsProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
 	unsigned int mSpecPrefilteredProgramId = 0;

@@ -70,12 +70,13 @@ class GeometryBatch
 	class BatchMeshRendererComponent
 	{
 	public:
-		BatchMeshRendererComponent() : bMeshIdx(0), bMaterialIdx(0), baseInstance(-1) {}
-		BatchMeshRendererComponent(unsigned int meshIdx, unsigned int materialIdx) :
-			bMeshIdx(meshIdx), bMaterialIdx(materialIdx), baseInstance(-1) {}
+		BatchMeshRendererComponent() : bMeshIdx(0), bMaterialIdx(0), baseInstance(-1), component(nullptr) {}
+		BatchMeshRendererComponent(unsigned int meshIdx, unsigned int materialIdx, const MeshRendererComponent* mComponent) :
+			bMeshIdx(meshIdx), bMaterialIdx(materialIdx), baseInstance(-1), component(mComponent) {}
 		uint32_t bMeshIdx;
 		uint32_t bMaterialIdx;
 		unsigned int baseInstance;
+		const MeshRendererComponent* component;
 	};
 
 public:
@@ -95,6 +96,8 @@ public:
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
 	void ComputeSkinning(const MeshRendererComponent& cMesh);
+	unsigned int GetCommandsSsbo() const;
+	void ComputeCommands(unsigned int bufferIdx);
 
 private:
 	void RecreatePersistentSsbos();
@@ -121,7 +124,7 @@ private:
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
-	unsigned int mIbo = 0;
+	//unsigned int mIbo = 0;
 
 	uint64_t mDrawCount = 0;
 	unsigned int mSsboModelMatrices = 0;

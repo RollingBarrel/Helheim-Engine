@@ -19,6 +19,8 @@ public:
 	void CleanUpCommands();
 	void Draw();
 	void EndFrameDraw();
+	unsigned int GetNumBatches() const { return mBatches.size(); }
+	GeometryBatch* operator[](unsigned int idx) { return mBatches[idx]; }
 
 private:
 	std::vector<GeometryBatch*> mBatches;
