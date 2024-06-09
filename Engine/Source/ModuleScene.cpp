@@ -206,6 +206,7 @@ void ModuleScene::Load(const char* sceneName)
 	//Close Prefab editor before loading a new scene
 	if (mBackgroundScene != nullptr)
 	{
+		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
 		mRoot = mBackgroundScene;
@@ -225,6 +226,7 @@ void ModuleScene::Load(const char* sceneName)
 	{
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
+		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
 		mRoot = new GameObject("SampleScene", nullptr);

@@ -213,27 +213,40 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 {
 	Component::Load(data, uidPointerMap);
 
-	SetMesh(data.GetInt("MeshID"));
-	SetMaterial(data.GetInt("MaterialID"));
-	mHasSkinning = data.GetBool("HasSkinning");
+	if(data.HasMember("MeshID"))
+		SetMesh(data.GetInt("MeshID"));
+	if(data.HasMember("MaterialID"))
+		SetMaterial(data.GetInt("MaterialID"));
+	if(data.HasMember("HasSkinning"))
+		mHasSkinning = data.GetBool("HasSkinning");
 
-	unsigned int id = data.GetInt("PaletteOwner");
-	if (id)
+	if (data.HasMember("PaletteOwner"))
 	{
-		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+		unsigned int id = data.GetInt("PaletteOwner");
+		if (id)
+		{
+			mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+		}
 	}
-	JsonArray arr = data.GetJsonArray("InverseBindMatrices");
-	for (int i = 0; i < arr.Size(); ++i)
+
+	if (data.HasMember("InverseBindMatrices"))
 	{
-		JsonObject obj = arr.GetJsonObject(i);
-		GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
-		float matrix[16];
-		obj.GetFloats("Matrix", matrix);
-		mGameobjectsInverseMatrices.emplace_back(ptr,
-			float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
-			matrix[4], matrix[5], matrix[6], matrix[7],
-			matrix[8], matrix[9], matrix[10], matrix[11],
-			matrix[12], matrix[13], matrix[14], matrix[15]));
+		JsonArray arr = data.GetJsonArray("InverseBindMatrices");
+		for (int i = 0; i < arr.Size(); ++i)
+		{
+			JsonObject obj = arr.GetJsonObject(i);
+			GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
+			float matrix[16];
+			if (data.HasMember("Matrix"))
+			{
+				obj.GetFloats("Matrix", matrix);
+				mGameobjectsInverseMatrices.emplace_back(ptr,
+					float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
+						matrix[4], matrix[5], matrix[6], matrix[7],
+						matrix[8], matrix[9], matrix[10], matrix[11],
+						matrix[12], matrix[13], matrix[14], matrix[15]));
+			}
+		}
 	}
 }
 

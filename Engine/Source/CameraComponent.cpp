@@ -130,13 +130,17 @@ void CameraComponent::Save(JsonObject& obj) const
 void CameraComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
     Component::Load(data, uidPointerMap);
+    if(data.HasMember("AspectRatio"))
+        mAspectRatio = data.GetFloat("AspectRatio");
+    if(data.HasMember("NearPlane"))
+        mFrustum.nearPlaneDistance = data.GetFloat("NearPlane");
+    if(data.HasMember("FarPlane"))
+        mFrustum.farPlaneDistance = data.GetFloat("FarPlane");
 
-    mAspectRatio = data.GetFloat("AspectRatio");
-    mFrustum.nearPlaneDistance = data.GetFloat("NearPlane");
-    mFrustum.farPlaneDistance = data.GetFloat("FarPlane");
-    if (data.GetBool("IsOrtographic"))
+    if (data.HasMember("IsOrtographic"))
     {
-        mFrustum.type = FrustumType::OrthographicFrustum;
+        if(data.GetBool("IsOrtographic"))   
+            mFrustum.type = FrustumType::OrthographicFrustum;      
     }
 
     App->GetOpenGL()->SetOpenGlCameraUniforms();
