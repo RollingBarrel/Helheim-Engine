@@ -101,20 +101,31 @@ void PointLightComponent::Load(const JsonObject& data, const std::unordered_map<
 {
 	Component::Load(data, uidPointerMap);
 
-	float pos[3];
-	data.GetFloats("Position", pos);
-	for (unsigned int i = 0; i < 3; ++i)
+	if (data.HasMember("Position"))
 	{
-		mData.pos[i] = pos[i];
+		float pos[3];
+		data.GetFloats("Position", pos);
+		for (unsigned int i = 0; i < 3; ++i)
+		{
+			mData.pos[i] = pos[i];
+		}
 	}
-	mData.radius = data.GetFloat("Radius");
-	float color[3];
-	data.GetFloats("Color", color);
-	for (unsigned int i = 0; i < 3; ++i)
+
+	if (data.HasMember("Radius"))
 	{
-		mData.color[i] = color[i];
+		mData.radius = data.GetFloat("Radius");
+		if (data.HasMember("Color"))
+		{
+			float color[3];
+			data.GetFloats("Color", color);
+			for (unsigned int i = 0; i < 3; ++i)
+			{
+				mData.color[i] = color[i];
+			}
+		}
 	}
-	mData.intensity = data.GetFloat("Intensity");
+
+	if (data.HasMember("Intensity")) mData.intensity = data.GetFloat("Intensity");
 }
 
 void PointLightComponent::Reset()
