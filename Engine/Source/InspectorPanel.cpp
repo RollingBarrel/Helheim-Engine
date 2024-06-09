@@ -983,6 +983,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		{
 			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
 			panel->SetStateMachine(component->GetStateMachine());
+			panel->SetComponent(component);
+			panel->SetIsSpine(false);
 			panel->Open();
 		}
 
@@ -992,6 +994,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 			{
 				AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
 				panel->SetStateMachine(component->GetSpineStateMachine());
+				panel->SetComponent(component);
+				panel->SetIsSpine(false);
 				panel->Open();
 			}
 

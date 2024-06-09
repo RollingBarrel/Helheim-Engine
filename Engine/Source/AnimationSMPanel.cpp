@@ -5,6 +5,8 @@
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineResource.h"
+#include "ResourceStateMachine.h"
+#include "AnimationComponent.h"
 
 namespace ed = ax::NodeEditor;
 
@@ -56,8 +58,13 @@ void AnimationSMPanel::Draw(int windowFlags)
 
 void AnimationSMPanel::Close()
 {
+    
+
     ed::DestroyEditor(mEditorContext);
     mStateMachine = nullptr; //Do a state machine save here when sm is a resource
+    mComponent = nullptr;
+    mOpen = false;
+    
 }
 
 void AnimationSMPanel::LoadConfig()
@@ -390,7 +397,20 @@ void AnimationSMPanel::GetResourcesList()
             {
                 currentItem = modelNames[n].c_str();
                 std::string path = std::string("Assets/StateMachines/" + modelNames[n] + ".smbin");
-                mStateMachine->LoadResource(path.c_str());
+                
+                ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+                mStateMachine = newSM->GetStateMachine();
+                mStateMachine->SetUID(newSM->GetUID());
+
+                if (mIsSpine)
+                {
+                    mComponent->SetSpineStateMachine(mStateMachine);
+                }
+                else
+                {
+                    mComponent->SetStateMachine(mStateMachine);
+                }
+                //mStateMachine->LoadResource(path.c_str());
                 
             }
 

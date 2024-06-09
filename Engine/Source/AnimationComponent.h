@@ -35,6 +35,9 @@ public:
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }
 
+	void SetStateMachine(AnimationStateMachine* sm) { mStateMachine = sm; }
+	void SetSpineStateMachine(AnimationStateMachine* sm) { mSpineStateMachine = sm; }
+
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
 	void SetAnimSpeed(float speed);
