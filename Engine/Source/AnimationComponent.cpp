@@ -346,25 +346,22 @@ Component* AnimationComponent::Clone(GameObject* owner) const
 void AnimationComponent::Save(JsonObject& obj) const
 {
 	Component::Save(obj);
-	obj.AddInt("ID", GetID());
+
 	obj.AddInts("AnimationsUIDs", static_cast<const int*>(static_cast<const void*>(mAnimationsUIDs.data())), mAnimationsUIDs.size());
 	obj.AddInt("NumAnimationUIDs", mAnimationsUIDs.size());
 
-	obj.AddInt("ComponentType", static_cast<int>(GetType()));
-	obj.AddBool("isEnabled", IsEnabled());
-
 	obj.AddInt("LowerSMUID", mStateMachine->GetUID());
+
 	if (mSpineObjects.size() > 0)
 	{
 		obj.AddInt("UpperSMUID", mSpineStateMachine->GetUID());
-
 	}
 
 }
 
 void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::Load(data ,uidPointerMap);
+	Component::Load(data,uidPointerMap);
 
 	if (data.HasMember("NumAnimationUIDs"))
 	{
