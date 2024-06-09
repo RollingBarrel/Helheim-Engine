@@ -69,7 +69,6 @@ void AnimationComponent::StartUp()
 	mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
 	mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
 
-
 }
 
 void AnimationComponent::Update()
@@ -94,6 +93,11 @@ void AnimationComponent::Update()
 				{
 					mController->GetTransform_Blending(current);
 				}
+				if (!mController->GetIsInTransition())
+				{
+					mController->EndBlending();
+				}
+				
 			}
 			else
 			{
@@ -114,6 +118,10 @@ void AnimationComponent::Update()
 				for (GameObject* current : mSpineObjects)
 				{
 					mSpineController->GetTransform_Blending(current);
+				}
+				if (!mSpineController->GetIsInTransition())
+				{
+					mSpineController->EndBlending();
 				}
 			}
 			else

@@ -936,10 +936,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 	if (component->GetAnimationUids().size() > 0)
 	{
-		ImGui::Text("Current state: ");
-		ImGui::SameLine();
-		ImGui::Text(component->GetCurrentStateName().c_str());
-	
+
 		if (ImGui::Button("Play/Pause"))
 		{
 			//component->OnStart();

@@ -26,7 +26,7 @@ AnimationSMPanel::~AnimationSMPanel()
 
 void AnimationSMPanel::Draw(int windowFlags)
 {
-    if (mStateMachine)
+    if (mStateMachine && mOpen)
     {
 	    if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	    {

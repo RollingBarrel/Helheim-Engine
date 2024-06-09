@@ -51,6 +51,7 @@ public:
 	void ActivateTransition() { mTransition = true; mStartTransitionTime = mCurrentTime; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }
 	bool GetIsInTransition() const { return mTransition; }
+	void EndBlending();
 
 	float GetTransitionDuration() const { return mTransitionDuration; }
 

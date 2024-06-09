@@ -122,7 +122,7 @@ void MoveState::DoAnimation()
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
 
-        mPlayerController->SetAnimation(animation, 0.1f);
+        mPlayerController->SetAnimation(animation, 0.3f);
     }
 }
 

@@ -141,7 +141,13 @@ void PlayerController::Start()
         mGrenade = (Grenade*)script->GetScriptInstance();
     }
 
-    //END ANIMATION
+    // ANIMATION
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(true);
+    }
+
 }
 
 void PlayerController::Update()
@@ -254,7 +260,7 @@ void PlayerController::HandleRotation()
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 {
-    //mAnimationComponent->SendTrigger(trigger, transitionTime);
+    mAnimationComponent->SendTrigger(trigger, transitionTime);
 }
 
 void PlayerController::PlayOneShot(std::string name)
