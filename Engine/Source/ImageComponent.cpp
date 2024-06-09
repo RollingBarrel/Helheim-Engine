@@ -121,30 +121,58 @@ void ImageComponent::Draw()
 		float4x4 model = float4x4::identity;
 		float4x4 view = float4x4::identity;
 
-		if (mCanvas->GetScreenSpace()) //Ortographic Mode
+		switch (mCanvas->GetRenderSpace())
 		{
-			Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-			if (component != nullptr)
+		case RenderSpace::Screen: //Ortographic Mode
 			{
-				model = component->GetGlobalMatrix();
+				Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+				if (component != nullptr)
+				{
+					model = component->GetGlobalMatrix();
 
-				//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
-				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+					//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+					float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
-				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+					model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
 
+				}
+				glEnable(GL_CULL_FACE);
+				break;
 			}
-			glEnable(GL_CULL_FACE);
-		}
-		else //World Mode
-		{
-			const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		case RenderSpace::World: //World Mode
+			{
+				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-			proj = camera->GetProjectionMatrix();
-			model = GetOwner()->GetWorldTransform();
-			view = camera->GetViewMatrix();
-			glDisable(GL_CULL_FACE);
+				proj = camera->GetProjectionMatrix();
+				model = GetOwner()->GetWorldTransform();
+				view = camera->GetViewMatrix();
+				glDisable(GL_CULL_FACE);
+				break;
+			}
+		case RenderSpace::Billboard: //World Mode aligned to the camera
+			{
+				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+				proj = camera->GetProjectionMatrix();
+				view = camera->GetViewMatrix();
+				float3 pos = GetOwner()->GetPosition();
+				float3 scale = GetOwner()->GetScale();
+				float3x3 scaleMatrix = float3x3::identity;
+				scaleMatrix[0][0] = scale.x;
+				scaleMatrix[1][1] = scale.y;
+				scaleMatrix[2][2] = scale.z;
+
+				float3 norm = camera->GetFrustum().front;
+				float3 up = camera->GetFrustum().up;
+				float3 right = up.Cross(norm).Normalized();
+				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+				model = model * scaleMatrix;
+				model.Transpose();
+
+				glDisable(GL_CULL_FACE);
+			}
 		}
+
 
 		glBindVertexArray(mQuadVAO);
 
