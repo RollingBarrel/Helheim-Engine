@@ -55,6 +55,7 @@
 
 
 #include "AnimationStateMachine.h"
+#include "AnimationSMPanel.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -933,7 +934,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	//bool play = false;
 
 
-	if (component->GetModelUUID() != 0)
+	if (component->GetAnimationUids().size() > 0)
 	{
 		ImGui::Text("Current state: ");
 		ImGui::SameLine();
@@ -977,6 +978,28 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		{
 			component->SetAnimSpeed(animSpeed);
 		}
+
+		if (ImGui::Button("Edit state machine"))
+		{
+			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			panel->SetStateMachine(component->GetStateMachine());
+			panel->SetComponent(component);
+			panel->SetIsSpine(false);
+			panel->Open();
+		}
+
+		if (component->HasSpine())
+		{
+			if (ImGui::Button("Edit spine state machine"))
+			{
+				AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+				panel->SetStateMachine(component->GetSpineStateMachine());
+				panel->SetComponent(component);
+				panel->SetIsSpine(false);
+				panel->Open();
+			}
+
+		}
 	}
 	else
 	{
@@ -1014,7 +1037,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 					{
 						if (model->mAnimationUids.size() > 0)
 						{
-							component->SetModel(model);
+							component->SetAnimationsUids(model->mAnimationUids);
 						}
 						else
 						{
