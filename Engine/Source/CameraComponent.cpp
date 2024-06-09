@@ -121,7 +121,7 @@ void CameraComponent::Save(JsonObject& obj) const
     Component::Save(obj);
 
     obj.AddFloat("AspectRatio", mAspectRatio);
-    obj.AddFloat("FieldOfView", math::RadToDeg(mFrustum.verticalFov));
+    obj.AddFloat("FieldOfView", math::RadToDeg(mFrustum.horizontalFov));
     obj.AddFloat("NearPlane", mFrustum.nearPlaneDistance);
     obj.AddFloat("FarPlane", mFrustum.farPlaneDistance);
     obj.AddBool("IsOrtographic", mFrustum.type == FrustumType::OrthographicFrustum);

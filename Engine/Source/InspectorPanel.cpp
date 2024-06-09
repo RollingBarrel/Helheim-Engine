@@ -721,7 +721,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	static float farPlane = component->GetFarPlane();
 	const char* farLabel = "##FarPlane";
 
-	static float FOV = RadToDeg(component->GetVerticicalFOV());
+	static float FOV = RadToDeg(component->GetHorizontalFOV());
 	const char* FOVLabel = "##FOV";
 
 	ImGui::PushID(nearLabel);
