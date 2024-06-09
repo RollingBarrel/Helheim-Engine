@@ -223,7 +223,8 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 	if (data.HasMember("PaletteOwner"))
 	{
 		unsigned int id = data.GetInt("PaletteOwner");
-		if (id)
+
+		if (id) //What is this??
 		{
 			mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
 		}
@@ -235,16 +236,19 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 		for (int i = 0; i < arr.Size(); ++i)
 		{
 			JsonObject obj = arr.GetJsonObject(i);
-			GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
-			float matrix[16];
-			if (data.HasMember("Matrix"))
+			if (obj.HasMember("GoId"))
 			{
-				obj.GetFloats("Matrix", matrix);
-				mGameobjectsInverseMatrices.emplace_back(ptr,
-					float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
-						matrix[4], matrix[5], matrix[6], matrix[7],
-						matrix[8], matrix[9], matrix[10], matrix[11],
-						matrix[12], matrix[13], matrix[14], matrix[15]));
+				GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
+				float matrix[16];
+				if (obj.HasMember("Matrix"))
+				{
+					obj.GetFloats("Matrix", matrix);
+					mGameobjectsInverseMatrices.emplace_back(ptr,
+						float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
+							matrix[4], matrix[5], matrix[6], matrix[7],
+							matrix[8], matrix[9], matrix[10], matrix[11],
+							matrix[12], matrix[13], matrix[14], matrix[15]));
+				}
 			}
 		}
 	}
