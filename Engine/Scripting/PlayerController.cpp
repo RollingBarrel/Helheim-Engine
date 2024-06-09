@@ -247,7 +247,7 @@ void PlayerController::HandleRotation()
 {
     // TODO: Not aim on melee state?
 
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
+    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
     Plane plane(mGameObject->GetPosition(), float3::unitY);
 
     float distance;
