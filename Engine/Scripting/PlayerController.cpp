@@ -253,7 +253,7 @@ void PlayerController::HandleRotation()
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 {
-    mAnimationComponent->SendTrigger(trigger, transitionTime);
+    //mAnimationComponent->SendTrigger(trigger, transitionTime);
 }
 
 void PlayerController::PlayOneShot(std::string name)
