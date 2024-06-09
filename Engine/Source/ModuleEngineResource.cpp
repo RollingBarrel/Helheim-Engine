@@ -12,6 +12,7 @@
 //#include "ResourcePrefab.h"
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
+#include "ResourceStateMachine.h"
 
 #include <algorithm>
 
@@ -23,6 +24,7 @@
 //#include "ImporterPrefab.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
+#include "ImporterStateMachine.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -176,6 +178,8 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::NavMesh:
 		ret = Importer::NavMesh::Import(uid, assetsFile);
 		break;
+	case Resource::Type::StateMachine:
+		ret = Importer::StateMachine::Import(assetsFile, uid);
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;

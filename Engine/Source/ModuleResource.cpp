@@ -12,6 +12,7 @@
 //#include "ResourcePrefab.h"
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
+#include "ResourceStateMachine.h"
 
 #include "SaveLoadTexture.h"
 #include "SaveLoadMesh.h"
@@ -22,6 +23,7 @@
 //#include "SaveLoadPrefab.h"
 #include "SaveLoadScript.h"
 #include "SaveLoadNavMesh.h"
+#include "SaveLoadStateMachine.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -137,6 +139,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	case Resource::Type::NavMesh:
 	{
 		ret = Importer::NavMesh::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::StateMachine:
+	{
+		ret = Importer::StateMachine::Load(lPath, uid);
 		break;
 	}
 	default:

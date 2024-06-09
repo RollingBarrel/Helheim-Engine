@@ -16,6 +16,7 @@ public:
 		Script,
 		NavMesh,
 		IBL,
+		StateMachine,
 		Unknown = 0
 	};
 
