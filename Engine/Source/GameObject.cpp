@@ -402,6 +402,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::AUDIOLISTENER:
 		newComponent = new AudioListenerComponent(this);
 		break;
+	case ComponentType::BOXCOLLIDER:
+		newComponent = new BoxColliderComponent(this);
+		break;
 	case ComponentType::SLIDER:				//TODO: Redoo UI To not create gameObjects in a component	
 		newComponent = new SliderComponent(this);
 		break;
