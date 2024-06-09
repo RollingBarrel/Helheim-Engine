@@ -11,7 +11,7 @@
 MoveState::MoveState(PlayerController* player) : State(player)
 {
     mMoveDirection = float3::zero;
-    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetFront().Normalized();
+    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
 }
 
 MoveState::~MoveState()

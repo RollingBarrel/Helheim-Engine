@@ -70,26 +70,6 @@ CREATE(PlayerController)
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
-    // States
-    mDashState = new DashState(this);
-    mIdleState = new IdleState(this);
-    mMoveState = new MoveState(this);
-    mAimState = new AimState(this);
-    mAttackState = new AttackState(this);
-    mGrenadeState = new GrenadeState(this);
-    mSwitchState = new SwitchState(this);
-    mSpecialState = new SpecialState(this);
-    mReloadState = new ReloadState(this);
-
-    mLowerStateType = StateType::IDLE;
-    mUpperStateType = StateType::AIM;
-    mUpperState = mAimState;
-    mLowerState = mIdleState;
-
-    // Weapons
-    mMeleeWeapon = new Bat();
-    mRangeWeapon = new Pistol();
-    mWeapon = mMeleeWeapon;
 }
 
 PlayerController::~PlayerController()
@@ -112,6 +92,27 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    // States
+    mDashState = new DashState(this);
+    mIdleState = new IdleState(this);
+    mMoveState = new MoveState(this);
+    mAimState = new AimState(this);
+    mAttackState = new AttackState(this);
+    mGrenadeState = new GrenadeState(this);
+    mSwitchState = new SwitchState(this);
+    mSpecialState = new SpecialState(this);
+    mReloadState = new ReloadState(this);
+
+    mLowerStateType = StateType::IDLE;
+    mUpperStateType = StateType::AIM;
+    mUpperState = mAimState;
+    mLowerState = mIdleState;
+
+    // Weapons
+    mMeleeWeapon = new Bat();
+    mRangeWeapon = new Pistol();
+    mWeapon = mMeleeWeapon;
+
     // AUDIO
     if (mFootStepAudioHolder)
     {
