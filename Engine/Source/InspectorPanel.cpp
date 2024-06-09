@@ -985,6 +985,17 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 			panel->SetStateMachine(component->GetStateMachine());
 			panel->Open();
 		}
+
+		if (component->HasSpine())
+		{
+			if (ImGui::Button("Edit spine state machine"))
+			{
+				AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+				panel->SetStateMachine(component->GetSpineStateMachine());
+				panel->Open();
+			}
+
+		}
 	}
 	else
 	{

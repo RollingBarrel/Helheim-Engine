@@ -410,7 +410,10 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 	}
 	else
 	{
-		mSpineController = nullptr;
-		mSpineStateMachine = nullptr;
+		mSpineController = new AnimationController(tmpAnimation, true);
+		mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
+		mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
+		mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+
 	}
 }

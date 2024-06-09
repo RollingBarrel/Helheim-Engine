@@ -174,7 +174,7 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
 
         ImGui::SameLine();
         if (ImGui::Button("Create new state")) {
-            mStateMachine->AddState(mNewNodeName);
+            mStateMachine->AddState(mNewNodeName, "Default");
             mNewNodeName = "";
         }
 

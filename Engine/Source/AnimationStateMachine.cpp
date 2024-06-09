@@ -70,10 +70,10 @@ unsigned int AnimationStateMachine::GetClipResource(int index) const
 	return mClips[index].mAnimationUID;
 }
 
-void AnimationStateMachine::AddState(const std::string& clipName)
+void AnimationStateMachine::AddState(const std::string& stateName, const std::string& clipName)
 {
 	int resource_idx = GetClipResource(GetClipIndex(clipName));
-	AnimationState newState = AnimationState(clipName);
+	AnimationState newState = AnimationState(stateName);
 	mStates.push_back(newState);
 }
 

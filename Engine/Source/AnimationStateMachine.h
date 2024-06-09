@@ -66,7 +66,7 @@ public:
 	unsigned int GetNumClips() const { return mClips.size(); }
 
 	//States
-	void AddState(const std::string& clipName);
+	void AddState(const std::string& stateName, const std::string& clipName);
 	void RemoveState(int index);
 
 	int GetStateIndex(const std::string& stateName) const;

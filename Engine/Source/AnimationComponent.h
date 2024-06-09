@@ -51,7 +51,7 @@ public:
 	void SetAnimationsUids(const std::vector<unsigned int>& uids) { mAnimationsUIDs = uids; }
 	const  std::vector<unsigned int>& GetAnimationUids() const { return mAnimationsUIDs; }
 
-	
+	bool HasSpine() const { return mHasSpine; }
 
 	void StartTransition(float transitionDuration);
 

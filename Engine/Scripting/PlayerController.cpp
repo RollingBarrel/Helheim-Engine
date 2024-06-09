@@ -11,6 +11,7 @@
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+#include "AnimationComponent.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
