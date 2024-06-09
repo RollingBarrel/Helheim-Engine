@@ -199,7 +199,7 @@ void SettingsPanel::LoadUserSettings()
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");
-		App->GetScene()->Load(name.c_str());
+		App->GetScene()->Load(name.c_str());	//TODO: Request Resource id and load 
 	}	
 }
 

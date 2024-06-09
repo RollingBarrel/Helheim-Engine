@@ -7,7 +7,6 @@ ResourceScene* Importer::Scene::Import(const char* assetsPath, unsigned int uid,
 {
 	ResourceScene* rScene = new ResourceScene(uid);
 
-
-	Importer::Scene::Save(rScene);
+	Importer::Scene::Save(rScene, assetsPath);
 	return rScene;
 }

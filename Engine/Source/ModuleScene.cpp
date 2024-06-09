@@ -19,6 +19,8 @@
 #include "ModuleResource.h"
 #include "Globals.h"
 
+#include "ResourceScene.h"
+
 #include <algorithm>
 #include <iterator>
 #include "Algorithm/Random/LCG.h"
@@ -178,10 +180,10 @@ void ModuleScene::Save(const char* sceneName) const
 		return;
 	}
 
-	std::string saveFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
-	if (saveFilePath.find(".json") == std::string::npos)
+	std::string saveFilePath = sceneName;
+	if (saveFilePath.find(".scn") == std::string::npos)
 	{
-		saveFilePath += ".json";
+		saveFilePath += ".scn";
 	}
 
 	Archive doc;
@@ -214,10 +216,11 @@ void ModuleScene::Load(const char* sceneName)
 	}
 	std::string filePath = ASSETS_SCENES_PATH + std::string(sceneName);
 
-	if (filePath.find(".json") == std::string::npos)
+	if (filePath.find(".scn") == std::string::npos)
 	{
-		filePath += ".json";
+		filePath += ".scn";
 	}
+	Resource* rScene = App->GetResource()->RequestResource(filePath.c_str());
 
 	char* fileBuffer = nullptr;
 

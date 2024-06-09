@@ -1,6 +1,7 @@
 #include "ModuleEngineResource.h"
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScene.h"
 
 #include "Resource.h"
 #include "ResourceTexture.h"
@@ -216,6 +217,12 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		importedBinFilePath = importedBinFilePath.substr(0, dotPos);
 		importedBinFilePath += ".bin";
 		EngineApp->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
+		break;
+	}
+	case Resource::Type::Scene:
+	{
+		assetsFilePath = ASSETS_SCENES_PATH + assetName + extensionName;
+		EngineApp->GetScene()->Save(assetsFilePath.c_str());
 		break;
 	}
 	case Resource::Type::Prefab:
