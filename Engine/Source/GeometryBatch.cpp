@@ -35,7 +35,7 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 	glGenBuffers(1, &mSsboModelMatrices);
 	glGenBuffers(1, &mSsboMaterials);
 	glGenBuffers(1, &mSsboIndicesCommands);
-	//glGenBuffers(1, &mIbo);
+	glGenBuffers(1, &mParameterBuffer);
 
 	glGenBuffers(1, &mPaletteSsbo);
 	glGenBuffers(1, &mSkinSsbo);
@@ -177,38 +177,16 @@ unsigned int GeometryBatch::GetCommandsSsbo() const
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ret);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size(), nullptr, GL_DYNAMIC_DRAW);
 
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
+	unsigned int startValue = 0;
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(startValue), &startValue, GL_DYNAMIC_DRAW);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 23, mParameterBuffer);
+
 	return ret;
 }
 
 void GeometryBatch::ComputeCommands(unsigned int bufferIdx)
 {
-	if (mVBOFlag)
-		RecreateVboAndEbo();
-	if (mMaterialFlag)
-		RecreateMaterials();
-	if (mPersistentsFlag)
-		RecreatePersistentSsbos();
-	if (mSkinningFlag)
-		RecreateSkinningSsbos();
-
-	for (auto it = mMeshComponents.cbegin(); it != mMeshComponents.cend(); ++it)
-	{
-		const BatchMeshRendererComponent& bComp = it->second;
-		ComputeSkinning(*bComp.component);
-
-		unsigned int idx = mDrawCount % NUM_BUFFERS;
-
-		const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
-		if (bComp.component->HasSkinning())
-		{
-			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
-		}
-		else
-		{
-			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
-		}
-	}
-
 	glUseProgram(App->GetOpenGL()->GetSelectCommandsProgramId());
 	glUniform1ui(0, mMeshComponents.size());
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 22, bufferIdx);
@@ -216,6 +194,10 @@ void GeometryBatch::ComputeCommands(unsigned int bufferIdx)
 	sizeMatIdxs += ALIGNED_STRUCT_SIZE(sizeMatIdxs, mSsboAligment) - sizeMatIdxs;
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 13, mSsboIndicesCommands, sizeMatIdxs, mMeshComponents.size()* sizeof(Command));
 	glDispatchCompute((mMeshComponents.size() + 63) / 64, 1, 1);
+	
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
+	//unsigned int startValue = 1;
+	//glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(startValue), &startValue);
 	mIboFlag = true;
 }
 
@@ -508,6 +490,7 @@ void GeometryBatch::Draw()
 
 	glBindVertexArray(mVao);
 	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mSsboIndicesCommands);
+	glBindBuffer(GL_PARAMETER_BUFFER, mParameterBuffer);
 	//if (mIboFlag)
 	//{
 	//	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
@@ -521,10 +504,41 @@ void GeometryBatch::Draw()
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndicesCommands, 0, ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4) * mMeshComponents.size());
 	unsigned int offset = mMeshComponents.size() * sizeof(BufferIndices);
 	offset += ALIGNED_STRUCT_SIZE(offset, mSsboAligment) - offset;
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)offset, mMeshComponents.size(), 0);
+	glMultiDrawElementsIndirectCount(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)offset, 0, mMeshComponents.size(), 0);
 
 	//CleanUp
 	glBindVertexArray(0);
+}
+
+void GeometryBatch::Update()
+{
+	if (mVBOFlag)
+		RecreateVboAndEbo();
+	if (mMaterialFlag)
+		RecreateMaterials();
+	if (mPersistentsFlag)
+		RecreatePersistentSsbos();
+	if (mSkinningFlag)
+		RecreateSkinningSsbos();
+
+	for (auto it = mMeshComponents.cbegin(); it != mMeshComponents.cend(); ++it)
+	{
+		const BatchMeshRendererComponent& bComp = it->second;
+		ComputeSkinning(*bComp.component);
+
+		unsigned int idx = mDrawCount % NUM_BUFFERS;
+
+		const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
+		if (bComp.component->HasSkinning())
+		{
+			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
+		}
+		else
+		{
+			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+		}
+	}
+
 }
 
 void GeometryBatch::CleanUpCommands()

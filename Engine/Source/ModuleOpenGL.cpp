@@ -1049,6 +1049,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//GaometryPass
 	if (mBatchManager.GetNumBatches())
 	{
+		mBatchManager[0]->Update();
 		unsigned int ibo = mBatchManager[0]->GetCommandsSsbo();
 		mBatchManager[0]->ComputeCommands(ibo);
 		glDeleteBuffers(1, &ibo);

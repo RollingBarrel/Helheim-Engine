@@ -10,12 +10,13 @@ struct Command
 };
 layout(std430, binding = 13) readonly buffer ReadCommands {Command inCommands[];};
 layout(std430, binding = 22) writeonly buffer WriteCommands {Command outCommands[];};
+layout(std430, binding = 23) writeonly buffer ParameterBuffer { int numOutCommands; };
 layout(location = 0) uniform uint numCommands;
 
 layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 void main()
 {
-	uint index = gl_GlobalInvocationID.x;
+	uint index = atomicAdd(numOutCommands, 1);
 	if(index < numCommands) 
     {
 		outCommands[index] = inCommands[index];

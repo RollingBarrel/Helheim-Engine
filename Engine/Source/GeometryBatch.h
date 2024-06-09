@@ -90,6 +90,7 @@ public:
 	bool EditMaterial(const MeshRendererComponent& component);
 	bool RemoveMeshComponent(const MeshRendererComponent& component);
 	bool AddToDraw(const MeshRendererComponent& component);
+	void Update();
 	void Draw();
 	void EndFrameDraw();
 	void CleanUpCommands();
@@ -132,6 +133,7 @@ private:
 	unsigned int mSsboIndicesCommands = 0;
 	uint32_t* mSsboMatIndicesCommandsData = nullptr;
 	GLsync mSync[NUM_BUFFERS];
+	unsigned int mParameterBuffer = 0;
 
 	unsigned int mSsboMaterials = 0;
 
