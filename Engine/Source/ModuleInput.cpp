@@ -212,11 +212,10 @@ float ModuleInput::GetGameControllerAxisValue(int id) const
 {
 	if (mGameController.mId != nullptr)
 	{
-		if (/*mGameController.mAxis[id] != AxisState::AXIS_IDLE &&*/
-			SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) > JOYSTICK_THRESHOLD ||
+		if (SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) > JOYSTICK_THRESHOLD ||
 			SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) < -JOYSTICK_THRESHOLD)
 		{
-			LOG("%d: %f", id, SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) / static_cast<float>(SDL_JOYSTICK_AXIS_MAX));
+			//LOG("%d: %f", id, SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) / static_cast<float>(SDL_JOYSTICK_AXIS_MAX));
 			return SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) / static_cast<float>(SDL_JOYSTICK_AXIS_MAX);
 		}
 	}
