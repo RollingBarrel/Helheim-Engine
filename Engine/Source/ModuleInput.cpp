@@ -219,14 +219,12 @@ float ModuleInput::GetGameControllerAxisValue(int id) const
 			LOG("%d: %f", id, SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) / static_cast<float>(SDL_JOYSTICK_AXIS_MAX));
 			return SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) / static_cast<float>(SDL_JOYSTICK_AXIS_MAX);
 		}
-		
-
 	}
 
 	return 0.0f;
 }
 
-int ModuleInput::GetGameControllerAxisRaw(int id) const
+/*int ModuleInput::GetGameControllerAxisRaw(int id) const
 {
 	if (mGameController.mId != nullptr)
 	{
@@ -242,12 +240,12 @@ int ModuleInput::GetGameControllerAxisRaw(int id) const
 	}
 
 	return 0;
-}
+}*/
 
-int ModuleInput::GetGameControllerAxisInput(int id) const
+/*int ModuleInput::GetGameControllerAxisInput(int id) const
 {
 	return ((mGameController.mId != nullptr) ? SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(id)) : 0);
-}
+}*/
 
 void ModuleInput::HandleGameControllerInput()
 {

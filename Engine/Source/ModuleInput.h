@@ -111,8 +111,8 @@ public:
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }
 	AxisState GetGameControllerAxis(int id) const { return mGameController.mAxis[id]; }
 	float GetGameControllerAxisValue(int id) const;
-	int	GetGameControllerAxisRaw(int id) const;
-	int	GetGameControllerAxisInput(int id) const;
+	//int	GetGameControllerAxisRaw(int id) const;
+	//int	GetGameControllerAxisInput(int id) const;
 	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
 
 
