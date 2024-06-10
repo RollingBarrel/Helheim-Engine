@@ -79,4 +79,7 @@ private:
     float mTimePassed = 0.0f;
 
     GameObject* mMenuScript = nullptr;
+
+    float mGrenadeCooldown = 0.0f;
+    float mGrenadeTimer = 0.0f;
 };

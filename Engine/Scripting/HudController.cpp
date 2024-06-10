@@ -90,8 +90,18 @@ void HudController::Update()
         {
             mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
         }
-        else if (mHealthGradualSlider->GetValue() < mTargetHealth) {
+        else if (mHealthGradualSlider->GetValue() < mTargetHealth) 
+        {
             mHealthGradualSlider->SetValue(mTargetHealth);
+        }
+    }
+
+    if (mGrenadeSlider != nullptr) 
+    {
+        if (mGrenadeTimer <= mGrenadeCooldown) 
+        {
+            mGrenadeTimer += App->GetDt();
+            mGrenadeSlider->SetValue(mGrenadeCooldown / mGrenadeTimer);
         }
     }
     
@@ -112,6 +122,7 @@ bool HudController::Delay(float delay)
 
 void HudController::Controls()
 {
+    // TODO: Move to gameManager
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
         mPaused = !mPaused;
@@ -166,8 +177,8 @@ void HudController::SwitchWeapon()
 
 void HudController::SetGrenadeCooldown(float cooldown)
 {
-    if (cooldown <= 0.001f) cooldown = 0.001f;
-    mGrenadeSlider->SetValue(cooldown);
+    mGrenadeCooldown = cooldown;
+    mGrenadeTimer = 0.0f;
 }
 
 void HudController::SetScreen(SCREEN name, bool active)

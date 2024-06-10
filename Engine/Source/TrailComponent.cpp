@@ -245,23 +245,31 @@ void TrailComponent::Save(JsonObject& obj) const
 void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
     Component::Load(data, uidPointerMap);
-    mResourceId = data.GetInt("Image");
-    SetImage(mResourceId);
-    mMaxPoints = data.GetInt("MaxPoints");
-    mMinDistance = data.GetFloat("MinDistance");    
-    mMaxLifeTime = data.GetFloat("MaxLifeTime");
-    mFixedDirection = data.GetBool("IsFixedDirection");
-    float dir[3];
-    data.GetFloats("Direction", dir);
-    mDirection = float3(dir[0], dir[1], dir[2]);
-
-    JsonObject gradient = data.GetJsonObject("Gradient");
-    mGradient.Load(gradient);
-
-    JsonObject width = data.GetJsonObject("Width");
-    mWidth.Load(width);
-
-
+    if(data.HasMember("Image")) 
+    {
+        mResourceId = data.GetInt("Image");
+        SetImage(mResourceId);
+    }
+    if (data.HasMember("MaxPoints")) mMaxPoints = data.GetInt("MaxPoints");
+    if (data.HasMember("MinDistance")) mMinDistance = data.GetFloat("MinDistance");    
+    if (data.HasMember("MaxLifeTime")) mMaxLifeTime = data.GetFloat("MaxLifeTime");
+    if (data.HasMember("IsFixedDirection")) mFixedDirection = data.GetBool("IsFixedDirection");
+    if (data.HasMember("Direction")) 
+    {
+        float dir[3];
+        data.GetFloats("Direction", dir);
+        mDirection = float3(dir[0], dir[1], dir[2]);
+    }
+    if (data.HasMember("Gradient")) 
+    {
+        JsonObject gradient = data.GetJsonObject("Gradient");
+        mGradient.Load(gradient);
+    }
+    if (data.HasMember("Width")) 
+    {
+        JsonObject width = data.GetJsonObject("Width");
+        mWidth.Load(width);
+    }
 }
 
 void TrailComponent::Enable()

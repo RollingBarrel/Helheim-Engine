@@ -266,33 +266,47 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
 {
     //TODO REDOOO
     Component::Load(data, uidPointerMap);
-    mResourceId = data.GetInt("Image");
-    SetImage(mResourceId);
-    mDelay = data.GetFloat("Delay");
-    mDuration = data.GetFloat("Duration");
-    mEmissionRate = data.GetFloat("EmissionRate");
-    mMaxParticles = data.GetInt("MaxParticles");
-    mLooping = data.GetBool("Looping");
-    mStretchedBillboard = data.GetBool("StretchedBillboard");
-    mStretchedRatio = data.GetFloat("StretchedRatio");
-    JsonObject lifetime = data.GetJsonObject("Lifetime");
-    mLifetime.Load(lifetime);
-    mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
-    mShapeRadius = data.GetFloat("ShapeRadius");
-    mShapeAngle = data.GetFloat("ShapeAngle");
-    float size[3];
-    data.GetFloats("ShapeSize", size);
-    mShapeSize = float3(size[0], size[1], size[2]);
-    mIsShapeAngleRand = data.GetBool("ShapeIsRandAngle");
-    mShapeRandAngle = data.GetFloat("ShapeRandAngle");
-    mShapeInverseDir = data.GetBool("ShapeInvertedDir");
+    if (data.HasMember("Image")) 
+    {
+        mResourceId = data.GetInt("Image");
+        SetImage(mResourceId);
+    }
+    if (data.HasMember("Delay")) mDelay = data.GetFloat("Delay");
+    if (data.HasMember("Duration")) mDuration = data.GetFloat("Duration");
+    if (data.HasMember("EmissionRate")) mEmissionRate = data.GetFloat("EmissionRate");
+    if (data.HasMember("MaxParticles")) mMaxParticles = data.GetInt("MaxParticles");
+    if (data.HasMember("Looping")) mLooping = data.GetBool("Looping");
+    if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
+    if (data.HasMember("StretchedRatio")) mStretchedRatio = data.GetFloat("StretchedRatio");
+    if (data.HasMember("Lifetime")) 
+    {
+        JsonObject lifetime = data.GetJsonObject("Lifetime");
+        mLifetime.Load(lifetime);
+    }
+    if (data.HasMember("ShapeType")) mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
+    if (data.HasMember("ShapeRadius")) mShapeRadius = data.GetFloat("ShapeRadius");
+    if (data.HasMember("ShapeAngle")) mShapeAngle = data.GetFloat("ShapeAngle");
+    if (data.HasMember("ShapeSize")) 
+    {
+        float size[3];
+        data.GetFloats("ShapeSize", size);
+        mShapeSize = float3(size[0], size[1], size[2]);
 
-    mBlendMode = data.GetInt("BlendMode");
-
-    JsonObject sizeObj = data.GetJsonObject("SizeCurve"); 
-    mSizeCurve.Load(sizeObj);
-    JsonObject speedObj = data.GetJsonObject("SpeedCurve");
-    mSpeedCurve.Load(speedObj);
+    }
+    if (data.HasMember("ShapeIsRandAngle")) mIsShapeAngleRand = data.GetBool("ShapeIsRandAngle");
+    if (data.HasMember("ShapeRandAngle")) mShapeRandAngle = data.GetFloat("ShapeRandAngle");
+    if (data.HasMember("ShapeInvertedDir")) mShapeInverseDir = data.GetBool("ShapeInvertedDir");
+    if (data.HasMember("BlendMode")) mBlendMode = data.GetInt("BlendMode");
+    if (data.HasMember("SizeCurve")) 
+    {
+        JsonObject sizeObj = data.GetJsonObject("SizeCurve"); 
+        mSizeCurve.Load(sizeObj);
+    }
+    if (data.HasMember("SpeedCurve")) 
+    {
+        JsonObject speedObj = data.GetJsonObject("SpeedCurve");
+        mSpeedCurve.Load(speedObj);
+    }
     mColorGradient.Load(data);  
 }
 
@@ -323,7 +337,7 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
     {
     case EmitterType::CONE:
     {
-        float r = sqrt(randFloat());  // Usar la raíz cuadrada para una distribución uniforme
+        float r = sqrt(randFloat());  // Usar la raï¿½z cuadrada para una distribuciï¿½n uniforme
         float angle = randFloat() * 2 * math::pi;
         float distance = r * mShapeRadius;
         float x = distance * cos(angle);

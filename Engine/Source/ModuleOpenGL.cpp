@@ -1036,8 +1036,6 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	SceneFramebufferResized();
 	BindSceneFramebuffer();
 
-
-
 	mBatchManager.CleanUpCommands();
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{

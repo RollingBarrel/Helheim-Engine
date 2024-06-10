@@ -1,3 +1,4 @@
+#include "ModuleScene.h"
 #pragma once
 #include "ModuleScene.h"
 #include "GameObject.h"
@@ -206,6 +207,7 @@ void ModuleScene::Load(const char* sceneName)
 	//Close Prefab editor before loading a new scene
 	if (mBackgroundScene != nullptr)
 	{
+		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
 		mRoot = mBackgroundScene;
@@ -225,6 +227,7 @@ void ModuleScene::Load(const char* sceneName)
 	{
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
+		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
 		mRoot = new GameObject("SampleScene", nullptr);
@@ -439,6 +442,29 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 			break;
 		}
 	}
+}
+
+void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)
+{
+	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	{
+		if ((*it)->GetID() == second->GetID())
+		{
+			mSceneGO.erase(it);
+			break;
+		}
+	}
+
+	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	{
+		if ((*it)->GetID() == first->GetID())
+		{
+			mSceneGO.insert(it, second);
+			break;
+		}
+	}
+
+	
 }
 
 void ModuleScene::DeleteGameObjects()
