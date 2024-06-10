@@ -230,6 +230,7 @@
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
     <ClCompile Include="log.cpp" />
+    <ClCompile Include="MaskComponent.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
@@ -725,6 +726,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="MaskComponent.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />

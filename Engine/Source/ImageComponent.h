@@ -6,6 +6,7 @@
 class ResourceTexture;
 class ModuleResource;
 class CanvasComponent;
+class Transform2DComponent;
 
 class ENGINE_API ImageComponent : public Component
 {
@@ -27,6 +28,8 @@ public:
     void FillSpriteSheetVBO();
     void CreateVAO();
     void ResizeByRatio();
+    void ApplyMask(ImageComponent* mask);
+    void UpdateMaskedImageStatus();
 
     unsigned int GetResourceId() const { return mResourceId; }
     ResourceTexture* GetImage() const { return mImage; }
@@ -34,12 +37,16 @@ public:
     float* GetAlpha() { return &mAlpha; }
     const char* GetFileName() const { return mFileName; }
     bool* GetMantainRatio() { return &mMantainRatio; }
+    bool& GetIsMaskable() { return mIsMaskable; }
+    bool& GetShouldDraw() { return mShouldDraw; }
     
     inline void SetFileName(const char* fileName) { mFileName = fileName; }
     inline void SetImage(unsigned int resourceId);
     inline void SetColor(float3 color) { mColor = color; }
     inline void SetAlpha(float alpha) { mAlpha = alpha; }
     inline void SetMantainRatio(bool ratio) { mMantainRatio = ratio; }
+    inline void SetMaskable(bool maskable) { mIsMaskable = maskable; }
+    inline void SetShouldDraw(bool draw) { mShouldDraw = draw; }
 
     bool IsSpritesheet() const { return mIsSpritesheet; }
     void SetIsSpritesheet(bool isSpritesheet) { mIsSpritesheet = isSpritesheet; }
@@ -59,7 +66,12 @@ public:
 
 
 private:
+    std::vector<unsigned char> GetPixelData(ResourceTexture* texture);
+    bool Contains(int x, int y);
+
     ResourceTexture* mImage = nullptr;
+    ResourceTexture* mMaskableImage = nullptr;
+    ResourceTexture* mImageToDraw = nullptr;
     unsigned int mResourceId = 148626881; // Default white texture
 
     //TODO: Handle filename when setting the image
@@ -67,10 +79,13 @@ private:
 
     math::float3 mColor = math::float3(1.0f, 1.0f, 1.0f);
     float mAlpha = 1.0f;
+    std::vector<unsigned char> mMaskedPixels = std::vector<unsigned char>();
 
     float2 mTexOffset = float2::zero;
     bool mHasDiffuse = true;
     bool mMantainRatio = true;
+    bool mShouldDraw = true;
+    bool mIsMaskable = false;
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;
@@ -85,4 +100,5 @@ private:
     bool mIsPlaying = false;
 
     CanvasComponent* mCanvas = nullptr;
+    Transform2DComponent* mTransform = nullptr;
 };

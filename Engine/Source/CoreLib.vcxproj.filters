@@ -444,6 +444,9 @@
     <ClCompile Include="SaveLoadStateMachine.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="MaskComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1924,6 +1927,9 @@
     </ClInclude>
     <ClInclude Include="SaveLoadStateMachine.h">
       <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="MaskComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

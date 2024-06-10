@@ -30,17 +30,22 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 	CreateVAO();
 
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 }
 
-ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
+ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
 	FillVBO();
 	CreateVAO();
 
-    SetImage(mResourceId);
+	SetImage(mResourceId);
 	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
-	if (canvas!= nullptr)
-	mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	if (canvas != nullptr)
+	{
+		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	}
+
+	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
 	if (component != nullptr) 
@@ -57,26 +62,43 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	CreateVAO();
 
 	mImage = original.mImage;
+	mMaskableImage = original.mMaskableImage;
+	mImageToDraw = original.mImageToDraw;
 	mResourceId = original.mResourceId;
+
 	mFileName = original.mFileName;
 
 	mColor = original.mColor;
 	mAlpha = original.mAlpha;
+	mMaskedPixels = original.mMaskedPixels;
 
 	mTexOffset = original.mTexOffset;
 	mHasDiffuse = original.mHasDiffuse;
 	mMantainRatio = original.mMantainRatio;
 
+	mShouldDraw = original.mShouldDraw;
+	mIsMaskable = original.mIsMaskable;
+
 	mQuadVBO = original.mQuadVBO;
 	mQuadVAO = original.mQuadVAO;
 
+	mIsSpritesheet = original.mIsSpritesheet;
+	mColumns = original.mColumns;
+	mRows = original.mRows;
+	mCurrentFrame = original.mCurrentFrame;
+	mElapsedTime = original.mElapsedTime;
+	mFPS = original.mFPS;
+	mIsPlaying = original.mIsPlaying;
+
 	mCanvas = original.mCanvas;
+	mTransform = original.mTransform;
 }
 
 ImageComponent:: ~ImageComponent() 
 {
 	CleanUp();
 	mCanvas = nullptr;
+	mTransform = nullptr;
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
@@ -102,12 +124,14 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 { 
+	mImageToDraw = mIsMaskable ? mMaskableImage : mImage;
+
 	if (mIsSpritesheet)
 	{
 		FillSpriteSheetVBO();
 		CreateVAO();
 	}
-	if (mImage && mCanvas)
+	if (mImage && mCanvas && mShouldDraw)
 	{
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
@@ -154,7 +178,7 @@ void ImageComponent::Draw()
 		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mImageToDraw->GetOpenGLId());
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
@@ -221,7 +245,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	mResourceId = data.GetInt("ImageID");
 	SetImage(mResourceId);
 
-	float col[2];
+	float col[3];
 	data.GetFloats("Color", col);
 	mColor = float3(col);
 	mAlpha = data.GetFloat("Alpha");
@@ -235,6 +259,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 void ImageComponent::SetImage(unsigned int resourceId) 
 {
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
+	mMaskedPixels = GetPixelData(mImage);
 }
 
 void ImageComponent::FillVBO()
@@ -341,6 +366,75 @@ void ImageComponent::Update()
 			mElapsedTime = 0;
 		}
 	}
+}
+
+void ImageComponent::ApplyMask(ImageComponent* mask)
+{
+	LOG("Name: %s", GetOwner()->GetName().c_str());
+	LOG("Screen Position: %f, %f, %f", mTransform->GetPosition().x, mTransform->GetPosition().y, mTransform->GetPosition().z); // TODO: Not the screen position
+
+	if (mask == nullptr) return;
+	if (mMaskedPixels.empty() || !mIsMaskable) return;
+
+	// Get the pixel data of the mask
+	std::vector<unsigned char> maskPixels = mask->GetPixelData(mask->mImage);
+
+	for (int y = 0; y < mMaskableImage->GetHeight(); ++y)
+	{
+		for (int x = 0; x < mMaskableImage->GetWidth(); ++x)
+		{
+			int index = (y * mMaskableImage->GetWidth() + x) * 4; // 4 for RGBA
+			if (mask->Contains(x, y))
+			{
+				// Set the alpha of the pixel to the alpha of the corresponding pixel in the mask
+				mMaskedPixels[index + 3] = maskPixels[index + 3];
+			}
+			else
+			{
+				mMaskedPixels[index + 3] = 0;
+			}
+		}
+	}
+
+	// Update the texture with the modified pixel data
+	glBindTexture(GL_TEXTURE_2D, mMaskableImage->GetOpenGLId());
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mMaskableImage->GetWidth(), mMaskableImage->GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, mMaskedPixels.data());
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ImageComponent::UpdateMaskedImageStatus()
+{
+	if (mIsMaskable && mMaskableImage == nullptr)
+	{
+		// Create a copy of mImage
+		mMaskableImage = new ResourceTexture(*mImage);
+	}
+}
+
+std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture)
+{
+	int numPixels = texture->GetWidth() * texture->GetHeight();
+
+	std::vector<unsigned char> pixels(texture->GetPixelsSize() * 4); // Assuming RGBA format
+
+	glBindTexture(GL_TEXTURE_2D, texture->GetOpenGLId());
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return pixels;
+}
+
+bool ImageComponent::Contains(int x, int y)
+{
+	if (mImage && mTransform)
+	{
+		float3 screenPos = mTransform->GetPosition(); // TODO: Not the screen position
+		int adjustedX = x - screenPos.x;
+		int adjustedY = y - screenPos.y;
+		return adjustedX >= 0 && adjustedX < mImage->GetWidth() && adjustedY >= 0 && adjustedY < mImage->GetHeight();
+	}
+	return false;
 }
 
 bool ImageComponent::CleanUp()
