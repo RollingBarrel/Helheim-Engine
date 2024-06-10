@@ -411,7 +411,10 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::PARTICLESYSTEM:
 		newComponent = new ParticleSystemComponent(this);
 		break;
-	
+	case ComponentType::TRAIL:
+		newComponent = new TrailComponent(this);
+		break;
+
 	default:
 		break;
 	}
