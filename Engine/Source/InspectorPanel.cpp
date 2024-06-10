@@ -27,6 +27,7 @@
 #include "CameraComponent.h"
 #include "AIAGentComponent.h"
 #include "ImageComponent.h"
+#include "MaskComponent.h"
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
 #include "AudioSourceComponent.h"
@@ -475,6 +476,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					break;
 				case ComponentType::IMAGE:
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					break;
+				case ComponentType::MASK:
+					DrawMaskComponent(reinterpret_cast<MaskComponent*>(component));
 					break;
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
@@ -1235,6 +1239,31 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 					}
 				}
 			}
+		}
+	}
+
+	// Maskable checkbox
+	bool maskable = imageComponent->GetIsMaskable();
+	if (ImGui::Checkbox("Maskable", &maskable))
+	{
+		imageComponent->SetMaskable(maskable);
+		imageComponent->UpdateMaskedImageStatus();
+	}
+}
+
+void InspectorPanel::DrawMaskComponent(MaskComponent* component)
+{
+	if (component->GetMask() == nullptr)
+		ImGui::Text("No image component attached");
+	else
+	{
+		ImGui::Text("Has Image attached");
+
+		// Add the Show Mask Graphic button
+		bool drawMask = component->GetDrawMask();
+		if (ImGui::Checkbox("Show Mask Graphic", &drawMask))
+		{
+			component->SetDrawMask(drawMask);
 		}
 	}
 }
