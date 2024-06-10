@@ -220,6 +220,7 @@ void ModuleScene::Load(const char* sceneName)
 	{
 		filePath += ".scn";
 	}
+
 	Resource* rScene = App->GetResource()->RequestResource(filePath.c_str());
 
 	char* fileBuffer = nullptr;
