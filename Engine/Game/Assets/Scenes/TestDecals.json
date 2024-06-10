@@ -221,6 +221,50 @@
                         "InverseBindMatrices": []
                     }
                 ]
+            },
+            {
+                "UID": 1988318643,
+                "ParentUID": 1,
+                "Name": "PointLight",
+                "Enabled": true,
+                "Translation": [
+                    -1.4989943504333497,
+                    8.505494117736817,
+                    8.266875267028809
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -1.4989943504333497,
+                            8.505494117736817,
+                            8.266875267028809
+                        ],
+                        "Radius": 73.5,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Intensity": 160.0
+                    }
+                ]
             }
         ]
     }

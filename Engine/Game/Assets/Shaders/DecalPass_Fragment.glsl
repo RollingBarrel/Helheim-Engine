@@ -87,12 +87,14 @@ void main()
 			discard;
 		}
 		outDiffuse = diffuseDecalColor.rgb;
+		//outDiffuse = pow(diffuseDecalColor.rgb,vec3(2.2));
 	}
 	
 	
 	if (hasSpecular)
 	{
 		outSpecularRough = texture(decalSpecularTex, objPos.xy+0.5);
+		outSpecularRough = pow(outSpecularRough,vec4(2.2));
 	}
 	
 	if (hasEmisive)
@@ -106,7 +108,8 @@ void main()
 		vec3 bitangent =  normalize(dFdy(worldPos));
 		vec3 normal = normalize(cross(tangent, bitangent));
 
-		outNormal = (mat3(tangent, bitangent, normal)* (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0));
+		outNormal = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0))*0.5+0.5;
+		//outNormal = pow(outNormal, vec3(2.2));
 	}
 
 	
