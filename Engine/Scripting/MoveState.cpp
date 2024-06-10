@@ -90,34 +90,50 @@ void MoveState::DoAnimation()
         mMoveDirection.Normalize();
         float2 mMovingTo = SetMovingDirection();
         float3 mousePosition = mPlayerController->GetPlayerAimPosition();
-
+        //LOG("mouse z:%f", mousePosition.z);
         std::string animation;
 
         auto setAnimation = [&](const std::string& forward, const std::string& back, const std::string& left, const std::string& right) 
             {
-            if (mMovingTo.x == 0 && mMovingTo.y == 1) animation = forward;
-            else if (mMovingTo.x == 0 && mMovingTo.y == -1) animation = back;
-            else if (mMovingTo.x == 1 && mMovingTo.y == 0) animation = right;
-            else if (mMovingTo.x == -1 && mMovingTo.y == 0) animation = left;
-            else if (mMovingTo.x == 1 && mMovingTo.y == 1) animation = forward;
-            else if (mMovingTo.x == -1 && mMovingTo.y == 1) animation = forward;
-            else if (mMovingTo.x == 1 && mMovingTo.y == -1) animation = back;
-            else if (mMovingTo.x == -1 && mMovingTo.y == -1) animation = back;
+                if (mMovingTo.x == -1 && mMovingTo.y == 0) {
+                    animation = forward;
+                }
+                else if (mMovingTo.x == 0 && mMovingTo.y == -1) {
+                    animation = back;
+                }
+                else if (mMovingTo.x == 1 && mMovingTo.y == 0) {
+                    animation = right;
+                }
+                else if (mMovingTo.x == -1 && mMovingTo.y == 0) {
+                    animation = left;
+                }
+                else if (mMovingTo.x == 1 && mMovingTo.y == 1) {
+                    animation = forward;
+                }
+                else if (mMovingTo.x == -1 && mMovingTo.y == 1) {
+                    animation = forward;
+                }
+                else if (mMovingTo.x == 1 && mMovingTo.y == -1) {
+                    animation = back;
+                }
+                else if (mMovingTo.x == -1 && mMovingTo.y == -1) {
+                    animation = back;
+                }
             };
 
-        if (mousePosition.z > 0) 
+        if (mousePosition.z > 0 && mousePosition.x < 0)
         { // Looking UP
             setAnimation("tWalkForward", "tWalkBack", "tStrafeLeft", "tStrafeRight");
         }
-        else if (mousePosition.z < 0) 
+        else if (mousePosition.z < 0 && mousePosition.x > 0)
         { // Looking DOWN
             setAnimation("tWalkBack", "tWalkForward", "tStrafeRight", "tStrafeLeft");
         }
-        else if (mousePosition.x < 0) 
+        else if (mousePosition.x > 0 && mousePosition.z > 0)
         { // Looking LEFT
             setAnimation("tStrafeRight", "tStrafeLeft", "tWalkForward", "tWalkBack");
         }
-        else if (mousePosition.x > 0) 
+        else if (mousePosition.x < 0 && mousePosition.z < 0)
         { // Looking RIGHT
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
