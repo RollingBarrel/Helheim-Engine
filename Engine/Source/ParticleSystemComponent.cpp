@@ -314,8 +314,9 @@ void ParticleSystemComponent::Disable()
 
 float3 ParticleSystemComponent::ShapeInitPosition() const
 {
-    auto randFloat = []() -> float {
-        return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+    auto randFloat = []() -> float 
+        {
+            return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
         };
 
     switch (mShapeType)
@@ -359,8 +360,9 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
 
 float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
 {
-    auto randFloat = []() -> float {
-        return static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f;
+    auto randFloat = []() -> float 
+        {
+            return static_cast<float>(rand()) / static_cast<float>(RAND_MAX) - 0.5f;
         };
 
     switch (mShapeType)
