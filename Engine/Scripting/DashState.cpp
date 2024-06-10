@@ -40,7 +40,6 @@ StateType DashState::HandleInput()
         {
             return StateType::MOVE;
         }
-        
     }
 
     return StateType::IDLE;
