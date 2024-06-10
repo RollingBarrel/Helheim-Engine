@@ -43,9 +43,10 @@ Component* TrailComponent::Clone(GameObject* owner) const
 
 void TrailComponent::Init()
 {
-    float3 position = mOwner->GetPosition();
-    float3 rotation = RotationToVector(mOwner->GetRotation());
-
+    float3 position, scale;
+    Quat rotationQ;
+    mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
+    float3 rotation = RotationToVector(rotationQ);
     mPoints.push_front(TrailPoint({ position, rotation, mTrailTime }));
     mPoints.push_front(TrailPoint({ position, rotation, mTrailTime }));
 
@@ -102,7 +103,9 @@ void TrailComponent::Draw() const
         {
             if (i < 1)
             {
-                position = mOwner->GetPosition();
+                float3 scale;
+                Quat rotationQ;
+                mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
             }
             else
             {
@@ -115,7 +118,7 @@ void TrailComponent::Draw() const
             if (!mFixedDirection and i < mPoints.size())
             {
                 nextPoint = mPoints[i].position;
-                if (i > 1 or (nextPoint - position).Length() > 0.0001f) 
+                if (i > 1 or (nextPoint - position).Length() > 0.000001f) 
                 {
                     direction = (nextPoint - position).Normalized();
                     direction = direction.Cross(norm).Normalized();
@@ -187,14 +190,16 @@ void TrailComponent::Update()
 {
     if (IsEnabled())
     {
-        float3 position = mOwner->GetPosition();
-        Quat rotation = mOwner->GetRotation();
+        float3 position, scale;
+        Quat rotationQ;
+        mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
+        float3 rotation = RotationToVector(rotationQ);
         const float3 lastPosition = mPoints.begin()->position;
 
         const float dposition = position.DistanceSq(lastPosition);
         if (mPoints.size() <= 1 || dposition >= mMinDistance && mPoints.size() < mMaxPoints)
         {
-            mPoints.push_front(TrailPoint{ position, RotationToVector(rotation), mTrailTime });
+            mPoints.push_front(TrailPoint{ position, rotation, mTrailTime });
         }
         //*(mPoints.begin()) = TrailPoint{ mOwner->GetPosition(), lastRotation, mTrailTime };
         mTrailTime += App->GetDt();
