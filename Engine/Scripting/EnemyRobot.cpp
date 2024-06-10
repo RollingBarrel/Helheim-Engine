@@ -48,6 +48,8 @@ void EnemyRobot::Start()
 
 void EnemyRobot::Update()
 {
+    Enemy::Update();
+
     if (!mBeAttracted) {
         switch (mCurrentState)
         {
@@ -66,7 +68,7 @@ void EnemyRobot::Update()
         }
     }
 
-    Enemy::Update();
+    mBeAttracted = false;
 }
 
 void EnemyRobot::Idle()

@@ -22,6 +22,7 @@ public:
     GameObject* GetPlayer() { return mPlayer; };
     HudController* GetHud() { return mHudController; };
     bool UsingController() { return mController; }
+    bool isPaused() { return mPaused; }
 
     void LoadLevel(const char* LevelName);
 

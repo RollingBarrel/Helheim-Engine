@@ -100,7 +100,7 @@ void HudController::Start()
 
 void HudController::Update()
 {
-    Controls();
+    if (GameManager::GetInstance()->isPaused()) return;
 
     // Gradually decrease the gradual health slider
     if (mHealthGradualSlider != nullptr)
@@ -137,19 +137,6 @@ bool HudController::Delay(float delay)
         return true;
     }
     else return false;
-}
-
-void HudController::Controls()
-{
-    // TODO: Move to gameManager
-    if (mPauseScreen) 
-    {
-        if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
-        {
-            mPaused = !mPaused;
-            mPauseScreen->SetEnabled(mPaused);
-        }
-    }
 }
 
 void HudController::Loading()

@@ -59,7 +59,7 @@ void GameManager::Update()
 
 void GameManager::LoadLevel(const char* LevelName)
 {
-    mHudController->mHealthGradualSlider = nullptr;
+    mHudController->mHealthGradualSlider = nullptr; // TODO: needed?
     App->GetScene()->Load(LevelName);
 }
 

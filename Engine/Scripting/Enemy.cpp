@@ -21,8 +21,7 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
-    mBeAttracted = false;
-
+    if (GameManager::GetInstance()->isPaused()) return;
 }
 
 void Enemy::ActivateEnemy() 

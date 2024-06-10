@@ -30,11 +30,7 @@ void EnemyExplosive::Start()
 
 void EnemyExplosive::Update()
 {
-    if (!mBeAttracted)
-    {
-        Enemy::Update();
-    }
-    
+    Enemy::Update();
 }
 
 void EnemyExplosive::TakeDamage(float damage)
