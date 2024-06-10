@@ -2,6 +2,7 @@
 #include "ResourceScene.h"
 #include "Application.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScene.h"
 
 void Importer::Scene::Save(const ResourceScene* ourScene, const char* assetsFile)
 {
@@ -15,9 +16,14 @@ void Importer::Scene::Save(const ResourceScene* ourScene, const char* assetsFile
 ResourceScene* Importer::Scene::Load(const char* fileName, unsigned int uid)
 {
 
-    
+    char* fileBuffer = nullptr;
 
-    ResourceScene* rScene = new ResourceScene(uid);
+    if (App->GetFileSystem()->Load(fileName, &fileBuffer) > 0);
+    {
+        App->GetScene()->Load(fileBuffer);
+    }
 
-    return rScene;
+    delete fileBuffer;
+
+    return nullptr;
 }

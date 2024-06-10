@@ -214,18 +214,8 @@ void ModuleScene::Load(const char* sceneName)
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
 	}
-	std::string filePath = ASSETS_SCENES_PATH + std::string(sceneName);
 
-	if (filePath.find(".scn") == std::string::npos)
-	{
-		filePath += ".scn";
-	}
-
-	Resource* rScene = App->GetResource()->RequestResource(filePath.c_str());
-
-	char* fileBuffer = nullptr;
-
-	if (App->GetFileSystem()->Load(filePath.c_str(), &fileBuffer) > 0)
+	if(fileBuffer != nullptr)
 	{
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
