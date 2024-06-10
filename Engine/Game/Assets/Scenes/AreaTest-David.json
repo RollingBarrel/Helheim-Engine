@@ -1,0 +1,617 @@
+{
+    "Scene": {
+        "Name": "AreaTest-David",
+        "GameObjects": [
+            {
+                "UID": 116836692,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    8.050000190734864,
+                    1.25,
+                    14.050000190734864
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 117950628,
+                "ParentUID": 116836692,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 119482290,
+                "ParentUID": 117950628,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 121570920,
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1210155665,
+                "ParentUID": 1,
+                "Name": "Player",
+                "Enabled": true,
+                "Translation": [
+                    0.7408909797668457,
+                    2.7985827922821047,
+                    9.834442138671875
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.100000023841858,
+                    1.0
+                ],
+                "Tag": "Player",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 870827401,
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayerController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mMaxShield",
+                                "MemberType": 1,
+                                "VariableData": 100.0
+                            },
+                            {
+                                "VariableName": "mPlayerSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "DASH",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDashRange",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mDashCoolDown",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mDashDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "Grenade",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mGrenadeAimAreaGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGrenadeExplotionPreviewAreaGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGrenadeRange",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mGrenadeCoolDown",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "DEBUG MODE",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mGodMode",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "AUDIO",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mFootStepAudioHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGunfireAudioHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    },
+                    {
+                        "ID": 1933686731,
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.30000001192092898,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1211269601,
+                "ParentUID": 1210155665,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1212383537,
+                "ParentUID": 1211269601,
+                "Name": "Cube",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1212870884,
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1097135934,
+                "ParentUID": 1,
+                "Name": "GameManager",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 415912401,
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "GameManager",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "Player",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mPlayer",
+                                "MemberType": 3,
+                                "VariableData": 1210155665
+                            },
+                            {
+                                "VariableName": "mHudControllerGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1390115288,
+                "ParentUID": 1,
+                "Name": "Camera",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 189492017,
+                        "ComponentType": 6,
+                        "IsEnabled": true,
+                        "ComponentType": 6,
+                        "AspectRatio": 1.8978978395462037,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    },
+                    {
+                        "ID": 645676248,
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayerCamera",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mFollowTarget",
+                                "MemberType": 3,
+                                "VariableData": 1210155665
+                            },
+                            {
+                                "VariableName": "mYawAngle",
+                                "MemberType": 1,
+                                "VariableData": 45.0
+                            },
+                            {
+                                "VariableName": "mPitchAngle",
+                                "MemberType": 1,
+                                "VariableData": -53.0
+                            },
+                            {
+                                "VariableName": "mDistanceToPlayer",
+                                "MemberType": 1,
+                                "VariableData": 18.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 6376846,
+                "ParentUID": 1,
+                "Name": "BatlleAreaController",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 671523797,
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            13.399999618530274,
+                            8.350000381469727,
+                            5.150000095367432
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ID": 226449079,
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ActiveBattleAreaController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "Battle Area",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO",
+                                "MemberType": 3,
+                                "VariableData": 1169367744
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1169367744,
+                "ParentUID": 1,
+                "Name": "BatleArea",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1008763139,
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "Spawner",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mSpawner1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawner2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawner3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawner4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2124181117,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 226250000,
+                        "ComponentType": 5,
+                        "IsEnabled": true
+                    },
+                    {
+                        "ID": 1992402358,
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ID": 420157541,
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            }
+        ]
+    }
+}

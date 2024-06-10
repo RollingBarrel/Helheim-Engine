@@ -42,13 +42,13 @@ void ActiveBattleAreaController::Update()
 
 void ActiveBattleAreaController::OnCollisionEnter(CollisionData* collisionData)
 {
-    
-    if (mBattleArea && collisionData->collidedWith->GetTag().compare("Player") == 0)
+    if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
         GameManager::GetInstance()->SetActiveBattleArea(mBattleArea);
-        mBattleArea->ActivateArea();
         LOG("PLAYER COLLISION");
         mBattleArea = nullptr;
+
+
     }
 }
 

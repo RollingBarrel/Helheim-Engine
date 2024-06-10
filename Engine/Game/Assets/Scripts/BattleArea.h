@@ -11,14 +11,10 @@ public:
 	~BattleArea();
 	void Start() override;
 	void Update() override;
-	void ActivateArea() { mIsActive = true; };
-	void DestroyEnemy();
 
 private:
-	int mMaxSimulNumEnemies = 0;
+	int mMaxNumEnemies = 0;
 	int mCurrentEnemies = 0;
-	int mTotalNumEnemies = 0;
-	bool mIsActive = false;
 	GameObject* mSpawner1 = nullptr;
 	GameObject* mSpawner2 = nullptr;
 	GameObject* mSpawner3 = nullptr;

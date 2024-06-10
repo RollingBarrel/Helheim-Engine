@@ -27,25 +27,4 @@ void BattleArea::Start()
 
 void BattleArea::Update()
 {
-    if (mIsActive && mTotalNumEnemies>0)
-    {
-        if (mCurrentEnemies < mMaxSimulNumEnemies)
-        {
-            //SPAWN ENEMIES
-        }
-    
-    
-    }
-}
-
-void BattleArea::DestroyEnemy()
-{
-    --mCurrentEnemies;
-    --mTotalNumEnemies;
-    if (mTotalNumEnemies != 0)
-    {
-        mIsActive = false;
-        return;
-    }
-
 }
