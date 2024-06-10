@@ -54,8 +54,8 @@ void RandomFloat::Save(JsonObject& obj) const
 
 void RandomFloat::Load(const JsonObject& data)
 {
-    mIsRand = data.GetBool("IsValueRandom");
-    mMin = data.GetFloat("MinValue");
-    mMax = data.GetFloat("MaxValue");
+    if (data.HasMember("IsValueRandom")) mIsRand = data.GetBool("IsValueRandom");
+    if (data.HasMember("MinValue")) mMin = data.GetFloat("MinValue");
+    if (data.HasMember("MaxValue")) mMax = data.GetFloat("MaxValue");
     mInitialValue = CalculateRandom();
 }
