@@ -137,7 +137,7 @@ void MoveState::DoAnimation()
         { // Looking RIGHT
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
-
+        LOG("x:%f ", animation);
         mPlayerController->SetAnimation(animation, 0.3f);
     }
 }
@@ -167,19 +167,19 @@ float2 MoveState::SetMovingDirection()
     }
     else if (mMoveDirection.x < 0 && mMoveDirection.z < 0 && absX > absZ)
     {
-        return float2(1, 1); // Moving up or down
+        return float2(1, 1); 
     }
     else if (mMoveDirection.x < 0 && mMoveDirection.z > 0 && absZ > absX)
     {
-        return float2(-1, 1); // Moving up or down
+        return float2(-1, 1); 
     }
     else if (mMoveDirection.x > 0 && mMoveDirection.z < 0 && absZ > absX)
     {
-        return float2(1, -1); // Moving up or down
+        return float2(1, -1); 
     }
     else if (mMoveDirection.x > 0 && mMoveDirection.z > 0 && absX > absZ)
     {
-        return float2(-1, -1); // Moving up or down
+        return float2(-1, -1); 
     }
     else 
     {
