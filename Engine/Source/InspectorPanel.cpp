@@ -1245,7 +1245,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
 {
-	const char* renderModes[] = { "World Space", "Screen Space", "Billboard mode"};
+	const char* renderModes[] = { "World Space", "Screen Space", "Billboard mode", "World axis billboard"};
 	static int selectedRenderMode = 1;
 
 	ImGui::Text("Render Mode");
@@ -1260,6 +1260,8 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	case 1: canvasComponent->SetRenderSpace(RenderSpace::Screen);
 		break;
 	case 2: canvasComponent->SetRenderSpace(RenderSpace::Billboard);
+		break;
+	case 3: canvasComponent->SetRenderSpace(RenderSpace::WorldAxisBillboard);
 		break;
 	}
 

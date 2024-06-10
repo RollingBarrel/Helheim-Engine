@@ -113,6 +113,7 @@ void ImageComponent::Draw()
 		if (UIImageProgram == 0) return;
 
 		glEnable(GL_BLEND);
+		glDepthMask(GL_TRUE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glUseProgram(UIImageProgram);
@@ -167,9 +168,34 @@ void ImageComponent::Draw()
 				float3 right = up.Cross(norm).Normalized();
 				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
 				model = model * scaleMatrix;
-				model.Transpose();
+				//model.Transpose();
 
 				glDisable(GL_CULL_FACE);
+				break;
+			}
+		case RenderSpace::WorldAxisBillboard: //World Mode aligned to the camera
+			{
+				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+				proj = camera->GetProjectionMatrix();
+				view = camera->GetViewMatrix();
+				float3 pos = GetOwner()->GetPosition();
+				float3 scale = GetOwner()->GetScale();
+				float3x3 scaleMatrix = float3x3::identity;
+				scaleMatrix[0][0] = scale.x;
+				scaleMatrix[1][1] = scale.y;
+				scaleMatrix[2][2] = scale.z;
+
+				float3 norm = (pos - camera->GetFrustum().pos).Normalized();
+				float3 up = float3::unitY;
+				float3 right = up.Cross(norm).Normalized();
+				norm = up.Cross(right).Normalized();
+				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+				model = model * scaleMatrix;
+				//model.Transpose();
+
+				glDisable(GL_CULL_FACE);
+				break;
 			}
 		}
 
@@ -249,7 +275,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	mResourceId = data.GetInt("ImageID");
 	SetImage(mResourceId);
 
-	float col[2];
+	float col[3];
 	data.GetFloats("Color", col);
 	mColor = float3(col);
 	mAlpha = data.GetFloat("Alpha");
@@ -339,7 +365,7 @@ void ImageComponent::CreateVAO()
 void ImageComponent::ResizeByRatio()
 {
 	float originalRatio = mImage->GetWidth() / mImage->GetHeight() ;
-	if (mCanvas->GetScreenSpace()) //Ortographic Mode
+	if (mCanvas->GetRenderSpace() == RenderSpace::Screen) //Ortographic Mode
 	{
 		Transform2DComponent* component = ((Transform2DComponent*)GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 		float currentRatio = component->GetSize().x / component->GetSize().y;

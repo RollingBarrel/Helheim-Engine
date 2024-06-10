@@ -8,7 +8,8 @@ enum class RenderSpace
 {
     Screen,
     World,
-    Billboard
+    Billboard,
+    WorldAxisBillboard
 };
 class CanvasComponent : public Component
 {
