@@ -24,7 +24,7 @@ StateType GrenadeState::HandleInput()
         return StateType::AIM;
     }
 
-	return StateType::GRENADE;
+    return StateType::GRENADE;
 }
 
 void GrenadeState::Update()

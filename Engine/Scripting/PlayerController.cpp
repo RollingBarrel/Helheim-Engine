@@ -53,6 +53,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
@@ -135,10 +136,13 @@ void PlayerController::Start()
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
 
     // GRENADE
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mGrenadeGO)
     {
-        ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
+        ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
+        mGrenadeGO->SetEnabled(false);
+        if (mGrenadeAimAreaGO) mGrenadeAimAreaGO->SetEnabled(false);
+        if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
     // ANIMATION
