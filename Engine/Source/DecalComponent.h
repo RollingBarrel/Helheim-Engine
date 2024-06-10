@@ -21,12 +21,12 @@ public:
 	unsigned int GetNormalId() const;
 	unsigned int GetEmisiveId() const;
 
-	bool HasDiffuse() const{ return mDiffuseTexture; };
+	bool HasDiffuse() const { return mDiffuseTexture; };
 	bool HasSpecular() const { return mSpecularTexture; };
 	bool HasNormal() const { return mNormalTexture; };
 	bool HasEmisive() const { return mEmisiveTexture; };
 
-	void Reset() override {}
+	void Reset() override;
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 

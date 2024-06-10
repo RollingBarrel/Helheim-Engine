@@ -32,9 +32,9 @@
                         "ComponentType": 19,
                         "IsEnabled": true,
                         "DiffuseID": 1608476329,
-                        "DiffuseName": "",
+                        "DiffuseName": "diffuse_green.tga",
                         "SpecularID": 2022236665,
-                        "SpecularName": "",
+                        "SpecularName": "specular_green.tga",
                         "NormalID": 1466974184,
                         "NormalName": "normal.tga"
                     }

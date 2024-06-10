@@ -1147,7 +1147,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glUseProgram(mPbrGeoPassProgramId);
 	mBatchManager.Draw();
 
-	//Decal Pass
+	//Decal Pass //TODO: USE ALWAYS ALL CHANNELS AND THE OUTPUT SHOULD BE THE ACTUAL CHANNEL COLOR IF THERE SI NO DECAL TEXTURE
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
 	
 	glActiveTexture(GL_TEXTURE0);
@@ -1165,26 +1165,19 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	
-	
-	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().ViewMatrix().Inverted();
 
-	//const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
 	
-	
-
-	//TODO: Decals without textures draws black;
-	
-
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
 
+	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().ViewMatrix().Inverted();
 	glUniformMatrix4fv(13, 1, GL_TRUE, viewMatrix.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
-		GLenum channels[4] = { GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+		GLenum channels[4] = {0,0,0,0};
 		int numberOfChannels = 0;
 
 		if (mDecalComponents[i]->HasDiffuse())
@@ -1211,7 +1204,6 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 			numberOfChannels++;
 		}
 
-		 //GL_COLOR_ATTACHMENT4
 		glDrawBuffers(numberOfChannels, channels);
 
 		

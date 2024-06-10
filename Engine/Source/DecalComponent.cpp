@@ -13,7 +13,7 @@ DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentTy
 
 DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL), 
 mDiffuseName(other.mDiffuseName), mDiffuseTexture(other.mDiffuseTexture), mSpecularName(other.mSpecularName), mSpecularTexture(other.mSpecularTexture),
-mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture)
+mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveName(other.mEmisiveName), mEmisiveTexture(other.mEmisiveTexture)
 {
 	App->GetOpenGL()->AddDecal(*this);
 }
@@ -56,6 +56,21 @@ unsigned int DecalComponent::GetEmisiveId() const
 		return mEmisiveTexture->GetOpenGLId();
 	}
 	return 0;
+}
+
+void DecalComponent::Reset()
+{
+	mDiffuseName = "";
+	mDiffuseTexture = nullptr;
+
+	mSpecularName = "";
+	mSpecularTexture = nullptr;
+
+	mNormalName = "";
+	mNormalTexture = nullptr;
+
+	mEmisiveName = "";
+	mEmisiveTexture = nullptr;
 }
 
 void DecalComponent::Update()

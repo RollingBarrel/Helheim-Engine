@@ -102,8 +102,8 @@ void main()
 
 	if (hasNormal)
 	{
-		vec3 tangent = dFdx(worldPos);
-		vec3 bitangent = dFdy(worldPos);
+		vec3 tangent = normalize(dFdx(worldPos));
+		vec3 bitangent =  normalize(dFdy(worldPos));
 		vec3 normal = normalize(cross(tangent, bitangent));
 
 		outNormal = (mat3(tangent, bitangent, normal)* (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0));
