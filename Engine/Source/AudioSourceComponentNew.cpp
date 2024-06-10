@@ -34,7 +34,6 @@ void AudioSourceComponentNew::LoadFromJSON(const rapidjson::Value& data, GameObj
 
 void AudioSourceComponentNew::Update()
 {
-    LOG("s");
 }
 
 void AudioSourceComponentNew::Enable()
@@ -43,6 +42,15 @@ void AudioSourceComponentNew::Enable()
 
 void AudioSourceComponentNew::Disable()
 {
+}
+
+AudioUnit* AudioSourceComponentNew::FindAudio(const std::string& audioName)
+{
+    auto it = std::find_if(mAudiosVector.begin(), mAudiosVector.end(),
+        [&audioName](const AudioUnit* audioUnit) {
+            return audioUnit->GetName() == audioName;
+        });
+    return (it != mAudiosVector.end()) ? *it : nullptr;
 }
 
 void AudioSourceComponentNew::AddNewAudio(FMOD::Studio::EventInstance* event)

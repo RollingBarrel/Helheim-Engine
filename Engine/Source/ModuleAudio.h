@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include "float3.h"
+#include <unordered_map>
 
 #define EVENT_BANK_UPPERLIMIT 64
 #define CheckError(result) ModuleAudio::CheckFmodError(result)
@@ -13,6 +15,7 @@ namespace FMOD {
 		class System; 
 		class Bank;
 		class EventInstance;
+		class EventDescription;
 	}
 	class System;
 }
@@ -40,6 +43,15 @@ public:
 	void AudioResume();
 
 	void EngineStop();
+	
+	// Start - stop
+	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
+	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout);
+	
+	// Update
+	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
+	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const int parameterValue);
+	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id ,FMOD::Studio::EventInstance* event, float3 eventPosition);
 
 	void AddToAudiosList(AudioSourceComponent* audioSource);
 
@@ -50,6 +62,8 @@ public:
 	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);
 
 private:
+	FMOD::Studio::EventInstance* FindEventInstance(const FMOD::Studio::EventDescription* eventDescription, const int id);
+
 	FMOD::Studio::System* mSystem = nullptr;
 	FMOD::System* mCoreSystem = nullptr;
 
@@ -63,5 +77,10 @@ private:
 	bool mStopped = false;
 
 	std::vector<AudioSourceComponent*> mAudiosSourceList;
+
+	std::unordered_map<int, FMOD::Studio::EventInstance*> mBackgroundAudioMap;
+	std::vector<FMOD::Studio::EventInstance*> mBackgroundAudioList;
+	std::vector<FMOD::Studio::EventInstance*> mSFXList;
+	int mBackgroundAudioCounter = 0;
 };
 

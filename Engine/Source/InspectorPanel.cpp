@@ -1432,7 +1432,8 @@ void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* compon
 
 			if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f"))
 			{
-				audioUnit->UpdateParameterValueByIndex(parameterKeys[i], value);
+				//audioUnit->UpdateParameterValueByIndex(parameterKeys[i], value);
+				audioUnit->UpdateParameterValueByName(paramName, value);
 			}
 		}
 		counter++;

@@ -20,6 +20,9 @@ public:
 
     std::string GetName() const { return mName; };
     std::map<int, float> GetParameters() const { return mParameters; };
+    FMOD::Studio::EventDescription* GetDescription() const { return mEventDescription; };
+    int GetPreviewID() const { return mPreviewPlayID; };
+
     void GetParametersNameAndValue(std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& value);
 
     // Set event
@@ -39,6 +42,8 @@ public:
     void ResumeCurrentInstance();
     void CleanCurrentInstance();
 
+    FMOD::Studio::EventInstance* CreateEventInstance();
+
     void Play();
     void PlayWithVolume(float volume);
     void PlayOneShotPosition(float3 position);
@@ -54,9 +59,14 @@ private:
 
     FMOD::Studio::EventInstance* mEventInstance = nullptr;
     FMOD::Studio::EventDescription* mEventDescription = nullptr;
+    // Index - value
     std::map<int, float> mParameters;
+    
+    // Name - value
     std::map<std::string, int> mNameToParameters;
 
     bool mPositionWithGameObject = true;
+
+    int mPreviewPlayID = -1;
 };
 

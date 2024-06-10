@@ -30,6 +30,7 @@ public:
     void Disable();
 
     std::vector<AudioUnit*> GetAudios() const { return mAudiosVector; }
+    AudioUnit* FindAudio(const std::string& audioName);
 
     void AddNewAudio(FMOD::Studio::EventInstance* event);
     void AddNewAudioByName(const char* name);

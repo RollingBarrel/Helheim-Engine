@@ -20,15 +20,27 @@ AudioUnit::~AudioUnit()
 
 void AudioUnit::GetParametersNameAndValue(std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
 {
-	for (const auto& pair : mParameters)
-	{
-		FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
-		mEventDescription->getParameterDescriptionByIndex(pair.first, &parameter);
+	//for (const auto& pair : mParameters)
+	//{
+	//	FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
+	//	mEventDescription->getParameterDescriptionByIndex(pair.first, &parameter);
 
-		index.push_back(pair.first);
-		names.push_back(parameter.name);
-		values.push_back(pair.second);
-	}
+	//	index.push_back(pair.first);
+	//	names.push_back(parameter.name);
+	//	values.push_back(pair.second);
+	//}
+
+	//int count = 0;
+	//mEventDescription->getParameterDescriptionCount(&count);
+
+	//for (auto i = 0; i < count; i++)
+	//{
+	//	FMOD_STUDIO_PARAMETER_DESCRIPTION parameter;
+	//	mEventDescription->getParameterDescriptionByIndex(i, &parameter);
+
+	//}
+
+	App->GetAudio()->GetParameters(mEventDescription, mPreviewPlayID, index, names, values);
 }
 
 void AudioUnit::SetEventInstance(FMOD::Studio::EventInstance* event)
@@ -46,6 +58,8 @@ void AudioUnit::SetEventInstance(FMOD::Studio::EventInstance* event)
 
 void AudioUnit::SetEventByName(const char* eventName)
 {
+	Play();
+	Stop(true);
 	FMOD::Studio::System* system = App->GetAudio()->GetFMODSystem();
 	FMOD::Studio::EventDescription* eventDescription = nullptr;
 	system->getEvent(eventName, &eventDescription);
@@ -84,7 +98,8 @@ void AudioUnit::UpdateParameterValueByIndex(int index, float value)
 
 void AudioUnit::UpdateParameterValueByName(const char* name, float value)
 {
-	mEventInstance->setParameterByName(name, value);
+	//mEventInstance->setParameterByName(name, value);
+	App->GetAudio()->UpdateParameter(mEventDescription, mPreviewPlayID, name, value);
 }
 
 void AudioUnit::SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime)
@@ -119,14 +134,23 @@ void AudioUnit::UpdatePosition(float3 position)
 
 void AudioUnit::Play()
 {
-	if (this != nullptr)
+	if (mPreviewPlayID == -1)
+	{
+		mPreviewPlayID = App->GetAudio()->Play(mEventDescription);
+	}
+	else 
+	{
+		// Continue
+		App->GetAudio()->Play(mEventDescription, mPreviewPlayID);
+	}
+	/*if (this != nullptr)
 	{
 		mEventInstance->start();
 	}
 	else
 	{
 		LOG("Cannot found audio source");
-	}
+	}*/
 }
 
 void AudioUnit::PlayWithVolume(float volume)
@@ -171,14 +195,15 @@ void AudioUnit::PlayOneShotPosition(float3 position)
 
 void AudioUnit::Stop(bool fadeout)
 {
-	if (fadeout)
-	{
-		mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-	}
-	else
-	{
-		mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-	}
+	App->GetAudio()->Release(mEventDescription, mPreviewPlayID, fadeout);
+	//if (fadeout)
+	//{
+	//	mEventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
+	//}
+	//else
+	//{
+	//	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	//}
 }
 
 
@@ -228,6 +253,20 @@ void AudioUnit::CleanCurrentInstance()
 	Reset();
 	mEventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
 	mEventInstance->release();
+}
+
+FMOD::Studio::EventInstance* AudioUnit::CreateEventInstance()
+{
+	if (this == nullptr)
+	{
+		LOG("Cannot found audio source");
+		return nullptr;
+	}
+	FMOD::Studio::EventInstance* eventInstance = nullptr;
+	mEventDescription->createInstance(&eventInstance);	
+
+	eventInstance->start();
+	return eventInstance;
 }
 
 void AudioUnit::UpdateParameters()
