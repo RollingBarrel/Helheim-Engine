@@ -63,7 +63,7 @@ void MoveState::Update()
     {
         mMoveDirection -= float3::unitY.Cross(mCameraFront);
     }
-
+    
     mPlayerController->MoveInDirection(mMoveDirection);
 
     DoAnimation();
@@ -90,16 +90,16 @@ void MoveState::DoAnimation()
         mMoveDirection.Normalize();
         float2 mMovingTo = SetMovingDirection();
         float3 mousePosition = mPlayerController->GetPlayerAimPosition();
-        //LOG("mouse z:%f", mousePosition.z);
+        //LOG("x:%f , y:%f", mMovingTo.x, mMovingTo.y);
         std::string animation;
 
-        auto setAnimation = [&](const std::string& forward, const std::string& back, const std::string& left, const std::string& right) 
+        auto setAnimation = [&](const std::string& up, const std::string& down, const std::string& left, const std::string& right) 
             {
-                if (mMovingTo.x == -1 && mMovingTo.y == 0) {
-                    animation = forward;
+                if (mMovingTo.x == 0 && mMovingTo.y == 1) {
+                    animation = up;
                 }
                 else if (mMovingTo.x == 0 && mMovingTo.y == -1) {
-                    animation = back;
+                    animation = down;
                 }
                 else if (mMovingTo.x == 1 && mMovingTo.y == 0) {
                     animation = right;
@@ -108,16 +108,16 @@ void MoveState::DoAnimation()
                     animation = left;
                 }
                 else if (mMovingTo.x == 1 && mMovingTo.y == 1) {
-                    animation = forward;
+                    animation = up;
                 }
                 else if (mMovingTo.x == -1 && mMovingTo.y == 1) {
-                    animation = forward;
+                    animation = up;
                 }
                 else if (mMovingTo.x == 1 && mMovingTo.y == -1) {
-                    animation = back;
+                    animation = down;
                 }
-                else if (mMovingTo.x == -1 && mMovingTo.y == -1) {
-                    animation = back;
+            else if (mMovingTo.x == -1 && mMovingTo.y == -1) {
+                    animation = down;
                 }
             };
 
@@ -147,29 +147,39 @@ float2 MoveState::SetMovingDirection()
     float absX = std::abs(mMoveDirection.x);
     float absZ = std::abs(mMoveDirection.z);
 
-    if (mMoveDirection.x > 0 && mMoveDirection.z > 0) 
+    //LOG("x:%f , z:%f", mMoveDirection.x, mMoveDirection.z)
+
+    if (mMoveDirection.x > 0 && mMoveDirection.z > 0 && absZ > absX)
     {
-        return (absX > absZ) ? float2(1, 0) : float2(0, 1); // Moving right or up
+        return float2(-1, 0); 
     }
-    else if (mMoveDirection.x > 0 && mMoveDirection.z < 0) 
+    else if (mMoveDirection.x > 0 && mMoveDirection.z < 0 && absX > absZ)
     {
-        return (absX > absZ) ? float2(1, 0) : float2(0, -1); // Moving right or down
+        return float2(0, -1); 
     }
-    else if (mMoveDirection.x < 0 && mMoveDirection.z > 0) 
+    else if (mMoveDirection.x < 0 && mMoveDirection.z > 0 && absX > absZ)
     {
-        return (absX > absZ) ? float2(-1, 0) : float2(0, 1); // Moving left or up
+        return float2(0, 1); 
     }
-    else if (mMoveDirection.x < 0 && mMoveDirection.z < 0) 
+    else if (mMoveDirection.x < 0 && mMoveDirection.z < 0 && absZ > absX)
     {
-        return (absX > absZ) ? float2(-1, 0) : float2(0, -1); // Moving left or down
+        return float2(1, 0);
     }
-    else if (mMoveDirection.x == 0 && mMoveDirection.z != 0) 
+    else if (mMoveDirection.x < 0 && mMoveDirection.z < 0 && absX > absZ)
     {
-        return (mMoveDirection.z > 0) ? float2(0, 1) : float2(0, -1); // Moving up or down
+        return float2(1, 1); // Moving up or down
     }
-    else if (mMoveDirection.z == 0 && mMoveDirection.x != 0) 
+    else if (mMoveDirection.x < 0 && mMoveDirection.z > 0 && absZ > absX)
     {
-        return (mMoveDirection.x > 0) ? float2(1, 0) : float2(-1, 0); // Moving right or left
+        return float2(-1, 1); // Moving up or down
+    }
+    else if (mMoveDirection.x > 0 && mMoveDirection.z < 0 && absZ > absX)
+    {
+        return float2(1, -1); // Moving up or down
+    }
+    else if (mMoveDirection.x > 0 && mMoveDirection.z > 0 && absX > absZ)
+    {
+        return float2(-1, -1); // Moving up or down
     }
     else 
     {
