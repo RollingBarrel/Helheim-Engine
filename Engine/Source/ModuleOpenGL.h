@@ -141,6 +141,10 @@ private:
 	unsigned int mGNormals;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
+	
+	//POSITION TEXTURE
+	unsigned int mGPosition;
+
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	//void Draw();
 

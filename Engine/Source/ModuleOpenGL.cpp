@@ -148,6 +148,10 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGColDepth);
 	glGenTextures(1, &mGEmissive);
 	glGenTextures(1, &mGDepth);
+
+	//POSITION TEXTURE
+	glGenTextures(1, &mGPosition);
+
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -168,6 +172,12 @@ bool ModuleOpenGL::Init()
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	//POSITION TEXTURE
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
@@ -175,13 +185,18 @@ bool ModuleOpenGL::Init()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
+	
+	//POSITION TEXTURE
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT6, GL_TEXTURE_2D, mGPosition, 0);
+	
+	
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
-	const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(6, att2);
+	const GLenum att2[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6 };
+	glDrawBuffers(7, att2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glGenVertexArrays(1, &mEmptyVAO);
 
@@ -547,7 +562,11 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
 
 void ModuleOpenGL::InitSkybox()
@@ -1138,6 +1157,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	}
 
 	//Geometry Pass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GeometryPass");
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glDisable(GL_BLEND);
 	glEnable(GL_STENCIL_TEST);
@@ -1146,6 +1166,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glStencilMask(0xFF);
 	glUseProgram(mPbrGeoPassProgramId);
 	mBatchManager.Draw();
+	glPopDebugGroup();
 
 	//Decal Pass //TODO: USE ALWAYS ALL CHANNELS AND THE OUTPUT SHOULD BE THE ACTUAL CHANNEL COLOR IF THERE SI NO DECAL TEXTURE
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
@@ -1165,7 +1186,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	
-
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
