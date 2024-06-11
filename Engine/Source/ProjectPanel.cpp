@@ -144,7 +144,12 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
 				AssetDisplay* asset = current.assets[i];
-				EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
+				std::string path = asset->mPath;
+				std::string token = path.substr(path.find_last_of('.'), path.size());
+				if (token == ".prfb")
+				{
+					EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
+				}
 			}
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 			{
