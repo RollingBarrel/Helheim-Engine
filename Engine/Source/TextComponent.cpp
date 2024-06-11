@@ -151,7 +151,7 @@ void TextComponent::RenderText(const std::string& text)
 
         Character ch = mCharacters[c];
 
-        if (x + (ch.Advance >> 6) > mLineWidth && mLineWidth != 0)
+        if (x + (static_cast<int>(ch.Advance) >> 6 >> 6) > mLineWidth && mLineWidth != 0)
         {
             y -= lineHeight;
             x = 0;
@@ -192,39 +192,26 @@ void TextComponent::RenderText(const std::string& text)
     glUseProgram(0);
 }
 
-void TextComponent::Save(Archive& archive) const
+void TextComponent::Save(JsonObject& obj) const
 {
-    Component::Save(archive);
+    Component::Save(obj);
 
-    archive.AddString("Text", mText.c_str());
-    archive.AddFloat3("Color", mColor);
-    archive.AddFloat("Alpha", mAlpha);
+    obj.AddString("Text", mText.c_str());
+    obj.AddFloats("Color", mColor.ptr(), 3);
+    obj.AddFloat("Alpha", mAlpha);
 }
 
-void TextComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void TextComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::LoadFromJSON(data, owner);
+    Component::Load(data, uidPointerMap);
 
-    if (data.HasMember("Text") && data["Text"].IsString())
-    {
-        mText = data["Text"].GetString();
-    }
+    mText = data.GetString("Text");
 
-    if (data.HasMember("Color") && data["Color"].IsArray())
-    {
-        const rapidjson::Value& values = data["Color"];
-        if (values.Size() == 3 && values[0].IsFloat() && values[1].IsFloat() && values[2].IsFloat())
-        {
-            mColor.x = values[0].GetFloat();
-            mColor.y = values[1].GetFloat();
-            mColor.z = values[2].GetFloat();
-        }
-    }
+    float col[3];
+    data.GetFloats("Color", col);
+    mColor = float3(col);
 
-    if (data.HasMember("Alpha") && data["Alpha"].IsFloat())
-    {
-        mAlpha = data["Alpha"].GetFloat();
-    }
+    mAlpha = data.GetFloat("Alpha");
 }
 
 void TextComponent::Draw() 

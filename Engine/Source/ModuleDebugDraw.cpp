@@ -1,6 +1,5 @@
 #include "Globals.h"
 #include "ModuleDebugDraw.h"
-#include "ModuleDebugDraw.h"
 #include "EngineApp.h"
 
 #include "ModuleOpenGL.h"
@@ -9,7 +8,7 @@
 #include "ModuleScene.h"
 
 #include "SpotLightComponent.h"
-#include "DebugPanel.h"
+#include "PointLightComponent.h"
 #include "HierarchyPanel.h"
 #include "MeshRendererComponent.h"
 #include "BoxColliderComponent.h"
@@ -648,11 +647,11 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
     implementation->width = width;
     implementation->height = height;
     implementation->mvpMatrix = viewproj;
-    if (mDrawGrid)
+
+    if (mDrawGrid) 
     {
         DrawGrid();
     }
-
 
     GameObject* focusGameObject = ((HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();   
     if (focusGameObject && !focusGameObject->IsRoot())
@@ -671,13 +670,18 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
         if (spotLight)
         {
-
             float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
-            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
+            DrawCone(spotLight->GetOwner()->GetPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
             //Frustum ShadowFrustum = spotLight->GetFrustum();
             //DrawFrustum(spotLight->GetFrustum());
         }
-        
+        PointLightComponent* pointLight = reinterpret_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
+        if (pointLight)
+        {
+            DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
+        }
+
+
         BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
         if (boxCollider)
         {
@@ -729,6 +733,8 @@ void ModuleDebugDraw::DrawSphere(const float center[3], const float color[3], co
     //    }
     //}
     dd::sphere(ddVec3(center), ddVec3(color), radius);
+
+    dd::flush();
 }
 
 void ModuleDebugDraw::DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius)
@@ -792,7 +798,8 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
 void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
 {
     
-    std::vector<Component*> meshComponents = gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER);
+    std::vector<Component*> meshComponents;
+    gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 
     if (!meshComponents.empty())
     {

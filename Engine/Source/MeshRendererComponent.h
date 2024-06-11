@@ -3,6 +3,7 @@
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 #include <vector>
+#include <unordered_map>
 #include "Math/float4x4.h"
 
 class ResourceMesh;
@@ -32,25 +33,21 @@ public:
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMesh(unsigned int uid);
 	void SetMaterial(unsigned int uid);
+	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
+	void UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
+	void UpdateSkletonGoIds();
 
+	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
+	bool HasSkinning() const { return mHasSkinning; };
 
-	unsigned int GetModelUUID() const { return mModelUid; }
-	void SetModelUUID(unsigned int modelUid) { mModelUid = modelUid; }
-
-	//Pallete calculations
-	const std::vector<float4x4> GetPalette() const { return mPalette; }
-
-
-
+	void Enable() override;
+	void Disable() override;
 
 
 private:
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
-	//Palette functions
-	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
-	void AddJointNode(GameObject* node, ResourceModel* model);
 	void UpdatePalette();
 
 
@@ -67,7 +64,7 @@ private:
 	//Skinning
 	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
 	std::vector<float4x4> mPalette;
-	unsigned int mModelUid = 0;
-	bool mHasSkinning = true;
+	const MeshRendererComponent* mPaletteOwner = nullptr;
+	bool mHasSkinning = false;
 
 };

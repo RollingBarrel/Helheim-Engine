@@ -1,24 +1,31 @@
 #pragma once
-#include "MathGeoLib.h"
 #include "Archive.h"
+#include "float2.h"
+#include "RandomFloat.h"
 
 class BezierCurve 
 {
 	friend class InspectorPanel;
 public:
 	BezierCurve();
-	float GetValue(float dt) const;
-	float GetInitialValue() const { return mLineal; }
-	void SaveJson(Archive& archive) const;
-	void LoadJson(const rapidjson::Value& data);
+
+	float CalculateValue(const float dt, const float initialValue) const;
+	RandomFloat GetValue() const { return mValue; }
+
+	void Save(JsonObject& archive) const;
+	void Load(const JsonObject& data);
+
 
 private:
-	template <int steps>
-	static void BezierTable(float2 P[], float2 results[]);
-	static float BezierValue(float dt01, float4 P);
+	void spline(const float* key, int num, int dim, float t, float* v) const;
+	float CurveValueSmooth(float p) const;
+	float CurveValue(float p) const;
 
-	bool mIsCurve = false;
-	float mLineal = 1.0f;
-	float4 mCurve;
-	float mCurveFactor = 1.0f;
+    bool mIsCurve = false;
+
+	RandomFloat mValue;
+
+    std::vector<float2> mPoints;
+    float mFactor = 1.0f;
 };
+

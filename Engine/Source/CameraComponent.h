@@ -33,12 +33,13 @@ public:
     float GetNearPlane() const { return mFrustum.nearPlaneDistance; }
     float GetFarPlane() const { return mFrustum.farPlaneDistance; }
     float GetVerticicalFOV() const { return mFrustum.verticalFov; }
+    float GetHorizontalFOV() const { return mFrustum.horizontalFov; }
 
 
 private:
 
-    void Save(Archive& archive) const override;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    void Save(JsonObject& obj) const override;
+    void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
     Frustum mFrustum;
     bool mEnableCulling = true;

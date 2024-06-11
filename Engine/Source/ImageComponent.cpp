@@ -109,7 +109,6 @@ void ImageComponent::Draw()
 	}
 	if (mImage && mCanvas)
 	{
-
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
 
@@ -203,80 +202,34 @@ void ImageComponent::StopAnimation()
 	mElapsedTime = 0;
 }
 
-void ImageComponent::Save(Archive& archive) const
+void ImageComponent::Save(JsonObject& obj) const
 {
-    archive.AddInt("ImageID", mImage->GetUID());
-    archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddFloat3("Color", mColor);
-	archive.AddFloat("Alpha", mAlpha);
-
-	archive.AddBool("IsSpritesheet", mIsSpritesheet);
-	archive.AddInt("Columns", mColumns);
-	archive.AddInt("Rows", mRows);
-	archive.AddInt("Speed", mFPS);
-	archive.AddBool("IsPlaying", mIsPlaying);
+	Component::Save(obj);
+	obj.AddInt("ImageID", mImage->GetUID());
+	obj.AddFloats("Color", mColor.ptr(), 3);;
+	obj.AddFloat("Alpha", mAlpha);
+	obj.AddBool("IsSpritesheet", mIsSpritesheet);
+	obj.AddInt("Columns", mColumns);
+	obj.AddInt("Rows", mRows);
+	obj.AddInt("Speed", mFPS);
+	obj.AddBool("IsPlaying", mIsPlaying);
 }
 
-void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    
-    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) 
-	{
-		const rapidjson::Value& imageIdValue = data["ImageID"];
-		
-		mResourceId = imageIdValue.GetInt();
-		SetImage(mResourceId);
-    }
+	Component::Load(data, uidPointerMap);
+	mResourceId = data.GetInt("ImageID");
+	SetImage(mResourceId);
 
-	if (data.HasMember("Color") && data["Color"].IsArray()) 
-	{
-		const rapidjson::Value& colorValues = data["Color"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) 
-		{
-			x = colorValues[0].GetFloat();
-			y = colorValues[1].GetFloat();
-			z = colorValues[2].GetFloat();
-		}
-
-		mColor = float3(x, y, z);
-	}
-
-	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
-	{
-		const rapidjson::Value& alphaValue = data["Alpha"];
-		mAlpha = alphaValue.GetFloat();
-	}
-
-	if (data.HasMember("IsSpritesheet") && data["IsSpritesheet"].IsBool())
-	{
-		const rapidjson::Value& isSpritesheetValue = data["IsSpritesheet"];
-		mIsSpritesheet = isSpritesheetValue.GetBool();
-	}
-
-	if (data.HasMember("Columns") && data["Columns"].IsInt())
-	{
-		const rapidjson::Value& columnsValue = data["Columns"];
-		mColumns = columnsValue.GetInt();
-	}
-
-	if (data.HasMember("Rows") && data["Rows"].IsInt())
-	{
-		const rapidjson::Value& rowsValue = data["Rows"];
-		mRows = rowsValue.GetInt();
-	}
-
-	if (data.HasMember("Speed") && data["Speed"].IsInt())
-	{
-		const rapidjson::Value& speedValue = data["Speed"];
-		mFPS = speedValue.GetInt();
-	}
-
-	if (data.HasMember("IsPlaying") && data["IsPlaying"].IsBool())
-	{
-		const rapidjson::Value& isPlaying = data["IsPlaying"];
-		mIsPlaying = isPlaying.GetBool();
-	}
+	float col[2];
+	data.GetFloats("Color", col);
+	mColor = float3(col);
+	mAlpha = data.GetFloat("Alpha");
+	mIsSpritesheet = data.GetBool("IsSpritesheet");
+	mColumns = data.GetInt("Columns");
+	mRows = data.GetInt("Rows");
+	mFPS = data.GetInt("Speed");
+	mIsPlaying = data.GetBool("IsPlaying");
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) 

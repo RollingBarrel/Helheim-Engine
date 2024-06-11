@@ -12,6 +12,7 @@
 #include "HierarchyPanel.h"
 #include "EditorControlPanel.h"
 
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -22,7 +23,7 @@
 #include "Math/float2.h"
 #include "imgui.h"
 
-GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rModel, GameObject* parent, bool isRoot)
+GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceModel& rModel, GameObject* parent, bool isRoot)
 {
 	const char* name = "";
 	static int nodeIt = 0;
@@ -55,7 +56,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
 				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
-				cAnimation->SetModelUUID(rModel.GetUID());
+				cAnimation->SetAnimationsUids(rModel.mAnimationUids);
+				cAnimation->StartUp();
 
 			}
 		}
@@ -79,10 +81,6 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			cSpot->SetInnerAngle(node.mLight.mInnerConeAngle);
 			cSpot->SetOuterAngle(node.mLight.mOuterConeAngle);
 		}
-		else
-		{
-			//Directional we don't import them xd
-		}
 	}
 
 	if (node.mMeshId > -1)
@@ -95,10 +93,9 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, ResourceModel& rM
 			}
 			GameObject* gO = new GameObject(name, gameObject);
 			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
+			//MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gameObject->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
-			cMesh->SetModelUUID(rModel.GetUID());
-
 		}
 	}
 
@@ -224,16 +221,6 @@ void ScenePanel::DrawScene()
 			{
 				switch (resource->GetType())
 				{
-				case Resource::Type::Texture:
-					break;
-				case Resource::Type::Mesh:
-					break;
-				case Resource::Type::Bone:
-					break;
-				case Resource::Type::Animation:
-					break;
-				case Resource::Type::Material:
-					break;
 				case Resource::Type::Model:
 				{
 					std::string name;
@@ -245,16 +232,26 @@ void ScenePanel::DrawScene()
 					std::vector<GameObject*> tempVec;
 					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
 					
-					tempVec.reserve(rModel->GetNodes().size());
+					std::unordered_map<unsigned int, GameObject*> gltfGoMap;
+					std::vector<GameObject*>skinGos;
+					skinGos.reserve(rModel->mInvBindMatrices.size());
+					const std::vector<ModelNode>& nodes = rModel->GetNodes();
+					tempVec.reserve(nodes.size());
 
-					for (int i = 0; i < rModel->GetNodes().size(); ++i)
+					for (int i = 0; i < nodes.size(); ++i)
 					{
-						ModelNode node = rModel->GetNodes()[i];
-						if (node.mParentIndex == -1)
+						const ModelNode& node = nodes[i];
+						if (node.mParentVecIdx == -1)
 							tempVec.push_back(DragToScene(node, i, *rModel, gameObjectRoot, true));
 						else
-							tempVec.push_back(DragToScene(node, i, *rModel, tempVec.at(node.mParentIndex), false));
-
+							tempVec.push_back(DragToScene(node, i, *rModel, tempVec.at(node.mParentVecIdx), false));
+						
+						//Skinning data
+						gltfGoMap[node.mGltfId] = tempVec.back();
+						if (node.mSkinId != -1)
+						{
+							skinGos.push_back(tempVec.back());
+						}
 						//for (int j = 0; j < reinterpret_cast<ResourceModel*>(resource)->mJoints.size(); ++j)
 						//{
 						//	if (reinterpret_cast<ResourceModel*>(resource)->mJoints[j].first == i)
@@ -265,19 +262,40 @@ void ScenePanel::DrawScene()
 						//	}
 						//}
 					}
-
-					tempVec.clear();
-
+					//Load Skinning data
+					std::vector<std::pair<GameObject*, float4x4>> invBindVec;
+					for (int j = 0; j<skinGos.size(); ++j)
+					{
+						invBindVec.reserve(rModel->mInvBindMatrices[j].size());
+						for (int i = 0; i < rModel->mInvBindMatrices[j].size(); ++i) 
+						{
+							invBindVec.emplace_back(gltfGoMap[rModel->mInvBindMatrices[j][i].first], rModel->mInvBindMatrices[j][i].second);
+						}
+						assert(skinGos[j]->GetChildren().size() != 0 && skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER) != nullptr);
+						MeshRendererComponent* paletteOwner = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER));
+						paletteOwner->SetInvBindMatrices(std::move(invBindVec));
+						for (int z = 1; z < skinGos[j]->GetChildren().size(); ++z)
+						{
+							MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[z]->GetComponent(ComponentType::MESHRENDERER));
+							if(meshRenderer != nullptr)
+								meshRenderer->SetInvBindMatrices(std::move(invBindVec), paletteOwner);
+						}
+						invBindVec.clear();
+					}
 					EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 					break;
 				}
-				case Resource::Type::Scene:
-					break;
-				case Resource::Type::Object:
+				case Resource::Type::Prefab:
 				{
 					EngineApp->GetScene()->LoadPrefab(asset->mPath);
 					break;
 				}
+				case Resource::Type::Texture:
+				case Resource::Type::Mesh:
+				case Resource::Type::Bone:
+				case Resource::Type::Animation:
+				case Resource::Type::Material:
+				case Resource::Type::Scene:
 				case Resource::Type::NavMesh:
 					break;
 				}

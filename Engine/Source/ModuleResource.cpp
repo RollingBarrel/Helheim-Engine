@@ -10,6 +10,7 @@
 #include "ResourceScript.h"
 #include "ResourceAnimation.h"
 #include "ResourceNavMesh.h"
+#include "ResourceStateMachine.h"
 
 #include "SaveLoadModel.h"
 #include "SaveLoadMesh.h"
@@ -18,6 +19,7 @@
 #include "SaveLoadScript.h"
 #include "SaveLoadTexture.h"
 #include "SaveLoadNavMesh.h"
+#include "SaveLoadStateMachine.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -125,9 +127,14 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Animation::Load(lPath, uid);
 		break;
 	}
-	case Resource::Type::Object:
+	case Resource::Type::Prefab:
 	{
 		ret = new Resource(uid, type);
+		break;
+	}
+	case Resource::Type::StateMachine:
+	{
+		ret = Importer::StateMachine::Load(lPath, uid);
 		break;
 	}
 	default:

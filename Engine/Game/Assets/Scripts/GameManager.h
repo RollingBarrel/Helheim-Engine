@@ -10,6 +10,9 @@ class GameManager : public Script
 {
     FRIEND(GameManager)
 public:
+    GameManager(GameObject* owner); 
+    ~GameManager();
+
     static GameManager* GetInstance(); 
 
     void Awake();
@@ -18,11 +21,15 @@ public:
 
     GameObject* GetPlayer() { return mPlayer; };
     HudController* GetHud() { return mHudController; };
+    bool UsingController() { return mController; }
 
     void LoadLevel(const char* LevelName);
+
+    void Victory();
+    void GameOver();
+
 private:
-    GameManager(GameObject* owner); 
-    ~GameManager();
+
 
     static GameManager* mInstance;
     
@@ -32,4 +39,6 @@ private:
     HudController* mHudController = nullptr;
 
     bool mPaused = false;
+
+    bool mController = true;
 };

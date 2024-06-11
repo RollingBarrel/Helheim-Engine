@@ -44,37 +44,9 @@ ModuleFileSystem::~ModuleFileSystem()
     PHYSFS_deinit();
 }
 
-// Called before render is available
-bool ModuleFileSystem::Init()
-{
-    //Importer::CreateBinaryFile();
-
-    //Importer::Import("Assets/Models/ZomBunny/Zombunny.gltf");
-    //Importer::Import("Shaders/basic.vs");
-
-    //TODO CREATE LIBRARY FILE SYSTEM FOLDERS
-
-    //CreateDirectoryLibrary();
-
-
-    return true;
-}
-
-update_status ModuleFileSystem::PreUpdate(float dt)
-{
-    return UPDATE_CONTINUE;
-}
-
-// Called every draw update
-update_status ModuleFileSystem::Update(float dt)
-{
-    return UPDATE_CONTINUE;
-}
-
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
-
     CleanNode(mRoot);
     return true;
 }
@@ -309,7 +281,7 @@ const char* ModuleFileSystem::GetWriteDirectory() const
     return PHYSFS_getWriteDir();
 }
 
-void ModuleFileSystem::DiscoverFiles(const char* directory, const char* extension, std::vector<std::string>&out) const
+void ModuleFileSystem::DiscoverFiles(const char* directory, const char* extension, std::vector<std::string>& out) const
 {
     if (Exists(directory) && IsDirectory(directory))
     {

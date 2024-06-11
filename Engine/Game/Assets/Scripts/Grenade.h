@@ -1,30 +1,44 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
-#include "Math/float3.h"
+#include "float3.h"
+#include <vector>
 
 GENERATE_BODY(Grenade);
 
+class GameObject;
+
 class Grenade : public Script
 {
-public:
 	FRIEND(Grenade)
-	Grenade(GameObject* owner, float3 destination);
-	Grenade(GameObject* owner, float dps, float duration, float area, float3 destination);
+public:
+	Grenade(GameObject* owner);
 	~Grenade();
 
 	void Start() override;
 	void Update() override;
 
+	void SetDestination(float3 destination);
+
+	float GetGrenadeRadius();
 private:
-	// Basic status
+	void Explotion();
+	void BlackHole();
+	void PullCloser(std::vector<GameObject*> enemies);
+	void EndExplotion();
+
+	std::vector<GameObject*> GetAffectedEnemies();
+
+	// Player-depends status
 	float mGrenadeDPS = 1.0f;
 	float mGrenadeDuration = 4.0f;
-	float mGrenadeArea = 2.0f;
-
-	float mGrenadeCoolDown = 15.0f;
-	float mGrenadeThrowSpeed = 1.0f;
+	float mGrenadeCurrentTime = mGrenadeDuration;
+	float mGrenadeRadius = 3.0f; // Explotion area
 
 	float3 mDestination = float3(0, 0, 0); // Init destination to 0,0,0
 
+	bool mExplotionStart = false;
+
+	float mTimeAccumulator = 0.0f;
+	const float mPullInterval = 0.3f;
 };

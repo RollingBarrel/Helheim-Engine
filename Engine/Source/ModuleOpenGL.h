@@ -28,8 +28,8 @@ typedef struct DirectionalLight
 
 class PointLightComponent;
 class SpotLightComponent;
-class Trail;
 class ParticleSystemComponent;
+class TrailComponent;
 class CameraComponent;
 struct PointLight;
 struct SpotLight;
@@ -101,9 +101,9 @@ public:
 	void UpdateSpotLightInfo(const SpotLightComponent& ptrSpotLight);
 	void RemoveSpotLight(const SpotLightComponent& cSpotLight);
 
-	void BatchAddMesh(MeshRendererComponent* mesh);
-	void BatchRemoveMesh(MeshRendererComponent* mesh);
-	void BatchEditMaterial(const MeshRendererComponent* mesh);
+	void BatchAddMesh(const MeshRendererComponent& mesh);
+	void BatchRemoveMesh(const MeshRendererComponent& mesh);
+	void BatchEditMaterial(const MeshRendererComponent& mesh);
 	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
 	void SetWireframe(bool wireframe);
 
@@ -113,8 +113,8 @@ public:
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
-	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
-	void RemoveTrail(const Trail* trail);
+	void AddTrail(const TrailComponent* trail) { mTrails.push_back(trail); }
+	void RemoveTrail(const TrailComponent* trail);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
@@ -199,7 +199,7 @@ private:
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
-	std::vector<const Trail*> mTrails;
+	std::vector<const TrailComponent*> mTrails;
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 	std::vector<const GameObject*> mHighlightedObjects;

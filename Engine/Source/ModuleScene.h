@@ -5,8 +5,8 @@
 #include "Math/float3.h"
 #include "Archive.h"
 #include <vector>
-#include <string>
 #include <unordered_map>
+#include <string>
 
 class Quadtree;
 class GameObject;
@@ -32,19 +32,16 @@ public:
 	// GameObjects
 	GameObject* Find(const char* name) const;
 	GameObject* Find(unsigned int UID) const;
+	GameObject* FindGameObjectWithTag(const std::string& tag);
+	const std::vector<GameObject*>& FindGameObjectsWithTag(const std::string& tag);
+
 	void AddGameObjectToScene(GameObject* gameObject);
-	void RemoveGameObjectFromScene(GameObject* gameObjet);
+	void RemoveGameObjectFromScene(GameObject* gameObject);
 	void RemoveGameObjectFromScene(int id); 
 	void RemoveGameObjectFromScene(const std::string& name);
-	void AddGameObjectToDelete(GameObject* gameObject) {
-		mGameObjectsToDelete.push_back(gameObject);
-	}
-	void AddGameObjectToDuplicate(GameObject* gameObject) {
-		mGameObjectsToDuplicate.push_back(gameObject);
-	}
-	void AddGameObjectToLoadIntoScripts(std::pair<unsigned int, GameObject**> pair) {
-		mGameObjectsToLoadIntoScripts.push_back(pair);
-	}
+	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
+	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
+	void SwitchGameObjectsFromScene(GameObject* first, GameObject* second);
 
 	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
 
@@ -63,20 +60,8 @@ public:
 	void Load(const char* saveFilePath);
 
 	// Tags
-	GameObject* FindGameObjectWithTag(unsigned tagID);
-	GameObject* FindGameObjectWithTag(const char* tagName);
-	void FindGameObjectsWithTag(unsigned tagID, std::vector<GameObject*>& foundGameObjects);
-	void FindGameObjectsWithTag(const char* tagName, std::vector<GameObject*>& foundGameObjects);
-
-	void AddTag(std::string tag);
-	unsigned int GetSize() { return static_cast<unsigned int>(mTags.size()); };
-	int GetCustomTagsSize();
-	std::vector<Tag*> GetAllTags() { return mTags; };
-	std::vector<Tag*> GetSystemTag();
-	std::vector<Tag*> GetCustomTag();
-	Tag* GetTagByName(std::string tagname);
-	Tag* GetTagByID(unsigned id);
-	void DeleteTag(Tag* tag);
+	void AddToTagMap(const std::string &tag, GameObject* gameObject);
+	void DeleteFromTagMap(const std::string& tag, GameObject* gameObject);
 
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
@@ -90,11 +75,6 @@ public:
 private:
 	void DeleteGameObjects();
 	void DuplicateGameObjects();
-	void LoadGameObjectsIntoScripts();
-	
-	void SaveGame(const std::vector<GameObject*>& gameObjects, Archive& rootArchive) const;
-	void SaveGameObjectRecursive(const GameObject* gameObject, std::vector<Archive>& gameObjectsArchive) const;
-	void LoadGameObject(const rapidjson::Value& gameObjectsJson, GameObject* parent, std::unordered_map<int, int>* uuids = nullptr);
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
@@ -103,7 +83,7 @@ private:
 	std::vector<GameObject*> mSceneGO;
 	std::vector<GameObject*> mGameObjectsToDelete;
 	std::vector<GameObject*> mGameObjectsToDuplicate;
-	std::vector<std::pair<unsigned int, GameObject**>> mGameObjectsToLoadIntoScripts;
+	std::unordered_map<std::string, std::vector<GameObject*>> mGameObjectsByTags;
 
 	// Quadtree
 	Quadtree* mQuadtreeRoot = nullptr;
@@ -114,12 +94,8 @@ private:
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
 
-	// Tags
-	std::vector<Tag*> mTags;
-	unsigned mLastTagIndex = 10;
-
 	// Others
-	std::vector<const MeshRendererComponent*>mCurrRenderComponents;
+	std::vector<const MeshRendererComponent*> mCurrRenderComponents;
 };
 
 #endif //_MODULE_SCENE_H_

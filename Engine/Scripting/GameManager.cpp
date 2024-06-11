@@ -11,7 +11,7 @@
 CREATE(GameManager)
 {
     CLASS(owner);
-    SEPARATOR("Player");
+    MEMBER(MemberType::BOOL, mController);
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     END_CREATE;
@@ -61,4 +61,22 @@ void GameManager::LoadLevel(const char* LevelName)
 {
     mHudController->mHealthGradualSlider = nullptr;
     App->GetScene()->Load(LevelName);
+}
+
+void GameManager::Victory()
+{
+    //TODO: PAUSE GAME
+
+    mHudController->SetScreen(SCREEN::WIN, true);
+
+    // Loading activated from HUD controller on Btn Click.
+}
+
+void GameManager::GameOver()
+{
+    // TODO: PAUSE GAME
+
+    mHudController->SetScreen(SCREEN::LOSE, true);
+
+    // Loading activated from HUD controller on Btn Click.
 }

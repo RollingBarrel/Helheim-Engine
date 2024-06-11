@@ -133,7 +133,7 @@ void AudioSourceComponent::Update()
 	// UPDATE 3D parameters
 	if (mPositionWithGameObject)
 	{
-		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
+		float3 gameobjectPosition = GetOwner()->GetPosition();
 
 		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
@@ -180,7 +180,7 @@ void AudioSourceComponent::PlayOneShot()
 		mEventDescription->createInstance(&eventInstance);
 
 		eventInstance->start();
-		float3 gameobjectPosition = GetOwner()->GetWorldPosition();
+		float3 gameobjectPosition = GetOwner()->GetPosition();
 
 		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
@@ -244,53 +244,35 @@ Component* AudioSourceComponent::Clone(GameObject* owner) const
 	return new AudioSourceComponent(*this, owner);
 }
 
-void AudioSourceComponent::Save(Archive& archive) const
+void AudioSourceComponent::Save(JsonObject& obj) const
 {
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
+	Component::Save(obj);
+	obj.AddString("EventName", mName.c_str());
 
-	archive.AddString("EventName", mName.c_str());
-
-	std::vector<int> parameterKeys;
-	std::vector<float> parameterValues;
-
+	JsonArray arr = obj.AddNewJsonArray("ParametersVariables");
 	for (const auto& pair : mParameters) 
 	{
-		parameterKeys.push_back(pair.first);
-		parameterValues.push_back(pair.second);
+		JsonObject data = arr.PushBackNewObject();
+		data.AddInt("ParametersKey", pair.first);
+		data.AddFloat("ParametersValue", pair.second);
 	}
-
-	std::vector<Archive> objectArray;
-	for (auto i = 0; i < parameterKeys.size(); i++)
-	{
-		Archive dataArchive;
-		dataArchive.AddInt("ParametersKey", parameterKeys[i]);
-		dataArchive.AddFloat("ParametersValue", parameterValues[i]);
-
-		objectArray.push_back(dataArchive);
-	}
-
-	archive.AddObjectArray("ParametersVariables", objectArray);
 }
 
-void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AudioSourceComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	if (data.HasMember("EventName") && data["EventName"].IsString()) 
+	Component::Load(data, uidPointerMap);
+
+	if(data.HasMember("EventName"))
+		SetEventByName(data.GetString("EventName").c_str());
+
+	UpdateParameters();
+
+	if (data.HasMember("ParametersVariables"))
 	{
-		SetEventByName(data["EventName"].GetString());
-	}
-
-	if (data.HasMember("ParametersVariables") && data["ParametersVariables"].IsArray()) 
-	{
-		UpdateParameters();
-
-		const auto& array = data["ParametersVariables"].GetArray();
-
-		for (unsigned int i = 0; i < array.Size(); ++i)
+		JsonArray arr = data.GetJsonArray("ParametersVariables");
+		for (unsigned int i = 0; i < arr.Size(); ++i)
 		{
-			unsigned key = array[i]["ParametersKey"].GetInt();
-			int value = array[i]["ParametersValue"].GetFloat();
-
-			UpdateParameterValueByIndex(key, value);
+			UpdateParameterValueByIndex(arr.GetInt(i), arr.GetFloat(i + 1));
 		}
 	}
 }
