@@ -18,6 +18,7 @@ layout(binding = 2)uniform sampler2D gBufferNormalTex;
 layout(binding = 3)uniform sampler2D gBufferDepthTex;
 layout(binding = 4)uniform sampler2D gBufferEmisiveTex;
 
+layout(binding = 6)uniform sampler2D gBufferPositionTex;
 
 layout(binding = 5)uniform sampler2D decalDiffuseTex;
 layout(binding = 6)uniform sampler2D decalSpecularTex;
@@ -53,9 +54,9 @@ in vec4 clipping;
 void main()
 {
 	
-
 	float depth = texture(gBufferDepthTex, clipping.xy/clipping.w*0.5 + 0.5).r;
-	vec3 worldPos = GetWorldPos(depth, clipping.xy/clipping.w*0.5 + 0.5).xyz;
+	vec3 worldPos = GetWorldPos(depth, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
+	//vec3 worldPos = texture(gBufferPositionTex, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
 	vec3 objPos = (invModel*vec4(worldPos, 1.0)).xyz;
 
 	
@@ -100,6 +101,7 @@ void main()
 	if (hasEmisive)
 	{
 		outEmissive = texture(decalEmisiveTex, objPos.xy+0.5).rgb;
+		outEmissive = pow(outEmissive, vec3(2.2));
 	}
 
 	if (hasNormal)
