@@ -152,10 +152,6 @@ void ScenePanel::MenuGBuffer()
 				currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
 				currentSceneName = "SCENE";
 			}
-			//if (ImGui::Selectable("DEPTH")) {
-			//	currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
-			//	currentSceneName = "DEPTH";
-			//}
 			if (ImGui::Selectable("DIFFUSE")) {
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDiffuse();
 				currentSceneName = "DIFFUSE";
@@ -167,6 +163,10 @@ void ScenePanel::MenuGBuffer()
 			if (ImGui::Selectable("EMISSIVE")) {
 				currentScene = EngineApp->GetOpenGL()->GetGBufferEmissive();
 				currentSceneName = "EMISSIVE";
+			}
+			if (ImGui::Selectable("POS")) {
+				currentScene = EngineApp->GetOpenGL()->GetGBufferPos();
+				currentSceneName = "POS";
 			}
 			if (ImGui::Selectable("NORMALS")) {
 				currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();

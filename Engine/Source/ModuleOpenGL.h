@@ -81,7 +81,8 @@ public:
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
 	unsigned int GetGBufferNormals() const { return mGNormals; }
-	unsigned int GetGBufferDepth() const { return mGColDepth; }
+	unsigned int GetGBufferDepth() const { return mGDepth; }
+	unsigned int GetGBufferPos() const { return mGPosition; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -137,13 +138,11 @@ private:
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
 	unsigned int mGSpecularRough;
-	unsigned int mGEmissive;
+	unsigned int mGPosition;
 	unsigned int mGNormals;
+	unsigned int mGEmissive;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
-	
-	//POSITION TEXTURE
-	unsigned int mGPosition;
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	//void Draw();
