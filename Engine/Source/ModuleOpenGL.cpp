@@ -184,10 +184,10 @@ bool ModuleOpenGL::Init()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGNormals, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
 	
 	//POSITION TEXTURE
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, mGPosition, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT6, GL_TEXTURE_2D, mGPosition, 0);
 	
 	
 	
@@ -1164,6 +1164,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//Geometry Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GeometryPass");
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	GLenum channels[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
 	glDisable(GL_BLEND);
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -1186,21 +1187,19 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
 
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	
-	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
 
-	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().ViewMatrix().Inverted();
-	glUniformMatrix4fv(14, 1, GL_TRUE, viewMatrix.ptr());
+	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
+	glUniformMatrix4fv(15, 1, GL_TRUE, viewMatrix.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
@@ -1234,27 +1233,27 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		glDrawBuffers(numberOfChannels, channels);
 
 		
-		glActiveTexture(GL_TEXTURE6);
+		glActiveTexture(GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
 
-		glActiveTexture(GL_TEXTURE7);
+		glActiveTexture(GL_TEXTURE8);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
 
-		glActiveTexture(GL_TEXTURE8);
+		glActiveTexture(GL_TEXTURE9);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
 
-		glActiveTexture(GL_TEXTURE9);
+		glActiveTexture(GL_TEXTURE10);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetEmisiveId());
 
-		glUniform1i(10, mDecalComponents[i]->HasDiffuse());
-		glUniform1i(11, mDecalComponents[i]->HasSpecular());
-		glUniform1i(12, mDecalComponents[i]->HasNormal());
-		glUniform1i(13, mDecalComponents[i]->HasEmisive());
+		glUniform1i(11, mDecalComponents[i]->HasDiffuse());
+		glUniform1i(12, mDecalComponents[i]->HasSpecular());
+		glUniform1i(13, mDecalComponents[i]->HasNormal());
+		glUniform1i(14, mDecalComponents[i]->HasEmisive());
 
 		float4x4 inverseModel = mDecalComponents[i]->GetOwner()->GetWorldTransform();
 		inverseModel.InverseColOrthogonal();
 
-		glUniformMatrix4fv(15, 1, GL_TRUE, inverseModel.ptr());
+		glUniformMatrix4fv(16, 1, GL_TRUE, inverseModel.ptr());
 		
 
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
@@ -1267,8 +1266,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glUseProgram(0);
 	glPopDebugGroup();
 
-	const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(6, att2);
+	const GLenum att2[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6 };
+	glDrawBuffers(7, att2);
 
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");

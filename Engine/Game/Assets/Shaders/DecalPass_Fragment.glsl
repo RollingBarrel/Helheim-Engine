@@ -18,21 +18,21 @@ layout(binding = 2)uniform sampler2D gBufferNormalTex;
 layout(binding = 3)uniform sampler2D gBufferDepthTex;
 layout(binding = 4)uniform sampler2D gBufferEmisiveTex;
 
-layout(binding = 5)uniform sampler2D gBufferPositionTex;
+layout(binding = 6)uniform sampler2D gBufferPositionTex;
 
-layout(binding = 6)uniform sampler2D decalDiffuseTex;
-layout(binding = 7)uniform sampler2D decalSpecularTex;
-layout(binding = 8)uniform sampler2D decalNormalTex;
-layout(binding = 9)uniform sampler2D decalEmisiveTex;
+layout(binding = 7)uniform sampler2D decalDiffuseTex;
+layout(binding = 8)uniform sampler2D decalSpecularTex;
+layout(binding = 9)uniform sampler2D decalNormalTex;
+layout(binding = 10)uniform sampler2D decalEmisiveTex;
 
 
-layout(location = 10) uniform bool hasDiffuse;
-layout(location = 11) uniform bool hasSpecular;
-layout(location = 12) uniform bool hasNormal;
-layout(location = 13) uniform bool hasEmisive;
+layout(location = 11) uniform bool hasDiffuse;
+layout(location = 12) uniform bool hasSpecular;
+layout(location = 13) uniform bool hasNormal;
+layout(location = 14) uniform bool hasEmisive;
 
-layout(location = 14)uniform mat4 invView;
-layout(location = 15) uniform mat4 invModel;
+layout(location = 15)uniform mat4 invView;
+layout(location = 16) uniform mat4 invModel;
 
 
 float GetLinearZ(float inputDepth)
@@ -103,7 +103,7 @@ void main()
 	if (hasEmisive)
 	{
 		outEmissive = texture(decalEmisiveTex, objPos.xy+0.5).rgb;
-		outEmissive = pow(outEmissive, vec3(2.2));
+		//outEmissive = outEmissive, vec3(2.2));
 	}
 
 	if (hasNormal)
