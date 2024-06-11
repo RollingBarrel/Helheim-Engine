@@ -34,10 +34,6 @@ void Pistol::BasicAttack()
         bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
     }
-    //else
-    //{
-    //    mCurrentAmmo = mMaxAmmo;
-    //}
     
 
     //mPlayerController->PlayOneShot("Shot");

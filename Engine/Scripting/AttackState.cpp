@@ -21,6 +21,7 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
+    //LOG("Attacked!");
     Weapon* weapon = mPlayerController->GetWeapon();
     weapon->BasicAttack();
 

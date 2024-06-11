@@ -25,15 +25,23 @@ StateType AimState::HandleInput()
 
     mAttackTimer += App->GetDt();
     if (mPlayerController->GetAttackCooldown() < mAttackTimer &&
-        App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
+        LOG("Fast Attack!");
+        mAttackTimer = 0;
+        return StateType::ATTACK;
+    }
+    if (mPlayerController->GetSlowAttackCooldown() < mAttackTimer &&
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
+    {
+        LOG("Slow Attack!");
         mAttackTimer = 0;
         return StateType::ATTACK;
     }
 
     mSpecialAttackTimer += App->GetDt();
     if (mPlayerController->GetSpecialAttackCooldown() < mSpecialAttackTimer &&
-        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
     {
         mSpecialAttackTimer = 0;
         return StateType::SPECIAL;
@@ -53,7 +61,6 @@ StateType AimState::HandleInput()
         return StateType::RELOAD;
     }
 
-    
 	return StateType::AIM;
 }
 
