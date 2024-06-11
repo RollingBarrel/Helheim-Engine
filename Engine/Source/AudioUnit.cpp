@@ -58,8 +58,6 @@ void AudioUnit::SetEventInstance(FMOD::Studio::EventInstance* event)
 
 void AudioUnit::SetEventByName(const char* eventName)
 {
-	Play();
-	Stop(true);
 	FMOD::Studio::System* system = App->GetAudio()->GetFMODSystem();
 	FMOD::Studio::EventDescription* eventDescription = nullptr;
 	system->getEvent(eventName, &eventDescription);
@@ -71,6 +69,10 @@ void AudioUnit::SetEventByName(const char* eventName)
 	size_t eventNameLength = strlen(eventName);
 
 	mName = eventName;
+
+	// Just to get an id
+	Play();
+	Stop(true);
 }
 
 void AudioUnit::GetParametersMaxMin(const char* eventName, float& max, float& min)
