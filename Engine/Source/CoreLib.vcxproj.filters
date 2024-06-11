@@ -411,9 +411,6 @@
     <ClCompile Include="ColorGradient.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
-    <ClCompile Include="Trail.cpp">
-      <Filter>Utils\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="TrailComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
@@ -433,6 +430,9 @@
       <Filter>Utils\Physics</Filter>
     </ClCompile>
     <ClCompile Include="BlendMode.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomFloat.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="AnimationStateMachine.cpp">
@@ -1032,9 +1032,6 @@
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="ColorGradient.h">
-      <Filter>Utils\Particles</Filter>
-    </ClInclude>
-    <ClInclude Include="Trail.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
     <ClInclude Include="TrailComponent.h">
@@ -1914,6 +1911,9 @@
       <Filter>Utils\Physics</Filter>
     </ClInclude>
     <ClInclude Include="BlendMode.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomFloat.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="AnimationStateMachine.h">

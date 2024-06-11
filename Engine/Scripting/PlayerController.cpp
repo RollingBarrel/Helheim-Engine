@@ -53,6 +53,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
@@ -70,26 +71,6 @@ CREATE(PlayerController)
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
-    // States
-    mDashState = new DashState(this);
-    mIdleState = new IdleState(this);
-    mMoveState = new MoveState(this);
-    mAimState = new AimState(this);
-    mAttackState = new AttackState(this);
-    mGrenadeState = new GrenadeState(this);
-    mSwitchState = new SwitchState(this);
-    mSpecialState = new SpecialState(this);
-    mReloadState = new ReloadState(this);
-
-    mLowerStateType = StateType::IDLE;
-    mUpperStateType = StateType::AIM;
-    mUpperState = mAimState;
-    mLowerState = mIdleState;
-
-    // Weapons
-    mMeleeWeapon = new Bat();
-    mRangeWeapon = new Pistol();
-    mWeapon = mMeleeWeapon;
 }
 
 PlayerController::~PlayerController()
@@ -112,6 +93,27 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    // States
+    mDashState = new DashState(this);
+    mIdleState = new IdleState(this);
+    mMoveState = new MoveState(this);
+    mAimState = new AimState(this);
+    mAttackState = new AttackState(this);
+    mGrenadeState = new GrenadeState(this);
+    mSwitchState = new SwitchState(this);
+    mSpecialState = new SpecialState(this);
+    mReloadState = new ReloadState(this);
+
+    mLowerStateType = StateType::IDLE;
+    mUpperStateType = StateType::AIM;
+    mUpperState = mAimState;
+    mLowerState = mIdleState;
+
+    // Weapons
+    mMeleeWeapon = new Bat();
+    mRangeWeapon = new Pistol();
+    mWeapon = mMeleeWeapon;
+
     // AUDIO
     if (mFootStepAudioHolder)
     {
@@ -134,13 +136,22 @@ void PlayerController::Start()
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
 
     // GRENADE
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mGrenadeGO)
     {
-        ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
+        ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
+        mGrenadeGO->SetEnabled(false);
+        if (mGrenadeAimAreaGO) mGrenadeAimAreaGO->SetEnabled(false);
+        if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
-    //END ANIMATION
+    // ANIMATION
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(true);
+    }
+
 }
 
 void PlayerController::Update()
@@ -179,7 +190,8 @@ void PlayerController::CheckInput()
         mLowerStateType = type;
         mLowerState->Exit();
 
-        switch (type) {
+        switch (type) 
+        {
             case StateType::DASH:
                 mLowerState = mDashState;
                 break;
@@ -207,7 +219,8 @@ void PlayerController::CheckInput()
         mUpperStateType = type;
         mUpperState->Exit();
 
-        switch (type) {
+        switch (type) 
+        {
             case StateType::AIM:
                 mUpperState = mAimState;
                 break;
@@ -238,17 +251,33 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    // TODO: Not aim on melee state?
+    // TODO: Not aim on melee state? and dash?
 
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane(mGameObject->GetPosition(), float3::unitY);
-
-    float distance;
-    if (plane.Intersects(ray, &distance))
+    if (GameManager::GetInstance()->UsingController())
     {
-        mAimPosition = ray.GetPoint(distance);
-        mGameObject->LookAt(mAimPosition);
+        float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+        float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+
+        if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
+
+        float3 position = mGameObject->GetPosition();
+        mAimPosition.x = position.x - rightX;
+        mAimPosition.y = position.y;
+        mAimPosition.z = position.z - rightY;
     }
+    else
+    {
+        Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+        Plane plane(mGameObject->GetPosition(), float3::unitY);
+
+        float distance;
+        if (plane.Intersects(ray, &distance))
+        {
+            mAimPosition = ray.GetPoint(distance);
+        }
+    }
+    
+    mGameObject->LookAt(mAimPosition);
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
@@ -258,10 +287,12 @@ void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 
 void PlayerController::PlayOneShot(std::string name)
 {
-    if (strcmp(name.c_str(), "Step")) {
+    if (strcmp(name.c_str(), "Step")) 
+    {
         mFootStepAudio->PlayOneShot();
     }
-    if (strcmp(name.c_str(), "Shot")) {
+    if (strcmp(name.c_str(), "Shot")) 
+    {
         mGunfireAudio->PlayOneShot();
     }
 }
@@ -280,10 +311,12 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) {
+    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
+    {
         mWeapon = mMeleeWeapon;
     }
-    else {
+    else 
+    {
         mWeapon = mRangeWeapon;
     }
 }
@@ -291,6 +324,50 @@ void PlayerController::SwitchWeapon()
 float3 PlayerController::GetPlayerPosition()
 {
     return  mGameObject->GetPosition(); 
+}
+
+void PlayerController::SetGrenadeVisuals(bool value)
+{
+    mGrenadeAimAreaGO->SetEnabled(value);
+    mGrenadeAimAreaGO->SetScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
+
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
+    mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+}
+
+void PlayerController::UpdateGrenadeVisuals()
+{
+    mGrenadeAimAreaGO->SetPosition(mGameObject->GetPosition());
+
+    float3 diff;
+    if (GameManager::GetInstance()->UsingController())
+    {
+        mGrenadePosition = mGameObject->GetPosition() + mAimPosition * mGrenadeRange;
+    }
+    else
+    {
+        diff = mAimPosition - mGameObject->GetPosition();
+        float distanceSquared = diff.LengthSq();
+        float radiusSquared = mGrenadeRange * mGrenadeRange;
+
+        if (distanceSquared <= radiusSquared)
+        {
+            mGrenadePosition = mAimPosition;
+        }
+        else 
+        {
+            diff.Normalize();
+            mGrenadePosition = mGameObject->GetPosition() + diff * mGrenadeRange;
+        }
+    }
+    
+    mGrenadeExplotionPreviewAreaGO->SetPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
+}
+
+void PlayerController::ThrowGrenade()
+{
+    // TODO wait for thow animation time
+    mGrenade->SetDestination(mGrenadePosition);
 }
 
 bool PlayerController::CanReload() const
@@ -313,14 +390,14 @@ void PlayerController::CheckDebugOptions()
     }
 }
 
-#pragma region Shield
-
 void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield) 
     {
         mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
-        UpdateShield();
+
+        float healthRatio = mShield / mMaxShield;
+        GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
     }
 }
 
@@ -332,21 +409,15 @@ void PlayerController::TakeDamage(float damage)
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
-    UpdateShield();
+
+    float healthRatio = mShield / mMaxShield;
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
 
     if (mShield < 0.0f)
     {
         GameManager::GetInstance()->GameOver();
     }
 }
-
-void PlayerController::UpdateShield()
-{
-    float healthRatio = mShield / mMaxShield;
-    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
-}
-
-#pragma endregion
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
@@ -394,5 +465,3 @@ void PlayerController::UpdateBattleSituation()
         }
     }*/
 }
-
-

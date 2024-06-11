@@ -122,57 +122,75 @@ void::ScriptComponent::Save(JsonObject& obj) const
 void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	Component::Load(data, uidPointerMap);
-
-	mName = data.GetString("ScriptName");
-	if (!mName.empty())
+	
+	if (data.HasMember("ScriptName"))
 	{
-		LoadScript(mName.c_str());
+		mName = data.GetString("ScriptName");
+		if (!mName.empty())
+		{
+			LoadScript(mName.c_str());
+		}
 	}
 
-	JsonArray scriptData = data.GetJsonArray("ScriptVariables");
-	if (mScript)
+	if (data.HasMember("ScriptVariables"))
 	{
-		for (unsigned int i = 0; i < scriptData.Size(); ++i)
+		JsonArray scriptData = data.GetJsonArray("ScriptVariables");
+		if (mScript)
 		{
-			JsonObject data = scriptData.GetJsonObject(i);
-			std::string name = data.GetString("VariableName");
-			const std::vector<Member*> members = mScript->GetMembers();
-			bool toFind = true;
-			for(std::vector<Member*>::const_iterator it = members.cbegin(); toFind && it != members.cend(); ++it)
+			for (unsigned int i = 0; i < scriptData.Size(); ++i)
 			{
-				const Member* member = *it;
-				if (strcmp(member->mName, name.c_str()) == 0)
+				JsonObject data = scriptData.GetJsonObject(i); 
+				if (data.HasMember("VariableName"))
 				{
-					toFind = false;
-					switch ((MemberType)data.GetInt("MemberType"))
+					std::string name = data.GetString("VariableName");
+					const std::vector<Member*> members = mScript->GetMembers();
+					bool toFind = true;
+					for (std::vector<Member*>::const_iterator it = members.cbegin(); toFind && it != members.cend(); ++it)
 					{
-					case MemberType::INT:
-						*reinterpret_cast<int*>((((char*)mScript) + member->mOffset)) = data.GetInt("VariableData");
-						break;
-					case MemberType::FLOAT:
-						*reinterpret_cast<float*>((((char*)mScript) + member->mOffset)) = data.GetFloat("VariableData");
-						break;
-					case MemberType::BOOL:
-						*reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)) = data.GetBool("VariableData");
-						break;
-					case MemberType::FLOAT3:
-					{
-						float tmp[3];
-						data.GetFloats("VariableData", tmp);
-						*reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)) = float3(tmp);
-						break;
-					}
-					case MemberType::GAMEOBJECT:
-					{
-						int  UID = data.GetInt("VariableData");
-						if (UID != -1) 
+						const Member* member = *it;
+						if (strcmp(member->mName, name.c_str()) == 0)
 						{
-							*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+							toFind = false;
+							if (data.HasMember("MemberType"))
+							{
+								switch ((MemberType)data.GetInt("MemberType"))
+								{
+								case MemberType::INT:
+									*reinterpret_cast<int*>((((char*)mScript) + member->mOffset)) = data.GetInt("VariableData");
+									break;
+								case MemberType::FLOAT:
+									*reinterpret_cast<float*>((((char*)mScript) + member->mOffset)) = data.GetFloat("VariableData");
+									break;
+								case MemberType::BOOL:
+									*reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)) = data.GetBool("VariableData");
+									break;
+								case MemberType::FLOAT3:
+								{
+									if (data.HasMember("VariableData"))
+									{
+										float tmp[3];
+										data.GetFloats("VariableData", tmp);
+										*reinterpret_cast<float3*>((((char*)mScript) + member->mOffset)) = float3(tmp);
+									}
+									break;
+								}
+								case MemberType::GAMEOBJECT:
+								{
+									if (data.HasMember("VariableData"))
+									{
+										int  UID = data.GetInt("VariableData");
+										if (UID != -1)
+										{
+											*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+										}
+									}
+									break;
+								}
+								default:
+									break;
+								}
+							}
 						}
-						break;
-					}
-					default:
-						break;
 					}
 				}
 			}

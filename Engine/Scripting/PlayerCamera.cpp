@@ -19,19 +19,23 @@ PlayerCamera::PlayerCamera(GameObject* owner) : Script(owner)
 {
 }
 
+void PlayerCamera::Awake() 
+{
+    mGameObject->SetPosition(mFollowTarget->GetPosition());
+    mGameObject->SetRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
+    mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
+}
+
 void PlayerCamera::Start()
 {
 }
 
 void PlayerCamera::Update()
 {
+    // TODO: Change to offset when camera values are defined.
 
-
-    
     mGameObject->SetPosition(mFollowTarget->GetPosition());
     mGameObject->SetRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront())*mDistanceToPlayer);
-
-
 }
 
