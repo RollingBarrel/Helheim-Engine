@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "PlayerController.h"
+#include "Weapon.h"
 
 AimState::AimState(PlayerController* player) : State(player)
 {
@@ -27,14 +28,19 @@ StateType AimState::HandleInput()
     if (mPlayerController->GetAttackCooldown() < mAttackTimer &&
         App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
-        LOG("Fast Attack!");
-        mAttackTimer = 0;
-        return StateType::ATTACK;
+        Weapon* weapon = mPlayerController->GetWeapon();
+        if (weapon->GetType() == Weapon::WeaponType::RANGE && weapon->GetCurrentAmmo() == 0)
+        {
+            return StateType::RELOAD;
+        }
+        else {
+            mAttackTimer = 0;
+            return StateType::ATTACK;
+        }
     }
     if (mPlayerController->GetSlowAttackCooldown() < mAttackTimer &&
         App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
     {
-        LOG("Slow Attack!");
         mAttackTimer = 0;
         return StateType::ATTACK;
     }

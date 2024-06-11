@@ -21,11 +21,10 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
-    //LOG("Attacked!");
     Weapon* weapon = mPlayerController->GetWeapon();
     weapon->BasicAttack();
 
-    DoAudio();
+    PlayAudio();
 }
 
 void AttackState::Enter()
@@ -41,6 +40,7 @@ StateType AttackState::GetType()
     return StateType::ATTACK;
 }
 
-void AttackState::DoAudio()
+void AttackState::PlayAudio()
 {
+
 }

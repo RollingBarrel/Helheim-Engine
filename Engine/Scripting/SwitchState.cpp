@@ -5,6 +5,7 @@
 #include "Keys.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "PlayerController.h"
 
 SwitchState::SwitchState(PlayerController* player) : State(player)
 {
@@ -23,6 +24,7 @@ StateType SwitchState::HandleInput()
 
 void SwitchState::Update()
 {
+	mPlayerController->SwitchWeapon();
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }
 
