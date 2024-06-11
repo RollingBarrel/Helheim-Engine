@@ -18,21 +18,21 @@ layout(binding = 2)uniform sampler2D gBufferNormalTex;
 layout(binding = 3)uniform sampler2D gBufferDepthTex;
 layout(binding = 4)uniform sampler2D gBufferEmisiveTex;
 
-layout(binding = 6)uniform sampler2D gBufferPositionTex;
+layout(binding = 5)uniform sampler2D gBufferPositionTex;
 
-layout(binding = 5)uniform sampler2D decalDiffuseTex;
-layout(binding = 6)uniform sampler2D decalSpecularTex;
-layout(binding = 7)uniform sampler2D decalNormalTex;
-layout(binding = 8)uniform sampler2D decalEmisiveTex;
+layout(binding = 6)uniform sampler2D decalDiffuseTex;
+layout(binding = 7)uniform sampler2D decalSpecularTex;
+layout(binding = 8)uniform sampler2D decalNormalTex;
+layout(binding = 9)uniform sampler2D decalEmisiveTex;
 
 
-layout(location = 9) uniform bool hasDiffuse;
-layout(location = 10) uniform bool hasSpecular;
-layout(location = 11) uniform bool hasNormal;
-layout(location = 12) uniform bool hasEmisive;
+layout(location = 10) uniform bool hasDiffuse;
+layout(location = 11) uniform bool hasSpecular;
+layout(location = 12) uniform bool hasNormal;
+layout(location = 13) uniform bool hasEmisive;
 
-layout(location = 13)uniform mat4 invView;
-layout(location = 14) uniform mat4 invModel;
+layout(location = 14)uniform mat4 invView;
+layout(location = 15) uniform mat4 invModel;
 
 
 float GetLinearZ(float inputDepth)
@@ -55,8 +55,10 @@ void main()
 {
 	
 	float depth = texture(gBufferDepthTex, clipping.xy/clipping.w*0.5 + 0.5).r;
-	vec3 worldPos = GetWorldPos(depth, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
-	//vec3 worldPos = texture(gBufferPositionTex, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
+	//vec3 worldPos = GetWorldPos(depth, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
+	
+	
+	vec3 worldPos = texture(gBufferPositionTex, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
 	vec3 objPos = (invModel*vec4(worldPos, 1.0)).xyz;
 
 	
@@ -111,7 +113,7 @@ void main()
 		vec3 normal = normalize(cross(tangent, bitangent));
 
 		outNormal = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0))*0.5+0.5;
-		//outNormal = pow(outNormal, vec3(2.2));
+		//outNormal = normal *0.5+0.5;
 	}
 
 	

@@ -45,7 +45,7 @@ layout(location = 2) out vec3 outNormal;
 layout(location = 3) out float outDepth;
 layout(location = 4) out vec3 outEmissive;
 
-layout(location = 6) out vec3 outPosition;
+layout(location = 5) out vec3 outPosition;
 
 void main() 
 {
@@ -94,7 +94,7 @@ void main()
 	outSpecularRough.a = rough;
 	outNormal = (N * 0.5) + 0.5;
 	
-	outPosition = vec3(0.0,1.0,0.0);
+	outPosition = sPos;
 	
 	outDepth = gl_FragCoord.z;
 

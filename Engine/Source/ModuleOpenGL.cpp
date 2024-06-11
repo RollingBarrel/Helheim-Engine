@@ -184,20 +184,23 @@ bool ModuleOpenGL::Init()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGNormals, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
 	
 	//POSITION TEXTURE
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT6, GL_TEXTURE_2D, mGPosition, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, mGPosition, 0);
 	
 	
+	
+	const GLenum att2[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6 };
+	glDrawBuffers(7, att2);
+
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
-	const GLenum att2[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6 };
-	glDrawBuffers(7, att2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	glGenVertexArrays(1, &mEmptyVAO);
 
 	//InitializePrograms
@@ -268,7 +271,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "DecalPass_Fragment.glsl";
 	DecalPassProgramId= CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-
+	int number;
+	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &number);
+	LOG("\nNUMBER OF BUFFERS: %i\n",number) ;
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -1186,7 +1191,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	
-	glActiveTexture(GL_TEXTURE6);
+	glActiveTexture(GL_TEXTURE5);
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	
 	glDisable(GL_STENCIL_TEST);
@@ -1195,7 +1200,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glBindVertexArray(mDecalsVao);
 
 	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().ViewMatrix().Inverted();
-	glUniformMatrix4fv(13, 1, GL_TRUE, viewMatrix.ptr());
+	glUniformMatrix4fv(14, 1, GL_TRUE, viewMatrix.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
@@ -1229,27 +1234,27 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		glDrawBuffers(numberOfChannels, channels);
 
 		
-		glActiveTexture(GL_TEXTURE5);
+		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
 
-		glActiveTexture(GL_TEXTURE6);
+		glActiveTexture(GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
 
-		glActiveTexture(GL_TEXTURE7);
+		glActiveTexture(GL_TEXTURE8);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
 
-		glActiveTexture(GL_TEXTURE8);
+		glActiveTexture(GL_TEXTURE9);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetEmisiveId());
 
-		glUniform1i(9, mDecalComponents[i]->HasDiffuse());
-		glUniform1i(10, mDecalComponents[i]->HasSpecular());
-		glUniform1i(11, mDecalComponents[i]->HasNormal());
-		glUniform1i(12, mDecalComponents[i]->HasEmisive());
+		glUniform1i(10, mDecalComponents[i]->HasDiffuse());
+		glUniform1i(11, mDecalComponents[i]->HasSpecular());
+		glUniform1i(12, mDecalComponents[i]->HasNormal());
+		glUniform1i(13, mDecalComponents[i]->HasEmisive());
 
 		float4x4 inverseModel = mDecalComponents[i]->GetOwner()->GetWorldTransform();
 		inverseModel.InverseColOrthogonal();
 
-		glUniformMatrix4fv(14, 1, GL_TRUE, inverseModel.ptr());
+		glUniformMatrix4fv(15, 1, GL_TRUE, inverseModel.ptr());
 		
 
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
