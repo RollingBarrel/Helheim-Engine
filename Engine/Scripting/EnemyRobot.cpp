@@ -7,6 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
+#include "GameManager.h"
 
 CREATE(EnemyRobot){
     CLASS(owner);
@@ -48,6 +49,8 @@ void EnemyRobot::Start()
 
 void EnemyRobot::Update()
 {
+    if (GameManager::GetInstance()->isPaused()) return;
+
     Enemy::Update();
 
     if (!mBeAttracted) {

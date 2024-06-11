@@ -1,4 +1,5 @@
 #include "EnemyExplosive.h"
+#include "GameManager.h"
 
 CREATE(EnemyExplosive)
 {
@@ -30,6 +31,8 @@ void EnemyExplosive::Start()
 
 void EnemyExplosive::Update()
 {
+    if (GameManager::GetInstance()->isPaused()) return;
+
     Enemy::Update();
 }
 

@@ -53,7 +53,8 @@ void GameManager::Update()
 {
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        mHudController->SetScreen(SCREEN::PAUSE, !mPaused);
+        mPaused = !mPaused;
+        mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     }
 }
 

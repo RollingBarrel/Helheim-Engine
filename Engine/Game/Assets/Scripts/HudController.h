@@ -1,4 +1,7 @@
 #pragma once
+
+//https://www.figma.com/design/J6S4FzW8Yn38GOiMe7XdYm/GAME_UI?node-id=625-249&t=mL60BsxKQdYvFkMC-0
+
 #include <Script.h>
 #include "Macros.h"
 

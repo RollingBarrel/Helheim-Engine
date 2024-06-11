@@ -71,7 +71,7 @@ void Transform2DComponent::Load(const JsonObject& data, const std::unordered_map
 
 	float rot[4];
 	data.GetFloats("Rotation", rot);
-	mRotation = Quat(pos);
+	mRotation = Quat(rot);
 
 	float size[2];
 	data.GetFloats("Size", size);
