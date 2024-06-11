@@ -10,9 +10,9 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
 {
     std::vector<Attribute> attributes;
     rMesh->GetAttributes(attributes);
-    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberJoints(), rMesh->GetNumberWeights(), rMesh->GetNumberVertices(), attributes.size() };
+    unsigned int header[] = { rMesh->GetNumberIndices(), rMesh->GetNumberVertices(), attributes.size() };
 
-    unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices() + sizeof(unsigned int) * rMesh->GetNumberJoints() + rMesh->GetNumberWeights() * sizeof(float);
+    unsigned int size = sizeof(header) + sizeof(unsigned int) * rMesh->GetNumberIndices();
     for (std::vector<Attribute>::const_iterator it = attributes.cbegin(); it != attributes.cend(); ++it)
     {
         size += it->size * rMesh->GetNumberVertices() + sizeof(Attribute);
@@ -29,16 +29,6 @@ void Importer::Mesh::Save(const ResourceMesh* rMesh)
     //Save Indices
     bytes = sizeof(unsigned int) * rMesh->GetNumberIndices();
     memcpy(cursor, rMesh->GetIndices(), bytes);
-    cursor += bytes;
-
-    //Save Joints
-    bytes = sizeof(unsigned int) * rMesh->GetNumberJoints();
-    memcpy(cursor, rMesh->GetJoints(), bytes);
-    cursor += bytes;
-
-    //Save Weights
-    bytes = sizeof(float) * rMesh->GetNumberWeights();
-    memcpy(cursor, rMesh->GetWeights(), bytes);
     cursor += bytes;
 
     //Save attributes and data
@@ -72,32 +62,18 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
     {
         //Load Header
         char* cursor = fileBuffer;
-        unsigned int header[5];
+        unsigned int header[3];
         unsigned int bytes = sizeof(header);
         memcpy(header, cursor, bytes);
         cursor += bytes;
         unsigned int numIndices = header[0];
-        unsigned int numJoints = header[1];
-        unsigned int numWeights = header[2];
-        unsigned int numVertices = header[3];
-        unsigned int numAttributes = header[4];
+        unsigned int numVertices = header[1];
+        unsigned int numAttributes = header[2];
 
         //Load Indices
         bytes = sizeof(unsigned int) * numIndices;
         unsigned int* indices = new unsigned int[numIndices];
         memcpy(indices, cursor, bytes);
-        cursor += bytes;
-
-        //Load Joints
-        bytes = sizeof(unsigned int) * numJoints;
-        unsigned int* joints = new unsigned int[numJoints];
-        memcpy(joints, cursor, bytes);
-        cursor += bytes;
-
-        //Load Weights
-        bytes = sizeof(float) * numWeights;
-        float* weights = new float[numWeights];
-        memcpy(weights, cursor, bytes);
         cursor += bytes;
 
 
@@ -114,7 +90,7 @@ ResourceMesh* Importer::Mesh::Load(const char* filePath, unsigned int uid)
             cursor += attr->size * numVertices;
         }
 
-        rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numJoints, std::move(joints), numWeights, std::move(weights), numVertices, std::move(attributes), std::move(attributesData));
+        rMesh = new ResourceMesh(uid, numIndices, std::move(indices), numVertices, std::move(attributes), std::move(attributesData));
         delete[] fileBuffer;
     }
 

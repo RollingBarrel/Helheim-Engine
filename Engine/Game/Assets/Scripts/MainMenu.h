@@ -101,5 +101,12 @@ private:
     ButtonComponent* mCreditsButton = nullptr;
     ButtonComponent* mQuitButton = nullptr;
     ButtonComponent* mBackCreditButton = nullptr;
+
+    // Scrolling related variables
+    float3 mStartPosition;
+    float3 mEndPosition;
+    float mScrollDuration;
+    float mElapsedTime;
+    bool mIsScrolling;
 };
 

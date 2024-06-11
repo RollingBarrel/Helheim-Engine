@@ -2,8 +2,10 @@
 #include "PlayerController.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "GameManager.h"
 #include "Math/MathFunc.h"
 #include "ScriptComponent.h"
+#include "AnimationComponent.h"
 
 CREATE(ItemShield)
 {
@@ -20,7 +22,23 @@ ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
 void ItemShield::Start()
 {
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
+    mPlayer = GameManager::GetInstance()->GetPlayer();
+
+
+    std::vector<Component*> components;
+    mGameObject->GetComponentsInChildren(ComponentType::ANIMATION, components);
+
+
+    if (!components.empty())
+    {
+        mAnimation = reinterpret_cast<AnimationComponent*>(*components.begin());
+
+        if (mAnimation)
+        {
+            mAnimation->SetIsPlaying(true);
+        }
+    }
+    
 }
 
 void ItemShield::Update()

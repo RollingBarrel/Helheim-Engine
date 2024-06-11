@@ -1,10 +1,10 @@
 #pragma once
 #include "Component.h"
-#include "GameObject.h"
-#include "ImageComponent.h"
-#include "Transform2DComponent.h"
 
 class CanvasComponent;
+class GameObject;
+class Transform2DComponent;
+class ImageComponent;
 
 class ENGINE_API SliderComponent :
     public Component
@@ -19,22 +19,29 @@ public:
     void Update() override {}
 
     Component* Clone(GameObject* owner) const override;
-    void SetFillPercent(float fillPercent);
+    void SetValue(float fillPercent);
 
-    void Save(Archive& archive) const override;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+    float GetValue() { return mValue; }
+    float* GetValuePointer() { return &mValue; }
+
+    void Save(JsonObject& obj) const override;
+    void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 private:
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
     GameObject* mFill = nullptr;
     GameObject* mBackground = nullptr;
+
     Transform2DComponent* mSliderTransform2D = nullptr;
+
     ImageComponent* mBgImage = nullptr;
     ImageComponent* mFillImage = nullptr;
+
     Transform2DComponent* mBgTransform2D = nullptr;
     Transform2DComponent* mFillTransform2D = nullptr;
-    float mFillPercent = 0.75f;
+
+    float mValue = 0.75f;
 
     CanvasComponent* mCanvas = nullptr;
 };

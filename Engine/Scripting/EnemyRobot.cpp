@@ -3,10 +3,12 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"
-#include "AnimationComponent.h"
 #include "Physics.h"
-CREATE(EnemyRobot)
-{
+#include "BoxColliderComponent.h"
+#include "GameObject.h"
+#include "ScriptComponent.h"
+
+CREATE(EnemyRobot){
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
@@ -34,30 +36,43 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 void EnemyRobot::Start()
 {
     Enemy::Start();
+
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+
+    
 }
 
 void EnemyRobot::Update()
 {
+    if (!mBeAttracted) {
+        switch (mCurrentState)
+        {
+        case EnemyState::IDLE:
+            
+            Idle();
+            
+            break;
+        case EnemyState::CHASE:
 
-    switch (mCurrentState) 
-    {
-    case EnemyState::IDLE:
-
-        Idle();
-
-        break;
-    case EnemyState::CHASE:
-
-        Chase();
-        break;
-    case EnemyState::ATTACK:
-        Attack();
-        break;
+            Chase();
+            break;
+        case EnemyState::ATTACK:
+            Attack();
+            break;
+        }
     }
+
+    Enemy::Update();
 }
 
 void EnemyRobot::Idle()
 {
+    
+
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
@@ -66,6 +81,7 @@ void EnemyRobot::Idle()
 
 void EnemyRobot::Chase()
 {
+    
 
     float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
@@ -117,16 +133,28 @@ void EnemyRobot::Attack()
         break;
     }
 
-    if (!IsPlayerInRange(range))
+    bool playerInRange = IsPlayerInRange(range);
+
+    if (!playerInRange && mTimerDisengage>1.0f)
     {
+
         mCurrentState = EnemyState::CHASE;
+        mTimerDisengage = 0.0f;
+    }
+    else if (!playerInRange) {
+        mTimerDisengage += App->GetDt();
     }
 
 }
 
+bool EnemyRobot::IsMoving()
+{
+    return (mCurrentState == EnemyState::CHASE);
+}
+
 void EnemyRobot::MeleeAttack() 
 {
-    if (Delay(mMeleeAttackCoolDown))
+    if ( mTimerAttack > mMeleeAttackCoolDown )
     {
        
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
@@ -144,6 +172,11 @@ void EnemyRobot::MeleeAttack()
                 playerScript->TakeDamage(mMeeleDamage);
             }
         }
+
+        mTimerAttack = 0.0f;
+    }
+    else {
+        mTimerAttack += App->GetDt();
     }
 }
 
@@ -156,14 +189,14 @@ void EnemyRobot::RangeAttack()
     ray.dir = mGameObject->GetFront();
     
     float distance = 100.0f;
-    hits = Physics::Raycast(&ray);
+    Physics::Raycast(ray, hits);
     
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
         //recorrer todos los hits y hacer da�o a los objetos que tengan tag = target
         for (const std::pair<float, Hit>& hit : hits) 
         {
-            if (hit.second.mGameObject->GetTag()->GetName() == "Player") 
+            if (hit.second.mGameObject->GetTag() == "Player") 
             {
                 PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
@@ -172,4 +205,12 @@ void EnemyRobot::RangeAttack()
                 }
             }
         }
+}
+
+void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
+{
+    if (collisionData->collidedWith->GetName().find("Bullet") != std::string::npos)
+    {
+        TakeDamage(1.0f);
+    }
 }

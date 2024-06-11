@@ -1,19 +1,28 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
+#include "GameManager.h"
+#include "AudioSourceComponent.h"
 #include "Math/MathFunc.h"
+#include "GameObject.h"
+
+
+
+
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()
 {
     ModuleScene* scene = App->GetScene();
-    mPlayer = scene->FindGameObjectWithTag(scene->GetTagByName("Player")->GetID());
-    mHealth = mMaxHealth;   
+    mPlayer = GameManager::GetInstance()->GetPlayer();
+    mHealth = mMaxHealth;  
 }
 
 void Enemy::Update()
 {
+    mBeAttracted = false;
+
 }
 
 void Enemy::ActivateEnemy() 
@@ -49,6 +58,20 @@ void Enemy::Death()
     DropShield();
 }
 
+void Enemy::AddFootStepAudio(GameObject* audio)
+{
+    if (mFootstepAudioHolder == nullptr)
+    {
+        mFootstepAudioHolder = audio;
+
+        if (mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE) != nullptr)
+        {
+            AudioSourceComponent* audio = reinterpret_cast<AudioSourceComponent*>(mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE));
+            audio->Play();
+        }
+    }
+}
+
 bool Enemy::Delay(float delay) //Lapse of time for doing some action
 {
    static float timePassed = 0.0f;
@@ -67,6 +90,11 @@ void Enemy::PushBack()
     float3 direction = mGameObject->GetPosition() - mPlayer->GetPosition();
     direction.Normalize();
     mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
+}
+
+bool Enemy::IsMoving()
+{
+    return false;
 }
 
 void Enemy::DropShield()

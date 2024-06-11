@@ -3,26 +3,28 @@
 #include "Macros.h"
 #include "float3.h"
 
-class NavMeshController;
 class AnimationComponent;
-class AudioSourceComponent;
-class SliderComponent;
-class AudioSourceComponent;
-class ObjectPool;
-class GameManager;
 class AnimationStateMachine;
-class BoxColliderComponent;
+class AudioSourceComponent;
 struct CollisionData;
+class BoxColliderComponent;
 
-enum class PlayerState 
-{
-    IDLE,
-    DASH,
-    MOVE,
-    ATTACK,
-    MOVE_ATTACK,
-    DEATH,
-};
+class State;
+class DashState;
+class IdleState;
+class MoveState;
+class AimState;
+class AttackState;
+class GrenadeState;
+class SwitchState;
+class SpecialState;
+class ReloadState;
+enum StateType;
+
+class Weapon;
+class RangeWeapon;
+class MeleeWeapon;
+class Grenade;
 
 enum class BattleSituation {
     IDLE_HIGHT_HP,
@@ -32,180 +34,143 @@ enum class BattleSituation {
     DEATH
 };
 
-enum class Weapon {
-    RANGE,
-    MELEE
-};
-
-enum class MouseDirection {
-    UP,
-    DOWN,
-    LEFT,
-    RIGHT,
-    DEFAULT
-};
-
-enum class MoveDirection {
-    UP,
-    DOWN,
-    RIGHT,
-    LEFT,
-    UP_RIGHT,
-    UP_LEFT,
-    DOWN_RIGHT,
-    DOWN_LEFT,
-    NOT_MOVING
-};
-
 GENERATE_BODY(PlayerController);
 class PlayerController :public Script
 {
     FRIEND(PlayerController)
-    public:
-        PlayerController(GameObject* owner);
-        ~PlayerController() {}
-        void Start() override;
-        void Update() override;
+public:
+    explicit PlayerController(GameObject* owner);
+    PlayerController(const PlayerController& playerController) = delete;
+    ~PlayerController();
+    PlayerController& operator=(const PlayerController& other) = delete;
 
-        void RechargeShield(float shield);
-        void TakeDamage(float damage);
-        bool IsDead();
+    void Start() override;
+    void Update() override;
 
-        BattleSituation GetBattleSituation() {return mCurrentSituation;};
+    float3 GetPlayerDirection() { return mPlayerDirection; }
+    float3 GetPlayerAimPosition() { return mAimPosition; }
+    float3 GetPlayerPosition();
+   
+    void SetAnimation(std::string trigger, float transitionTime);
+    void PlayOneShot(std::string name);
 
-    private:
-        void Idle();
-        void Moving();
-        void Dash();
-        void Attack();
-        void InitAnimations();
+    void MoveToPosition(float3 position);
+    void MoveInDirection(float3 direction);
 
-        void MeleeAttack();
-        void MeleeBaseCombo();
-        void MeleeSpecialCombo();
+    void SwitchWeapon();
 
-        void MeleeHit(float AttackRange, float AttackDamage);
-        void RangedAttack();
-        void Move(float3 position);
-        void HandleRotation();
-        void Shoot(float damage);
-        void Reload();
-        void ClosestMouseDirection(float2 mouseState);
-        void SetMovingDirection(float3 moveDirection);
-      
-        void Death();
-        void UpdateShield();
-        void UpdateBattleSituation();
-        void CheckDebugOptions();
+    float GetDashCoolDown() const { return mDashCoolDown; }
+    float GetDashDuration() const { return mDashDuration; }
+    float GetDashRange() const { return mDashRange; }
+    float GetGrenadeCooldown() const { return mGrenadeCoolDown; }
+    float GetGrenadeRange() const { return mGrenadeRange;  }
+    float GetAttackCooldown() const { return mAttackCoolDown; }
+    float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
+    float GetSwitchCooldown() const { return mSwitchCoolDown; }
+    float GetReloadDuration() const { return mReloadDuration; }
+    Weapon* GetWeapon() const { return mWeapon; }
+    const State* GetPlayerUpperState() const { return mUpperState; }
 
-        void Victory();
-        void GameoOver();
-        bool Delay(float delay);
-        void Loading();
-        
+    void SetDashCoolDown(float value) { mDashCoolDown = value; }
+    void SetDashDuration(float value) { mDashDuration = value; }
+    void SetDashRange(float value) { mDashRange = value; }
+    void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
+    void SetGrenadeRange(float value) { mGrenadeRange = value; }
+    void SetGrenadeVisuals(bool value);
+    void UpdateGrenadeVisuals();
+    void ThrowGrenade();
 
-        void OnCollisionEnter(CollisionData* collisionData);
+    bool CanReload() const;
+    void Reload() const;
+    
+    // --------------- OLD ----------------------
 
-        Weapon mWeapon = Weapon::RANGE;
-        PlayerState mCurrentState = PlayerState::IDLE;
-        PlayerState mPreviousState = PlayerState::IDLE;
-        BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-        MouseDirection mLookingAt = MouseDirection::DEFAULT;
-        MoveDirection mMovingTo = MoveDirection::NOT_MOVING;
-        float mBattleStateTransitionTime = 0.0f;
+    void RechargeShield(float shield);
+    void TakeDamage(float damage);
 
-        NavMeshController* mNavMeshControl = nullptr;
-        AnimationComponent* mAnimationComponent = nullptr;
-        AnimationStateMachine* mStateMachine = nullptr;
+    BattleSituation GetBattleSituation() { return mCurrentSituation; };
 
-        GameObject* mBulletPoolHolder = nullptr;
-        ObjectPool* mBulletPool = nullptr;
+private:
+    void CheckInput();
+    void StateMachine();
+    void HandleRotation();
+    void CheckDebugOptions();
 
-        GameManager* mGameManager = nullptr;
-        GameObject* mGameManagerGO = nullptr;
+    // STATES
+    State* mLowerState = nullptr;
+    StateType mLowerStateType;
 
-        //Stats
-        float mPlayerSpeed = 2.0f;
-        float mShield = 0.0f;
-        float mMaxShield = 100.0f;
-        float mSanity = 0.0f;
-        float mMaxSanity = 100.0f;
-        bool mPlayerIsDead = false;
-        float3 mMoveDirection = float3::zero;
+    DashState* mDashState;
+    IdleState* mIdleState;
+    MoveState* mMoveState;
 
-        //Dash
-        bool mIsDashing = false;
-        bool mIsDashCoolDownActive = false;
-        float mDashCoolDownTimer = 0.0f;
-        float mDashCoolDown = 0.7f;
-        float mDashTimer = 0.0f;
-        float mDashDuration = 0.5f;
-        float mDashRange = 8.0f;
+    State* mUpperState = nullptr;
+    StateType mUpperStateType;
 
-        //Range
-        int mAmmoCapacity = 500000;
-        int mBullets = 0;
-        GameObject* bullet = nullptr;
-        float mRangeBaseDamage = 1.0f;
+    AimState* mAimState;
+    AttackState* mAttackState;
+    GrenadeState* mGrenadeState;
+    SwitchState* mSwitchState;
+    SpecialState* mSpecialState;
+    ReloadState* mReloadState;
 
-        //Melee
-        bool mLeftMouseButtonPressed = false;
+    // MOUSE
+    float3 mPlayerDirection;
+    float3 mAimPosition;
 
-            //Melee Base Attack
-        float mMeleeBaseDamage = 2.0f;
-        float mMeleeBaseRange = 1.0f;
-               //Combo
-        int mMeleeBaseComboStep = 1;
-        float mMeleeBaseComboTimer = 0.0f;
-        const float mMeleeBaseMaxComboInterval = 5.0f; 
-        bool mIsMeleeBaseComboActive = false;
-               //Final Attack
-        const float mMeleeBaseFinalAttackDuration = 0.5f; 
-        float mMeleeBaseFinalAttackTimer = 0.0f;
-        float mMeleeBaseMoveDuration = 0.5f;
-        float mMeleeBaseMoveRange = 8.0f;
+    // ANIMATION
+    AnimationComponent* mAnimationComponent = nullptr;
+    AnimationStateMachine* mStateMachine = nullptr;
 
-          //Melee Special Attack
-        float mMeleeSpecialTimer = 0.0f;
-        const float mMeleeSpecialAttackDuration = 2.0f;
-        float mMeleeSpecialDamage = 4.0f;
-        float mMeleeSpecialRange = 2.0f;
-               //Cooldown
-        bool mIsMeleeSpecialCoolDownActive = false;
-        float mMeleeSpecialCoolDownTimer = 0.0f;
-        float mMeleeSpecialCoolDown = 4.0f;
+    // STATS
+    // Dash
+    float mDashCoolDown = 2.0f;
+    float mDashDuration = 0.5f;
+    float mDashRange = 5.0f;
+    // Speed
+    float mPlayerSpeed = 2.0f;
+    // Shield
+    float mShield = 100.0f;
+    float mMaxShield = 100.0f;
 
-        //HUD
-        GameObject* mShieldGO = nullptr;
-        SliderComponent* mShieldSlider = nullptr;
+    // WEAPONS
+    Weapon* mWeapon = nullptr;
+    MeleeWeapon* mMeleeWeapon = nullptr;
+    RangeWeapon* mRangeWeapon = nullptr;
+    // Attack
+    float mAttackCoolDown = 0.1f;
+    float mSpecialAttackCoolDown = 5.0f;
+    float mSwitchCoolDown = 0.2f;
+    float mReloadDuration = 0.5;
+    // Grenade
+    float mGrenadeCoolDown = 5.0f;
+    float mGrenadeRange = 5.0f;
+    float3 mGrenadePosition;
+    Grenade* mGrenade = nullptr;
+    GameObject* mGrenadeGO = nullptr;
+    GameObject* mGrenadeAimAreaGO = nullptr;
+    GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
 
-        //DEBUG
-        bool mGodMode = false;
+    // -------- PROVISIONAL --------
 
-        GameObject* mWinArea = nullptr;
+    // AUIDO
+    // Footstep
+    GameObject* mFootStepAudioHolder = nullptr;
+    AudioSourceComponent* mFootStepAudio = nullptr;
+    // Gunfire
+    GameObject* mGunfireAudioHolder = nullptr;
+    AudioSourceComponent* mGunfireAudio = nullptr;
 
-        // Audios section
-        // Footstep
-        GameObject* mFootStepAudioHolder = nullptr;
-        AudioSourceComponent* mFootStepAudio = nullptr;
-        bool mIsMoving = false;
-        bool mReadyToStep = false;
-        float mStepTimePassed = 0.0f;
-        float mStepCoolDown = 0.5f;
+    void OnCollisionEnter(CollisionData* collisionData);
+    void UpdateBattleSituation();
 
-        // Gunfire
-        GameObject* mGunfireAudioHolder = nullptr;
-        AudioSourceComponent* mGunfireAudio = nullptr;
 
-        //SCREENS
-        bool mVictory = false;
-        bool mGameOver = false;
-        bool mLoadingActive = false;
-        float mTimeScreen = 3.0f;
-        float mTimePassed = 0.0f;
+    bool mGodMode = false;
 
-        //CAMERA
-        GameObject* mCamera = nullptr;
-        //Collider
-        BoxColliderComponent* mCollider;
+    GameObject* mCamera = nullptr;
+
+    BoxColliderComponent* mCollider = nullptr;
+
+    BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
+    float mBattleStateTransitionTime = 0.0f;
 };

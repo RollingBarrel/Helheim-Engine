@@ -1,22 +1,25 @@
 #include "InspectorPanel.h"
+
 #include "ImBezier.h"
 #include "imgui.h"
-#include "imgui_color_gradient.h"
+#include "ImColorGradient.h"
+
 #include "EngineApp.h"
 #include "ModuleScene.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
 #include "HierarchyPanel.h"
-#include "TagsManagerPanel.h"
+#include "SettingsPanel.h"
 #include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
 #include "ModuleDebugDraw.h"
+#include "ModuleOpenGL.h"
+#include "ModuleUI.h"
 #include "GameObject.h"
 
-#include "TestComponent.h"
 #include "MeshRendererComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -31,33 +34,36 @@
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
 #include "TrailComponent.h"
-#include "EmitterShape.h"
 #include "BoxColliderComponent.h"
-
-#include "ImporterMaterial.h"
-#include "Tag.h"
-#include "MathFunc.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
-#include "ModuleOpenGL.h"
+#include "SliderComponent.h"
+
+#include "ImporterMaterial.h"
+#include "MathFunc.h"
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
-#include "Trail.h"
+#include "TrailComponent.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
-
-#include "ModuleUI.h"
+#include "ResourceModel.h"
 
 #include "IconsFontAwesome6.h"
+
+
+#include "AnimationStateMachine.h"
+#include "AnimationSMPanel.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
 void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
+	SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+	
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
 	if (mLockedGameObject != nullptr) 
@@ -70,10 +76,11 @@ void InspectorPanel::Draw(int windowFlags)
 	char nameArray[100];
 	strcpy_s(nameArray, focusedObject->mName.c_str());
 	bool enabled = focusedObject->IsEnabled();
-	ImGui::PushID(focusedObject->mID);
+	ImGui::PushID(focusedObject->mUid);
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
+
 
 	if (!focusedObject->IsRoot())
 	{
@@ -85,7 +92,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 
 		// Rename
-		ImGui::PushID(focusedObject->mID);
+		ImGui::PushID(focusedObject->mUid);
 		ImGui::InputText("##rename", nameArray, IM_ARRAYSIZE(nameArray));
 		focusedObject->mName = nameArray;
 		ImGui::PopID();
@@ -120,29 +127,37 @@ void InspectorPanel::Draw(int windowFlags)
 		// Tag
 		ImGui::Text("Tag");
 		ImGui::SameLine();
-		std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
 
-		if (ImGui::BeginCombo("##tags", focusedObject->GetTag()->GetName().c_str()))
+
+		if (ImGui::BeginCombo("##tags", focusedObject->GetTag().c_str()))
 		{
-			for (auto i = 0; i < tags.size(); i++) 
+			for (unsigned int i = 0; i < settingsPanel->GetTags().size(); i++)
 			{
-				if (ImGui::Selectable(tags[i]->GetName().c_str()))
+				ImGui::SetNextItemAllowOverlap();
+				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str(), false, 0, ImVec2(100.0f, 20.0f)))
 				{
-					focusedObject->SetTag(tags[i]);
+					focusedObject->SetTag(settingsPanel->GetTags()[i]);
 				}
-			}
+				
+				
+				if (i >= NUM_ENGINE_TAGS)
+				{
+					ImGui::SameLine();
+					ImGui::PushID(i);
+					if (ImGui::Button(ICON_FA_TRASH_CAN))
+					{
+						settingsPanel->DeleteTag(settingsPanel->GetTags()[i].c_str());
+					}
+					ImGui::PopID();
+				}
 
+			}
+			ImGui::Separator();
+			mTagsLayersPopUp = ImGui::Button("Add Tag...");
 			ImGui::EndCombo();
 		}
 
-		ImGui::SameLine();
-
-		if (ImGui::Button("Add Tag")) 
-		{
-			EngineApp->GetEditor()->OpenPanel(TAGSMANAGERPANEL, true);
-		}
-
-		if (focusedObject->mPrefabResourceId != 0) {
+		if (focusedObject->mPrefabId != 0) {
 			ImGui::Text("From Prefab");
 			ImGui::Checkbox("Override Prefab", &focusedObject->mPrefabOverride);
 		}
@@ -158,12 +173,53 @@ void InspectorPanel::Draw(int windowFlags)
 		ShowSameComponentPopup();
 	}
 
+	if (mTagsLayersPopUp)
+	{
+		ImGui::OpenPopup("Tags&Layers");
+		ShowTagsLayerPopUp();
+	}
+
+	if (settingsPanel->mDeleteTagPopup)
+	{
+		ImGui::OpenPopup("DeleteTag");
+		settingsPanel->ShowDeleteTagsPopup();
+	}
+
 	ImGui::End();
 	ImGui::PopID();
 }
 
-void InspectorPanel::DrawTransform(GameObject* object) {
-	ImGui::PushID(object->mID);
+void InspectorPanel::ShowTagsLayerPopUp()
+{
+	SettingsPanel* settingsPanel = reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+
+	if(ImGui::BeginPopup("Tags&Layers"))
+	{
+		static char tmp[280] = "";
+		ImGui::InputText("New Tag", tmp, IM_ARRAYSIZE(tmp), ImGuiInputTextFlags_AlwaysOverwrite);
+		if (ImGui::IsKeyPressed(ImGuiKey_Enter) || ImGui::Button("Save"))
+		{
+			if (strcmp(tmp, "") != 0)
+			{
+				settingsPanel->AddTag(tmp);
+			}
+			memset(tmp, 0, 280);
+			mTagsLayersPopUp = false;
+		}
+		ImGui::SameLine();
+		if(ImGui::Button("Cancel"))
+		{
+			mTagsLayersPopUp = false;
+			memset(tmp, 0, 280);
+		}
+
+		ImGui::EndPopup();
+	}
+}
+
+void InspectorPanel::DrawTransform(GameObject* object)
+{
+	ImGui::PushID(object->mUid);
 	bool headerOpen = ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
@@ -188,7 +244,7 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 
 			bool modifiedTransform = false;
 			float3 newPosition = object->mPosition;
-			float3 newRotation = RadToDeg(object->mEulerRotation);
+			float3 newRotation = RadToDeg(object->mLocalEulerAngles);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
@@ -231,7 +287,8 @@ void InspectorPanel::DrawTransform(GameObject* object) {
 	ImGui::PopID();
 }
 
-void InspectorPanel::AddComponentButton(GameObject* object) {
+void InspectorPanel::AddComponentButton(GameObject* object) 
+{
 	float windowWidth = ImGui::GetWindowWidth();
 	float buttonWidth = 150.0f; // Desired width for the button
 	float posX = (windowWidth - buttonWidth) * 0.5f;
@@ -322,18 +379,6 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 		switch (component->GetType()) 
 		{
-		case ComponentType::TEST: 
-		{
-			if (ImGui::MenuItem("Custom Test Component Option")) 
-			{
-				ImGui::CloseCurrentPopup();
-			}
-			if (ImGui::MenuItem("Custom Test Component Option 2")) 
-			{
-				ImGui::CloseCurrentPopup();
-			}
-			break;
-		}
 		case ComponentType::MESHRENDERER: 
 		{
 			if (ImGui::MenuItem("Custom MeshRendererComponent Option")) 
@@ -353,41 +398,41 @@ void InspectorPanel::RightClickPopup(Component* component) {
 
 }
 
-void InspectorPanel::DragAndDropSource(Component* component) {
-	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-	{
-		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
-
-		ImGui::Text(Component::GetNameFromType(component->GetType()));
-		ImGui::EndDragDropSource();
-	}
-}
-
-void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
-	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
-	ImGui::InvisibleButton("##", ImVec2(-1, 5));
-	if (ImGui::BeginDragDropTarget())
-	{
-		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
-		{
-			Component* movedComponent = (Component*)payload->Data;
-			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
-			{
-				Component* pMovedComponent = object->RemoveComponent(movedComponent);
-				object->AddComponent(pMovedComponent, target);
-			}
-		}
-		ImGui::EndDragDropTarget();
-	}
-	ImGui::PopStyleVar();
-}
+//void InspectorPanel::DragAndDropSource(Component* component) {
+//	if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+//	{
+//		ImGui::SetDragDropPayload("_COMPONENT", component, sizeof(*component));
+//
+//		ImGui::Text(Component::GetNameFromType(component->GetType()));
+//		ImGui::EndDragDropSource();
+//	}
+//}
+//
+//void InspectorPanel::DragAndDropTarget(GameObject* object, Component* target) {
+//	ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(0, 0));
+//	ImGui::InvisibleButton("##", ImVec2(-1, 5));
+//	if (ImGui::BeginDragDropTarget())
+//	{
+//		if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_COMPONENT"))
+//		{
+//			Component* movedComponent = (Component*)payload->Data;
+//			if (target != nullptr ? movedComponent->GetID() != target->GetID() : true) 
+//			{
+//				Component* pMovedComponent = object->RemoveComponent(movedComponent);
+//				object->AddComponent(pMovedComponent, target);
+//			}
+//		}
+//		ImGui::EndDragDropTarget();
+//	}
+//	ImGui::PopStyleVar();
+//}
 
 void InspectorPanel::DrawComponents(GameObject* object) 
 {
-	for (auto component : object->mComponents) 
+	for (Component* component : object->mComponents) 
 	{
 		ImGui::PushID(component->mID);
-		DragAndDropTarget(object, component);
+		//DragAndDropTarget(object, component);
 
 		bool isOpen = ImGui::CollapsingHeader(Component::GetNameFromType(component->GetType()), ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_SpanFullWidth | ImGuiTreeNodeFlags_AllowItemOverlap);
 		RightClickPopup(component);
@@ -398,14 +443,14 @@ void InspectorPanel::DrawComponents(GameObject* object)
 			component->SetEnable(isEnabled);
 		}
 
-		DragAndDropSource(component);
+		//DragAndDropSource(component);
 		
 		if (isOpen) 
 		{
 			switch (component->GetType()) 
 			{
 				case ComponentType::MESHRENDERER:
-					DrawMeshRendererComponent(reinterpret_cast<MeshRendererComponent*>(component));
+					DrawMeshRendererComponent(*reinterpret_cast<MeshRendererComponent*>(component));
 					break;
 				case ComponentType::AIAGENT:
 					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
@@ -428,14 +473,14 @@ void InspectorPanel::DrawComponents(GameObject* object)
 				case ComponentType::ANIMATION: 
 					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
 					break;
-				case ComponentType::TEST: 
-					DrawTestComponent(reinterpret_cast<TestComponent*>(component));
-					break;
 				case ComponentType::IMAGE:
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
 					break;
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					break;
+				case ComponentType::SLIDER:
+					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
 					break;
 				case ComponentType::BUTTON:
 					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
@@ -462,54 +507,10 @@ void InspectorPanel::DrawComponents(GameObject* object)
 		}
 		ImGui::PopID();
 	}
-	DragAndDropTarget(object, nullptr);
+	//DragAndDropTarget(object, nullptr);
 }
 
-void InspectorPanel::DrawTestComponent(TestComponent* component) 
-{
-	ImGui::Text("Demo Text");
-	ImGui::Text("Demo Text 2 ");
-
-	ImGui::SeparatorText("TAGS SYSYEM TEST");
-	ImGui::Text("The first name of game object found with");
-	ImGui::SameLine();
-	std::vector<Tag*> tags = EngineApp->GetScene()->GetAllTags();
-
-	if (ImGui::BeginCombo("##tags", tags[component->mTestSavedTag1]->GetName().c_str()))
-	{
-		for (auto i = 0; i < tags.size(); i++) 
-		{
-			if (ImGui::Selectable(tags[i]->GetName().c_str()))
-			{
-				component->mTestSavedTag1 = i;
-			}
-		}
-
-		ImGui::EndCombo();
-	}
-	ImGui::Text("tag is ");
-	ImGui::SameLine();
-	GameObject* found = GameObject::FindGameObjectWithTag(tags[component->mTestSavedTag1]->GetName());
-	if (found != nullptr)
-	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), found->GetName().c_str());
-	}
-	else 
-	{
-		ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), "Not found");
-	}
-
-
-	ImGui::Separator();
-	ImGui::Text("There is ");
-	ImGui::SameLine();
-	ImGui::TextColored(ImVec4(1.0f, 0.0f, 0.0f, 1.0f), std::to_string(GameObject::FindGameObjectsWithTag(tags[component->mTestSavedTag1]->GetName()).capacity()).c_str());
-	ImGui::SameLine();
-	ImGui::Text(" gameobjects with the same tag.");
-}
-
-void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) 
-{
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
@@ -584,14 +585,12 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 }
 
-void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent* component) 
+void InspectorPanel::DrawMeshRendererComponent(const MeshRendererComponent& component) 
 {
-
 	ImGui::SeparatorText("Material");
 
 	MaterialVariables(component);
 
-	ImGui::Text(" ");
 	//TODO: SEPARATE GAME ENGINE
 	//bool shouldDraw = component->ShouldDraw();
 	//if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
@@ -650,13 +649,11 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 		component->SetStoppingDistance(stoppingDistance);
 	}*/
 
-
-
 }
 
-void InspectorPanel::MaterialVariables(MeshRendererComponent* renderComponent)
+void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderComponent)
 {
-	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent->GetResourceMaterial());
+	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent.GetResourceMaterial());
 
 	if (material)
 	{
@@ -724,7 +721,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	static float farPlane = component->GetFarPlane();
 	const char* farLabel = "##FarPlane";
 
-	static float FOV = RadToDeg(component->GetVerticicalFOV());
+	static float FOV = RadToDeg(component->GetHorizontalFOV());
 	const char* FOVLabel = "##FOV";
 
 	ImGui::PushID(nearLabel);
@@ -933,56 +930,133 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 	ImGui::SeparatorText("Animation");
 
-	GameObject* owner = const_cast<GameObject*>(component->GetOwner());
-	std::vector<Component*> components = owner->FindComponentsInChildren(owner, ComponentType::MESHRENDERER);
-
 	bool loop = component->GetLoop();
 	//bool play = false;
 
-	if (ImGui::Button("Play/Pause"))
-	{
-		component->OnStart();
-		bool play = component->GetIsPlaying();
-		component->SetIsPlaying(!play);
-	}
 
-	ImGui::SameLine();
-	ImGui::Dummy(ImVec2(40.0f, 0.0f));
-	ImGui::SameLine();
-
-	if (component->GetIsPlaying())
+	if (component->GetAnimationUids().size() > 0)
 	{
-		ImGui::Text("PLAYING");
+
+		if (ImGui::Button("Play/Pause"))
+		{
+			//component->OnStart();
+			bool play = component->GetIsPlaying();
+			component->SetIsPlaying(!play);
+		}
+
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(40.0f, 0.0f));
+		ImGui::SameLine();
+
+
+
+		if (component->GetIsPlaying())
+		{
+			ImGui::Text("PLAYING");
+		}
+		else
+		{
+			ImGui::Text("PAUSED");
+		}
+
+		if (ImGui::Button("Restart"))
+		{
+			component->OnRestart();
+		}
+
+		if (ImGui::Checkbox("Loop", &loop))
+		{
+			component->SetLoop(loop);
+		}
+
+		float animSpeed = component->GetAnimSpeed();
+
+		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
+		{
+			component->SetAnimSpeed(animSpeed);
+		}
+
+		if (ImGui::Button("Edit state machine"))
+		{
+			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			panel->SetStateMachine(component->GetStateMachine());
+			panel->SetComponent(component);
+			panel->SetIsSpine(false);
+			panel->Open();
+		}
+
+		if (component->HasSpine())
+		{
+			if (ImGui::Button("Edit spine state machine"))
+			{
+				AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+				panel->SetStateMachine(component->GetSpineStateMachine());
+				panel->SetComponent(component);
+				panel->SetIsSpine(false);
+				panel->Open();
+			}
+
+		}
 	}
 	else
 	{
-		ImGui::Text("PAUSED");
+		const char* currentItem = "None";
+		if (ImGui::BeginCombo("##combo", currentItem))
+		{
+			std::vector<std::string> modelNames;
+			EngineApp->GetFileSystem()->DiscoverFiles("Assets/Models", ".emeta", modelNames);
+			for (int i = 0; i < modelNames.size(); ++i)
+			{
+
+				size_t slashPos = modelNames[i].find_last_of('/');
+				if (slashPos != std::string::npos)
+				{
+
+					modelNames[i].erase(0, slashPos + 1);
+				}
+
+				size_t dotPos = modelNames[i].find_first_of('.');
+				if (dotPos != std::string::npos)
+				{
+
+					modelNames[i].erase(dotPos);
+				}
+			}
+
+			for (int n = 0; n < modelNames.size(); n++)
+			{
+				bool is_selected = (currentItem == modelNames[n]);
+				if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
+				{
+					currentItem = modelNames[n].c_str();
+					ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(std::string("Assets/Models/" + std::string(currentItem) + ".gltf").c_str()));
+					if (model)
+					{
+						if (model->mAnimationUids.size() > 0)
+						{
+							component->SetAnimationsUids(model->mAnimationUids);
+						}
+						else
+						{
+							currentItem = "Error: Not animated";
+							is_selected = false;
+						}
+						App->GetResource()->ReleaseResource(model->GetUID());
+					}
+					
+				}
+
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+
+			}
+			ImGui::EndCombo();
+		}
 	}
 
-	/*
-	if (ImGui::Button("Stop"))
-	{
-		component->SetIsPlaying(false);
-		component->OnRestart();
-	}
-	*/
 
-	if (ImGui::Button("Restart"))
-	{
-		component->OnRestart();
-	}
-
-	if (ImGui::Checkbox("Loop", &loop))
-	{
-		component->SetLoop(loop);
-	}
-
-	float animSpeed = component->GetAnimSpeed();
-
-	if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
-	{
-		component->SetAnimSpeed(animSpeed);
-	}
 
 }
 
@@ -1221,10 +1295,22 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
 {
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
+
+	if (ImGui::Button("Play"))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("Stop"))
+	{
+		component->Stop(false);
+	}
+
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
 	std::string name = component->GetName();
+
 	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
 	{
 		for (auto i = 0; i < events.size(); i++) 
@@ -1278,6 +1364,14 @@ void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
 ;
 void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
 {
+}
+
+void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+{
+	float value = component->GetValue();
+
+	ImGui::Text("Fill Percent:"); ImGui::SameLine(); ImGui::SliderFloat("##Fill Percent", &value, 0.0f, 1.0f);
+	component->SetValue(value);
 }
 
 void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 
@@ -1382,110 +1476,109 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component)
 	
 }
 
-ImColor Float4ToImColor(const float4& color)
-{
-	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
-	return ret;
-}
-
-float4 ImColorToFloat4(const float* color)
-{
-	return float4(color[0], color[1], color[2], color[3]);
-}
-
-
-ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
-	ImGradient result;
-
-	const std::map<float, float4>& marks = gradient->GetColorMarks();
-
-	for (const auto& mark : marks) {
-		result.addMark(mark.first, Float4ToImColor(mark.second));
-	}
-
-	return result;
-}
-
-
-#define FLOAT_TOLERANCE 1e-6f
-
-inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
-{
-	return std::fabs(a - b) < tolerance;
-}
-
-bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
-	if (approximatelyEqual(a->position, b.first)) {
-		for (int i = 0; i < 4; ++i) {
-			if (!approximatelyEqual(a->color[i], b.second[i])) {
-				return false;
-			}
-		}
-		return true;
-	}
-	return false;
-}
-
-bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
-
-	// find if marksEdited has not a mark from the gradient to delete it
-	for (const auto& mark : marks) {
-		auto it = std::find_if(
-			marksEdited.begin(), marksEdited.end(),
-			[&](const ImGradientMark* mark1) {
-				return areMarksEquivalent(mark1, mark);
-			}
-		);
-
-		if (it == marksEdited.end())
-		{
-			return false;
-		}
-	}
-	return true;
-}
-
-void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	auto marks = gradient->GetColorMarks();
-
-	// find if marksEdited has not a mark from the gradient to delete it
-	for (const auto& mark : marks) {
-		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
-			{
-				return areMarksEquivalent(mark1, mark);
-			}
-		);
-		if (it == marksEdited.end()) 
-		{
-			gradient->RemoveColorGradientMark(mark.first);
-		}
-	}
-}
-
-static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
-{
-	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
-	std::map<float, float4> marks = gradient->GetColorMarks();
-
-	// find if markEdit is not in marks to add it
-	for (const ImGradientMark* markEdit : marksEdited) {
-		auto it = std::find_if(
-			marks.begin(), marks.end(),
-			[&](const std::pair<float, float4> mark) {
-				return areMarksEquivalent(markEdit, mark);
-			}
-		);
-		if (it == marks.end()) 
-		{
-			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
-		}
-	}
-}
+//ImColor Float4ToImColor(const float4& color)
+//{
+//	ImColor ret = ImColor(color.x, color.y, color.z, color.w);
+//	return ret;
+//}
+//
+//float4 ImColorToFloat4(const float* color)
+//{
+//	return float4(color[0], color[1], color[2], color[3]);
+//}
+//
+//ImGradient ColorGradientToImGradient(ColorGradient* gradient) {
+//	ImGradient result;
+//
+//	const std::map<float, float4>& marks = gradient->GetColorMarks();
+//
+//	for (const auto& mark : marks) {
+//		result.addMark(mark.first, Float4ToImColor(mark.second));
+//	}
+//
+//	return result;
+//}
+//
+//
+//#define FLOAT_TOLERANCE 1e-6f
+//
+//inline bool approximatelyEqual(float a, float b, float tolerance = FLOAT_TOLERANCE) 
+//{
+//	return std::fabs(a - b) < tolerance;
+//}
+//
+//bool areMarksEquivalent(const ImGradientMark* a, const std::pair<float, float4> b) {
+//	if (approximatelyEqual(a->position, b.first)) {
+//		for (int i = 0; i < 4; ++i) {
+//			if (!approximatelyEqual(a->color[i], b.second[i])) {
+//				return false;
+//			}
+//		}
+//		return true;
+//	}
+//	return false;
+//}
+//
+//bool EqualGradients(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	auto marks = gradient->GetColorMarks();
+//
+//	// find if marksEdited has not a mark from the gradient to delete it
+//	for (const auto& mark : marks) {
+//		auto it = std::find_if(
+//			marksEdited.begin(), marksEdited.end(),
+//			[&](const ImGradientMark* mark1) {
+//				return areMarksEquivalent(mark1, mark);
+//			}
+//		);
+//
+//		if (it == marksEdited.end())
+//		{
+//			return false;
+//		}
+//	}
+//	return true;
+//}
+//
+//void findRemovedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	auto marks = gradient->GetColorMarks();
+//
+//	// find if marksEdited has not a mark from the gradient to delete it
+//	for (const auto& mark : marks) {
+//		auto it = std::find_if(marksEdited.begin(), marksEdited.end(),[&](const ImGradientMark* mark1) 
+//			{
+//				return areMarksEquivalent(mark1, mark);
+//			}
+//		);
+//		if (it == marksEdited.end()) 
+//		{
+//			gradient->RemoveColorGradientMark(mark.first);
+//		}
+//	}
+//}
+//
+//static void findAddedMarks(const ImGradient& editedGradient, ColorGradient* gradient)
+//{
+//	const std::list<ImGradientMark*>& marksEdited = editedGradient.getMarks();
+//	std::map<float, float4> marks = gradient->GetColorMarks();
+//
+//	// find if markEdit is not in marks to add it
+//	for (const ImGradientMark* markEdit : marksEdited) {
+//		auto it = std::find_if(
+//			marks.begin(), marks.end(),
+//			[&](const std::pair<float, float4> mark) {
+//				return areMarksEquivalent(markEdit, mark);
+//			}
+//		);
+//		if (it == marks.end()) 
+//		{
+//			gradient->AddColorGradientMark(markEdit->position, float4(markEdit->color));
+//		}
+//	}
+//}
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
@@ -1509,9 +1602,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	ImGui::Text("Lifetime");
-	ImGui::SameLine(); 
-	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 0.1f, 0.0f);
+	DrawRandomFloat(component->mLifetime, "Lifetime");
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1519,40 +1610,60 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Stretched Billboard");
 	ImGui::SameLine();
 	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
+	ImGui::Text("Stretched Ratio");
+	ImGui::SameLine();
+	ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
+
 	DrawBezierCurve(&(component->mSizeCurve), "Size");
 	ImGui::Separator();
-	static const char* items[]{ "Cone","Square","Circle" };
+	static const char* items[]{ "Cone","Box","Sphere"};
 	static int Selecteditem = 0;
 	ImGui::Text("Shape");
 	ImGui::SameLine();
 	bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
 	if (check)
 	{
-		component->mShapeType = (EmitterShape::Type)(Selecteditem + 1);
-		component->InitEmitterShape();
+		component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
 	}	
 	switch(component->mShapeType)
 	{
-		case EmitterShape::Type::CONE:
+		case ParticleSystemComponent::EmitterType::CONE:
 			ImGui::Text("Angle");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Angle", &component->mShape->mShapeAngle, 0.1f, 0.0f);
+			ImGui::DragFloat("##Angle", &component->mShapeAngle, 0.1f, 0.0f);
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
-		case EmitterShape::Type::SQUARE:
+		case ParticleSystemComponent::EmitterType::BOX:
 			ImGui::Text("Width");
 			ImGui::SameLine();
-			ImGui::DragFloat2("##Width", &component->mShape->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::DragFloat3("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::Text("Invers Dir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
+
 			break;
-		case EmitterShape::Type::CIRCLE:
+		case ParticleSystemComponent::EmitterType::SPHERE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
-			ImGui::DragFloat("##Radius", &component->mShape->mShapeRadius, 0.1f, 0.0f);
-			break;
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
+			ImGui::Text("Invers Dir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
 
+			break;
 	}
+	ImGui::Text("Rand Dir");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FixedDirection", &(component->mIsShapeAngleRand));
+	if (component->mIsShapeAngleRand) 
+	{
+		ImGui::SameLine();
+		ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
+	}
+
+	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint")) 
 	{
@@ -1560,7 +1671,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->GetImage();
+		const ResourceTexture* image = component->GetImage();
 
 		if (image)
 		{
@@ -1599,27 +1710,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 		}
 		ImGui::Columns(1);
-
-		// Color and alpha
-		//float4* color = &component->mColorGradient[0.0f];
-		//ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("", (float*)color);
-		//ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat(" ", &(color->w), 0.0f, 1.0f);
-
-		//::GRADIENT DATA::
-		static unsigned int id = 0;
-		static ImGradient gradient = ColorGradientToImGradient(component->mColorGradient);
-		static ImGradientMark* draggingMark = nullptr;
-		static ImGradientMark* selectedMark = nullptr;
-		if (!EqualGradients(gradient, component->mColorGradient))
-		{
-			gradient = ColorGradientToImGradient(component->mColorGradient);
-		}
-		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
-
-		if (updated) {
-			findRemovedMarks(gradient, component->mColorGradient);
-			findAddedMarks(gradient, component->mColorGradient);			
-		}
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
 	}
 }
 
@@ -1726,13 +1819,13 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
 	ImGui::Text("Fixed Direction");
 	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+	ImGui::Checkbox("##FixedDirection", &(component->mFixedDirection));
 
-	if (component->mTrail->mFixedDirection) 
+	if (component->mFixedDirection) 
 	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
-		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+		ImGui::DragFloat3("##TrailDirection", component->mDirection.ptr());
 	}
 
 	ImGui::Text("Minimum distance");
@@ -1741,10 +1834,10 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 	ImGui::Text("Lifetime");
 	ImGui::SameLine();
-	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
 
 	ImGui::Separator();
-	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+	DrawBezierCurve(&(component->mWidth), "Width");
 	
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint"))
@@ -1753,7 +1846,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->mTrail->mImage;
+		ResourceTexture* image = component->mImage;
 
 		if (image)
 		{
@@ -1792,23 +1885,9 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 		}
 		ImGui::Columns(1);
-
-		//::GRADIENT DATA::
-		static unsigned int id = 0;
-		static ImGradient gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		static ImGradientMark* draggingMark = nullptr;
-		static ImGradientMark* selectedMark = nullptr;
-		if (!EqualGradients(gradient, &component->mTrail->mGradient))
-		{
-			gradient = ColorGradientToImGradient(&component->mTrail->mGradient);
-		}
-		bool updated = ImGui::GradientEditor(&gradient, draggingMark, selectedMark);
-
-		if (updated) 
-		{
-			findRemovedMarks(gradient, &component->mTrail->mGradient);
-			findAddedMarks(gradient, &component->mTrail->mGradient);
-		}
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		bool updated = ImGui::GradientEditor(component->mGradient, draggingMark, selectedMark);
 	}
 }
 
@@ -1816,38 +1895,82 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 {
 	std::string label = cLabel;
 	ImGui::Text(cLabel);
-	ImGui::Text("Initial %s", cLabel);
-	ImGui::SameLine();
-	std::string initial = "##Initial " + label;
-	ImGui::DragFloat(initial.c_str(), &curve->mLineal, 1.0f, 0.0f);
+	std::string initial = "Initial " + label;
+	DrawRandomFloat(curve->mValue, initial.c_str());
 
-	ImGui::Text("%s as a Curve", cLabel);
+	ImGui::Text("%s Curved", cLabel);
 	ImGui::SameLine();
-	std::string asCurve = "##" + label + " as a Curve";
+	std::string asCurve = "##" + label + " Curved";
 	ImGui::Checkbox(asCurve.c_str(), &(curve->mIsCurve));
 	if (curve->mIsCurve)
 	{
-		static float points[5] = { curve->mCurve[0],
-			curve->mCurve[1],
-			curve->mCurve[2],
-			curve->mCurve[3] };
 		ImGui::Text("%s Growing Factor", cLabel);
 		ImGui::SameLine();
 		std::string growing = "##" + label + " Growing Factor";
-		ImGui::DragFloat(growing.c_str(), &curve->mCurveFactor, 1.0f, 0.0f);
-		ImGui::Text("Point 1");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 1", points, 0, 1, "%.3f", 1.0f);
-		ImGui::Text("Point 2");
-		ImGui::SameLine();
-		ImGui::SliderFloat2("##Point 2", &points[2], 0, 1, "%.3f", 1.0f);
+		ImGui::DragFloat(growing.c_str(), &curve->mFactor, 1.0f, 0.0f);
 
-		if (points[0] != curve->mCurve[0]) curve->mCurve[0] = points[0];
-		if (points[1] != curve->mCurve[1]) curve->mCurve[1] = points[1];
-		if (points[2] != curve->mCurve[2]) curve->mCurve[2] = points[2];
-		if (points[3] != curve->mCurve[3]) curve->mCurve[3] = points[3];
+		if (ImGui::Curve("Das editor", ImVec2(400, 200), 10, curve->mPoints))
+		{
+			// curve changed
+		}
+	}
+}
 
-		std::string presets = label + " Presets";
-		ImGui::Bezier(presets.c_str(), points);
+void InspectorPanel::DrawRandomFloat(RandomFloat& value, const char* cLabel) const
+{
+	std::string label = cLabel;
+	ImGui::Text("%s Rand", cLabel);
+	ImGui::SameLine();
+	std::string asCurve = "##" + label + "Rand";
+	ImGui::Checkbox(asCurve.c_str(), &value.mIsRand);
+	ImGui::SameLine();
+	float itemWidth = ImGui::GetWindowWidth() / 4.0f; // Por ejemplo, un cuarto del ancho de la ventana
+	if (!value.mIsRand)
+	{
+		std::string min = "##Min " + label;
+		ImGui::PushItemWidth(itemWidth*2); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(min.c_str(), &value.mMin);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+	}
+	else
+	{
+		ImGui::Text("Min");
+		std::string min = "##Min " + label;
+		ImGui::SameLine();
+		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(min.c_str(), &value.mMin);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+
+		ImGui::SameLine();
+		ImGui::Text("Max");
+		ImGui::SameLine();
+		std::string max = "##Max " + label;
+		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
+		ImGui::DragFloat(max.c_str(), &value.mMax);
+		ImGui::PopItemWidth(); // Restaura el ancho original
+
+	}
+}
+
+void InspectorPanel::DrawBlendTypeSelector(int& type, const char* cLabel) const
+{
+	std::string label = cLabel;
+	static const char* items[]{ 
+		"TRANSPARENCY", 
+		"ADDITIVE", 
+		"MULTIPLICATIVE", 
+		"SUBTRACTIVE", 
+		"PREMULTIPLIED_ALPHA", 
+		"SCREEN"
+	};
+	int selected = static_cast<int>(type);
+	ImGui::Separator();
+	ImGui::Text(cLabel);
+	ImGui::SameLine();
+	std::string labelID = "##" + label;
+	bool check = ImGui::Combo(labelID.c_str(), &selected, items, IM_ARRAYSIZE(items));
+	if (check)
+	{
+		type = selected;
 	}
 }

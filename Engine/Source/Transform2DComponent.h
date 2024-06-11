@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 #include "Math/float2.h" 
+#include "Math/Quat.h"
+#include "Math/float4x4.h" 
 
 class ComponentCanvas;
 
@@ -16,8 +18,8 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 	void Reset();
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 	inline const float4x4& GetGlobalMatrix() const { return mGlobalMatrix; }
 	inline const float3& GetPosition() const { return mPosition; }

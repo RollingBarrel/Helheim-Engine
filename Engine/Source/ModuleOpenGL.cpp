@@ -10,15 +10,16 @@
 #include "ModuleUI.h"
 
 #include "GameObject.h"
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ParticleSystemComponent.h"
+#include "TrailComponent.h"
 
 #include "Quadtree.h"
 #include "BatchManager.h"
 
-#include "Trail.h"
 
 #include "SDL.h"
 #include "glew.h"
@@ -268,7 +269,7 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
-	BakeIBL("Assets/Textures/skybox.hdr");
+	BakeIBL("Assets/Textures/HDR_subdued_blue_nebulae.hdr");
 	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 
 	//SHADOWS
@@ -379,7 +380,8 @@ void ModuleOpenGL::AddHighLight(const GameObject& gameObject)
 {
 	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents;
+		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 		if (!meshComponents.empty())
 		{
 			for (const Component* comp : meshComponents)
@@ -394,7 +396,8 @@ void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
 {
 	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents;
+		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 		if (!meshComponents.empty())
 		{
 			for (Component* comp : meshComponents)
@@ -923,17 +926,17 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
-void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchAddMesh(const MeshRendererComponent& mesh)
 {
 	mBatchManager.AddMeshComponent(mesh);
 }
 
-void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchRemoveMesh(const MeshRendererComponent& mesh)
 {
 	mBatchManager.RemoveMeshComponent(mesh);
 }
 
-void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 {
 	mBatchManager.EditMaterial(mesh);
 }
@@ -944,7 +947,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//scene
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.AddCommand(mesh);
+		assert(mesh);
+		mBatchManager.AddCommand(*mesh);
 	}
 	
 	//Shadows
@@ -978,7 +982,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
 		for (const MeshRendererComponent* mesh : meshInFrustum)
 		{
-			mBatchManager.AddCommand(mesh);
+			assert(mesh);
+			mBatchManager.AddCommand(*mesh);
 		}	
 	}
 
@@ -1000,7 +1005,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 		for (const MeshRendererComponent* mesh : meshInFrustum)
 		{
-			mBatchManager.AddCommand(mesh);
+			assert(mesh);
+			mBatchManager.AddCommand(*mesh);
 		}
 
 		
@@ -1030,12 +1036,10 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	SceneFramebufferResized();
 	BindSceneFramebuffer();
 
-
-
 	mBatchManager.CleanUpCommands();
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.AddCommand(mesh);
+		mBatchManager.AddCommand(*mesh);
 	}
 	//GaometryPass
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
@@ -1050,6 +1054,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//Lighting Pass
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
 	glStencilMask(0x00);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(0x00);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glActiveTexture(GL_TEXTURE1);
@@ -1072,12 +1078,21 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	
 	glStencilMask(0xFF);
 	glDisable(GL_STENCIL_TEST);
-	glUseProgram(0);
-	glBindVertexArray(0);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(0xFF);
 
-	
+	//particles
+	glActiveTexture(GL_TEXTURE0);
+	for (const ParticleSystemComponent* partSys : mParticleSystems)
+	{
+		partSys->Draw();
+	}
+	for (const TrailComponent* trail : mTrails)
+	{
+		trail->Draw();
+	}
 
-
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight
 	mBatchManager.CleanUpCommands();
 	for (const GameObject* object : mHighlightedObjects)
@@ -1086,12 +1101,12 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		{
 			if (sMesh->GetOwner()->GetID() == object->GetID())
 			{
-				mBatchManager.AddCommand(sMesh);
+				mBatchManager.AddCommand(*sMesh);
 				break;
 			}
 		}
 	}
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
+
 	//Higlight pass
 	glClear(GL_STENCIL_BUFFER_BIT);
 	glEnable(GL_STENCIL_TEST);
@@ -1113,16 +1128,10 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glEnable(GL_DEPTH_TEST);
 
 	mBatchManager.EndFrameDraw();
-
 	glActiveTexture(GL_TEXTURE0);
-	for (const ParticleSystemComponent* partSys : mParticleSystems)
-	{
-		partSys->Draw();
-	}
-	for (auto trail : mTrails)
-	{
-		trail->Draw();
-	}
+	glUseProgram(0);
+	glBindVertexArray(0);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
@@ -1300,7 +1309,7 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 	}
 }
 
-void ModuleOpenGL::RemoveTrail(const Trail* trail)
+void ModuleOpenGL::RemoveTrail(const TrailComponent* trail)
 {
 	for (int i = 0; i < mTrails.size(); ++i)
 	{

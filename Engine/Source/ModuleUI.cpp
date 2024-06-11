@@ -43,10 +43,12 @@ update_status ModuleUI::Update(float dt)
 {
 	// Draw the UI
 	App->GetOpenGL()->BindSceneFramebuffer();
+	glDisable(GL_DEPTH_TEST);
 	for (GameObject* gameObject : mCanvasList) 
 	{
 		DrawWidget(gameObject);
 	}
+	glEnable(GL_DEPTH_TEST);
 	App->GetOpenGL()->UnbindFramebuffer();
 
 	return UPDATE_CONTINUE;
@@ -78,24 +80,19 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 		{
 			DrawWidget(child);
 		}
-
-		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+		//TODO: Check this...
+		ImageComponent* image = reinterpret_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+		if (image && image->IsEnabled())
 		{
-			ImageComponent* image = (ImageComponent*)component;
-			if (image->IsEnabled())
-			{
-				image->Draw();
-			}
+			image->Draw();
 		}
-
-		for (Component* component : gameObject->GetComponents(ComponentType::TEXT))
+		
+		TextComponent* text = reinterpret_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
+		if (text && text->IsEnabled())
 		{
-			TextComponent* text = (TextComponent*)component;
-			if (text->IsEnabled())
-			{
-				text->Draw();
-			}
+			text->Draw();
 		}
+		
 	}
 }
 

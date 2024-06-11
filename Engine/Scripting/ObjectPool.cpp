@@ -17,12 +17,12 @@ ObjectPool::ObjectPool(GameObject* owner) : Script(owner) {}
 
 void ObjectPool::Start()
 {
-    App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetTagByName("Bullet")->GetID(), mObject);
+    //TAG: App->GetScene()->FindGameObjectsWithTag(App->GetScene()->GetTagByName("Bullet")->GetID(), mObject);
     mPoolCount = mObject.size();
     for (int i = 0 ; i < mObject.size() ; i++)
     {
         ScriptComponent* script = (ScriptComponent*)mObject[i]->GetComponent(ComponentType::SCRIPT);
-        ((Bullet*)script->GetScriptInstance())->objectPool = this;
+        //((Bullet*)script->GetScriptInstance())->objectPool = this;
 		mObject[i]->SetEnabled(false);
 	}
 }
@@ -42,7 +42,7 @@ GameObject* ObjectPool::GetPooledObject()
         GameObject* goToReturn = mObject[i];
 
         ScriptComponent* script = (ScriptComponent*)mObject[i]->GetComponent(ComponentType::SCRIPT);
-        ((Bullet*)script->GetScriptInstance())->mTimePassed = 0;
+        //((Bullet*)script->GetScriptInstance())->mTimePassed = 0;
 
         Pop(mObject,i);
 

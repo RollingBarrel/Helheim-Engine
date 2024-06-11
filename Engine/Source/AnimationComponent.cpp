@@ -1,4 +1,5 @@
 #include "AnimationComponent.h"
+
 #include "Application.h"
 #include "ModuleResource.h"
 #include "ResourceAnimation.h"
@@ -8,22 +9,22 @@
 
 #include "GameObject.h"
 
-#include "ResourceModel.h"
 #include "float4x4.h"
+#include "ResourceStateMachine.h"
 
-AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mModelUid(0)
+AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
 	mSpeed = 1.0;
 }
 
-AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION), mController(nullptr)
+AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION), mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 
 	mSpeed = 1.0;
 	mStateMachine = nullptr;
 
-	mModelUid = other.mModelUid;
+	SetAnimationsUids(other.mAnimationsUIDs);
 
 }
 
@@ -31,37 +32,108 @@ AnimationComponent::~AnimationComponent()
 {
 	delete mController;
 	delete mStateMachine;
-	mGameobjectsInverseMatrices.clear();
-	mPalette.clear();
-	
+
+	if (mHasSpine)
+	{
+		delete mSpineController;
+		delete mSpineStateMachine;
+	}
+
 }
 
 void AnimationComponent::SetLoop(bool loop)
 {
 	mLoop = loop;
 	mController->SetLoop(loop);
+	if (mHasSpine)
+	{
+		mSpineController->SetLoop(loop);
+	}
 }
 
-void AnimationComponent::OnStart()
+void AnimationComponent::StartUp()
 {
-	if (mGameobjectsInverseMatrices.size() == 0 && mModelUid != 0)
-	{
-		ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(mModelUid, Resource::Type::Model));
-		LoadAllChildJoints(mOwner, model);
+	assert(mAnimationsUIDs.size() > 0);
+	
+	mStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+	mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+	
+	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationsUIDs[0], Resource::Type::Animation));
+	mController = new AnimationController(tmpAnimation, true);
+	mController->SetStartTime(mStateMachine->GetStateStartTime(0));
+	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
+	mStateMachine = new AnimationStateMachine(mAnimationsUIDs);
 
-	}
+	mSpineController = new AnimationController(tmpAnimation, true);
+	mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
+	mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
+	mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
 
 }
 
 void AnimationComponent::Update()
 {
+	if (mDefaultObjects.size() == 0)
+	{
+		LoadGameObjects(mOwner);
+		if (!mHasSpine)
+		{
+			delete mSpineController;
+			delete mSpineStateMachine;
+		}
+	}
 	if (mIsPlaying)
 	{
 		if (mController)
 		{
-			mController->Update(mOwner);
+			mController->Update();
+			if (mController->GetIsInTransition())
+			{
+				for (GameObject* current : mDefaultObjects)
+				{
+					mController->GetTransform_Blending(current);
+				}
+				if (!mController->GetIsInTransition())
+				{
+					mController->EndBlending();
+				}
+				
+			}
+			else
+			{
+				for (GameObject* current : mDefaultObjects)
+				{
+					mController->GetTransform(current);
+				}
+
+			}
 		}
-		UpdatePalette();
+
+		if (mHasSpine && mSpineController)
+		{
+			mSpineController->Update();
+
+			if (mSpineController->GetIsInTransition())
+			{
+				for (GameObject* current : mSpineObjects)
+				{
+					mSpineController->GetTransform_Blending(current);
+				}
+				if (!mSpineController->GetIsInTransition())
+				{
+					mSpineController->EndBlending();
+				}
+			}
+			else
+			{
+				for (GameObject* current : mSpineObjects)
+				{
+					mSpineController->GetTransform(current);
+				}
+			}
+
+		}
+		
 	}
 }
 
@@ -73,6 +145,10 @@ void AnimationComponent::OnStop()
 void AnimationComponent::OnRestart()
 {
 	mController->Restart();
+	if (mHasSpine)
+	{
+		mSpineController->Restart();
+	}
 }
 
 
@@ -80,6 +156,10 @@ void AnimationComponent::SetAnimSpeed(float speed)
 {
 	mSpeed = speed;
 	mController->SetAnimSpeed(speed);
+	if (mHasSpine)
+	{
+		mSpineController->SetAnimSpeed(speed);
+	}
 
 }
 
@@ -100,11 +180,11 @@ void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
 
 	std::string currentStateName = GetCurrentStateName();
 
-	for (size_t i = 0; i < mStateMachine->GetnNumTransitions(); i++)
+	for (size_t i = 0; i < mStateMachine->GetNumTransitions(); i++)
 	{
 		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))
 		{
-			ChangeState(mStateMachine->GeTransitionTarget(i), transitionTime);
+			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
 
@@ -143,10 +223,7 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 			}
 			else
 			{
-				if (mController)
-				{
-					delete mController;
-				}
+				
 				mController = new AnimationController(tmpAnimation, true);
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
@@ -158,51 +235,78 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 
 }
 
-void AnimationComponent::SetModelUUID(unsigned int modelUid)
+std::string AnimationComponent::GetCurrentSpineStateName()
 {
-	if (modelUid == mModelUid)
-		return;
-	mModelUid = modelUid;
-	ResourceModel* my_model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(modelUid, Resource::Type::Model));
-	if(mStateMachine)
-		delete mStateMachine;
-	mStateMachine = new AnimationStateMachine(my_model->mAnimationUids);
-	ChangeState("default", 0.0f);
+	assert(!mHasSpine);
+	std::string currentStateName;
 
-	
+	if (mStateMachine != nullptr && mCurrentSpineState < mStateMachine->GetNumStates())
+	{
+		currentStateName = mStateMachine->GetStateName(mCurrentSpineState);
+	}
+
+	return currentStateName;
 }
 
-void AnimationComponent::AddJointNode(GameObject* node, ResourceModel* model)
+void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionTime)
 {
-	for (const auto& pair : model->mInvBindMatrices)
+	assert(!mHasSpine);
+
+	std::string currentStateName = GetCurrentSpineStateName();
+
+	for (size_t i = 0; i < mSpineStateMachine->GetNumTransitions(); i++)
 	{
-		if (pair.first == node->GetName())
+		if (currentStateName == mSpineStateMachine->GetTransitionSource(i) && trigger == mSpineStateMachine->GetTransitionTrigger(i))
 		{
-			mGameobjectsInverseMatrices.push_back(std::pair<GameObject*, float4x4>(node, pair.second));
-			break;
+			ChangeSpineState(mSpineStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
 }
 
-void AnimationComponent::LoadAllChildJoints(GameObject* currentObject, ResourceModel* model)
+void AnimationComponent::ChangeSpineState(std::string stateName, float transitionTime)
 {
-	AddJointNode(currentObject, model);
-	for (const auto& object : currentObject->GetChildren())
-	{
-		LoadAllChildJoints(object, model);
-	}
+	assert(!mHasSpine);
 
+	int stateIndex = mSpineStateMachine->GetStateIndex(stateName);
+
+	if (stateIndex < mSpineStateMachine->GetNumStates() /*&& (stateIndex == 0 || stateIndex != mCurrentState)*/)
+	{
+		mCurrentSpineState = stateIndex;
+
+		int clipIndex = mSpineStateMachine->GetClipIndex(mSpineStateMachine->GetStateClip(stateIndex));
+
+		unsigned int resourceAnimation = mSpineStateMachine->GetClipResource(clipIndex);
+
+		if (resourceAnimation != 0)
+		{
+			// TODO: Before doing the request check if it is the same Resource (uid) as the current to avoid loading time :)
+			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+			assert(tmpAnimation);
+			if (mSpineController)
+			{
+				mSpineController->SetNextAnimation(tmpAnimation);
+				float new_clip_start = mSpineStateMachine->GetStateStartTime(stateIndex);
+				float new_clip_end = mSpineStateMachine->GetStateEndTime(stateIndex);
+				mSpineController->SetClipStartTime(new_clip_start);
+				mSpineController->SetStartTime(new_clip_start);
+				mSpineController->SetEndTime(new_clip_end);
+				mSpineController->SetTransitionDuration(transitionTime);
+				mSpineController->ActivateTransition();
+
+			}
+			else
+			{
+				mSpineController = new AnimationController(tmpAnimation, true);
+				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(stateIndex));
+				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(stateIndex));
+
+			}
+
+		}
+	}
 }
 
-void AnimationComponent::UpdatePalette()
-{
-	mPalette.clear();
-	mPalette.reserve(mGameobjectsInverseMatrices.size());
-	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
-	{
-		mPalette.push_back((mGameobjectsInverseMatrices[i].first->GetWorldTransform() * mGameobjectsInverseMatrices[i].second).Transposed());
-	}
-}
+
 
 void AnimationComponent::StartTransition(float transitionDuration)
 {
@@ -210,29 +314,121 @@ void AnimationComponent::StartTransition(float transitionDuration)
 	mController->SetTransitionDuration(transitionDuration);
 }
 
+
+
+void AnimationComponent::LoadGameObjects(GameObject* current)
+{
+	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine"))
+	{
+		mHasSpine = true;
+		mSpineObjects.push_back(current);
+		for (GameObject* child : current->GetChildren())
+		{
+			LoadSpineChildren(child);
+		}
+	}
+	else 
+	{
+		mDefaultObjects.push_back(current);
+		for (GameObject* child : current->GetChildren())
+		{
+			LoadGameObjects(child);
+		}
+	}
+}
+
+void AnimationComponent::LoadSpineChildren(GameObject* current)
+{
+	mSpineObjects.push_back(current);
+	for (GameObject* child : current->GetChildren())
+	{
+		LoadSpineChildren(child);
+	}
+}
+
 Component* AnimationComponent::Clone(GameObject* owner) const
 {
 	return new AnimationComponent(*this, owner);
 }
 
-void AnimationComponent::Save(Archive& archive) const
+void AnimationComponent::Save(JsonObject& obj) const
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("ModelUID", mModelUid);
+	Component::Save(obj);
 
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
+	obj.AddInts("AnimationsUIDs", static_cast<const int*>(static_cast<const void*>(mAnimationsUIDs.data())), mAnimationsUIDs.size());
+	obj.AddInt("NumAnimationUIDs", mAnimationsUIDs.size());
+
+	obj.AddInt("LowerSMUID", mStateMachine->GetUID());
+
+	if (mSpineObjects.size() > 0)
+	{
+		obj.AddInt("UpperSMUID", mSpineStateMachine->GetUID());
+	}
 
 }
 
-void AnimationComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	int modelUid = { 0 };
+	Component::Load(data,uidPointerMap);
 
-	if (data.HasMember("ModelUID") && data["ModelUID"].IsInt()) 
+	if (data.HasMember("NumAnimationUIDs"))
 	{
-		modelUid = data["ModelUID"].GetInt();
-	}
+		int numUids = data.GetInt("NumAnimationUIDs");
+		int* animationUids = new int[numUids];
 
-	SetModelUUID(modelUid);
+		if (data.HasMember("AnimationsUIDs"))
+		{
+			data.GetInts("AnimationsUIDs", animationUids);
+
+			for (unsigned int i = 0; i < numUids; ++i)
+			{
+				mAnimationsUIDs.push_back(animationUids[i]);
+			}
+
+			assert(mAnimationsUIDs.size() > 0);
+			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationsUIDs[0], Resource::Type::Animation));
+			mController = new AnimationController(tmpAnimation, true);
+
+			if (data.HasMember("LowerSMUID"))
+			{
+				int lowerStateMachine = data.GetInt("LowerSMUID");
+				if (lowerStateMachine != 0)
+				{
+					ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
+					mStateMachine = resSM->GetStateMachine();
+				}
+				else
+				{
+					mStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+				}
+			}
+
+			mController->SetStartTime(mStateMachine->GetStateStartTime(0));
+			mController->SetEndTime(mStateMachine->GetStateEndTime(0));
+
+			if (data.HasMember("UpperSMUID"))
+			{
+				int upperStateMachine = data.GetInt("UpperSMUID");
+
+				if (upperStateMachine != 0)
+				{
+					ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
+					mSpineStateMachine = resSM->GetStateMachine();
+					mSpineController = new AnimationController(tmpAnimation, true);
+					mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
+					mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
+
+
+				}
+				else
+				{
+					mSpineController = new AnimationController(tmpAnimation, true);
+					mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
+					mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
+					mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+
+				}
+			}
+		}
+	}
 }

@@ -1,24 +1,15 @@
 #include "MeshRendererComponent.h"
-#include "AnimationComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
-#include "glew.h"
 #include "Quadtree.h"
 #include "ModuleScene.h"
-#include "ModuleEditor.h"
-#include "DebugPanel.h"
-#include "GeometryBatch.h"
-
-#include "ImporterMaterial.h"
 
 #include "float4.h"
 #include "float3.h"
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-#include "ResourceTexture.h"
-
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
@@ -41,6 +32,12 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMaterial(other.mMaterial->GetUID());
 	}
+	mHasSkinning = other.mHasSkinning;
+	mPaletteOwner = other.mPaletteOwner;
+	for (int i = 0; i < other.mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mGameobjectsInverseMatrices.push_back(other.mGameobjectsInverseMatrices[i]);
+	}
 }
 
 MeshRendererComponent::~MeshRendererComponent()
@@ -49,7 +46,7 @@ MeshRendererComponent::~MeshRendererComponent()
 	{
 		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 	}
-	App->GetOpenGL()->BatchRemoveMesh(this);
+	App->GetOpenGL()->BatchRemoveMesh(*this);
 	if (mMesh)
 	{
 		App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -60,6 +57,9 @@ MeshRendererComponent::~MeshRendererComponent()
 		App->GetResource()->ReleaseResource(mMaterial->GetUID());
 		mMaterial = nullptr;
 	}
+
+	mGameobjectsInverseMatrices.clear();
+	mPalette.clear();
 }
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
@@ -71,7 +71,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		{
 			if (mMaterial)
 			{
-				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetOpenGL()->BatchRemoveMesh(*this);
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
@@ -85,7 +85,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 		if (mMaterial)
 		{
-			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetOpenGL()->BatchAddMesh(*this);
 			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 
@@ -102,7 +102,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		{
 			if (mMesh)
 			{
-				App->GetOpenGL()->BatchRemoveMesh(this);
+				App->GetOpenGL()->BatchRemoveMesh(*this);
 				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
@@ -112,7 +112,7 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		mMaterial = tmpMaterial;
 		if (mMesh)
 		{
-			App->GetOpenGL()->BatchAddMesh(this);
+			App->GetOpenGL()->BatchAddMesh(*this);
 			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 	}
@@ -123,6 +123,37 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 	//}
 }
 
+void MeshRendererComponent::SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette)
+{
+	if (palette != nullptr)
+	{
+		mPaletteOwner = palette;
+	}
+	else
+	{
+		mGameobjectsInverseMatrices = std::move(bindMatrices);
+	}
+	mHasSkinning = true;
+}
+
+void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew)
+{
+	assert(mHasSkinning && "Component does not have skinning");
+	if (mPaletteOwner != nullptr)
+	{
+		assert(originalToNew.find(mPaletteOwner->GetOwner()) != originalToNew.end() && originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER) != nullptr);
+		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
+	}
+	else
+	{
+		assert(mGameobjectsInverseMatrices.size() && "Component does not have skeleton");
+		for (auto& pair : mGameobjectsInverseMatrices)
+		{
+			assert(originalToNew.find(pair.first) != originalToNew.end());
+			pair.first = originalToNew.at(pair.first);
+		}
+	}
+}
 
 void MeshRendererComponent::Update() 
 {
@@ -131,19 +162,20 @@ void MeshRendererComponent::Update()
 		RefreshBoundingBoxes();
 	}
 
+	UpdatePalette();
 }
 
-//void MeshRendererComponent::Enable()
-//{
-//	if(mMaterial && mMesh)
-//		App->GetOpenGL()->BatchAddMesh(this);
-//}
-//
-//void MeshRendererComponent::Disable()
-//{
-//	if (mMaterial && mMesh)
-//		App->GetOpenGL()->BatchRemoveMesh(this);
-//}
+void MeshRendererComponent::Enable()
+{
+	if(mMaterial && mMesh)
+		App->GetOpenGL()->BatchAddMesh(*this);
+}
+
+void MeshRendererComponent::Disable()
+{
+	if (mMaterial && mMesh)
+		App->GetOpenGL()->BatchRemoveMesh(*this);
+}
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
@@ -158,34 +190,78 @@ void MeshRendererComponent::RefreshBoundingBoxes()
 	mAABB.SetFrom(mOBB);
 }
 
-void MeshRendererComponent::Save(Archive& archive) const 
+void MeshRendererComponent::Save(JsonObject& obj) const 
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("MeshID", mMesh->GetUID());
-	archive.AddInt("MaterialID", mMaterial->GetUID());
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
+	Component::Save(obj);
+	obj.AddInt("MeshID", mMesh->GetUID());
+	obj.AddInt("MaterialID", mMaterial->GetUID());
+	obj.AddBool("HasSkinning", mHasSkinning);
+	if (mPaletteOwner)
+		obj.AddInt("PaletteOwner", mPaletteOwner->GetOwner()->GetID());
+	else
+		obj.AddInt("PaletteOwner", 0);
+	JsonArray arr = obj.AddNewJsonArray("InverseBindMatrices");
+	for (int i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		JsonObject obj = arr.PushBackNewObject();
+		obj.AddInt("GoId", mGameobjectsInverseMatrices[i].first->GetID());
+		obj.AddFloats("Matrix", mGameobjectsInverseMatrices[i].second.ptr(), 16);
+	}
 }
 
-void MeshRendererComponent::LoadFromJSON(const rapidjson::Value& componentJson, GameObject* owner) 
+void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	int ID = { 0 };
-	int meshID = { 0 };
-	int materialID = { 0 };
-	if (componentJson.HasMember("ID") && componentJson["ID"].IsInt()) 
+	Component::Load(data, uidPointerMap);
+
+	if(data.HasMember("MeshID"))
+		SetMesh(data.GetInt("MeshID"));
+	if(data.HasMember("MaterialID"))
+		SetMaterial(data.GetInt("MaterialID"));
+	if(data.HasMember("HasSkinning"))
+		mHasSkinning = data.GetBool("HasSkinning");
+
+	if (data.HasMember("PaletteOwner"))
 	{
-		ID = componentJson["ID"].GetInt();
-	}
-	if (componentJson.HasMember("MeshID") && componentJson["MeshID"].IsInt()) 
-	{
-		meshID = componentJson["MeshID"].GetInt();
-	}
-	if (componentJson.HasMember("MaterialID") && componentJson["MaterialID"].IsInt()) 
-	{
-		materialID = componentJson["MaterialID"].GetInt();
+		unsigned int id = data.GetInt("PaletteOwner");
+
+		if (id) //What is this??
+		{
+			mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+		}
 	}
 
-	SetMesh(meshID);
-	SetMaterial(materialID);
+	if (data.HasMember("InverseBindMatrices"))
+	{
+		JsonArray arr = data.GetJsonArray("InverseBindMatrices");
+		for (int i = 0; i < arr.Size(); ++i)
+		{
+			JsonObject obj = arr.GetJsonObject(i);
+			if (obj.HasMember("GoId"))
+			{
+				GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
+				float matrix[16];
+				if (obj.HasMember("Matrix"))
+				{
+					obj.GetFloats("Matrix", matrix);
+					mGameobjectsInverseMatrices.emplace_back(ptr,
+						float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
+							matrix[4], matrix[5], matrix[6], matrix[7],
+							matrix[8], matrix[9], matrix[10], matrix[11],
+							matrix[12], matrix[13], matrix[14], matrix[15]));
+				}
+			}
+		}
+	}
+}
+
+void MeshRendererComponent::UpdatePalette()
+{
+	mPalette.clear();
+	mPalette.reserve(mGameobjectsInverseMatrices.size());
+	for (unsigned i = 0; i < mGameobjectsInverseMatrices.size(); ++i)
+	{
+		mPalette.push_back((mGameobjectsInverseMatrices[i].first->GetWorldTransform() * mGameobjectsInverseMatrices[i].second).Transposed());
+	}
+
 }
 

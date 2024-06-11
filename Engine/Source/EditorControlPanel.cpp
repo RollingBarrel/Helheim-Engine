@@ -177,6 +177,9 @@ void EditorControlPanel::Play()
 	auto& colors = ImGui::GetStyle().Colors;
 	colors[ImGuiCol_WindowBg] = ImVec4{ 0.05f, 0.05f, 0.07f, 1.0f };
 	
+	ImGui::SetWindowFocus("Game");
+	EngineApp->GetEngineCamera()->ActivateGameCamera();
+
 	EngineApp->Start();
 	switch (mState)
 	{
@@ -188,9 +191,6 @@ void EditorControlPanel::Play()
 		mState = GameState::PLAY;
 		break;
 	}
-	
-
-	ImGui::SetWindowFocus("Game");
 }
 
 void EditorControlPanel::Pause() 

@@ -9,42 +9,6 @@ class MeshRendererComponent;
 class ResourceMaterial;
 typedef struct __GLsync* GLsync;
 
-class BatchMaterialResource
-{
-public:
-	BatchMaterialResource(const ResourceMaterial* res)
-		: resource(res), referenceCount(1) {}
-	const ResourceMaterial* resource;
-	unsigned int referenceCount;
-};
-
-class BatchMeshResource
-{
-public:
-	BatchMeshResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
-		: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1) {}
-	const ResourceMesh* resource;
-	unsigned int firstIndex;
-	unsigned int baseVertex;
-	unsigned int referenceCount;
-};
-
-class BatchMeshRendererComponent
-{
-public:
-	BatchMeshRendererComponent(): component(nullptr), bMeshIdx(0), bMaterialIdx(0), bCAnim(nullptr) {}
-	BatchMeshRendererComponent(const MeshRendererComponent* comp, unsigned int meshIdx, unsigned int materialIdx, const AnimationComponent* cAnim = nullptr) : 
-		component(comp), bMeshIdx(meshIdx), bMaterialIdx(materialIdx), bCAnim(cAnim) {}
-	
-	const MeshRendererComponent* component;
-	uint32_t bMeshIdx;
-	uint32_t bMaterialIdx;
-	const AnimationComponent* bCAnim;
-
-	bool IsAnimated() const { return bCAnim != nullptr; }
-};
-
-
 class Command
 {
 public:
@@ -80,34 +44,70 @@ typedef struct BufferIndices {
 #define NUM_BUFFERS 3
 class GeometryBatch
 {
+
+	class BatchMaterialResource
+	{
+	public:
+		BatchMaterialResource(const ResourceMaterial* res)
+			: resource(res), referenceCount(1) {}
+		const ResourceMaterial* resource;
+		unsigned int referenceCount;
+	};
+
+	class BatchMeshResource
+	{
+	public:
+		BatchMeshResource(const ResourceMesh* res, unsigned int fIndex = 0, unsigned int bVertex = 0)
+			: resource(res), firstIndex(fIndex), baseVertex(bVertex), referenceCount(1), skinOffset(-1) {}
+		const ResourceMesh* resource;
+		unsigned int firstIndex;
+		unsigned int baseVertex;
+		unsigned int referenceCount;
+		unsigned int skinOffset;
+		bool HasSkinning() const { return skinOffset != -1; }
+	};
+
+	class BatchMeshRendererComponent
+	{
+	public:
+		BatchMeshRendererComponent() : bMeshIdx(0), bMaterialIdx(0), baseInstance(-1) {}
+		BatchMeshRendererComponent(unsigned int meshIdx, unsigned int materialIdx) :
+			bMeshIdx(meshIdx), bMaterialIdx(materialIdx), baseInstance(-1) {}
+		uint32_t bMeshIdx;
+		uint32_t bMaterialIdx;
+		unsigned int baseInstance;
+	};
+
 public:
 
-	GeometryBatch(const MeshRendererComponent* mesh);
+	GeometryBatch(const MeshRendererComponent& mesh);
 	~GeometryBatch();
 
 	void GetAttributes(std::vector<Attribute>& attributes) const;
-	unsigned int GetVertexSize() { return mVertexSize; };
-	void AddMeshComponent(const MeshRendererComponent* component);
-	bool EditMaterial(const MeshRendererComponent* component);
-	bool RemoveMeshComponent(const MeshRendererComponent* component);
-	bool AddToDraw(const MeshRendererComponent* component);
+	unsigned int GetVertexSize() const { return mVertexSize; };
+	void AddMeshComponent(const MeshRendererComponent& component);
+	bool EditMaterial(const MeshRendererComponent& component);
+	bool RemoveMeshComponent(const MeshRendererComponent& component);
+	bool AddToDraw(const MeshRendererComponent& component);
 	void Draw();
 	void EndFrameDraw();
 	void CleanUpCommands();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	void ComputeAnimation(const MeshRendererComponent* cMesh);
+	void ComputeSkinning(const MeshRendererComponent& cMesh);
 
 private:
 	void RecreatePersistentSsbos();
+	void RecreateSkinningSsbos();
 	void RecreateVboAndEbo();
 	void RecreateMaterials();
-	void AddUniqueMesh(const MeshRendererComponent* cMesh, unsigned int& meshIdx);
+	void AddUniqueMesh(const MeshRendererComponent& cMesh, unsigned int& meshIdx);
 
 	bool mMaterialFlag = false;
 	bool mPersistentsFlag = false;
 	bool mVBOFlag = false;
 	bool mIboFlag = false;
+	bool mSkinningFlag = false;
 	
 	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
@@ -117,7 +117,6 @@ private:
 	std::unordered_map<unsigned int, Command> mComandsMap;
 
 	unsigned int mVertexSize = 0;
-
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
@@ -141,13 +140,11 @@ private:
 	unsigned int mEboNumElements = 0;
 
 	//Animation
-	bool mAnimationSkinning = false;
+	bool mSkinningApplied = false;
 	unsigned int mPaletteSsbo = 0;
-	unsigned int mBoneIndicesSsbo = 0;
-	unsigned int mWeightsSsbo = 0;
-	unsigned int mPosSsbo = 0;
-	unsigned int mNormSsbo = 0;
-	unsigned int mTangSsbo = 0;
+	unsigned int mBiggestPaletteSize = 0;
+	unsigned int mSkinSsbo = 0;
+	unsigned int mSkinBufferSize = 0;
 
 	int mSsboAligment = 0;
 };

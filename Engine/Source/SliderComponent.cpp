@@ -1,7 +1,10 @@
 #pragma once
 #include "SliderComponent.h"
+
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
+#include "GameObject.h"
+#include "Transform2DComponent.h"
 
 SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(owner, ComponentType::SLIDER)
 {
@@ -10,7 +13,7 @@ SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(own
 
 SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
 {
-	mFillPercent = original.mFillPercent;
+	mValue = original.mValue;
 	mCanvas = original.mCanvas;
 }
 
@@ -22,20 +25,16 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	if (self->GetChildren().empty()) 
 	{
 		self->SetName("Slider");
-		mFill = new GameObject("Fill", self);
-		mBackground = new GameObject("Background", self);
-
 		mSliderTransform2D = new Transform2DComponent(self);
-		mBgImage = new ImageComponent(mBackground);
-		mFillImage = new ImageComponent(mFill);
-		mBgTransform2D = new Transform2DComponent(mBackground);
-		mFillTransform2D = new Transform2DComponent(mFill);
 
-		self->AddComponent(mSliderTransform2D, this);
-		mBackground->AddComponent(mBgTransform2D, this);
-		mBackground->AddComponent(mBgImage, this);
-		mFill->AddComponent(mFillTransform2D, this);
-		mFill->AddComponent(mFillImage, this);
+		mBackground = new GameObject("Background", self);
+		mFill = new GameObject("Fill", self);
+
+		self->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::IMAGE);
+		mFill->CreateComponent(ComponentType::TRANSFORM2D);
+		mFill->CreateComponent(ComponentType::IMAGE);
 	}
 	else 
 	{
@@ -52,46 +51,41 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 			}
 		}
 	}
-	
-	// Set default values
-	//mBgImage->SetColor(float3(1.f, 0, 0));
-	//mFillImage->SetColor(float3(0, 1.f, 0));
-	//mSliderTransform2D->SetSize(float2(500, 50));
-	//mBgTransform2D->SetSize(float2::one);
-
-	//mFillTransform2D->SetPosition(float3(((1 - mFillPercent) / 2) * -1, 0, 0));
-	//mFillTransform2D->SetSize(float2(mFillPercent, 1));
 }
 
-void SliderComponent::SetFillPercent(float fillPercent)
+void SliderComponent::SetValue(float fillPercent)
 {
 	if (mFillTransform2D == nullptr) mFillTransform2D = (Transform2DComponent*)mFill->GetComponent(ComponentType::TRANSFORM2D);
-	if (mBackground == nullptr) mBgTransform2D = (Transform2DComponent*)mBackground->GetComponent(ComponentType::TRANSFORM2D);
+	if (mBgTransform2D == nullptr) mBgTransform2D = (Transform2DComponent*)mBackground->GetComponent(ComponentType::TRANSFORM2D);
 
-	this->mFillPercent = fillPercent;
+	this->mValue = fillPercent;
 
 	if (!mCanvas) return;
-	if (mCanvas->GetScreenSpace()) 
+
+	float backgroundWidth = mBgTransform2D->GetSize().x;
+	float fillWidth = backgroundWidth * fillPercent;
+	float fillPositionX = (backgroundWidth - fillWidth) / 2 * -1; // Center the fill
+
+	if (mCanvas->GetScreenSpace())
 	{
-		mFillTransform2D->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
-		mFillTransform2D->SetSize(float2(fillPercent, mFillTransform2D->GetSize().y));
+		mFillTransform2D->SetPosition(float3(fillPositionX, 0, 0));
+		mFillTransform2D->SetSize(float2(fillWidth, mFillTransform2D->GetSize().y));
 	}
-	else 
+	else
 	{
-		mFill->SetPosition(float3(((1 - fillPercent) / 2) * -1, 0, 0));
-		mFill->SetScale(float3(fillPercent, mFillTransform2D->GetSize().y, 0));
+		mFill->SetPosition(float3(fillPositionX, 0, 0));
+		mFill->SetScale(float3(fillPercent, 1.0f, 1.0f));
 	}
-	
 }
 
-void SliderComponent::Save(Archive& archive) const
+void SliderComponent::Save(JsonObject& obj) const
 {
-	Component::Save(archive);
+	Component::Save(obj);
 }
 
-void SliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void SliderComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::LoadFromJSON(data, owner);
+	Component::Load(data, uidPointerMap);
 }
 
 SliderComponent:: ~SliderComponent()

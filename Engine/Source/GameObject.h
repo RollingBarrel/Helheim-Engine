@@ -1,25 +1,18 @@
 #pragma once
-#include <vector>
 #include "Globals.h"
+#include <string>
+#include <vector>
+#include <unordered_map>
 #include "Math/float4x4.h"
 #include "Math/float3.h"
 #include "Math/Quat.h"
+#include "Math/float4.h"
 #include "Geometry/AABB.h"
 #include "Geometry/OBB.h"
-#include "string"
 #include "Archive.h"
-#include "Tag.h"
-#include "MeshRendererComponent.h"
-#include <unordered_map>
 
-#undef max
-#undef min
-#define NOMINMAX
-#include "rapidjson/document.h"
-
-class AIAgentComponent;
-class CameraComponent;
 class Component;
+class MeshRendererComponent;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
@@ -28,123 +21,145 @@ class ENGINE_API GameObject
 	friend class InspectorPanel;
 
 public:
-	GameObject(const char* name);
+	GameObject() = delete;
+	GameObject(const GameObject& original) = delete;
+	GameObject& operator=(const GameObject& other) = delete;
+
+	explicit GameObject(const char* name);
 	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
-	GameObject(const GameObject& original);
-	GameObject(const GameObject& original, GameObject* newParent);
+	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew = nullptr, std::vector<MeshRendererComponent*>*meshRendererComps = nullptr);
 	~GameObject();
 
 	void Update();
 
-	void Translate(float3 translation);
-
-	// Getters
-	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
-	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
-	const float3& GetRotation() const { return mEulerRotation; }
-	const Quat& GetRotationQuat() const { return mRotation; }
-	float3 GetWorldPosition() const { return mWorldTransformMatrix.TranslatePart(); }
-	const float3& GetPosition() const { return mPosition; }
-	const float3& GetScale() const { return mScale; }
+	//Getters
 	GameObject* GetParent() const { return mParent; }
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
-	float3 GetFront() const { return ( mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized(); } 
-	float3 GetUp() const { return (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized(); }
-	float3 GetRight() const { return (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized(); }
-	Tag* GetTag() const { return mTag; }
+	unsigned int GetID() const { return mUid; }
+	const float3& GetFront() const { return mFront; }
+	const float3& GetUp() const { return mUp; }
+	const float3& GetRight() const { return mRight; }
+	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
-
-	unsigned int GetID() const { return mID; }
-	bool IsRoot() const { return mIsRoot; }
-	// Status for this GameObject
-	bool IsEnabled() const { return mIsEnabled; }
-	// Status for this GameObject and all its ancestors
-	bool IsActive() const { return mIsEnabled && mIsActive; }
 	bool IsDynamic() const { return mIsDynamic; }
-	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
-	// Children
-	void AddChild(GameObject* child, const int aboveThisId = 0);
-	GameObject* RemoveChild(const int id);
-	void DeleteChild(GameObject* child);
+	bool IsRoot() const { return mIsRoot; }
+	bool IsEnabled() const { return mIsEnabled; } // Status for this GameObject
+	bool IsActive() const { return mIsEnabled && mIsActive; } 	// Status for this GameObject and all its ancestors
 
-	// Setters
-	void SetRotation(const float3& rotation);
-	void SetRotation(const Quat& rotation);
-	void SetPosition(const float3& position);
-	void SetScale(const float3& scale);
-	void SetTag(Tag* tag) { mTag = tag; };
+	//Setters
+	void SetTag(const std::string& tag);;
 	void SetName(const char* name) { mName = name; };
+	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
+	void SetParent(GameObject* newParent);
 	void SetEnabled(bool enabled);
+
+	// Children
+	void AddChild(GameObject* child);
+	GameObject* RemoveChild(const int id);	//Remove from mChildren does not delete
+
+	//Transform
+	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
+	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
+	void RecalculateMatrices();															//TODO: REVIEW METHOD
+
+	//Position
+	const float3& GetPosition() const { return mPosition; }
+	const float3& GetLocalPosition() const { return mLocalPosition; }
+	void SetPosition(const float3& position);
+	void SetLocalPosition(const float3& position);
+
+	//Rotation
+	const Quat& GetRotation() const { return mRotation; }
+	const Quat& GetLocalRotation() const { return mLocalRotation; }
+	const float3& GetEulerAngles() const { return mEulerAngles; }
+	const float3& GetLocalEulerAngles() const { return mLocalEulerAngles; }
+	void SetRotation(const float3& rotation);
+	void SetLocalRotation(const float3& rotation);
+	void SetRotation(const Quat& rotation);
+	void SetLocalRotation(const Quat& rotation);
+
+	//Scale
+	const float3& GetScale() const { return mScale; }
+	const float3& GetLocalScale() const { return mLocalScale; }
+	void SetScale(const float3& scale);
+	void SetLocalScale(const float3& scale);
 
 	// Transform
 	const bool HasUpdatedTransform() const;
-	void LookAt(float3 target);
+	void Translate(const float3& translation);
+	void LookAt(const float3& target);
 	void ResetTransform();
-	void RecalculateMatrices();
-
-	// Finds
-	GameObject* Find(const char* name) const;
-	GameObject* Find(unsigned int UID) const;
-	static GameObject* FindGameObjectWithTag(std::string tagname);
-	static std::vector<GameObject*> FindGameObjectsWithTag(std::string tagname);
 
 	// Components
+	template<typename T> T* CreateComponent();
 	Component* CreateComponent(ComponentType type);
+	template<typename T> T* GetComponent() const;
 	Component* GetComponent(ComponentType type) const;
-	std::vector<Component*> GetComponents(ComponentType type) const;
-	std::vector<Component*> GetComponentsInChildren(ComponentType type) const;
-	Component* GetComponentInParent(ComponentType type) const;
-	std::vector<Component*> FindComponentsInChildren(GameObject* parent, const ComponentType type);
-	const AnimationComponent* FindAnimationComponent();
-	void AddComponent(Component* component, Component* position);
+	template<typename T> T* GetComponentInParent() const;											
+	Component* GetComponentInParent(ComponentType type) const;											
+	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
+	//TODO: do the template correctly,SRRY
+	void GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const;
 	void AddComponentToDelete(Component* component);
 
 	// Save / Load
-	void Save(Archive& archive) const;
-	void Load(const rapidjson::Value& gameObjectsJson);
-	static GameObject* LoadGameObjectFromJSON(const rapidjson::Value& gameObject, GameObject* parent, std::unordered_map<int,int>* uuids = nullptr);
-	void LoadComponentsFromJSON(const rapidjson::Value& components);
+	void Save(JsonObject& obj) const;
+	void LoadGameObject(const JsonObject& obj, std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
+	void LoadComponents(const JsonObject& obj, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	// Prefabs
-	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);
-	void SetPrefabId(unsigned int id) { mPrefabResourceId = id; }
-	void SetPrefabOverride(bool ov) { mPrefabOverride = ov; }
-
+	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here? 
+	void SetPrefabId(unsigned int id) { mPrefabId = id; }						   //TODO: This need to be here?
+	void SetPrefabOverride(bool override) { mPrefabOverride = override; }		   //TODO: This need to be here?
+																				   
 private:
-	void AddSuffix();
 
 	void DeleteComponents();
-	Component* RemoveComponent(Component* component);
+	void SetActive(bool active); 
 
-	void RecalculateLocalTransform();
-	void SetActiveInHierarchy(bool active);
-	std::pair<GameObject*, int> RecursiveTreeSearch(GameObject* owner, std::pair<GameObject*, int> currentGameObject, const int objectToFind);
-
-	const unsigned int mID;
+	const unsigned int mUid;
 	std::string mName = "GameObject";
 
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 
-	// Components
-	std::vector<Component*> mComponents;
-	std::vector<Component*> mComponentsToDelete;
-	Tag* mTag = nullptr;
-
 	// Transform
 	float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
+
+	//Direction
+	float3 mFront;
+	float3 mUp;
+	float3 mRight;
+
+	//Position
 	float3 mPosition = float3::zero;
+	float3 mLocalPosition = float3::zero;
+
+	//Rotation
 	Quat mRotation = Quat::identity;
-	float3 mEulerRotation = float3::zero;
+	Quat mLocalRotation = Quat::identity;
+
+	//Rotation in Euler Angles (Rads Always)
+	float3 mEulerAngles = float3::zero;
+	float3 mLocalEulerAngles = float3::zero;
+
+	//Scale
 	float3 mScale = float3::one;
+	float3 mLocalScale = float3::one;
+
+	// Components
+	std::vector<Component*> mComponents;
+	std::vector<Component*> mComponentsToDelete;
 
 	// Prefabs
-	int mPrefabResourceId = 0;
+	int mPrefabId = 0;
 	bool mPrefabOverride = true;
+
+	std::string mTag = "Untagged";
 
 	bool mIsEnabled = true;
 	bool mIsActive = true;

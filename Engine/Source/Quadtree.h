@@ -29,7 +29,7 @@ public:
 	unsigned int GetNumGameObjs() const { return static_cast<unsigned int>(mGameObjects.size()); }
 	const std::vector<const GameObject*>& GetGameObjects() const { return mGameObjects; }
 	const Quadtree* GetChildren() const { return *mChildren; }
-	const std::map<float, Hit> RayCast(const Ray* ray) const;
+	void RayCast(const Ray& ray, std::map<float, Hit>& map) const;
 	void UpdateTree();
 	const char* GetName() const { return mName.c_str(); }
 	void GetRenderComponentsInFrustum(const Frustum& cam, std::vector<const MeshRendererComponent*>& components) const;

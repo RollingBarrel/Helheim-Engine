@@ -51,7 +51,7 @@ bool ResourceTexture::IsCubemap() const
     return mGLTarget == GL_TEXTURE_CUBE_MAP;
 }
 
-void ResourceTexture::MakeTextutureBindless()
+void ResourceTexture::MakeTextutureBindless() const
 {
     if (mTexHandle == 0)
     {
@@ -60,7 +60,7 @@ void ResourceTexture::MakeTextutureBindless()
     }
 }
 
-void ResourceTexture::GenerateMipmaps()
+void ResourceTexture::GenerateMipmaps() const
 {
     if (mMipLevels == 1)
     {

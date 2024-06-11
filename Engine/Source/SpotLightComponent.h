@@ -12,21 +12,24 @@ typedef struct SpotLight {
 	int shadowIndex;
 	float padding[2];
 	
-
 }SpotLight;
 
 class ENGINE_API SpotLightComponent : public Component 
 {
 public:
-	SpotLightComponent(GameObject* owner);
-	SpotLightComponent(const SpotLightComponent* original, GameObject* owner);
+	explicit SpotLightComponent(GameObject* owner);
+	SpotLightComponent(const SpotLightComponent& original) = delete;
 	~SpotLightComponent();
+
+	SpotLightComponent& operator=(const SpotLightComponent& other) = delete;
 
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-	void Reset() override {}
+
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
+
+	void Reset() override;
 	void Enable() override;
 	void Disable() override;
 
@@ -54,6 +57,7 @@ public:
 
 
 private:
+	SpotLightComponent(const SpotLightComponent* original, GameObject* owner);
 	SpotLight mData;
 	Frustum mShadowFrustum;
 
