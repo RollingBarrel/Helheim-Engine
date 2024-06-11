@@ -193,12 +193,12 @@ void TrailComponent::Update()
         float3 position, scale;
         Quat rotationQ;
         mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
-        float3 rotation = RotationToVector(rotationQ);
         const float3 lastPosition = mPoints.begin()->position;
 
         const float dposition = position.DistanceSq(lastPosition);
         if (mPoints.size() <= 1 || dposition >= mMinDistance && mPoints.size() < mMaxPoints)
         {
+            float3 rotation = rotationQ.Transform(mDirection);
             mPoints.push_front(TrailPoint{ position, rotation, mTrailTime });
         }
         //*(mPoints.begin()) = TrailPoint{ mOwner->GetPosition(), lastRotation, mTrailTime };
@@ -238,7 +238,7 @@ void TrailComponent::Save(JsonObject& obj) const
     obj.AddFloat("MinDistance", mMinDistance);
     obj.AddFloat("MaxLifeTime", mMaxLifeTime);
     obj.AddBool("IsFixedDirection", mFixedDirection);
-    obj.AddFloats("IsFixedDirection", mDirection.ptr(), 3);
+    obj.AddFloats("Direction", mDirection.ptr(), 3);
 
     JsonObject width = obj.AddNewJsonObject("Width");
     mWidth.Save(width);
