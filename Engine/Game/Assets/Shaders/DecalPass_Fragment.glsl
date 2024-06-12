@@ -87,8 +87,8 @@ void main()
 		{
 			discard;
 		}
-		outDiffuse = diffuseDecalColor.rgb;
-		//outDiffuse = pow(diffuseDecalColor.rgb,vec3(2.2));
+		//outDiffuse = diffuseDecalColor.rgb;
+		outDiffuse = pow(diffuseDecalColor.rgb,vec3(2.2));
 	}
 	
 	
@@ -96,14 +96,12 @@ void main()
 	{
 		vec3 specTex = texture(decalSpecularTex, objPos.xy+0.5).rgb;
 		outSpecularRough.rgb = pow(specTex, vec3(2.2));
-		//outSpecularRough = pow(outSpecularRough,vec4(2.2));
 	}
 	
 	if (hasEmisive)
 	{
 		vec3 emissiveTex = texture(decalEmisiveTex, objPos.xy+0.5).rgb;
 		outEmissive = pow(emissiveTex, vec3(2.2));
-		//outEmissive = outEmissive, vec3(2.2));
 	}
 
 	if (hasNormal)

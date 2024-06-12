@@ -62,9 +62,9 @@ void main()
 	float rough = material.rough;
 	if(material.hasMetalRoughTex)
 	{
-		vec3 metRough = texture(material.metalRoughTex, uv).rgb;
-		metal *= metRough.b;
-		rough *= metRough.g;
+		vec2 metRough = texture(material.metalRoughTex, uv).gb;
+		rough *= metRough.x;
+		metal *= metRough.y;
 	}
 	vec3 N = vec3(0.0f);
 	if (material.hasNormalMap)
