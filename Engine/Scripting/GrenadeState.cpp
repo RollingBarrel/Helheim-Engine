@@ -48,3 +48,7 @@ StateType GrenadeState::GetType()
 {
     return StateType::GRENADE;
 }
+
+void GrenadeState::PlayAudio()
+{
+}

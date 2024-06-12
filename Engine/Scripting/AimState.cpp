@@ -29,14 +29,14 @@ StateType AimState::HandleInput()
         App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
         Weapon* weapon = mPlayerController->GetWeapon();
-        if (weapon->GetType() == Weapon::WeaponType::RANGE && weapon->GetCurrentAmmo() == 0)
+        if (!(weapon->GetType() == Weapon::WeaponType::RANGE && weapon->GetCurrentAmmo() == 0))
         {
-            return StateType::RELOAD;
-        }
-        else {
             mAttackTimer = 0;
             return StateType::ATTACK;
         }
+        //else {                        //This should be when pressing Click or automatically when bullets are 0?
+        //   return StateType::RELOAD;
+        //}
     }
     if (mPlayerController->GetSlowAttackCooldown() < mAttackTimer &&
         App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT)
@@ -85,4 +85,8 @@ void AimState::Exit()
 StateType AimState::GetType()
 {
     return StateType::AIM;
+}
+
+void AimState::PlayAudio()
+{
 }

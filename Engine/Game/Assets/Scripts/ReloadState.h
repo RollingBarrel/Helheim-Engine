@@ -15,6 +15,7 @@ public:
 
 	StateType GetType() override;
 
+	void PlayAudio() override;
 
 private:
 	float mReloadTimer = 0;

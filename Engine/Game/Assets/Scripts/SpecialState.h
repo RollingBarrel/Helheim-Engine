@@ -15,7 +15,7 @@ public:
 
 	StateType GetType() override;
 
-
 private:
 
+	void PlayAudio() override;
 };

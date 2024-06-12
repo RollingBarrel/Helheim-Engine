@@ -95,7 +95,7 @@ void MoveState::Update()
     mPlayerController->MoveInDirection(mMoveDirection);
 
     DoAnimation();
-    DoAudio();
+    PlayAudio();
 }
 
 void MoveState::Enter()
@@ -189,7 +189,7 @@ float2 MoveState::SetMovingDirection()
     }
 }
 
-void MoveState::DoAudio()
+void MoveState::PlayAudio()
 {
     // TODO: play sound according the animation
     mStepTimer += App->GetDt();

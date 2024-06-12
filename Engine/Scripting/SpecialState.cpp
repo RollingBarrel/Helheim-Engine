@@ -29,3 +29,7 @@ StateType SpecialState::GetType()
 {
 	return StateType::SPECIAL;
 }
+
+void SpecialState::PlayAudio()
+{
+}

@@ -33,6 +33,7 @@ void Pistol::BasicAttack()
     if (mCurrentAmmo > 0) {
         bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
+        LOG("Bullets: %i", mCurrentAmmo);
     }
     
 

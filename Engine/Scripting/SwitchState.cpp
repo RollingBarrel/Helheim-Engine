@@ -40,3 +40,7 @@ StateType SwitchState::GetType()
 {
 	return StateType::SWITCH;
 }
+
+void SwitchState::PlayAudio() 
+{
+}
