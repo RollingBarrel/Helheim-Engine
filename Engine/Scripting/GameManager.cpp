@@ -51,6 +51,8 @@ void GameManager::Start()
 
 void GameManager::Update()
 {
+    //App->GetInput()->SetGameControllerRumble(65535, 0, 10);
+
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
         SetPaused(!mPaused);

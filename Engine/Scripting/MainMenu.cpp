@@ -228,31 +228,31 @@ void MainMenu::ClickMenu(MENU_TYPE type)
 
 void MainMenu::OnMainButtonClick() 
 {
-    mMainMenuManager->PlayOKSFX();
+    //mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnQuitButtonClick() {
     App->Exit();
-    mMainMenuManager->PlayOKSFX();
+    //mMainMenuManager->PlayOKSFX();
     exit(0);
 }
 
 void MainMenu::OnOptionsButtonClick() 
 {
-    mMainMenuManager->PlayOKSFX();
+    //mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::OPTIONS);
 }
 
 void MainMenu::OnCreditsButtonClick() 
 {
-    mMainMenuManager->PlayOKSFX();
+    //mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::CREDITS);
 }
 
 void MainMenu::OnNewButtonClick() 
 {
-    mMainMenuManager->PlayOKSFX();
+    //mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::LOADING);
     mLoadlevel = true;
 }
@@ -260,7 +260,7 @@ void MainMenu::OnNewButtonClick()
 void MainMenu::OnSplashButtonClick() 
 {
     OnPlayButtonHover();
-    mMainMenuManager->PlayOKSFX();
+    //mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
 
@@ -295,10 +295,10 @@ void MainMenu::OnQuitButtonHover()
 {
     if (mOption != 3) 
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
     }
     ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    image->SetAlpha(0.8f);
     mOption = 3;
 
     // Set the other hovers off (integration mouse/click)
@@ -310,17 +310,17 @@ void MainMenu::OnQuitButtonHover()
 void MainMenu::OnQuitButtonHoverOff() 
 {
     ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    image->SetAlpha(0.0f);
 }
 
 void MainMenu::OnOptionsButtonHover() 
 {
     if (mOption != 1)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
     }
     ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    image->SetAlpha(0.8f);
     mOption = 1;
 
     // Set the other hovers off (integration mouse/click)
@@ -332,17 +332,17 @@ void MainMenu::OnOptionsButtonHover()
 void MainMenu::OnOptionsButtonHoverOff() 
 {
     ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    image->SetAlpha(0.0f);
 }
 
 void MainMenu::OnCreditsButtonHover() 
 {
     if (mOption != 2)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
     }
     ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    image->SetAlpha(0.8f);
     mOption = 2;
 
     // Set the other hovers off (integration mouse/click)
@@ -354,17 +354,17 @@ void MainMenu::OnCreditsButtonHover()
 void MainMenu::OnCreditsButtonHoverOff() 
 {
     ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    image->SetAlpha(0.0f);
 }
 
 void MainMenu::OnPlayButtonHover()
 {
     if (mOption != 0)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
     }
     ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    image->SetAlpha(0.8f);
     mOption = 0;
 
     // Set the other hovers off (integration mouse/click)
@@ -376,18 +376,18 @@ void MainMenu::OnPlayButtonHover()
 void MainMenu::OnPlayButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    image->SetAlpha(0.0f);
 }
 
 void MainMenu::OnBackCreditsButtonHover()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.8f, 0.8f, 0.8f));
+    image->SetAlpha(0.8f);
     mOption = 0;
 }
 
 void MainMenu::OnBackCreditsButtonHoverOff() 
 {
     ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    image->SetAlpha(0.0f);
 }
