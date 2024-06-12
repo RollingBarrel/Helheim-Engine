@@ -16,11 +16,11 @@
 #include "SpotLightComponent.h"
 #include "ParticleSystemComponent.h"
 #include "DecalComponent.h"
+#include "TrailComponent.h"
 
 #include "Quadtree.h"
 #include "BatchManager.h"
 
-#include "Trail.h"
 
 #include "SDL.h"
 #include "glew.h"
@@ -1303,7 +1303,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	{
 		partSys->Draw();
 	}
-	for (const Trail* trail : mTrails)
+	for (const TrailComponent* trail : mTrails)
 	{
 		trail->Draw();
 	}
@@ -1526,7 +1526,7 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 	}
 }
 
-void ModuleOpenGL::RemoveTrail(const Trail* trail)
+void ModuleOpenGL::RemoveTrail(const TrailComponent* trail)
 {
 	for (int i = 0; i < mTrails.size(); ++i)
 	{

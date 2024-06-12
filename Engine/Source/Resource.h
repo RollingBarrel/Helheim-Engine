@@ -17,6 +17,7 @@ public:
 		Script,
 		Prefab,
 		IBL,
+		StateMachine,
 		Unknown = 0
 	};
 

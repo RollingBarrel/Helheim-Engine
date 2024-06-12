@@ -253,6 +253,7 @@
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="Quadtree.cpp" />
+    <ClCompile Include="RandomFloat.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
@@ -261,6 +262,7 @@
     <ClCompile Include="ResourceNavmesh.cpp" />
     <ClCompile Include="ResourceObject.cpp" />
     <ClCompile Include="ResourceScript.cpp" />
+    <ClCompile Include="ResourceStateMachine.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="SaveLoadAnimation.cpp" />
     <ClCompile Include="SaveLoadMaterial.cpp" />
@@ -268,6 +270,7 @@
     <ClCompile Include="SaveLoadModel.cpp" />
     <ClCompile Include="SaveLoadNavMesh.cpp" />
     <ClCompile Include="SaveLoadScript.cpp" />
+    <ClCompile Include="SaveLoadStateMachine.cpp" />
     <ClCompile Include="SaveLoadTexture.cpp" />
     <ClCompile Include="Script.cpp" />
     <ClCompile Include="ScriptComponent.cpp" />
@@ -275,7 +278,6 @@
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
-    <ClCompile Include="Trail.cpp" />
     <ClCompile Include="TrailComponent.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
@@ -748,6 +750,7 @@
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="Quadtree.h" />
+    <ClInclude Include="RandomFloat.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceAnimation.h" />
     <ClInclude Include="ResourceMaterial.h" />
@@ -755,6 +758,7 @@
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceNavMesh.h" />
     <ClInclude Include="ResourceScript.h" />
+    <ClInclude Include="ResourceStateMachine.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="SaveLoadAnimation.h" />
     <ClInclude Include="SaveLoadMaterial.h" />
@@ -762,6 +766,7 @@
     <ClInclude Include="SaveLoadModel.h" />
     <ClInclude Include="SaveLoadNavMesh.h" />
     <ClInclude Include="SaveLoadScript.h" />
+    <ClInclude Include="SaveLoadStateMachine.h" />
     <ClInclude Include="SaveLoadTexture.h" />
     <ClInclude Include="Script.h" />
     <ClInclude Include="ScriptComponent.h" />
@@ -769,7 +774,6 @@
     <ClInclude Include="SpotLightComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.h" />
-    <ClInclude Include="Trail.h" />
     <ClInclude Include="TrailComponent.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>

@@ -80,14 +80,17 @@ void ColorGradient::Load(const JsonObject& data)
     // Clear existing marks before loading new ones
     mColorMarks.clear();
 
-    JsonArray colorArray = data.GetJsonArray("Color Gradient");
-    for (unsigned int i = 0; i < colorArray.Size(); ++i)
+    if (data.HasMember("Value"))
     {
-        JsonObject color = colorArray.GetJsonObject(i);
-        float time = 0.0f;
-        time = color.GetFloat("Time");
-        float col[4];
-        color.GetFloats("Color", col);
-        mColorMarks[time] = float4(col);
+        JsonArray colorArray = data.GetJsonArray("Color Gradient");
+        for (unsigned int i = 0; i < colorArray.Size(); ++i)
+        {
+            JsonObject color = colorArray.GetJsonObject(i);
+            float time = 0.0f;
+            if (data.HasMember("Value")) time = color.GetFloat("Time");
+            float col[4];
+            if (data.HasMember("Value")) color.GetFloats("Color", col);
+            mColorMarks[time] = float4(col);
+        }
     }
 }

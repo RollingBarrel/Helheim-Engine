@@ -345,23 +345,22 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						if (reorder) 
 						{ 
 							movedObject->mParent->RemoveChild(movedObject->mUid);
-							movedObject->mParent = target;
-							for (std::vector<GameObject*>::const_iterator it = target->mChildren.cbegin(); it != target->mChildren.cend(); ++it)
+							movedObject->mParent = target->mParent;
+							for (std::vector<GameObject*>::const_iterator it = target->mParent->mChildren.cbegin(); it != target->mParent->mChildren.cend(); ++it)
 							{
-								
 								if ((*it)->mUid == target->mUid)
 								{
 									target->mParent->mChildren.insert(it, movedObject);
-									//inserted = true;
+
+									// Reorder in scene vector
+									App->GetScene()->SwitchGameObjectsFromScene(target, movedObject);
+
 									break;
 								}
-								
-								
 							}
 						}
 						else 
 						{ 
-							//target->AddChild(movedObject);
 							movedObject->SetParent(target);
 						}
 					}
