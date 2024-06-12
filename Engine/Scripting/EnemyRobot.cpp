@@ -49,7 +49,7 @@ void EnemyRobot::Start()
 
 void EnemyRobot::Update()
 {
-    if (GameManager::GetInstance()->isPaused()) return;
+    if (GameManager::GetInstance()->IsPaused()) return;
 
     Enemy::Update();
 

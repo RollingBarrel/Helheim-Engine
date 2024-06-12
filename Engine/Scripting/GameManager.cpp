@@ -53,9 +53,14 @@ void GameManager::Update()
 {
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        mPaused = !mPaused;
-        mHudController->SetScreen(SCREEN::PAUSE, mPaused);
+        SetPaused(!mPaused);
     }
+}
+
+void GameManager::SetPaused(bool value)
+{
+    mPaused = value;
+    mHudController->SetScreen(SCREEN::PAUSE, mPaused);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
@@ -66,7 +71,7 @@ void GameManager::LoadLevel(const char* LevelName)
 
 void GameManager::Victory()
 {
-    //TODO: PAUSE GAME
+    mPaused = true;
 
     mHudController->SetScreen(SCREEN::WIN, true);
 
@@ -75,7 +80,7 @@ void GameManager::Victory()
 
 void GameManager::GameOver()
 {
-    // TODO: PAUSE GAME
+    mPaused = true;
 
     mHudController->SetScreen(SCREEN::LOSE, true);
 

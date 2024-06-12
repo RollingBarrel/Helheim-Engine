@@ -156,7 +156,7 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
-    if (GameManager::GetInstance()->isPaused()) return;
+    if (GameManager::GetInstance()->IsPaused()) return;
 
     // Check input
     CheckInput();

@@ -31,7 +31,7 @@ void EnemyExplosive::Start()
 
 void EnemyExplosive::Update()
 {
-    if (GameManager::GetInstance()->isPaused()) return;
+    if (GameManager::GetInstance()->IsPaused()) return;
 
     Enemy::Update();
 }

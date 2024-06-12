@@ -21,7 +21,7 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
-    if (GameManager::GetInstance()->isPaused()) return;
+    if (GameManager::GetInstance()->IsPaused()) return;
 }
 
 void Enemy::ActivateEnemy() 

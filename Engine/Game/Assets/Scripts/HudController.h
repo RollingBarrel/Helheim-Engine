@@ -42,20 +42,33 @@ private:
 
     void OnWinButtonClick();
     void OnLoseButtonClick();
-    void OnYesButtonClick();
-    void OnNoButtonClick();
 
-    void OnYesButtonHoverOn();
-    void OnNoButtonHoverOn();
-    void OnYesButtonHoverOff();
-    void OnNoButtonHoverOff();
+    void OnContinueBtnClick();
+    void OnContinueBtnHoverOn();
+    void OnContinueBtnHoverOff();
 
+    void OnOptionsBtnClick();
+    void OnOptionsBtnHoverOn();
+    void OnOptionsBtnHoverOff();
+
+    void OnMainMenuBtnClick();
+    void OnMainMenuBtnHoverOn();
+    void OnMainMenuBtnHoverOff();
+
+
+    // Pause Menu
     GameObject* mPauseScreen = nullptr;
+    GameObject* mContinueBtnGO = nullptr;
+    GameObject* mOptionsBtnGO = nullptr;
+    GameObject* mMainMenuBtnGO = nullptr;
+    ButtonComponent* mContinueBtn = nullptr;
+    ButtonComponent* mOptionsBtn = nullptr;
+    ButtonComponent* mMainMenuBtn = nullptr;
+    GameObject* mOptionsPanel = nullptr;
+
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;
     GameObject* mLoadingScreen = nullptr;
-    GameObject* mYesGO = nullptr;
-    GameObject* mNoGO = nullptr;
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
     GameObject* mAmmoGO = nullptr;
@@ -68,8 +81,6 @@ private:
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
-    ButtonComponent* mYesBtn = nullptr;
-    ButtonComponent* mNoBtn = nullptr;
     SliderComponent* mHealthSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
