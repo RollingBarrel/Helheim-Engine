@@ -7,11 +7,12 @@
 #include "GameObject.h"
 #include "Keys.h"
 #include "PlayerController.h"
+#include "GameManager.h"
 
 MoveState::MoveState(PlayerController* player) : State(player)
 {
     mMoveDirection = float3::zero;
-    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetFront().Cross(float3::unitY).Normalized();
+    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
 }
 
 MoveState::~MoveState()
@@ -28,13 +29,25 @@ StateType MoveState::HandleInput()
         mDashTimer = 0.0f;
         return StateType::DASH;
     }
-    else if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
-        App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+    else if (GameManager::GetInstance()->UsingController())
     {
-
-        return StateType::MOVE;
+        if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0 ||
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX) != 0 ||
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY) != 0)
+        {
+            return StateType::MOVE;
+        }
+    }
+    else
+    {
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
+            App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        {
+            return StateType::MOVE;
+        }
     }
 
 	return StateType::IDLE;
@@ -44,24 +57,39 @@ void MoveState::Update()
 {
     mMoveDirection = float3::zero;
 
-    if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+    if (GameManager::GetInstance()->UsingController())
     {
-        mMoveDirection += mCameraFront;
-    }
+        if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
+        {
+            mMoveDirection -= mCameraFront * App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY);
+        }
 
-    if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
-    {
-        mMoveDirection -= mCameraFront;
+        if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0)
+        {
+            mMoveDirection -= float3::unitY.Cross(mCameraFront) * App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX);
+        }
     }
-
-    if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+    else 
     {
-        mMoveDirection += float3::unitY.Cross(mCameraFront);
-    }
+        if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
+        {
+            mMoveDirection += mCameraFront;
+        }
 
-    if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
-    {
-        mMoveDirection -= float3::unitY.Cross(mCameraFront);
+        if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT)
+        {
+            mMoveDirection -= mCameraFront;
+        }
+
+        if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT)
+        {
+            mMoveDirection += float3::unitY.Cross(mCameraFront);
+        }
+
+        if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
+        {
+            mMoveDirection -= float3::unitY.Cross(mCameraFront);
+        }
     }
 
     mPlayerController->MoveInDirection(mMoveDirection);
@@ -122,7 +150,7 @@ void MoveState::DoAnimation()
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
 
-        mPlayerController->SetAnimation(animation, 0.1f);
+        mPlayerController->SetAnimation(animation, 0.3f);
     }
 }
 

@@ -11,6 +11,7 @@ class PlayerCamera :public Script
 
 public:
     PlayerCamera(GameObject* owner);
+    void Awake() override;
     void Start() override;
     void Update() override;
 

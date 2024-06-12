@@ -43,7 +43,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
-    <ClInclude Include="StateMachineTest.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h">
       <Filter>Weapons</Filter>
@@ -143,7 +142,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="TestScript.cpp" />
-    <ClCompile Include="StateMachineTest.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Weapon.cpp">
       <Filter>Weapons</Filter>

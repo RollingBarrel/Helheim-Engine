@@ -21,11 +21,11 @@ public:
     void Start();
     void Update();
 
-    GameObject* GetPlayer() const { return mPlayer; };
-    HudController* GetHud() const { return mHudController; };
-    BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
-    EnemyPool* GetEnemyPool() const { return mEnemyPool; }
-    
+    GameObject* GetPlayer() { return mPlayer; };
+    HudController* GetHud() { return mHudController; };
+    bool UsingController() { return mController; }
+    BattleArea* GetActiveBattleArea() { return mActiveBattleArea; }
+    EnemyPool* GetEnemyPool() { return mEnemyPool; }
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
 
@@ -45,4 +45,6 @@ private:
     HudController* mHudController = nullptr;
 
     bool mPaused = false;
+
+    bool mController = true;
 };

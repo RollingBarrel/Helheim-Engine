@@ -12,7 +12,7 @@
 CREATE(GameManager)
 {
     CLASS(owner);
-    SEPARATOR("Player");
+    MEMBER(MemberType::BOOL, mController);
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mEnemyPool);

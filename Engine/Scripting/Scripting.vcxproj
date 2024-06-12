@@ -202,7 +202,6 @@
     <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
-    <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ActiveBattleAreaController.cpp" />
@@ -237,7 +236,6 @@
     <ClCompile Include="ReloadState.cpp" />
     <ClCompile Include="SpecialState.cpp" />
     <ClCompile Include="State.cpp" />
-    <ClCompile Include="StateMachineTest.cpp" />
     <ClCompile Include="SwitchState.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="Weapon.cpp" />

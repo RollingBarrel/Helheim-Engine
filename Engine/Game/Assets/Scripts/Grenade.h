@@ -18,7 +18,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void SetDestionation(float3 destination);
+	void SetDestination(float3 destination);
 
 	float GetGrenadeRadius();
 private:

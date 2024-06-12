@@ -70,16 +70,19 @@ public:
     float GetReloadDuration() const { return mReloadDuration; }
     Weapon* GetWeapon() const { return mWeapon; }
     const State* GetPlayerUpperState() const { return mUpperState; }
-    
-    bool CanReload() const;
-    void Reload() const;
 
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
     void SetGrenadeRange(float value) { mGrenadeRange = value; }
+    void SetGrenadeVisuals(bool value);
+    void UpdateGrenadeVisuals();
+    void ThrowGrenade();
 
+    bool CanReload() const;
+    void Reload() const;
+    
     // --------------- OLD ----------------------
 
     void RechargeShield(float shield);
@@ -90,6 +93,8 @@ public:
 private:
     void CheckInput();
     void StateMachine();
+    void HandleRotation();
+    void CheckDebugOptions();
 
     // STATES
     State* mLowerState = nullptr;
@@ -140,7 +145,9 @@ private:
     // Grenade
     float mGrenadeCoolDown = 5.0f;
     float mGrenadeRange = 5.0f;
+    float3 mGrenadePosition;
     Grenade* mGrenade = nullptr;
+    GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeAimAreaGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
 
@@ -155,10 +162,7 @@ private:
     AudioSourceComponent* mGunfireAudio = nullptr;
 
     void OnCollisionEnter(CollisionData* collisionData);
-    void CheckDebugOptions();
-    void UpdateShield();
     void UpdateBattleSituation();
-    void HandleRotation();
 
 
     bool mGodMode = false;

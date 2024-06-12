@@ -226,6 +226,24 @@
     <ClCompile Include="ImColorGradient.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="AnimationSMPanel.cpp">
+      <Filter>Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\crude_json.cpp">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_canvas.cpp">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor.cpp">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClCompile>
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_api.cpp">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClCompile>
+    <ClCompile Include="ImporterStateMachine.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -472,6 +490,30 @@
     <ClInclude Include="ImColorGradient.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationSMPanel.h">
+      <Filter>Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\crude_json.h">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_bezier_math.h">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_canvas.h">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_extra_math.h">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor.h">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClInclude>
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.h">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterStateMachine.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Dependencies">
@@ -519,5 +561,19 @@
     <Filter Include="Dependencies\Detour">
       <UniqueIdentifier>{37ae183b-2780-4bd8-b3ca-a0b37fa72e92}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Dependencies\ImguiNode">
+      <UniqueIdentifier>{b7c067c1-c775-483e-906b-cc704984d02c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_bezier_math.inl">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </None>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_extra_math.inl">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </None>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.inl">
+      <Filter>Dependencies\ImguiNode</Filter>
+    </None>
   </ItemGroup>
 </Project>

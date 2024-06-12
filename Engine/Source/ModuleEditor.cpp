@@ -24,6 +24,7 @@
 #include "TimerPanel.h"
 #include "SettingsPanel.h"
 #include "EditorControlPanel.h"
+#include "AnimationSMPanel.h"
 
 #include "imgui_impl_sdl2.h"
 #include "imgui_impl_opengl3.h"
@@ -55,6 +56,7 @@ ModuleEditor::ModuleEditor()
 	mPanels[TIMERPANEL] = new TimerPanel();
 	mPanels[EDITORCONTROLPANEL] = new EditorControlPanel();
 	mPanels[SETTINGSPANEL] = new SettingsPanel();
+	mPanels[ANIMATIONSMPANEL] = new AnimationSMPanel();
 
 	for (auto panel : mPanels) 
 	{

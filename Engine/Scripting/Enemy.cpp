@@ -8,6 +8,8 @@
 
 
 
+
+
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()

@@ -7,12 +7,11 @@
 #include "GameObject.h"
 #include "Physics.h"
 
-#include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
 #include "AudioSourceComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+#include "AnimationComponent.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
@@ -54,6 +53,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("Grenade");
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
@@ -70,6 +70,28 @@ CREATE(PlayerController)
 }
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
+{
+}
+
+PlayerController::~PlayerController()
+{
+    delete mDashState;
+    delete mIdleState;
+    delete mMoveState;
+    delete mAimState;
+    delete mAttackState;
+    delete mGrenadeState;
+    delete mSwitchState;
+    delete mSpecialState;
+    delete mReloadState;
+
+    delete mMeleeWeapon;
+    delete mRangeWeapon;
+}
+
+#pragma region MyRegion
+
+void PlayerController::Start()
 {
     // States
     mDashState = new DashState(this);
@@ -91,26 +113,7 @@ PlayerController::PlayerController(GameObject* owner) : Script(owner)
     mMeleeWeapon = new Bat();
     mRangeWeapon = new Pistol();
     mWeapon = mMeleeWeapon;
-}
 
-PlayerController::~PlayerController()
-{
-    delete mDashState;
-    delete mIdleState;
-    delete mMoveState;
-    delete mAimState;
-    delete mAttackState;
-    delete mGrenadeState;
-    delete mSwitchState;
-    delete mSpecialState;
-    delete mReloadState;
-
-    delete mMeleeWeapon;
-    delete mRangeWeapon;
-}
-
-void PlayerController::Start()
-{
     // AUDIO
     if (mFootStepAudioHolder)
     {
@@ -133,121 +136,22 @@ void PlayerController::Start()
     mCamera = App->GetCamera()->GetCurrentCamera()->GetOwner();
 
     // GRENADE
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mGrenadeGO)
     {
-        ScriptComponent* script = (ScriptComponent*)mGrenadeExplotionPreviewAreaGO->GetComponent(ComponentType::SCRIPT);
+        ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
+        mGrenadeGO->SetEnabled(false);
+        if (mGrenadeAimAreaGO) mGrenadeAimAreaGO->SetEnabled(false);
+        if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
-    //Animation
-    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
+    // ANIMATION
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
-        mStateMachine = mAnimationComponent->GetStateMachine();
-
-    }
-    if (mStateMachine)
-    {
-        std::string clip = "Character";
-
-        std::string defaultState = "default";
-        std::string sIdle = "Idle";
-        std::string sWalkForward = "Walk Forward";
-        std::string sWalkBack = "Walk Back";
-        std::string sStrafeLeft = "Strafe Left";
-        std::string sStrafeRight = "Strafe Right";
-        std::string sShooting = "Shooting";
-        std::string sMeleeCombo = "MeleeCombo";
-
-        std::string idleTrigger = "tIdle";
-        std::string forwardTrigger = "tWalkForward";
-        std::string backTrigger = "tWalkBack";
-        std::string strafeLeftTrigger = "tStrafeLeft";
-        std::string strafeRightTrigger = "tStrafeRight";
-        std::string shootingTrigger = "tShooting";
-        std::string meleeTrigger = "tMelee";
-
-        mStateMachine->SetClipName(0, clip);
-
-        //States
-        mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(12.4f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(23.14f));
-
-        mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(5.78f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(7.74f));
-
-        mStateMachine->AddState(clip, sWalkBack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkBack), float(7.8f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkBack), float(9.76f));
-
-        mStateMachine->AddState(clip, sStrafeLeft);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeLeft), float(0.0f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeLeft), float(2.86f));
-
-        mStateMachine->AddState(clip, sStrafeRight);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sStrafeRight), float(2.92f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sStrafeRight), float(5.72f));
-
-        mStateMachine->AddState(clip, sShooting);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sShooting), float(9.8f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sShooting), float(12.36f));
-
-        mStateMachine->AddState(clip, sMeleeCombo);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sMeleeCombo), float(23.9f));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sMeleeCombo), float(28.1f));
-
-
-        //Transitions
-        mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
-
-        mStateMachine->AddTransition(sIdle, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sIdle, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sIdle, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sIdle, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sIdle, sShooting, shootingTrigger);
-        mStateMachine->AddTransition(sIdle, sMeleeCombo, meleeTrigger);
-
-        mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sWalkForward, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sWalkForward, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sWalkForward, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkForward, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sWalkBack, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sWalkBack, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sWalkBack, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sWalkBack, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sWalkBack, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sStrafeLeft, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sStrafeRight, strafeRightTrigger);
-        mStateMachine->AddTransition(sStrafeLeft, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sStrafeRight, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sStrafeRight, sMeleeCombo, meleeTrigger);
-
-
-        mStateMachine->AddTransition(sShooting, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sShooting, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sShooting, sWalkBack, backTrigger);
-        mStateMachine->AddTransition(sShooting, sStrafeLeft, strafeLeftTrigger);
-        mStateMachine->AddTransition(sShooting, sStrafeRight, strafeRightTrigger);
-
-        mStateMachine->AddTransition(sMeleeCombo, sIdle, idleTrigger);
-
-        mAnimationComponent->OnStart();
         mAnimationComponent->SetIsPlaying(true);
     }
+
 }
 
 void PlayerController::Update()
@@ -286,7 +190,8 @@ void PlayerController::CheckInput()
         mLowerStateType = type;
         mLowerState->Exit();
 
-        switch (type) {
+        switch (type) 
+        {
             case StateType::DASH:
                 mLowerState = mDashState;
                 break;
@@ -314,7 +219,8 @@ void PlayerController::CheckInput()
         mUpperStateType = type;
         mUpperState->Exit();
 
-        switch (type) {
+        switch (type) 
+        {
             case StateType::AIM:
                 mUpperState = mAimState;
                 break;
@@ -345,17 +251,33 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    // TODO: Not aim on melee state?
+    // TODO: Not aim on melee state? and dash?
 
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetLocalMousePosition());
-    Plane plane(mGameObject->GetPosition(), float3::unitY);
-
-    float distance;
-    if (plane.Intersects(ray, &distance))
+    if (GameManager::GetInstance()->UsingController())
     {
-        mAimPosition = ray.GetPoint(distance);
-        mGameObject->LookAt(mAimPosition);
+        float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+        float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+
+        if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
+
+        float3 position = mGameObject->GetPosition();
+        mAimPosition.x = position.x - rightX;
+        mAimPosition.y = position.y;
+        mAimPosition.z = position.z - rightY;
     }
+    else
+    {
+        Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+        Plane plane(mGameObject->GetPosition(), float3::unitY);
+
+        float distance;
+        if (plane.Intersects(ray, &distance))
+        {
+            mAimPosition = ray.GetPoint(distance);
+        }
+    }
+    
+    mGameObject->LookAt(mAimPosition);
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
@@ -365,10 +287,12 @@ void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 
 void PlayerController::PlayOneShot(std::string name)
 {
-    if (strcmp(name.c_str(), "Step")) {
+    if (strcmp(name.c_str(), "Step")) 
+    {
         mFootStepAudio->PlayOneShot();
     }
-    if (strcmp(name.c_str(), "Shot")) {
+    if (strcmp(name.c_str(), "Shot")) 
+    {
         mGunfireAudio->PlayOneShot();
     }
 }
@@ -387,10 +311,12 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) {
+    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
+    {
         mWeapon = mMeleeWeapon;
     }
-    else {
+    else 
+    {
         mWeapon = mRangeWeapon;
     }
 }
@@ -398,6 +324,50 @@ void PlayerController::SwitchWeapon()
 float3 PlayerController::GetPlayerPosition()
 {
     return  mGameObject->GetPosition(); 
+}
+
+void PlayerController::SetGrenadeVisuals(bool value)
+{
+    mGrenadeAimAreaGO->SetEnabled(value);
+    mGrenadeAimAreaGO->SetScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
+
+    mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
+    mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+}
+
+void PlayerController::UpdateGrenadeVisuals()
+{
+    mGrenadeAimAreaGO->SetPosition(mGameObject->GetPosition());
+
+    float3 diff;
+    if (GameManager::GetInstance()->UsingController())
+    {
+        mGrenadePosition = mGameObject->GetPosition() + mAimPosition * mGrenadeRange;
+    }
+    else
+    {
+        diff = mAimPosition - mGameObject->GetPosition();
+        float distanceSquared = diff.LengthSq();
+        float radiusSquared = mGrenadeRange * mGrenadeRange;
+
+        if (distanceSquared <= radiusSquared)
+        {
+            mGrenadePosition = mAimPosition;
+        }
+        else 
+        {
+            diff.Normalize();
+            mGrenadePosition = mGameObject->GetPosition() + diff * mGrenadeRange;
+        }
+    }
+    
+    mGrenadeExplotionPreviewAreaGO->SetPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
+}
+
+void PlayerController::ThrowGrenade()
+{
+    // TODO wait for thow animation time
+    mGrenade->SetDestination(mGrenadePosition);
 }
 
 bool PlayerController::CanReload() const
@@ -420,14 +390,14 @@ void PlayerController::CheckDebugOptions()
     }
 }
 
-#pragma region Shield
-
 void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield) 
     {
         mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
-        UpdateShield();
+
+        float healthRatio = mShield / mMaxShield;
+        GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
     }
 }
 
@@ -439,21 +409,15 @@ void PlayerController::TakeDamage(float damage)
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
-    UpdateShield();
+
+    float healthRatio = mShield / mMaxShield;
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
 
     if (mShield < 0.0f)
     {
         GameManager::GetInstance()->GameOver();
     }
 }
-
-void PlayerController::UpdateShield()
-{
-    float healthRatio = mShield / mMaxShield;
-    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
-}
-
-#pragma endregion
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
@@ -501,5 +465,3 @@ void PlayerController::UpdateBattleSituation()
         }
     }*/
 }
-
-
