@@ -1,6 +1,11 @@
 #include "EnemyPool.h"
 #include "GameObject.h"
-
+#include "Application.h"
+#include "ModuleScene.h"
+CREATE(EnemyPool) {
+	CLASS(owner);
+	END_CREATE;
+}
 EnemyPool::EnemyPool(GameObject* owner) : Script(owner) {}
 
 EnemyPool::~EnemyPool()
@@ -13,14 +18,31 @@ EnemyPool::~EnemyPool()
 
 void EnemyPool::Start()
 {
-	for (int i = 0; i < mGameObject->GetChildren().size() && i < static_cast<int>(EnemyType::COUNT); ++i)
+	for (int i = 0; i < static_cast<int>(EnemyType::COUNT); ++i)
 	{
-		GameObject* child = mGameObject->GetChildren()[i];
-		mEnemies[i].reserve(child->GetChildren().size());
-		for (GameObject* enemyInstance : child->GetChildren())
+
+		mEnemies[i].reserve(mNumOfEnemies);
+		for (size_t i = 0; i < mNumOfEnemies; i++)
 		{
-			mEnemies[i].push_back(enemyInstance);
+			std::string enemyType = "";
+			switch (static_cast<EnemyType>(i))
+			{
+			case EnemyType::ROBOT_MELEE:
+				enemyType= "Robot_Melee.prfb";
+			case EnemyType::ROBOT_RANGE:
+				enemyType = "Robot_Range.prfb";
+
+			default:
+				break;
+			}
+			GameObject* newEnemy = App->GetScene()->InstantiatePrefab(enemyType.c_str());
+			if (newEnemy) {
+				newEnemy->SetPosition(mGameObject->GetPosition());
+				mEnemies[i].push_back(newEnemy);
+			}
+
 		}
+
 	}
 }
 
@@ -38,4 +60,8 @@ GameObject* EnemyPool::GetEnemy(EnemyType type)
 		}
 	}
 	return nullptr;
+}
+
+GameObject* EnemyPool::CreateEnemyInstance(EnemyType type) {
+
 }

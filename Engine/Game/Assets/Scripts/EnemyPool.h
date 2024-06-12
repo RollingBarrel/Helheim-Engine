@@ -19,5 +19,6 @@ public:
 
 private:
 	std::vector<GameObject*> mEnemies[static_cast<int>(EnemyType::COUNT)];
+	int mNumOfEnemies = 10;
 
 };

@@ -21,11 +21,11 @@ public:
     void Start();
     void Update();
 
-    GameObject* GetPlayer() { return mPlayer; };
-    HudController* GetHud() { return mHudController; };
-    bool UsingController() { return mController; }
-    BattleArea* GetActiveBattleArea() { return mActiveBattleArea; }
-    EnemyPool* GetEnemyPool() { return mEnemyPool; }
+    GameObject* GetPlayer() const { return mPlayer; };
+    HudController* GetHud() const { return mHudController; };
+    bool UsingController() const { return mController; }
+    BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
+    EnemyPool* GetEnemyPool() const { return mEnemyPool; }
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
 

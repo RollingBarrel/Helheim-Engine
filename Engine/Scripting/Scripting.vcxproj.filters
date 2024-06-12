@@ -80,8 +80,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="BattleArea.h" />
-    <ClInclude Include="ActiveBattleAreaController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
       <Filter>Weapons</Filter>
     </ClInclude>
@@ -130,10 +128,11 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="EnemySpawner.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="EnemyPool.h">
+    <ClInclude Include="Grenade.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
       <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>

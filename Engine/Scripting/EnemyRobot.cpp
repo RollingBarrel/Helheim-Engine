@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"
+#include "AnimationComponent.h"
 #include "Physics.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
@@ -34,39 +35,6 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
-void EnemyRobot::Start()
-{
-    Enemy::Start();
-
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
-    }
-
-    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
-    
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-    if (mAnimationComponent)
-    {
-        mStateMachine = mAnimationComponent->GetStateMachine();
-
-    }
-    if (mStateMachine)
-    {
-        std::string clip = "Character";
-
-        std::string defaultState = "default";
-        std::string sIdle = "Idle";
-        std::string sWalkForward = "Walk Forward";
-        std::string sAttack = "Attack";
-       
-
-        std::string idleTrigger = "tIdle";
-        std::string forwardTrigger = "tWalkForward";
-        std::string attackTrigger = "tAttack";
-    
-}
 
 void EnemyRobot::Update()
 {
@@ -90,6 +58,42 @@ void EnemyRobot::Update()
 
     Enemy::Update();
 }
+
+void EnemyRobot::Start()
+{
+    Enemy::Start();
+
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mStateMachine = mAnimationComponent->GetStateMachine();
+
+    }
+    if (mStateMachine)
+    {
+        std::string clip = "Character";
+
+        std::string defaultState = "default";
+        std::string sIdle = "Idle";
+        std::string sWalkForward = "Walk Forward";
+        std::string sAttack = "Attack";
+
+
+        std::string idleTrigger = "tIdle";
+        std::string forwardTrigger = "tWalkForward";
+        std::string attackTrigger = "tAttack";
+
+    }
+}
+
 
 void EnemyRobot::Idle()
 {

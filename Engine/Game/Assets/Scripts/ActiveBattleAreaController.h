@@ -12,7 +12,6 @@ class ActiveBattleAreaController : public Script
 public:
 	ActiveBattleAreaController(GameObject* owner);
 	~ActiveBattleAreaController();
-	void SetActiveBattleArea() const;
 	void Start();
 	void Update();
 	void OnCollisionEnter(CollisionData* collisionData);
