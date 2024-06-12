@@ -31,12 +31,8 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 1608476329,
-                        "DiffuseName": "diffuse_green.tga",
-                        "SpecularID": 2022236665,
-                        "SpecularName": "specular_green.tga",
-                        "NormalID": 1466974184,
-                        "NormalName": "normal.tga"
+                        "DiffuseID": 1455240431,
+                        "DiffuseName": "OB_decal_test_DefaultMaterial_BaseColor.png"
                     }
                 ]
             },

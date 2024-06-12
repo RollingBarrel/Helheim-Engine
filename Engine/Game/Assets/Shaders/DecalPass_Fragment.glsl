@@ -59,8 +59,7 @@ void main()
 	
 	vec3 worldPos = texture(gBufferPositionTex, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
 	vec3 objPos = (invModel*vec4(worldPos, 1.0)).xyz;
-
-	
+	objPos.y *= -1;
 
 	if (abs(objPos.x) > 0.5 || abs(objPos.y) > 0.5 || abs(objPos.z) > 0.5)
 	{

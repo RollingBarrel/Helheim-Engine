@@ -692,14 +692,10 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         DecalComponent* decalComponent = reinterpret_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
         if (decalComponent)
         {
-            //DrawCube(focusGameObject->GetPosition().ptr(), focusGameObject->GetScale().x, focusGameObject->GetScale().y, focusGameObject->GetScale().z, float3(0.8f, 0.8f, 0.8f));
             OBB obb = OBB(AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f)));
             obb.Transform(focusGameObject->GetWorldTransform());
-            //dd::arrow(focusGameObject->GetPosition(), focusGameObject->GetPosition() + focusGameObject->GetFront(), float3(0.5f, 0.5f, 0.5f), 5.0f);
-            //dd::flush();
-            dd::line(focusGameObject->GetPosition(), focusGameObject->GetPosition() - focusGameObject->GetFront(), float3(0.5f, 0.5f, 0.5f), 5.0f);
+            dd::arrow(focusGameObject->GetPosition(), focusGameObject->GetPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
-            
         }
 
         if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
