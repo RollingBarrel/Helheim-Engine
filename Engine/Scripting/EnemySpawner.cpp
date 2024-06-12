@@ -1,5 +1,6 @@
 #include "EnemySpawner.h"
 #include "Application.h"
+//#include "RoomController.h"
 
 EnemySpawner::EnemySpawner(GameObject* owner) : Script(owner) {}
 
@@ -22,9 +23,16 @@ void EnemySpawner::Spawn()
 	{
 		if (mLastSpawnTime >= mSpawnRate && mMaxEnemies > 0)
 		{
-			// Do instantiation from enemy pool
-			mLastSpawnTime = 0.0f;
-			--mMaxEnemies;
+			// Instantiate from enemy pool
+			GameObject* enemy = nullptr; //RoomController->GetEnemyPool()->GetEnemy(mEnemyType);
+			if (enemy)
+			{
+				enemy->SetPosition(mGameObject->GetPosition());
+				enemy->SetEnabled(true);
+
+				mLastSpawnTime = 0.0f;
+				--mMaxEnemies;
+			}
 		}
 	}
 }

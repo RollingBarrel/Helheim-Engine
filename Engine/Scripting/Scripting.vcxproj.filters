@@ -89,9 +89,6 @@
     <ClInclude Include="EnemySpawner.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="RoomController.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="EnemyPool.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -152,9 +149,6 @@
     </ClCompile>
     <ClCompile Include="EnemySpawner.cpp">
       <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="RoomController.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="EnemyPool.cpp">
       <Filter>Enemies</Filter>

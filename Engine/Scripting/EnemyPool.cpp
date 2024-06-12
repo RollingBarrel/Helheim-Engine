@@ -14,13 +14,10 @@ EnemyPool::~EnemyPool()
 
 void EnemyPool::Start()
 {
-	std::vector<Component*> components;
-	mGameObject->GetComponentsInChildren(ComponentType::SCRIPT, components);
-
-	for (Component* component : components)
+	for (int i = 0; i < mGameObject->GetChildren().size() && i < static_cast<int>(EnemyType::COUNT); ++i)
 	{
-		ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(component);
-
+		GameObject* child = mGameObject->GetChildren()[i];
+		mEnemies[i].emplace_back(child->GetChildren());
 	}
 }
 
@@ -30,5 +27,12 @@ void EnemyPool::Update()
 
 GameObject* EnemyPool::GetEnemy(EnemyType type)
 {
+	for (GameObject* enemy : mEnemies[static_cast<int>(type)])
+	{
+		if (!enemy->IsEnabled())
+		{
+			return enemy;
+		}
+	}
 	return nullptr;
 }

@@ -188,7 +188,6 @@
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
     <ClInclude Include="MainMenuManager.h" />
-    <ClInclude Include="RoomController.h" />
     <ClInclude Include="StateMachineTest.h" />
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +211,6 @@
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="RangeWeapon.cpp" />
-    <ClCompile Include="RoomController.cpp" />
     <ClCompile Include="StateMachineTest.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="Weapon.cpp" />

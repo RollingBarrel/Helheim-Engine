@@ -18,6 +18,5 @@ public:
 
 private:
 	std::vector<GameObject*> mEnemies[static_cast<int>(EnemyType::COUNT)];
-	int mPoolCount = 0;
 
 };
