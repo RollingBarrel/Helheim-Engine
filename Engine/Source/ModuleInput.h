@@ -113,6 +113,7 @@ public:
 	float GetGameControllerAxisValue(int id) const;
 	//int	GetGameControllerAxisRaw(int id) const;
 	//int	GetGameControllerAxisInput(int id) const;
+	void SetGameControllerRumble(unsigned int low_freq, unsigned int high_freq, unsigned int time);
 	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
 
 

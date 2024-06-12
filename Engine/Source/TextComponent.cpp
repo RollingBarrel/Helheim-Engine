@@ -19,7 +19,10 @@ TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType
     LoadFont("Assets\\Fonts\\Akshar-Regular.ttf");
     CreateBuffers();
 
-    mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+    GameObject* canvasGO = FindCanvasOnParents(this->GetOwner());
+    if (!canvasGO) return;
+
+    mCanvas = (CanvasComponent*)canvasGO->GetComponent(ComponentType::CANVAS);
 }
 
 TextComponent::TextComponent(const TextComponent& other, GameObject* owner)

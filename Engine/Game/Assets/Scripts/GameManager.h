@@ -23,6 +23,9 @@ public:
     HudController* GetHud() { return mHudController; };
     bool UsingController() { return mController; }
 
+    bool IsPaused() { return mPaused; }
+    void SetPaused(bool value);
+
     void LoadLevel(const char* LevelName);
 
     void Victory();

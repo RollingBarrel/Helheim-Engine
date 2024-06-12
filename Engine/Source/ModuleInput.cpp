@@ -400,3 +400,8 @@ void ModuleInput::HandleGameControllerInput()
 		}
 	}
 }
+
+void ModuleInput::SetGameControllerRumble(unsigned int low_freq, unsigned int high_freq, unsigned int time) 
+{
+	SDL_GameControllerRumble(mGameController.mId, low_freq, high_freq, time); 
+}
