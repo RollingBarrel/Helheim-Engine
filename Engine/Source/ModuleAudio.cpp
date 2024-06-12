@@ -110,31 +110,6 @@ void ModuleAudio::EngineStop()
 	mAudiosSourceList = std::vector<AudioSourceComponent*>();
 }
 
-//int ModuleAudio::Play(FMOD::Studio::EventDescription* eventDescription, float3 audioPosition, const std::unordered_map<std::string, int>& parameters)
-//{
-//	// Create a new instance
-//	FMOD::Studio::EventInstance* eventInstance = nullptr;
-//	eventDescription->createInstance(&eventInstance);
-//
-//	// Play it
-//	StartEvent(eventInstance, audioPosition);
-//
-//	for (const auto& param : parameters)
-//	{
-//		const std::string& paramName = param.first;
-//		int paramValue = param.second;
-//
-//		ChangeEventParameter(eventInstance, paramName, paramValue);
-//	}
-//
-//	
-//	
-//	CheckError(eventDescription->getInstanceCount(&count));
-//
-//	// Return id
-//	return count;
-//}
-
 int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, const int id)
 {
 	// Returns: -1 Continue an audio | else: play new audio 
@@ -203,7 +178,7 @@ void ModuleAudio::GetParameters(const FMOD::Studio::EventDescription* eventDescr
 	}
 }
 
-void ModuleAudio::UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id, const std::string& parameterName, const int parameterValue)
+void ModuleAudio::UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id, const std::string& parameterName, const float parameterValue)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 

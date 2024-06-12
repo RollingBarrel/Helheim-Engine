@@ -33,7 +33,7 @@ public:
 
     // Update parameters
     void UpdateParameterValueByIndex(int index, float value);
-    void UpdateParameterValueByName(const char* name, float value);
+    void UpdateParameterValueByName(const char* name, const float value);
     void SmoothUpdateParameterValueByName(const char* name, float targetValue, float transitionTime);
     void UpdatePosition(float3 position);
 

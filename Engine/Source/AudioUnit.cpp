@@ -98,7 +98,7 @@ void AudioUnit::UpdateParameterValueByIndex(int index, float value)
 	}
 }
 
-void AudioUnit::UpdateParameterValueByName(const char* name, float value)
+void AudioUnit::UpdateParameterValueByName(const char* name, const float value)
 {
 	//mEventInstance->setParameterByName(name, value);
 	App->GetAudio()->UpdateParameter(mEventDescription, mPreviewPlayID, name, value);

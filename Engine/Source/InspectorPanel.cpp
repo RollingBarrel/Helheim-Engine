@@ -1389,7 +1389,7 @@ void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* compon
 	for (auto audioUnit : component->GetAudios())
 	{
 		ImGui::Text("%i : %s",counter, audioUnit->GetName().c_str());
-
+		ImGui::PushID(audioUnit);
 		if (ImGui::Button("Play"))
 		{
 			audioUnit->Play();
@@ -1403,9 +1403,10 @@ void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* compon
 		if (ImGui::Button("Remove"))
 		{
 			component->RemoveAudio(audioUnit);
+			ImGui::PopID();
 			return;
 		}
-
+		
 		ImGui::SameLine();
 		ImGui::Separator();
 		
@@ -1436,6 +1437,7 @@ void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* compon
 				audioUnit->UpdateParameterValueByName(paramName, value);
 			}
 		}
+		ImGui::PopID();
 		counter++;
 		ImGui::Separator();
 	}

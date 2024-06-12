@@ -50,7 +50,7 @@ public:
 	
 	// Update
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
-	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const int parameterValue);
+	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id ,FMOD::Studio::EventInstance* event, float3 eventPosition);
 
 	void AddToAudiosList(AudioSourceComponent* audioSource);
