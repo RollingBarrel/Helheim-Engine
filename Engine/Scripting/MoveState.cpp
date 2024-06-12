@@ -121,32 +121,16 @@ void MoveState::DoAnimation()
         std::string animation;
 
         auto setAnimation = [&](const std::string& up, const std::string& down, const std::string& left, const std::string& right) 
-            {
-                if (mMovingTo.x == 0 && mMovingTo.y == 1) {
-                    animation = up;
-                }
-                else if (mMovingTo.x == 0 && mMovingTo.y == -1) {
-                    animation = down;
-                }
-                else if (mMovingTo.x == 1 && mMovingTo.y == 0) {
-                    animation = right;
-                }
-                else if (mMovingTo.x == -1 && mMovingTo.y == 0) {
-                    animation = left;
-                }
-                else if (mMovingTo.x == 1 && mMovingTo.y == 1) {
-                    animation = up;
-                }
-                else if (mMovingTo.x == -1 && mMovingTo.y == 1) {
-                    animation = up;
-                }
-                else if (mMovingTo.x == 1 && mMovingTo.y == -1) {
-                    animation = down;
-                }
-            else if (mMovingTo.x == -1 && mMovingTo.y == -1) {
-                    animation = down;
-                }
-            };
+        {
+            if (mMovingTo.x == 0 && mMovingTo.y == 1) {animation = up;}
+            else if (mMovingTo.x == 0 && mMovingTo.y == -1) {animation = down;}
+            else if (mMovingTo.x == 1 && mMovingTo.y == 0) {animation = right;}
+            else if (mMovingTo.x == -1 && mMovingTo.y == 0) {animation = left;}
+            else if (mMovingTo.x == 1 && mMovingTo.y == 1) {animation = up;}
+            else if (mMovingTo.x == -1 && mMovingTo.y == 1) {animation = up;}
+            else if (mMovingTo.x == 1 && mMovingTo.y == -1) {animation = down;}
+            else if (mMovingTo.x == -1 && mMovingTo.y == -1) {animation = down;}
+        };
 
         if (mousePosition.z > 0 && mousePosition.x < 0)
         { // Looking UP
