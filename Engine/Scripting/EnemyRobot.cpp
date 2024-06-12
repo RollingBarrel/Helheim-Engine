@@ -53,7 +53,8 @@ void EnemyRobot::Update()
 
     Enemy::Update();
 
-    if (!mBeAttracted) {
+    if (!mBeAttracted) 
+    {
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
@@ -146,7 +147,8 @@ void EnemyRobot::Attack()
         mCurrentState = EnemyState::CHASE;
         mTimerDisengage = 0.0f;
     }
-    else if (!playerInRange) {
+    else if (!playerInRange) 
+    {
         mTimerDisengage += App->GetDt();
     }
 
@@ -180,7 +182,8 @@ void EnemyRobot::MeleeAttack()
 
         mTimerAttack = 0.0f;
     }
-    else {
+    else 
+    {
         mTimerAttack += App->GetDt();
     }
 }

@@ -48,7 +48,8 @@ HudController::~HudController()
 
 void HudController::Start()
 {
-    if (mPauseScreen) {
+    if (mPauseScreen) 
+    {
         mPauseScreen->SetEnabled(false);
         if (mContinueBtnGO)
         {
