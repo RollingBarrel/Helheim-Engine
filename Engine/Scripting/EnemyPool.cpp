@@ -16,7 +16,11 @@ void EnemyPool::Start()
 	for (int i = 0; i < mGameObject->GetChildren().size() && i < static_cast<int>(EnemyType::COUNT); ++i)
 	{
 		GameObject* child = mGameObject->GetChildren()[i];
-		mEnemies[i].emplace_back(child->GetChildren());
+		mEnemies[i].reserve(child->GetChildren().size());
+		for (GameObject* enemyInstance : child->GetChildren())
+		{
+			mEnemies[i].push_back(enemyInstance);
+		}
 	}
 }
 
