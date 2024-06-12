@@ -95,6 +95,11 @@ bool Enemy::IsMoving()
     return false;
 }
 
+void Enemy::Reset()
+{
+    mHealth = mMaxHealth;
+}
+
 void Enemy::DropShield()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));

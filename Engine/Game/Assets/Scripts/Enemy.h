@@ -26,6 +26,7 @@ class Enemy : public Script
 		virtual void Death();
 		virtual void PushBack();
 		virtual bool IsMoving();
+		virtual void Reset();
 
 		virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 

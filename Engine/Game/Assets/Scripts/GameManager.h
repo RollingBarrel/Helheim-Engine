@@ -5,6 +5,8 @@
 class ButtonComponent;
 class HudController;
 class BattleArea;
+class EnemyPool;
+
 GENERATE_BODY(GameManager);
 class GameManager : public Script
 {
@@ -22,6 +24,7 @@ public:
     GameObject* GetPlayer() const { return mPlayer; };
     HudController* GetHud() const { return mHudController; };
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
+    EnemyPool* GetEnemyPool() const { return mEnemyPool; }
     
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
@@ -38,6 +41,7 @@ private:
     GameObject* mHudControllerGO = nullptr;
 
     BattleArea* mActiveBattleArea = nullptr;
+    EnemyPool* mEnemyPool = nullptr;
     HudController* mHudController = nullptr;
 
     bool mPaused = false;

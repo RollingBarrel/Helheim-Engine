@@ -8,6 +8,7 @@
 GENERATE_BODY(EnemyPool);
 class EnemyPool : public Script
 {
+	FRIEND(EnemyPool)
 public:
 	EnemyPool(GameObject* owner);
 	~EnemyPool();

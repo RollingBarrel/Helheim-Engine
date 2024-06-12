@@ -1,6 +1,5 @@
 #include "EnemyPool.h"
 #include "GameObject.h"
-#include "ScriptComponent.h"
 
 EnemyPool::EnemyPool(GameObject* owner) : Script(owner) {}
 
