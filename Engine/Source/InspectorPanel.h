@@ -26,6 +26,7 @@ class BoxColliderComponent;
 class TrailComponent;
 class BezierCurve;
 class DecalComponent;
+class RandomFloat;
 
 
 class InspectorPanel : public Panel
