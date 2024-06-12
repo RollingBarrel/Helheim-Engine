@@ -7,6 +7,13 @@ class NavMeshController;
 class AnimationComponent;
 class AIAgentComponent;
 
+enum class EnemyType : int
+{
+	ROBOT_MELEE = 0,
+	ROBOT_RANGE,
+	COUNT
+};
+
 class Enemy : public Script
 {
 	public:

@@ -198,6 +198,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="ActiveBattleAreaController.h" />
     <ClInclude Include="BattleArea.h" />
+    <ClInclude Include="EnemyPool.h" />
+    <ClInclude Include="EnemySpawner.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="StateMachineTest.h" />
@@ -212,7 +214,9 @@
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
+    <ClCompile Include="EnemyPool.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
+    <ClCompile Include="EnemySpawner.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GrenadeState.cpp" />
     <ClCompile Include="HudController.cpp" />
