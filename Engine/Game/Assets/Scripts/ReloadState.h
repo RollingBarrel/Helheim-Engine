@@ -15,9 +15,10 @@ public:
 
 	StateType GetType() override;
 
+private:
+
 	void PlayAudio() override;
 
-private:
 	float mReloadTimer = 0;
 	bool mReloaded = false;
 };
