@@ -22,6 +22,7 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "TextComponent.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -414,7 +415,8 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::TRAIL:
 		newComponent = new TrailComponent(this);
 		break;
-
+	case ComponentType::TEXT:
+		newComponent = new TextComponent(this);
 	default:
 		break;
 	}

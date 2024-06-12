@@ -6,17 +6,6 @@
 #include "GameObject.h"
 #include "Transform2DComponent.h"
 
-SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(owner, ComponentType::SLIDER)
-{
-	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
-}
-
-SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
-{
-	mValue = original.mValue;
-	mCanvas = original.mCanvas;
-}
-
 SliderComponent::SliderComponent(GameObject* owner) : Component(owner, ComponentType::SLIDER)
 {
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
@@ -53,6 +42,16 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	}
 }
 
+SliderComponent::SliderComponent(const SliderComponent& original, GameObject* owner) : Component(owner, ComponentType::SLIDER)
+{
+	mValue = original.mValue;
+	mCanvas = original.mCanvas;
+}
+
+SliderComponent:: ~SliderComponent()
+{
+}
+
 void SliderComponent::SetValue(float fillPercent)
 {
 	if (mFillTransform2D == nullptr) mFillTransform2D = (Transform2DComponent*)mFill->GetComponent(ComponentType::TRANSFORM2D);
@@ -86,10 +85,6 @@ void SliderComponent::Save(JsonObject& obj) const
 void SliderComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	Component::Load(data, uidPointerMap);
-}
-
-SliderComponent:: ~SliderComponent()
-{
 }
 
 Component* SliderComponent::Clone(GameObject* origin) const

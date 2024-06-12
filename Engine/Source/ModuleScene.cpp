@@ -1,6 +1,4 @@
 #include "ModuleScene.h"
-#pragma once
-#include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
 #include "Application.h"
@@ -502,6 +500,9 @@ void ModuleScene::NewScene()
 {
 	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
+	mGameObjectsByTags.clear();
+	mSceneGO.clear();
+
 	delete mRoot;
 	mRoot = new GameObject("Untlitled", nullptr);
 }

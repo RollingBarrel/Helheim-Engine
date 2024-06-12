@@ -71,7 +71,7 @@ void Transform2DComponent::Load(const JsonObject& data, const std::unordered_map
 
 	float rot[4];
 	data.GetFloats("Rotation", rot);
-	mRotation = Quat(pos);
+	mRotation = Quat(rot);
 
 	float size[2];
 	data.GetFloats("Size", size);
@@ -96,7 +96,10 @@ void Transform2DComponent::CalculateMatrices()
 {
 	mLocalMatrix = float4x4::FromTRS(mPosition, mRotation, float3(mSize, 1.0f));
 
-	CanvasComponent* canvas = (CanvasComponent*)FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS);
+	GameObject* canvasGO = FindCanvasOnParents(this->GetOwner());
+	if (!canvasGO) return;
+
+	CanvasComponent* canvas = (CanvasComponent*)canvasGO->GetComponent(ComponentType::CANVAS);
 	float2 canvasSize = canvas ? canvas->GetSize() : float2(1.0f, 1.0f); // Default to 1.0f if canvas size is not found
 
 	GameObject* parent = GetOwner()->GetParent();
