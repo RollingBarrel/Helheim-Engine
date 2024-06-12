@@ -20,6 +20,7 @@ mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveNa
 
 DecalComponent::~DecalComponent()
 {
+	Reset();
 }
 
 unsigned int DecalComponent::GetDiffuseId() const
@@ -61,15 +62,23 @@ unsigned int DecalComponent::GetEmisiveId() const
 void DecalComponent::Reset()
 {
 	mDiffuseName = "";
+	if (mDiffuseTexture)
+		App->GetResource()->ReleaseResource(mDiffuseTexture->GetUID());
 	mDiffuseTexture = nullptr;
 
 	mSpecularName = "";
+	if (mSpecularTexture)
+		App->GetResource()->ReleaseResource(mSpecularTexture->GetUID());
 	mSpecularTexture = nullptr;
 
 	mNormalName = "";
+	if (mNormalTexture)
+		App->GetResource()->ReleaseResource(mNormalTexture->GetUID());
 	mNormalTexture = nullptr;
 
 	mEmisiveName = "";
+	if (mEmisiveTexture)
+		App->GetResource()->ReleaseResource(mEmisiveTexture->GetUID());
 	mEmisiveTexture = nullptr;
 }
 

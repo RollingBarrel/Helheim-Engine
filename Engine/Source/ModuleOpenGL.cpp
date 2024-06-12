@@ -1194,8 +1194,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
 
-	float4x4 viewMatrix = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
-	glUniformMatrix4fv(15, 1, GL_TRUE, viewMatrix.ptr());
+	float4x4 invView = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
+	glUniformMatrix4fv(15, 1, GL_TRUE, invView.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
@@ -1229,16 +1229,16 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		glDrawBuffers(numberOfChannels, channels);
 
 		
-		glActiveTexture(GL_TEXTURE7);
+		glActiveTexture(GL_TEXTURE5);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
 
-		glActiveTexture(GL_TEXTURE8);
+		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
 
-		glActiveTexture(GL_TEXTURE9);
+		glActiveTexture(GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
 
-		glActiveTexture(GL_TEXTURE10);
+		glActiveTexture(GL_TEXTURE8);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetEmisiveId());
 
 		glUniform1i(11, mDecalComponents[i]->HasDiffuse());

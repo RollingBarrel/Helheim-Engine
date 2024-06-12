@@ -19,10 +19,10 @@ layout(binding = 3)uniform sampler2D gBufferPositionTex;
 layout(binding = 4)uniform sampler2D gBufferEmisiveTex;
 
 
-layout(binding = 7)uniform sampler2D decalDiffuseTex;
-layout(binding = 8)uniform sampler2D decalSpecularTex;
-layout(binding = 9)uniform sampler2D decalNormalTex;
-layout(binding = 10)uniform sampler2D decalEmisiveTex;
+layout(binding = 5)uniform sampler2D decalDiffuseTex;
+layout(binding = 6)uniform sampler2D decalSpecularTex;
+layout(binding = 7)uniform sampler2D decalNormalTex;
+layout(binding = 8)uniform sampler2D decalEmisiveTex;
 
 
 layout(location = 11) uniform bool hasDiffuse;
