@@ -116,7 +116,7 @@ void MoveState::DoAnimation()
     {
         mMoveDirection.Normalize();
         float2 mMovingTo = SetMovingDirection();
-        float3 mousePosition = mPlayerController->GetPlayerAimPosition();
+        float3 mousePosition = (mPlayerController->GetPlayerAimPosition()-mPlayerController->GetPlayerPosition()).Normalized();
         //LOG("x:%f , y:%f", mMovingTo.x, mMovingTo.y);
         std::string animation;
 
@@ -154,7 +154,7 @@ void MoveState::DoAnimation()
         }
         else if (mousePosition.z < 0 && mousePosition.x > 0)
         { // Looking DOWN
-            setAnimation("tWalkBack", "tWalkForward", "tStrafeRight", "tStrafeLeft");
+           setAnimation("tWalkBack", "tWalkForward", "tStrafeRight", "tStrafeLeft");
         }
         else if (mousePosition.x > 0 && mousePosition.z > 0)
         { // Looking LEFT
