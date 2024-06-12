@@ -16,21 +16,23 @@
 CREATE(MainMenu)
 {
     CLASS(owner);
-    SEPARATOR("STATS");
-    MEMBER(MemberType::BOOL, mMenuActive);
-    MEMBER(MemberType::BOOL, mPauseMenu);
+    SEPARATOR("SCRIPTS");
     MEMBER(MemberType::GAMEOBJECT, mMainMenuManagerHolder);
+
     SEPARATOR("MENUS");
+    MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
+    MEMBER(MemberType::GAMEOBJECT, mStudioScreen);
+    MEMBER(MemberType::GAMEOBJECT, mEngineScreen);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+
     MEMBER(MemberType::GAMEOBJECT, mMainMenu);
     MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
     MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
-    MEMBER(MemberType::GAMEOBJECT, mLoadingMenu);
-    MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
-    MEMBER(MemberType::GAMEOBJECT, mContainerGO);
-    MEMBER(MemberType::GAMEOBJECT, mOptionsContainerGO);
+
+    //MEMBER(MemberType::GAMEOBJECT, mContainerGO);
+    //MEMBER(MemberType::GAMEOBJECT, mOptionsContainerGO);
     SEPARATOR("BUTTONS");
-    MEMBER(MemberType::GAMEOBJECT, mSplashGO);
-    MEMBER(MemberType::GAMEOBJECT, mNewGO);
+    MEMBER(MemberType::GAMEOBJECT, mPlayGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
     MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
     MEMBER(MemberType::GAMEOBJECT, mQuitGO);
@@ -48,26 +50,26 @@ void MainMenu::Start()
         mMainMenuManager = (MainMenuManager*)script->GetScriptInstance();
     }
 
-    mSplashButton = static_cast<ButtonComponent*>(mSplashGO->GetComponent(ComponentType::BUTTON));
-    mNewButton = static_cast<ButtonComponent*>(mNewGO->GetComponent(ComponentType::BUTTON));
+    mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
+    mPlayButton = static_cast<ButtonComponent*>(mPlayGO->GetComponent(ComponentType::BUTTON));
     mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
     mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
     mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
     mBackCreditButton = static_cast<ButtonComponent*>(mBackCreditGO->GetComponent(ComponentType::BUTTON));
 
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
-    mNewButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnNewButtonClick, this)));
+    mPlayButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnNewButtonClick, this)));
     mOptionsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonClick, this)));
     mCreditsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonClick, this)));
     mQuitButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonClick, this)));
     mBackCreditButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMainButtonClick, this)));
 
-    mNewButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnNewButtonHover, this)));
+    mPlayButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnPlayButtonHover, this)));
     mOptionsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHover, this)));
     mCreditsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHover, this)));
     mQuitButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHover, this)));
 
-    mNewButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnNewButtonHoverOff, this)));
+    mPlayButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnPlayButtonHoverOff, this)));
     mOptionsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHoverOff, this)));
     mCreditsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHoverOff, this)));
     mQuitButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHoverOff, this)));
@@ -79,7 +81,7 @@ void MainMenu::Update()
 {
     if (mLoadlevel == true && Delay(0.1f)) 
     {
-        App->GetScene()->Load("Level1");
+        App->GetScene()->Load("Level1Scene");
     }
     
     /*int mouseWheelDelta = GetMouseWheelDelta();
@@ -156,35 +158,44 @@ void MainMenu::Controls()
 
 void MainMenu::OpenMenu(MENU_TYPE type) 
 {
+    mEngineScreen->SetEnabled(false);
+    mStudioScreen->SetEnabled(false);
+    mSplashScreen->SetEnabled(false);
+    mLoadingScreen->SetEnabled(false);
 
     mMainMenu->SetEnabled(false);
     mOptionsMenu->SetEnabled(false);
     mCreditsMenu->SetEnabled(false);
-    mLoadingMenu->SetEnabled(false);
-    mSplashScreen->SetEnabled(false);
-    mContainerGO->SetEnabled(false);
-    mBackCreditGO->SetEnabled(false);
-    mOptionsContainerGO->SetEnabled(false);
+
+    //mBackCreditGO->SetEnabled(false);
+    //mContainerGO->SetEnabled(false);
+    //mOptionsContainerGO->SetEnabled(false);
 
     switch (type) 
     {
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
-            mContainerGO->SetEnabled(true);
+            //mContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
-            mContainerGO->SetEnabled(true);
+            //mContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
-            mBackCreditGO->SetEnabled(true);
+            //mBackCreditGO->SetEnabled(true);
             break;
         case MENU_TYPE::LOADING:
-            mLoadingMenu->SetEnabled(true);
+            mLoadingScreen->SetEnabled(true);
             break;
         case MENU_TYPE::SPLASH:
             mSplashScreen->SetEnabled(true);
+            break;
+        case MENU_TYPE::ENGINE:
+            mEngineScreen->SetEnabled(true);
+            break;
+        case MENU_TYPE::STUDIO:
+            mStudioScreen->SetEnabled(true);
             break;
     }
 }
@@ -248,7 +259,7 @@ void MainMenu::OnNewButtonClick()
 
 void MainMenu::OnSplashButtonClick() 
 {
-    OnNewButtonHover();
+    OnPlayButtonHover();
     mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
 }
@@ -265,7 +276,7 @@ void MainMenu::HoverMenu(MENU_TYPE type)
 
     switch (type) {
     case MENU_TYPE::MAIN:
-        OnNewButtonHover();
+        OnPlayButtonHover();
         break;
     case MENU_TYPE::OPTIONS:
         OnOptionsButtonHover();
@@ -292,7 +303,7 @@ void MainMenu::OnQuitButtonHover()
 
     // Set the other hovers off (integration mouse/click)
     OnCreditsButtonHoverOff();
-    OnNewButtonHoverOff();
+    OnPlayButtonHoverOff();
     OnOptionsButtonHoverOff();
 }
 
@@ -314,7 +325,7 @@ void MainMenu::OnOptionsButtonHover()
 
     // Set the other hovers off (integration mouse/click)
     OnCreditsButtonHoverOff();
-    OnNewButtonHoverOff();
+    OnPlayButtonHoverOff();
     OnQuitButtonHoverOff();
 }
 
@@ -335,7 +346,7 @@ void MainMenu::OnCreditsButtonHover()
     mOption = 2;
 
     // Set the other hovers off (integration mouse/click)
-    OnNewButtonHoverOff();
+    OnPlayButtonHoverOff();
     OnOptionsButtonHoverOff();
     OnQuitButtonHoverOff();
 }
@@ -346,13 +357,13 @@ void MainMenu::OnCreditsButtonHoverOff()
     image->SetColor(float3(1, 1, 1));
 }
 
-void MainMenu::OnNewButtonHover() 
+void MainMenu::OnPlayButtonHover()
 {
     if (mOption != 0)
     {
         mMainMenuManager->PlaySelectSFX();
     }
-    ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(0.8f, 0.8f, 0.8f));
     mOption = 0;
 
@@ -362,9 +373,9 @@ void MainMenu::OnNewButtonHover()
     OnQuitButtonHoverOff();
 }
 
-void MainMenu::OnNewButtonHoverOff() 
+void MainMenu::OnPlayButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNewGO->GetComponent(ComponentType::IMAGE));
+    ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
     image->SetColor(float3(1, 1, 1));
 }
 
