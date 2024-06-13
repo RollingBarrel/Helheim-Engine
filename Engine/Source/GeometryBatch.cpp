@@ -600,7 +600,6 @@ void GeometryBatch::ComputeSkinning(const MeshRendererComponent& cMesh)
 {
 	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh.GetID()];
 	const ResourceMesh* rMesh = cMesh.GetResourceMesh();
-	const unsigned int idx = mDrawCount % NUM_BUFFERS;
 	if (cMesh.HasSkinning())
 	{
 		glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
