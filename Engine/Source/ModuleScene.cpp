@@ -255,6 +255,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		mRoot->RecalculateMatrices();
 		mQuadtreeRoot->UpdateTree();
+		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
