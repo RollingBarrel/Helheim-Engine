@@ -54,7 +54,7 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    DropShield();
+    DropItem();
 }
 
 void Enemy::AddFootStepAudio(GameObject* audio)
@@ -96,7 +96,7 @@ bool Enemy::IsMoving()
     return false;
 }
 
-void Enemy::DropShield()
+void Enemy::DropItem()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;

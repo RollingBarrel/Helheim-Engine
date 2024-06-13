@@ -3,17 +3,17 @@
 #include "Macros.h"
 #include "GameObject.h"
 
-GENERATE_BODY(ItemShield);
+GENERATE_BODY(ItemDrop);
 
 class AnimationComponent;
 
-class ItemShield : public Script
+class ItemDrop : public Script
 {
-    FRIEND(ItemShield)
+    FRIEND(ItemDrop)
 
 public:
-    ItemShield(GameObject* owner);
-    ~ItemShield() {}
+    ItemDrop(GameObject* owner);
+    ~ItemDrop() {}
     void Start() override;
     void Update() override;
     

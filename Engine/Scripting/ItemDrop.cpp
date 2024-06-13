@@ -1,4 +1,4 @@
-#include "ItemShield.h"
+#include "ItemDrop.h"
 #include "PlayerController.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -7,7 +7,7 @@
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
 
-CREATE(ItemShield)
+CREATE(ItemDrop)
 {
 	CLASS(owner);
 
@@ -17,9 +17,9 @@ CREATE(ItemShield)
 	END_CREATE;
 }
 
-ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
+ItemDrop::ItemDrop(GameObject* owner) : Script(owner) {}
 
-void ItemShield::Start()
+void ItemDrop::Start()
 {
     ModuleScene* scene = App->GetScene();
     mPlayer = GameManager::GetInstance()->GetPlayer();
@@ -41,7 +41,7 @@ void ItemShield::Start()
     
 }
 
-void ItemShield::Update()
+void ItemDrop::Update()
 {
     if (IsPlayerInRange(mActivationRange))
     {
@@ -55,7 +55,7 @@ void ItemShield::Update()
     }
 }
 
-bool ItemShield::IsPlayerInRange(float range)
+bool ItemDrop::IsPlayerInRange(float range)
 {
     float distance = 0.0f;
     distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;
