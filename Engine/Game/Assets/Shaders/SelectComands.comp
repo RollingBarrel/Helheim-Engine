@@ -40,10 +40,12 @@ void main()
     {
 		Box obb;
 		for(uint i = 0; i<8; ++i)
+		{
 			obb.points[i] =  (models[gl_GlobalInvocationID.x] * vec4(OBBs[gl_GlobalInvocationID.x].points[i], 1.0)).xyz;
-		uint outPoint = 0;
+		}
 		for(uint i = 0; i<6; ++i)
 		{
+			uint outPoint = 0;
 			for(uint k = 0; k<8; ++k)
 			{
 				Plane currPlane = fPlanes[i];
