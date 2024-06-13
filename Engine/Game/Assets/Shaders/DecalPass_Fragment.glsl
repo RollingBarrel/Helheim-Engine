@@ -1,9 +1,9 @@
 #version 460 core
 
-layout(location = 0) out vec3 outDiffuse;
+layout(location = 0) out vec4 outDiffuse;
 layout(location = 1) out vec4 outSpecularRough;
-layout(location = 2) out vec3 outNormal;
-layout(location = 3) out vec3 outEmissive;
+layout(location = 2) out vec4 outNormal;
+layout(location = 3) out vec4 outEmissive;
 
 layout(std140, binding = 0) uniform CameraMatrices{
 	mat4 view;
@@ -68,26 +68,31 @@ void main()
 
 		if (diffuseDecalColor.w < 0.1)
 		{
-			discard;
+			//discard;
 		}
-		outDiffuse = pow(diffuseDecalColor.rgb,vec3(2.2));
+		outDiffuse.rgb = pow(diffuseDecalColor.rgb,vec3(2.2));
+
+		outDiffuse.w = 1.0;
 	}
 	
 	if (hasSpecular)
 	{
 		vec4 specTex = texture(decalSpecularTex, objPos.xy+0.5);
 		outSpecularRough = pow(specTex, vec4(2.2));
+		outSpecularRough.w = 1.0f;
 	}
 	
 	if (hasEmisive)
 	{
 		vec3 emissiveTex = texture(decalEmisiveTex, objPos.xy+0.5).rgb * emisiveColor;
-		outEmissive = pow(emissiveTex, vec3(2.2));
+		outEmissive.rgb = pow(emissiveTex, vec3(2.2));
+		outEmissive.w = 1.0;
 	}
 
 	if (hasNormal)
 	{
-		outNormal = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0))*0.5+0.5;
+		outNormal.rgb = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0))*0.5+0.5;
+		outNormal.w = 1.0;
 		//outNormal = normal *0.5+0.5;
 	}
 

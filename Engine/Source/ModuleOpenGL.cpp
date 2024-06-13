@@ -1170,13 +1170,14 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	mBatchManager.Draw();
 	glPopDebugGroup();
 
-	//Decal Pass //TODO: USE ALWAYS ALL CHANNELS AND THE OUTPUT SHOULD BE THE ACTUAL CHANNEL COLOR IF THERE SI NO DECAL TEXTURE
+	
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
 
-
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
@@ -1247,6 +1248,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	}
 	glDepthMask(0xFF);
 	glEnable(GL_STENCIL_TEST);
+	glDisable(GL_BLEND);
 
 	glBindVertexArray(0);
 	glUseProgram(0);
