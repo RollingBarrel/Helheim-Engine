@@ -128,6 +128,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -219,5 +220,6 @@
     <ClCompile Include="HudController.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Sanity.cpp" />
   </ItemGroup>
 </Project>
