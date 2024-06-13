@@ -25,8 +25,12 @@ layout(location = 12) uniform bool hasSpecular;
 layout(location = 13) uniform bool hasNormal;
 layout(location = 14) uniform bool hasEmisive;
 
-layout(location = 15)uniform mat4 invView;
+layout(location = 15) uniform mat4 invView;
 layout(location = 16) uniform mat4 invModel;
+
+
+layout(location = 45) uniform vec4 diffuseColor;
+layout(location = 46) uniform vec3 emisiveColor;
 
 in vec4 clipping;
 
@@ -60,7 +64,7 @@ void main()
 
 	if (hasDiffuse)
 	{
-		vec4 diffuseDecalColor = texture(decalDiffuseTex, objPos.xy+0.5);
+		vec4 diffuseDecalColor = texture(decalDiffuseTex, objPos.xy+0.5) * diffuseColor;
 
 		if (diffuseDecalColor.w < 0.1)
 		{
@@ -77,7 +81,7 @@ void main()
 	
 	if (hasEmisive)
 	{
-		vec3 emissiveTex = texture(decalEmisiveTex, objPos.xy+0.5).rgb;
+		vec3 emissiveTex = texture(decalEmisiveTex, objPos.xy+0.5).rgb * emisiveColor;
 		outEmissive = pow(emissiveTex, vec3(2.2));
 	}
 

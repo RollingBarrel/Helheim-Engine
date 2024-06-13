@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "float4.h"
 #include <string>
 
 class ResourceTexture;
@@ -26,6 +27,10 @@ public:
 	bool HasNormal() const { return mNormalTexture; };
 	bool HasEmisive() const { return mEmisiveTexture; };
 
+	const float4& GetDiffuseColor() const { return mDiffuseColor; }
+	const float4& GetEmisiveColor() const { return mEmisiveColor; }
+
+
 	void Reset() override;
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
@@ -41,6 +46,9 @@ private:
 	ResourceTexture* mSpecularTexture = nullptr;
 	ResourceTexture* mNormalTexture = nullptr;
 	ResourceTexture* mEmisiveTexture = nullptr;
+
+	float4 mDiffuseColor;
+	float4 mEmisiveColor;
 
 	std::string mDiffuseName = "";
 	std::string mSpecularName = "";

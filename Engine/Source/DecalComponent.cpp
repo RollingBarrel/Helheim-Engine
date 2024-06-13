@@ -9,11 +9,15 @@
 DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentType::DECAL)
 {
 	App->GetOpenGL()->AddDecal(*this);
+
+	mDiffuseColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	mEmisiveColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
 DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL), 
 mDiffuseName(other.mDiffuseName), mDiffuseTexture(other.mDiffuseTexture), mSpecularName(other.mSpecularName), mSpecularTexture(other.mSpecularTexture),
-mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveName(other.mEmisiveName), mEmisiveTexture(other.mEmisiveTexture)
+mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveName(other.mEmisiveName), mEmisiveTexture(other.mEmisiveTexture),
+mDiffuseColor(other.mDiffuseColor), mEmisiveColor(other.mEmisiveColor)
 {
 	App->GetOpenGL()->AddDecal(*this);
 }
@@ -81,6 +85,10 @@ void DecalComponent::Reset()
 	if (mEmisiveTexture)
 		App->GetResource()->ReleaseResource(mEmisiveTexture->GetUID());
 	mEmisiveTexture = nullptr;
+
+	mDiffuseColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	mEmisiveColor = { 1.0f, 1.0f, 1.0f, 1.0f };
+	
 }
 
 void DecalComponent::Update()
@@ -100,6 +108,7 @@ void DecalComponent::Save(JsonObject& obj) const
 	{
 		obj.AddInt("DiffuseID", mDiffuseTexture->GetUID());
 		obj.AddString("DiffuseName", mDiffuseName.c_str());
+		obj.AddFloats("DiffuseColor", mDiffuseColor.ptr(), 4);
 	}
 	
 	if (mSpecularTexture)
@@ -118,7 +127,9 @@ void DecalComponent::Save(JsonObject& obj) const
 	{
 		obj.AddInt("EmisiveID", mEmisiveTexture->GetUID());
 		obj.AddString("EmisiveName", mEmisiveName.c_str());
+		obj.AddFloats("EmisiveColor", mEmisiveColor.ptr(), 4);
 	}
+
 }
 
 void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -129,40 +140,33 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	{
 		mDiffuseTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("DiffuseID"), Resource::Type::Texture);
 		mDiffuseTexture->GenerateMipmaps();
-		if (data.HasMember("DiffuseName"))
-		{
-			mDiffuseName = data.GetString("DiffuseName");
-		}
+		mDiffuseName = data.GetString("DiffuseName");
+		data.GetFloats("DiffuseColor", mDiffuseColor.ptr());
+		
 	}
 	
 	if (data.HasMember("SpecularID"))
 	{
 		mSpecularTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("SpecularID"), Resource::Type::Texture);
 		mSpecularTexture->GenerateMipmaps();
-		if (data.HasMember("SpecularName"))
-		{
-			mSpecularName = data.GetString("SpecularName");
-		}
+		mSpecularName = data.GetString("SpecularName");
+		
 	}
 	
 	if (data.HasMember("NormalID"))
 	{
 		mNormalTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("NormalID"), Resource::Type::Texture);
 		mNormalTexture->GenerateMipmaps();
-		if (data.HasMember("NormalName"))
-		{
-			mNormalName = data.GetString("NormalName");
-		}
+		mNormalName = data.GetString("NormalName");
+		
 	}
 
 	if (data.HasMember("EmisiveID"))
 	{
 		mEmisiveTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("EmisiveID"), Resource::Type::Texture);
 		mEmisiveTexture->GenerateMipmaps();
-		if (data.HasMember("EmisiveName"))
-		{
-			mEmisiveName = data.GetString("EmisiveName");
-		}
+		mEmisiveName = data.GetString("EmisiveName");
+		data.GetFloats("EmisiveColor", mEmisiveColor.ptr());
 	}
 	
 }

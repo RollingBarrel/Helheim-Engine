@@ -1903,6 +1903,7 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 	ResourceTexture** textures[4] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture, &component->mEmisiveTexture };
 	std::string* fileNames[4] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName, &component->mEmisiveName };
 	const char* names[4] = { "Diffuse Texture", "Specular Texture", "Normal Map", "Emisive Texture"};
+	float4* colors[4] = { &component->mDiffuseColor, nullptr, nullptr, &component->mEmisiveColor };
 
 	if (ImGui::BeginTable("1", 2, ImGuiTableFlags_BordersInnerV))
 	{
@@ -1918,9 +1919,11 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 			{
 				ImTextureID imageID = (void*)(intptr_t)(*textures[i])->GetOpenGLId();
 				ImGui::Image(imageID, ImVec2(imageSize, imageSize));
-
-				//ImGui::SameLine();
-				
+		
+				if (colors[i])
+				{
+					ImGui::ColorEdit4(names[i], colors[i]->ptr(), ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoInputs);
+				}
 
 				ImGui::TableNextColumn();
 				if (!(*fileNames[i]).empty())
@@ -1932,11 +1935,13 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 					ImGui::Text("Width:%dpx", (*textures[i])->GetWidth());
 					ImGui::Text("Height:%dpx", (*textures[i])->GetHeight());
 				}
+				ImGui::PushID(i);
 				if (ImGui::Button(ICON_FA_TRASH_CAN))
 				{
 					App->GetResource()->ReleaseResource((*textures[i])->GetUID());
 					*textures[i] = nullptr;
 				}
+				ImGui::PopID();
 			}
 			else
 			{
@@ -1963,6 +1968,7 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 				}
 				ImGui::EndDragDropTarget();
 			}
+
 		}
 
 		ImGui::EndTable();

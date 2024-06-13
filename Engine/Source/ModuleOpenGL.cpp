@@ -1236,6 +1236,12 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		glUniformMatrix4fv(16, 1, GL_TRUE, inverseModel.ptr());
 		
 
+		float4 diffuseColor = mDecalComponents[i]->GetDiffuseColor();
+		float4 emisiveColor = mDecalComponents[i]->GetEmisiveColor();
+
+		glUniform4f(45, diffuseColor.x, diffuseColor.y, diffuseColor.z, diffuseColor.w);
+		glUniform3f(46, emisiveColor.x, emisiveColor.y, emisiveColor.z);
+
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
