@@ -52,6 +52,7 @@ public:
     float3 GetPlayerPosition();
    
     void SetAnimation(std::string trigger, float transitionTime);
+    void SetSpineAnimation(std::string trigger, float transitionTime);
     void PlayOneShot(std::string name);
 
     void MoveToPosition(float3 position);

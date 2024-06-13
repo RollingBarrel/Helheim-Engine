@@ -29,6 +29,8 @@ void AttackState::Update()
 
 void AttackState::Enter()
 {
+    //TODO: Different states and animations depending on the weapon
+    mPlayerController->SetSpineAnimation("tAttack", 0.1f);
 }
 
 void AttackState::Exit()

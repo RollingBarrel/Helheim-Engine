@@ -285,6 +285,11 @@ void PlayerController::SetAnimation(std::string trigger, float transitionTime)
     mAnimationComponent->SendTrigger(trigger, transitionTime);
 }
 
+void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
+{
+    mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
+}
+
 void PlayerController::PlayOneShot(std::string name)
 {
     if (strcmp(name.c_str(), "Step")) 

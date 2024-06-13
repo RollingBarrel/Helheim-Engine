@@ -36,6 +36,8 @@ void ReloadState::Update()
 
 void ReloadState::Enter()
 {
+	mPlayerController->SetSpineAnimation("tReload", 0.1f);
+
 	mReloadTimer = 0;
 	mReloaded = false;
 }

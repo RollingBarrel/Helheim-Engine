@@ -17,9 +17,8 @@ SwitchState::~SwitchState()
 
 StateType SwitchState::HandleInput()
 {
+	//TODO: Should not be immediate
 	return StateType::AIM;
-
-	//return State::HandleInput();
 }
 
 void SwitchState::Update()
@@ -30,6 +29,7 @@ void SwitchState::Update()
 
 void SwitchState::Enter()
 {
+	mPlayerController->SetSpineAnimation("tSwitch", 0.1f);
 }
 
 void SwitchState::Exit()
