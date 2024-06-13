@@ -1919,6 +1919,9 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 				ImTextureID imageID = (void*)(intptr_t)(*textures[i])->GetOpenGLId();
 				ImGui::Image(imageID, ImVec2(imageSize, imageSize));
 
+				//ImGui::SameLine();
+				
+
 				ImGui::TableNextColumn();
 				if (!(*fileNames[i]).empty())
 				{
@@ -1929,7 +1932,11 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 					ImGui::Text("Width:%dpx", (*textures[i])->GetWidth());
 					ImGui::Text("Height:%dpx", (*textures[i])->GetHeight());
 				}
-
+				if (ImGui::Button(ICON_FA_TRASH_CAN))
+				{
+					App->GetResource()->ReleaseResource((*textures[i])->GetUID());
+					*textures[i] = nullptr;
+				}
 			}
 			else
 			{

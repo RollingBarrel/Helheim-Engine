@@ -538,16 +538,17 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::DeleteComponents()
 {
-	for (std::vector<Component*>::iterator deletIt = mComponentsToDelete.begin(); deletIt != mComponentsToDelete.end(); ++deletIt)
+	for (std::vector<Component*>::iterator deleteIt = mComponentsToDelete.begin(); deleteIt != mComponentsToDelete.end(); ++deleteIt)
 	{
 		for (std::vector<Component*>::iterator compIt = mComponents.begin(); compIt != mComponents.end(); ++compIt)
 		{
-			if ((*compIt)->GetType() == (*deletIt)->GetType())
-			{
+			if ((*compIt)->GetType() == (*deleteIt)->GetType())
+			{	
 				mComponents.erase(compIt);
 				break;
 			}
 		}
+		delete *deleteIt;
 	}
 	mComponentsToDelete.clear();
 }

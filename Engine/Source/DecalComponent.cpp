@@ -20,6 +20,7 @@ mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveNa
 
 DecalComponent::~DecalComponent()
 {
+	App->GetOpenGL()->RemoveDecal(*this);
 	Reset();
 }
 
