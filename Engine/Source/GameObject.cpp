@@ -611,7 +611,7 @@ void GameObject::LoadComponents(const JsonObject& jsonObject, const std::unorder
 	}
 }
 
-void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id)
+void GameObject::OverridePrefab(const JsonObject& obj, unsigned int id)
 {
 	if (mPrefabOverride && mPrefabId == id)
 	{
@@ -623,7 +623,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 		mChildren.clear();
 		std::unordered_map<int, int> uuids;
 		
-		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
+		if (obj.HasMember("Prefab") && obj["GameObjects"].IsArray())
 		{
 			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
 			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
@@ -671,7 +671,7 @@ void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned 
 	{
 		for (GameObject* child : mChildren)
 		{
-			child->LoadChangesPrefab(gameObject, id);
+			child->LoadChangesPrefab(obj, id);
 		}
 	}
 

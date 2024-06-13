@@ -65,8 +65,8 @@ public:
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
 	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
-	GameObject* LoadPrefab(const char* saveFilePath, bool update = false, GameObject* parent = nullptr);
-	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent) { return LoadPrefab(saveFilePath, false, parent); }
+	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent = nullptr, bool update = false);
+
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }

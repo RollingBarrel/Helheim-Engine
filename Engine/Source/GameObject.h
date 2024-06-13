@@ -111,7 +111,7 @@ public:
 	void LoadComponents(const JsonObject& obj, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	// Prefabs
-	void LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id);   //TODO: This need to be here? 
+	void OverridePrefab(const JsonObject& gameObject, unsigned int id);   //TODO: This need to be here? 
 	void SetPrefabId(unsigned int id) { mPrefabId = id; }						   //TODO: This need to be here?
 	void SetPrefabOverride(bool override) { mPrefabOverride = override; }		   //TODO: This need to be here?
 																				   
