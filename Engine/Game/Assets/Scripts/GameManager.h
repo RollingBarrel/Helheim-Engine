@@ -43,5 +43,5 @@ private:
 
     bool mPaused = false;
 
-    bool mController = true;
+    bool mController = false;
 };
