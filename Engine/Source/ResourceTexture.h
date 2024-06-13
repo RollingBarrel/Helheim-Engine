@@ -27,6 +27,7 @@ public:
 		unsigned int numPixels,
 		bool hasAlpha,
 		unsigned int texelSize);
+	ResourceTexture(const ResourceTexture& original);
 
 	~ResourceTexture();
 

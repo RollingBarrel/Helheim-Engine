@@ -37,6 +37,39 @@ ResourceTexture::ResourceTexture(
     glGenTextures(1, &mOpenGLId);
 }
 
+ResourceTexture::ResourceTexture(const ResourceTexture& original)
+    : Resource(original.GetUID(), Type::Texture),
+    mGLTarget(original.mGLTarget), mWidth(original.mWidth), mHeight(original.mHeight),
+    mInternalFormat(original.mInternalFormat), mTexFormat(original.mTexFormat), mDataType(original.mDataType),
+    mMipLevels(0),
+    mPixelsSize(original.mPixelsSize),
+    mTexelSize(original.mTexelSize),
+    mHasAlpha(original.mHasAlpha),
+    mOpenGLId(0),
+    mTexHandle(0)
+{
+
+    // Generate a new OpenGL texture
+    glGenTextures(1, &mOpenGLId);
+    glBindTexture(GL_TEXTURE_2D, mOpenGLId);
+
+    // Allocate memory for the new texture
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, mWidth, mHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
+
+    // Get the pixel data from the original texture
+    std::vector<unsigned char> pixels(original.mPixelsSize);
+    glBindTexture(GL_TEXTURE_2D, original.mOpenGLId);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+    glBindTexture(GL_TEXTURE_2D, 0);
+
+    // Set the pixel data of the new texture
+    glBindTexture(GL_TEXTURE_2D, mOpenGLId);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mWidth, mHeight, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 ResourceTexture::~ResourceTexture()
 {
     if (mTexHandle)

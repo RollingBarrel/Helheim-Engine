@@ -37,8 +37,8 @@ public:
     float* GetAlpha() { return &mAlpha; }
     const char* GetFileName() const { return mFileName; }
     bool* GetMantainRatio() { return &mMantainRatio; }
-    bool& GetIsMaskable() { return mIsMaskable; }
-    bool& GetShouldDraw() { return mShouldDraw; }
+    bool GetIsMaskable() { return mIsMaskable; }
+    bool GetShouldDraw() { return mShouldDraw; }
     
     inline void SetFileName(const char* fileName) { mFileName = fileName; }
     inline void SetImage(unsigned int resourceId);
