@@ -183,6 +183,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="AudioManager.h" />
+    <ClInclude Include="AudioTester.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />
@@ -191,6 +192,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioTester.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />

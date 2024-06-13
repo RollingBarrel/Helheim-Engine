@@ -31,6 +31,9 @@
     <Filter Include="Weapons\Range\Pistol">
       <UniqueIdentifier>{26a052d1-42d1-4771-81c9-b465aab29ef1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sound\Test">
+      <UniqueIdentifier>{a76f27bd-e8d6-4a04-80b8-3f021cb5f28f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
@@ -85,7 +88,10 @@
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="AudioManager.h">
-      <Filter>Managers</Filter>
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioTester.h">
+      <Filter>Sound\Test</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -141,7 +147,10 @@
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="AudioManager.cpp">
-      <Filter>Managers</Filter>
+      <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioTester.cpp">
+      <Filter>Sound\Test</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

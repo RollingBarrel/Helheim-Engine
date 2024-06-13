@@ -150,7 +150,7 @@ void DebugPanel::Draw(int windowFlags) {
 
             std::map<std::string, int> events = App->GetAudio()->GetInstances();
             for (const auto& event : events) {
-                ImGui::Text("%s: %d instances", event.first.c_str(), event.second - 1);
+                ImGui::Text("%s: %d instances", event.first.c_str(), event.second);
             }
             ImGui::TreePop();
         }
