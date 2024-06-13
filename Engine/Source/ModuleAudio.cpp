@@ -4,6 +4,7 @@
 #include "fmod_errors.h"
 #include "fmod_studio.hpp"
 #include "Application.h"
+#include "AudioUnit.h"
 
 ModuleAudio::ModuleAudio()
 {
@@ -112,6 +113,7 @@ void ModuleAudio::EngineStop()
 
 int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, const int id)
 {
+	AddIntoEventList(eventDescription);
 	// Returns: -1 Continue an audio | else: play new audio 
 	FMOD::Studio::EventInstance* eventInstance = nullptr;
 	// Continue audio
@@ -136,7 +138,8 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	return count - 1;
 }
 
-void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout)
+
+void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 	
@@ -150,6 +153,20 @@ void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription
 		{
 			eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
 		}
+	}
+	else {
+		LOG("Cannot stop event");
+	}
+}
+
+void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription, const int id)
+{
+	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
+
+	if (eventInstance != nullptr)
+	{
+		eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+		eventInstance->release();
 	}
 	else {
 		LOG("Cannot release event");
@@ -217,6 +234,26 @@ int ModuleAudio::GetMemoryUsage() const
 	return currentAllocated;
 }
 
+std::map<std::string, int> ModuleAudio::GetInstances() const {
+	std::map<std::string, int> result;
+
+	for (const auto& eventDescription : mActiveEvent) {
+		// Get the path of the event description
+		char path[256];
+		int retrieved = 0;
+		CheckError(eventDescription->getPath(path, sizeof(path), &retrieved));
+
+		// Get the instance count of the event description
+		int instanceCount = 0;
+		CheckError(eventDescription->getInstanceCount(&instanceCount));
+
+		// Store the path and instance count in the map
+		result[std::string(path)] = instanceCount;
+	}
+
+	return result;
+}
+
 float ModuleAudio::GetVolume(std::string busname) const
 {
 	FMOD::Studio::Bus* bus = nullptr;
@@ -256,6 +293,17 @@ FMOD::Studio::EventInstance* ModuleAudio::FindEventInstance(const FMOD::Studio::
 	eventInstance = instances.at(id);
 
 	return eventInstance;
+}
+
+void ModuleAudio::AddIntoEventList(const FMOD::Studio::EventDescription* eventDescription)
+{
+	auto it = std::find(mActiveEvent.begin(), mActiveEvent.end(), eventDescription);
+
+	// If not found, add it to the list
+	if (it == mActiveEvent.end()) {
+		mActiveEvent.push_back(const_cast<FMOD::Studio::EventDescription*>(eventDescription));
+	}
+
 }
 
 bool ModuleAudio::CleanUp()

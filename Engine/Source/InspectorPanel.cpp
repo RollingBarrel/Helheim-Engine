@@ -1397,7 +1397,7 @@ void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* compon
 		ImGui::SameLine();
 		if (ImGui::Button("Stop"))
 		{
-			audioUnit->Stop(false);
+			audioUnit->Release();
 		}
 		ImGui::SameLine();
 		if (ImGui::Button("Remove"))

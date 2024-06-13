@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <map>
 #include "float3.h"
 #include <unordered_map>
 
@@ -43,19 +44,21 @@ public:
 	void AudioResume();
 
 	void EngineStop();
-	
-	// Start - stop
+	void AddToAudiosList(AudioSourceComponent* audioSource);
+	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
-	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout);
+	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout);
+	// Kill instance
+	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	
 	// Update
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
 	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id ,FMOD::Studio::EventInstance* event, float3 eventPosition);
 
-	void AddToAudiosList(AudioSourceComponent* audioSource);
-
 	int GetMemoryUsage() const;
+	std::map<std::string, int> GetInstances() const;
+
 	float GetVolume(std::string busname) const;
 	void SetVolume(std::string busname, float value) const;
 
@@ -63,6 +66,7 @@ public:
 
 private:
 	FMOD::Studio::EventInstance* FindEventInstance(const FMOD::Studio::EventDescription* eventDescription, const int id);
+	void AddIntoEventList(const FMOD::Studio::EventDescription* eventDescription);
 
 	FMOD::Studio::System* mSystem = nullptr;
 	FMOD::System* mCoreSystem = nullptr;
@@ -77,6 +81,8 @@ private:
 	bool mStopped = false;
 
 	std::vector<AudioSourceComponent*> mAudiosSourceList;
+
+	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 
 	std::unordered_map<int, FMOD::Studio::EventInstance*> mBackgroundAudioMap;
 	std::vector<FMOD::Studio::EventInstance*> mBackgroundAudioList;

@@ -32,6 +32,7 @@ namespace FMOD {
 
 class AudioSourceComponentNew;
 class AudioUnit;
+class GameObject;
 
 GENERATE_BODY(AudioManager);
 class AudioManager : public Script
@@ -45,22 +46,31 @@ public:
 	void Start();
 	void Update();
 
-	void Play(BGM bgm, int& instanceid);
-	void Play(const std::string& audioName, int& instanceid);
-	void PlayOneShot(const std::string& audioName, float3 audioPosition, const std::unordered_map<std::string, int>& parameters = {});
+	int PlayBGM(BGM bgm);
+	// Use PlaySFX only if you want to ajust SFX later (like manually pause shot sound)
+	// Other wise, call `PlayOneShot(SFX sfx)`
+	int PlaySFX(SFX sfx);
+	void PlayOneShot(SFX sfx);
 
+	void PauseAudio(BGM bgm,int id, bool immediate);
 
-	void Release(int audioIndex);
+	int Release(BGM bgm, int id);
+	int Release(SFX sfx, int id);
+
+	void UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value);
+	void UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value);
+
+	void SetPositionReference(SFX sfx, int id, const char* name, const float value);
 
 private:
-	std::string GetBGMName(BGM sfx);
+	std::string GetBGMName(BGM bgm);
 	std::string GetSFXName(SFX sfx);
+	const AudioUnit* GetAudioUnit(BGM bgm);
+	const AudioUnit* GetAudioUnit(SFX sfx);
+
+	const FMOD::Studio::EventDescription* GetEventDescription(BGM bgm);
+	const FMOD::Studio::EventDescription* GetEventDescription(SFX sfx);
 	AudioSourceComponentNew* mAudioSources = nullptr;
-
-	std::unordered_map<int, FMOD::Studio::EventInstance*> mBackgroundAudioMap;
-	std::vector<AudioUnit*> mSFXList;
-
-	int mBackgroundAudioCounter = 0;
 
 	// Audio - Name
 	const std::unordered_map<BGM, std::string> mBGMToString

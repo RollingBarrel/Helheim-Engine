@@ -25,92 +25,102 @@ AudioManager::~AudioManager()
 {
 }
 
-//int AudioManager::Play(const std::string& audioName, float3 audioPosition, const std::unordered_map<std::string, int>& parameters)
-//{
-//    //AudioUnit* audio = mAudioSources->FindAudio(audioName);
-//    //if (audio == nullptr)
-//    //{
-//    //    return -1;
-//    //}
-//    //mBackgroundAudioCounter++; 
-//    ////FMOD::Studio::EventInstance* newAudioEvent = audio->CreateEventInstance();
-//
-//    //FMOD::Studio::EventDescription* description = audio->GetDescription();
-//
-//    //int eventID = App->GetAudio()->Play(description, audioPosition, parameters);
-//    
-//    // May return description id + audio id
-//        // May return description id + audio id
-//    // May return description id + audio id
-//    // May return description id + audio id
-//
-//    //mBackgroundAudioMap.insert(std::pair<int, FMOD::Studio::EventInstance*>(mBackgroundAudioCounter, newAudioEvent));
-//
-//    //App->GetAudio()->StartEvent(newAudioEvent, audioPosition);
-//
-//    //for (const auto& param : parameters)
-//    //{
-//    //    const std::string& paramName = param.first;
-//    //    float paramValue = param.second;
-//
-//    //    App->GetAudio()->ChangeEventParameter(newAudioEvent, paramName, paramValue);
-//    //}
-//
-//    //return eventID;
-//
-//    return 1;
-//}
-
-void AudioManager::Play(BGM bgm, int& instanceid)
+int AudioManager::PlayBGM(BGM bgm)
 {
-    std::string audioName = GetBGMName(bgm);
-    const AudioUnit* audio = mAudioSources->FindAudio(audioName);
-    if (audio == nullptr)
+    const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
+    if (description == nullptr)
     {
-        // Cannot set audio
-        instanceid = -1;
+        return -1;
     }
-
-    const FMOD::Studio::EventDescription* description = audio->GetDescription();
 
     int id = App->GetAudio()->Play(description);
 
-    instanceid = id;
+    return id;
 }
 
-void AudioManager::Play(const std::string& audioName, int& instanceid)
+int AudioManager::PlaySFX(SFX sfx)
 {
-    const AudioUnit* audio = mAudioSources->FindAudio(audioName);
-    if (audio == nullptr)
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+    if (description == nullptr)
     {
-        // Cannot set audio
-        instanceid = -1;
+        return -1;
     }
-
-    const FMOD::Studio::EventDescription* description = audio->GetDescription();
 
     int id = App->GetAudio()->Play(description);
 
-    instanceid = id;
+    return id;
 }
 
-void AudioManager::PlayOneShot(const std::string& audioName, float3 audioPosition, const std::unordered_map<std::string, int>& parameters)
+void AudioManager::PlayOneShot(SFX sfx)
 {
-    //if (!FindAudio(audioName))
-    //{
-    //    return;
-    //}
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+    if (description == nullptr)
+    {
+        return;
+    }
+
+    int id = App->GetAudio()->Play(description);
+    App->GetAudio()->Release(description, id);
+
+    return;
 }
 
-void AudioManager::Release(int audioIndex)
+void AudioManager::PauseAudio(BGM bgm, int id, bool immediate)
 {
-    //for (const auto& backGroundAudio : mBackgroundAudioMap)
-    //{
-    //    if (backGroundAudio.first == audioIndex)
-    //    {
-    //        App->GetAudio()->ReleaseEvent(backGroundAudio.second);
-    //    }
-    //}
+    const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
+    if (description == nullptr)
+    {
+        return;
+    }
+    App->GetAudio()->Pause(description, id, immediate);
+
+    return;
+}
+
+// Stop, kill instance
+int AudioManager::Release(BGM bgm, int id)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
+    if (description == nullptr)
+    {
+        return id;
+    }
+    App->GetAudio()->Release(description, id);
+
+    return -1;
+}
+
+int AudioManager::Release(SFX sfx, int id)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+    if (description == nullptr)
+    {
+        return id;
+    }
+
+    App->GetAudio()->Release(description, id);
+
+    return -1;
+}
+
+void AudioManager::UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
+    if (description == nullptr)
+    {
+        return;
+    }
+    App->GetAudio()->UpdateParameter(description, id, name, value);
+}
+
+void AudioManager::UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+    if (description == nullptr)
+    {
+        return;
+    }
+    App->GetAudio()->UpdateParameter(description, id, name, value);
 }
 
 std::string AudioManager::GetBGMName(BGM bgm)
@@ -129,6 +139,66 @@ std::string AudioManager::GetSFXName(SFX sfx)
         return it->second;
     }
     return "Unknown";
+}
+
+const AudioUnit* AudioManager::GetAudioUnit(BGM bgm)
+{
+    std::string audioName = GetBGMName(bgm);
+    const AudioUnit* audio = mAudioSources->FindAudio(audioName);
+    if (audio == nullptr)
+    {
+        // Cannot get audio
+        LOG("Audio not found");
+        return nullptr;
+    }
+    else {
+        return audio;
+    }
+}
+
+const AudioUnit* AudioManager::GetAudioUnit(SFX sfx)
+{
+    std::string audioName = GetSFXName(sfx);
+    const AudioUnit* audio = mAudioSources->FindAudio(audioName);
+    if (audio == nullptr)
+    {
+        // Cannot get audio
+        LOG("Audio not found");
+        return nullptr;
+    }
+    else {
+        return audio;
+    }
+}
+
+const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(BGM bgm)
+{
+    std::string audioName = GetBGMName(bgm);
+    const AudioUnit* audio = mAudioSources->FindAudio(audioName);
+    if (audio == nullptr)
+    {
+        // Cannot get audio
+        LOG("Audio not found");
+        return nullptr;
+    }
+    else {
+        return audio->GetDescription();
+    }
+}
+
+const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(SFX sfx)
+{
+    std::string audioName = GetSFXName(sfx);
+    const AudioUnit* audio = mAudioSources->FindAudio(audioName);
+    if (audio == nullptr)
+    {
+        // Cannot get audio
+        LOG("Audio not found");
+        return nullptr;
+    }
+    else {
+        return audio->GetDescription();
+    }
 }
 
 
