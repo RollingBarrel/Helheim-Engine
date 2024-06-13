@@ -75,6 +75,6 @@ private:
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
 	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;
-	void DrawRandomFloat(bool& isRand, float& minV, float& maxV, const char* cLabel) const;
+	void DrawRandomFloat(RandomFloat& value, const char* cLabel) const;
 	void DrawBlendTypeSelector(int& type, const char* cLabel) const;
 };

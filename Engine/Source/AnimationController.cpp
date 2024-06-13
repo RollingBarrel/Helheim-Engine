@@ -42,7 +42,10 @@ AnimationController::~AnimationController()
 void AnimationController::Update()
 {
 	mCurrentTime += App->GetDt() * mSpeed;
-	
+	if (mTransition)
+	{
+		mCurrentTransitionTime += App->GetDt();
+	}
 }
 
 void AnimationController::Restart()
@@ -87,6 +90,16 @@ void AnimationController::SetEndTime(float time)
 {
 	mEndTime = std::min(time, mCurrentAnimation->GetDuration());
 
+}
+
+void AnimationController::EndBlending()
+{
+	mCurrentTime = mClipStartTime;
+	mCurrentTransitionTime = 0.0f;
+
+	//Change the animations once the transition is done
+	mCurrentAnimation = mNextAnimation;
+	mNextAnimation = nullptr;
 }
 
 void AnimationController::GetTransform(GameObject* model)
@@ -229,12 +242,6 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 	else 
 	{
 		mTransition = false;
-		mCurrentTime = mClipStartTime;
-		mCurrentTransitionTime = 0.0f;
-
-		//Change the animations once the transition is done
-		mCurrentAnimation = mNextAnimation;
-		mNextAnimation = nullptr;
 	}
 }
 

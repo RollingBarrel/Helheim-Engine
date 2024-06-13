@@ -411,16 +411,12 @@
     <ClCompile Include="ColorGradient.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
-    <ClCompile Include="Trail.cpp">
-      <Filter>Utils\Particles</Filter>
-    </ClCompile>
     <ClCompile Include="TrailComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="BezierCurve.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="AnimationStateMachine.cpp" />
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
@@ -435,6 +431,18 @@
     </ClCompile>
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="RandomFloat.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationStateMachine.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourceStateMachine.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadStateMachine.cpp">
+      <Filter>Importers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1026,9 +1034,6 @@
     <ClInclude Include="ColorGradient.h">
       <Filter>Utils\Particles</Filter>
     </ClInclude>
-    <ClInclude Include="Trail.h">
-      <Filter>Utils\Particles</Filter>
-    </ClInclude>
     <ClInclude Include="TrailComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
@@ -1041,7 +1046,6 @@
     <ClInclude Include="BezierCurve.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="AnimationStateMachine.h" />
     <ClInclude Include="ModuleCamera.h">
       <Filter>Modules</Filter>
     </ClInclude>
@@ -1908,6 +1912,18 @@
     </ClInclude>
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomFloat.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AnimationStateMachine.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourceStateMachine.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadStateMachine.h">
+      <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

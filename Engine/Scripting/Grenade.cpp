@@ -108,10 +108,10 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     return AffectedEnemies;
 }
 
-void Grenade::SetDestionation(float3 destination)
+void Grenade::SetDestination(float3 destination)
 {
-	mDestination = destination;
-
+	mGameObject->SetPosition(destination);
+    mGameObject->SetEnabled(true);
 	mExplotionStart = true;
 }
 

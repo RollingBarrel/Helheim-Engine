@@ -3,8 +3,6 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"
-#include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
 #include "Physics.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
@@ -45,58 +43,7 @@ void EnemyRobot::Start()
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
     }
 
-    mAnimationComponent = (AnimationComponent*)mGameObject->GetComponent(ComponentType::ANIMATION);
-    if (mAnimationComponent)
-    {
-        mStateMachine = mAnimationComponent->GetStateMachine();
-
-    }
-    if (mStateMachine)
-    {
-        std::string clip = "Character";
-
-        std::string defaultState = "default";
-        std::string sIdle = "Idle";
-        std::string sWalkForward = "Walk Forward";
-        std::string sAttack = "Attack";
-       
-
-        std::string idleTrigger = "tIdle";
-        std::string forwardTrigger = "tWalkForward";
-        std::string attackTrigger = "tAttack";
     
-
-        mStateMachine->SetClipName(0, clip);
-
-        mStateMachine->AddTransition(defaultState, sIdle, idleTrigger);
-
-        mStateMachine->AddState(clip, sIdle);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sIdle), float(0.0));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sIdle), float(1.97));
-
-        mStateMachine->AddState(clip, sWalkForward);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sWalkForward), float(2.01));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sWalkForward), float(3.11));
-
-        mStateMachine->AddState(clip, sAttack);
-        mStateMachine->SetStateStartTime(mStateMachine->GetStateIndex(sAttack), float(3.15));
-        mStateMachine->SetStateEndTime(mStateMachine->GetStateIndex(sAttack), float(10.0));
-
-        mStateMachine->AddTransition(sIdle, sWalkForward, forwardTrigger);
-        mStateMachine->AddTransition(sIdle, sAttack, attackTrigger);
-       
-
-        mStateMachine->AddTransition(sWalkForward, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sWalkForward, sAttack, attackTrigger);
-        
-        mStateMachine->AddTransition(sAttack, sIdle, idleTrigger);
-        mStateMachine->AddTransition(sAttack, sWalkForward, forwardTrigger);
-
-        mAnimationComponent->OnStart();
-        mAnimationComponent->SetIsPlaying(true);
-
-        mAnimationComponent->SendTrigger("tIdle", 0.1f);
-    }
 }
 
 void EnemyRobot::Update()
@@ -129,7 +76,6 @@ void EnemyRobot::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
-        mAnimationComponent->SendTrigger("tWalkForward", 0.2f);
     }
 }
 
@@ -163,13 +109,11 @@ void EnemyRobot::Chase()
         if (IsPlayerInRange(range))
         {
             mCurrentState = EnemyState::ATTACK;
-            mAnimationComponent->SendTrigger("tAttack", 0.2f);
         }
     }
     else
     {
         mCurrentState = EnemyState::IDLE;
-        mAnimationComponent->SendTrigger("tIdle", 0.2f);
     }
 }
 
@@ -195,7 +139,6 @@ void EnemyRobot::Attack()
     {
 
         mCurrentState = EnemyState::CHASE;
-        mAnimationComponent->SendTrigger("tWalkForward", 0.3f);
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange) {

@@ -30,7 +30,9 @@ private:
 		{".gltf", Resource::Type::Model},
 		{".h", Resource::Type::Script},
 		{".prfb", Resource::Type::Prefab},
-		{".navmesshi", Resource::Type::NavMesh}
+		{".navmesshi", Resource::Type::NavMesh},
+		{".smbin", Resource::Type::StateMachine}
+
 		// Add more mappings for other resource types as needed
 	};
 
