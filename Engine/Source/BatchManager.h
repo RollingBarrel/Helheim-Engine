@@ -17,7 +17,8 @@ public:
 
 	void AddCommand(const MeshRendererComponent& meshComponent);
 	void CleanUpCommands();
-	void Draw();
+	//TODO: mhan de passar el command buffer
+	//void Draw();
 	void EndFrameDraw();
 	unsigned int GetNumBatches() const { return mBatches.size(); }
 	GeometryBatch* operator[](unsigned int idx) { return mBatches[idx]; }

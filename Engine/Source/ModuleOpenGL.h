@@ -105,7 +105,7 @@ public:
 	void BatchAddMesh(const MeshRendererComponent& mesh);
 	void BatchRemoveMesh(const MeshRendererComponent& mesh);
 	void BatchEditMaterial(const MeshRendererComponent& mesh);
-	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
+	void Draw();
 	void SetWireframe(bool wireframe);
 
 	void AddHighLight(const GameObject& gameObject);

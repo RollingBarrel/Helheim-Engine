@@ -72,9 +72,9 @@ update_status ModuleScene::Update(float dt)
 	//	mQuadtreeRoot->UpdateTree();
 	//}
 	//mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
-	mRoot->GetMeshesInChildren(mCurrRenderComponents);
-	App->GetOpenGL()->Draw(mCurrRenderComponents);
-	mCurrRenderComponents.clear();
+	//mRoot->GetMeshesInChildren(mCurrRenderComponents);
+	App->GetOpenGL()->Draw();
+	//mCurrRenderComponents.clear();
 
 	return UPDATE_CONTINUE;
 }

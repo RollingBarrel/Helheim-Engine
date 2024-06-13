@@ -84,13 +84,13 @@ void BatchManager::CleanUpCommands()
 	}
 }
 
-void BatchManager::Draw()
-{
-	for (GeometryBatch* batch : mBatches)
-	{
-		batch->Draw();
-	}
-}
+//void BatchManager::Draw()
+//{
+//	for (GeometryBatch* batch : mBatches)
+//	{
+//		batch->Draw();
+//	}
+//}
 
 void BatchManager::EndFrameDraw()
 {

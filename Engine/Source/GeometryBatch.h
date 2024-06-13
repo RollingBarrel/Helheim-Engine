@@ -94,7 +94,7 @@ public:
 	bool RemoveMeshComponent(const MeshRendererComponent& component);
 	bool AddToDraw(const MeshRendererComponent& component);
 	void Update();
-	void Draw();
+	void Draw(unsigned int commandsBuffer);
 	void EndFrameDraw();
 	void CleanUpCommands();
 

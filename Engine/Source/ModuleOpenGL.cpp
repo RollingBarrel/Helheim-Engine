@@ -944,7 +944,7 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 	mBatchManager.EditMaterial(mesh);
 }
 
-void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes)
+void ModuleOpenGL::Draw()
 {
 	//NOTE: Before the first draw call we need to add all the commands of the frame
 	//scene
@@ -1053,7 +1053,6 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		mBatchManager[0]->Update();
 		unsigned int ibo = mBatchManager[0]->GetCommandsSsbo();
 		mBatchManager[0]->ComputeCommands(ibo, App->GetCamera()->GetCurrentCamera()->GetFrustum());
-		glDeleteBuffers(1, &ibo);
 		glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 		glDisable(GL_BLEND);
 		glEnable(GL_STENCIL_TEST);
@@ -1061,7 +1060,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 		glStencilMask(0xFF);
 		glUseProgram(mPbrGeoPassProgramId);
-		mBatchManager[0]->Draw();
+		mBatchManager[0]->Draw(ibo);
+		glDeleteBuffers(1, &ibo);
 
 		//Lighting Pass
 		glStencilFunc(GL_EQUAL, 1, 0xFF);
