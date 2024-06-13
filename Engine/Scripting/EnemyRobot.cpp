@@ -7,6 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
+#include "GameManager.h"
 
 CREATE(EnemyRobot){
     CLASS(owner);
@@ -48,7 +49,12 @@ void EnemyRobot::Start()
 
 void EnemyRobot::Update()
 {
-    if (!mBeAttracted) {
+    if (GameManager::GetInstance()->IsPaused()) return;
+
+    Enemy::Update();
+
+    if (!mBeAttracted) 
+    {
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
@@ -66,7 +72,7 @@ void EnemyRobot::Update()
         }
     }
 
-    Enemy::Update();
+    mBeAttracted = false;
 }
 
 void EnemyRobot::Idle()
@@ -141,7 +147,8 @@ void EnemyRobot::Attack()
         mCurrentState = EnemyState::CHASE;
         mTimerDisengage = 0.0f;
     }
-    else if (!playerInRange) {
+    else if (!playerInRange) 
+    {
         mTimerDisengage += App->GetDt();
     }
 
@@ -175,7 +182,8 @@ void EnemyRobot::MeleeAttack()
 
         mTimerAttack = 0.0f;
     }
-    else {
+    else 
+    {
         mTimerAttack += App->GetDt();
     }
 }

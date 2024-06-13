@@ -71,7 +71,7 @@ void Transform2DComponent::Load(const JsonObject& data, const std::unordered_map
 
 	float rot[4];
 	data.GetFloats("Rotation", rot);
-	mRotation = Quat(pos);
+	mRotation = Quat(rot);
 
 	float size[2];
 	data.GetFloats("Size", size);
@@ -96,7 +96,10 @@ void Transform2DComponent::CalculateMatrices()
 {
 	mLocalMatrix = float4x4::FromTRS(mPosition, mRotation, float3(mSize, 1.0f));
 
-	CanvasComponent* canvas = (CanvasComponent*)FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS);
+	GameObject* canvasGO = FindCanvasOnParents(this->GetOwner());
+	if (!canvasGO) return;
+
+	CanvasComponent* canvas = (CanvasComponent*)canvasGO->GetComponent(ComponentType::CANVAS);
 	float2 canvasSize = canvas ? canvas->GetSize() : float2(1.0f, 1.0f); // Default to 1.0f if canvas size is not found
 
 	GameObject* parent = GetOwner()->GetParent();
@@ -107,7 +110,18 @@ void Transform2DComponent::CalculateMatrices()
 		{
 			// Get the parent global matrix
 			float4x4 mParentMatrix = parentTransform->GetGlobalMatrix();
-			mGlobalMatrix = float4x4::FromTRS(mParentMatrix.TranslatePart(), mParentMatrix.RotatePart(), float3::one.Div(mParentMatrix.ExtractScale()));
+
+			float3 scaleAux;
+			if (mParentMatrix.ExtractScale().Equals(float3::zero)) 
+			{
+				scaleAux = float3::one;
+			} 
+			else
+			{
+				scaleAux = float3::one.Div(mParentMatrix.ExtractScale());
+			}
+
+			mGlobalMatrix = float4x4::FromTRS(mParentMatrix.TranslatePart(), mParentMatrix.RotatePart(), scaleAux);
 
 			// Translate the parent matrix by the transform translate
 			float4x4 localMatrix = float4x4::FromTRS(mPosition, mRotation, float3(mSize, 1.0f));
@@ -135,6 +149,7 @@ void Transform2DComponent::CalculateMatrices()
 
 void Transform2DComponent::RescaleMatrices(float2 ratio)
 {
+	if (mSize.Equals(float2::zero) || ratio.Equals(float2::zero)) return;
 	mSize = float2(mSize.x * ratio.x, mSize.y * ratio.y);
 	
 	for (GameObject* child : GetOwner()->GetChildren())
@@ -178,7 +193,9 @@ void Transform2DComponent::SetRotation(const float3& rotation)
 
 void Transform2DComponent::SetSize(const float2 size)
 { 
-	RescaleMatrices(size.Div(mSize));
+	if (mSize.Equals(float2::zero)) return;
+	const float2 resize = size.Div(mSize);
+	RescaleMatrices(resize);
 	CalculateMatrices(); 
 }
 

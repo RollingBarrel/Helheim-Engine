@@ -156,6 +156,8 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
+    if (GameManager::GetInstance()->IsPaused()) return;
+
     // Check input
     CheckInput();
 
@@ -190,7 +192,8 @@ void PlayerController::CheckInput()
         mLowerStateType = type;
         mLowerState->Exit();
 
-        switch (type) {
+        switch (type) 
+        {
             case StateType::DASH:
                 mLowerState = mDashState;
                 break;
@@ -218,7 +221,8 @@ void PlayerController::CheckInput()
         mUpperStateType = type;
         mUpperState->Exit();
 
-        switch (type) {
+        switch (type) 
+        {
             case StateType::AIM:
                 mUpperState = mAimState;
                 break;
@@ -249,17 +253,33 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    // TODO: Not aim on melee state?
+    // TODO: Not aim on melee state? and dash?
 
-    Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-    Plane plane(mGameObject->GetPosition(), float3::unitY);
-
-    float distance;
-    if (plane.Intersects(ray, &distance))
+    if (GameManager::GetInstance()->UsingController())
     {
-        mAimPosition = ray.GetPoint(distance);
-        mGameObject->LookAt(mAimPosition);
+        float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+        float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+
+        if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
+
+        float3 position = mGameObject->GetPosition();
+        mAimPosition.x = position.x - rightX;
+        mAimPosition.y = position.y;
+        mAimPosition.z = position.z - rightY;
     }
+    else
+    {
+        Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+        Plane plane(mGameObject->GetPosition(), float3::unitY);
+
+        float distance;
+        if (plane.Intersects(ray, &distance))
+        {
+            mAimPosition = ray.GetPoint(distance);
+        }
+    }
+    
+    mGameObject->LookAt(mAimPosition);
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
@@ -269,10 +289,12 @@ void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 
 void PlayerController::PlayOneShot(std::string name)
 {
-    if (strcmp(name.c_str(), "Step")) {
+    if (strcmp(name.c_str(), "Step")) 
+    {
         mFootStepAudio->PlayOneShot();
     }
-    if (strcmp(name.c_str(), "Shot")) {
+    if (strcmp(name.c_str(), "Shot")) 
+    {
         mGunfireAudio->PlayOneShot();
     }
 }
@@ -291,10 +313,12 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) {
+    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
+    {
         mWeapon = mMeleeWeapon;
     }
-    else {
+    else 
+    {
         mWeapon = mRangeWeapon;
     }
 }
@@ -317,19 +341,28 @@ void PlayerController::UpdateGrenadeVisuals()
 {
     mGrenadeAimAreaGO->SetPosition(mGameObject->GetPosition());
 
-    float3 diff = mAimPosition - mGameObject->GetPosition();
-    float distanceSquared = diff.LengthSq();
-    float radiusSquared = mGrenadeRange * mGrenadeRange;
-
-    bool isWithinRange = distanceSquared <= radiusSquared;
-    if (isWithinRange) {
-        mGrenadePosition = mAimPosition;
+    float3 diff;
+    if (GameManager::GetInstance()->UsingController())
+    {
+        mGrenadePosition = mGameObject->GetPosition() + mAimPosition * mGrenadeRange;
     }
-    else {
-        diff.Normalize();
-        mGrenadePosition = mGameObject->GetPosition() + diff * mGrenadeRange;
-    }
+    else
+    {
+        diff = mAimPosition - mGameObject->GetPosition();
+        float distanceSquared = diff.LengthSq();
+        float radiusSquared = mGrenadeRange * mGrenadeRange;
 
+        if (distanceSquared <= radiusSquared)
+        {
+            mGrenadePosition = mAimPosition;
+        }
+        else 
+        {
+            diff.Normalize();
+            mGrenadePosition = mGameObject->GetPosition() + diff * mGrenadeRange;
+        }
+    }
+    
     mGrenadeExplotionPreviewAreaGO->SetPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
 }
 

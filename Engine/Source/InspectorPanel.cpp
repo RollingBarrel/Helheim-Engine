@@ -1761,7 +1761,7 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 
 	ImGui::Text("Text:");
 	ImGui::SameLine();
-	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) 
+	if (ImGui::InputTextMultiline("##TextInput", buffer.data(), buffer.size())) 
 	{
 		// Update the std::string if the text was changed
 		*text = std::string(buffer.data());
