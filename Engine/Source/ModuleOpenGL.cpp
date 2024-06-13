@@ -1049,9 +1049,10 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//GaometryPass
 	if (mBatchManager.GetNumBatches())
 	{
+		//TODO: sestan fent els skins cada frame
 		mBatchManager[0]->Update();
 		unsigned int ibo = mBatchManager[0]->GetCommandsSsbo();
-		mBatchManager[0]->ComputeCommands(ibo);
+		mBatchManager[0]->ComputeCommands(ibo, App->GetCamera()->GetCurrentCamera()->GetFrustum());
 		glDeleteBuffers(1, &ibo);
 		glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 		glDisable(GL_BLEND);

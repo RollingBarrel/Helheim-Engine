@@ -7,6 +7,9 @@
 class AnimationComponent;
 class MeshRendererComponent;
 class ResourceMaterial;
+namespace math {
+	class Frustum;
+};
 typedef struct __GLsync* GLsync;
 
 class Command
@@ -98,7 +101,7 @@ public:
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
 	void ComputeSkinning(const MeshRendererComponent& cMesh);
 	unsigned int GetCommandsSsbo() const;
-	void ComputeCommands(unsigned int bufferIdx);
+	void ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum);
 
 private:
 	void RecreatePersistentSsbos();
@@ -132,10 +135,13 @@ private:
 	float* mSsboModelMatricesData[NUM_BUFFERS];
 	unsigned int mSsboIndicesCommands = 0;
 	uint32_t* mSsboMatIndicesCommandsData = nullptr;
+	unsigned int mSsboObbs = 0;
+	float* mSsboObbsData = nullptr;
 	GLsync mSync[NUM_BUFFERS];
 	unsigned int mParameterBuffer = 0;
 
 	unsigned int mSsboMaterials = 0;
+	unsigned int mFrustumBuffer = 0;
 
 	float* mVboData = nullptr;
 	unsigned int mVboDataSize = 0;

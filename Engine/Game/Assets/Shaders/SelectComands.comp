@@ -1,5 +1,13 @@
 #version 460 core
 
+struct Plane
+{
+	vec4 normD; //the w is the distance
+};
+struct Box
+{
+	vec3 points[8];
+};
 struct Command
 {
 	uint mCount;		 // Number of indices in the mesh
@@ -8,17 +16,44 @@ struct Command
 	uint baseVertex;	 // Vertex offset in the VBO
 	uint baseInstance;   // Instance Index
 };
-layout(std430, binding = 13) readonly buffer ReadCommands {Command inCommands[];};
-layout(std430, binding = 22) writeonly buffer WriteCommands {Command outCommands[];};
+layout(std140, binding = 5) uniform FrustumPlanes
+{
+	Plane fPlanes[6];
+};
+layout(std430, binding = 14) readonly buffer OBBS
+{
+	Box OBBs[];
+};
+readonly layout(std430, row_major, binding = 10) buffer Transforms 
+{
+	mat4 models[];
+};
+layout(std430, binding = 13) readonly buffer ReadCommands { Command inCommands[]; };
+layout(std430, binding = 22) writeonly buffer WriteCommands { Command outCommands[]; };
 layout(std430, binding = 23) writeonly buffer ParameterBuffer { int numOutCommands; };
 layout(location = 0) uniform uint numCommands;
 
 layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
 void main()
 {
-	uint index = atomicAdd(numOutCommands, 1);
-	if(index < numCommands) 
+	if(gl_GlobalInvocationID.x < numCommands) 
     {
-		outCommands[index] = inCommands[index];
+		Box obb;
+		for(uint i = 0; i<8; ++i)
+			obb.points[i] =  (models[gl_GlobalInvocationID.x] * vec4(OBBs[gl_GlobalInvocationID.x].points[i], 1.0)).xyz;
+		uint outPoint = 0;
+		for(uint i = 0; i<6; ++i)
+		{
+			for(uint k = 0; k<8; ++k)
+			{
+				Plane currPlane = fPlanes[i];
+				 if((dot(currPlane.normD.xyz, obb.points[k]) - currPlane.normD.w) >= 0.0)
+					++outPoint;
+			}
+			if(outPoint == 8)
+				return;
+		}
+		uint outIdx = atomicAdd(numOutCommands, 1);
+		outCommands[outIdx] = inCommands[gl_GlobalInvocationID.x];
 	}
 }
