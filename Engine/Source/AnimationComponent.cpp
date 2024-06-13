@@ -1,4 +1,6 @@
 #include "AnimationComponent.h"
+#include "AnimationComponent.h"
+#include "AnimationComponent.h"
 
 #include "Application.h"
 #include "ModuleResource.h"
@@ -312,6 +314,16 @@ void AnimationComponent::StartTransition(float transitionDuration)
 {
 	mController->ActivateTransition();
 	mController->SetTransitionDuration(transitionDuration);
+}
+
+void AnimationComponent::SetSpineSMUID(unsigned int uid)
+{
+	mSpineStateMachine->SetUID(uid);
+}
+
+void AnimationComponent::SetSMUID(unsigned int uid)
+{
+	mStateMachine->SetUID(uid);
 }
 
 

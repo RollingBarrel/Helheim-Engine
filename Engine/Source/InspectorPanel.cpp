@@ -1000,6 +1000,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
 					ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
 					component->SetStateMachine(newSM->GetStateMachine());
+					component->SetSMUID(newSM->GetUID());
 				}
 				if (is_selected)
 				{
@@ -1024,6 +1025,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
 						ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
 						component->SetSpineStateMachine(newSM->GetStateMachine());
+						component->SetSpineSMUID(newSM->GetUID());
+
 					}
 					if (is_selected)
 					{
