@@ -1172,22 +1172,11 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 	//Decal Pass //TODO: USE ALWAYS ALL CHANNELS AND THE OUTPUT SHOULD BE THE ACTUAL CHANNEL COLOR IF THERE SI NO DECAL TEXTURE
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
-	
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
-
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-	
-	glActiveTexture(GL_TEXTURE2);
-	glBindTexture(GL_TEXTURE_2D, mGNormals);
 
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
 
-	glActiveTexture(GL_TEXTURE4);
-	glBindTexture(GL_TEXTURE_2D, mGEmissive);
-	
+
 	
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
@@ -1200,33 +1189,28 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
 		GLenum channels[4] = { GL_NONE, GL_NONE, GL_NONE, GL_NONE };
-		int numberOfChannels = 0;
 
 		if (mDecalComponents[i]->HasDiffuse())
 		{
 			channels[0] = GL_COLOR_ATTACHMENT0;
-			numberOfChannels++;
 		}
 		
 		if (mDecalComponents[i]->HasSpecular())
 		{
 			channels[1] = GL_COLOR_ATTACHMENT1;
-			numberOfChannels++;
 		}
 
 		if (mDecalComponents[i]->HasNormal())
 		{
 			channels[2] = GL_COLOR_ATTACHMENT2;
-			numberOfChannels++;
 		}
 
 		if (mDecalComponents[i]->HasEmisive())
 		{
 			channels[3] = GL_COLOR_ATTACHMENT4;
-			numberOfChannels++;
 		}
 
-		glDrawBuffers(numberOfChannels, channels);
+		glDrawBuffers(4, channels);
 
 		
 		glActiveTexture(GL_TEXTURE5);
