@@ -64,6 +64,39 @@ unsigned int DecalComponent::GetEmisiveId() const
 	return 0;
 }
 
+void DecalComponent::GetSpriteSheetSize(int& rows, int& columns) const
+{
+	if (mIsSpriteSheet)
+	{
+		rows = mRows;
+		columns = mColumns;
+	}
+	else
+	{
+		rows = 1;
+		columns = 1;
+	}
+	
+}
+
+void DecalComponent::GetSpriteSheetCurrentPosition(int& row, int& column) const
+{
+
+	if (mIsSpriteSheet)
+	{
+		row = mCurrentRow;
+		column = mCurrentColumn;
+	}
+	else
+	{
+		row = 0;
+		column = 0;
+	}
+
+}
+
+
+
 void DecalComponent::Reset()
 {
 	mDiffuseName = "";

@@ -1240,8 +1240,44 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		float4 diffuseColor = mDecalComponents[i]->GetDiffuseColor();
 		float4 emisiveColor = mDecalComponents[i]->GetEmisiveColor();
 
+		bool isSpriteSheet = mDecalComponents[i]->IsSpriteSheet();
+
+		int numRows;
+		int numColumns;
+
+		int currentRow;
+		int currentColumn;
+
+		mDecalComponents[i]->GetSpriteSheetSize(numRows, numColumns);
+		mDecalComponents[i]->GetSpriteSheetCurrentPosition(currentRow, currentColumn);
+
 		glUniform4f(45, diffuseColor.x, diffuseColor.y, diffuseColor.z, diffuseColor.w);
 		glUniform3f(46, emisiveColor.x, emisiveColor.y, emisiveColor.z);
+		glUniform1i(47, isSpriteSheet);
+		//glUniform2f(48, numRows, numColumns);
+		//glUniform2f(49, currentRow, currentColumn);
+		
+		float spriteSheetRowOffset;
+		float spriteSheetColumOffset;
+
+	
+		spriteSheetRowOffset = 1.0f - (1.0f / static_cast<float>(numRows)) * static_cast<float>(currentRow);
+		spriteSheetColumOffset = 1.0f - (1.0f / static_cast<float>(numColumns)) * static_cast<float>(currentColumn);
+		
+
+		float uStart = (float)currentColumn / (float)numColumns;
+		float vStart = (float)currentRow / (float)numRows;
+
+		glUniform2f(49, uStart, vStart);
+
+		float uEnd = uStart + (1.0 / (float)numColumns);
+		float vEnd = vStart + (1.0 / (float)numRows);
+
+		float uSum = uEnd - uStart;
+		float vSum = vEnd - vStart;
+
+		glUniform2f(48, uSum , vSum );
+
 
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
 		glDrawArrays(GL_TRIANGLES, 0, 36);

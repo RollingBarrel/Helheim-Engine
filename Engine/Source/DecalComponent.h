@@ -30,6 +30,9 @@ public:
 	const float4& GetDiffuseColor() const { return mDiffuseColor; }
 	const float4& GetEmisiveColor() const { return mEmisiveColor; }
 
+	bool IsSpriteSheet() const { return mIsSpriteSheet; }
+	void GetSpriteSheetSize(int& rows, int& columns) const;
+	void GetSpriteSheetCurrentPosition(int& row, int& column) const;
 
 	void Reset() override;
 	void Update() override;
@@ -54,6 +57,15 @@ private:
 	std::string mSpecularName = "";
 	std::string mNormalName = "";
 	std::string mEmisiveName = "";
+
+	bool mIsSpriteSheet = false;
+	
+	int mRows = 1;
+	int mColumns = 1;
+	int mSpeed = 1;
+
+	int mCurrentRow = 0;
+	int mCurrentColumn = 0;
 
 };
 

@@ -1899,13 +1899,138 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 {
 
 	unsigned int imageSize = 50;
+	const unsigned int numTextures = 4;
 
-	ResourceTexture** textures[4] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture, &component->mEmisiveTexture };
-	std::string* fileNames[4] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName, &component->mEmisiveName };
-	const char* names[4] = { "Diffuse Texture", "Specular Texture", "Normal Map", "Emisive Texture"};
-	float4* colors[4] = { &component->mDiffuseColor, nullptr, nullptr, &component->mEmisiveColor };
+	ResourceTexture** textures[numTextures] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture, &component->mEmisiveTexture };
+	std::string* fileNames[numTextures] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName, &component->mEmisiveName };
+	const char* names[numTextures] = { "Diffuse Texture", "Specular Texture", "Normal Map", "Emisive Texture"};
+	float4* colors[numTextures] = { &component->mDiffuseColor, nullptr, nullptr, &component->mEmisiveColor };
+	
 
-	if (ImGui::BeginTable("1", 2, ImGuiTableFlags_BordersInnerV))
+	ImGui::Checkbox("Sprite Sheet", &component->mIsSpriteSheet);
+	if (component->mIsSpriteSheet)
+	{
+		// Play/Pause/Stop buttons
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 1.0f, 0.6f, 1.0f)); // Pale green
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
+		if (ImGui::Button("Play"))
+		{
+			//imageComponent->PlayAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.6f, 1.0f)); // Pale yellow
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Pause"))
+		{
+			//imageComponent->PauseAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.6f, 0.6f, 1.0f)); // Pale red
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Stop"))
+		{
+			//imageComponent->StopAnimation();
+		}
+		ImGui::PopStyleColor(2);
+
+		
+		// Columns and rows selector
+
+		
+
+		ImGui::InputInt("Current Row", &component->mCurrentRow);
+		ImGui::InputInt("Current Column", &component->mCurrentColumn);
+
+		component->mCurrentRow = Clamp(static_cast<float>(component->mCurrentRow), 0.0f, static_cast<float>(component->mRows - 1));
+		component->mCurrentColumn = Clamp(static_cast<float>(component->mCurrentColumn), 0.0f, static_cast<float>(component->mColumns - 1));
+
+		ImGui::InputInt("Rows", &component->mRows);
+		ImGui::InputInt("Columns", &component->mColumns);
+		
+		component->mRows = (component->mRows < 1) ? 1 : component->mRows;
+		component->mColumns = (component->mColumns < 1) ? 1 : component->mColumns;
+		
+	
+		
+		// Reproduction speed slider
+		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
+		ImGui::PushItemWidth(100);
+		ImGui::SliderInt("Reproduction Speed", &component->mSpeed, 1, 100);
+		ImGui::PopItemWidth();
+
+
+		// Display the spritesheet image
+		ResourceTexture* image = nullptr;
+
+		for (unsigned int i = 0; i < numTextures; ++i)
+		{
+			if (*textures[i])
+			{
+				image = *textures[i];
+				break;
+			}
+		}
+
+		if (image)
+		{
+			ImVec2 imageSize(175, 175);
+			ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), imageSize);
+		
+			// Draw lines to divide the image into columns and rows
+			ImVec2 imagePos = ImGui::GetItemRectMin();
+			float columnWidth = imageSize.x / component->mColumns;
+			float rowHeight = imageSize.y / component->mRows;
+			for (int i = 1; i < component->mColumns; ++i)
+			{
+				ImVec2 start(imagePos.x + i * columnWidth, imagePos.y);
+				ImVec2 end(imagePos.x + i * columnWidth, imagePos.y + imageSize.y);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+			for (int i = 1; i < component->mRows; ++i)
+			{
+				ImVec2 start(imagePos.x, imagePos.y + i * rowHeight);
+				ImVec2 end(imagePos.x + imageSize.x, imagePos.y + i * rowHeight);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+		
+			// Display a list of the slices
+			if (ImGui::CollapsingHeader("Slices", ImGuiTreeNodeFlags_None))
+			{
+				float sliceWidth = 1.0f / component->mColumns;
+				float sliceHeight = 1.0f / component->mRows;
+				ImVec2 sliceSize(50, 50);
+		
+				for (int row = 0; row < component->mRows; ++row)
+				{
+					for (int col = 0; col < component->mColumns; ++col)
+					{
+						// Calculate the texture coordinates for the slice
+						ImVec2 uv0(col * sliceWidth, row * sliceHeight);
+						ImVec2 uv1((col + 1) * sliceWidth, (row + 1) * sliceHeight);
+		
+						ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), sliceSize, uv0, uv1);
+		
+						if (col < component->mColumns - 1)
+						{
+							ImGui::SameLine();
+							ImGui::Text(" ");
+							ImGui::SameLine();
+						}
+					}
+					if (row < component->mRows - 1)
+					{
+						ImGui::NewLine();
+					}
+				}
+			}
+		}
+	}
+
+	if (ImGui::BeginTable("1", 2, ImGuiTableFlags_BordersInner))
 	{
 
 		for (int i = 0; i < 4; ++i)
@@ -1918,7 +2043,16 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 			if (*textures[i])
 			{
 				ImTextureID imageID = (void*)(intptr_t)(*textures[i])->GetOpenGLId();
-				ImGui::Image(imageID, ImVec2(imageSize, imageSize));
+
+				if (colors[i])
+				{
+					ImGui::Image((void*)(intptr_t)imageID, ImVec2(imageSize, imageSize), ImVec2(0, 0), ImVec2(1, 1), ImVec4(colors[i]->x, colors[i]->y, colors[i]->z, colors[i]->w));
+				}
+				else
+				{
+					ImGui::Image((void*)(intptr_t)imageID, ImVec2(imageSize, imageSize));
+				}
+				
 		
 				if (colors[i])
 				{
@@ -1936,6 +2070,9 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 					ImGui::Text("Height:%dpx", (*textures[i])->GetHeight());
 				}
 				ImGui::PushID(i);
+
+				
+
 				if (ImGui::Button(ICON_FA_TRASH_CAN))
 				{
 					App->GetResource()->ReleaseResource((*textures[i])->GetUID());
@@ -1969,12 +2106,126 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 				ImGui::EndDragDropTarget();
 			}
 
+			ImGui::Dummy(ImVec2(1,5.0f));
 		}
 
 		ImGui::EndTable();
 	}
 
 	
+	/*
+	if (imageComponent->IsSpritesheet())
+	{
+		// Play/Pause/Stop buttons
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 1.0f, 0.6f, 1.0f)); // Pale green
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
+		if (ImGui::Button("Play"))
+		{
+			imageComponent->PlayAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.6f, 1.0f)); // Pale yellow
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Pause"))
+		{
+			imageComponent->PauseAnimation();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.6f, 0.6f, 1.0f)); // Pale red
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Stop"))
+		{
+			imageComponent->StopAnimation();
+		}
+		ImGui::PopStyleColor(2);
+
+		// Columns and rows selector
+		int columns = imageComponent->GetColumns();
+		int rows = imageComponent->GetRows();
+		ImGui::InputInt("Columns", &columns);
+		ImGui::InputInt("Rows", &rows);
+		if (columns <= 0) 
+		{
+			columns = 1;
+		}
+		if (rows <= 0) 
+		{
+			rows = 1;
+		}
+		imageComponent->SetSpritesheetLayout(columns, rows);
+
+		// Reproduction speed slider
+		int reproductionSpeed = imageComponent->GetFrameDuration();
+		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
+		ImGui::PushItemWidth(100);
+		ImGui::SliderInt("Reproduction Speed", &reproductionSpeed, 1, 100);
+		ImGui::PopItemWidth();
+		imageComponent->SetFrameDuration(reproductionSpeed);
+
+		// Display the spritesheet image
+		if (image != nullptr)
+		{
+			ImVec2 imageSize(175, 175);
+			ImVec4 tint(color->x, color->y, color->z, *alpha);
+			ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), imageSize, ImVec2(0, 0), ImVec2(1, 1), tint);
+
+			// Draw lines to divide the image into columns and rows
+			ImVec2 imagePos = ImGui::GetItemRectMin();
+			float columnWidth = imageSize.x / columns;
+			float rowHeight = imageSize.y / rows;
+			for (int i = 1; i < columns; ++i)
+			{
+				ImVec2 start(imagePos.x + i * columnWidth, imagePos.y);
+				ImVec2 end(imagePos.x + i * columnWidth, imagePos.y + imageSize.y);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+			for (int i = 1; i < rows; ++i)
+			{
+				ImVec2 start(imagePos.x, imagePos.y + i * rowHeight);
+				ImVec2 end(imagePos.x + imageSize.x, imagePos.y + i * rowHeight);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+
+			// Display a list of the slices
+			if (ImGui::CollapsingHeader("Slices", ImGuiTreeNodeFlags_None))
+			{
+				float sliceWidth = 1.0f / columns;
+				float sliceHeight = 1.0f / rows;
+				ImVec2 sliceSize(50, 50);
+				
+				for (int row = 0; row < rows; ++row)
+				{
+					for (int col = 0; col < columns; ++col)
+					{
+						// Calculate the texture coordinates for the slice
+						ImVec2 uv0(col * sliceWidth, row * sliceHeight);
+						ImVec2 uv1((col + 1) * sliceWidth, (row + 1) * sliceHeight);
+
+						ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), sliceSize, uv0, uv1, tint);
+
+						if (col < columns - 1)
+						{
+							ImGui::SameLine();
+							ImGui::Text(" ");
+							ImGui::SameLine();
+						}
+					}
+					if (row < rows - 1)
+					{
+						ImGui::NewLine();
+					}
+				}
+			}
+		}
+	}
+	
+	*/
+
+
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const

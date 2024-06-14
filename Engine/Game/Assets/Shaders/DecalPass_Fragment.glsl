@@ -31,6 +31,11 @@ layout(location = 16) uniform mat4 invModel;
 
 layout(location = 45) uniform vec4 diffuseColor;
 layout(location = 46) uniform vec3 emisiveColor;
+layout(location = 47) uniform bool isSpriteSheet;
+//layout(location = 48) uniform vec2 spriteSheetSize;
+//layout(location = 49) uniform vec2 spriteSheetCurrentPosition;
+layout(location = 49) uniform vec2 spriteSheetStart;
+layout(location = 48) uniform vec2 spriteSheetOffset;
 
 in vec4 clipping;
 
@@ -61,37 +66,72 @@ void main()
 	}
 
 
+	//float U = 1.0 / spriteSheetSize.x;
+	//float V = 1.0 / spriteSheetSize.y;
+	
+	//float offsetU = (objPos.x+0.5)/U;
+	//offsetU = U * fract(offsetU) + floor(offsetU) * U;
+	
+	
+	//float uStart = spriteSheetCurrentPosition.y / spriteSheetSize.y;
+	//float vStart = spriteSheetCurrentPosition.x / spriteSheetSize.x;
+	//
+	//float uEnd = uStart + (1.0 / spriteSheetSize.y);
+	//float vEnd = vStart + (1.0 / spriteSheetSize.x);
+	//
+	//
+	//
+	//float offsetU = (uStart + uEnd) * (objPos.x+0.5); 
+	//float offsetV = (vStart + vEnd) * (objPos.y+0.5); 
+
+	vec2 texCoords = {spriteSheetOffset.x * (objPos.x+0.5) + spriteSheetStart.x , spriteSheetOffset.y * (objPos.y+0.5) + spriteSheetStart.y };
+
+	float metal = 0.01;
+	float rough = 0.99;
+
+
+	if (hasSpecular)
+	{
+		vec2 metRough = texture(decalSpecularTex, texCoords).gb;
+		metal = metRough.y;
+		rough = metRough.x;
+		
+		outSpecularRough.rgb = mix(vec3(0.04), diffuseColor.rgb, metal);
+		outSpecularRough.a = rough;
+		
+		//outSpecularRough = pow(specTex, vec4(2.2));
+		//outSpecularRough.w = 1.0f;
+	}
+
+
 
 	if (hasDiffuse)
 	{
-		vec4 diffuseDecalColor = texture(decalDiffuseTex, objPos.xy+0.5) * diffuseColor;
-
+		vec4 diffuseDecalColor = texture(decalDiffuseTex, texCoords); // * diffuseColor;
+		diffuseDecalColor.rgb =  pow(diffuseDecalColor.rgb,vec3(2.2));
+		diffuseDecalColor *= diffuseColor;	
+	
 		if (diffuseDecalColor.w < 0.1)
 		{
 			//discard;
 		}
-		outDiffuse.rgb = pow(diffuseDecalColor.rgb,vec3(2.2));
 
+		outDiffuse = diffuseDecalColor * (1 - metal);
 		outDiffuse.w = 1.0;
 	}
 	
-	if (hasSpecular)
-	{
-		vec4 specTex = texture(decalSpecularTex, objPos.xy+0.5);
-		outSpecularRough = pow(specTex, vec4(2.2));
-		outSpecularRough.w = 1.0f;
-	}
+	
 	
 	if (hasEmisive)
 	{
-		vec3 emissiveTex = texture(decalEmisiveTex, objPos.xy+0.5).rgb * emisiveColor;
+		vec3 emissiveTex = texture(decalEmisiveTex, texCoords).rgb * emisiveColor;
 		outEmissive.rgb = pow(emissiveTex, vec3(2.2));
 		outEmissive.w = 1.0;
 	}
 
 	if (hasNormal)
 	{
-		outNormal.rgb = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, objPos.xy+0.5).rgb*2.0-1.0))*0.5+0.5;
+		outNormal.rgb = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, texCoords).rgb*2.0-1.0))*0.5+0.5;
 		outNormal.w = 1.0;
 		//outNormal = normal *0.5+0.5;
 	}
