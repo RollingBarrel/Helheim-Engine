@@ -11,6 +11,8 @@ CREATE(ItemDrop)
 {
 	CLASS(owner);
 
+    MEMBER(MemberType::INT, mDropId);
+    MEMBER(MemberType::FLOAT, mEnergyRecovered);
     MEMBER(MemberType::FLOAT, mHealthRecovered);
     MEMBER(MemberType::FLOAT, mActivationRange);
 
@@ -50,7 +52,21 @@ void ItemDrop::Update()
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
         {
-            playerScript->RechargeShield(mHealthRecovered);
+            switch (mDropId)
+            {
+            case 1:
+                playerScript->RechargeShield(mHealthRecovered);
+                break;
+            case 2:
+                //playerScript->RechargeShield(mHealthRecovered); // upgrade to shotgun function here
+                break;
+            case 3:
+                //playerScript->RechargeShield(mHealthRecovered); // upgrade to machine gun function here
+                break;
+            default:
+                break;
+            }
+            
         }
     }
 }

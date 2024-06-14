@@ -20,7 +20,9 @@ public:
 private:
     bool IsPlayerInRange(float range);
 
+    int mDropId;
     float mActivationRange = 1.0f;
+    float mEnergyRecovered = 15.0f;
     float mHealthRecovered = 15.0f;
     GameObject* mPlayer = nullptr;
     AnimationComponent* mAnimation = nullptr;
