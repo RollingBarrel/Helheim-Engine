@@ -403,6 +403,16 @@ void PlayerController::RechargeShield(float shield)
     }
 }
 
+void PlayerController::UpgradeToShotgun()
+{
+    LOG("Shotgun Upgrade");
+}
+
+void PlayerController::UpgradeToMachineGun()
+{
+    LOG("Machine Gun Upgrade");
+}
+
 void PlayerController::TakeDamage(float damage)
 {
     if (mLowerState->GetType() == StateType::DASH || mGodMode)

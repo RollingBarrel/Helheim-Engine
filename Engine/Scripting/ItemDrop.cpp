@@ -58,10 +58,10 @@ void ItemDrop::Update()
                 playerScript->RechargeShield(mHealthRecovered);
                 break;
             case 2:
-                //playerScript->RechargeShield(mHealthRecovered); // upgrade to shotgun function here
+                playerScript->UpgradeToShotgun(); 
                 break;
             case 3:
-                //playerScript->RechargeShield(mHealthRecovered); // upgrade to machine gun function here
+                playerScript->UpgradeToMachineGun(); 
                 break;
             default:
                 break;

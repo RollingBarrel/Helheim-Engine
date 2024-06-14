@@ -86,6 +86,8 @@ public:
     // --------------- OLD ----------------------
 
     void RechargeShield(float shield);
+    void UpgradeToShotgun();
+    void UpgradeToMachineGun();
     void TakeDamage(float damage);
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
