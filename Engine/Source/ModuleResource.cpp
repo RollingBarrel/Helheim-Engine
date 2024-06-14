@@ -60,7 +60,8 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 
 	rapidjson::Document document;
 	rapidjson::ParseResult result = document.Parse(fileBuffer);
-	if (!result) {
+	if (!result) 
+	{
 		// Handle parsing error
 		LOG("Not able to load .emeta file");
 		RELEASE_ARRAY(fileBuffer);

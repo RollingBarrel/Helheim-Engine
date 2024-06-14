@@ -64,8 +64,10 @@ public:
 
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
-	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
+	void SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
+	void SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const;
 	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent = nullptr, bool update = false);
+	void OverridePrefab(const JsonObject& gameObject, unsigned int id);
 
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();

@@ -447,6 +447,12 @@
     <ClCompile Include="SaveLoadScene.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="SaveLoadPrefab.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="ResourcePrefab.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1933,6 +1939,12 @@
     </ClInclude>
     <ClInclude Include="SaveLoadScene.h">
       <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadPrefab.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ResourcePrefab.h">
+      <Filter>Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

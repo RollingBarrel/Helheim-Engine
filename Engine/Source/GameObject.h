@@ -111,9 +111,8 @@ public:
 	void LoadComponents(const JsonObject& obj, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	// Prefabs
-	void OverridePrefab(const JsonObject& gameObject, unsigned int id);   //TODO: This need to be here? 
 	void SetPrefabId(unsigned int id) { mPrefabId = id; }						   //TODO: This need to be here?
-	void SetPrefabOverride(bool override) { mPrefabOverride = override; }		   //TODO: This need to be here?
+	void SetPrefabOverride(bool override) { mIsPrefabOverride = override; }		   //TODO: This need to be here?
 																				   
 private:
 
@@ -156,8 +155,8 @@ private:
 	std::vector<Component*> mComponentsToDelete;
 
 	// Prefabs
-	int mPrefabId = 0;
-	bool mPrefabOverride = true;
+	int mPrefabId = 0;	//Id of the prefab it belongs
+	bool mIsPrefabOverride = false;
 
 	std::string mTag = "Untagged";
 

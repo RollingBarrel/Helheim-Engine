@@ -247,6 +247,9 @@
     <ClCompile Include="ImporterScene.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="ImporterPrefab.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imconfig.h">
@@ -518,6 +521,9 @@
       <Filter>Importers</Filter>
     </ClInclude>
     <ClInclude Include="ImporterScene.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="ImporterPrefab.h">
       <Filter>Importers</Filter>
     </ClInclude>
   </ItemGroup>

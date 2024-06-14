@@ -2,6 +2,8 @@
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "HierarchyPanel.h"
 
 #include "Resource.h"
 #include "ResourceTexture.h"
@@ -10,7 +12,7 @@
 #include "ResourceModel.h"
 #include "ResourceAnimation.h"
 #include "ResourceScene.h"
-//#include "ResourcePrefab.h"
+#include "ResourcePrefab.h"
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
@@ -22,7 +24,7 @@
 #include "ImporterTexture.h"
 #include "ImporterModel.h"
 #include "ImporterScene.h"
-//#include "ImporterPrefab.h"
+#include "ImporterPrefab.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
 #include "ImporterStateMachine.h"
@@ -171,7 +173,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 		ret = Importer::Scene::Import(assetsFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Prefab:
-		//ret = Importer::Prefab::Import(assetsFile, uid, modifyAssets);
+		ret = Importer::Prefab::Import(assetsFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
@@ -181,12 +183,14 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 		break;
 	case Resource::Type::StateMachine:
 		ret = Importer::StateMachine::Import(assetsFile, uid);
+		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
 	}
 	//if ret is not nullptr
-	if (ret) {
+	if (ret) 
+	{
 		mResources[uid] = ret;
 		mResources[uid]->AddReferenceCount();
 	}
@@ -226,7 +230,8 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		break;
 	}
 	case Resource::Type::Prefab:
-		assetsFilePath = importedFilePath;
+		assetsFilePath = ASSETS_PREFABS_PATH + assetName + extensionName;
+		EngineApp->GetScene()->SavePrefab(*(reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()), assetsFilePath.c_str());
 		break;
 	case Resource::Type::Script:
 	{

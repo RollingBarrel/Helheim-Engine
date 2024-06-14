@@ -174,9 +174,7 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 			{
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
-				unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
-				object->SetPrefabId(resourceId);
-				EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
+				EngineApp->GetEngineResource()->ImportFile(file.c_str());
 
 			}
 		}

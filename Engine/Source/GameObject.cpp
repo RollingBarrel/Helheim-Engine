@@ -65,7 +65,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 	mEulerAngles(original.mEulerAngles), mRotation(original.mRotation), mLocalRotation(original.mLocalRotation), mLocalEulerAngles(original.mLocalEulerAngles),
 	mPosition(original.mPosition), mLocalPosition(original.mLocalPosition), mScale(original.mScale), mLocalScale(original.mLocalScale), 
 	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight),
-	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride), mIsDynamic(original.mIsDynamic)
+	mPrefabId(original.mPrefabId), mIsPrefabOverride(original.mIsPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
 	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
@@ -566,7 +566,7 @@ void GameObject::Save(JsonObject& obj) const
 	obj.AddFloats("Scale", mScale.ptr(), 3);
 	obj.AddString("Tag", mTag.c_str());
 	obj.AddInt("PrefabUid", mPrefabId);
-	obj.AddBool("OverridePrefab", mPrefabOverride);
+	obj.AddBool("OverridePrefab", mIsPrefabOverride);
 	obj.AddBool("Dynamic", mIsDynamic);
 
 	// Save components
@@ -593,7 +593,7 @@ void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map
 
 	SetTag(jsonObject.GetString("Tag"));
 	mPrefabId = jsonObject.GetInt("PrefabUid");
-	mPrefabOverride = jsonObject.GetBool("OverridePrefab");
+	mIsPrefabOverride = jsonObject.GetBool("OverridePrefab");
 	mIsDynamic = jsonObject.GetBool("Dynamic");
 	uidPointerMap[mUid] = this;
 }
@@ -609,72 +609,6 @@ void GameObject::LoadComponents(const JsonObject& jsonObject, const std::unorder
 		Component* component = this->CreateComponent(cType);
 		component->Load(componentData, uidPointerMap);
 	}
-}
-
-void GameObject::OverridePrefab(const JsonObject& obj, unsigned int id)
-{
-	if (mPrefabOverride && mPrefabId == id)
-	{
-		std::vector<GameObject*> loadedObjects;
-		for (GameObject* child : mChildren)
-		{
-			delete child;
-		}
-		mChildren.clear();
-		std::unordered_map<int, int> uuids;
-		
-		if (obj.HasMember("Prefab") && obj["GameObjects"].IsArray())
-		{
-			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
-			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-			{
-				if (gameObjects[i].IsObject())
-				{
-					unsigned int parentUID{ 0 };
-					unsigned int uuid{ 0 };
-
-					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
-					{
-						parentUID = gameObjects[i]["ParentUID"].GetInt();
-					}
-					if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt())
-					{
-						uuid = gameObjects[i]["UID"].GetInt();
-					}
-					if (parentUID == 1) {
-						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-						{
-							loadedObjects.push_back(this);
-							uuids[uuid] = mUid;
-							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
-						}
-					}
-					else
-					{
-						//GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
-						//loadedObjects.push_back(go);
-						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-					}
-				}
-			}
-			mParent->RecalculateMatrices();
-			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-			{
-				if (gameObjects[i].IsObject())
-				{
-					//loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-				}
-			}
-		}
-	}
-	else
-	{
-		for (GameObject* child : mChildren)
-		{
-			child->LoadChangesPrefab(obj, id);
-		}
-	}
-
 }
 #pragma endregion
 
