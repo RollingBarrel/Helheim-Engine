@@ -985,7 +985,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		}
 
 		//Draw selectable state machines
-		std::vector<std::string> assets = GetStateMachineAssets(component, false);
+		std::vector<std::string> assets;
+		GetStateMachineAssets(component, false, assets);
 		const char* smName = component->GetStateMachine()->GetName().c_str();
 		ImGui::Text("Select default state machine:");
 		if (ImGui::BeginCombo("##DefaultSM", smName))
@@ -1040,7 +1041,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	}
 }
 
-std::vector<std::string> InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine)
+void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names)
 {
 	
 	const char* currentItem = component->GetStateMachine()->GetName().c_str();
@@ -1049,26 +1050,24 @@ std::vector<std::string> InspectorPanel::GetStateMachineAssets(AnimationComponen
 		currentItem = component->GetSpineStateMachine()->GetName().c_str();
 
 	}
-	std::vector<std::string> modelNames;
-	EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".smbin", modelNames);
-	for (int i = 0; i < modelNames.size(); ++i)
+	EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".smbin", names);
+	for (int i = 0; i < names.size(); ++i)
 	{
 
-		size_t slashPos = modelNames[i].find_last_of('/');
+		size_t slashPos = names[i].find_last_of('/');
 		if (slashPos != std::string::npos)
 		{
 
-			modelNames[i].erase(0, slashPos + 1);
+			names[i].erase(0, slashPos + 1);
 		}
 
-		size_t dotPos = modelNames[i].find_first_of('.');
+		size_t dotPos = names[i].find_first_of('.');
 		if (dotPos != std::string::npos)
 		{
 
-			modelNames[i].erase(dotPos);
+			names[i].erase(dotPos);
 		}
 	}
-	return modelNames;
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
