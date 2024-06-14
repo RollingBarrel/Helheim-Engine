@@ -7,6 +7,7 @@
 #include "Keys.h"
 #include "ScriptComponent.h"
 #include "HudController.h"
+#include "PlayerController.h"
 
 CREATE(GameManager)
 {
@@ -46,6 +47,12 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
         mHudController = static_cast<HudController*>(script->GetScriptInstance());
+    }
+
+    if (mPlayer)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT));
+        mPlayerController = static_cast<PlayerController*>(script->GetScriptInstance());
     }
 }
 

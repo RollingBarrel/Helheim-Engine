@@ -328,6 +328,17 @@ float3 PlayerController::GetPlayerPosition()
     return  mGameObject->GetPosition(); 
 }
 
+void PlayerController::SetWeaponDamage(float percentage)
+{
+    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+}
+
+void PlayerController::SetMaxShield(float percentage)
+{
+    mMaxShield *= percentage; 
+    GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
+}
+
 void PlayerController::SetGrenadeVisuals(bool value)
 {
     mGrenadeAimAreaGO->SetEnabled(value);

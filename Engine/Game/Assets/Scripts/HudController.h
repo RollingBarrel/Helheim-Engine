@@ -27,6 +27,7 @@ public:
 
     void SetAmmo(int ammo);
     void SetHealth(float health);
+    void SetMaxHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);

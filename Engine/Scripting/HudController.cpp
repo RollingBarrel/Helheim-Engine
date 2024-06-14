@@ -10,6 +10,7 @@
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
+#include "Transform2DComponent.h"
 #include "SliderComponent.h"
 
 
@@ -183,6 +184,34 @@ void HudController::SetHealth(float health)
 {
     if (mHealthSlider) mHealthSlider->SetValue(health);
     mTargetHealth = health;
+}
+
+void HudController::SetMaxHealth(float health)
+{
+    float newWidth = health * 3;
+
+    if (mHealthSlider)
+    {
+        Transform2DComponent* transform = static_cast<Transform2DComponent*>(mHealthSlider->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        float2 currentSize = transform->GetSize();
+        float3 currentPosition = transform->GetPosition();
+
+        transform->SetSize(float2(newWidth, currentSize.y));
+
+        float newPositionX = currentPosition.x + (newWidth - currentSize.x) / 2;
+        transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
+    }
+    if (mHealthGradualSlider)
+    {
+        Transform2DComponent* transform = static_cast<Transform2DComponent*>(mHealthGradualSlider->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        float2 currentSize = transform->GetSize();
+        float3 currentPosition = transform->GetPosition();
+
+        transform->SetSize(float2(newWidth, currentSize.y));
+
+        float newPositionX = currentPosition.x + (newWidth - currentSize.x) / 2;
+        transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
+    }
 }
 
 void HudController::SwitchWeapon()

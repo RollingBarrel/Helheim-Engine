@@ -17,13 +17,14 @@ public:
 	WeaponType GetType() { return mType; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
+	int GetDamage() { return mDamage; }
 
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
-
+	void SetDamage(int value) { mDamage = value; }
 protected:
 	WeaponType mType;
 
-	float mDamage = 0.0f;
+	int mDamage = 0.0f;
 	float mAttackRate = 0.0f;
 
 	int mCurrentAmmo = 0;

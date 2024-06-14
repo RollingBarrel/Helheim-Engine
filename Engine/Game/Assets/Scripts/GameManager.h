@@ -4,6 +4,7 @@
 
 class ButtonComponent;
 class HudController;
+class PlayerController;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -20,6 +21,7 @@ public:
     void Update();
 
     GameObject* GetPlayer() { return mPlayer; };
+    PlayerController* GetPlayerController() { return mPlayerController; }
     HudController* GetHud() { return mHudController; };
     bool UsingController() { return mController; }
 
@@ -39,6 +41,7 @@ private:
     GameObject* mPlayer = nullptr;
     GameObject* mHudControllerGO = nullptr;
 
+    PlayerController* mPlayerController = nullptr;
     HudController* mHudController = nullptr;
 
     bool mPaused = false;

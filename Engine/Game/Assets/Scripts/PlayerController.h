@@ -71,9 +71,15 @@ public:
     Weapon* GetWeapon() const { return mWeapon; }
     const State* GetPlayerUpperState() const { return mUpperState; }
 
+    void SetMovementSpeed(float percentage) { mPlayerSpeed *= percentage; }
+    void SetWeaponDamage(float percentage); 
+    void SetMaxShield(float percentage); 
+
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
+
+    // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
     void SetGrenadeRange(float value) { mGrenadeRange = value; }
     void SetGrenadeVisuals(bool value);
@@ -83,11 +89,10 @@ public:
     bool CanReload() const;
     void Reload() const;
     
-    // --------------- OLD ----------------------
-
     void RechargeShield(float shield);
     void TakeDamage(float damage);
 
+    // --------------- OLD ----------------------
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
 
 private:
