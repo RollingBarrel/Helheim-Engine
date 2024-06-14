@@ -987,7 +987,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		//Draw selectable state machines
 		std::vector<std::string> assets = GetStateMachineAssets(component, false);
 		const char* smName = component->GetStateMachine()->GetName().c_str();
-
+		ImGui::Text("Select default state machine:");
 		if (ImGui::BeginCombo("##DefaultSM", smName))
 		{
 
@@ -1012,6 +1012,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 		
 		if (component->HasSpine())
 		{
+			ImGui::Text("Select spine state machine:");
 			const char* spineSMName = component->GetSpineStateMachine()->GetName().c_str();
 			if (ImGui::BeginCombo("##SpineSM", spineSMName))
 			{
