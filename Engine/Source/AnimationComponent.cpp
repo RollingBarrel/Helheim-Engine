@@ -1,6 +1,4 @@
 #include "AnimationComponent.h"
-#include "AnimationComponent.h"
-#include "AnimationComponent.h"
 
 #include "Application.h"
 #include "ModuleResource.h"
