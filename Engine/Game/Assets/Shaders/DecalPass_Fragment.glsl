@@ -113,7 +113,7 @@ void main()
 	
 		if (diffuseDecalColor.w < 0.1)
 		{
-			//discard;
+			discard;
 		}
 
 		outDiffuse = diffuseDecalColor * (1 - metal);

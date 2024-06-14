@@ -1948,8 +1948,6 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 			component->mCurrentColumn = component->mDefaultColumn;
 		}
 
-
-
 		component->mDefaultRow = Clamp(static_cast<float>(component->mDefaultRow), 0.0f, static_cast<float>(component->mRows - 1));
 		component->mDefaultColumn = Clamp(static_cast<float>(component->mDefaultColumn), 0.0f, static_cast<float>(component->mColumns - 1));
 
