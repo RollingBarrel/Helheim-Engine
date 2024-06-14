@@ -42,7 +42,18 @@
                         "SpecularID": 2022236665,
                         "SpecularName": "specular_green.tga",
                         "NormalID": 1466974184,
-                        "NormalName": "normal.tga"
+                        "NormalName": "normal.tga",
+                        "IsSpriteSheet": true,
+                        "PlayAtStart": false,
+                        "SpriteSheetSize": [
+                            4,
+                            4
+                        ],
+                        "DefaultPosition": [
+                            1,
+                            1
+                        ],
+                        "Speed": 2
                     }
                 ]
             },

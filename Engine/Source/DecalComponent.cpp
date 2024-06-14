@@ -97,6 +97,15 @@ void DecalComponent::GetSpriteSheetCurrentPosition(int& row, int& column) const
 
 
 
+void DecalComponent::Stop()
+{
+	mIsPlaying = false;
+	mElapsedTime = 0;
+
+	mCurrentRow = mDefaultRow;
+	mCurrentColumn = mDefaultColumn;
+}
+
 void DecalComponent::Reset()
 {
 	mDiffuseName = "";
@@ -126,6 +135,22 @@ void DecalComponent::Reset()
 
 void DecalComponent::Update()
 {
+	if (mIsSpriteSheet && mIsPlaying)
+	{
+		mElapsedTime += App->GetDt();
+		float frameDuration = 1.0f / mFPS;
+
+		if (mElapsedTime > frameDuration)
+		{
+			mCurrentColumn = (mCurrentColumn + 1) % mColumns;
+			if (mCurrentColumn == 0)
+			{
+				mCurrentRow = (mCurrentRow + 1) % mRows;
+			}
+			
+			mElapsedTime = 0;
+		}
+	}
 }
 
 Component* DecalComponent::Clone(GameObject* owner) const
@@ -162,6 +187,16 @@ void DecalComponent::Save(JsonObject& obj) const
 		obj.AddString("EmisiveName", mEmisiveName.c_str());
 		obj.AddFloats("EmisiveColor", mEmisiveColor.ptr(), 4);
 	}
+
+
+	obj.AddBool("IsSpriteSheet", mIsSpriteSheet);
+	obj.AddBool("PlayAtStart", mPlayAtStart);
+
+	int size[2] = { mRows , mColumns };
+	int defaultPosition[2] = {mDefaultRow, mDefaultColumn};
+	obj.AddInts("SpriteSheetSize", size, 2);
+	obj.AddInts("DefaultPosition", defaultPosition, 2);
+	obj.AddInt("Speed", mFPS);
 
 }
 
@@ -201,6 +236,23 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		mEmisiveName = data.GetString("EmisiveName");
 		data.GetFloats("EmisiveColor", mEmisiveColor.ptr());
 	}
+	
+	mIsSpriteSheet = data.GetBool("IsSpriteSheet");
+	mPlayAtStart = data.GetBool("PlayAtStart");
+
+	int size[2];
+	data.GetInts("SpriteSheetSize", size);
+	mRows = size[0];
+	mColumns = size[1];
+
+	int defaultPosition[2];
+	data.GetInts("DefaultPosition", defaultPosition);
+	mDefaultRow = defaultPosition[0];
+	mDefaultColumn = defaultPosition[1];
+	
+	mFPS = data.GetInt("Speed");
+
+
 	
 }
 

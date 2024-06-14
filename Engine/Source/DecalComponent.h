@@ -5,7 +5,7 @@
 
 class ResourceTexture;
 
-class DecalComponent : public Component
+class ENGINE_API DecalComponent : public Component
 {
 	friend class InspectorPanel;
 public:
@@ -33,6 +33,9 @@ public:
 	bool IsSpriteSheet() const { return mIsSpriteSheet; }
 	void GetSpriteSheetSize(int& rows, int& columns) const;
 	void GetSpriteSheetCurrentPosition(int& row, int& column) const;
+	void Play() { mIsPlaying = true; }
+	void Pause() { mIsPlaying = false; }
+	void Stop();
 
 	void Reset() override;
 	void Update() override;
@@ -58,14 +61,23 @@ private:
 	std::string mNormalName = "";
 	std::string mEmisiveName = "";
 
+
+	// Sprite Sheet
 	bool mIsSpriteSheet = false;
 	
 	int mRows = 1;
 	int mColumns = 1;
-	int mSpeed = 1;
 
 	int mCurrentRow = 0;
 	int mCurrentColumn = 0;
+
+	int mDefaultRow = 0;
+	int mDefaultColumn = 0;
+
+	long double mElapsedTime = 0;
+	int mFPS = 30;
+	bool mIsPlaying = false;
+	bool mPlayAtStart = false;
 
 };
 

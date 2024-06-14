@@ -1915,7 +1915,7 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
 		if (ImGui::Button("Play"))
 		{
-			//imageComponent->PlayAnimation();
+			component->Play();
 		}
 		ImGui::PopStyleColor(2);
 		ImGui::SameLine();
@@ -1924,7 +1924,7 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 		if (ImGui::Button("Pause"))
 		{
-			//imageComponent->PauseAnimation();
+			component->Pause();
 		}
 		ImGui::PopStyleColor(2);
 		ImGui::SameLine();
@@ -1933,20 +1933,25 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
 		if (ImGui::Button("Stop"))
 		{
-			//imageComponent->StopAnimation();
+			component->Stop();
 		}
 		ImGui::PopStyleColor(2);
 
 		
 		// Columns and rows selector
+		if (ImGui::InputInt("Row", &component->mDefaultRow))
+		{
+			component->mCurrentRow = component->mDefaultRow;
+		}
+		if (ImGui::InputInt("Column", &component->mDefaultColumn))
+		{
+			component->mCurrentColumn = component->mDefaultColumn;
+		}
 
-		
 
-		ImGui::InputInt("Current Row", &component->mCurrentRow);
-		ImGui::InputInt("Current Column", &component->mCurrentColumn);
 
-		component->mCurrentRow = Clamp(static_cast<float>(component->mCurrentRow), 0.0f, static_cast<float>(component->mRows - 1));
-		component->mCurrentColumn = Clamp(static_cast<float>(component->mCurrentColumn), 0.0f, static_cast<float>(component->mColumns - 1));
+		component->mDefaultRow = Clamp(static_cast<float>(component->mDefaultRow), 0.0f, static_cast<float>(component->mRows - 1));
+		component->mDefaultColumn = Clamp(static_cast<float>(component->mDefaultColumn), 0.0f, static_cast<float>(component->mColumns - 1));
 
 		ImGui::InputInt("Rows", &component->mRows);
 		ImGui::InputInt("Columns", &component->mColumns);
@@ -1959,7 +1964,7 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 		// Reproduction speed slider
 		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
 		ImGui::PushItemWidth(100);
-		ImGui::SliderInt("Reproduction Speed", &component->mSpeed, 1, 100);
+		ImGui::SliderInt("##Reproduction Speed", &component->mFPS, 1, 100);
 		ImGui::PopItemWidth();
 
 
