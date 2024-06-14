@@ -23,7 +23,6 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     SEPARATOR("Pause Screen");
@@ -39,11 +38,12 @@ CREATE(HudController)
     END_CREATE;
 }
 
-HudController::HudController(GameObject* owner) : Script(owner) {}
+HudController::HudController(GameObject* owner) : Script(owner) 
+{
+}
 
 HudController::~HudController()
 {
-    
 }
 
 void HudController::Start()
@@ -134,12 +134,16 @@ void HudController::Update()
     }
 
     // Grenade cooldown update
-    if (mGrenadeSlider != nullptr) 
+    if (mGrenadeSlider != nullptr && mGrenadeCooldown != 0.0f) 
     {
         if (mGrenadeTimer <= mGrenadeCooldown) 
         {
             mGrenadeTimer += App->GetDt();
-            mGrenadeSlider->SetValue(mGrenadeCooldown / mGrenadeTimer);
+            mGrenadeSlider->SetValue(1 - (mGrenadeTimer / mGrenadeCooldown));
+        }
+        else
+        {
+            mGrenadeCooldown = 0.0f;
         }
     }
 }
@@ -204,7 +208,7 @@ void HudController::SwitchWeapon()
 void HudController::SetGrenadeCooldown(float cooldown)
 {
     mGrenadeCooldown = cooldown;
-    mGrenadeTimer = 0.0f;
+    mGrenadeTimer = 0.001f;
 }
 
 void HudController::SetScreen(SCREEN name, bool active)

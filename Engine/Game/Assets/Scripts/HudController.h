@@ -76,7 +76,6 @@ private:
     GameObject* mSecondWeaponMeleeGO = nullptr;
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mSecondWeaponRangeGO = nullptr;
-    GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
