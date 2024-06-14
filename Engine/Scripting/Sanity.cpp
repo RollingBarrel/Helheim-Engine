@@ -23,15 +23,9 @@ CREATE(Sanity)
 Sanity::Sanity(GameObject* owner) : Script(owner)
 {
     // Create buff selections
-    std::vector<Buff> arena1_level1 = { Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) };
-    std::vector<Buff> arena2_level1 = { Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) };
-    std::vector<Buff> arena3_level1 = { Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) };
-
-    // Add buff vectors to the selection vector
-    mBuffSelection.push_back(arena1_level1);
-    mBuffSelection.push_back(arena2_level1);
-    mBuffSelection.push_back(arena3_level1);
-
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
 }
 
 Sanity::~Sanity()
@@ -88,7 +82,8 @@ void Sanity::Update()
 
 void Sanity::CreateSelection(int arena)
 {
-    if (arena > mBuffSelection.size()) return;
+    if (arena < 0 || arena >= mBuffSelection.size()) return;
+
     mCurrentBuffs = mBuffSelection[arena];
 
     // Card 1
@@ -182,45 +177,56 @@ void Buff::Consume()
     }
 }
 
-void Sanity::OnCard1Click() 
+void Sanity::OnCard1Click()
 {
-    mCurrentBuffs.at(0).Consume();
+    if (!mCurrentBuffs.empty())
+        mCurrentBuffs.at(0).Consume();
 }
 
-void Sanity::OnCard1HoverOn() 
+void Sanity::OnCard1HoverOn()
 {
-    mCard1Image->SetAlpha(0.9f);
+    if (mCard1Image)
+        mCard1Image->SetAlpha(0.9f);
 }
 
 void Sanity::OnCard1HoverOff()
 {
-    mCard1Image->SetAlpha(0.7f);
+    if (mCard1Image)
+        mCard1Image->SetAlpha(0.7f);
 }
+
 void Sanity::OnCard2Click()
 {
-    mCurrentBuffs.at(1).Consume();
+    if (mCurrentBuffs.size() > 1)
+        mCurrentBuffs.at(1).Consume();
 }
 
 void Sanity::OnCard2HoverOn()
 {
-    mCard2Image->SetAlpha(0.9f);
+    if (mCard2Image)
+        mCard2Image->SetAlpha(0.9f);
 }
 
 void Sanity::OnCard2HoverOff()
 {
-    mCard2Image->SetAlpha(0.7f);
+    if (mCard2Image)
+        mCard2Image->SetAlpha(0.7f);
 }
+
 void Sanity::OnCard3Click()
 {
-    mCurrentBuffs.at(2).Consume();
+    if (mCurrentBuffs.size() > 2)
+        mCurrentBuffs.at(2).Consume();
 }
 
 void Sanity::OnCard3HoverOn()
 {
-    mCard3Image->SetAlpha(0.9f);
+    if (mCard3Image)
+        mCard3Image->SetAlpha(0.9f);
 }
 
 void Sanity::OnCard3HoverOff()
 {
-    mCard3Image->SetAlpha(0.7f);
+    if (mCard3Image)
+        mCard3Image->SetAlpha(0.7f);
 }
