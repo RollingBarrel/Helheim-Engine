@@ -67,7 +67,7 @@ void main()
 	cubeZaxis.y = invModel[1][2];
 	cubeZaxis.z = invModel[2][2];
 	
-	if (dot(cubeZaxis,normal) < 0.3)
+	if (dot(cubeZaxis,normal) < 0.0)
 	{
 		discard;
 	}
