@@ -914,6 +914,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 					if (gameObject) 
 					{
 						*gameObject = *(GameObject**)payload->Data;
+						App->GetScriptManager()->AddGameObjectToMap(gameObject);
 					}
 					
 				}

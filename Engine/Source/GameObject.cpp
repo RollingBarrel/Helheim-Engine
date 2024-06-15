@@ -24,6 +24,7 @@
 #include "TrailComponent.h"
 #include "DecalComponent.h"
 #include "TextComponent.h"
+#include "ModuleScriptManager.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -97,6 +98,8 @@ GameObject::~GameObject()
 {
 	App->GetScene()->RemoveGameObjectFromScene(this);
 
+	App->GetScriptManager()->RemoveGameObject(this);
+
 	for (Component* component : mComponents)
 	{
 		delete component;
@@ -106,6 +109,8 @@ GameObject::~GameObject()
 	{
 		delete gameObject;
 	}
+
+	
 }
 
 #pragma endregion

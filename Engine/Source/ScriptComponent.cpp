@@ -185,6 +185,7 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 											if (got != uidPointerMap.end())
 											{
 												*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+												App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
 											}
 										}
 									}
