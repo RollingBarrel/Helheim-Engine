@@ -1,5 +1,8 @@
 #pragma once
 #include "Panel.h"
+#include <vector>
+#include <string>
+
 #define INSPECTORPANEL "Inspector##"
 
 class GameObject;
@@ -74,6 +77,7 @@ private:
 	void MaterialVariables(const MeshRendererComponent& renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
+	void GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names);
 	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;
 	void DrawRandomFloat(RandomFloat& value, const char* cLabel) const;
 	void DrawBlendTypeSelector(int& type, const char* cLabel) const;
