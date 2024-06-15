@@ -1,4 +1,5 @@
 #include "EnemyExplosive.h"
+#include "GameManager.h"
 
 CREATE(EnemyExplosive)
 {
@@ -30,11 +31,9 @@ void EnemyExplosive::Start()
 
 void EnemyExplosive::Update()
 {
-    if (!mBeAttracted)
-    {
-        Enemy::Update();
-    }
-    
+    if (GameManager::GetInstance()->IsPaused()) return;
+
+    Enemy::Update();
 }
 
 void EnemyExplosive::TakeDamage(float damage)

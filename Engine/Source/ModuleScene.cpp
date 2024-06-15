@@ -1,6 +1,4 @@
 #include "ModuleScene.h"
-#pragma once
-#include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
 #include "Application.h"
@@ -257,6 +255,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		mRoot->RecalculateMatrices();
 		mQuadtreeRoot->UpdateTree();
+		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
@@ -502,6 +501,9 @@ void ModuleScene::NewScene()
 {
 	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
+	mGameObjectsByTags.clear();
+	mSceneGO.clear();
+
 	delete mRoot;
 	mRoot = new GameObject("Untlitled", nullptr);
 }
