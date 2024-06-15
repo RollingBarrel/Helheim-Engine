@@ -86,37 +86,41 @@ void::ScriptComponent::Save(JsonObject& obj) const
 
 	obj.AddString("ScriptName", mName.c_str());
 
-	JsonArray arr = obj.AddNewJsonArray("ScriptVariables");
-	const std::vector<Member*>& members = mScript->GetMembers();
-	for (const Member* member : members) 
+	if (mScript)
 	{
-		JsonObject membObj = arr.PushBackNewObject();	
-		membObj.AddString("VariableName", member->mName);
-		membObj.AddInt("MemberType", static_cast<int>(member->mType));
-		switch (member->mType)
+		JsonArray arr = obj.AddNewJsonArray("ScriptVariables");
+		const std::vector<Member*>& members = mScript->GetMembers();
+		for (const Member* member : members)
 		{
-		case MemberType::INT:
-			membObj.AddInt("VariableData", *reinterpret_cast<int*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::FLOAT:
-			membObj.AddFloat("VariableData", *reinterpret_cast<float*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::BOOL:
-			membObj.AddBool("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
-			break;
-		case MemberType::FLOAT3:
-			membObj.AddFloats("VariableData", reinterpret_cast<float3*>((((char*)mScript) + member->mOffset))->ptr(), 3);
-			break;
-		case MemberType::GAMEOBJECT:
-		{
-			GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
-			gameObject ? membObj.AddInt("VariableData", (gameObject->GetID())) : membObj.AddInt("VariableData", -1);
-			break;
-		}
-		default:
-			break;
+			JsonObject membObj = arr.PushBackNewObject();
+			membObj.AddString("VariableName", member->mName);
+			membObj.AddInt("MemberType", static_cast<int>(member->mType));
+			switch (member->mType)
+			{
+			case MemberType::INT:
+				membObj.AddInt("VariableData", *reinterpret_cast<int*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::FLOAT:
+				membObj.AddFloat("VariableData", *reinterpret_cast<float*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::BOOL:
+				membObj.AddBool("VariableData", *reinterpret_cast<bool*>((((char*)mScript) + member->mOffset)));
+				break;
+			case MemberType::FLOAT3:
+				membObj.AddFloats("VariableData", reinterpret_cast<float3*>((((char*)mScript) + member->mOffset))->ptr(), 3);
+				break;
+			case MemberType::GAMEOBJECT:
+			{
+				GameObject* gameObject = *reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset));
+				gameObject ? membObj.AddInt("VariableData", (gameObject->GetID())) : membObj.AddInt("VariableData", -1);
+				break;
+			}
+			default:
+				break;
+			}
 		}
 	}
+	
 }
 
 void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)

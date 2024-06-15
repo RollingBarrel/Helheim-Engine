@@ -18,12 +18,18 @@ PointLightComponent::PointLightComponent(GameObject* owner) : Component(owner, C
 
 	mData.intensity = 50.0f;
 	
-	App->GetOpenGL()->AddPointLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddPointLight(*this);
+	}
 }
 
 PointLightComponent::PointLightComponent(const PointLightComponent* original, GameObject* owner) : Component(owner, ComponentType::POINTLIGHT), mData(original->mData)
 {
-	App->GetOpenGL()->AddPointLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddPointLight(*this);
+	}
 }
 
 PointLightComponent::~PointLightComponent() 
@@ -125,7 +131,13 @@ void PointLightComponent::Load(const JsonObject& data, const std::unordered_map<
 		}
 	}
 
-	if (data.HasMember("Intensity")) mData.intensity = data.GetFloat("Intensity");
+	if (data.HasMember("Intensity"))
+	{
+		mData.intensity = data.GetFloat("Intensity");
+	}
+
+	SetEnable(IsEnabled());
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::Reset()

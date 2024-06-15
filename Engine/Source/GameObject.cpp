@@ -426,6 +426,7 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);
+		break;
 	default:
 		break;
 	}
@@ -576,6 +577,7 @@ void GameObject::Save(JsonObject& obj) const
 	}
 	obj.AddString("Name", mName.c_str());
 	obj.AddBool("Enabled", mIsEnabled);
+	obj.AddBool("Active", mIsActive);
 	obj.AddFloats("Translation", mPosition.ptr(), 3);
 	obj.AddFloats("Rotation", mRotation.ptr(), 4);
 	obj.AddFloats("Scale", mScale.ptr(), 3);
@@ -597,6 +599,12 @@ void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map
 {
 	mIsEnabled = jsonObject.GetBool("Enabled");
 	float pos[3]; 
+
+	if(jsonObject.HasMember("Active"))
+	{
+		mIsActive = jsonObject.GetBool("Active");
+	}
+
 	jsonObject.GetFloats("Translation", pos);
 	SetPosition(float3(pos));
 	float rot[4]; 

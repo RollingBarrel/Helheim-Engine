@@ -2,7 +2,10 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
 
-Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
+Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int())
+{
+	mIsEnabled = mOwner->IsActive();
+}
 
 void Component::Save(JsonObject& obj) const
 {
@@ -66,4 +69,15 @@ const char* Component::GetNameFromType(ComponentType type)
 		default:
 			return "None";
 		}
+}
+
+void Component::SetEnable(bool enable)
+{
+	if (enable == mIsEnabled)
+		return;
+	mIsEnabled = enable;
+	if (mIsEnabled)
+		Enable();
+	else
+		Disable();
 }

@@ -36,16 +36,7 @@ public:
 
 	static const char* GetNameFromType(ComponentType type);
 
-	void SetEnable(bool enable)
-	{
-		if (enable == mIsEnabled)
-			return;
-		mIsEnabled = enable;
-		if (mIsEnabled)
-			Enable();
-		else
-			Disable();
-	}
+	void SetEnable(bool enable);
 
 protected:
 	virtual	void Reset() = 0;
