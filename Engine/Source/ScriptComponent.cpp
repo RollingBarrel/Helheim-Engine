@@ -240,7 +240,12 @@ void ScriptComponent::LoadScript(const char* scriptName)
 		{
 			LOG("SCRIPT RESOURCE NOT FOUND");
 		}
-		App->GetScriptManager()->AddScript(this);
+
+		if (IsEnabled())
+		{
+			App->GetScriptManager()->AddScript(this);
+		}
+		
 		LOG("LOADING SCRIPT SUCCESS");
 	}
 	else 

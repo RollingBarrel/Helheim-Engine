@@ -281,8 +281,6 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 	mIsTransformModified = true;
 }
 
-
-
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
 	mLocalRotation = rotation;
