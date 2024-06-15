@@ -221,9 +221,9 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	mResourceId = data.GetInt("ImageID");
 	SetImage(mResourceId);
 
-	float col[2];
+	float col[3];
 	data.GetFloats("Color", col);
-	mColor = float3(col);
+	mColor = float3(col[0], col[1], col[2]);
 	mAlpha = data.GetFloat("Alpha");
 	mIsSpritesheet = data.GetBool("IsSpritesheet");
 	mColumns = data.GetInt("Columns");

@@ -181,7 +181,11 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 										int  UID = data.GetInt("VariableData");
 										if (UID != -1)
 										{
-											*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+											std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(UID);
+											if (got != uidPointerMap.end())
+											{
+												*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+											}
 										}
 									}
 									break;
