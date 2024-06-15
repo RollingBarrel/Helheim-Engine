@@ -1941,21 +1941,26 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 		// Columns and rows selector
 		if (ImGui::InputInt("Row", &component->mDefaultRow))
 		{
+			component->mDefaultRow = Clamp(static_cast<float>(component->mDefaultRow), 0.0f, static_cast<float>(component->mRows - 1));
 			component->mCurrentRow = component->mDefaultRow;
 		}
 		if (ImGui::InputInt("Column", &component->mDefaultColumn))
 		{
+			component->mDefaultColumn = Clamp(static_cast<float>(component->mDefaultColumn), 0.0f, static_cast<float>(component->mColumns - 1));
 			component->mCurrentColumn = component->mDefaultColumn;
 		}
 
-		component->mDefaultRow = Clamp(static_cast<float>(component->mDefaultRow), 0.0f, static_cast<float>(component->mRows - 1));
-		component->mDefaultColumn = Clamp(static_cast<float>(component->mDefaultColumn), 0.0f, static_cast<float>(component->mColumns - 1));
-
-		ImGui::InputInt("Rows", &component->mRows);
-		ImGui::InputInt("Columns", &component->mColumns);
+		if (ImGui::InputInt("Rows", &component->mRows))
+		{
+			component->mRows = (component->mRows < 1) ? 1 : component->mRows;
+		}
+		if (ImGui::InputInt("Columns", &component->mColumns))
+		{
+			component->mColumns = (component->mColumns < 1) ? 1 : component->mColumns;
+		}
 		
-		component->mRows = (component->mRows < 1) ? 1 : component->mRows;
-		component->mColumns = (component->mColumns < 1) ? 1 : component->mColumns;
+		
+		
 		
 	
 		
