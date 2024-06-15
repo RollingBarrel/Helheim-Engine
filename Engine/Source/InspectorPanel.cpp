@@ -1907,6 +1907,8 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 	float4* colors[numTextures] = { &component->mDiffuseColor, nullptr, nullptr, &component->mEmisiveColor };
 	
 
+	ImGui::SliderFloat("fade", &component->mFade, 0.0f, 1.0f);
+
 	ImGui::Checkbox("Sprite Sheet", &component->mIsSpriteSheet);
 	if (component->mIsSpriteSheet)
 	{

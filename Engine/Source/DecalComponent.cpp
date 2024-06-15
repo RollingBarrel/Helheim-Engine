@@ -64,6 +64,12 @@ unsigned int DecalComponent::GetEmisiveId() const
 	return 0;
 }
 
+float DecalComponent::GetBlendFactor() const
+{
+	float frameDuration = 1.0f / mFPS;
+	return mElapsedTime / frameDuration;
+}
+
 void DecalComponent::GetSpriteSheetSize(int& rows, int& columns) const
 {
 	if (mIsSpriteSheet)
@@ -197,7 +203,7 @@ void DecalComponent::Save(JsonObject& obj) const
 	obj.AddInts("SpriteSheetSize", size, 2);
 	obj.AddInts("DefaultPosition", defaultPosition, 2);
 	obj.AddInt("Speed", mFPS);
-
+	obj.AddFloat("Fade", mFade);
 }
 
 void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -251,9 +257,7 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	mDefaultColumn = defaultPosition[1];
 	
 	mFPS = data.GetInt("Speed");
-
-
-	
+	mFade = data.GetFloat("Fade");
 }
 
 void DecalComponent::Enable()

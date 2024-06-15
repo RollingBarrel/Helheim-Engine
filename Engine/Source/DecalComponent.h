@@ -21,6 +21,8 @@ public:
 	unsigned int GetSpecularId() const;
 	unsigned int GetNormalId() const;
 	unsigned int GetEmisiveId() const;
+	float GetBlendFactor() const;
+	float GetFadeFactor() const { return mFade; }
 
 	bool HasDiffuse() const { return mDiffuseTexture; };
 	bool HasSpecular() const { return mSpecularTexture; };
@@ -61,6 +63,7 @@ private:
 	std::string mNormalName = "";
 	std::string mEmisiveName = "";
 
+	float mFade = 1.0f;
 
 	// Sprite Sheet
 	bool mIsSpriteSheet = false;

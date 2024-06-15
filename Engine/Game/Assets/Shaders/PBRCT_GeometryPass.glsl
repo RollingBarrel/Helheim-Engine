@@ -40,7 +40,8 @@ in VertToFrag {
 };
 
 layout(location = 0) out vec3 outDiffuse;
-layout(location = 1) out vec4 outSpecularRough;
+//layout(location = 1) out vec4 outSpecularRough;
+layout(location = 1) out vec4 outMetalRough;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec3 outPosition;
 layout(location = 4) out vec3 outEmissive;
@@ -88,9 +89,15 @@ void main()
 		emissiveColor *= material.emissiveFactor;
 		outEmissive = emissiveColor;
 	}
-	outDiffuse = baseColor * (1 - metal);
-	outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
-	outSpecularRough.a = rough;
+
+	outDiffuse = baseColor;
+	outMetalRough.b = metal;
+	outMetalRough.g = rough;
+
+
+	//outDiffuse = baseColor * (1 - metal);
+	//outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
+	//outSpecularRough.a = rough;
 	outNormal = (N * 0.5) + 0.5;
 	outPosition = sPos;
 	

@@ -34,13 +34,20 @@ layout(location = 46) uniform vec3 emisiveColor;
 layout(location = 47) uniform bool isSpriteSheet;
 //layout(location = 48) uniform vec2 spriteSheetSize;
 //layout(location = 49) uniform vec2 spriteSheetCurrentPosition;
-layout(location = 49) uniform vec2 spriteSheetStart;
 layout(location = 48) uniform vec2 spriteSheetOffset;
+layout(location = 49) uniform vec2 spriteSheetStart;
+//layout(location = 50) uniform float blendFactor;
+//layout(location = 51) uniform vec2 spriteSheetNext;
+layout(location = 52) uniform float fade;
+
+
+
 
 in vec4 clipping;
 
 void main()
 {
+
 	vec3 worldPos = texture(gBufferPositionTex, (clipping.xy/clipping.w)*0.5 + 0.5).xyz;
 	vec3 objPos = (invModel*vec4(worldPos, 1.0)).xyz;
 	objPos.y *= -1;
@@ -66,25 +73,9 @@ void main()
 	}
 
 
-	//float U = 1.0 / spriteSheetSize.x;
-	//float V = 1.0 / spriteSheetSize.y;
-	
-	//float offsetU = (objPos.x+0.5)/U;
-	//offsetU = U * fract(offsetU) + floor(offsetU) * U;
-	
-	
-	//float uStart = spriteSheetCurrentPosition.y / spriteSheetSize.y;
-	//float vStart = spriteSheetCurrentPosition.x / spriteSheetSize.x;
-	//
-	//float uEnd = uStart + (1.0 / spriteSheetSize.y);
-	//float vEnd = vStart + (1.0 / spriteSheetSize.x);
-	//
-	//
-	//
-	//float offsetU = (uStart + uEnd) * (objPos.x+0.5); 
-	//float offsetV = (vStart + vEnd) * (objPos.y+0.5); 
-
-	vec2 texCoords = {spriteSheetOffset.x * (objPos.x+0.5) + spriteSheetStart.x , spriteSheetOffset.y * (objPos.y+0.5) + spriteSheetStart.y };
+	//Sprite Sheet
+	vec2 texCoordsCurrent = {spriteSheetOffset.x * (objPos.x+0.5) + spriteSheetStart.x , spriteSheetOffset.y * (objPos.y+0.5) + spriteSheetStart.y };
+	//vec2 texCoordsNext = {spriteSheetOffset.x * (objPos.x+0.5) + spriteSheetNext.x , spriteSheetOffset.y * (objPos.y+0.5) + spriteSheetNext.y };
 
 	float metal = 0.01;
 	float rough = 0.99;
@@ -92,22 +83,33 @@ void main()
 
 	if (hasSpecular)
 	{
-		vec2 metRough = texture(decalSpecularTex, texCoords).gb;
+		//vec2 metRoughCurrent = texture(decalSpecularTex, texCoordsCurrent).gb;
+		//vec2 metRoughNext = texture(decalSpecularTex, texCoordsNext).gb;
+		//vec2 metRough = mix(metRoughCurrent, metRoughNext, 1 - blendFactor);
+
+		vec2 metRough = texture(decalSpecularTex, texCoordsCurrent).gb;
 		metal = metRough.y;
 		rough = metRough.x;
 		
-		outSpecularRough.rgb = mix(vec3(0.04), diffuseColor.rgb, metal);
-		outSpecularRough.a = rough;
+		//outSpecularRough.rgb = mix(vec3(0.04), diffuseColor.rgb, metal);
+		//outSpecularRough.a = rough;
 		
+		outSpecularRough.b = metal;
+		outSpecularRough.g = rough;
+
 		//outSpecularRough = pow(specTex, vec4(2.2));
-		//outSpecularRough.w = 1.0f;
+		outSpecularRough.a = fade;
 	}
 
 
 
 	if (hasDiffuse)
 	{
-		vec4 diffuseDecalColor = texture(decalDiffuseTex, texCoords); // * diffuseColor;
+		//vec4 diffuseDecalColorCurrent = texture(decalDiffuseTex, texCoordsCurrent); // * diffuseColor;
+		//vec4 diffuseDecalColorNext = texture(decalDiffuseTex, texCoordsNext);
+		//vec4 diffuseDecalColor = mix(diffuseDecalColorCurrent, diffuseDecalColorNext, 1 - blendFactor);
+		
+		vec4 diffuseDecalColor = texture(decalDiffuseTex, texCoordsCurrent); // * diffuseColor;
 		diffuseDecalColor.rgb =  pow(diffuseDecalColor.rgb,vec3(2.2));
 		diffuseDecalColor *= diffuseColor;	
 	
@@ -116,23 +118,23 @@ void main()
 			discard;
 		}
 
-		outDiffuse = diffuseDecalColor * (1 - metal);
-		outDiffuse.w = 1.0;
+		outDiffuse = diffuseDecalColor; // * (1 - metal);
+		outDiffuse.w = fade;
 	}
 	
 	
 	
 	if (hasEmisive)
 	{
-		vec3 emissiveTex = texture(decalEmisiveTex, texCoords).rgb * emisiveColor;
+		vec3 emissiveTex = texture(decalEmisiveTex, texCoordsCurrent).rgb * emisiveColor;
 		outEmissive.rgb = pow(emissiveTex, vec3(2.2));
-		outEmissive.w = 1.0;
+		outEmissive.w = fade;
 	}
 
 	if (hasNormal)
 	{
-		outNormal.rgb = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, texCoords).rgb*2.0-1.0))*0.5+0.5;
-		outNormal.w = 1.0;
+		outNormal.rgb = (mat3(tangent, bitangent, normal) * (texture(decalNormalTex, texCoordsCurrent).rgb*2.0-1.0))*0.5+0.5;
+		outNormal.w = fade;
 		//outNormal = normal *0.5+0.5;
 	}
 

@@ -1170,7 +1170,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	mBatchManager.Draw();
 	glPopDebugGroup();
 
-	
+	//Decal Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
 
 	glActiveTexture(GL_TEXTURE3);
@@ -1265,18 +1265,35 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		spriteSheetColumOffset = 1.0f - (1.0f / static_cast<float>(numColumns)) * static_cast<float>(currentColumn);
 		
 
-		float uStart = (float)currentColumn / (float)numColumns;
-		float vStart = (float)currentRow / (float)numRows;
+		float uOffset = 1.0f / (float)numColumns;
+		float vOffset = 1.0f / (float)numRows;
+		float uStart = (float)currentColumn * uOffset;
+		float vStart = (float)currentRow * vOffset;
 
+		//int nextColumn = currentColumn = (currentColumn + 1) % numColumns;
+		//int nextRow = currentRow;
+
+		//if (nextColumn == 0)
+		//{
+		//	nextRow = (currentRow + 1) % numRows;
+		//}
+		//float uNext = (float)nextColumn * uOffset;
+		//float vNext = (float)nextRow * vOffset;
+
+		//float blendFactor = mDecalComponents[i]->GetBlendFactor();
+
+		glUniform2f(48, uOffset, vOffset);
 		glUniform2f(49, uStart, vStart);
+		//glUniform1f(50, blendFactor);
+		//glUniform2f(51, uNext, vNext);
 
-		float uEnd = uStart + (1.0 / (float)numColumns);
-		float vEnd = vStart + (1.0 / (float)numRows);
+		//float uEnd = uStart + (1.0 / (float)numColumns);
+		//float vEnd = vStart + (1.0 / (float)numRows);
+		//
+		//float uSum = uEnd - uStart;
+		//float vSum = vEnd - vStart;
 
-		float uSum = uEnd - uStart;
-		float vSum = vEnd - vStart;
-
-		glUniform2f(48, uSum , vSum );
+		glUniform1f(52, mDecalComponents[i]->GetFadeFactor());
 
 
 		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());

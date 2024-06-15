@@ -70,7 +70,8 @@ in vec2 uv;
 layout(location = 1)uniform vec3 cPos;
 //Gbuffer
 layout(binding = 0)uniform sampler2D diffuseTex;
-layout(binding = 1)uniform sampler2D specularRoughTex;
+//layout(binding = 1)uniform sampler2D specularRoughTex;
+layout(binding = 1)uniform sampler2D metalRoughTex;
 layout(binding = 2)uniform sampler2D normalTex;
 layout(binding = 3)uniform sampler2D positionTex;
 layout(binding = 4)uniform sampler2D emissiveTex;
@@ -122,16 +123,25 @@ vec3 GetAmbientLight()
 
 void main() 
 {
-	cDif = texture(diffuseTex, uv).rgb;
-	vec4 specColorTex = texture(specularRoughTex, uv);
-	cSpec = specColorTex.rgb;
-	rough = max(specColorTex.a * specColorTex.a, 0.001f);
+	//cDif = texture(diffuseTex, uv).rgb;
+	//vec4 specColorTex = texture(specularRoughTex, uv);
+	//cSpec = specColorTex.rgb;
+	//rough = max(specColorTex.a * specColorTex.a, 0.001f);
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
 	//depth = texture(depthTex, uv).r;
 	//pos = GetWorldPos(depth, uv);
 	pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;
 	V = normalize(cPos - pos);
+
+	vec3 baseColor = texture(diffuseTex, uv).rgb;
+	vec4 specColorTex = texture(metalRoughTex, uv);
+	float metal = specColorTex.b;
+	rough = max(specColorTex.g * specColorTex.g, 0.001f);
+	
+	cDif = baseColor * (1- specColorTex.b);
+	cSpec = mix(vec3(0.04), baseColor, metal);
+
 
 	vec3 pbrCol = vec3(0);
 	//Directional light
