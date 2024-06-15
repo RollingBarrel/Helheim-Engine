@@ -136,7 +136,6 @@ void PointLightComponent::Load(const JsonObject& data, const std::unordered_map<
 		mData.intensity = data.GetFloat("Intensity");
 	}
 
-	SetEnable(IsEnabled());
 	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 

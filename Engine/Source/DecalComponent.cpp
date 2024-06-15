@@ -8,7 +8,11 @@
 
 DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentType::DECAL)
 {
-	App->GetOpenGL()->AddDecal(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddDecal(*this);
+	}
+	
 
 	mDiffuseColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 	mEmisiveColor = { 1.0f, 1.0f, 1.0f, 1.0f };
@@ -19,7 +23,10 @@ mDiffuseName(other.mDiffuseName), mDiffuseTexture(other.mDiffuseTexture), mSpecu
 mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveName(other.mEmisiveName), mEmisiveTexture(other.mEmisiveTexture),
 mDiffuseColor(other.mDiffuseColor), mEmisiveColor(other.mEmisiveColor)
 {
-	App->GetOpenGL()->AddDecal(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddDecal(*this);
+	}
 }
 
 DecalComponent::~DecalComponent()

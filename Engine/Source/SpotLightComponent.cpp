@@ -205,7 +205,6 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
 
-	SetEnable(IsEnabled());
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	
 	
