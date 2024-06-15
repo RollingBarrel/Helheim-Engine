@@ -264,10 +264,6 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "DecalPass_Fragment.glsl";
 	DecalPassProgramId= CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	int number;
-	glGetIntegerv(GL_MAX_DRAW_BUFFERS, &number);
-	LOG("\nNUMBER OF BUFFERS: %i\n",number) ;
-
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 	SetOpenGlCameraUniforms();
