@@ -21,7 +21,6 @@ public:
 	unsigned int GetSpecularId() const;
 	unsigned int GetNormalId() const;
 	unsigned int GetEmisiveId() const;
-	float GetBlendFactor() const;
 	float GetFadeFactor() const { return mFade; }
 
 	bool HasDiffuse() const { return mDiffuseTexture; };
@@ -80,7 +79,5 @@ private:
 	long double mElapsedTime = 0;
 	int mFPS = 30;
 	bool mIsPlaying = false;
-	bool mPlayAtStart = false;
-
 };
 

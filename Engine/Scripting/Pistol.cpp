@@ -33,7 +33,8 @@ Pistol::~Pistol()
 void Pistol::BasicAttack()
 {
     GameObject* bullet = nullptr;
-    if (mCurrentAmmo > 0) {
+    if (mCurrentAmmo > 0) 
+    {
        //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
     }

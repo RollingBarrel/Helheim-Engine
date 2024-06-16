@@ -81,9 +81,6 @@ update_status ModulePhysics::PreUpdate(float dt)
 		}
 	}
 	
-	//std::multiset<Hit> hits;
-	//RayCast(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 5.0f), hits);
-
 	return UPDATE_CONTINUE;
 }
 

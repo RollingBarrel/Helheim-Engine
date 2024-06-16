@@ -71,12 +71,6 @@ unsigned int DecalComponent::GetEmisiveId() const
 	return 0;
 }
 
-float DecalComponent::GetBlendFactor() const
-{
-	float frameDuration = 1.0f / mFPS;
-	return mElapsedTime / frameDuration;
-}
-
 void DecalComponent::GetSpriteSheetSize(int& rows, int& columns) const
 {
 	if (mIsSpriteSheet)
@@ -203,7 +197,6 @@ void DecalComponent::Save(JsonObject& obj) const
 
 
 	obj.AddBool("IsSpriteSheet", mIsSpriteSheet);
-	obj.AddBool("PlayAtStart", mPlayAtStart);
 
 	int size[2] = { mRows , mColumns };
 	int defaultPosition[2] = {mDefaultRow, mDefaultColumn};
@@ -223,7 +216,6 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		mDiffuseTexture->GenerateMipmaps();
 		mDiffuseName = data.GetString("DiffuseName");
 		data.GetFloats("DiffuseColor", mDiffuseColor.ptr());
-		
 	}
 	
 	if (data.HasMember("SpecularID"))
@@ -231,7 +223,6 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		mSpecularTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("SpecularID"), Resource::Type::Texture);
 		mSpecularTexture->GenerateMipmaps();
 		mSpecularName = data.GetString("SpecularName");
-		
 	}
 	
 	if (data.HasMember("NormalID"))
@@ -239,7 +230,6 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		mNormalTexture = (ResourceTexture*)App->GetResource()->RequestResource(data.GetInt("NormalID"), Resource::Type::Texture);
 		mNormalTexture->GenerateMipmaps();
 		mNormalName = data.GetString("NormalName");
-		
 	}
 
 	if (data.HasMember("EmisiveID"))
@@ -251,7 +241,6 @@ void DecalComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	}
 	
 	mIsSpriteSheet = data.GetBool("IsSpriteSheet");
-	mPlayAtStart = data.GetBool("PlayAtStart");
 
 	int size[2];
 	data.GetInts("SpriteSheetSize", size);

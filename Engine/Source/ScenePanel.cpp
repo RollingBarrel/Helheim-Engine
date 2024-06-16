@@ -150,31 +150,38 @@ void ScenePanel::MenuGBuffer()
 	{
 		if (ImGui::BeginCombo("##Screen Output", currentSceneName.c_str(), ImGuiComboFlags_PopupAlignLeft))
 		{
-			if (ImGui::Selectable("SCENE")) {
+			if (ImGui::Selectable("SCENE")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
 				currentSceneName = "SCENE";
 			}
-			if (ImGui::Selectable("BASE_COLOR")) {
+			if (ImGui::Selectable("BASE_COLOR")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDiffuse();
 				currentSceneName = "BASE_COLOR";
 			}
-			if (ImGui::Selectable("METAL_ROUGH")) {
+			if (ImGui::Selectable("METAL_ROUGH")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferSpecularRough();
 				currentSceneName = "METAL_ROUGH";
 			}
-			if (ImGui::Selectable("EMISSIVE")) {
+			if (ImGui::Selectable("EMISSIVE")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferEmissive();
 				currentSceneName = "EMISSIVE";
 			}
-			if (ImGui::Selectable("POS")) {
+			if (ImGui::Selectable("POS")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferPos();
 				currentSceneName = "POS";
 			}
-			if (ImGui::Selectable("NORMALS")) {
+			if (ImGui::Selectable("NORMALS")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
 				currentSceneName = "NORMALS";
 			}
-			if (ImGui::Selectable("DEPTH")) {
+			if (ImGui::Selectable("DEPTH")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
 				currentSceneName = "DEPTH";
 			}
