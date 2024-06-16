@@ -166,7 +166,7 @@ void GeometryBatch::RecreatePersistentSsbos()
 	unsigned int offset = mMeshComponents.size() + ((inBetweenOffset + sizeof(uint32_t) - 1) / sizeof(uint32_t));
 	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 	{
-		BatchMeshRendererComponent& bMesh = it->second;
+		BatchMeshRendererComponent& bMesh = *it;
 		bMesh.baseInstance = i;
 		mSsboMatIndicesCommandsData[i] = bMesh.bMaterialIdx;
 		mSsboMatIndicesCommandsData[offset + i * 5] = mUniqueMeshes[bMesh.bMeshIdx].resource->GetNumberIndices();//Count: Number of indices in the mesh
@@ -187,7 +187,7 @@ void GeometryBatch::RecreatePersistentSsbos()
 	i = 0;
 	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 	{
-		const MeshRendererComponent& bMesh = *(it->second.component);
+		const MeshRendererComponent& bMesh = *(it->component);
 		float3 points[8];
 		bMesh.GetOriginalAABB().GetCornerPoints(points);
 		for (int k = 0; k < 8; ++k)
@@ -399,7 +399,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent& cMesh)
 			AddUniqueMesh(cMesh, meshIdx);
 		}
 	}
-	mMeshComponents[cMesh.GetID()] = { meshIdx, matIdx, &cMesh };
+	mMeshComponents.emplace_back(meshIdx, matIdx, &cMesh);
 	mPersistentsFlag = true;
 }
 
@@ -408,15 +408,18 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 	unsigned int bMeshIdx = 0;
 	unsigned int bMaterialIdx = 0;
 	bool found = false;
-	auto mapIterator = mMeshComponents.find(component.GetID());
-	if (mapIterator != mMeshComponents.end())
+	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 	{
-		found = true;
-		bMeshIdx = mapIterator->second.bMeshIdx;
-		bMaterialIdx = mapIterator->second.bMaterialIdx;
-		if (component.HasSkinning())
-			mSkinningFlag = true;
-		mMeshComponents.erase(mapIterator);
+		if (component.GetID() == it->component->GetID())
+		{
+			found = true;
+			bMeshIdx = it->bMeshIdx;
+			bMaterialIdx = it->bMaterialIdx;
+			if (component.HasSkinning())
+				mSkinningFlag = true;
+			mMeshComponents.erase(it);
+			break;
+		}
 	}
 	if (!found)
 		return false;
@@ -432,8 +435,8 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 		mUniqueMeshes.erase(mUniqueMeshes.begin() + bMeshIdx);
 		for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
-			if (it->second.bMeshIdx > bMeshIdx)
-				--(it->second.bMeshIdx);
+			if (it->bMeshIdx > bMeshIdx)
+				--(it->bMeshIdx);
 		}
 		mVboDataSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::RENDER);
 		mEboDataSize -= rMesh.GetNumberIndices() * sizeof(unsigned int);
@@ -445,9 +448,9 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 		mMaterialFlag = true;
 		for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
-			if (it->second.bMaterialIdx > bMaterialIdx)
+			if (it->bMaterialIdx > bMaterialIdx)
 			{
-				--(it->second.bMaterialIdx);
+				--(it->bMaterialIdx);
 			}
 		}
 	}
@@ -457,53 +460,13 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 	return true;
 }
 
-bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
-{
-	if (mMeshComponents.find(component.GetID()) == mMeshComponents.end())
-	{
-		return false;
-	}
-	if (mComandsMap.find(component.GetID()) != mComandsMap.end())
-	{
-		mCommands.emplace_back(mComandsMap[component.GetID()]);
-		mIboFlag = true;
-		return true;
-	}
-
-	if (mVBOFlag)
-		RecreateVboAndEbo();
-	if (mMaterialFlag)
-		RecreateMaterials();
-	if (mPersistentsFlag)
-		RecreatePersistentSsbos();
-	if (mSkinningFlag)
-		RecreateSkinningSsbos();
-	
-	ComputeSkinning(component);
-
-	unsigned int idx = mDrawCount % NUM_BUFFERS;
-
-	const BatchMeshRendererComponent& bComp = mMeshComponents[component.GetID()];
-	const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
-	if (component.HasSkinning())
-	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
-	}
-	else
-	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
-	}
-	
-	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, bRes.firstIndex, bRes.baseVertex, bComp.baseInstance);
-	mComandsMap[component.GetID()] = mCommands.back();
-	mIboFlag = true;
-	return true;
-}
-
-void GeometryBatch::Draw(unsigned int commandsBuffer)
+void GeometryBatch::Draw(const Frustum& frustum, unsigned int programId)
 {
 	if (mMeshComponents.size() == 0)
 		return;
+
+	unsigned int ibo = GetCommandsSsbo();
+	ComputeCommands(ibo, frustum);
 
 	if (mSkinningApplied)
 	{
@@ -527,27 +490,21 @@ void GeometryBatch::Draw(unsigned int commandsBuffer)
 		}
 	}
 
+	glUseProgram(programId);
 	glBindVertexArray(mVao);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, commandsBuffer);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
 	glBindBuffer(GL_PARAMETER_BUFFER, mParameterBuffer);
-	//if (mIboFlag)
-	//{
-	//	glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
-	//	mIboFlag = false;
-	//}
 
 	unsigned int structSize = ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
 	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndicesCommands, 0, ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4) * mMeshComponents.size());
-	//unsigned int offset = mMeshComponents.size() * sizeof(BufferIndices);
-	//offset += ALIGNED_STRUCT_SIZE(offset, mSsboAligment) - offset;
-	//glMultiDrawElementsIndirectCount(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)offset, 0, mMeshComponents.size(), 0);
 	glMultiDrawElementsIndirectCount(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, 0, mMeshComponents.size(), 0);
 
 	//CleanUp
 	glBindVertexArray(0);
+	glDeleteBuffers(1, &ibo);
 }
 
 void GeometryBatch::Update()
@@ -563,8 +520,8 @@ void GeometryBatch::Update()
 
 	for (auto it = mMeshComponents.cbegin(); it != mMeshComponents.cend(); ++it)
 	{
-		const BatchMeshRendererComponent& bComp = it->second;
-		ComputeSkinning(*bComp.component);
+		const BatchMeshRendererComponent& bComp = *it;
+		ComputeSkinning(bComp);
 
 		unsigned int idx = mDrawCount % NUM_BUFFERS;
 
@@ -581,29 +538,22 @@ void GeometryBatch::Update()
 
 }
 
-void GeometryBatch::CleanUpCommands()
-{
-	mCommands.clear();
-}
-
 void GeometryBatch::EndFrameDraw()
 {
-	CleanUpCommands();
-	mComandsMap.clear();
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 	glDeleteSync(mSync[idx]);
 	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	++mDrawCount;
 }
 
-void GeometryBatch::ComputeSkinning(const MeshRendererComponent& cMesh)
+void GeometryBatch::ComputeSkinning(const BatchMeshRendererComponent& bMesh)
 {
-	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh.GetID()];
+	const MeshRendererComponent& cMesh = *bMesh.component;
 	const ResourceMesh* rMesh = cMesh.GetResourceMesh();
 	if (cMesh.HasSkinning())
 	{
 		glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
-		const BatchMeshResource& bRes = mUniqueMeshes[batchMeshRenderer.bMeshIdx];
+		const BatchMeshResource& bRes = mUniqueMeshes[bMesh.bMeshIdx];
 		//TODO: El buffer range de los vertices dskin entre 2 batches no funcionara
 		assert(bRes.skinOffset != -1 && "Skin mesh does not have the offset set");
 		glUniform1ui(0, bRes.skinOffset);

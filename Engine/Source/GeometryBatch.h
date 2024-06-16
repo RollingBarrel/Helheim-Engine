@@ -1,8 +1,7 @@
 #pragma once
 #include <vector>
-#include <unordered_map>
-#include "float4.h"
 #include "ResourceMesh.h"
+#include "MathGeoLibFwd.h"
 
 class AnimationComponent;
 class MeshRendererComponent;
@@ -92,18 +91,17 @@ public:
 	void AddMeshComponent(const MeshRendererComponent& component);
 	bool EditMaterial(const MeshRendererComponent& component);
 	bool RemoveMeshComponent(const MeshRendererComponent& component);
-	bool AddToDraw(const MeshRendererComponent& component);
 	void Update();
-	void Draw(unsigned int commandsBuffer);
+	void Draw(const math::Frustum& frustum, unsigned int programId);
 	void EndFrameDraw();
-	void CleanUpCommands();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	void ComputeSkinning(const MeshRendererComponent& cMesh);
+	void ComputeSkinning(const BatchMeshRendererComponent& cMesh);
+
+private:
 	unsigned int GetCommandsSsbo() const;
 	void ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum);
 
-private:
 	void RecreatePersistentSsbos();
 	void RecreateSkinningSsbos();
 	void RecreateVboAndEbo();
@@ -116,12 +114,10 @@ private:
 	bool mIboFlag = false;
 	bool mSkinningFlag = false;
 	
-	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
+	std::vector<BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
-	std::vector<Command> mCommands;
-	std::unordered_map<unsigned int, Command> mComandsMap;
 
 	unsigned int mVertexSize = 0;
 

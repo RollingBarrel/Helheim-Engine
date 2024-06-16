@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "Globals.h"
+#include "MathGeoLibFwd.h"
 
 class GeometryBatch;
 class Component;
@@ -15,13 +16,11 @@ public:
 	void RemoveMeshComponent(const MeshRendererComponent& meshComponent);
 	void EditMaterial(const MeshRendererComponent& meshComponent);
 
-	void AddCommand(const MeshRendererComponent& meshComponent);
-	void CleanUpCommands();
-	//TODO: mhan de passar el command buffer
-	//void Draw();
+	//Once per draw call
+	void Update();
+	void Draw(const math::Frustum& frustum, unsigned int programId);
 	void EndFrameDraw();
 	unsigned int GetNumBatches() const { return mBatches.size(); }
-	GeometryBatch* operator[](unsigned int idx) { return mBatches[idx]; }
 
 private:
 	std::vector<GeometryBatch*> mBatches;

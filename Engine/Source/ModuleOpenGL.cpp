@@ -1047,52 +1047,47 @@ void ModuleOpenGL::Draw()
 	//	mBatchManager.AddCommand(*mesh);
 	//}
 	//GaometryPass
-	if (mBatchManager.GetNumBatches())
-	{
-		//TODO: sestan fent els skins cada frame
-		mBatchManager[0]->Update();
-		unsigned int ibo = mBatchManager[0]->GetCommandsSsbo();
-		mBatchManager[0]->ComputeCommands(ibo, App->GetCamera()->GetCurrentCamera()->GetFrustum());
-		glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
-		glDisable(GL_BLEND);
-		glEnable(GL_STENCIL_TEST);
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		glStencilMask(0xFF);
-		glUseProgram(mPbrGeoPassProgramId);
-		mBatchManager[0]->Draw(ibo);
-		glDeleteBuffers(1, &ibo);
+	//TODO: sestan fent els skins cada frame
 
-		//Lighting Pass
-		glStencilFunc(GL_EQUAL, 1, 0xFF);
-		glStencilMask(0x00);
-		glDisable(GL_DEPTH_TEST);
-		glDepthMask(0x00);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mGDiffuse);
-		glActiveTexture(GL_TEXTURE1);
-		glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-		glActiveTexture(GL_TEXTURE2);
-		glBindTexture(GL_TEXTURE_2D, mGNormals);
-		glActiveTexture(GL_TEXTURE3);
-		glBindTexture(GL_TEXTURE_2D, mGColDepth);
-		glActiveTexture(GL_TEXTURE4);
-		glBindTexture(GL_TEXTURE_2D, mGEmissive);
-		glActiveTexture(GL_TEXTURE5);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
-		glActiveTexture(GL_TEXTURE6);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
-		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
-		glBindVertexArray(mEmptyVAO);
-		glUseProgram(mPbrLightingPassProgramId);
-		glDrawArrays(GL_TRIANGLES, 0, 3);
+	mBatchManager.Update();
+	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	glDisable(GL_BLEND);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	glStencilMask(0xFF);
+	mBatchManager.Draw(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mPbrGeoPassProgramId);
+	//glDeleteBuffers(1, &ibo);
 
-		glStencilMask(0xFF);
-		glDisable(GL_STENCIL_TEST);
-		glEnable(GL_DEPTH_TEST);
-		glDepthMask(0xFF);
-	}
+	//Lighting Pass
+	glStencilFunc(GL_EQUAL, 1, 0xFF);
+	glStencilMask(0x00);
+	glDisable(GL_DEPTH_TEST);
+	glDepthMask(0x00);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	glActiveTexture(GL_TEXTURE4);
+	glBindTexture(GL_TEXTURE_2D, mGEmissive);
+	glActiveTexture(GL_TEXTURE5);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
+	glBindVertexArray(mEmptyVAO);
+	glUseProgram(mPbrLightingPassProgramId);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	glStencilMask(0xFF);
+	glDisable(GL_STENCIL_TEST);
+	glEnable(GL_DEPTH_TEST);
+	glDepthMask(0xFF);
 
 	//particles
 	glActiveTexture(GL_TEXTURE0);
