@@ -51,6 +51,7 @@
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
 #include "ResourceModel.h"
+#include "ResourceStateMachine.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -982,88 +983,97 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 			component->SetAnimSpeed(animSpeed);
 		}
 
-		if (ImGui::Button("Edit state machine"))
+		if (ImGui::Button("Open state machine panel"))
 		{
 			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
 			panel->SetStateMachine(component->GetStateMachine());
-			panel->SetComponent(component);
-			panel->SetIsSpine(false);
 			panel->Open();
 		}
 
-		if (component->HasSpine())
+		//Draw selectable state machines
+		std::vector<std::string> assets;
+		GetStateMachineAssets(component, false, assets);
+		const char* smName = component->GetStateMachine()->GetName().c_str();
+		ImGui::Text("Select default state machine:");
+		if (ImGui::BeginCombo("##DefaultSM", smName))
 		{
-			if (ImGui::Button("Edit spine state machine"))
+
+			for (int n = 0; n < assets.size(); n++)
 			{
-				AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
-				panel->SetStateMachine(component->GetSpineStateMachine());
-				panel->SetComponent(component);
-				panel->SetIsSpine(false);
-				panel->Open();
-			}
-
-		}
-	}
-	else
-	{
-		const char* currentItem = "None";
-		if (ImGui::BeginCombo("##combo", currentItem))
-		{
-			std::vector<std::string> modelNames;
-			EngineApp->GetFileSystem()->DiscoverFiles("Assets/Models", ".emeta", modelNames);
-			for (int i = 0; i < modelNames.size(); ++i)
-			{
-
-				size_t slashPos = modelNames[i].find_last_of('/');
-				if (slashPos != std::string::npos)
+				bool is_selected = (smName == assets[n]);
+				if (ImGui::Selectable(assets[n].c_str(), is_selected))
 				{
-
-					modelNames[i].erase(0, slashPos + 1);
+					smName = assets[n].c_str();
+					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
+					ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+					component->SetStateMachine(newSM->GetStateMachine());
+					component->SetSMUID(newSM->GetUID());
 				}
-
-				size_t dotPos = modelNames[i].find_first_of('.');
-				if (dotPos != std::string::npos)
-				{
-
-					modelNames[i].erase(dotPos);
-				}
-			}
-
-			for (int n = 0; n < modelNames.size(); n++)
-			{
-				bool is_selected = (currentItem == modelNames[n]);
-				if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
-				{
-					currentItem = modelNames[n].c_str();
-					ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(std::string("Assets/Models/" + std::string(currentItem) + ".gltf").c_str()));
-					if (model)
-					{
-						if (model->mAnimationUids.size() > 0)
-						{
-							component->SetAnimationsUids(model->mAnimationUids);
-						}
-						else
-						{
-							currentItem = "Error: Not animated";
-							is_selected = false;
-						}
-						App->GetResource()->ReleaseResource(model->GetUID());
-					}
-					
-				}
-
 				if (is_selected)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
-
 			}
 			ImGui::EndCombo();
 		}
+		
+		if (component->HasSpine())
+		{
+			ImGui::Text("Select spine state machine:");
+			const char* spineSMName = component->GetSpineStateMachine()->GetName().c_str();
+			if (ImGui::BeginCombo("##SpineSM", spineSMName))
+			{
+
+				for (int n = 0; n < assets.size(); n++)
+				{
+					bool is_selected = (spineSMName == assets[n]);
+					if (ImGui::Selectable(assets[n].c_str(), is_selected))
+					{
+						spineSMName = assets[n].c_str();
+						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
+						ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+						component->SetSpineStateMachine(newSM->GetStateMachine());
+						component->SetSpineSMUID(newSM->GetUID());
+
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
 	}
+}
 
+void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names)
+{
+	
+	const char* currentItem = component->GetStateMachine()->GetName().c_str();
+	if (isSpine)
+	{
+		currentItem = component->GetSpineStateMachine()->GetName().c_str();
 
+	}
+	EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".smbin", names);
+	for (int i = 0; i < names.size(); ++i)
+	{
 
+		size_t slashPos = names[i].find_last_of('/');
+		if (slashPos != std::string::npos)
+		{
+
+			names[i].erase(0, slashPos + 1);
+		}
+
+		size_t dotPos = names[i].find_first_of('.');
+		if (dotPos != std::string::npos)
+		{
+
+			names[i].erase(dotPos);
+		}
+	}
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
