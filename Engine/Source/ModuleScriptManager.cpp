@@ -133,7 +133,6 @@ void ModuleScriptManager::RemoveGameObjectFromMap(GameObject** gameObject)
 	if (gameObject && *gameObject)
 	{
 		unsigned int ID = (*gameObject)->GetID();
-
 		if (mGameObjectsPointersMap.find(ID) != mGameObjectsPointersMap.end())
 		{
 			for (std::vector<GameObject**>::const_iterator it = mGameObjectsPointersMap[ID].cbegin(); it != mGameObjectsPointersMap[ID].cend(); ++it)
@@ -142,10 +141,8 @@ void ModuleScriptManager::RemoveGameObjectFromMap(GameObject** gameObject)
 				{
 					mGameObjectsPointersMap[ID].erase(it);
 					break;
-				}
-				
+				}	
 			}
-			
 		}
 	}
 }
