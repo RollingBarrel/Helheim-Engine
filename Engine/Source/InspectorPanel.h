@@ -28,7 +28,9 @@ class TextComponent;
 class BoxColliderComponent;
 class TrailComponent;
 class BezierCurve;
+class DecalComponent;
 class RandomFloat;
+
 
 class InspectorPanel : public Panel
 {
@@ -71,6 +73,7 @@ private:
 	void DrawBoxColliderComponent(BoxColliderComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
+	void DrawDecalComponent(DecalComponent* component);
 
 	//void DragAndDropSource(Component* component);
 	//void DragAndDropTarget(GameObject* object, Component* target);

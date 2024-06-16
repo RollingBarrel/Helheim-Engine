@@ -432,6 +432,9 @@
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="DecalComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
     <ClCompile Include="RandomFloat.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -1913,6 +1916,9 @@
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="DecalComponent.h">
+      <Filter>GameObjects\Components</Filter>
+    </ClInclude>
     <ClInclude Include="RandomFloat.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -2026,6 +2032,14 @@
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
