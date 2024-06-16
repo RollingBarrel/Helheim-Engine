@@ -65,6 +65,23 @@ void AudioUnit::UpdateParameterValueByName(const char* name, const float value)
 	}
 }
 
+void AudioUnit::Save(Archive& archive) const {
+	archive.AddString("Name", mName.c_str());
+	archive.AddInt("PreviewPlayID", mPreviewPlayID);
+}
+
+void AudioUnit::LoadFromJSON(const rapidjson::Value& data)
+{
+	if (data.HasMember("Name") && data["Name"].IsString()) {
+		mName = data["Name"].GetString();
+	}
+	if (data.HasMember("PreviewPlayID") && data["PreviewPlayID"].IsInt()) {
+		mPreviewPlayID = data["PreviewPlayID"].GetInt();
+	}
+
+	SetEventByName(mName.c_str());
+}
+
 void AudioUnit::Play()
 {
 	if (mPreviewPlayID == -1)
@@ -81,13 +98,20 @@ void AudioUnit::Play()
 
 void AudioUnit::Pause(bool fadeout)
 {
-	App->GetAudio()->Pause(mEventDescription, mPreviewPlayID, fadeout);
+	if (mPreviewPlayID != -1)
+	{
+		App->GetAudio()->Pause(mEventDescription, mPreviewPlayID, fadeout);
+	}
 }
 
 void AudioUnit::Release()
 {
-	App->GetAudio()->Release(mEventDescription, mPreviewPlayID);
-	mPreviewPlayID = -1;
+	if (mPreviewPlayID != -1)
+	{
+		Pause(true);
+		App->GetAudio()->Release(mEventDescription, mPreviewPlayID);
+		mPreviewPlayID = -1;
+	}
 }
 
 

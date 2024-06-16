@@ -44,7 +44,6 @@ public:
 	void AudioResume();
 
 	void EngineStop();
-	void AddToAudiosList(AudioSourceComponent* audioSource);
 	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
 	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout);
@@ -54,7 +53,7 @@ public:
 	// Update
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
 	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
-	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id ,FMOD::Studio::EventInstance* event, float3 eventPosition);
+	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
 
 	int GetMemoryUsage() const;
 	std::map<std::string, int> GetInstances() const;
@@ -80,13 +79,6 @@ private:
 	bool mPaused = false;
 	bool mStopped = false;
 
-	std::vector<AudioSourceComponent*> mAudiosSourceList;
-
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 
-	std::unordered_map<int, FMOD::Studio::EventInstance*> mBackgroundAudioMap;
-	std::vector<FMOD::Studio::EventInstance*> mBackgroundAudioList;
-	std::vector<FMOD::Studio::EventInstance*> mSFXList;
-	int mBackgroundAudioCounter = 0;
 };
-

@@ -166,6 +166,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
@@ -182,8 +184,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="AudioManager.h" />
-    <ClInclude Include="AudioTester.h" />
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
     <ClInclude Include="Level1AManager.h" />

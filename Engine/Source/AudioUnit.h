@@ -32,6 +32,9 @@ public:
     // Update parameters
     void UpdateParameterValueByName(const char* name, const float value);
 
+    void Save(Archive& archive) const;
+    void LoadFromJSON(const rapidjson::Value& data);
+
     void Play();
     void Pause(bool fadeout);
     void Release();

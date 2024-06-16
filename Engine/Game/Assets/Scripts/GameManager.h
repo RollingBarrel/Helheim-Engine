@@ -4,6 +4,7 @@
 
 class ButtonComponent;
 class HudController;
+class AudioManager;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -17,6 +18,7 @@ public:
     void Update();
 
     GameObject* GetPlayer() { return mPlayer; };
+    AudioManager* GetAudio() {return mAudioManager;};
 
     void LoadLevel(const char* LevelName);
 private:
@@ -27,8 +29,10 @@ private:
     
     GameObject* mPlayer = nullptr;
     GameObject* mHudControllerGO = nullptr;
+    GameObject* mAudioManagerGO = nullptr;
 
     HudController* mHudController = nullptr;
+    AudioManager* mAudioManager = nullptr;
 
     bool mPaused = false;
 };

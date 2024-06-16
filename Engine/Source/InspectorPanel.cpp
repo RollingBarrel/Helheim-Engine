@@ -1414,8 +1414,16 @@ void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* compon
 		std::vector<int> parameterKeys;
 		std::vector<const char*> names;
 		std::vector<float> parameterValues;
-		audioUnit->GetParametersNameAndValue(parameterKeys, names, parameterValues);
-		ImGui::Text("Num Event parameters: %i", parameterKeys.size());
+
+		if (audioUnit->GetPreviewID() == -1)
+		{
+			ImGui::Text("Press 'Play' to view parameters");
+		}
+		else {
+			audioUnit->GetParametersNameAndValue(parameterKeys, names, parameterValues);
+			ImGui::Text("Num Event parameters: %i", parameterKeys.size());
+		}
+	
 		for (auto i = 0; i < parameterKeys.size(); i++)
 		{
 			const char* paramName = names[i];

@@ -87,11 +87,11 @@
     </ClInclude>
     <ClInclude Include="Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
-    <ClInclude Include="AudioManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioTester.h">
+    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
+      <Filter>Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

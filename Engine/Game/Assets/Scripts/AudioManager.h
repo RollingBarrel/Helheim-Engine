@@ -46,21 +46,26 @@ public:
 	void Start();
 	void Update();
 
-	int PlayBGM(BGM bgm);
-	// Use PlaySFX only if you want to ajust SFX later (like manually pause shot sound)
+	int Play(BGM bgm, int id = -1, float3 position = { 0.0f, 0.0f, 0.0f });
+	// Use Play(SFX) only if you want to ajust SFX later (like manually pause shot sound)
 	// Other wise, call `PlayOneShot(SFX sfx)`
-	int PlaySFX(SFX sfx);
-	void PlayOneShot(SFX sfx);
+	int Play(SFX sfx, int id = -1, float3 position = { 0.0f, 0.0f, 0.0f });
+	void PlayOneShot(SFX sfx, float3 position = { 0.0f, 0.0f, 0.0f });
 
-	void PauseAudio(BGM bgm,int id, bool immediate);
+	void Pause(BGM bgm, int id, bool immediate);
+	void Pause(SFX sfx, int id, bool immediate);
 
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
 
+	int PauseAndRelease(BGM bgm, int id);
+	int PauseAndRelease(SFX sfx, int id);
+
 	void UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value);
 	void UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value);
 
-	void SetPositionReference(SFX sfx, int id, const char* name, const float value);
+	void SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position);
+
 
 private:
 	std::string GetBGMName(BGM bgm);

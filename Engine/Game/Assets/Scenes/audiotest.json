@@ -1,0 +1,216 @@
+{
+    "Scene": {
+        "Name": "audiotest",
+        "GameObjects": [
+            {
+                "UID": 794142043,
+                "ParentUID": 1,
+                "Name": "AudioTest",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "AudioTester",
+                        "ScriptVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 635478494,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "AspectRatio": 1.8978978395462037,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 1583784092,
+                "ParentUID": 1,
+                "Name": "GameManager",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "GameManager",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "Player",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mPlayer",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mHudControllerGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mAudioManagerGO",
+                                "MemberType": 3,
+                                "VariableData": 167652440
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 167652440,
+                "ParentUID": 1583784092,
+                "Name": "AudioManager",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "ScriptName": "AudioManager",
+                        "ScriptVariables": []
+                    },
+                    {
+                        "ID": 1023448062,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "ComponentType": 15,
+                        "Audios": [
+                            {
+                                "Name": "event:/Music/Level 02",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Music/Level 01",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Weapons/Pistol",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Character/Player Footsteps",
+                                "PreviewPlayID": -1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 267858119,
+                "ParentUID": 1,
+                "Name": "Listener",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 14
+                    }
+                ]
+            }
+        ]
+    }
+}

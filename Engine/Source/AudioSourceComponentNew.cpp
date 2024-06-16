@@ -21,15 +21,32 @@ AudioSourceComponentNew::~AudioSourceComponentNew()
 
 Component* AudioSourceComponentNew::Clone(GameObject* owner) const
 {
-    return nullptr;
+    return new AudioSourceComponentNew(*this, owner);
 }
 
 void AudioSourceComponentNew::Save(Archive& archive) const
 {
+    Component::Save(archive);
+    archive.AddInt("ComponentType", static_cast<int>(GetType()));
+
+    std::vector<Archive> audioUnits;
+    for (const auto& audio : mAudiosVector) {
+        Archive audioArchive;
+        audio->Save(audioArchive);
+        audioUnits.push_back(std::move(audioArchive));
+    }
+    archive.AddObjectArray("Audios", audioUnits);
 }
 
 void AudioSourceComponentNew::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
 {
+    if (data.HasMember("Audios") && data["Audios"].IsArray()) {
+        for (const auto& item : data["Audios"].GetArray()) {
+            AudioUnit* audio = new AudioUnit();
+            audio->LoadFromJSON(item);
+            mAudiosVector.push_back(audio);
+        }
+    }
 }
 
 void AudioSourceComponentNew::Update()
@@ -72,6 +89,8 @@ void AudioSourceComponentNew::RemoveAudio(AudioUnit* audio)
     auto it = std::find(mAudiosVector.begin(), mAudiosVector.end(), audio);
     if (it != mAudiosVector.end())
     {
+        audio->Pause(true);
+        audio->Release();
         delete* it;
         mAudiosVector.erase(it);
     }

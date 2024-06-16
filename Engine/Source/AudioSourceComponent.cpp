@@ -10,7 +10,6 @@
 
 AudioSourceComponent::AudioSourceComponent(GameObject* ownerGameObject): Component(ownerGameObject,ComponentType::AUDIOSOURCE)
 {
-	App->GetAudio()->AddToAudiosList(this);
 }
 
 AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original, GameObject* owner)
@@ -20,7 +19,6 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original,
 	SetEventByName(mName.c_str());
 	mParameters = original.GetParameters();
 
-	App->GetAudio()->AddToAudiosList(this);
 }
 
 AudioSourceComponent::~AudioSourceComponent()

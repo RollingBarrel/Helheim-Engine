@@ -8,8 +8,15 @@
 #include "AudioSourceComponentNew.h"
 #include "fmod_studio.hpp"
 
+CREATE(AudioManager)
+{
+    CLASS(owner);
+    END_CREATE;
+}
+
 void AudioManager::Start()
 {
+    mAudioSources = reinterpret_cast<AudioSourceComponentNew*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCENEW));
 }
 
 void AudioManager::Update()
@@ -18,14 +25,13 @@ void AudioManager::Update()
 
 AudioManager::AudioManager(GameObject* owner) : Script(owner) 
 {
-    mAudioSources = reinterpret_cast<AudioSourceComponentNew*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCENEW));
 }
 
 AudioManager::~AudioManager()
 {
 }
 
-int AudioManager::PlayBGM(BGM bgm)
+int AudioManager::Play(BGM bgm, int id, float3 position)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
     if (description == nullptr)
@@ -33,12 +39,19 @@ int AudioManager::PlayBGM(BGM bgm)
         return -1;
     }
 
-    int id = App->GetAudio()->Play(description);
+    if (id != -1)
+    {
+        // Continue audio
+        App->GetAudio()->Play(description, id);
+        return id;
+    }
 
-    return id;
+    int newid = App->GetAudio()->Play(description);
+    SetPosition(description, newid, position);
+    return newid;
 }
 
-int AudioManager::PlaySFX(SFX sfx)
+int AudioManager::Play(SFX sfx, int id, float3 position)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
     if (description == nullptr)
@@ -46,12 +59,20 @@ int AudioManager::PlaySFX(SFX sfx)
         return -1;
     }
 
-    int id = App->GetAudio()->Play(description);
+    if (id != -1)
+    {
+        // Continue audio
+        App->GetAudio()->Play(description, id);
+        return id;
+    }
 
-    return id;
+    int newid = App->GetAudio()->Play(description);
+    SetPosition(description, newid, position);
+
+    return newid;
 }
 
-void AudioManager::PlayOneShot(SFX sfx)
+void AudioManager::PlayOneShot(SFX sfx, float3 position)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
     if (description == nullptr)
@@ -59,13 +80,14 @@ void AudioManager::PlayOneShot(SFX sfx)
         return;
     }
 
-    int id = App->GetAudio()->Play(description);
-    App->GetAudio()->Release(description, id);
+    int newid = App->GetAudio()->Play(description);
+    SetPosition(description, newid, position);
 
+    App->GetAudio()->Release(description, newid);
     return;
 }
 
-void AudioManager::PauseAudio(BGM bgm, int id, bool immediate)
+void AudioManager::Pause(BGM bgm, int id, bool immediate)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
     if (description == nullptr)
@@ -73,6 +95,17 @@ void AudioManager::PauseAudio(BGM bgm, int id, bool immediate)
         return;
     }
     App->GetAudio()->Pause(description, id, immediate);
+    return;
+}
+
+void AudioManager::Pause(SFX sfx, int id, bool pause)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+    if (description == nullptr)
+    {
+        return;
+    }
+    App->GetAudio()->Pause(description, id, pause);
 
     return;
 }
@@ -85,6 +118,7 @@ int AudioManager::Release(BGM bgm, int id)
     {
         return id;
     }
+
     App->GetAudio()->Release(description, id);
 
     return -1;
@@ -101,6 +135,18 @@ int AudioManager::Release(SFX sfx, int id)
     App->GetAudio()->Release(description, id);
 
     return -1;
+}
+
+int AudioManager::PauseAndRelease(BGM bgm, int id)
+{
+    Pause(bgm, id, true);
+    return Release(bgm, id);
+}
+
+int AudioManager::PauseAndRelease(SFX sfx, int id)
+{
+    Pause(sfx, id, true);
+    return Release(sfx, id);
 }
 
 void AudioManager::UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value)
@@ -121,6 +167,11 @@ void AudioManager::UpdateParameterValueByName(SFX sfx, int id, const char* name,
         return;
     }
     App->GetAudio()->UpdateParameter(description, id, name, value);
+}
+
+void AudioManager::SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position)
+{
+    App->GetAudio()->SetEventPosition(description, id, position);
 }
 
 std::string AudioManager::GetBGMName(BGM bgm)

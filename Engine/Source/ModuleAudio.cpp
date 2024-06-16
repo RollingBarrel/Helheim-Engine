@@ -92,23 +92,52 @@ std::vector<const char*> ModuleAudio::GetEventsNames()
 
 void ModuleAudio::AudioPause()
 {
-	for (auto audioSource : mAudiosSourceList) 
-	{
-		audioSource->PauseCurrentInstance();
+	for (const auto& eventDescription : mActiveEvent) {
+		int capacity = 1024;
+		std::vector<FMOD::Studio::EventInstance*> instances(capacity);
+
+		int count = 0;
+		CheckError(eventDescription->getInstanceList(instances.data(), capacity, &count));
+
+		for (const auto& instance : instances)
+		{
+			instance->setPaused(true);
+		}
 	}
 }
 
 void ModuleAudio::AudioResume()
 {
-	for (auto audioSource : mAudiosSourceList) 
-	{
-		audioSource->ResumeCurrentInstance();
+	for (const auto& eventDescription : mActiveEvent) {
+		int capacity = 1024;
+		std::vector<FMOD::Studio::EventInstance*> instances(capacity);
+
+		int count = 0;
+		CheckError(eventDescription->getInstanceList(instances.data(), capacity, &count));
+
+		for (const auto& instance : instances)
+		{
+			instance->setPaused(false);
+
+		}
 	}
 }
 
 void ModuleAudio::EngineStop()
 {
-	mAudiosSourceList = std::vector<AudioSourceComponent*>();
+	for (const auto& eventDescription : mActiveEvent) {
+		int capacity = 1024;
+		std::vector<FMOD::Studio::EventInstance*> instances(capacity);
+
+		int count = 0;
+		CheckError(eventDescription->getInstanceList(instances.data(), capacity, &count));
+
+		for (const auto& instance : instances)
+		{
+			instance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+			instance->release();
+		}
+	}
 }
 
 int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, const int id)
@@ -138,21 +167,13 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	return count - 1;
 }
 
-
-void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout)
+void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 	
 	if (eventInstance != nullptr)
 	{
-		if (fadeout)
-		{
-			eventInstance->stop(FMOD_STUDIO_STOP_ALLOWFADEOUT);
-		}
-		else
-		{
-			eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-		}
+		eventInstance->setPaused(pause);
 	}
 	else {
 		LOG("Cannot stop event");
@@ -205,8 +226,7 @@ void ModuleAudio::UpdateParameter(const FMOD::Studio::EventDescription* eventDes
 	CheckError(eventInstance->setParameterByID(parameter.id, parameterValue));
 }
 
-
-void ModuleAudio::SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id ,FMOD::Studio::EventInstance* event, float3 eventPosition)
+void ModuleAudio::SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id, float3 eventPosition)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 
@@ -219,11 +239,6 @@ void ModuleAudio::SetEventPosition(const FMOD::Studio::EventDescription* eventDe
 	attributes.up.y = 1.0f;
 
 	eventInstance->set3DAttributes(&attributes);
-}
-
-void ModuleAudio::AddToAudiosList(AudioSourceComponent* audioSource)
-{
-	mAudiosSourceList.push_back(audioSource);
 }
 
 int ModuleAudio::GetMemoryUsage() const
@@ -248,7 +263,7 @@ std::map<std::string, int> ModuleAudio::GetInstances() const {
 		CheckError(eventDescription->getInstanceCount(&instanceCount));
 
 		// Store the path and instance count in the map
-		result[std::string(path)] = instanceCount;
+		result[std::string(path)] = instanceCount - 1;
 	}
 
 	return result;
@@ -311,6 +326,5 @@ bool ModuleAudio::CleanUp()
 	mSystem->unloadAll();
 	mSystem->release();
 
-	mAudiosSourceList.clear();
     return true;
 }
