@@ -41,7 +41,7 @@ in VertToFrag {
 
 layout(location = 0) out vec3 outDiffuse;
 //layout(location = 1) out vec4 outSpecularRough;
-layout(location = 1) out vec4 outMetalRough;
+layout(location = 1) out vec3 outMetalRough;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec3 outPosition;
 layout(location = 4) out vec3 outEmissive;

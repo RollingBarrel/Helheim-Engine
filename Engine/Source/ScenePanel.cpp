@@ -154,13 +154,13 @@ void ScenePanel::MenuGBuffer()
 				currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
 				currentSceneName = "SCENE";
 			}
-			if (ImGui::Selectable("DIFFUSE")) {
+			if (ImGui::Selectable("BASE_COLOR")) {
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDiffuse();
-				currentSceneName = "DIFFUSE";
+				currentSceneName = "BASE_COLOR";
 			}
-			if (ImGui::Selectable("SPECULAR")) {
+			if (ImGui::Selectable("METAL_ROUGH")) {
 				currentScene = EngineApp->GetOpenGL()->GetGBufferSpecularRough();
-				currentSceneName = "SPECULAR";
+				currentSceneName = "METAL_ROUGH";
 			}
 			if (ImGui::Selectable("EMISSIVE")) {
 				currentScene = EngineApp->GetOpenGL()->GetGBufferEmissive();
