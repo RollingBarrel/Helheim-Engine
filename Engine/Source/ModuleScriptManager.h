@@ -27,6 +27,7 @@ public:
 	virtual void StartScripts();
 
 	void AddGameObjectToMap(GameObject** gameObject);
+	void RemoveGameObjectFromMap(GameObject** gameObject);
 
 protected:
 	std::vector<ScriptComponent*> mScripts;

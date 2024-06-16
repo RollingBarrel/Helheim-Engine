@@ -61,7 +61,10 @@ void ModuleScriptManager::RemoveGameObject(GameObject* gameObject)
 	std::vector<GameObject**> gameObjectsPointers = mGameObjectsPointersMap[gameObject->GetID()];
 	for (unsigned int i = 0; i < gameObjectsPointers.size(); ++i)
 	{
-		(*gameObjectsPointers[i]) = nullptr;
+		if (gameObjectsPointers[i])
+		{
+			(*gameObjectsPointers[i]) = nullptr;
+		}
 	}
 	mGameObjectsPointersMap.erase(gameObject->GetID());
 }
@@ -122,6 +125,28 @@ void ModuleScriptManager::AddGameObjectToMap(GameObject** gameObject)
 			mGameObjectsPointersMap[ID] = std::vector<GameObject**>();
 		}
 		mGameObjectsPointersMap[ID].push_back(gameObject);
+	}
+}
+
+void ModuleScriptManager::RemoveGameObjectFromMap(GameObject** gameObject)
+{
+	if (gameObject && *gameObject)
+	{
+		unsigned int ID = (*gameObject)->GetID();
+
+		if (mGameObjectsPointersMap.find(ID) != mGameObjectsPointersMap.end())
+		{
+			for (std::vector<GameObject**>::const_iterator it = mGameObjectsPointersMap[ID].cbegin(); it != mGameObjectsPointersMap[ID].cend(); ++it)
+			{
+				if (**it == *gameObject)
+				{
+					mGameObjectsPointersMap[ID].erase(it);
+					break;
+				}
+				
+			}
+			
+		}
 	}
 }
 

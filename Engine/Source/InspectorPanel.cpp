@@ -913,6 +913,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				{
 					if (gameObject) 
 					{
+						App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
 						*gameObject = *(GameObject**)payload->Data;
 						App->GetScriptManager()->AddGameObjectToMap(gameObject);
 					}
