@@ -1,10 +1,11 @@
 #include "ModulePhysics.h"
-#include "ModuleScriptManager.h"
-#include "BoxColliderComponent.h"
 #include "Application.h"
-#include "GameObject.h"
-#include "MotionState.h"
+#include "ModuleScriptManager.h"
 
+#include "GameObject.h"
+#include "BoxColliderComponent.h"
+
+#include "MotionState.h"
 #include "btBulletDynamicsCommon.h"
 
 ModulePhysics::ModulePhysics()
@@ -80,8 +81,43 @@ update_status ModulePhysics::PreUpdate(float dt)
 		}
 	}
 	
+	//std::multiset<Hit> hits;
+	//RayCast(float3(0.0f, 0.0f, 0.0f), float3(0.0f, 0.0f, 5.0f), hits);
 
 	return UPDATE_CONTINUE;
+}
+
+void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits)
+{
+	btVector3 fromBt(from.x, from.y, from.z);
+	btVector3 toBt(to.x, to.y, to.z);
+	btCollisionWorld::AllHitsRayResultCallback callback(fromBt, toBt);
+	mWorld->rayTest(fromBt, toBt, callback);
+	
+	if (callback.hasHit())
+	{
+		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
+		{
+			LOG("RayCast %i", i);
+			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
+			if (collider)
+			{
+				Component* component = (Component*)collider->mCollider;
+				if (component)
+				{
+					Hit hit;
+					float3 hitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
+
+					hit.mDistance = from.Distance(hitPoint);
+					hit.mGameObject = component->GetOwner();;
+					hit.mHitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
+
+					hits.insert(hit);
+					LOG("RayCast %i", i);
+				}
+			}
+		}
+	}	
 }
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
