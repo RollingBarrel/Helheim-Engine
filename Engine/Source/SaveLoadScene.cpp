@@ -15,7 +15,6 @@ void Importer::Scene::Save(const ResourceScene* ourScene, const char* assetsFile
 
 ResourceScene* Importer::Scene::Load(const char* fileName, unsigned int uid)
 {
-
     char* fileBuffer = nullptr;
 
     if (App->GetFileSystem()->Load(fileName, &fileBuffer) > 0);

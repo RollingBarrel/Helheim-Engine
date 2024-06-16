@@ -120,9 +120,9 @@ void EngineApplication::Start()
 	mIsPlayMode = true;
 
 	SetCurrentClock(EngineApp->GetGameClock());
-	scene->Save(std::string(ASSETS_SCENES_PATH + std::string("TemporalScene")).c_str());
+	scene->Save(std::string(ASSETS_SCENES_PATH + std::string("TemporalScene")).c_str());	//TODO: Change to Importfile
 	engineScriptManager->StartScripts();
-	mGameTimer->Start();
+	mGameTimer->Start();			
 }
 
 void EngineApplication::Stop()
@@ -134,7 +134,7 @@ void EngineApplication::Stop()
 	SetCurrentClock(EngineApp->GetEngineClock());
 	mEngineTimer->Resume();
 	EngineApp->GetAudio()->EngineStop();
-	scene->Load(std::string(ASSETS_SCENES_PATH + std::string("TemporalScene")).c_str());
+	scene->Load(std::string(ASSETS_SCENES_PATH + std::string("TemporalScene")).c_str());	//TODO: Change to Request Resource
 
 }
 

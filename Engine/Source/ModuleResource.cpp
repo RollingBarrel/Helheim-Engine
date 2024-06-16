@@ -9,7 +9,7 @@
 #include "ResourceAnimation.h"
 #include "ResourceModel.h"
 #include "ResourceScene.h"
-//#include "ResourcePrefab.h"
+#include "ResourcePrefab.h"
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
@@ -20,7 +20,7 @@
 #include "SaveLoadAnimation.h"
 #include "SaveLoadModel.h"
 #include "SaveLoadScene.h"
-//#include "SaveLoadPrefab.h"
+#include "SaveLoadPrefab.h"
 #include "SaveLoadScript.h"
 #include "SaveLoadNavMesh.h"
 #include "SaveLoadStateMachine.h"
@@ -129,7 +129,7 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 	}
 	case Resource::Type::Prefab:
 	{
-		//ret = Importer::Prefab::Load(lPath, uid);
+		ret = Importer::Prefab::Load(lPath, uid);
 		break;
 	}
 	case Resource::Type::Script:

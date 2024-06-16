@@ -15,5 +15,6 @@ void Importer::Prefab::Save(const ResourcePrefab* ourPrefab, const char* assetsF
 
 ResourcePrefab* Importer::Prefab::Load(const char* fileName, unsigned int uid)
 {
-	return nullptr;
+    ResourcePrefab* rPrefab = new ResourcePrefab(uid);
+	return rPrefab;
 }

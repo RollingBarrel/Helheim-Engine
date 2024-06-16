@@ -230,9 +230,15 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		break;
 	}
 	case Resource::Type::Prefab:
+	{
+		//TODO: LOOK AT THIS
 		assetsFilePath = ASSETS_PREFABS_PATH + assetName + extensionName;
-		EngineApp->GetScene()->SavePrefab(*(reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()), assetsFilePath.c_str());
+		if ((reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()))
+		{
+			EngineApp->GetScene()->SavePrefab(*(reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()), assetsFilePath.c_str());
+		}
 		break;
+	}
 	case Resource::Type::Script:
 	{
 		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
