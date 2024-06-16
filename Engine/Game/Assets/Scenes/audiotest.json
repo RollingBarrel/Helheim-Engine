@@ -155,25 +155,25 @@
                         "ScriptVariables": []
                     },
                     {
-                        "ID": 1023448062,
-                        "ComponentType": 15,
+                        "ID": 1381135174,
+                        "ComponentType": 13,
                         "isEnabled": true,
-                        "ComponentType": 15,
+                        "ComponentType": 13,
                         "Audios": [
-                            {
-                                "Name": "event:/Music/Level 02",
-                                "PreviewPlayID": -1
-                            },
                             {
                                 "Name": "event:/Music/Level 01",
                                 "PreviewPlayID": -1
                             },
                             {
-                                "Name": "event:/Weapons/Pistol",
+                                "Name": "event:/Music/Level 02",
                                 "PreviewPlayID": -1
                             },
                             {
                                 "Name": "event:/Character/Player Footsteps",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Weapons/Pistol",
                                 "PreviewPlayID": -1
                             }
                         ]

@@ -2,10 +2,10 @@
 #include "ModuleAudio.h"
 #include "AudioUnit.h"
 #include "ScriptComponent.h"
+#include "AudioSourceComponent.h"
 #include "Application.h"
 #include "GameObject.h"
 #include "Component.h"
-#include "AudioSourceComponentNew.h"
 #include "fmod_studio.hpp"
 
 CREATE(AudioManager)
@@ -16,7 +16,7 @@ CREATE(AudioManager)
 
 void AudioManager::Start()
 {
-    mAudioSources = reinterpret_cast<AudioSourceComponentNew*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCENEW));
+    mAudioSources = reinterpret_cast<AudioSourceComponent*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCE));
 }
 
 void AudioManager::Update()

@@ -61,7 +61,7 @@ void Enemy::AddFootStepAudio(GameObject* audio)
         if (mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE) != nullptr)
         {
             AudioSourceComponent* audio = reinterpret_cast<AudioSourceComponent*>(mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE));
-            audio->Play();
+            //audio->Play();
         }
     }
 }

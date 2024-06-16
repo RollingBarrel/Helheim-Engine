@@ -729,7 +729,7 @@ void PlayerController::Moving()
     }
     else
     {
-        mFootStepAudio->PlayOneShot();
+        //mFootStepAudio->PlayOneShot();
         mReadyToStep = false;
     }
     if (mHasShoot)
@@ -1007,7 +1007,7 @@ void PlayerController::RangedAttack()
     //Shoot(mRangeBaseDamage);
     if (mRangeWeapon && !mHasShoot)
     {
-        mGunfireAudio->PlayOneShot();
+        //mGunfireAudio->PlayOneShot();
         mRangeWeapon->BasicAttack();
         mHasShoot = true;
     }

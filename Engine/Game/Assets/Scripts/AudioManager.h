@@ -30,9 +30,9 @@ namespace FMOD {
 	}
 }
 
-class AudioSourceComponentNew;
 class AudioUnit;
 class GameObject;
+class AudioSourceComponent;
 
 GENERATE_BODY(AudioManager);
 class AudioManager : public Script
@@ -75,7 +75,7 @@ private:
 
 	const FMOD::Studio::EventDescription* GetEventDescription(BGM bgm);
 	const FMOD::Studio::EventDescription* GetEventDescription(SFX sfx);
-	AudioSourceComponentNew* mAudioSources = nullptr;
+	AudioSourceComponent* mAudioSources = nullptr;
 
 	// Audio - Name
 	const std::unordered_map<BGM, std::string> mBGMToString

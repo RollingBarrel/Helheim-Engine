@@ -24,11 +24,5 @@ public:
 private:
     GameObject* mMainMenuThemeHolder = nullptr;
     AudioSourceComponent* mMainMenuTheme = nullptr;
-
-    GameObject* mOKSFXHolder = nullptr;
-    AudioSourceComponent* mOKSFX = nullptr;
-
-    GameObject* mSelectSFXHolder = nullptr;
-    AudioSourceComponent* mSelectSFX = nullptr;
 };
 

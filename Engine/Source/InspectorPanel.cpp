@@ -31,7 +31,6 @@
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
 #include "AudioSourceComponent.h"
-#include "AudioSourceComponentNew.h"
 #include "Transform2DComponent.h"
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
@@ -468,9 +467,6 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					break;
 				case ComponentType::TRAIL:
 					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
-					break;
-				case ComponentType::AUDIOSOURCENEW:
-					DrawNewAudioSourceComponent(reinterpret_cast<AudioSourceComponentNew*>(component));
 					break;
 			}
 		}
@@ -1292,73 +1288,7 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
-{
-	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
-
-	if (ImGui::Button("Play"))
-	{
-		component->Play();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Stop"))
-	{
-		component->Stop(false);
-	}
-
-	ImGui::Text("Launch event");
-	ImGui::SameLine();
-
-	std::string name = component->GetName();
-
-	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
-	{
-		for (auto i = 0; i < events.size(); i++) 
-		{
-			if (ImGui::Selectable(events[i]))
-			{
-				component->SetEventByName(events[i]);
-			}
-		}
-
-		ImGui::EndCombo();
-	}
-
-	ImGui::Separator();
-	ImGui::Text("Event parameters");
-
-	std::vector<int> parameterKeys;
-	std::vector<const char*> names;
-	std::vector<float> parameterValues;
-
-	component->GetParametersNameAndValue(parameterKeys, names, parameterValues);
-
-	for (auto i = 0; i < parameterKeys.size(); i++)
-	{
-		const char* name = names[i];
-		float value = parameterValues[i];
-
-		float max = 0;
-		float min = 0;
-
-		component->GetParametersMaxMin(name, max, min);
-
-		ImGui::Text("%s: ", name);
-		ImGui::SameLine();
-
-		std::string str(name);
-		std::string tagName = "##" + str;
-
-		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f")) 
-		{
-			component->UpdateParameterValueByIndex(parameterKeys[i], value);
-		}
-	}
-
-}
-
-void InspectorPanel::DrawNewAudioSourceComponent(AudioSourceComponentNew* component)
-{
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
 	// List event and add
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 

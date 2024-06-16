@@ -61,8 +61,6 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Audio Listener";
 		case ComponentType::AUDIOSOURCE:
 			return "Audio Source";
-		case ComponentType::AUDIOSOURCENEW:
-			return "New Audio Source";
 		case ComponentType::SLIDER:
 			return "Slider";
 		case ComponentType::TEXT:

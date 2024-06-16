@@ -60,7 +60,6 @@ private:
 	void DrawButtonComponent(ButtonComponent* component);
 	void DrawSliderComponent(SliderComponent* component);
 	void DrawAudioSourceComponent(AudioSourceComponent* component);
-	void DrawNewAudioSourceComponent(AudioSourceComponentNew* component);
 	void DrawListenerComponent(AudioListenerComponent* component);
 	void DrawTransform2DComponent(Transform2DComponent* component);
 	void DrawTextComponent(TextComponent* component);

@@ -442,7 +442,6 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
     </ClCompile>
-    <ClCompile Include="AudioSourceComponentNew.cpp" />
     <ClCompile Include="AudioUnit.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -1925,7 +1924,6 @@
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="AudioSourceComponentNew.h" />
     <ClInclude Include="AudioUnit.h">
       <Filter>Utils</Filter>
     </ClInclude>
