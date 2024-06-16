@@ -104,14 +104,14 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ENGINE;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Source\Dependencies\imgui-node-editor-0.9.3;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7;</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\Optick\lib\x64\debug;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories);$(SolutionDir)Source\Output\CoreLib\$(Platform)\$(Configuration)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\DirectXTex\lib\x64\Debug;$(ProjectDir)Dependencies\Optick\lib\x64\debug;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;%(AdditionalLibraryDirectories);$(SolutionDir)Source\Output\CoreLib\$(Platform)\$(Configuration)\;$(ProjectDir)..\Source\Dependencies\imgui-node-editor-0.9.3</AdditionalLibraryDirectories>
       <AdditionalDependencies>CoreLib.lib;DirectXTex.lib;OptickCore.lib;glew32.lib;SDL2.lib;opengl32.lib;SDL2main.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
@@ -145,7 +145,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>ENGINE;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7;$(ProjectDir)Dependencies\Bullet\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\Source\Dependencies\imgui-node-editor-0.9.3;$(ProjectDir)Dependencies\SDL-2.0.16\include;$(ProjectDir)Dependencies\GLEW-2.1.0\include\GL;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include;$(ProjectDir)Dependencies\MathGeoLib-v1.5\include\Math;$(ProjectDir)Dependencies\DirectXTex;$(ProjectDir)Dependencies\Physfs-3.2.0\include;$(ProjectDir)Dependencies\RapidJSON-1.1.0\include;$(ProjectDir)Dependencies\FMOD\api\studio\inc;$(ProjectDir)Dependencies\FMOD\api\core\inc;$(ProjectDir)Dependencies\Freetype\include;$(ProjectDir)Dependencies\Detour\Include;$(ProjectDir)Dependencies\MikkTSpace;$(ProjectDir)Dependencies\ImGui-1.90-docking\include;$(ProjectDir)Dependencies\ImGui-1.90-docking\include\backends;$(ProjectDir)Dependencies\Tinygltf-2.8.19;$(ProjectDir)Dependencies\DebugDraw;$(ProjectDir)Dependencies\Recast\Include;$(ProjectDir)Dependencies\ImGuizmo-1.83\include;$(ProjectDir)Dependencies\Optick\include;$(ProjectDir)Dependencies\ImGuiFileDialog-0.6.7;$(ProjectDir)Dependencies\Bullet\include</AdditionalIncludeDirectories>
       <DisableSpecificWarnings>4996;4251;4244;4267;33010;4312;4251;4838</DisableSpecificWarnings>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
@@ -165,6 +165,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AboutPanel.cpp" />
+    <ClCompile Include="AnimationSMPanel.cpp" />
     <ClCompile Include="ConsolePanel.cpp" />
     <ClCompile Include="DebugPanel.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
@@ -189,12 +190,15 @@
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_draw.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_tables.cpp" />
     <ClCompile Include="Dependencies\ImGui-1.90-docking\include\imgui_widgets.cpp" />
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\crude_json.cpp" />
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_canvas.cpp" />
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor.cpp" />
+    <ClCompile Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_api.cpp" />
     <ClCompile Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.cpp" />
-    <ClCompile Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.cpp" />
     <ClCompile Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.cpp" />
     <ClCompile Include="Dependencies\MikkTSpace\mikktspace.c" />
     <ClCompile Include="Dependencies\MikkTSpace\weldmesh.c" />
@@ -213,6 +217,7 @@
     <ClCompile Include="EngineApp.cpp" />
     <ClCompile Include="EngineLog.cpp" />
     <ClCompile Include="ImBezier.cpp" />
+    <ClCompile Include="ImColorGradient.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
@@ -220,6 +225,7 @@
     <ClCompile Include="ImporterScript.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
+    <ClCompile Include="ImporterStateMachine.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEngineCamera.cpp" />
@@ -237,11 +243,11 @@
     <ClCompile Include="ScenePanel.cpp" />
     <ClCompile Include="Panel.cpp" />
     <ClCompile Include="SettingsPanel.cpp" />
-    <ClCompile Include="TagsManagerPanel.cpp" />
     <ClCompile Include="TimerPanel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AboutPanel.h" />
+    <ClInclude Include="AnimationSMPanel.h" />
     <ClInclude Include="ConsolePanel.h" />
     <ClInclude Include="Dependencies\DebugDraw\debugdraw.h" />
     <ClInclude Include="Dependencies\DebugDraw\debug_draw.hpp" />
@@ -272,12 +278,17 @@
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_rectpack.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_textedit.h" />
     <ClInclude Include="Dependencies\ImGui-1.90-docking\include\imstb_truetype.h" />
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\crude_json.h" />
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_bezier_math.h" />
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_canvas.h" />
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_extra_math.h" />
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor.h" />
+    <ClInclude Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.h" />
     <ClInclude Include="Dependencies\ImGuiFileDialog-0.6.7\ImGuiFileDialog.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\GraphEditor.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImCurveEdit.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGradient.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImGuizmo.h" />
-    <ClInclude Include="Dependencies\ImGuizmo-1.83\include\imgui_color_gradient.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImSequencer.h" />
     <ClInclude Include="Dependencies\ImGuizmo-1.83\include\ImZoomSlider.h" />
     <ClInclude Include="Dependencies\MikkTSpace\mikktspace.h" />
@@ -292,6 +303,7 @@
     <ClInclude Include="EditorControlPanel.h" />
     <ClInclude Include="EngineApp.h" />
     <ClInclude Include="ImBezier.h" />
+    <ClInclude Include="ImColorGradient.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterNavMesh.h" />
     <ClInclude Include="ImporterScript.h" />
@@ -299,6 +311,7 @@
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterMaterial.h" />
+    <ClInclude Include="ImporterStateMachine.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClCompile Include="EngineMain.cpp" />
@@ -313,7 +326,6 @@
     <ClInclude Include="LightningPanel.h" />
     <ClInclude Include="ModuleEditor.h" />
     <ClInclude Include="ImporterTexture.h" />
-    <ClInclude Include="TagsManagerPanel.h" />
     <ClInclude Include="OptickAdapter.h" />
     <ClInclude Include="SettingsPanel.h" />
     <ClInclude Include="TimerPanel.h" />
@@ -327,6 +339,11 @@
     <ProjectReference Include="CoreLib.vcxproj">
       <Project>{75d74dae-b631-4317-bf0a-958b8e57fb39}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_bezier_math.inl" />
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_extra_math.inl" />
+    <None Include="Dependencies\imgui-node-editor-0.9.3\imgui_node_editor_internal.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

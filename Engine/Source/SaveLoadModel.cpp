@@ -47,7 +47,11 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
 
         //Parent Index
         bytes = sizeof(int);
-        memcpy(cursor, &currentNode.mParentIndex, bytes);
+        memcpy(cursor, &currentNode.mParentVecIdx, bytes);
+        cursor += bytes;
+        //GltfId
+        bytes = sizeof(int);
+        memcpy(cursor, &currentNode.mGltfId, bytes);
         cursor += bytes;
         //Light
         bytes = sizeof(int);
@@ -125,25 +129,26 @@ void Importer::Model::Save(const ResourceModel* rModel, unsigned int& size)
     }
 
     //Joints
-    unsigned int jointsSize = rModel->mInvBindMatrices.size();
+    unsigned int numVectors = rModel->mInvBindMatrices.size();
     bytes = sizeof(unsigned int);
-    memcpy(cursor, &jointsSize, bytes);
+    memcpy(cursor, &numVectors, bytes);
     cursor += bytes;
 
-    for (unsigned int i = 0; i < jointsSize; ++i)
+    for (unsigned int j = 0; j < numVectors; ++j)
     {
-        bytes = sizeof(unsigned int);
-        unsigned int lenString = rModel->mInvBindMatrices[i].first.length() + 1;
-        memcpy(cursor, &lenString, bytes);
+        unsigned int numJoints = rModel->mInvBindMatrices[j].size();
+        bytes = sizeof(numJoints);
+        memcpy(cursor, &numJoints, bytes);
         cursor += bytes;
-
-        bytes = lenString;
-        memcpy(cursor, rModel->mInvBindMatrices[i].first.data(), bytes);
-        cursor += bytes;
-
-        bytes = sizeof(float4x4);
-        memcpy(cursor, rModel->mInvBindMatrices[i].second.ptr(), bytes);
-        cursor += bytes;
+        for (unsigned int i = 0; i < numJoints; ++i)
+        {
+            bytes = sizeof(unsigned int);
+            memcpy(cursor, &rModel->mInvBindMatrices[j][i].first, bytes);
+            cursor += bytes;
+            bytes = sizeof(float4x4);
+            memcpy(cursor, &rModel->mInvBindMatrices[j][i].second, bytes);
+            cursor += bytes;
+        }
     }
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rModel->GetUID(), true);
@@ -217,7 +222,11 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             }
 
             bytes = sizeof(int);
-            memcpy(&node.mParentIndex, cursor, bytes);
+            memcpy(&node.mParentVecIdx, cursor, bytes);
+            cursor += bytes;
+
+            bytes = sizeof(int);
+            memcpy(&node.mGltfId, cursor, bytes);
             cursor += bytes;
 
             bytes = sizeof(int);
@@ -311,32 +320,33 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
         }
 
         //Joints
-        unsigned int jointsSize = 0;
+        unsigned int numVectors = 0;
         bytes = sizeof(unsigned int);
-        memcpy(&jointsSize, cursor, bytes);
+        memcpy(&numVectors, cursor, bytes);
         cursor += bytes;
 
-        rModel->mInvBindMatrices.resize(jointsSize);
-
-        for (unsigned int i = 0; i < jointsSize; ++i)
+        rModel->mInvBindMatrices.reserve(numVectors);
+        for (unsigned int j = 0; j < numVectors; ++j)
         {
+            unsigned int numInvBindMat = 0;
             bytes = sizeof(unsigned int);
-            unsigned int lenString = 0;
-            memcpy(&lenString, cursor, bytes);
+            memcpy(&numInvBindMat, cursor, bytes);
             cursor += bytes;
-
-            bytes = lenString;
-            char* jointName = new char[lenString];
-            memcpy(jointName, cursor, bytes);
-            cursor += bytes;
-
-            rModel->mInvBindMatrices[i].first = jointName;
-
-            bytes = sizeof(float4x4);
-            memcpy(&rModel->mInvBindMatrices[i].second, cursor, bytes);
-            cursor += bytes;
+            rModel->mInvBindMatrices.emplace_back();
+            rModel->mInvBindMatrices[j].reserve(numInvBindMat);
+            for (int i = 0; i < numInvBindMat; ++i)
+            {
+                unsigned int gltfId;
+                bytes = sizeof(unsigned int);
+                memcpy(&gltfId, cursor, bytes);
+                cursor += bytes;
+                float4x4 mat;
+                bytes = sizeof(float4x4);
+                memcpy(&mat, cursor, bytes);
+                cursor += bytes;
+                rModel->mInvBindMatrices[j].emplace_back(gltfId, mat);
+            }
         }
-
         delete[] fileBuffer;
     }
 

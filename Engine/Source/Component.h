@@ -1,12 +1,14 @@
 #pragma once
+#include "Globals.h"
 #include "Archive.h"
+#include <unordered_map>
 
 enum class ENGINE_API ComponentType : unsigned int
 {
 	MESHRENDERER, POINTLIGHT, SPOTLIGHT, SCRIPT, NAVMESHOBSTACLE, AIAGENT, 
 	CAMERA, CANVAS, IMAGE, TRANSFORM2D, ANIMATION, BUTTON, SLIDER,
 	AUDIOSOURCE, AUDIOLISTENER, PARTICLESYSTEM, TEXT,
-	BOXCOLLIDER, TRAIL,	TEST, NONE
+	BOXCOLLIDER, TRAIL, DECAL, NONE
 };
 
 class GameObject;
@@ -21,11 +23,12 @@ public:
 	virtual	void Update() = 0;
 	
 	virtual Component* Clone(GameObject* owner) const = 0;
-	virtual void Save(Archive& archive) const;
-	virtual void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
+
+	virtual void Save(JsonObject& obj) const;
+	virtual void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
 
 	ComponentType GetType() const { return mType; }
-	GameObject* const GetOwner() const { return mOwner; }
+	GameObject* GetOwner() const { return mOwner; }
 
 	unsigned int GetID() const { return mID; }
 
@@ -33,16 +36,7 @@ public:
 
 	static const char* GetNameFromType(ComponentType type);
 
-	void SetEnable(bool enable)
-	{
-		if (enable == mIsEnabled)
-			return;
-		mIsEnabled = enable;
-		if (mIsEnabled)
-			Enable();
-		else
-			Disable();
-	}
+	void SetEnable(bool enable);
 
 protected:
 	virtual	void Reset() = 0;

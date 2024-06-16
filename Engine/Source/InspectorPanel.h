@@ -1,5 +1,8 @@
 #pragma once
 #include "Panel.h"
+#include <vector>
+#include <string>
+
 #define INSPECTORPANEL "Inspector##"
 
 class GameObject;
@@ -26,6 +29,9 @@ class BoxColliderComponent;
 class TrailComponent;
 class BezierCurve;
 class AudioSourceComponentNew;
+class DecalComponent;
+class RandomFloat;
+
 
 class InspectorPanel : public Panel
 {
@@ -40,7 +46,10 @@ private:
 	Component* mComponent = nullptr;
 
 	bool mLocked = false;
-	bool mSameComponentPopup = false;
+	bool mSameComponentPopup = false; 
+	bool mTagsLayersPopUp = false;
+
+	void ShowTagsLayerPopUp();
 
 	void DrawTransform(GameObject* object);
 	void AddComponentButton(GameObject* object);
@@ -48,12 +57,11 @@ private:
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 
-	void DrawTestComponent(TestComponent* component);
 	void DrawCameraComponent(CameraComponent* component);
 	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
-	void DrawMeshRendererComponent(MeshRendererComponent* component);
+	void DrawMeshRendererComponent(const MeshRendererComponent& component);
 	void DrawAIAgentComponent(AIAgentComponent* component);
 	void DrawImageComponent(ImageComponent* component);
 	void DrawCanvasComponent(CanvasComponent* component);
@@ -66,11 +74,15 @@ private:
 	void DrawBoxColliderComponent(BoxColliderComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
+	void DrawDecalComponent(DecalComponent* component);
 
-	void DragAndDropSource(Component* component);
-	void DragAndDropTarget(GameObject* object, Component* target);
-	void MaterialVariables(MeshRendererComponent* renderComponent);
+	//void DragAndDropSource(Component* component);
+	//void DragAndDropTarget(GameObject* object, Component* target);
+	void MaterialVariables(const MeshRendererComponent& renderComponent);
 	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
 	void DrawAnimationComponent(AnimationComponent* component);
+	void GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names);
 	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;
+	void DrawRandomFloat(RandomFloat& value, const char* cLabel) const;
+	void DrawBlendTypeSelector(int& type, const char* cLabel) const;
 };

@@ -110,9 +110,10 @@ public:
 	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }
 	AxisState GetGameControllerAxis(int id) const { return mGameController.mAxis[id]; }
-	int	GetGameControllerAxisValue(int id) const;
-	int	GetGameControllerAxisRaw(int id) const;
-	int	GetGameControllerAxisInput(int id) const;
+	float GetGameControllerAxisValue(int id) const;
+	//int	GetGameControllerAxisRaw(int id) const;
+	//int	GetGameControllerAxisInput(int id) const;
+	void SetGameControllerRumble(unsigned int low_freq, unsigned int high_freq, unsigned int time);
 	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
 
 

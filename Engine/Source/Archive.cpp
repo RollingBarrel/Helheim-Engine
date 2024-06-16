@@ -1,346 +1,278 @@
 #include "archive.h"
+#include "rapidjson/writer.h"
+#include "rapidjson/prettywriter.h"
+#include "rapidjson/stringbuffer.h"
 
-Archive::Archive() : mDocument(std::make_unique<rapidjson::Document>()) {
-    mDocument->SetObject();
+Archive::Archive()
+{
+    mDocument.SetObject();
 }
+Archive::Archive(const char* json)
+{
+    rapidjson::ParseResult ok = mDocument.Parse(json);
+    assert(ok && "Json not parsed correctly");
+}
+// Copy constructor
+Archive::Archive(const Archive& other)
+{
+    mDocument.CopyFrom(other.mDocument, mDocument.GetAllocator());
+}
+
+Archive::Archive(Archive&& other) noexcept : mDocument(std::move(other.mDocument)) {}
 
 Archive::~Archive() {}
 
-void Archive::AddInt(const char* key, int value)
+Archive& Archive::operator=(const Archive& other)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kNumberType);
-    jsonValue.SetInt(value);
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    assert(this != &other && "this is the same than other");
+    mDocument.CopyFrom(other.mDocument, mDocument.GetAllocator());
+    return *this;
 }
 
-void Archive::AddString(const char* key, const char* value)
+Archive& Archive::operator=(Archive&& other) noexcept
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kStringType);
-    jsonValue.SetString(value, strlen(value), mDocument->GetAllocator());
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    assert(this != &other && "other is the same than this");
+    mDocument = std::move(other.mDocument);
+    return *this;
 }
 
-void Archive::AddFloat(const char* key, float value)
+JsonArray::JsonArray(const rapidjson::Value::Array& arr, rapidjson::MemoryPoolAllocator<>& allocator) : mArray(arr), mAllocator(allocator) {}
+
+JsonArray::JsonArray(const JsonArray& other) : mArray(other.mArray), mAllocator(other.mAllocator) {}
+
+void JsonArray::Reserve(unsigned int size)
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kNumberType);
-    jsonValue.SetFloat(value);
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    mArray.Reserve(size, mAllocator);
 }
 
-void Archive::AddBool(const char* key, bool value)
+unsigned int JsonArray::Size() const
 {
-    rapidjson::Value jsonKey(rapidjson::kStringType);
-    jsonKey.SetString(key, strlen(key), mDocument->GetAllocator());
-
-    rapidjson::Value jsonValue(rapidjson::kFalseType);
-    jsonValue.SetBool(value);
-
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
+    return mArray.Size();
 }
 
-void Archive::AddIntArray(const char* key, const std::vector<unsigned int>& array) {
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+unsigned int JsonArray::Capacity() const
+{
+    return mArray.Capacity();
+}
+
+void JsonArray::PushBackBool(bool value)
+{
+    mArray.PushBack(rapidjson::Value().SetBool(value), mAllocator);
+}
+
+void JsonArray::PushBackInt(int value)
+{
+    mArray.PushBack(rapidjson::Value().SetInt(value), mAllocator);
+}
+
+void JsonArray::PushBackFloat(float value)
+{
+    mArray.PushBack(rapidjson::Value().SetFloat(value), mAllocator);
+}
+
+void JsonArray::PushBackString(const char* value)
+{
+    mArray.PushBack(rapidjson::Value().SetString(value, mAllocator), mAllocator);
+}
+
+JsonArray JsonArray::PushBackNewArray()
+{
+    rapidjson::Value a(rapidjson::kArrayType);
+    mArray.PushBack(a, mAllocator);
+    return JsonArray(mArray[mArray.Size() - 1].GetArray(), mAllocator);
+}
+
+JsonObject JsonArray::PushBackNewObject()
+{
+    rapidjson::Value o(rapidjson::kObjectType);
+    mArray.PushBack(o, mAllocator);
+    return JsonObject(mArray[mArray.Size() - 1].GetObject(), mAllocator);
+}
+
+void JsonArray::PopBack()
+{
+    mArray.PopBack();
+}
+
+inline bool JsonArray::GetBool(unsigned int idx) const
+{
+    assert(mArray[idx].IsBool() && "This member is not a bool");
+    return mArray[idx].GetBool();
+}
+
+inline int JsonArray::GetInt(unsigned int idx) const
+{
+    assert(mArray[idx].IsInt() && "This member is not an int");
+    return mArray[idx].GetInt();
+}
+
+inline float JsonArray::GetFloat(unsigned int idx) const
+{
+    assert(mArray[idx].IsFloat() && "This member is not a float");
+    return mArray[idx].GetFloat();
+}
+
+inline std::string JsonArray::GetString(unsigned int idx) const
+{
+    assert(mArray[idx].IsString() && "This member is not a string");
+    return mArray[idx].GetString();
+}
+
+inline JsonObject JsonArray::GetJsonObject(unsigned int idx)
+{
+    assert(mArray[idx].IsObject() && "This member is not an object");
+    return JsonObject(mArray[idx].GetObject(), mAllocator);
+}
+
+inline JsonArray JsonArray::GetJsonArray(unsigned int idx)
+{
+    assert(mArray[idx].IsArray() && "This member is not an array");
+    return JsonArray(mArray[idx].GetArray(), mAllocator);
+}
+
+JsonObject::JsonObject(const rapidjson::Value::Object& obj, rapidjson::MemoryPoolAllocator<>& allocator) : mObject(obj), mAllocator(allocator) {}
+
+JsonObject::JsonObject(const JsonObject& other) : mObject(other.mObject), mAllocator(other.mAllocator) {}
+
+void JsonObject::AddInt(const char* key, int value)
+{
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetInt(value), mAllocator);
+}
+
+void JsonObject::AddInts(const char* key, const int* array, unsigned int numInts)
+{
     rapidjson::Value jsonArray(rapidjson::kArrayType);
-    for (const auto& item : array) {
-        rapidjson::Value jsonItem(rapidjson::kNumberType);
-        jsonItem.SetInt(item);
-        jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
+    jsonArray.Reserve(numInts * sizeof(int), mAllocator);
+    for (unsigned int i = 0; i < numInts; ++i)
+    {
+        jsonArray.PushBack(array[i], mAllocator);
     }
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
 }
 
-void Archive::AddObjectArray(const char* key, const std::vector<Archive>& array) {
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
+void JsonObject::AddString(const char* key, const char* value)
+{
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetString(value, mAllocator), mAllocator);
+}
+
+void JsonObject::AddFloat(const char* key, float value)
+{
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetFloat(value), mAllocator);
+}
+
+void JsonObject::AddFloats(const char* key, const float* floats, unsigned int numFloats)
+{
     rapidjson::Value jsonArray(rapidjson::kArrayType);
-
-    for (const auto& item : array) {
-        rapidjson::Value jsonItem(rapidjson::kObjectType);
-        jsonItem.CopyFrom(*item.mDocument, mDocument->GetAllocator());
-        jsonArray.PushBack(jsonItem, mDocument->GetAllocator());
-    }
-
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
-}
-
-std::vector<Archive> Archive::GetObjectArray(const char* key) const {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsArray()) {
-        const auto& array = it->value.GetArray();
-        std::vector<Archive> result;
-        for (const auto& element : array) {
-            Archive elementArchive;
-            elementArchive.CopyFrom(element);
-            result.push_back(elementArchive);
-        }
-        return result;
-    }
-    // Handle error or return an empty vector
-    return std::vector<Archive>();
-}
-
-void Archive::AddFloat2(const char* key, const float2& vector)
-{
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-
-    jsonArray.PushBack(vector.x, mDocument->GetAllocator());
-    jsonArray.PushBack(vector.y, mDocument->GetAllocator());
-
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
-}
-
-void Archive::AddFloat3(const char* key, const float3& vector)
-{
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-
-    jsonArray.PushBack(vector.x, mDocument->GetAllocator());
-    jsonArray.PushBack(vector.y, mDocument->GetAllocator());
-    jsonArray.PushBack(vector.z, mDocument->GetAllocator());
-
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
-}
-
-void Archive::AddFloat4(const char* key, const float vector[4])
-{
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-
-    jsonArray.PushBack(vector[0], mDocument->GetAllocator());
-    jsonArray.PushBack(vector[1], mDocument->GetAllocator());
-    jsonArray.PushBack(vector[2], mDocument->GetAllocator());
-    jsonArray.PushBack(vector[3], mDocument->GetAllocator());
-
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
-}
-
-void Archive::AddFloat4x4(const char* key, const float4x4& matrix)
-{
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-
-    for (int i = 0; i < 4; ++i) {
-        for (int j = 0; j < 4; ++j) {
-            jsonArray.PushBack(matrix[i][j], mDocument->GetAllocator());
-        }
-    }
-
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
-}
-
-void Archive::AddQuat(const char* key, const Quat& quat)
-{
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
-    rapidjson::Value jsonArray(rapidjson::kArrayType);
-
-    jsonArray.PushBack(quat.x, mDocument->GetAllocator());
-    jsonArray.PushBack(quat.y, mDocument->GetAllocator());
-    jsonArray.PushBack(quat.z, mDocument->GetAllocator());
-    jsonArray.PushBack(quat.w, mDocument->GetAllocator());
-
-    mDocument->AddMember(jsonKey, jsonArray, mDocument->GetAllocator());
-}
-
-void Archive::AddObject(const char* key, const Archive& value) {
-    rapidjson::Value jsonKey(key, mDocument->GetAllocator());
-    rapidjson::Value jsonValue(rapidjson::kObjectType);
-    jsonValue.CopyFrom(*value.mDocument, mDocument->GetAllocator());
-    mDocument->AddMember(jsonKey, jsonValue, mDocument->GetAllocator());
-}
-
-/*void Archive::AddObjectWithId(const unsigned int objectId, const Archive& objectArchive) {
-    // Convert the object ID to string
-    std::string key = std::to_string(objectId);
-    // Add the object to the archive
-    rapidjson::Value jsonKey(key.c_str(), mDocument->GetAllocator());
-    rapidjson::Value jsonObject(rapidjson::kObjectType);
-    jsonObject.CopyFrom(*objectArchive.mDocument, mDocument->GetAllocator());
-    mDocument->AddMember(jsonKey, jsonObject, mDocument->GetAllocator());
-}*/
-
-int Archive::GetInt(const char* key) const
-{
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsInt()) {
-        return it->value.GetInt();
-    }
-    // Handle error or return a default value
-    return 0;
-}
-
-std::string Archive::GetString(const char* key) const
-{
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsString())
+    jsonArray.Reserve(numFloats * sizeof(float), mAllocator);
+    for (unsigned int i = 0; i < numFloats; ++i)
     {
-        return it->value.GetString();
+        jsonArray.PushBack(floats[i], mAllocator);
     }
-    // Handle error or return a default value
-    return "";
+
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), jsonArray, mAllocator);
 }
 
-float Archive::GetFloat(const char* key) const
+void JsonObject::AddBool(const char* key, bool value)
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsNumber())
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), rapidjson::Value().SetBool(value), mAllocator);
+}
+
+JsonArray JsonObject::AddNewJsonArray(const char* key)
+{
+    rapidjson::Value o(rapidjson::kArrayType);
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), o, mAllocator);
+    return JsonArray(mObject[key].GetArray(), mAllocator);
+}
+
+JsonObject JsonObject::AddNewJsonObject(const char* key)
+{
+    rapidjson::Value o(rapidjson::kObjectType);
+    mObject.AddMember(rapidjson::Value().SetString(key, mAllocator), o, mAllocator);
+    return JsonObject(mObject[key].GetObject(), mAllocator);
+}
+
+bool JsonObject::GetBool(const char* key) const
+{
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsBool() && "This member is not a bool");
+    return mObject[key].GetBool();
+}
+
+int JsonObject::GetInt(const char* key) const
+{
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsInt() && "This member is not an int");
+    return mObject[key].GetInt();
+}
+
+unsigned int JsonObject::GetInts(const char* key, int* fillInts) const
+{
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsArray() && "This member is not an array");
+    const rapidjson::Value::Array& ints = mObject[key].GetArray();
+    rapidjson::SizeType numInts = ints.Size();
+    for (rapidjson::SizeType i = 0; i < numInts; ++i)
     {
-        return it->value.GetFloat();
+        fillInts[i] = ints[i].GetInt();
     }
-    // Handle error or return a default value
-    return 0.0f;
+    return numInts;
 }
 
-bool Archive::GetBool(const char* key) const
+float JsonObject::GetFloat(const char* key) const
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsBool())
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsFloat() && "This member is not a float");
+    return mObject[key].GetFloat();
+}
+
+unsigned int JsonObject::GetFloats(const char* key, float* fillFloats) const
+{
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsArray() && "This member is not an array");
+    const rapidjson::Value::Array& floats = mObject[key].GetArray();
+    rapidjson::SizeType numFloats = floats.Size();
+    for (rapidjson::SizeType i = 0; i < numFloats; ++i)
     {
-        return it->value.GetBool();
+        fillFloats[i] = floats[i].GetFloat();
     }
-    // Handle error or return a default value
-    return false;
+    return numFloats;
 }
 
-std::vector<Archive> Archive::GetArray(const char* key) const
+std::string JsonObject::GetString(const char* key) const
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsArray()) {
-        const auto& array = it->value.GetArray();
-        std::vector<Archive> result;
-        for (const auto& element : array) {
-            Archive elementArchive;
-            elementArchive.CopyFrom(element);
-            result.push_back(elementArchive);
-        }
-        return result;
-    }
-    // Handle error or return an empty vector
-    return std::vector<Archive>();
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsString() && "This member is not a string");
+    return mObject[key].GetString();
 }
 
-float2 Archive::GetFloat2(const char* key) const
+const JsonObject JsonObject::GetJsonObject(const char* key) const
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsObject())
-    {
-        const auto& object = it->value.GetObject();
-        float x = object["x"].GetFloat();
-        float y = object["y"].GetFloat();
-        return float2(x, y);
-    }
-    // Handle error or return a default value
-    return float2(0.0f, 0.0f);
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsObject() && "This member is not an object");
+    return JsonObject(mObject[key].GetObject(), mAllocator);
 }
 
-float3 Archive::GetFloat3(const char* key) const
+const JsonArray JsonObject::GetJsonArray(const char* key) const
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsObject())
-    {
-        const auto& object = it->value.GetObject();
-        float x = object["x"].GetFloat();
-        float y = object["y"].GetFloat();
-        float z = object["z"].GetFloat();
-        return float3(x, y, z);
-    }
-    // Handle error or return a default value
-    return float3(0.0f, 0.0f, 0.0f);
+    assert(mObject.HasMember(key) && "Document does not have this member");
+    assert(mObject[key].IsArray() && "This member is not an array");
+    return JsonArray(mObject[key].GetArray(), mAllocator);
 }
 
-float4 Archive::GetFloat4(const char* key) const
+bool JsonObject::HasMember(const char* key) const
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsObject())
-    {
-        const auto& object = it->value.GetObject();
-        float x = object["x"].GetFloat();
-        float y = object["y"].GetFloat();
-        float z = object["z"].GetFloat();
-        float w = object["w"].GetFloat();
-        return float4(x, y, z, w);
-    }
-    // Handle error or return a default value
-    return float4(0.0f, 0.0f, 0.0f, 0.0f);
+    return mObject.FindMember(key) != mObject.MemberEnd();
 }
 
-
-float4x4 Archive::GetFloat4x4(const char* key) const
+JsonObject Archive::GetRootObject()
 {
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsArray())
-    {
-        const auto& array = it->value.GetArray();
-        float4x4 result;
-
-        for (int i = 0; i < 4; ++i)
-        {
-            for (int j = 0; j < 4; ++j)
-            {
-                result[i][j] = array[i * 4 + j].GetFloat();
-            }
-        }
-
-        return result;
-    }
-    // Handle error or return a default value
-    return float4x4::identity;
-}
-
-Quat Archive::GetQuat(const char* key) const
-{
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsObject())
-    {
-        const auto& object = it->value.GetObject();
-        float x = object["x"].GetFloat();
-        float y = object["y"].GetFloat();
-        float z = object["z"].GetFloat();
-        float w = object["w"].GetFloat();
-        return Quat(x, y, z, w);
-    }
-    // Handle error or return a default value
-    return Quat::identity;
-}
-
-Archive Archive::GetObject(const char* key) const
-{
-    auto it = mDocument->FindMember(key);
-    if (it != mDocument->MemberEnd() && it->value.IsObject()) {
-        Archive objectArchive;
-        objectArchive.CopyFrom(it->value);
-        return objectArchive;
-    }
-    // Handle error or return an empty Archive
-    return Archive();
-}
-
-void Archive::CopyFrom(const rapidjson::Value& value)
-{
-    mDocument->CopyFrom(value, mDocument->GetAllocator());
-}
-
-void Archive::CopyFrom(const Archive& other) {
-    rapidjson::Document tempDocument;
-    tempDocument.CopyFrom(*other.mDocument, tempDocument.GetAllocator());
-    mDocument->Swap(tempDocument);
+    return JsonObject(mDocument.GetObject(), mDocument.GetAllocator());
 }
 
 std::string Archive::Serialize() const
 {
     rapidjson::StringBuffer buffer;
     rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(buffer);
-    mDocument->Accept(writer);
+    mDocument.Accept(writer);
     return buffer.GetString();
 }

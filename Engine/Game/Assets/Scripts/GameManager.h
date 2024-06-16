@@ -11,6 +11,9 @@ class GameManager : public Script
 {
     FRIEND(GameManager)
 public:
+    GameManager(GameObject* owner); 
+    ~GameManager();
+
     static GameManager* GetInstance(); 
 
     void Awake();
@@ -19,11 +22,19 @@ public:
 
     GameObject* GetPlayer() { return mPlayer; };
     AudioManager* GetAudio() {return mAudioManager;};
+    HudController* GetHud() { return mHudController; };
+    bool UsingController() { return mController; }
+
+    bool IsPaused() { return mPaused; }
+    void SetPaused(bool value);
 
     void LoadLevel(const char* LevelName);
+
+    void Victory();
+    void GameOver();
+
 private:
-    GameManager(GameObject* owner); 
-    ~GameManager();
+
 
     static GameManager* mInstance;
     
@@ -35,4 +46,6 @@ private:
     AudioManager* mAudioManager = nullptr;
 
     bool mPaused = false;
+
+    bool mController = false;
 };

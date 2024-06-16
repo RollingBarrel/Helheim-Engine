@@ -2,9 +2,10 @@
 
 #include "Component.h"
 #include "BezierCurve.h"
-#include <map>
-#include "EmitterShape.h"
 #include "ColorGradient.h"
+#include "BlendMode.h"
+#include "MathConstants.h"
+#include "RandomFloat.h"
 
 class ResourceTexture;
 class Particle;
@@ -14,10 +15,17 @@ class ENGINE_API ParticleSystemComponent : public Component
 {
 	friend class InspectorPanel;
 public:
-	ParticleSystemComponent(GameObject* ownerGameObject);
+	enum class EmitterType
+	{
+		NONE = 0,
+		CONE,
+		BOX,
+		SPHERE
+	};
+	explicit ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
 	~ParticleSystemComponent();
-	ResourceTexture* GetImage() const { return mImage; }
+	const ResourceTexture* GetImage() const { return mImage; }
 	const char* GetFileName() const { return mFileName; }
 	void Reset();
 
@@ -27,20 +35,21 @@ public:
 	void Enable() override;
 	void Disable() override;
 
+	float3 ShapeInitPosition() const;
+
+	float3 ShapeInitDirection(const float3& pos) const;
+
 	Component* Clone(GameObject* owner) const override;
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-	void InitEmitterShape();
+	
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
-	template <int steps>
-	static void BezierTable(float2 P[], float2 results[]);
-	static float BezierValue(float dt01, float4 P);
 
 	ResourceTexture* mImage = nullptr;
-	unsigned int mResourceId = 452546727; // Default particle texture
+	unsigned int mResourceId = 148626881; // Default particle texture
 	const char* mFileName = nullptr;
 
 	float mEmitterTime = 0.0f;
@@ -48,20 +57,32 @@ private:
 
 	float mDelay = 0.0f;
 	float mDuration = 5.0f;
-	float mMaxLifeTime = 3.0f;
+
+	RandomFloat mLifetime;
 
 	BezierCurve mSpeedCurve = BezierCurve();
 	BezierCurve mSizeCurve = BezierCurve();
 	bool mStretchedBillboard = false;
+	float mStretchedRatio = 0.0f;
 
 	float mEmissionRate = 10.0f;
 	int mMaxParticles = 1000.0f;
 	bool mLooping = true;
 
-	EmitterShape* mShape;
-	EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
+	//EmitterShape* mShape;
+	//EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
 
-	ColorGradient* mColorGradient = new ColorGradient();
+	EmitterType mShapeType = EmitterType::NONE;
+	float mShapeRadius = 0.0f;
+	float mShapeAngle = math::pi / 4.0f;
+	float3 mShapeSize = float3(1.0f, 1.0f, 1.0f);
+	bool mIsShapeAngleRand = false;
+	float mShapeRandAngle = 0.0f;
+	bool mShapeInverseDir = false;
+
+	int mBlendMode = 0;
+
+	ColorGradient mColorGradient;
 	std::vector<Particle*> mParticles;
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;

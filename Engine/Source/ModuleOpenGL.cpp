@@ -10,15 +10,17 @@
 #include "ModuleUI.h"
 
 #include "GameObject.h"
+#include "MeshRendererComponent.h"
 #include "CameraComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ParticleSystemComponent.h"
+#include "DecalComponent.h"
+#include "TrailComponent.h"
 
 #include "Quadtree.h"
 #include "BatchManager.h"
 
-#include "Trail.h"
 
 #include "SDL.h"
 #include "glew.h"
@@ -146,6 +148,8 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGColDepth);
 	glGenTextures(1, &mGEmissive);
 	glGenTextures(1, &mGDepth);
+	glGenTextures(1, &mGPosition);
+
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
@@ -160,27 +164,36 @@ bool ModuleOpenGL::Init()
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, mGColDepth);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//POSITION TEXTURE
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGNormals, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPosition, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
+	
+	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(1, att2);
+
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
-	const GLenum att2[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(6, att2);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
 	glGenVertexArrays(1, &mEmptyVAO);
 
 	//InitializePrograms
@@ -247,17 +260,16 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
-	sourcesPaths[1] = "PassThroughPixel.glsl";
-	mDepthPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
-
-
+	sourcesPaths[0] = "DecalPass_Vertex.glsl";
+	sourcesPaths[1] = "DecalPass_Fragment.glsl";
+	DecalPassProgramId= CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 	SetOpenGlCameraUniforms();
 
 	InitSkybox();
+	InitDecals();
 
 	//Lighting uniforms
 	mDLightUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 1, sizeof(mDirLight), &mDirLight);
@@ -269,6 +281,7 @@ bool ModuleOpenGL::Init()
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
 	BakeIBL("Assets/Textures/HDR_subdued_blue_nebulae.hdr");
+	//BakeIBL("Assets/Textures/skybox.hdr");
 	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
 
 	//SHADOWS
@@ -306,7 +319,11 @@ bool ModuleOpenGL::Init()
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(6, colBuff);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	GLenum colBuff2[] = { GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(1, colBuff2);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -314,6 +331,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	//Draw the skybox
 	if (mEnvironmentTextureId != 0)
 	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
 		glUseProgram(mSkyBoxProgramId);
@@ -323,6 +341,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 		glDepthMask(GL_TRUE);
 		glBindVertexArray(0);
 		glUseProgram(0);
+		glPopDebugGroup();
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -379,7 +398,8 @@ void ModuleOpenGL::AddHighLight(const GameObject& gameObject)
 {
 	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents;
+		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 		if (!meshComponents.empty())
 		{
 			for (const Component* comp : meshComponents)
@@ -394,7 +414,8 @@ void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
 {
 	if (!gameObject.IsRoot())
 	{
-		std::vector<Component*> meshComponents = gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER);
+		std::vector<Component*> meshComponents;
+		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 		if (!meshComponents.empty())
 		{
 			for (Component* comp : meshComponents)
@@ -409,6 +430,23 @@ void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
 				}
 			}
 			meshComponents;
+		}
+	}
+}
+
+void ModuleOpenGL::AddDecal(const DecalComponent& decal)
+{
+	mDecalComponents.push_back(&decal);
+}
+
+void ModuleOpenGL::RemoveDecal(const DecalComponent& decal)
+{
+	for (std::vector<const DecalComponent*>::const_iterator it = mDecalComponents.cbegin(); it != mDecalComponents.cend(); ++it)
+	{
+		if (decal.GetID() == (*it)->GetID())
+		{
+			mDecalComponents.erase(it);
+			break;
 		}
 	}
 }
@@ -515,13 +553,15 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGColDepth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
@@ -529,47 +569,47 @@ void ModuleOpenGL::InitSkybox()
 {
 
 	float skyboxVertices[] = {
-	   -1.0f,  1.0f, -1.0f,
-	   -1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-	   -1.0f,  1.0f, -1.0f,
-
-	   -1.0f, -1.0f,  1.0f,
-	   -1.0f, -1.0f, -1.0f,
-	   -1.0f,  1.0f, -1.0f,
-	   -1.0f,  1.0f, -1.0f,
-	   -1.0f,  1.0f,  1.0f,
-	   -1.0f, -1.0f,  1.0f,
-
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-
-	   -1.0f, -1.0f,  1.0f,
-	   -1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f,
-	   -1.0f, -1.0f,  1.0f,
-
-	   -1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f, -1.0f,
-		1.0f,  1.0f,  1.0f,
-		1.0f,  1.0f,  1.0f,
-	   -1.0f,  1.0f,  1.0f,
-	   -1.0f,  1.0f, -1.0f,
-
-	   -1.0f, -1.0f, -1.0f,
-	   -1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f, -1.0f,
-		1.0f, -1.0f, -1.0f,
-	   -1.0f, -1.0f,  1.0f,
-		1.0f, -1.0f,  1.0f
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+			   		  
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,
+			   		  
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+			   		  
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+	   -0.5f, -0.5f,  0.5f,
+			   		  
+	   -0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f, -0.5f,
+			   		  
+	   -0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f
 	};
 
 	glGenVertexArrays(1, &mSkyVao);
@@ -673,6 +713,78 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	unsigned int ret = CreateShaderProgramFromIDs(shaderIds, numShaderSources);
 	free(shaderIds);
 	return ret;
+}
+
+void ModuleOpenGL::InitDecals()
+{
+	float decalsVertices[] = {
+	   -0.5f,  0.5f, -0.5f,
+	   0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+		
+		0.5f, -0.5f, -0.5f,
+		-0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+	   
+
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f, -0.5f,
+	   
+
+	   -0.5f,  0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+	   
+
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+		
+
+		0.5f,  0.5f,  0.5f,
+		0.5f, -0.5f, -0.5f,
+		0.5f,  0.5f, -0.5f,
+		
+
+	   -0.5f, -0.5f,  0.5f,
+	    0.5f,  0.5f,  0.5f,
+	   -0.5f,  0.5f,  0.5f,
+		
+
+		0.5f,  0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+		0.5f, -0.5f,  0.5f,
+	   
+
+	   -0.5f,  0.5f, -0.5f,
+		0.5f,  0.5f,  0.5f,
+	    0.5f,  0.5f, -0.5f,
+		
+
+		0.5f,  0.5f,  0.5f,
+	    -0.5f,  0.5f, -0.5f,
+		-0.5f,  0.5f,  0.5f,
+	   
+
+	   -0.5f, -0.5f, -0.5f,
+	    0.5f, -0.5f, -0.5f,
+	   -0.5f, -0.5f,  0.5f,
+		
+		0.5f, -0.5f, -0.5f,
+	    0.5f, -0.5f,  0.5f,
+		-0.5f, -0.5f,  0.5f,
+		
+	};
+
+	glGenVertexArrays(1, &mDecalsVao);
+	glGenBuffers(1, &mDecalsVbo);
+	glBindVertexArray(mDecalsVao);
+	glBindBuffer(GL_ARRAY_BUFFER, mDecalsVbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(decalsVertices), decalsVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glBindVertexArray(0);
 }
 
 void ModuleOpenGL::BakeEnvironmentBRDF(unsigned int width, unsigned int height)
@@ -923,17 +1035,17 @@ void ModuleOpenGL::RemovePointLight(const PointLightComponent& cPointLight)
 	}
 }
 
-void ModuleOpenGL::BatchAddMesh(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchAddMesh(const MeshRendererComponent& mesh)
 {
 	mBatchManager.AddMeshComponent(mesh);
 }
 
-void ModuleOpenGL::BatchRemoveMesh(MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchRemoveMesh(const MeshRendererComponent& mesh)
 {
 	mBatchManager.RemoveMeshComponent(mesh);
 }
 
-void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent* mesh)
+void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 {
 	mBatchManager.EditMaterial(mesh);
 }
@@ -944,7 +1056,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	//scene
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.AddCommand(mesh);
+		assert(mesh);
+		mBatchManager.AddCommand(*mesh);
 	}
 	
 	//Shadows
@@ -978,14 +1091,16 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
 		for (const MeshRendererComponent* mesh : meshInFrustum)
 		{
-			mBatchManager.AddCommand(mesh);
+			assert(mesh);
+			mBatchManager.AddCommand(*mesh);
 		}	
 	}
 
 	meshInFrustum.clear();
 	mBatchManager.CleanUpCommands();
 
-	//Shadows
+	//Shadow Maps
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
@@ -1000,7 +1115,8 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 
 		for (const MeshRendererComponent* mesh : meshInFrustum)
 		{
-			mBatchManager.AddCommand(mesh);
+			assert(mesh);
+			mBatchManager.AddCommand(*mesh);
 		}
 
 		
@@ -1019,26 +1135,28 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
 
 		mBatchManager.Draw();
-		
-		
 	}
+
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
 	SceneFramebufferResized();
 	BindSceneFramebuffer();
-
+	glPopDebugGroup();
 
 
 	mBatchManager.CleanUpCommands();
 	for (const MeshRendererComponent* mesh : sceneMeshes)
 	{
-		mBatchManager.AddCommand(mesh);
+		mBatchManager.AddCommand(*mesh);
 	}
-	//GaometryPass
+
+	//Geometry Pass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GeometryPass");
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(5, colBuff);
 	glDisable(GL_BLEND);
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
@@ -1046,8 +1164,150 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glStencilMask(0xFF);
 	glUseProgram(mPbrGeoPassProgramId);
 	mBatchManager.Draw();
+	glPopDebugGroup();
+
+	//Decal Pass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
+
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	
+	glDisable(GL_STENCIL_TEST);
+	glDepthMask(0x00);
+	glUseProgram(DecalPassProgramId);
+	glBindVertexArray(mDecalsVao);
+
+	float4x4 invView = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
+	glUniformMatrix4fv(15, 1, GL_TRUE, invView.ptr());
+
+	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
+	{
+		GLenum channels[4] = { GL_NONE, GL_NONE, GL_NONE, GL_NONE };
+
+		if (mDecalComponents[i]->HasDiffuse())
+		{
+			channels[0] = GL_COLOR_ATTACHMENT0;
+		}
+		
+		if (mDecalComponents[i]->HasSpecular())
+		{
+			channels[1] = GL_COLOR_ATTACHMENT1;
+		}
+
+		if (mDecalComponents[i]->HasNormal())
+		{
+			channels[2] = GL_COLOR_ATTACHMENT2;
+		}
+
+		if (mDecalComponents[i]->HasEmisive())
+		{
+			channels[3] = GL_COLOR_ATTACHMENT4;
+		}
+
+		glDrawBuffers(4, channels);
+
+		
+		glActiveTexture(GL_TEXTURE5);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetDiffuseId());
+
+		glActiveTexture(GL_TEXTURE6);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
+
+		glActiveTexture(GL_TEXTURE7);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
+
+		glActiveTexture(GL_TEXTURE8);
+		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetEmisiveId());
+
+		glUniform1i(11, mDecalComponents[i]->HasDiffuse());
+		glUniform1i(12, mDecalComponents[i]->HasSpecular());
+		glUniform1i(13, mDecalComponents[i]->HasNormal());
+		glUniform1i(14, mDecalComponents[i]->HasEmisive());
+
+		float4x4 inverseModel = mDecalComponents[i]->GetOwner()->GetWorldTransform();
+		inverseModel.InverseColOrthogonal();
+
+		glUniformMatrix4fv(16, 1, GL_TRUE, inverseModel.ptr());
+		
+
+		float4 diffuseColor = mDecalComponents[i]->GetDiffuseColor();
+		float4 emisiveColor = mDecalComponents[i]->GetEmisiveColor();
+
+		bool isSpriteSheet = mDecalComponents[i]->IsSpriteSheet();
+
+		int numRows;
+		int numColumns;
+
+		int currentRow;
+		int currentColumn;
+
+		mDecalComponents[i]->GetSpriteSheetSize(numRows, numColumns);
+		mDecalComponents[i]->GetSpriteSheetCurrentPosition(currentRow, currentColumn);
+
+		glUniform4f(45, diffuseColor.x, diffuseColor.y, diffuseColor.z, diffuseColor.w);
+		glUniform3f(46, emisiveColor.x, emisiveColor.y, emisiveColor.z);
+		glUniform1i(47, isSpriteSheet);
+		//glUniform2f(48, numRows, numColumns);
+		//glUniform2f(49, currentRow, currentColumn);
+		
+		float spriteSheetRowOffset;
+		float spriteSheetColumOffset;
+
+	
+		spriteSheetRowOffset = 1.0f - (1.0f / static_cast<float>(numRows)) * static_cast<float>(currentRow);
+		spriteSheetColumOffset = 1.0f - (1.0f / static_cast<float>(numColumns)) * static_cast<float>(currentColumn);
+		
+
+		float uOffset = 1.0f / (float)numColumns;
+		float vOffset = 1.0f / (float)numRows;
+		float uStart = (float)currentColumn * uOffset;
+		float vStart = (float)currentRow * vOffset;
+
+		//int nextColumn = currentColumn = (currentColumn + 1) % numColumns;
+		//int nextRow = currentRow;
+
+		//if (nextColumn == 0)
+		//{
+		//	nextRow = (currentRow + 1) % numRows;
+		//}
+		//float uNext = (float)nextColumn * uOffset;
+		//float vNext = (float)nextRow * vOffset;
+
+		//float blendFactor = mDecalComponents[i]->GetBlendFactor();
+
+		glUniform2f(48, uOffset, vOffset);
+		glUniform2f(49, uStart, vStart);
+		//glUniform1f(50, blendFactor);
+		//glUniform2f(51, uNext, vNext);
+
+		//float uEnd = uStart + (1.0 / (float)numColumns);
+		//float vEnd = vStart + (1.0 / (float)numRows);
+		//
+		//float uSum = uEnd - uStart;
+		//float vSum = vEnd - vStart;
+
+		glUniform1f(52, mDecalComponents[i]->GetFadeFactor());
+
+
+		glUniformMatrix4fv(1, 1, GL_TRUE, mDecalComponents[i]->GetOwner()->GetWorldTransform().ptr());
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+	}
+	glDepthMask(0xFF);
+	glEnable(GL_STENCIL_TEST);
+	glDisable(GL_BLEND);
+
+	glBindVertexArray(0);
+	glUseProgram(0);
+	glPopDebugGroup();
+
+	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
+	glDrawBuffers(1, att2);
 
 	//Lighting Pass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
 	glStencilMask(0x00);
 	glDisable(GL_DEPTH_TEST);
@@ -1059,7 +1319,7 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glActiveTexture(GL_TEXTURE5);
@@ -1076,48 +1336,50 @@ void ModuleOpenGL::Draw(const std::vector<const MeshRendererComponent*>& sceneMe
 	glDisable(GL_STENCIL_TEST);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(0xFF);
+	glPopDebugGroup();
 
-	//particles
+	//Particles
 	glActiveTexture(GL_TEXTURE0);
 	for (const ParticleSystemComponent* partSys : mParticleSystems)
 	{
 		partSys->Draw();
 	}
-	for (const Trail* trail : mTrails)
+	for (const TrailComponent* trail : mTrails)
 	{
 		trail->Draw();
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	//Highlight
-	mBatchManager.CleanUpCommands();
-	for (const GameObject* object : mHighlightedObjects)
-	{
-		for (const MeshRendererComponent* sMesh : sceneMeshes)
-		{
-			if (sMesh->GetOwner()->GetID() == object->GetID())
-			{
-				mBatchManager.AddCommand(sMesh);
-				break;
-			}
-		}
-	}
 
-	//Higlight pass
-	glClear(GL_STENCIL_BUFFER_BIT);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilMask(0xFF);
-	glUseProgram(mPassThroughProgramId);
-	mBatchManager.Draw();
-	
-	glDisable(GL_DEPTH_TEST);
-	glStencilMask(0x00);
-	glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
-	
-	glUseProgram(mHighLightProgramId);
-	mBatchManager.Draw();
+	//Highlight
+	//mBatchManager.CleanUpCommands();
+	//for (const GameObject* object : mHighlightedObjects)
+	//{
+	//	for (const MeshRendererComponent* sMesh : sceneMeshes)
+	//	{
+	//		if (sMesh->GetOwner()->GetID() == object->GetID())
+	//		{
+	//			mBatchManager.AddCommand(*sMesh);
+	//			break;
+	//		}
+	//	}
+	//}
+	//
+	////Higlight Pass
+	//glClear(GL_STENCIL_BUFFER_BIT);
+	//glEnable(GL_STENCIL_TEST);
+	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	//glStencilMask(0xFF);
+	//glUseProgram(mPassThroughProgramId);
+	//mBatchManager.Draw();
+	//
+	//glDisable(GL_DEPTH_TEST);
+	//glStencilMask(0x00);
+	//glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+	//
+	//glUseProgram(mHighLightProgramId);
+	//mBatchManager.Draw();
 	
 	glStencilMask(0xFF);
 	glDisable(GL_STENCIL_TEST);
@@ -1305,7 +1567,7 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 	}
 }
 
-void ModuleOpenGL::RemoveTrail(const Trail* trail)
+void ModuleOpenGL::RemoveTrail(const TrailComponent* trail)
 {
 	for (int i = 0; i < mTrails.size(); ++i)
 	{

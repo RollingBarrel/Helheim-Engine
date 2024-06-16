@@ -13,14 +13,17 @@ class ENGINE_API ScriptComponent : public Component
 	friend class ModuleEngineScriptManager;
 public:
 
-	ScriptComponent(GameObject* owner);
+	ScriptComponent() = delete;
+	explicit ScriptComponent(GameObject* owner);
 	ScriptComponent(const ScriptComponent& other, GameObject* owner);
 	~ScriptComponent();
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;	
 	void Reset() override;
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
+
 	void LoadScript(const char* scriptName);
 	const char* GetScriptName() const { return mName.c_str(); }
 	Script* GetScriptInstance() const { return mScript; }
@@ -28,6 +31,7 @@ public:
 	void Enable() override;
 	void Disable() override;
 	
+	ScriptComponent& operator=(const ScriptComponent& other) = delete;
 
 private:
 	ResourceScript* mResourceScript = nullptr;

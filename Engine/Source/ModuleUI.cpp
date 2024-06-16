@@ -76,26 +76,19 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 	if (gameObject->IsEnabled())
 	{
-		
-
-		for (Component* component : gameObject->GetComponents(ComponentType::IMAGE))
+		//TODO: Check this...
+		ImageComponent* image = reinterpret_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+		if (image && image->IsEnabled())
 		{
-			ImageComponent* image = (ImageComponent*)component;
-			if (image->IsEnabled())
-			{
-				image->Draw();
-			}
-		}
-
-		for (Component* component : gameObject->GetComponents(ComponentType::TEXT))
-		{
-			TextComponent* text = (TextComponent*)component;
-			if (text->IsEnabled())
-			{
-				text->Draw();
-			}
+			image->Draw();
 		}
 		
+		TextComponent* text = reinterpret_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
+		if (text && text->IsEnabled())
+		{
+			text->Draw();
+		}
+
 		for (GameObject* child : gameObject->GetChildren())
 		{
 			DrawWidget(child);

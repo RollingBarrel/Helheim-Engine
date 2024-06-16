@@ -28,8 +28,14 @@
     <Filter Include="Weapons\Range">
       <UniqueIdentifier>{a5234334-8063-4966-9fdf-1bdf4286b373}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Weapons\Range\Pistol">
-      <UniqueIdentifier>{26a052d1-42d1-4771-81c9-b465aab29ef1}</UniqueIdentifier>
+    <Filter Include="States">
+      <UniqueIdentifier>{dab926c2-b3d8-4b05-9554-248d057853e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\Move">
+      <UniqueIdentifier>{80e247c2-a634-48fe-b9f2-db894f956ba8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States\Attack">
+      <UniqueIdentifier>{30388697-f73b-4a9c-9e6d-8d5797552617}</UniqueIdentifier>
     </Filter>
     <Filter Include="Sound\Test">
       <UniqueIdentifier>{a76f27bd-e8d6-4a04-80b8-3f021cb5f28f}</UniqueIdentifier>
@@ -40,7 +46,6 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
-    <ClInclude Include="StateMachineTest.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h">
       <Filter>Weapons</Filter>
@@ -69,23 +74,63 @@
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="Level1AManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="MainMenuManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h">
       <Filter>Weapons\Range</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
-      <Filter>Weapons\Range\Pistol</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
+      <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="Grenade.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
+      <Filter>Weapons\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AimState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AttackState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\GrenadeState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ReloadState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SpecialState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SwitchState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\DashState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\IdleState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\MoveState.h">
+      <Filter>States\Move</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Bat.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
@@ -99,7 +144,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="TestScript.cpp" />
-    <ClCompile Include="StateMachineTest.cpp" />
     <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Weapon.cpp">
       <Filter>Weapons</Filter>
@@ -134,18 +178,58 @@
     <ClCompile Include="MainMenuManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="MeleeWeapon.cpp">
       <Filter>Weapons\Melee</Filter>
     </ClCompile>
     <ClCompile Include="RangeWeapon.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>States\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>States\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="DashState.cpp">
+      <Filter>States\Move</Filter>
+    </ClCompile>
+    <ClCompile Include="AimState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="GrenadeState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="SpecialState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Grenade.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="ReloadState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
     <ClCompile Include="Pistol.cpp">
-      <Filter>Weapons\Range\Pistol</Filter>
+      <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="HudController.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="HudController.cpp" />
-    <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="AudioManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>

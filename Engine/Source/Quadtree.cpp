@@ -175,7 +175,7 @@ void Quadtree::AddHierarchyObjects(const GameObject& node)
 		AddHierarchyObjects(*child);
 	}
 }
-
+/*
 void Quadtree::RayCast(const Ray& ray, std::map<float, Hit>& map) const
 {
 	if (!IsLeaf()) 
@@ -223,7 +223,7 @@ void Quadtree::RayCast(const Ray& ray, std::map<float, Hit>& map) const
 		}
 	}
 }
-
+*/
 void Quadtree::UpdateTree()
 {
 	CleanUp();

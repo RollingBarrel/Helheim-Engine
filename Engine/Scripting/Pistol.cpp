@@ -12,82 +12,77 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "HudController.h"
+#include "GameManager.h"
 
 #include <map>
+#include "Bat.h"
 
-CREATE(Pistol)
+Pistol::Pistol() : RangeWeapon()
 {
-    CLASS(owner);
-    //SEPARATOR("STATS");
-    MEMBER(MemberType::GAMEOBJECT, mShootPoint);
+    mCurrentAmmo = 16;
+    mMaxAmmo = 16;
 
-    SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
-
-    END_CREATE;
+    mDamage = 10.0f;
+    mAttackRate = 1.0f;
 }
 
-void Pistol::Start()
+Pistol::~Pistol()
 {
-    if (mHudControllerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
-        mHudController = static_cast<HudController*>(script->GetScriptInstance());
-    }
 }
 
 void Pistol::BasicAttack()
 {
     GameObject* bullet = nullptr;
-    if (mCurrentAmmo > 0) {
-        bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
+    if (mCurrentAmmo > 0) 
+    {
+       //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
     }
     else {
         mCurrentAmmo = mMaxAmmo;
     }
     
-    mHudController->SetAmmo(mCurrentAmmo);
+
+    //mPlayerController->PlayOneShot("Shot");
+    //mAnimationComponent->SendTrigger("tShooting", 0.2f);
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 
     if (bullet != nullptr)
     {
-        if (mShootPoint)
-        {
-            LOG("%f, %f, %f", mShootPoint->GetWorldPosition().x, mShootPoint->GetWorldPosition().y, mShootPoint->GetWorldPosition().z);
-            bullet->SetPosition(mShootPoint->GetWorldPosition());
+        /*bullet->SetPosition(mPlayerCharacter->GetPosition());
 
-            mShootPoint->SetEnabled(false);
-            mShootPoint->SetEnabled(true); // Reset particles
-        }
-        bullet->SetRotation(mGameObject->GetWorldRotation());
+        mShootPoint->SetEnabled(false);
+        mShootPoint->SetEnabled(true); // Reset particles
+        
+        bullet->SetRotation(mGameObject->GetWorldRotation());*/
     }
 
-    /*std::map<float, Hit> hits;
+    std::multiset<Hit> hits;
 
     Ray ray;
-    ray.pos = mGameObject->GetPosition();
+    ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
     ray.pos.y++;
-    ray.dir = mGameObject->GetFront();
+    ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    Physics::Raycast(ray, hits);
+    Physics::Raycast(hits, ray);
 
     if (!hits.empty())
     {
-        for (const std::pair<float, Hit>& hit : hits)
+        for (const Hit& hit : hits)
         {
-            if (hit.second.mGameObject->GetTag()->GetName() == "Enemy")
+            if (hit.mGameObject->GetTag() == "Enemy")
             {
-                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
+                LOG("Enemy %s has been hit at distance: %f", hits.begin()->mGameObject->GetName().c_str(), hits.begin()->mDistance);
 
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
                     enemy->TakeDamage(mDamage);
                 }
             }
         }
-    }*/
+    }
 }
 
 void Pistol::SpecialAttack()

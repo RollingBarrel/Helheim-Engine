@@ -1,4 +1,7 @@
 #pragma once
+
+//https://www.figma.com/design/J6S4FzW8Yn38GOiMe7XdYm/GAME_UI?node-id=625-249&t=mL60BsxKQdYvFkMC-0
+
 #include <Script.h>
 #include "Macros.h"
 
@@ -39,20 +42,33 @@ private:
 
     void OnWinButtonClick();
     void OnLoseButtonClick();
-    void OnYesButtonClick();
-    void OnNoButtonClick();
 
-    void OnYesButtonHoverOn();
-    void OnNoButtonHoverOn();
-    void OnYesButtonHoverOff();
-    void OnNoButtonHoverOff();
+    void OnContinueBtnClick();
+    void OnContinueBtnHoverOn();
+    void OnContinueBtnHoverOff();
 
+    void OnOptionsBtnClick();
+    void OnOptionsBtnHoverOn();
+    void OnOptionsBtnHoverOff();
+
+    void OnMainMenuBtnClick();
+    void OnMainMenuBtnHoverOn();
+    void OnMainMenuBtnHoverOff();
+
+
+    // Pause Menu
     GameObject* mPauseScreen = nullptr;
+    GameObject* mContinueBtnGO = nullptr;
+    GameObject* mOptionsBtnGO = nullptr;
+    GameObject* mMainMenuBtnGO = nullptr;
+    ButtonComponent* mContinueBtn = nullptr;
+    ButtonComponent* mOptionsBtn = nullptr;
+    ButtonComponent* mMainMenuBtn = nullptr;
+    GameObject* mOptionsPanel = nullptr;
+
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;
     GameObject* mLoadingScreen = nullptr;
-    GameObject* mYesGO = nullptr;
-    GameObject* mNoGO = nullptr;
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
     GameObject* mAmmoGO = nullptr;
@@ -60,13 +76,10 @@ private:
     GameObject* mSecondWeaponMeleeGO = nullptr;
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mSecondWeaponRangeGO = nullptr;
-    GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
-    ButtonComponent* mYesBtn = nullptr;
-    ButtonComponent* mNoBtn = nullptr;
     SliderComponent* mHealthSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
@@ -79,4 +92,7 @@ private:
     float mTimePassed = 0.0f;
 
     GameObject* mMenuScript = nullptr;
+
+    float mGrenadeCooldown = 0.0f;
+    float mGrenadeTimer = 0.0f;
 };

@@ -2,29 +2,24 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
 
-Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
-
-void Component::Save(Archive& archive) const
+Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int())
 {
-	archive.AddInt("ID", GetID());
-	archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddBool("isEnabled", IsEnabled());
+	mIsEnabled = mOwner->IsActive();
 }
 
-void Component::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void Component::Save(JsonObject& obj) const
 {
-	if (data.HasMember("ID") && data["ID"].IsInt())
-	{
-		mID = data["ID"].GetInt();
-	}
-	if (data.HasMember("ComponentType") && data["ComponentType"].IsInt())
-	{
-		mType = static_cast<ComponentType>(data["ComponentType"].GetInt());
-	}
-	if (data.HasMember("isEnabled") && data["isEnabled"].IsBool())
-	{
-		mIsEnabled = data["isEnabled"].GetBool();
-	}
+	//obj.AddInt("ID", GetID());
+	obj.AddInt("ComponentType", static_cast<int>(GetType()));
+	obj.AddBool("IsEnabled", IsEnabled());
+}
+
+void Component::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
+{
+	if(data.HasMember("ComponentType"))
+		mType = (ComponentType) data.GetInt("ComponentType");
+	if(data.HasMember("IsEnabled"))
+		mIsEnabled = data.GetBool("IsEnabled");
 }
 
 const char* Component::GetNameFromType(ComponentType type)
@@ -37,8 +32,6 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Point Light";
 		case ComponentType::SPOTLIGHT:
 			return "Spot Light";
-		case ComponentType::TEST:
-			return "Test";
 		case ComponentType::CAMERA:
 			return "Camera";
 		case ComponentType::SCRIPT:
@@ -71,7 +64,20 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Box Collider";
 		case ComponentType::TRAIL:
 			return "Trail";
+		case ComponentType::DECAL:
+			return "Decal Projector";
 		default:
 			return "None";
 		}
+}
+
+void Component::SetEnable(bool enable)
+{
+	if (enable == mIsEnabled)
+		return;
+	mIsEnabled = enable;
+	if (mIsEnabled)
+		Enable();
+	else
+		Disable();
 }

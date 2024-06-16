@@ -24,26 +24,16 @@ Component* NavMeshObstacleComponent::Clone(GameObject* owner) const
 	return nullptr;
 }
 
-void NavMeshObstacleComponent::Save(Archive& archive) const
+void NavMeshObstacleComponent::Save(JsonObject& obj) const
 {
-	archive.AddFloat("Radius", mRadius);
-	archive.AddFloat("Height", mHeight);
+	obj.AddFloat("Radius", mRadius);
+	obj.AddFloat("Height", mHeight);
 }
 
-void NavMeshObstacleComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void NavMeshObstacleComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	float radius{ 0.0f };
-	float height{ 0.0f };
-	if (data.HasMember("Radius") && data["Radius"].IsFloat()) 
-	{
-		radius = data["Radius"].GetFloat();
-	}
+	Component::Load(data, uidPointerMap);
 
-	if (data.HasMember("Height") && data["Height"].IsFloat()) 
-	{
-		height = data["Height"].GetFloat();
-	}
-
-	mRadius = radius;
-	mHeight = height;
+	mRadius = data.GetFloat("Radius");
+	mHeight = data.GetFloat("Height");
 }

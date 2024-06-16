@@ -12,7 +12,7 @@
 CREATE(GameManager)
 {
     CLASS(owner);
-    SEPARATOR("Player");
+    MEMBER(MemberType::BOOL, mController);
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
@@ -59,14 +59,40 @@ void GameManager::Start()
 
 void GameManager::Update()
 {
+    //App->GetInput()->SetGameControllerRumble(65535, 0, 10);
+
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        mHudController->SetScreen(SCREEN::PAUSE, !mPaused);
+        SetPaused(!mPaused);
     }
+}
+
+void GameManager::SetPaused(bool value)
+{
+    mPaused = value;
+    mHudController->SetScreen(SCREEN::PAUSE, mPaused);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
 {
-    mHudController->mHealthGradualSlider = nullptr;
+    mHudController->mHealthGradualSlider = nullptr; // TODO: needed?
     App->GetScene()->Load(LevelName);
+}
+
+void GameManager::Victory()
+{
+    mPaused = true;
+
+    mHudController->SetScreen(SCREEN::WIN, true);
+
+    // Loading activated from HUD controller on Btn Click.
+}
+
+void GameManager::GameOver()
+{
+    mPaused = true;
+
+    mHudController->SetScreen(SCREEN::LOSE, true);
+
+    // Loading activated from HUD controller on Btn Click.
 }

@@ -5,83 +5,94 @@
 #undef min
 #define NOMINMAX
 #include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/stringbuffer.h"
-#include <vector>
-#include "Math/Quat.h"
-#include "Math/float4x4.h"
-#include "Math/float2.h"
-#include "Math/float3.h"
-#include "Math/float4.h"
+#include "rapidjson/allocators.h"
+#include <string>
+#include "Globals.h"
+
+class JsonObject;
+class ENGINE_API JsonArray {
+public:
+    JsonArray() = delete;
+    JsonArray(const rapidjson::Value::Array& arr, rapidjson::MemoryPoolAllocator<>& allocator);
+    JsonArray(const JsonArray& other);
+    ~JsonArray() {}
+    inline void Reserve(unsigned int size);
+    inline unsigned int Size() const;
+    inline unsigned int Capacity() const;
+
+    inline void PushBackBool(bool value);
+    inline void PushBackInt(int value);
+    inline void PushBackFloat(float value);
+    inline void PushBackString(const char* value);
+    inline JsonObject PushBackNewObject();
+    inline JsonArray PushBackNewArray();
+    inline void PopBack();
+
+    inline bool GetBool(unsigned int idx) const;
+    inline int GetInt(unsigned int idx) const;
+    inline float GetFloat(unsigned int idx) const;
+    inline std::string GetString(unsigned int idx) const;
+    inline JsonObject GetJsonObject(unsigned int idx);
+    inline JsonArray GetJsonArray(unsigned int idx);
+
+private:
+    rapidjson::Value::Array mArray;
+    rapidjson::MemoryPoolAllocator<>& mAllocator;
+
+    friend class JsonObject;
+};
+
+class ENGINE_API JsonObject {
+public:
+    JsonObject() = delete;
+    JsonObject(const rapidjson::Value::Object& obj, rapidjson::MemoryPoolAllocator<>& allocator);
+    JsonObject(const JsonObject& other);
+    ~JsonObject() {}
+
+    inline void AddBool(const char* key, bool value);
+    inline void AddInt(const char* key, int value);
+    void AddInts(const char* key, const int* array, unsigned int numInts);
+    inline void AddFloat(const char* key, float value);
+    void AddFloats(const char* key, const float* floats, unsigned int numFloats);
+    inline void AddString(const char* key, const char* value);
+    inline JsonObject AddNewJsonObject(const char* key);
+    inline JsonArray AddNewJsonArray(const char* key);
+
+    inline bool GetBool(const char* key) const;
+    inline int GetInt(const char* key) const;
+    unsigned int GetInts(const char* key, int* fillInts) const;
+    inline float GetFloat(const char* key) const;
+    unsigned int GetFloats(const char* key, float* fillFloats) const;
+    inline std::string GetString(const char* key) const;
+    inline const JsonObject GetJsonObject(const char* key) const;
+    inline const JsonArray GetJsonArray(const char* key) const;
+    bool HasMember(const char* key) const;
+
+private:
+    rapidjson::Value::Object mObject;
+    rapidjson::MemoryPoolAllocator<>& mAllocator;
+
+    friend class JsonArray;
+};
 
 class ENGINE_API Archive
 {
 public:
     Archive();
+    Archive(const char* json);
     ~Archive();
+    Archive(const Archive& other);
+    Archive(Archive&& other) noexcept;
 
-    // Copy constructor
-    Archive(const Archive& other) : mDocument(std::make_unique<rapidjson::Document>()) {
-        mDocument->CopyFrom(*other.mDocument, mDocument->GetAllocator());
-    }
+    Archive& operator=(const Archive& other);
+    Archive& operator=(Archive&& other) noexcept;
 
-    // Move constructor
-    Archive(Archive&& other) noexcept : mDocument(std::move(other.mDocument)) {
-        other.mDocument = nullptr;
-    }
-
-    // Copy assignment operator
-    Archive& operator=(const Archive& other) {
-        if (this != &other) {
-            mDocument = std::make_unique<rapidjson::Document>();
-            mDocument->CopyFrom(*other.mDocument, mDocument->GetAllocator());
-        }
-        return *this;
-    }
-
-    // Move assignment operator
-    Archive& operator=(Archive&& other) noexcept {
-        if (this != &other) {
-            mDocument = std::move(other.mDocument);
-            other.mDocument = nullptr;
-        }
-        return *this;
-    }
-
-    void AddInt(const char* key, int value);
-    void AddString(const char* key, const char* value);
-    void AddFloat(const char* key, float value);
-    void AddBool(const char* key, bool value);
-    void AddIntArray(const char* key, const std::vector<unsigned int>& array);
-    void AddFloat2(const char* key, const float2& vector);
-    void AddFloat3(const char* key, const float3& vector);
-    void AddFloat4(const char* key, const float vector[4]);
-    void AddFloat4x4(const char* key, const float4x4& matrix);
-    void AddQuat(const char* key, const Quat& quat);
-    void AddObject(const char* key, const Archive& value);
-    void AddObjectArray(const char* key, const std::vector<Archive>& array);
-    std::vector<Archive> GetObjectArray(const char* key) const;
-
-    int GetInt(const char* key) const;
-    std::string GetString(const char* key) const;
-    float GetFloat(const char* key) const;
-    bool GetBool(const char* key) const;
-    std::vector<Archive> GetArray(const char* key) const;
-    float2 GetFloat2(const char* key) const;
-    float3 GetFloat3(const char* key) const;
-    float4 GetFloat4(const char* key) const;
-    float4x4 GetFloat4x4(const char* key) const;
-    Quat GetQuat(const char* key) const;
-    Archive GetObject(const char* key) const;
-
-    void CopyFrom(const rapidjson::Value& value);
-    void CopyFrom(const Archive& other);
+    JsonObject GetRootObject();
 
     std::string Serialize() const;
 
 private:
-    std::unique_ptr<rapidjson::Document> mDocument;
+    rapidjson::Document mDocument;
 };
 
 #endif // ARCHIVE_H
