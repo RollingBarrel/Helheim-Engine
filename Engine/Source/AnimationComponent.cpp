@@ -76,11 +76,6 @@ void AnimationComponent::Update()
 	if (mDefaultObjects.size() == 0)
 	{
 		LoadGameObjects(mOwner);
-		if (!mHasSpine)
-		{
-			delete mSpineController;
-			delete mSpineStateMachine;
-		}
 	}
 	if (mIsPlaying)
 	{
