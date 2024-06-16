@@ -57,7 +57,7 @@ void MaskComponent::ApplyMaskToChildren()
         ImageComponent* childImage = static_cast<ImageComponent*>(child->GetComponent(ComponentType::IMAGE));
         if (childImage && childImage->GetIsMaskable())
         {
-            childImage->ApplyMask(mMask);
+            //childImage->ApplyMask(mMask);
         }
     }
 }

@@ -21,6 +21,7 @@
 #include "Transform2DComponent.h"
 #include "CameraComponent.h"
 #include "ButtonComponent.h"
+#include "MaskComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -156,7 +157,6 @@ void ImageComponent::Draw()
 				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
 				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
-
 			}
 			glEnable(GL_CULL_FACE);
 		}
@@ -172,13 +172,28 @@ void ImageComponent::Draw()
 
 		glBindVertexArray(mQuadVAO);
 
-
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
 		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mImageToDraw->GetOpenGLId());
+		glUniform1i(glGetUniformLocation(UIImageProgram, "Texture"), 0);
+
+		if (mIsMaskable && mMask != nullptr)
+		{
+			float2 textureOffset = CalculateTextureOffset();
+			glActiveTexture(GL_TEXTURE1);
+			glBindTexture(GL_TEXTURE_2D, mMask->GetOpenGLId());
+			GLint textureOffsetLocation = glGetUniformLocation(UIImageProgram, "textureOffset");
+			glUniform2f(textureOffsetLocation, textureOffset.x, textureOffset.y);
+			glUniform1i(glGetUniformLocation(UIImageProgram, "maskTexture"), 1);
+			glUniform1i(glGetUniformLocation(UIImageProgram, "useMask"), 1);
+		}
+		else
+		{
+			glUniform1i(glGetUniformLocation(UIImageProgram, "useMask"), 0); // No mask used
+		}
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
@@ -368,46 +383,13 @@ void ImageComponent::Update()
 	}
 }
 
-void ImageComponent::ApplyMask(ImageComponent* mask)
-{
-	LOG("Name: %s", GetOwner()->GetName().c_str());
-	LOG("Screen Position: %f, %f, %f", mTransform->GetPosition().x, mTransform->GetPosition().y, mTransform->GetPosition().z); // TODO: Not the screen position
-
-	if (mask == nullptr) return;
-	if (mMaskedPixels.empty() || !mIsMaskable) return;
-
-	// Get the pixel data of the mask
-	std::vector<unsigned char> maskPixels = mask->GetPixelData(mask->mImage);
-
-	for (int y = 0; y < mMaskableImage->GetHeight(); ++y)
-	{
-		for (int x = 0; x < mMaskableImage->GetWidth(); ++x)
-		{
-			int index = (y * mMaskableImage->GetWidth() + x) * 4; // 4 for RGBA
-			if (mask->Contains(x, y))
-			{
-				// Set the alpha of the pixel to the alpha of the corresponding pixel in the mask
-				mMaskedPixels[index + 3] = maskPixels[index + 3];
-			}
-			else
-			{
-				mMaskedPixels[index + 3] = 0;
-			}
-		}
-	}
-
-	// Update the texture with the modified pixel data
-	glBindTexture(GL_TEXTURE_2D, mMaskableImage->GetOpenGLId());
-	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mMaskableImage->GetWidth(), mMaskableImage->GetHeight(), GL_RGBA, GL_UNSIGNED_BYTE, mMaskedPixels.data());
-	glBindTexture(GL_TEXTURE_2D, 0);
-}
-
 void ImageComponent::UpdateMaskedImageStatus()
 {
 	if (mIsMaskable && mMaskableImage == nullptr)
 	{
 		// Create a copy of mImage
 		mMaskableImage = new ResourceTexture(*mImage);
+		mMask = static_cast<MaskComponent*>(GetOwner()->GetParent()->GetComponent(ComponentType::MASK))->GetMask()->GetImage();
 	}
 }
 
@@ -425,16 +407,9 @@ std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture
 	return pixels;
 }
 
-bool ImageComponent::Contains(int x, int y)
+float2 ImageComponent::CalculateTextureOffset()
 {
-	if (mImage && mTransform)
-	{
-		float3 screenPos = mTransform->GetPosition(); // TODO: Not the screen position
-		int adjustedX = x - screenPos.x;
-		int adjustedY = y - screenPos.y;
-		return adjustedX >= 0 && adjustedX < mImage->GetWidth() && adjustedY >= 0 && adjustedY < mImage->GetHeight();
-	}
-	return false;
+	return mTransform->GetPosition().xy();
 }
 
 bool ImageComponent::CleanUp()

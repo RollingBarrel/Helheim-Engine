@@ -28,7 +28,6 @@ public:
     void FillSpriteSheetVBO();
     void CreateVAO();
     void ResizeByRatio();
-    void ApplyMask(ImageComponent* mask);
     void UpdateMaskedImageStatus();
 
     unsigned int GetResourceId() const { return mResourceId; }
@@ -67,11 +66,12 @@ public:
 
 private:
     std::vector<unsigned char> GetPixelData(ResourceTexture* texture);
-    bool Contains(int x, int y);
+    float2 CalculateTextureOffset();
 
     ResourceTexture* mImage = nullptr;
     ResourceTexture* mMaskableImage = nullptr;
     ResourceTexture* mImageToDraw = nullptr;
+    ResourceTexture* mMask = nullptr;
     unsigned int mResourceId = 148626881; // Default white texture
 
     //TODO: Handle filename when setting the image
