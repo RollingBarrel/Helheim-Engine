@@ -7,6 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
+#include "GameManager.h"
 
 CREATE(EnemyRobot){
     CLASS(owner);
@@ -48,7 +49,12 @@ void EnemyRobot::Start()
 
 void EnemyRobot::Update()
 {
-    if (!mBeAttracted) {
+    if (GameManager::GetInstance()->IsPaused()) return;
+
+    Enemy::Update();
+
+    if (!mBeAttracted) 
+    {
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
@@ -66,7 +72,7 @@ void EnemyRobot::Update()
         }
     }
 
-    Enemy::Update();
+    mBeAttracted = false;
 }
 
 void EnemyRobot::Idle()
@@ -141,7 +147,8 @@ void EnemyRobot::Attack()
         mCurrentState = EnemyState::CHASE;
         mTimerDisengage = 0.0f;
     }
-    else if (!playerInRange) {
+    else if (!playerInRange) 
+    {
         mTimerDisengage += App->GetDt();
     }
 
@@ -175,30 +182,31 @@ void EnemyRobot::MeleeAttack()
 
         mTimerAttack = 0.0f;
     }
-    else {
+    else 
+    {
         mTimerAttack += App->GetDt();
     }
 }
 
 void EnemyRobot::RangeAttack() 
 {
-    std::map<float , Hit> hits;
+    std::multiset<Hit> hits;
     Ray ray;
     ray.pos = mGameObject->GetPosition();
     ray.pos.y++;
     ray.dir = mGameObject->GetFront();
     
     float distance = 100.0f;
-    Physics::Raycast(ray, hits);
+    Physics::Raycast(hits, ray);
     
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
         //recorrer todos los hits y hacer da�o a los objetos que tengan tag = target
-        for (const std::pair<float, Hit>& hit : hits) 
+        for (const Hit& hit : hits) 
         {
-            if (hit.second.mGameObject->GetTag() == "Player") 
+            if (hit.mGameObject->GetTag() == "Player") 
             {
-                PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
                 {
                     playerScript->TakeDamage(mRangeDamage);

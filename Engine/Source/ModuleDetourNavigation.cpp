@@ -29,6 +29,7 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 
 bool ModuleDetourNavigation::Init()
 {
+	LoadResourceData();
 	return true;
 }
 

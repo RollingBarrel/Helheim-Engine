@@ -1,6 +1,4 @@
 #include "ModuleScene.h"
-#pragma once
-#include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
 #include "Application.h"
@@ -205,9 +203,10 @@ void ModuleScene::Save(const char* sceneName) const
 void ModuleScene::Load(const char* sceneName)
 {
 	//Close Prefab editor before loading a new scene
+	
+
 	if (mBackgroundScene != nullptr)
 	{
-		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
 		mRoot = mBackgroundScene;
@@ -227,11 +226,10 @@ void ModuleScene::Load(const char* sceneName)
 	{
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
-		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
+		mGameObjectsByTags.clear();
 		mRoot = new GameObject("SampleScene", nullptr);
-
 		Archive doc(fileBuffer);
 		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
@@ -257,6 +255,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		mRoot->RecalculateMatrices();
 		mQuadtreeRoot->UpdateTree();
+		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
@@ -502,6 +501,9 @@ void ModuleScene::NewScene()
 {
 	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
+	mGameObjectsByTags.clear();
+	mSceneGO.clear();
+
 	delete mRoot;
 	mRoot = new GameObject("Untlitled", nullptr);
 }

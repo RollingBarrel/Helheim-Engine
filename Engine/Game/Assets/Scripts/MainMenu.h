@@ -10,7 +10,9 @@ enum MENU_TYPE {
     OPTIONS,
     CREDITS,
     LOADING,
-    SPLASH
+    SPLASH,
+    ENGINE,
+    STUDIO
 };
 
 GENERATE_BODY(MainMenu);
@@ -49,16 +51,16 @@ private:
     void OnQuitButtonHover();
     void OnOptionsButtonHover();
     void OnCreditsButtonHover();
-    void OnNewButtonHover();
+    void OnPlayButtonHover();
     void OnBackCreditsButtonHover();
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
-    void OnNewButtonHoverOff();
+    void OnPlayButtonHoverOff();
     void OnBackCreditsButtonHoverOff();
 
-    bool mMenuActive = true;
-    bool mPauseMenu = false;
+    //bool mMenuActive = true;
+    //bool mPauseMenu = false;
 
     bool mLoadingActive = false;
     bool mOptionsActive = false;
@@ -80,33 +82,38 @@ private:
     int mOption = 0;  
     bool mLoadlevel = false;
 
+    // Screens
+    GameObject* mSplashScreen = nullptr;
+    ButtonComponent* mSplashButton = nullptr;
+    GameObject* mStudioScreen = nullptr;
+    ButtonComponent* mStudioButton = nullptr;
+    GameObject* mEngineScreen = nullptr;
+    ButtonComponent* mEngineButton = nullptr;
+    GameObject* mLoadingScreen = nullptr;
+
     GameObject* mMainMenu = nullptr;
     GameObject* mOptionsMenu = nullptr;
     GameObject* mCreditsMenu = nullptr;
-    GameObject* mLoadingMenu = nullptr;
-    GameObject* mSplashScreen = nullptr;
 
-    GameObject* mContainerGO = nullptr;
-    GameObject* mSplashGO = nullptr;
-    GameObject* mNewGO = nullptr;
+    GameObject* mPlayGO = nullptr;
+    ButtonComponent* mPlayButton = nullptr;
     GameObject* mOptionsGO = nullptr;
-    GameObject* mCreditsGO = nullptr;
-    GameObject* mQuitGO = nullptr;
-    GameObject* mBackCreditGO = nullptr;
-    GameObject* mOptionsContainerGO = nullptr;
-
-    ButtonComponent* mSplashButton = nullptr;
-    ButtonComponent* mNewButton = nullptr;
     ButtonComponent* mOptionsButton = nullptr;
+    GameObject* mCreditsGO = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+    GameObject* mQuitGO = nullptr;
     ButtonComponent* mQuitButton = nullptr;
+    GameObject* mBackCreditGO = nullptr;
     ButtonComponent* mBackCreditButton = nullptr;
 
+    //GameObject* mContainerGO = nullptr;
+    //GameObject* mOptionsContainerGO = nullptr;
+
     // Scrolling related variables
-    float3 mStartPosition;
-    float3 mEndPosition;
-    float mScrollDuration;
-    float mElapsedTime;
-    bool mIsScrolling;
+    //float3 mStartPosition;
+    //float3 mEndPosition;
+    //float mScrollDuration;
+    //float mElapsedTime;
+    //bool mIsScrolling;
 };
 

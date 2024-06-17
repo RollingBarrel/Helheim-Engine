@@ -316,6 +316,16 @@ void AnimationComponent::StartTransition(float transitionDuration)
 	mController->SetTransitionDuration(transitionDuration);
 }
 
+void AnimationComponent::SetSpineSMUID(unsigned int uid)
+{
+	mSpineStateMachine->SetUID(uid);
+}
+
+void AnimationComponent::SetSMUID(unsigned int uid)
+{
+	mStateMachine->SetUID(uid);
+}
+
 
 
 void AnimationComponent::LoadGameObjects(GameObject* current)

@@ -34,9 +34,9 @@ void GrenadeState::Update()
 
 void GrenadeState::Enter()
 {
-    mPlayerController->SetSpineAnimation("tGranade", 0.1f);
+    //mPlayerController->SetSpineAnimation("tGranade", 0.1f);
 
-    GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
+   //GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
     mPlayerController->SetGrenadeVisuals(true);
 }
 
@@ -44,6 +44,7 @@ void GrenadeState::Exit()
 {
     mPlayerController->SetGrenadeVisuals(false);
     mPlayerController->ThrowGrenade();
+    GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
 }
 
 StateType GrenadeState::GetType()
