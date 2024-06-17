@@ -938,10 +938,7 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 
 void ModuleOpenGL::Draw()
 {
-	//TODO: sestan fent els skins cada frame
-	mBatchManager.Update();
-
-	//Shadows
+	//Select spot Shadow casters
 	std::map<float, const SpotLightComponent*> orderedLights;
 	std::vector<const SpotLightComponent*> chosenLights;
 	
@@ -966,7 +963,12 @@ void ModuleOpenGL::Draw()
 	
 		chosenLights.push_back(it->second);
 	}
-	//Shadows
+
+	//TODO: sestan fent els skins cada frame
+	mBatchManager.Update();
+	//START THE DRAW
+	
+	//Draw Shadowmaps
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);

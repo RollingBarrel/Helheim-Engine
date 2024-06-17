@@ -46,9 +46,9 @@ void main()
 		for(uint i = 0; i<6; ++i)
 		{
 			uint outPoint = 0;
+			Plane currPlane = fPlanes[i];
 			for(uint k = 0; k<8; ++k)
 			{
-				Plane currPlane = fPlanes[i];
 				 if((dot(currPlane.normD.xyz, obb.points[k]) - currPlane.normD.w) >= 0.0)
 					++outPoint;
 			}
