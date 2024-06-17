@@ -203,7 +203,7 @@ void ModuleScene::Save(const char* sceneName) const
 void ModuleScene::Load(const char* sceneName)
 {
 	//Close Prefab editor before loading a new scene
-	
+	//sceneName = "new";
 
 	if (mBackgroundScene != nullptr)
 	{

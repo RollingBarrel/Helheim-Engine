@@ -180,13 +180,25 @@ void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, 
 	}
 }
 
-void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription, const int id)
+void ModuleAudio::Stop(const FMOD::Studio::EventDescription* eventDescription, const int id)
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 
 	if (eventInstance != nullptr)
 	{
 		eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
+	}
+	else {
+		LOG("Cannot release event");
+	}
+}
+
+void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription, const int id)
+{
+	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
+
+	if (eventInstance != nullptr)
+	{
 		eventInstance->release();
 	}
 	else {

@@ -45,7 +45,6 @@
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
-#include "Trail.h"
 #include "AudioUnit.h"
 #include "TrailComponent.h"
 
