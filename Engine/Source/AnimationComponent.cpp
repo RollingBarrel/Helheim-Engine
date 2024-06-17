@@ -76,11 +76,6 @@ void AnimationComponent::Update()
 	if (mDefaultObjects.size() == 0)
 	{
 		LoadGameObjects(mOwner);
-		if (!mHasSpine)
-		{
-			delete mSpineController;
-			delete mSpineStateMachine;
-		}
 	}
 	if (mIsPlaying)
 	{
@@ -211,7 +206,6 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 			}
 			if (mController)
 			{
-				mController->SetNextAnimation(tmpAnimation);
 				float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
 				float new_clip_end = mStateMachine->GetStateEndTime(stateIndex);
 				mController->SetClipStartTime(new_clip_start);
@@ -284,7 +278,6 @@ void AnimationComponent::ChangeSpineState(std::string stateName, float transitio
 			assert(tmpAnimation);
 			if (mSpineController)
 			{
-				mSpineController->SetNextAnimation(tmpAnimation);
 				float new_clip_start = mSpineStateMachine->GetStateStartTime(stateIndex);
 				float new_clip_end = mSpineStateMachine->GetStateEndTime(stateIndex);
 				mSpineController->SetClipStartTime(new_clip_start);

@@ -33,10 +33,6 @@ AnimationController::~AnimationController()
 	{
 		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
 	}
-	if (mNextAnimation)
-	{
-		App->GetResource()->ReleaseResource(mNextAnimation->GetUID());
-	}
 }
 
 void AnimationController::Update()
@@ -97,9 +93,6 @@ void AnimationController::EndBlending()
 	mCurrentTime = mClipStartTime;
 	mCurrentTransitionTime = 0.0f;
 
-	//Change the animations once the transition is done
-	mCurrentAnimation = mNextAnimation;
-	mNextAnimation = nullptr;
 }
 
 void AnimationController::GetTransform(GameObject* model)
@@ -173,14 +166,12 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 	{
 		std::string name = model->GetName();
 		ResourceAnimation::AnimationChannel* newChannel = mCurrentAnimation->GetChannel(name);
-		ResourceAnimation::AnimationChannel* newNextChannel = mNextAnimation->GetChannel(name);
 
-		if (newChannel != nullptr && newNextChannel != nullptr)
+		if (newChannel != nullptr)
 		{
 
 			ResourceAnimation::AnimationChannel* channel = mCurrentAnimation->GetChannels().find(model->GetName())->second;
-			ResourceAnimation::AnimationChannel* nextChannel = mNextAnimation->GetChannels().find(model->GetName())->second;
-			if (channel == nullptr || nextChannel == nullptr)
+			if (channel == nullptr)
 			{
 				return;
 			}
@@ -206,7 +197,7 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), nextChannel->positions[newClipIndex], weight));
+				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
 			}
 			if (channel->hasRotation)
 			{
@@ -224,7 +215,7 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), nextChannel->rotations[newClipIndex], weight));
+				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
 			//else if (name == "scale") {
 			//}
