@@ -425,19 +425,12 @@ void ModuleOpenGL::WindowResized(unsigned width, unsigned height)
 	//SetOpenGlCameraUniforms();
 }
 
-void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height = 0)
+void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int height)
 {
-	static unsigned sWidth = 1;
-	static unsigned sHeight = 1;
-	if (width == 0 && height == 0)
-	{
-		width = sWidth;
-		height = sHeight;
-	}
-	sWidth = width;
-	sHeight = height;
+	assert(width && height);
+	mSceneWidth = width;
+	mSceneHeight = height;
 
-	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glViewport(0, 0, width, height);
 	App->GetCamera()->SetAspectRatio((float)width / (float)height);
 	SetOpenGlCameraUniforms();
@@ -446,7 +439,6 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned width = 0, unsigned height =
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	ResizeGBuffer(width, height);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 }
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
@@ -515,7 +507,6 @@ static unsigned int LoadCubeMap()
 
 void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 {
-	glViewport(0, 0, width, height);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
@@ -887,7 +878,8 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		glUseProgram(mPbrLightingPassProgramId);
 		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), numMipMaps);
 		glUseProgram(0);
-		SceneFramebufferResized();
+		glViewport(0, 0, mSceneWidth, mSceneHeight);
+		//SceneFramebufferResized(mSceneWidth, mSceneHeight);
 	}
 
 }
@@ -946,109 +938,62 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 
 void ModuleOpenGL::Draw()
 {
-	//NOTE: Before the first draw call we need to add all the commands of the frame
-	//scene
-	//for (const MeshRendererComponent* mesh : sceneMeshes)
-	//{
-	//	assert(mesh);
-	//	mBatchManager.AddCommand(*mesh);
-	//}
-	//
-	////Shadows
-	//std::map<float,const SpotLightComponent*> orderedLights;
-	//std::vector<const SpotLightComponent*> chosenLights;
-	//
-	//for (const SpotLightComponent* spotLight : mSpotLights)
-	//{
-	//	if (spotLight->CanCastShadow())
-	//	{
-	//		float distance = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetPosition().Distance(spotLight->GetOwner()->GetPosition());
-	//		orderedLights.insert(std::pair<float, const SpotLightComponent*>(distance, spotLight));
-	//	}
-	//	const_cast<SpotLightComponent*>(spotLight)->SetShadowIndex(-1);
-	//}
-	//
-	//std::vector<const MeshRendererComponent*> meshInFrustum;
-	//
-	//int count = 0;
-	//for (std::map<float, const SpotLightComponent*>::iterator it = orderedLights.begin(); it != orderedLights.end(); ++it)
-	//{	
-	//	if (count == NUM_SHADOW_MAPS)
-	//	{
-	//		break;
-	//	}
-	//	count++;
-	//
-	//	chosenLights.push_back(it->second);
-	//	const Frustum& frustum = it->second->GetFrustum(); //->GetFrustum();
-	//	meshInFrustum.clear();
-	//	App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
-	//	for (const MeshRendererComponent* mesh : meshInFrustum)
-	//	{
-	//		assert(mesh);
-	//		mBatchManager.AddCommand(*mesh);
-	//	}	
-	//}
-	//
-	//meshInFrustum.clear();
-	//mBatchManager.CleanUpCommands();
-	//
-	////Shadows
-	//for (unsigned int i = 0; i < chosenLights.size(); ++i)
-	//{
-	//	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
-	//	glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
-	//	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
-	//	mBatchManager.CleanUpCommands();
-	//
-	//
-	//	const Frustum& frustum = chosenLights[i]->GetFrustum();
-	//	meshInFrustum.clear();
-	//	App->GetScene()->GetQuadtreeRoot()->GetRenderComponentsInFrustum(frustum, meshInFrustum);
-	//
-	//	for (const MeshRendererComponent* mesh : meshInFrustum)
-	//	{
-	//		assert(mesh);
-	//		mBatchManager.AddCommand(*mesh);
-	//	}
-	//
-	//	
-	//	glClear(GL_DEPTH_BUFFER_BIT);
-	//	glUseProgram(mDepthPassProgramId);
-	//	glViewport(0, 0, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE);
-	//	mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
-	//	mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-	//
-	//	const_cast<SpotLightComponent*>(chosenLights[i])->SetShadowIndex(i);
-	//	Shadow shadow;
-	//	shadow.shadowMapHandle = mShadowMapsHandle[i];
-	//	shadow.viewProjMatrix = frustum.ViewProjMatrix().Transposed();
-	//	shadow.bias = chosenLights[i]->GetBias();
-	//
-	//	mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
-	//
-	//	mBatchManager.Draw();
-	//	
-	//	
-	//}
-	//
-	//glBindTexture(GL_TEXTURE_2D, 0);
-	//glUseProgram(0);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//
-	//SceneFramebufferResized();
-	//BindSceneFramebuffer();
-	//
-	//
-	//
-	//mBatchManager.CleanUpCommands();
-	//for (const MeshRendererComponent* mesh : sceneMeshes)
-	//{
-	//	mBatchManager.AddCommand(*mesh);
-	//}
+	//Shadows
+	std::map<float, const SpotLightComponent*> orderedLights;
+	std::vector<const SpotLightComponent*> chosenLights;
+	
+	for (const SpotLightComponent* spotLight : mSpotLights)
+	{
+		if (spotLight->CanCastShadow())
+		{
+			float distance = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetPosition().Distance(spotLight->GetOwner()->GetPosition());
+			orderedLights.insert(std::pair<float, const SpotLightComponent*>(distance, spotLight));
+		}
+		const_cast<SpotLightComponent*>(spotLight)->SetShadowIndex(-1);
+	}
+	
+	int count = 0;
+	for (std::map<float, const SpotLightComponent*>::iterator it = orderedLights.begin(); it != orderedLights.end(); ++it)
+	{	
+		if (count == NUM_SHADOW_MAPS)
+		{
+			break;
+		}
+		count++;
+	
+		chosenLights.push_back(it->second);
+	}
+	//Shadows
+	for (unsigned int i = 0; i < chosenLights.size(); ++i)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
+		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
+	
+	
+		const Frustum& frustum = chosenLights[i]->GetFrustum();
+		glClear(GL_DEPTH_BUFFER_BIT);
+		glViewport(0, 0, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE);
+		mCameraUniBuffer->UpdateData(float4x4(frustum.ViewMatrix()).Transposed().ptr(), sizeof(float) * 16, 0);
+		mCameraUniBuffer->UpdateData(frustum.ProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
+	
+		const_cast<SpotLightComponent*>(chosenLights[i])->SetShadowIndex(i);
+		Shadow shadow;
+		shadow.shadowMapHandle = mShadowMapsHandle[i];
+		shadow.viewProjMatrix = frustum.ViewProjMatrix().Transposed();
+		shadow.bias = chosenLights[i]->GetBias();
+	
+		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
+	
+		mBatchManager.Draw(frustum, mDepthPassProgramId);
+	}
+
+	glViewport(0, 0, mSceneWidth, mSceneHeight);
+	App->GetCamera()->SetAspectRatio((float)mSceneWidth / (float)mSceneHeight);
+	SetOpenGlCameraUniforms();
+
 	//GaometryPass
 	//TODO: sestan fent els skins cada frame
-
 	mBatchManager.Update();
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glDisable(GL_BLEND);

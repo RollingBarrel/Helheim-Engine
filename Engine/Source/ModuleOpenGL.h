@@ -71,7 +71,7 @@ public:
 
 	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
-	void SceneFramebufferResized(unsigned width, unsigned height);
+	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
 	void BindGFramebuffer();
@@ -120,7 +120,8 @@ public:
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
 	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
-
+	unsigned int GetSceneWidth() const { return mSceneWidth; }
+	unsigned int GetSceneHeight() const { return mSceneHeight; }
 private:
 	void* context = nullptr;
 
@@ -205,6 +206,9 @@ private:
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 	std::vector<const GameObject*> mHighlightedObjects;
+
+	unsigned int mSceneWidth = 1;
+	unsigned int mSceneHeight = 1;
 };
 
 #endif /* _MODULEOPENGL_H_ */
