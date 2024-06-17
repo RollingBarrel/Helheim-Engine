@@ -938,6 +938,9 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 
 void ModuleOpenGL::Draw()
 {
+	//TODO: sestan fent els skins cada frame
+	mBatchManager.Update();
+
 	//Shadows
 	std::map<float, const SpotLightComponent*> orderedLights;
 	std::vector<const SpotLightComponent*> chosenLights;
@@ -993,8 +996,6 @@ void ModuleOpenGL::Draw()
 	SetOpenGlCameraUniforms();
 
 	//GaometryPass
-	//TODO: sestan fent els skins cada frame
-	mBatchManager.Update();
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glDisable(GL_BLEND);
 	glEnable(GL_STENCIL_TEST);
