@@ -439,6 +439,13 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 			memcpy(name, cursor, sizeof(char) * namelen);
 			cursor += sizeof(char) * namelen;
 
+			if (sourceID >= numStates || targetID >= numStates)
+			{
+				assert(false); // Hi, you have a corrupted state machine, make sure all transitions exist for the state machine "smname"!
+				//Specially check the transitions with trigger_name = "name".
+				continue;
+			}
+
 			transition.mSource = GetStateName(sourceID);
 			transition.mTarget = GetStateName(targetID);
 			transition.mTrigger = std::string(name);
