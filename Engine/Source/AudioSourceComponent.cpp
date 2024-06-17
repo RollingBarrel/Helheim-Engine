@@ -24,26 +24,27 @@ Component* AudioSourceComponent::Clone(GameObject* owner) const
     return new AudioSourceComponent(*this, owner);
 }
 
-void AudioSourceComponent::Save(Archive& archive) const
+void AudioSourceComponent::Save(JsonObject& obj) const
 {
-    Component::Save(archive);
-    archive.AddInt("ComponentType", static_cast<int>(GetType()));
-
-    std::vector<Archive> audioUnits;
+    Component::Save(obj);
+    JsonArray audiosArray = obj.AddNewJsonArray("Audios");
     for (const auto& audio : mAudiosVector) {
-        Archive audioArchive;
-        audio->Save(audioArchive);
-        audioUnits.push_back(std::move(audioArchive));
+        JsonObject audioObj = audiosArray.PushBackNewObject();
+        audio->Save(audioObj);
     }
-    archive.AddObjectArray("Audios", audioUnits);
 }
 
-void AudioSourceComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void AudioSourceComponent::Load(const JsonObject& obj, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    if (data.HasMember("Audios") && data["Audios"].IsArray()) {
-        for (const auto& item : data["Audios"].GetArray()) {
+    Component::Load(obj, uidPointerMap);
+    if (obj.HasMember("Audios")) {
+        JsonArray audiosArray = obj.GetJsonArray("Audios");
+
+        for (unsigned int i = 0; i < audiosArray.Size(); ++i)
+        {
+            JsonObject audioObj = audiosArray.GetJsonObject(i);
             AudioUnit* audio = new AudioUnit();
-            audio->LoadFromJSON(item);
+            audio->Load(audioObj);
             mAudiosVector.push_back(audio);
         }
     }

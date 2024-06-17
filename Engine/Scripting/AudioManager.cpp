@@ -119,6 +119,7 @@ int AudioManager::Release(BGM bgm, int id)
         return id;
     }
 
+    App->GetAudio()->Stop(description, id);
     App->GetAudio()->Release(description, id);
 
     return -1;
@@ -131,7 +132,7 @@ int AudioManager::Release(SFX sfx, int id)
     {
         return id;
     }
-
+    App->GetAudio()->Stop(description, id);
     App->GetAudio()->Release(description, id);
 
     return -1;
@@ -139,13 +140,13 @@ int AudioManager::Release(SFX sfx, int id)
 
 int AudioManager::PauseAndRelease(BGM bgm, int id)
 {
-    Pause(bgm, id, true);
+    //Pause(bgm, id, true);
     return Release(bgm, id);
 }
 
 int AudioManager::PauseAndRelease(SFX sfx, int id)
 {
-    Pause(sfx, id, true);
+    //Pause(sfx, id, true);
     return Release(sfx, id);
 }
 

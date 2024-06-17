@@ -65,19 +65,16 @@ void AudioUnit::UpdateParameterValueByName(const char* name, const float value)
 	}
 }
 
-void AudioUnit::Save(Archive& archive) const {
-	archive.AddString("Name", mName.c_str());
-	archive.AddInt("PreviewPlayID", mPreviewPlayID);
+void AudioUnit::Save(JsonObject& obj) const
+{
+	obj.AddString("Name", mName.c_str());
+	obj.AddInt("PreviewPlayID", mPreviewPlayID);
 }
 
-void AudioUnit::LoadFromJSON(const rapidjson::Value& data)
+void AudioUnit::Load(const JsonObject& data)
 {
-	if (data.HasMember("Name") && data["Name"].IsString()) {
-		mName = data["Name"].GetString();
-	}
-	if (data.HasMember("PreviewPlayID") && data["PreviewPlayID"].IsInt()) {
-		mPreviewPlayID = data["PreviewPlayID"].GetInt();
-	}
+	mName = data.GetString("Name");
+	mPreviewPlayID = data.GetInt("PreviewPlayID");
 
 	SetEventByName(mName.c_str());
 }

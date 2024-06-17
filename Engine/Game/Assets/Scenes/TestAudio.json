@@ -1,12 +1,13 @@
 {
     "Scene": {
-        "Name": "audiotest",
+        "Name": "TestAudio",
         "GameObjects": [
             {
-                "UID": 794142043,
+                "UID": 216418378,
                 "ParentUID": 1,
-                "Name": "AudioTest",
-                "isEnabled": true,
+                "Name": "Camera",
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -23,47 +24,26 @@
                     1.0,
                     1.0
                 ],
-                "Tag": 0,
-                "PrefabId": 0,
+                "Tag": "Untagged",
+                "PrefabUid": 0,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ComponentType": 3,
-                        "ScriptName": "AudioTester",
-                        "ScriptVariables": []
-                    }
-                ]
-            },
-            {
-                "UID": 635478494,
-                "ParentUID": 1,
-                "Name": "GameObject",
-                "isEnabled": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": 0,
-                "PrefabId": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
+                        "ComponentType": 13,
+                        "IsEnabled": true,
+                        "Audios": [
+                            {
+                                "Name": "event:/Music/Level 02",
+                                "PreviewPlayID": -1
+                            }
+                        ]
+                    },
                     {
                         "ComponentType": 6,
+                        "IsEnabled": true,
                         "AspectRatio": 1.8978978395462037,
+                        "FieldOfView": 72.73432159423828,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
@@ -71,10 +51,11 @@
                 ]
             },
             {
-                "UID": 1583784092,
+                "UID": 363920765,
                 "ParentUID": 1,
-                "Name": "GameManager",
-                "isEnabled": true,
+                "Name": "Listener",
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -91,18 +72,53 @@
                     1.0,
                     1.0
                 ],
-                "Tag": 0,
-                "PrefabId": 0,
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 14,
+                        "IsEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 156955917,
+                "ParentUID": 1,
+                "Name": "GameManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 3,
+                        "IsEnabled": true,
                         "ScriptName": "GameManager",
                         "ScriptVariables": [
                             {
-                                "VariableName": "Player",
-                                "MemberType": 5
+                                "VariableName": "mController",
+                                "MemberType": 2,
+                                "VariableData": false
                             },
                             {
                                 "VariableName": "mPlayer",
@@ -117,17 +133,18 @@
                             {
                                 "VariableName": "mAudioManagerGO",
                                 "MemberType": 3,
-                                "VariableData": 167652440
+                                "VariableData": 83208920
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 167652440,
-                "ParentUID": 1583784092,
-                "Name": "AudioManager",
-                "isEnabled": true,
+                "UID": 937847346,
+                "ParentUID": 1,
+                "Name": "Test",
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -144,47 +161,25 @@
                     1.0,
                     1.0
                 ],
-                "Tag": 0,
-                "PrefabId": 0,
+                "Tag": "Untagged",
+                "PrefabUid": 0,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 3,
-                        "ScriptName": "AudioManager",
+                        "IsEnabled": true,
+                        "ScriptName": "AudioTester",
                         "ScriptVariables": []
-                    },
-                    {
-                        "ID": 1381135174,
-                        "ComponentType": 13,
-                        "isEnabled": true,
-                        "ComponentType": 13,
-                        "Audios": [
-                            {
-                                "Name": "event:/Music/Level 01",
-                                "PreviewPlayID": -1
-                            },
-                            {
-                                "Name": "event:/Music/Level 02",
-                                "PreviewPlayID": -1
-                            },
-                            {
-                                "Name": "event:/Character/Player Footsteps",
-                                "PreviewPlayID": -1
-                            },
-                            {
-                                "Name": "event:/Weapons/Pistol",
-                                "PreviewPlayID": -1
-                            }
-                        ]
                     }
                 ]
             },
             {
-                "UID": 267858119,
+                "UID": 83208920,
                 "ParentUID": 1,
-                "Name": "Listener",
-                "isEnabled": true,
+                "Name": "AudioManager",
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -201,13 +196,38 @@
                     1.0,
                     1.0
                 ],
-                "Tag": 0,
-                "PrefabId": 0,
+                "Tag": "Untagged",
+                "PrefabUid": 0,
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ComponentType": 14
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AudioManager",
+                        "ScriptVariables": []
+                    },
+                    {
+                        "ComponentType": 13,
+                        "IsEnabled": true,
+                        "Audios": [
+                            {
+                                "Name": "event:/Music/Level 02",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Music/Level 01",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Weapons/Pistol",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/Character/Player Footsteps",
+                                "PreviewPlayID": -1
+                            }
+                        ]
                     }
                 ]
             }

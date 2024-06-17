@@ -22,8 +22,10 @@ public:
     ~AudioSourceComponent();
 
     Component* Clone(GameObject* owner) const;
-    void Save(Archive& archive) const;
-    void LoadFromJSON(const rapidjson::Value& data, GameObject* owner);
+
+    void Save(JsonObject& obj) const;
+    void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap);
+
     void Update() override;
 
     void Enable();
