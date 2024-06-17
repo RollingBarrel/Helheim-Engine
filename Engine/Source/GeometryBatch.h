@@ -91,8 +91,8 @@ public:
 	void AddMeshComponent(const MeshRendererComponent& component);
 	bool EditMaterial(const MeshRendererComponent& component);
 	bool RemoveMeshComponent(const MeshRendererComponent& component);
-	void Update();
-	void Draw(const math::Frustum& frustum, unsigned int programId);
+	void Update(const std::vector<const math::Frustum*>& frustums);
+	void Draw(unsigned int programId);
 	void EndFrameDraw();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
@@ -100,8 +100,9 @@ public:
 
 private:
 	unsigned int GetCommandsSsbo() const;
-	void ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum);
+	void ComputeCommands(unsigned int bufferIdx);
 
+	void RecreatePersistentFrustums();
 	void RecreatePersistentSsbos();
 	void RecreateSkinningSsbos();
 	void RecreateVboAndEbo();
@@ -137,7 +138,11 @@ private:
 	unsigned int mParameterBuffer = 0;
 
 	unsigned int mSsboMaterials = 0;
-	unsigned int mFrustumBuffer = 0;
+
+	unsigned int mFrustumsSsbo = 0;
+	unsigned int mFrustumsSsboCapacity = 0;
+	unsigned int mCurrFrustumIdx = 0;
+	float* mSsboFrustumsData[NUM_BUFFERS];
 
 	float* mVboData = nullptr;
 	unsigned int mVboDataSize = 0;

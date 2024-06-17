@@ -964,8 +964,14 @@ void ModuleOpenGL::Draw()
 		chosenLights.push_back(it->second);
 	}
 
+	std::vector<const math::Frustum*> mRenderFrustums;
+	for (int i = 0; i < chosenLights.size(); ++i)
+	{
+		mRenderFrustums.push_back(&chosenLights[i]->GetFrustum());
+	}
+	mRenderFrustums.push_back(&App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	//TODO: sestan fent els skins cada frame
-	mBatchManager.Update();
+	mBatchManager.Update(mRenderFrustums);
 	//START THE DRAW
 	
 	//Draw Shadowmaps
@@ -990,7 +996,7 @@ void ModuleOpenGL::Draw()
 	
 		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
 	
-		mBatchManager.Draw(frustum, mDepthPassProgramId);
+		mBatchManager.Draw(mDepthPassProgramId);
 	}
 
 	glViewport(0, 0, mSceneWidth, mSceneHeight);
@@ -1004,7 +1010,7 @@ void ModuleOpenGL::Draw()
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilMask(0xFF);
-	mBatchManager.Draw(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mPbrGeoPassProgramId);
+	mBatchManager.Draw(mPbrGeoPassProgramId);
 	//glDeleteBuffers(1, &ibo);
 
 	//Lighting Pass

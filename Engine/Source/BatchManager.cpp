@@ -65,19 +65,19 @@ void BatchManager::EditMaterial(const MeshRendererComponent& meshComponent)
 	}
 }
 
-void BatchManager::Update()
+void BatchManager::Update(const std::vector<const math::Frustum*>& frustums)
 {
 	for (GeometryBatch* batch : mBatches)
 	{
-		batch->Update();
+		batch->Update(frustums);
 	}
 }
 
-void BatchManager::Draw(const math::Frustum& frustum, unsigned int programId)
+void BatchManager::Draw(unsigned int programId)
 {
 	for (int i = 0; i< mBatches.size(); ++i)
 	{
-		mBatches[i]->Draw(frustum, programId);
+		mBatches[i]->Draw(programId);
 	}
 }
 

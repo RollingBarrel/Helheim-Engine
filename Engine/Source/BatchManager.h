@@ -17,8 +17,8 @@ public:
 	void EditMaterial(const MeshRendererComponent& meshComponent);
 
 	//Once per draw call
-	void Update();
-	void Draw(const math::Frustum& frustum, unsigned int programId);
+	void Update(const std::vector<const math::Frustum*>& frustums);
+	void Draw(unsigned int programId);
 	void EndFrameDraw();
 	unsigned int GetNumBatches() const { return mBatches.size(); }
 
