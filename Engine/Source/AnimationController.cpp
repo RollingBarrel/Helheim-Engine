@@ -38,6 +38,23 @@ AnimationController::~AnimationController()
 void AnimationController::Update()
 {
 	mCurrentTime += App->GetDt() * mSpeed;
+	if (mCurrentTime < mStartTime)
+	{
+		mCurrentTime = mStartTime;
+	}
+
+	//In case the current time is greater than the animation durationt, if he animation loops we change the time so it's in range
+	if (mCurrentTime >= mEndTime)
+	{
+		if (mLoop)
+		{
+			mCurrentTime = mStartTime + (mEndTime - mCurrentTime);
+		}
+		else
+		{
+			mCurrentTime = mEndTime;
+		}
+	}
 	if (mTransition)
 	{
 		mCurrentTransitionTime += App->GetDt();
@@ -111,24 +128,6 @@ void AnimationController::GetTransform(GameObject* model)
 			return;
 		}
 
-		if (mCurrentTime < mStartTime)
-		{
-			mCurrentTime = mStartTime;
-		}
-
-		//In case the current time is greater than the animation durationt, if he animation loops we change the time so it's in range
-		if (mCurrentTime >= mEndTime)
-		{
-			if (mLoop)
-			{
-				//mCurrentTime = std::fmod(mCurrentTime, mEndTime - mStartTime) + mStartTime;
-				mCurrentTime = mStartTime + (mEndTime - mCurrentTime);
-			}
-			else
-			{
-				mCurrentTime = mEndTime;
-			}
-		}
 
 		static float lambda;
 		static int keyIndex;
@@ -145,18 +144,12 @@ void AnimationController::GetTransform(GameObject* model)
 
 			model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
-		//else if (name == "scale") {
-		//}
+
 		else { return; }
 
 		model->RecalculateMatrices();
 	}
-	/*
-	for (const auto& child : model->GetChildren())
-	{
-		GetTransform(child);
-	}
-	*/
+
 }
 
 void AnimationController::GetTransform_Blending(GameObject* model)
@@ -217,18 +210,12 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 
 				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
-			//else if (name == "scale") {
-			//}
+
 			else { return; }
 
 			model->RecalculateMatrices();
 		}
-		/*
-		for (const auto& child : model->GetChildren())
-		{
-			GetTransform_Blending(child);
-		}
-		*/
+
 	}
 	else 
 	{
