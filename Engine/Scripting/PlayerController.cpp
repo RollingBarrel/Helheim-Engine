@@ -445,6 +445,11 @@ void PlayerController::RechargeShield(float shield)
     }
 }
 
+void PlayerController::RechargeBattery(BatteryType batteryType)
+{
+    LOG("Shotgun Upgrade");
+}
+
 void PlayerController::TakeDamage(float damage)
 {
     if (mLowerState->GetType() == StateType::DASH || mGodMode)

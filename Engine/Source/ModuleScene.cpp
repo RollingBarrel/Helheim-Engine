@@ -292,7 +292,7 @@ void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFil
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
 	gameObject->SetRotation(float3::zero);
 	gameObject->SetPosition(float3::zero);
-	gameObject->RecalculateMatrices();
+	//gameObject->RecalculateMatrices();
 	
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
@@ -368,7 +368,7 @@ void ModuleScene::LoadPrefabRecursive(JsonArray& gameObjects, unsigned int& idx,
 	if (idx < gameObjects.Size())
 	{
 		JsonObject obj = gameObjects.GetJsonObject(idx);
-		GameObject* gO = new GameObject(obj.GetString("Name").c_str(), parent);
+		GameObject* gO = new GameObject(obj.GetInt("UID"),obj.GetString("Name").c_str(), parent);
 		gO->LoadGameObject(obj, loadMap);
 
 		LoadPrefabRecursive(gameObjects, ++idx, loadMap[gO->GetID()], loadMap);

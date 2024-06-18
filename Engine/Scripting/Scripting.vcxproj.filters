@@ -59,7 +59,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
+    <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
@@ -162,7 +162,7 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="ItemShield.cpp">
+    <ClCompile Include="ItemDrop.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">

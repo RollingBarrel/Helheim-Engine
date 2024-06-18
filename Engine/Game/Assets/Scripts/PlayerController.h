@@ -97,6 +97,7 @@ public:
     // --------------- OLD ----------------------
 
     void RechargeShield(float shield);
+    void RechargeBattery(BatteryType batteryType);
     void TakeDamage(float damage);
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
