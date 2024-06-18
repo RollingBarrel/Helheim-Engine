@@ -16,7 +16,7 @@ struct Command
 	uint baseVertex;	 // Vertex offset in the VBO
 	uint baseInstance;   // Instance Index
 };
-layout(std430, binding = 15) readonly buffer FrustumPlanes
+layout(std430, binding = 16) readonly buffer FrustumPlanes
 {
 	Plane fPlanes[];
 };

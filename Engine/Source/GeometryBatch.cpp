@@ -233,6 +233,7 @@ void GeometryBatch::ComputeCommands(unsigned int bufferIdx)
 	const unsigned int idx = mDrawCount % NUM_BUFFERS;
 	glUseProgram(App->GetOpenGL()->GetSelectCommandsProgramId());
 	glUniform1ui(0, mMeshComponents.size());
+	glUniform1ui(1, mCurrFrustumIdx++ * 6);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 22, bufferIdx);
 	unsigned int sizeMatIdxs = mMeshComponents.size() * sizeof(unsigned int);
 	sizeMatIdxs += ALIGNED_STRUCT_SIZE(sizeMatIdxs, mSsboAligment) - sizeMatIdxs;
@@ -241,9 +242,7 @@ void GeometryBatch::ComputeCommands(unsigned int bufferIdx)
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 14, mSsboObbs);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 23, mParameterBuffer);
 	const unsigned int sizeFrustums = mFrustumsSsboCapacity * sizeof(float) * 24;
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 15, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
-	glUniform1ui(1, mCurrFrustumIdx*6);
-	++mCurrFrustumIdx;
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
 	glDispatchCompute((mMeshComponents.size() + 63) / 64, 1, 1);
 	
 	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
@@ -533,10 +532,6 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 		RecreatePersistentFrustums();
 
 	const unsigned int idx = mDrawCount % NUM_BUFFERS;
-	for (int i = 0; i < frustums.size(); ++i)
-	{
-		frustums[i]->GetPlanes(reinterpret_cast<Plane*>(mSsboFrustumsData[idx] + 24 * i));
-	}
 	for (auto it = mMeshComponents.cbegin(); it != mMeshComponents.cend(); ++it)
 	{
 		const BatchMeshRendererComponent& bComp = *it;
@@ -551,6 +546,10 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 		{
 			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 		}
+	}
+	for (int i = 0; i < frustums.size(); ++i)
+	{
+		frustums[i]->GetPlanes(reinterpret_cast<Plane*>(mSsboFrustumsData[idx] + 24 * i));
 	}
 }
 
@@ -591,5 +590,4 @@ void GeometryBatch::ComputeSkinning(const BatchMeshRendererComponent& bMesh)
 		glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
 		mSkinningApplied = true;
 	}
-	glUseProgram(0);
 }
