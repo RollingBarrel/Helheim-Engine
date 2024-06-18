@@ -399,6 +399,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 				{
 					ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
 					mStateMachine = resSM->GetStateMachine();
+					mStateMachine->SetUID(resSM->GetUID());
 				}
 				else
 				{
@@ -417,6 +418,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 				{
 					ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
 					mSpineStateMachine = resSM->GetStateMachine();
+					mSpineStateMachine->SetUID(resSM->GetUID());
 					mSpineController = new AnimationController(tmpAnimation, true);
 					mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
 					mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
