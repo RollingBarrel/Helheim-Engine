@@ -290,9 +290,9 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
-	//gameObject->SetRotation(float3::zero);
-	//gameObject->SetPosition(float3::zero);
-	//gameObject->RecalculateMatrices();
+	gameObject->SetRotation(float3::zero);
+	gameObject->SetPosition(float3::zero);
+	gameObject->RecalculateMatrices();
 	
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
@@ -321,13 +321,13 @@ void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray&
 
 GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent, bool update)
 {
+	prefabOldNewUid.clear();
+	
 	GameObject* ret = nullptr;
 	if (parent == nullptr) 
 	{
 		parent = mRoot;
 	}
-
-	prefabOldNewUid.clear();
 
 	char* fileBuffer = nullptr;
 
@@ -372,7 +372,7 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 	
 		ret = mSceneGO[currSize];
 
-		//mRoot->RecalculateMatrices();
+		mRoot->RecalculateMatrices();
 		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
 	}
