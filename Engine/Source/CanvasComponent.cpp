@@ -43,6 +43,7 @@ void CanvasComponent::Save(JsonObject& obj)const
 	Component::Save(obj);
 	
 	obj.AddFloats("Size", mSize.ptr(), 2);
+	obj.AddInt("Render", static_cast<int>(mRenderSpace));
 }
 
 void CanvasComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -52,4 +53,9 @@ void CanvasComponent::Load(const JsonObject& data, const std::unordered_map<unsi
 	float size[2];
 	data.GetFloats("Size", size);
 	mSize = float2(size);
+	if (data.HasMember("Render"))
+	{
+		mRenderSpace = static_cast<RenderSpace>(data.GetInt("Render"));
+	}
+	
 }
