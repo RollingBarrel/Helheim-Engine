@@ -160,7 +160,7 @@ void GeometryBatch::RecreatePersistentSsbos()
 	unsigned int size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
 	mSsboModelMatricesData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
-	for (int i = 1; i < NUM_BUFFERS; ++i)
+	for (unsigned int i = 1; i < NUM_BUFFERS; ++i)
 	{
 		mSsboModelMatricesData[i] = mSsboModelMatricesData[0] + ((size * i) / sizeof(float));
 	}
@@ -175,11 +175,10 @@ void GeometryBatch::RecreatePersistentSsbos()
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size, nullptr, flags);
 	mSsboMatIndicesCommandsData = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size, flags));
 
-	unsigned int i = 0;
 	unsigned int offset = mMeshComponents.size() + ((inBetweenOffset + sizeof(uint32_t) - 1) / sizeof(uint32_t));
-	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 	{
-		BatchMeshRendererComponent& bMesh = *it;
+		BatchMeshRendererComponent& bMesh = mMeshComponents[i];
 		bMesh.baseInstance = i;
 		mSsboMatIndicesCommandsData[i] = bMesh.bMaterialIdx;
 		mSsboMatIndicesCommandsData[offset + i * 5] = mUniqueMeshes[bMesh.bMeshIdx].resource->GetNumberIndices();//Count: Number of indices in the mesh
@@ -187,27 +186,32 @@ void GeometryBatch::RecreatePersistentSsbos()
 		mSsboMatIndicesCommandsData[offset + i * 5 + 2] = mUniqueMeshes[bMesh.bMeshIdx].firstIndex;	 //FirstIndex: Index offset in the EBO
 		mSsboMatIndicesCommandsData[offset + i * 5 + 3] = mUniqueMeshes[bMesh.bMeshIdx].baseVertex;	 //BaseVertex: Vertex offset in the VBO
 		mSsboMatIndicesCommandsData[offset + i * 5 + 4] = i;   //BaseInstance Instance Index
-		++i;
 	}
 
 	glDeleteBuffers(1, &mSsboObbs);
 	glGenBuffers(1, &mSsboObbs);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboObbs);
 	size = mMeshComponents.size() * sizeof(float) * 32;
-	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size, nullptr, flags);
-	mSsboObbsData = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size, flags));
-
-	i = 0;
-	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
+	mSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+	for (int i = 1; i < NUM_BUFFERS; ++i)
 	{
-		const MeshRendererComponent& bMesh = *(it->component);
+		mSsboObbsData[i] = mSsboObbsData[0] + ((size * i) / sizeof(float));
+	}
+
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+	{
+		const MeshRendererComponent& bMesh = *mMeshComponents[i].component;
 		float3 points[8];
 		bMesh.GetOriginalAABB().GetCornerPoints(points);
 		for (int k = 0; k < 8; ++k)
 		{
-			memcpy(&mSsboObbsData[i*32 + k*4], points[k].ptr(), sizeof(float3));
+			memcpy(&mSsboObbsData[0][i*32 + k*4], points[k].ptr(), sizeof(float3));
 		}
-		++i;
+	}
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		memcpy(mSsboObbsData[i], mSsboObbsData[0], size);
 	}
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
@@ -532,15 +536,23 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 		RecreatePersistentFrustums();
 
 	const unsigned int idx = mDrawCount % NUM_BUFFERS;
-	for (auto it = mMeshComponents.cbegin(); it != mMeshComponents.cend(); ++it)
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 	{
-		const BatchMeshRendererComponent& bComp = *it;
+		const BatchMeshRendererComponent& bComp = mMeshComponents[i];
 		ComputeSkinning(bComp);
 
 		const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
 		if (bComp.component->HasSkinning())
 		{
 			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
+			//Transform the obb points as we set identity as the model matrix
+			math::OBB obb = bComp.component->GetOriginalAABB().Transform(bComp.component->GetOwner()->GetWorldTransform());
+			float3 points[8];
+			obb.GetCornerPoints(points);
+			for (int k = 0; k < 8; ++k)
+			{
+				memcpy(&mSsboObbsData[idx][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+			}
 		}
 		else
 		{

@@ -133,7 +133,7 @@ private:
 	unsigned int mSsboIndicesCommands = 0;
 	uint32_t* mSsboMatIndicesCommandsData = nullptr;
 	unsigned int mSsboObbs = 0;
-	float* mSsboObbsData = nullptr;
+	float* mSsboObbsData[NUM_BUFFERS];
 	GLsync mSync[NUM_BUFFERS];
 	unsigned int mParameterBuffer = 0;
 
