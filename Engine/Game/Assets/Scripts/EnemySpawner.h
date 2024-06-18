@@ -14,9 +14,9 @@ public:
 	void Update() override;
 	void Spawn();
 
-	bool GetIsActive() { return mIsActive; }
-	float GetSpawnRate() { return mSpawnRate; }
-	EnemyType GetEnemyType() { return mEnemyType; }
+	bool GetIsActive() const { return mIsActive; }
+	float GetSpawnRate() const { return mSpawnRate; }
+	EnemyType GetEnemyType() const { return mEnemyType; }
 	void SetIsActive(bool active) { mIsActive = active; }
 	void SetSpawnRate(float seconds) { mSpawnRate = seconds; }
 	void SetEnemyType(EnemyType enemyType) { mEnemyType = enemyType; }

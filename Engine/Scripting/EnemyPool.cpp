@@ -20,37 +20,42 @@ void EnemyPool::Start()
 {
 	for (int i = 0; i < static_cast<int>(EnemyType::COUNT); ++i)
 	{
-
+		const char* enemyType = GetPrefabFromEnemyType(static_cast<EnemyType>(i));
+		
 		mEnemies[i].reserve(mNumOfEnemies);
-		for (size_t i = 0; i < mNumOfEnemies; i++)
+		for (int j = 0; j < mNumOfEnemies; j++)
 		{
-			std::string enemyType = "";
-			switch (static_cast<EnemyType>(i))
+			GameObject* newEnemy = App->GetScene()->InstantiatePrefab(enemyType);
+			if (newEnemy)
 			{
-			case EnemyType::ROBOT_MELEE:
-				enemyType= "Robot_Melee.prfb";
-			case EnemyType::ROBOT_RANGE:
-				enemyType = "Robot_Range.prfb";
-
-			default:
-				break;
-			}
-			GameObject* newEnemy = App->GetScene()->InstantiatePrefab(enemyType.c_str());
-			if (newEnemy) {
-				newEnemy->SetPosition(mGameObject->GetPosition());
+				newEnemy->SetParent(mGameObject);
+				newEnemy->SetPosition(float3::zero);
+				newEnemy->SetEnabled(false);
+				std::string newName = newEnemy->GetName() + std::to_string(j);
+				newEnemy->SetName(newName.c_str());
 				mEnemies[i].push_back(newEnemy);
 			}
-
 		}
-
 	}
+}
+
+const char* EnemyPool::GetPrefabFromEnemyType(EnemyType enemyType)
+{
+	switch (enemyType)
+	{
+	case EnemyType::ROBOT_MELEE:
+		return "Robot_Melee.prfb";
+	case EnemyType::ROBOT_RANGE:
+		return "Robot_Range.prfb";
+	}
+	return "";
 }
 
 void EnemyPool::Update()
 {
 }
 
-GameObject* EnemyPool::GetEnemy(EnemyType type)
+GameObject* EnemyPool::GetEnemy(EnemyType type) const
 {
 	for (GameObject* enemy : mEnemies[static_cast<int>(type)])
 	{
@@ -59,11 +64,5 @@ GameObject* EnemyPool::GetEnemy(EnemyType type)
 			return enemy;
 		}
 	}
-	return nullptr;
-}
-
-GameObject* EnemyPool::CreateEnemyInstance(EnemyType type)
-{
-	// TODO
 	return nullptr;
 }

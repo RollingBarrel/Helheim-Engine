@@ -9,6 +9,7 @@ CREATE(EnemySpawner)
 {
 	CLASS(owner);
 	SEPARATOR("Enemy Spawner");
+	MEMBER(MemberType::INT, mEnemyType);
 	MEMBER(MemberType::FLOAT, mSpawnRate);
 	END_CREATE;
 }

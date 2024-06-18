@@ -15,11 +15,11 @@ public:
 	void Start() override;
 	void Update() override;
 
-	GameObject* GetEnemy(EnemyType type);
-
-	GameObject* CreateEnemyInstance(EnemyType type);
+	GameObject* GetEnemy(EnemyType type) const;
 
 private:
+	const char* GetPrefabFromEnemyType(EnemyType enemyType);
+	
 	std::vector<GameObject*> mEnemies[static_cast<int>(EnemyType::COUNT)];
 	int mNumOfEnemies = 10;
 

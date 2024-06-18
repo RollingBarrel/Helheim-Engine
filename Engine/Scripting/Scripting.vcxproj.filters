@@ -125,15 +125,18 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="Grenade.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +228,16 @@
     </ClCompile>
     <ClCompile Include="Pistol.cpp">
       <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="BattleArea.cpp" />
+    <ClCompile Include="EnemyPool.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveBattleAreaController.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

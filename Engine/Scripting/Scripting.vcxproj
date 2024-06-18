@@ -200,7 +200,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\SwitchState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="Grenade.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
