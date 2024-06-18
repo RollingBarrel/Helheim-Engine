@@ -58,7 +58,7 @@ public:
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
 
 	int GetMemoryUsage() const;
-	std::map<std::string, int> GetInstances() const;
+	std::map<std::string, int>& GetInstances() const;
 
 	float GetVolume(std::string busname) const;
 	void SetVolume(std::string busname, float value) const;

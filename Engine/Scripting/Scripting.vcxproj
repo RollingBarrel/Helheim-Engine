@@ -182,7 +182,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\IdleState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h" />
@@ -217,7 +216,6 @@
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="ItemShield.cpp" />
-    <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuManager.cpp" />

@@ -20,7 +20,8 @@ AudioUnit::~AudioUnit()
 
 void AudioUnit::GetParametersNameAndValue(std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
 {
-	if (mPreviewPlayID != -1) {
+	if (mPreviewPlayID != -1) 
+	{
 		App->GetAudio()->GetParameters(mEventDescription, mPreviewPlayID, index, names, values);
 	}
 }
@@ -60,7 +61,8 @@ void AudioUnit::GetParametersMaxMin(const char* eventName, float& max, float& mi
 
 void AudioUnit::UpdateParameterValueByName(const char* name, const float value)
 {
-	if (mPreviewPlayID != -1) {
+	if (mPreviewPlayID != -1) 
+	{
 		App->GetAudio()->UpdateParameter(mEventDescription, mPreviewPlayID, name, value);
 	}
 }

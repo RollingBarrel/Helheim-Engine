@@ -92,7 +92,8 @@ std::vector<const char*> ModuleAudio::GetEventsNames()
 
 void ModuleAudio::AudioPause()
 {
-	for (const auto& eventDescription : mActiveEvent) {
+	for (const auto& eventDescription : mActiveEvent)
+	{
 		int capacity = 1024;
 		std::vector<FMOD::Studio::EventInstance*> instances(capacity);
 
@@ -108,7 +109,8 @@ void ModuleAudio::AudioPause()
 
 void ModuleAudio::AudioResume()
 {
-	for (const auto& eventDescription : mActiveEvent) {
+	for (const auto& eventDescription : mActiveEvent)
+	{
 		int capacity = 1024;
 		std::vector<FMOD::Studio::EventInstance*> instances(capacity);
 
@@ -125,7 +127,8 @@ void ModuleAudio::AudioResume()
 
 void ModuleAudio::EngineStop()
 {
-	for (const auto& eventDescription : mActiveEvent) {
+	for (const auto& eventDescription : mActiveEvent)
+	{
 		int capacity = 1024;
 		std::vector<FMOD::Studio::EventInstance*> instances(capacity);
 
@@ -175,7 +178,8 @@ void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, 
 	{
 		eventInstance->setPaused(pause);
 	}
-	else {
+	else 
+	{
 		LOG("Cannot stop event");
 	}
 }
@@ -188,7 +192,8 @@ void ModuleAudio::Stop(const FMOD::Studio::EventDescription* eventDescription, c
 	{
 		eventInstance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
 	}
-	else {
+	else 
+	{
 		LOG("Cannot release event");
 	}
 }
@@ -201,7 +206,8 @@ void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription
 	{
 		eventInstance->release();
 	}
-	else {
+	else 
+	{
 		LOG("Cannot release event");
 	}
 }
@@ -261,10 +267,11 @@ int ModuleAudio::GetMemoryUsage() const
 	return currentAllocated;
 }
 
-std::map<std::string, int> ModuleAudio::GetInstances() const {
+std::map<std::string, int>& ModuleAudio::GetInstances() const {
 	std::map<std::string, int> result;
 
-	for (const auto& eventDescription : mActiveEvent) {
+	for (const auto& eventDescription : mActiveEvent)
+	{
 		// Get the path of the event description
 		char path[256];
 		int retrieved = 0;
@@ -327,7 +334,8 @@ void ModuleAudio::AddIntoEventList(const FMOD::Studio::EventDescription* eventDe
 	auto it = std::find(mActiveEvent.begin(), mActiveEvent.end(), eventDescription);
 
 	// If not found, add it to the list
-	if (it == mActiveEvent.end()) {
+	if (it == mActiveEvent.end())
+	{
 		mActiveEvent.push_back(const_cast<FMOD::Studio::EventDescription*>(eventDescription));
 	}
 

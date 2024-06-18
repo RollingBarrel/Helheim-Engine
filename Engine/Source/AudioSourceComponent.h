@@ -2,13 +2,13 @@
 #include "Component.h"
 #include "float3.h"
 
-#include <vector>
-#include <map>
 
 class AudioUnit;
 
-namespace FMOD {
-    namespace Studio {
+namespace FMOD 
+{
+    namespace Studio 
+    {
         class EventInstance;
         class EventDescription;
     }
@@ -31,7 +31,7 @@ public:
     void Enable();
     void Disable();
 
-    std::vector<AudioUnit*> GetAudios() const { return mAudiosVector; }
+    const std::vector<AudioUnit*>& GetAudios() const { return mAudiosVector; }
     AudioUnit* FindAudio(const std::string& audioName);
 
     void AddNewAudio(FMOD::Studio::EventInstance* event);

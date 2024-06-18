@@ -28,7 +28,6 @@ class TextComponent;
 class BoxColliderComponent;
 class TrailComponent;
 class BezierCurve;
-class AudioSourceComponentNew;
 class DecalComponent;
 class RandomFloat;
 

@@ -86,9 +86,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
       <Filter>Weapons\Range</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
@@ -171,9 +168,6 @@
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="Level1AManager.cpp">
-      <Filter>Sound</Filter>
     </ClCompile>
     <ClCompile Include="MainMenuManager.cpp">
       <Filter>Sound</Filter>

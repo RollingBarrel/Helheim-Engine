@@ -37,7 +37,8 @@ void AudioTester::Start()
 }
 
 
-void AudioTester::Update() {
+void AudioTester::Update() 
+{
     ControlBGM();
     ControlSFX();
 
@@ -51,19 +52,25 @@ void AudioTester::ControlBGM()
     bool controlPressed = input->GetKey(Keys::Keys_LCTRL) == KeyState::KEY_REPEAT;
 
     // Control BGM 1
-    if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) {
-        if (controlPressed) {
-            if (mBGM1ID != -1) {
-                mBGM1ID = GameManager::GetInstance()->GetAudio()->PauseAndRelease(BGM::LEVEL1, mBGM1ID);
+    if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
+    {
+        if (controlPressed) 
+        {
+            if (mBGM1ID != -1) 
+            {
+                mBGM1ID = GameManager::GetInstance()->GetAudio()->Release(BGM::LEVEL1, mBGM1ID);
                 mBGM1Play = false;
             }
         }
         else {
-            if (!mBGM1Play) {
-                if (mBGM1ID == -1) {
+            if (!mBGM1Play) 
+            {
+                if (mBGM1ID == -1) 
+                {
                     mBGM1ID = GameManager::GetInstance()->GetAudio()->Play(BGM::LEVEL1);
                 }
-                else {
+                else 
+                {
                     GameManager::GetInstance()->GetAudio()->Pause(BGM::LEVEL1, mBGM1ID, false);
                 }
                 mBGM1Play = true;
@@ -76,24 +83,31 @@ void AudioTester::ControlBGM()
     }
 
     // Control BGM 2
-    if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) {
-        if (controlPressed) {
-            if (mBGM2ID != -1) {
-                mBGM2ID = GameManager::GetInstance()->GetAudio()->PauseAndRelease(BGM::LEVEL1, mBGM2ID);
+    if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
+    {
+        if (controlPressed) 
+        {
+            if (mBGM2ID != -1) 
+            {
+                mBGM2ID = GameManager::GetInstance()->GetAudio()->Release(BGM::LEVEL1, mBGM2ID);
                 mBGM2Play = false;
             }
         }
         else {
-            if (!mBGM2Play) {
-                if (mBGM2ID == -1) {
+            if (!mBGM2Play)
+            {
+                if (mBGM2ID == -1) 
+                {
                     mBGM2ID = GameManager::GetInstance()->GetAudio()->Play(BGM::LEVEL1);
                 }
-                else {
+                else 
+                {
                     GameManager::GetInstance()->GetAudio()->Pause(BGM::LEVEL1, mBGM2ID, false);
                 }
                 mBGM2Play = true;
             }
-            else {
+            else 
+            {
                 GameManager::GetInstance()->GetAudio()->Pause(BGM::LEVEL1, mBGM2ID, true);
                 mBGM2Play = false;
             }
@@ -101,16 +115,21 @@ void AudioTester::ControlBGM()
     }
 
     // Control BGM 3
-    if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN) {
-        if (controlPressed) {
-            if (mBGM3ID != -1) {
-                mBGM3ID = GameManager::GetInstance()->GetAudio()->PauseAndRelease(BGM::MAINMENU, mBGM3ID);
+    if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    {
+        if (controlPressed) 
+        {
+            if (mBGM3ID != -1) 
+            {
+                mBGM3ID = GameManager::GetInstance()->GetAudio()->Release(BGM::MAINMENU, mBGM3ID);
                 mBGM3Play = false;
             }
         }
         else {
-            if (!mBGM3Play) {
-                if (mBGM3ID == -1) {
+            if (!mBGM3Play) 
+            {
+                if (mBGM3ID == -1) 
+                {
                     mBGM3ID = GameManager::GetInstance()->GetAudio()->Play(BGM::MAINMENU);
                 }
                 else {
@@ -131,9 +150,12 @@ void AudioTester::ControlSFX()
     auto input = App->GetInput();
 
     // Control SFX 1
-    if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) {
-        if (!mSFX4Play) {
-            if (mSFX4sID == -1) {
+    if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) 
+    {
+        if (!mSFX4Play) 
+        {
+            if (mSFX4sID == -1)
+            {
                 mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetPosition());
             }
             else {
@@ -142,7 +164,7 @@ void AudioTester::ControlSFX()
             mSFX4Play = true;
         }
         else {
-            mSFX4sID = GameManager::GetInstance()->GetAudio()->PauseAndRelease(SFX::GUNFIRE, mSFX4sID);
+            mSFX4sID = GameManager::GetInstance()->GetAudio()->Release(SFX::GUNFIRE, mSFX4sID);
             mSFX4Play = false;
         }
     }
@@ -154,7 +176,8 @@ void AudioTester::WalkingSimulation()
 
     // Update movement state
     bool isMovingNow = input->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT || input->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT;
-    if (isMovingNow) {
+    if (isMovingNow)
+    {
         mIsMoving = true;
     }
     else {
@@ -163,9 +186,11 @@ void AudioTester::WalkingSimulation()
     }
 
     // Handle footsteps sound
-    if (mIsMoving) {
+    if (mIsMoving)
+    {
         mStepTimePassed += App->GetDt();
-        if (mStepTimePassed >= mStepCoolDown) {
+        if (mStepTimePassed >= mStepCoolDown)
+        {
             GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mGameObject->GetPosition());
             mStepTimePassed = 0.0f;
         }
@@ -181,7 +206,8 @@ void AudioTester::BGM1ParameterChange()
         {
             GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "Area", 80);
         }
-        else if(input->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
+        else if(input->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) 
+        {
             GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "Area", 1);
         }
     }

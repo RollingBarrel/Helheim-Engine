@@ -138,18 +138,6 @@ int AudioManager::Release(SFX sfx, int id)
     return -1;
 }
 
-int AudioManager::PauseAndRelease(BGM bgm, int id)
-{
-    //Pause(bgm, id, true);
-    return Release(bgm, id);
-}
-
-int AudioManager::PauseAndRelease(SFX sfx, int id)
-{
-    //Pause(sfx, id, true);
-    return Release(sfx, id);
-}
-
 void AudioManager::UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
@@ -178,7 +166,8 @@ void AudioManager::SetPosition(const FMOD::Studio::EventDescription* description
 std::string AudioManager::GetBGMName(BGM bgm)
 {
     auto it = mBGMToString.find(bgm);
-    if (it != mBGMToString.end()) {
+    if (it != mBGMToString.end()) 
+    {
         return it->second;
     }
     return "Unknown";
@@ -187,7 +176,8 @@ std::string AudioManager::GetBGMName(BGM bgm)
 std::string AudioManager::GetSFXName(SFX sfx)
 {
     auto it = mSFXToString.find(sfx);
-    if (it != mSFXToString.end()) {
+    if (it != mSFXToString.end()) 
+    {
         return it->second;
     }
     return "Unknown";

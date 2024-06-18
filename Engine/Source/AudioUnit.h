@@ -1,12 +1,10 @@
 #pragma once
 #include "Component.h"
-#include "float3.h"
 
-#include <vector>
-#include <map>
-
-namespace FMOD {
-    namespace Studio {
+namespace FMOD 
+{
+    namespace Studio
+    {
         class EventInstance;
         class EventDescription;
     }

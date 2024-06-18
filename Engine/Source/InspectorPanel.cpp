@@ -1370,7 +1370,8 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
 		{
 			ImGui::Text("Press 'Play' to view parameters");
 		}
-		else {
+		else 
+		{
 			audioUnit->GetParametersNameAndValue(parameterKeys, names, parameterValues);
 			ImGui::Text("Num Event parameters: %i", parameterKeys.size());
 		}

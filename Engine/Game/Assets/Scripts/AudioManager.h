@@ -5,12 +5,14 @@
 #include "Macros.h"
 #include "float3.h"
 
-enum class BGM {
+enum class BGM 
+{
 	MAINMENU,
 	LEVEL1
 };
 
-enum class SFX {
+enum class SFX 
+{
 	// MAIN MENU
 	MAINMENU_SELECT,
 	MAINMENU_OK,
@@ -23,7 +25,8 @@ enum class SFX {
 	ENEMY_ROBOT_FOOTSTEP,
 };
 
-namespace FMOD {
+namespace FMOD 
+{
 	namespace Studio {
 		class EventInstance;
 		class EventDescription;
@@ -57,9 +60,6 @@ public:
 
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
-
-	int PauseAndRelease(BGM bgm, int id);
-	int PauseAndRelease(SFX sfx, int id);
 
 	void UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value);
 	void UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value);

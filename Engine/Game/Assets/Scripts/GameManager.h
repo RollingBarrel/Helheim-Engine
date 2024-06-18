@@ -21,7 +21,7 @@ public:
     void Update();
 
     GameObject* GetPlayer() { return mPlayer; };
-    AudioManager* GetAudio() {return mAudioManager;};
+    AudioManager* GetAudio() const {return mAudioManager;};
     HudController* GetHud() { return mHudController; };
     bool UsingController() { return mController; }
 
