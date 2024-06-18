@@ -1,4 +1,3 @@
-#pragma once
 #include "ModuleScene.h"
 #include "GameObject.h"
 #include "Quadtree.h"
@@ -206,6 +205,8 @@ void ModuleScene::Save(const char* sceneName) const
 void ModuleScene::Load(const char* sceneName)
 {
 	//Close Prefab editor before loading a new scene
+	
+
 	if (mBackgroundScene != nullptr)
 	{
 		mSceneGO.clear();
@@ -238,8 +239,8 @@ void ModuleScene::Load(const char* sceneName)
 		App->GetUI()->CleanUp();
 		mSceneGO.clear();
 		delete mRoot;
+		mGameObjectsByTags.clear();
 		mRoot = new GameObject("SampleScene", nullptr);
-
 		Archive doc(fileBuffer);
 		delete fileBuffer;
 		JsonObject root = doc.GetRootObject();
@@ -265,6 +266,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		mRoot->RecalculateMatrices();
 		mQuadtreeRoot->UpdateTree();
+		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
 		App->GetScriptManager()->StartScripts();
@@ -367,6 +369,7 @@ void ModuleScene::LoadPrefabRecursive(JsonArray& gameObjects, unsigned int& idx,
 	{
 		JsonObject obj = gameObjects.GetJsonObject(idx);
 		GameObject* gO = new GameObject(obj.GetString("Name").c_str(), parent);
+		//GameObject* gO = new GameObject(obj.GetInt("UID"),obj.GetString("Name").c_str(), parent);
 		gO->LoadGameObject(obj, loadMap);
 
 		LoadPrefabRecursive(gameObjects, ++idx, loadMap[gO->GetID()], loadMap);
@@ -538,6 +541,29 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 	}
 }
 
+void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)
+{
+	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	{
+		if ((*it)->GetID() == second->GetID())
+		{
+			mSceneGO.erase(it);
+			break;
+		}
+	}
+
+	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	{
+		if ((*it)->GetID() == first->GetID())
+		{
+			mSceneGO.insert(it, second);
+			break;
+		}
+	}
+
+	
+}
+
 void ModuleScene::DeleteGameObjects()
 {
 	for (GameObject* gameObject : mGameObjectsToDelete)
@@ -573,6 +599,9 @@ void ModuleScene::NewScene()
 {
 	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
+	mGameObjectsByTags.clear();
+	mSceneGO.clear();
+
 	delete mRoot;
 	mRoot = new GameObject("Untlitled", nullptr);
 }

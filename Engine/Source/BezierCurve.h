@@ -1,6 +1,7 @@
 #pragma once
 #include "Archive.h"
 #include "float2.h"
+#include "RandomFloat.h"
 
 class BezierCurve 
 {
@@ -8,8 +9,8 @@ class BezierCurve
 public:
 	BezierCurve();
 
-	float GetValue(const float dt, const float initialValue) const;
-	float CalculateInitialValue();
+	float CalculateValue(const float dt, const float initialValue) const;
+	RandomFloat GetValue() const { return mValue; }
 
 	void Save(JsonObject& archive) const;
 	void Load(const JsonObject& data);
@@ -19,16 +20,11 @@ private:
 	void spline(const float* key, int num, int dim, float t, float* v) const;
 	float CurveValueSmooth(float p) const;
 	float CurveValue(float p) const;
-	float CalculateRandomValue();
 
     bool mIsCurve = false;
 
-	bool mIsValueRandom;
-	float mValue;
-	float mMaxValue;
-	float mInitialValue;
+	RandomFloat mValue;
 
     std::vector<float2> mPoints;
-    float mFactor = 1.0f;
 };
 

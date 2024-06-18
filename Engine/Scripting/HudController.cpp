@@ -23,65 +23,102 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
-    SEPARATOR("Screens");
+    SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
+    MEMBER(MemberType::GAMEOBJECT, mContinueBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mMainMenuBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsPanel);
+    SEPARATOR("Screens");
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
-    SEPARATOR("Buttons");
-    MEMBER(MemberType::GAMEOBJECT, mYesGO);
-    MEMBER(MemberType::GAMEOBJECT, mNoGO);
     END_CREATE;
 }
 
-HudController::HudController(GameObject* owner) : Script(owner) {}
+HudController::HudController(GameObject* owner) : Script(owner) 
+{
+}
 
 HudController::~HudController()
 {
-    
 }
 
 void HudController::Start()
 {
-    mPauseScreen->SetEnabled(false);
-    mWinScreen->SetEnabled(false);
-    mLoseScreen->SetEnabled(false);
-    mLoadingScreen->SetEnabled(false);
+    if (mPauseScreen) 
+    {
+        mPauseScreen->SetEnabled(false);
+        if (mContinueBtnGO)
+        {
+            mContinueBtn = static_cast<ButtonComponent*>(mContinueBtnGO->GetComponent(ComponentType::BUTTON));
+            mContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnContinueBtnClick, this)));
+            mContinueBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnContinueBtnHoverOn, this)));
+            mContinueBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnContinueBtnHoverOff, this)));
+        }
+        if (mOptionsBtnGO)
+        {
+            mOptionsBtn = static_cast<ButtonComponent*>(mOptionsBtnGO->GetComponent(ComponentType::BUTTON));
+            mOptionsBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnOptionsBtnClick, this)));
+            mOptionsBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnOptionsBtnHoverOn, this)));
+            mOptionsBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnOptionsBtnHoverOff, this)));
+        }
+        if (mMainMenuBtnGO)
+        {
+            mMainMenuBtn = static_cast<ButtonComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::BUTTON));
+            mMainMenuBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnMainMenuBtnClick, this)));
+            mMainMenuBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnMainMenuBtnHoverOn, this)));
+            mMainMenuBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnMainMenuBtnHoverOff, this)));
+        }
+        if (mOptionsPanel) mOptionsPanel->SetEnabled(false);
+    }
 
-    // Component cast
-    mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
-    mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
-    mYesBtn = static_cast<ButtonComponent*>(mYesGO->GetComponent(ComponentType::BUTTON));
-    mNoBtn = static_cast<ButtonComponent*>(mNoGO->GetComponent(ComponentType::BUTTON));
 
-    mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
-    mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
-    mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
-    mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
+    if (mWinScreen) 
+    {
+        mWinScreen->SetEnabled(false);
+        mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
+        mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
+    }
+    if (mLoseScreen)
+    {
+        mLoseScreen->SetEnabled(false);
+        mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
+        mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnLoseButtonClick, this)));
+    }
+    if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
 
-    mHealthGradualSlider->SetValue(1.0f);
-    mHealthSlider->SetValue(1.0f);
-    mGrenadeSlider->SetValue(0.001f);
+    
 
-    // Click events
-    mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
-    mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnLoseButtonClick, this)));
-    mYesBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnYesButtonClick, this)));
-    mNoBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnNoButtonClick, this)));
+    if (mHealthGO)
+    {
+        mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+        mHealthSlider->SetValue(1.0f);
+    }
 
-    // Hovers events
-    mYesBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnYesButtonHoverOn, this)));
-    mNoBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnNoButtonHoverOn, this)));
-    mYesBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnYesButtonHoverOff, this)));
-    mNoBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnNoButtonHoverOff, this)));
+    if (mHealthGradualGO) 
+    {
+        mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
+        mHealthGradualSlider->SetValue(1.0f);
+    }
+
+    if (mGrenadeSliderGO)
+    {
+        mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
+        mGrenadeSlider->SetValue(0.001f);
+    }
+
+    if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
+
 }
 
 void HudController::Update()
 {
-    Controls();
+    Loading();
+
+    if (GameManager::GetInstance()->IsPaused()) return;
 
     // Gradually decrease the gradual health slider
     if (mHealthGradualSlider != nullptr)
@@ -90,12 +127,25 @@ void HudController::Update()
         {
             mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
         }
-        else if (mHealthGradualSlider->GetValue() < mTargetHealth) {
+        else if (mHealthGradualSlider->GetValue() < mTargetHealth) 
+        {
             mHealthGradualSlider->SetValue(mTargetHealth);
         }
     }
-    
-    Loading();
+
+    // Grenade cooldown update
+    if (mGrenadeSlider != nullptr && mGrenadeCooldown != 0.0f) 
+    {
+        if (mGrenadeTimer <= mGrenadeCooldown) 
+        {
+            mGrenadeTimer += App->GetDt();
+            mGrenadeSlider->SetValue(1 - (mGrenadeTimer / mGrenadeCooldown));
+        }
+        else
+        {
+            mGrenadeCooldown = 0.0f;
+        }
+    }
 }
 
 bool HudController::Delay(float delay)
@@ -108,15 +158,6 @@ bool HudController::Delay(float delay)
         return true;
     }
     else return false;
-}
-
-void HudController::Controls()
-{
-    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
-    {
-        mPaused = !mPaused;
-        mPauseScreen->SetEnabled(mPaused);
-    }
 }
 
 void HudController::Loading()
@@ -135,24 +176,25 @@ void HudController::Loading()
 
 void HudController::SetAmmo(int ammo)
 {
-    mAmmoText->SetText(std::to_string(ammo));
+    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
 }
 
 void HudController::SetHealth(float health)
 {
-    mHealthSlider->SetValue(health);
+    if (mHealthSlider) mHealthSlider->SetValue(health);
     mTargetHealth = health;
 }
 
 void HudController::SwitchWeapon()
 {
+    if (!mWeaponMeleeGO || !mWeaponRangeGO || !mSecondWeaponMeleeGO || !mSecondWeaponRangeGO) return;
+
     if (mWeaponMeleeGO->IsEnabled())
     {
         mWeaponMeleeGO->SetEnabled(false);
         mWeaponRangeGO->SetEnabled(true);
         mSecondWeaponMeleeGO->SetEnabled(true);
         mSecondWeaponRangeGO->SetEnabled(false);
-        return;
     }
     else
     {
@@ -160,30 +202,29 @@ void HudController::SwitchWeapon()
         mWeaponRangeGO->SetEnabled(false);
         mSecondWeaponMeleeGO->SetEnabled(false);
         mSecondWeaponRangeGO->SetEnabled(true);
-        return;
     }
 }
 
 void HudController::SetGrenadeCooldown(float cooldown)
 {
-    if (cooldown <= 0.001f) cooldown = 0.001f;
-    mGrenadeSlider->SetValue(cooldown);
+    mGrenadeCooldown = cooldown;
+    mGrenadeTimer = 0.001f;
 }
 
 void HudController::SetScreen(SCREEN name, bool active)
 {
     switch (name) {
         case SCREEN::LOAD:
-            mLoadingScreen->SetEnabled(active);
+            if (mLoadingScreen) mLoadingScreen->SetEnabled(active);
             break;
         case SCREEN::LOSE:
-            mLoseScreen->SetEnabled(active);
+            if (mLoseScreen) mLoseScreen->SetEnabled(active);
             break;
         case SCREEN::WIN:
-            mWinScreen->SetEnabled(active);
+            if (mWinScreen) mWinScreen->SetEnabled(active);
             break;
         case SCREEN::PAUSE:
-            mPauseScreen->SetEnabled(active);
+            if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
         default:
             break;
@@ -202,43 +243,59 @@ void HudController::OnLoseButtonClick()
     mLoading = true;
 }
 
-void HudController::OnYesButtonClick()
-{
-    mLoading = true;
-}
-
-void HudController::OnNoButtonClick()
-{
-    mPaused = false;
-    mPauseScreen->SetEnabled(false);
-}
-
 #pragma endregion
 
-#pragma region Hover Events
+#pragma region Btn Events
 
-void HudController::OnYesButtonHoverOn()
+void HudController::OnContinueBtnClick()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mYesGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.7f, 0.7f, 0.7f));
+    GameManager::GetInstance()->SetPaused(false);
 }
 
-void HudController::OnNoButtonHoverOn()
+void HudController::OnContinueBtnHoverOn()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNoGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(0.7f, 0.7f, 0.7f));
+    ImageComponent* image = static_cast<ImageComponent*>(mContinueBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.25f);
 }
 
-void HudController::OnYesButtonHoverOff()
+void HudController::OnContinueBtnHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mYesGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    ImageComponent* image = static_cast<ImageComponent*>(mContinueBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
 }
 
-void HudController::OnNoButtonHoverOff()
+void HudController::OnOptionsBtnClick()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mNoGO->GetComponent(ComponentType::IMAGE));
-    image->SetColor(float3(1, 1, 1));
+    mOptionsPanel->SetEnabled(true);
+}
+
+void HudController::OnOptionsBtnHoverOn()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mOptionsBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.25f);
+}
+
+void HudController::OnOptionsBtnHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mOptionsBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void HudController::OnMainMenuBtnClick()
+{
+    GameManager::GetInstance()->LoadLevel("MainMenu");
+}
+
+void HudController::OnMainMenuBtnHoverOn()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.25f);
+}
+
+void HudController::OnMainMenuBtnHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
 }
 
 #pragma endregion

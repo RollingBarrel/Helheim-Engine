@@ -33,6 +33,7 @@ public:
     float GetNearPlane() const { return mFrustum.nearPlaneDistance; }
     float GetFarPlane() const { return mFrustum.farPlaneDistance; }
     float GetVerticicalFOV() const { return mFrustum.verticalFov; }
+    float GetHorizontalFOV() const { return mFrustum.horizontalFov; }
 
 
 private:

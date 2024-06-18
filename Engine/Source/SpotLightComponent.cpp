@@ -35,14 +35,20 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
-	App->GetOpenGL()->AddSpotLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddSpotLight(*this);
+	}
 }
 
 
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
 	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias)
 {
-	App->GetOpenGL()->AddSpotLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddSpotLight(*this);
+	}
 }
 
 SpotLightComponent::~SpotLightComponent()
@@ -153,32 +159,41 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 {	
 	Component::Load(data, uidPointerMap);
 
-	float pos[4];
-	data.GetFloats("Position", pos);
-	for (unsigned int i = 0; i < 4; ++i)
+	if (data.HasMember("Position")) 
 	{
-		mData.pos[i] = pos[i];
+		float pos[4];
+		data.GetFloats("Position", pos);
+		for (unsigned int i = 0; i < 4; ++i)
+		{
+			mData.pos[i] = pos[i];
+		}
 	}
 
-	float dir[4];
-	data.GetFloats("Direction", dir);
-	for (unsigned int i = 0; i < 4; ++i)
+	if (data.HasMember("Direction"))
 	{
-		mData.aimD[i] = dir[i];
+		float dir[4];
+		data.GetFloats("Direction", dir);
+		for (unsigned int i = 0; i < 4; ++i)
+		{
+			mData.aimD[i] = dir[i];
+		}
 	}
 
-	float col[4];
-	data.GetFloats("Color", col);
-	for (unsigned int i = 0; i < 4; ++i)
+	if (data.HasMember("Color"))
 	{
-		mData.color[i] = col[i];
+		float col[4];
+		data.GetFloats("Color", col);
+		for (unsigned int i = 0; i < 4; ++i)
+		{
+			mData.color[i] = col[i];
+		}
 	}
 
-	mData.range = data.GetFloat("Range");
+	if (data.HasMember("Range")) mData.range = data.GetFloat("Range");
 
-	mCastShadow = data.GetBool("CastShadow");
+	if (data.HasMember("CastShadow")) mCastShadow = data.GetBool("CastShadow");
 	
-	mBias = data.GetFloat("Bias");
+	if (data.HasMember("Bias")) mBias = data.GetFloat("Bias");
 	
 	GameObject* owner = this->GetOwner();
 	mShadowFrustum.pos = owner->GetPosition();
@@ -189,7 +204,10 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
+
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	
+	
 }
 
 void SpotLightComponent::Reset()

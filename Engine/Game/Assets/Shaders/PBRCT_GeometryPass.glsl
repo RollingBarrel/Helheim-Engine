@@ -40,10 +40,12 @@ in VertToFrag {
 };
 
 layout(location = 0) out vec3 outDiffuse;
-layout(location = 1) out vec4 outSpecularRough;
+//layout(location = 1) out vec4 outSpecularRough;
+layout(location = 1) out vec3 outMetalRough;
 layout(location = 2) out vec3 outNormal;
-layout(location = 3) out float outDepth;
+layout(location = 3) out vec3 outPosition;
 layout(location = 4) out vec3 outEmissive;
+
 
 void main() 
 {
@@ -61,9 +63,9 @@ void main()
 	float rough = material.rough;
 	if(material.hasMetalRoughTex)
 	{
-		vec3 metRough = texture(material.metalRoughTex, uv).rgb;
-		metal *= metRough.b;
-		rough *= metRough.g;
+		vec2 metRough = texture(material.metalRoughTex, uv).gb;
+		rough *= metRough.x;
+		metal *= metRough.y;
 	}
 	vec3 N = vec3(0.0f);
 	if (material.hasNormalMap)
@@ -87,9 +89,19 @@ void main()
 		emissiveColor *= material.emissiveFactor;
 		outEmissive = emissiveColor;
 	}
-	outDiffuse = baseColor * (1 - metal);
-	outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
-	outSpecularRough.a = rough;
+
+	outDiffuse = baseColor;
+	outMetalRough.b = metal;
+	outMetalRough.g = rough;
+
+
+	//outDiffuse = baseColor * (1 - metal);
+	//outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
+	//outSpecularRough.a = rough;
 	outNormal = (N * 0.5) + 0.5;
-	outDepth = gl_FragCoord.z;
+	outPosition = sPos;
+	
+	//outDepth = gl_FragCoord.z;
+
+	
 }

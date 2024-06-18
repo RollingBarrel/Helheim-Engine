@@ -38,18 +38,20 @@
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
 #include "SliderComponent.h"
+#include "DecalComponent.h"
 
 #include "ImporterMaterial.h"
 #include "MathFunc.h"
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
-#include "Trail.h"
+#include "TrailComponent.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "ResourceAnimation.h"
 #include "ResourceModel.h"
+#include "ResourceStateMachine.h"
 
 #include "IconsFontAwesome6.h"
 
@@ -503,6 +505,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 				case ComponentType::TRAIL:
 					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
 					break;
+				case ComponentType::DECAL:
+					DrawDecalComponent(reinterpret_cast<DecalComponent*>(component));
+					break;
 			}
 		}
 		ImGui::PopID();
@@ -721,7 +726,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	static float farPlane = component->GetFarPlane();
 	const char* farLabel = "##FarPlane";
 
-	static float FOV = RadToDeg(component->GetVerticicalFOV());
+	static float FOV = RadToDeg(component->GetHorizontalFOV());
 	const char* FOVLabel = "##FOV";
 
 	ImGui::PushID(nearLabel);
@@ -909,7 +914,9 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 				{
 					if (gameObject) 
 					{
+						App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
 						*gameObject = *(GameObject**)payload->Data;
+						App->GetScriptManager()->AddGameObjectToMap(gameObject);
 					}
 					
 				}
@@ -936,10 +943,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 	if (component->GetAnimationUids().size() > 0)
 	{
-		ImGui::Text("Current state: ");
-		ImGui::SameLine();
-		ImGui::Text(component->GetCurrentStateName().c_str());
-	
+
 		if (ImGui::Button("Play/Pause"))
 		{
 			//component->OnStart();
@@ -979,88 +983,97 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 			component->SetAnimSpeed(animSpeed);
 		}
 
-		if (ImGui::Button("Edit state machine"))
+		if (ImGui::Button("Open state machine panel"))
 		{
 			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
 			panel->SetStateMachine(component->GetStateMachine());
-			panel->SetComponent(component);
-			panel->SetIsSpine(false);
 			panel->Open();
 		}
 
-		if (component->HasSpine())
+		//Draw selectable state machines
+		std::vector<std::string> assets;
+		GetStateMachineAssets(component, false, assets);
+		const char* smName = component->GetStateMachine()->GetName().c_str();
+		ImGui::Text("Select default state machine:");
+		if (ImGui::BeginCombo("##DefaultSM", smName))
 		{
-			if (ImGui::Button("Edit spine state machine"))
+
+			for (int n = 0; n < assets.size(); n++)
 			{
-				AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
-				panel->SetStateMachine(component->GetSpineStateMachine());
-				panel->SetComponent(component);
-				panel->SetIsSpine(false);
-				panel->Open();
-			}
-
-		}
-	}
-	else
-	{
-		const char* currentItem = "None";
-		if (ImGui::BeginCombo("##combo", currentItem))
-		{
-			std::vector<std::string> modelNames;
-			EngineApp->GetFileSystem()->DiscoverFiles("Assets/Models", ".emeta", modelNames);
-			for (int i = 0; i < modelNames.size(); ++i)
-			{
-
-				size_t slashPos = modelNames[i].find_last_of('/');
-				if (slashPos != std::string::npos)
+				bool is_selected = (smName == assets[n]);
+				if (ImGui::Selectable(assets[n].c_str(), is_selected))
 				{
-
-					modelNames[i].erase(0, slashPos + 1);
+					smName = assets[n].c_str();
+					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
+					ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+					component->SetStateMachine(newSM->GetStateMachine());
+					component->SetSMUID(newSM->GetUID());
 				}
-
-				size_t dotPos = modelNames[i].find_first_of('.');
-				if (dotPos != std::string::npos)
-				{
-
-					modelNames[i].erase(dotPos);
-				}
-			}
-
-			for (int n = 0; n < modelNames.size(); n++)
-			{
-				bool is_selected = (currentItem == modelNames[n]);
-				if (ImGui::Selectable(modelNames[n].c_str(), is_selected))
-				{
-					currentItem = modelNames[n].c_str();
-					ResourceModel* model = reinterpret_cast<ResourceModel*>(App->GetResource()->RequestResource(std::string("Assets/Models/" + std::string(currentItem) + ".gltf").c_str()));
-					if (model)
-					{
-						if (model->mAnimationUids.size() > 0)
-						{
-							component->SetAnimationsUids(model->mAnimationUids);
-						}
-						else
-						{
-							currentItem = "Error: Not animated";
-							is_selected = false;
-						}
-						App->GetResource()->ReleaseResource(model->GetUID());
-					}
-					
-				}
-
 				if (is_selected)
 				{
 					ImGui::SetItemDefaultFocus();
 				}
-
 			}
 			ImGui::EndCombo();
 		}
+		
+		if (component->HasSpine())
+		{
+			ImGui::Text("Select spine state machine:");
+			const char* spineSMName = component->GetSpineStateMachine()->GetName().c_str();
+			if (ImGui::BeginCombo("##SpineSM", spineSMName))
+			{
+
+				for (int n = 0; n < assets.size(); n++)
+				{
+					bool is_selected = (spineSMName == assets[n]);
+					if (ImGui::Selectable(assets[n].c_str(), is_selected))
+					{
+						spineSMName = assets[n].c_str();
+						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
+						ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+						component->SetSpineStateMachine(newSM->GetStateMachine());
+						component->SetSpineSMUID(newSM->GetUID());
+
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
 	}
+}
 
+void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names)
+{
+	
+	const char* currentItem = component->GetStateMachine()->GetName().c_str();
+	if (isSpine)
+	{
+		currentItem = component->GetSpineStateMachine()->GetName().c_str();
 
+	}
+	EngineApp->GetFileSystem()->DiscoverFiles("Assets/StateMachines", ".smbin", names);
+	for (int i = 0; i < names.size(); ++i)
+	{
 
+		size_t slashPos = names[i].find_last_of('/');
+		if (slashPos != std::string::npos)
+		{
+
+			names[i].erase(0, slashPos + 1);
+		}
+
+		size_t dotPos = names[i].find_first_of('.');
+		if (dotPos != std::string::npos)
+		{
+
+			names[i].erase(dotPos);
+		}
+	}
 }
 
 void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
@@ -1605,7 +1618,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	DrawRandomFloat(component->mIsLifetimeRandom, component->mLifetime, component->mMaxLifetime, "Lifetime");
+	DrawRandomFloat(component->mLifetime, "Lifetime");
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
@@ -1613,9 +1626,13 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Stretched Billboard");
 	ImGui::SameLine();
 	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
+	ImGui::Text("Stretched Ratio");
+	ImGui::SameLine();
+	ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
+
 	DrawBezierCurve(&(component->mSizeCurve), "Size");
 	ImGui::Separator();
-	static const char* items[]{ "Cone","Square","Circle" };
+	static const char* items[]{ "Cone","Box","Sphere"};
 	static int Selecteditem = 0;
 	ImGui::Text("Shape");
 	ImGui::SameLine();
@@ -1634,17 +1651,32 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
-		case ParticleSystemComponent::EmitterType::SQUARE:
+		case ParticleSystemComponent::EmitterType::BOX:
 			ImGui::Text("Width");
 			ImGui::SameLine();
-			ImGui::DragFloat2("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::DragFloat3("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::Text("Invers Dir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
+
 			break;
-		case ParticleSystemComponent::EmitterType::CIRCLE:
+		case ParticleSystemComponent::EmitterType::SPHERE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
-			break;
+			ImGui::Text("Invers Dir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
 
+			break;
+	}
+	ImGui::Text("Rand Dir");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FixedDirection", &(component->mIsShapeAngleRand));
+	if (component->mIsShapeAngleRand) 
+	{
+		ImGui::SameLine();
+		ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
 	}
 
 	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
@@ -1716,7 +1748,7 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 
 	ImGui::Text("Text:");
 	ImGui::SameLine();
-	if (ImGui::InputText("##TextInput", buffer.data(), buffer.size())) 
+	if (ImGui::InputTextMultiline("##TextInput", buffer.data(), buffer.size())) 
 	{
 		// Update the std::string if the text was changed
 		*text = std::string(buffer.data());
@@ -1803,13 +1835,13 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
 	ImGui::Text("Fixed Direction");
 	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+	ImGui::Checkbox("##FixedDirection", &(component->mFixedDirection));
 
-	if (component->mTrail->mFixedDirection) 
+	if (component->mFixedDirection) 
 	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
-		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+		ImGui::DragFloat3("##TrailDirection", component->mDirection.ptr());
 	}
 
 	ImGui::Text("Minimum distance");
@@ -1818,10 +1850,10 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 	ImGui::Text("Lifetime");
 	ImGui::SameLine();
-	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
 
 	ImGui::Separator();
-	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+	DrawBezierCurve(&(component->mWidth), "Width");
 	
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint"))
@@ -1830,7 +1862,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->mTrail->mImage;
+		ResourceTexture* image = component->mImage;
 
 		if (image)
 		{
@@ -1871,7 +1903,230 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(1);
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
-		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
+		bool updated = ImGui::GradientEditor(component->mGradient, draggingMark, selectedMark);
+	}
+}
+
+void InspectorPanel::DrawDecalComponent(DecalComponent* component)
+{
+
+	unsigned int imageSize = 50;
+	const unsigned int numTextures = 4;
+
+	ResourceTexture** textures[numTextures] = { &component->mDiffuseTexture , &component->mSpecularTexture , &component->mNormalTexture, &component->mEmisiveTexture };
+	std::string* fileNames[numTextures] = { &component->mDiffuseName, &component->mSpecularName , &component->mNormalName, &component->mEmisiveName };
+	const char* names[numTextures] = { "Diffuse Texture", "Specular Texture", "Normal Map", "Emisive Texture"};
+	float4* colors[numTextures] = { &component->mDiffuseColor, nullptr, nullptr, &component->mEmisiveColor };
+	
+
+	ImGui::SliderFloat("fade", &component->mFade, 0.0f, 1.0f);
+
+	ImGui::Checkbox("Sprite Sheet", &component->mIsSpriteSheet);
+	if (component->mIsSpriteSheet)
+	{
+		// Play/Pause/Stop buttons
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0.6f, 1.0f, 0.6f, 1.0f)); // Pale green
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f)); // Black text
+		if (ImGui::Button("Play"))
+		{
+			component->Play();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 1.0f, 0.6f, 1.0f)); // Pale yellow
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Pause"))
+		{
+			component->Pause();
+		}
+		ImGui::PopStyleColor(2);
+		ImGui::SameLine();
+
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1.0f, 0.6f, 0.6f, 1.0f)); // Pale red
+		ImGui::PushStyleColor(ImGuiCol_Text, ImVec4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (ImGui::Button("Stop"))
+		{
+			component->Stop();
+		}
+		ImGui::PopStyleColor(2);
+
+		
+		// Columns and rows selector
+		if (ImGui::InputInt("Row", &component->mDefaultRow))
+		{
+			component->mDefaultRow = Clamp(static_cast<float>(component->mDefaultRow), 0.0f, static_cast<float>(component->mRows - 1));
+			component->mCurrentRow = component->mDefaultRow;
+		}
+		if (ImGui::InputInt("Column", &component->mDefaultColumn))
+		{
+			component->mDefaultColumn = Clamp(static_cast<float>(component->mDefaultColumn), 0.0f, static_cast<float>(component->mColumns - 1));
+			component->mCurrentColumn = component->mDefaultColumn;
+		}
+
+		if (ImGui::InputInt("Rows", &component->mRows))
+		{
+			component->mRows = (component->mRows < 1) ? 1 : component->mRows;
+		}
+		if (ImGui::InputInt("Columns", &component->mColumns))
+		{
+			component->mColumns = (component->mColumns < 1) ? 1 : component->mColumns;
+		}
+		
+		// Reproduction speed slider
+		ImGui::Text("Speed (FPS):"); ImGui::SameLine();
+		ImGui::PushItemWidth(100);
+		ImGui::SliderInt("##Reproduction Speed", &component->mFPS, 1, 100);
+		ImGui::PopItemWidth();
+
+
+		// Display the spritesheet image
+		ResourceTexture* image = nullptr;
+
+		for (unsigned int i = 0; i < numTextures; ++i)
+		{
+			if (*textures[i])
+			{
+				image = *textures[i];
+				break;
+			}
+		}
+
+		if (image)
+		{
+			ImVec2 imageSize(175, 175);
+			ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), imageSize);
+		
+			// Draw lines to divide the image into columns and rows
+			ImVec2 imagePos = ImGui::GetItemRectMin();
+			float columnWidth = imageSize.x / component->mColumns;
+			float rowHeight = imageSize.y / component->mRows;
+			for (int i = 1; i < component->mColumns; ++i)
+			{
+				ImVec2 start(imagePos.x + i * columnWidth, imagePos.y);
+				ImVec2 end(imagePos.x + i * columnWidth, imagePos.y + imageSize.y);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+			for (int i = 1; i < component->mRows; ++i)
+			{
+				ImVec2 start(imagePos.x, imagePos.y + i * rowHeight);
+				ImVec2 end(imagePos.x + imageSize.x, imagePos.y + i * rowHeight);
+				ImGui::GetWindowDrawList()->AddLine(start, end, IM_COL32(255, 255, 255, 255));
+			}
+		
+			// Display a list of the slices
+			if (ImGui::CollapsingHeader("Slices", ImGuiTreeNodeFlags_None))
+			{
+				float sliceWidth = 1.0f / component->mColumns;
+				float sliceHeight = 1.0f / component->mRows;
+				ImVec2 sliceSize(50, 50);
+		
+				for (int row = 0; row < component->mRows; ++row)
+				{
+					for (int col = 0; col < component->mColumns; ++col)
+					{
+						// Calculate the texture coordinates for the slice
+						ImVec2 uv0(col * sliceWidth, row * sliceHeight);
+						ImVec2 uv1((col + 1) * sliceWidth, (row + 1) * sliceHeight);
+		
+						ImGui::Image((void*)(intptr_t)image->GetOpenGLId(), sliceSize, uv0, uv1);
+		
+						if (col < component->mColumns - 1)
+						{
+							ImGui::SameLine();
+							ImGui::Text(" ");
+							ImGui::SameLine();
+						}
+					}
+					if (row < component->mRows - 1)
+					{
+						ImGui::NewLine();
+					}
+				}
+			}
+		}
+	}
+
+	if (ImGui::BeginTable("1", 2, ImGuiTableFlags_BordersInner))
+	{
+
+		for (int i = 0; i < 4; ++i)
+		{
+			ImGui::BeginGroup();
+			ImGui::TableNextRow();
+
+			ImGui::TableNextColumn();
+			ImGui::Text(names[i]);
+			if (*textures[i])
+			{
+				ImTextureID imageID = (void*)(intptr_t)(*textures[i])->GetOpenGLId();
+
+				if (colors[i])
+				{
+					ImGui::Image((void*)(intptr_t)imageID, ImVec2(imageSize, imageSize), ImVec2(0, 0), ImVec2(1, 1), ImVec4(colors[i]->x, colors[i]->y, colors[i]->z, colors[i]->w));
+				}
+				else
+				{
+					ImGui::Image((void*)(intptr_t)imageID, ImVec2(imageSize, imageSize));
+				}
+				
+		
+				if (colors[i])
+				{
+					ImGui::ColorEdit4(names[i], colors[i]->ptr(), ImGuiColorEditFlags_NoOptions | ImGuiColorEditFlags_NoLabel | ImGuiColorEditFlags_NoInputs);
+				}
+
+				ImGui::TableNextColumn();
+				if (!(*fileNames[i]).empty())
+				{
+					ImGui::Text((*fileNames[i]).c_str());
+				}
+				if ((*textures[i]))
+				{
+					ImGui::Text("Width:%dpx", (*textures[i])->GetWidth());
+					ImGui::Text("Height:%dpx", (*textures[i])->GetHeight());
+				}
+				ImGui::PushID(i);
+
+				
+
+				if (ImGui::Button(ICON_FA_TRASH_CAN))
+				{
+					App->GetResource()->ReleaseResource((*textures[i])->GetUID());
+					*textures[i] = nullptr;
+				}
+				ImGui::PopID();
+			}
+			else
+			{
+
+				ImGui::Image(0, ImVec2(imageSize, imageSize));
+				ImGui::TableNextColumn();
+				ImGui::Dummy(ImVec2(0.0f, 20.0f));
+				ImGui::Text("Drop Texture");
+			}
+			ImGui::EndGroup();
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+				{
+					AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+					Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+					if (resource && (resource->GetType() == Resource::Type::Texture))
+					{
+						(*textures[i]) = reinterpret_cast<ResourceTexture*>(resource);
+						(*textures[i])->GenerateMipmaps();
+						(*fileNames[i]) = asset->mName;
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+
+			ImGui::Dummy(ImVec2(1,5.0f));
+		}
+
+		ImGui::EndTable();
 	}
 }
 
@@ -1880,7 +2135,7 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	std::string label = cLabel;
 	ImGui::Text(cLabel);
 	std::string initial = "Initial " + label;
-	DrawRandomFloat(curve->mIsValueRandom, curve->mValue, curve->mMaxValue, initial.c_str());
+	DrawRandomFloat(curve->mValue, initial.c_str());
 
 	ImGui::Text("%s Curved", cLabel);
 	ImGui::SameLine();
@@ -1888,11 +2143,6 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	ImGui::Checkbox(asCurve.c_str(), &(curve->mIsCurve));
 	if (curve->mIsCurve)
 	{
-		ImGui::Text("%s Growing Factor", cLabel);
-		ImGui::SameLine();
-		std::string growing = "##" + label + " Growing Factor";
-		ImGui::DragFloat(growing.c_str(), &curve->mFactor, 1.0f, 0.0f);
-
 		if (ImGui::Curve("Das editor", ImVec2(400, 200), 10, curve->mPoints))
 		{
 			// curve changed
@@ -1900,20 +2150,20 @@ void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) con
 	}
 }
 
-void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, const char* cLabel) const
+void InspectorPanel::DrawRandomFloat(RandomFloat& value, const char* cLabel) const
 {
 	std::string label = cLabel;
 	ImGui::Text("%s Rand", cLabel);
 	ImGui::SameLine();
 	std::string asCurve = "##" + label + "Rand";
-	ImGui::Checkbox(asCurve.c_str(), &isRand);
+	ImGui::Checkbox(asCurve.c_str(), &value.mIsRand);
 	ImGui::SameLine();
 	float itemWidth = ImGui::GetWindowWidth() / 4.0f; // Por ejemplo, un cuarto del ancho de la ventana
-	if (!isRand)
+	if (!value.mIsRand)
 	{
 		std::string min = "##Min " + label;
 		ImGui::PushItemWidth(itemWidth*2); // Establece el ancho para el DragFloat
-		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::DragFloat(min.c_str(), &value.mMin);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 	}
 	else
@@ -1922,7 +2172,7 @@ void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, con
 		std::string min = "##Min " + label;
 		ImGui::SameLine();
 		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
-		ImGui::DragFloat(min.c_str(), &minV);
+		ImGui::DragFloat(min.c_str(), &value.mMin);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 
 		ImGui::SameLine();
@@ -1930,7 +2180,7 @@ void InspectorPanel::DrawRandomFloat(bool& isRand, float& minV, float& maxV, con
 		ImGui::SameLine();
 		std::string max = "##Max " + label;
 		ImGui::PushItemWidth(itemWidth); // Establece el ancho para el DragFloat
-		ImGui::DragFloat(max.c_str(), &maxV);
+		ImGui::DragFloat(max.c_str(), &value.mMax);
 		ImGui::PopItemWidth(); // Restaura el ancho original
 
 	}
