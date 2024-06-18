@@ -34,7 +34,7 @@ void Pistol::Enter()
 {
 }
 
-void Pistol::BasicAttack(float time)
+void Pistol::BasicAttack()
 {
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 

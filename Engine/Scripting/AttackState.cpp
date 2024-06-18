@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "PlayerController.h"
+#include "Weapon.h"
 
 AttackState::AttackState(PlayerController* player) : State(player)
 {
@@ -15,6 +16,8 @@ AttackState::~AttackState()
 
 StateType AttackState::HandleInput()
 {
+    mAttackTimer += App->GetDt();
+
     if (mAttackTimer < mWeapon->GetAttackTime())
     {
         return StateType::ATTACK;
@@ -27,8 +30,7 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
-    mAttackTimer += App->GetDt();
-    mWeapon->BasicAttack(mAttackTimer);
+    mWeapon->BasicAttack();
     DoAudio();
 }
 

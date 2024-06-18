@@ -7,7 +7,7 @@ public:
 	Pistol();
 	~Pistol();
 	void Enter() override;
-	void BasicAttack(float time) override;
+	void BasicAttack() override;
 	void SpecialAttack() override;
 	void Exit() override;
 

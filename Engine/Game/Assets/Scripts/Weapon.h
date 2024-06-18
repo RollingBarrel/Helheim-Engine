@@ -12,7 +12,7 @@ public:
 	~Weapon();
 
 	virtual void Enter() = 0;
-	virtual void BasicAttack(float time) = 0;
+	virtual void BasicAttack() = 0;
 	virtual void SpecialAttack() = 0;
 	virtual void Exit() = 0;
 
