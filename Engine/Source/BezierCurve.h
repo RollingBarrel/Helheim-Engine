@@ -26,6 +26,5 @@ private:
 	RandomFloat mValue;
 
     std::vector<float2> mPoints;
-    float mFactor = 1.0f;
 };
 
