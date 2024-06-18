@@ -423,7 +423,7 @@ void ModuleEditor::OpenLoadScene() {
 			{
 				reinterpret_cast<EditorControlPanel*>(mPanels[EDITORCONTROLPANEL])->Stop();
 			}
-			EngineApp->GetScene()->Load(filePathName.c_str());
+			EngineApp->GetScene()->Load(std::string(ASSETS_SCENES_PATH + filePathName).c_str());
 
 		}
 		ImGuiFileDialog::Instance()->Close();
