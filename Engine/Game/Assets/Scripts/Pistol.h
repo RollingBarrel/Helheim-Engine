@@ -6,9 +6,10 @@ class Pistol : public RangeWeapon
 public:
 	Pistol();
 	~Pistol();
-
-	void BasicAttack() override;
+	void Enter() override;
+	void BasicAttack(float time) override;
 	void SpecialAttack() override;
+	void Exit() override;
 
 };
 

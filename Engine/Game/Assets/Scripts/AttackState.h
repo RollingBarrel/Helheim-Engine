@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "Weapon.h"
 
 class AttackState : public State
 {
@@ -18,4 +19,6 @@ public:
 
 private:
 	void DoAudio();
+	Weapon* mWeapon = nullptr;
+	float mAttackTimer = 0.0f;
 };

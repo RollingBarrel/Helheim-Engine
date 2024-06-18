@@ -52,6 +52,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
 
+    SEPARATOR("MELEE");
+    MEMBER(MemberType::GAMEOBJECT, mBat);
+
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
@@ -110,8 +113,16 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    mMeleeWeapon = new Bat();
+    //mMeleeWeapon = new Bat();
     mRangeWeapon = new Pistol();
+
+    // MELEE WEAPON
+    if (mBat)
+    {
+        ScriptComponent* script = (ScriptComponent*)mBat->GetComponent(ComponentType::SCRIPT);
+        mMeleeWeapon = (Bat*)script->GetScriptInstance();
+        mBat->SetEnabled(false);
+    }
     mWeapon = mMeleeWeapon;
 
     // AUDIO

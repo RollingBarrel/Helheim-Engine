@@ -27,7 +27,11 @@ Pistol::~Pistol()
 {
 }
 
-void Pistol::BasicAttack()
+void Pistol::Enter()
+{
+}
+
+void Pistol::BasicAttack(float time)
 {
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) {
@@ -82,5 +86,9 @@ void Pistol::BasicAttack()
 }
 
 void Pistol::SpecialAttack()
+{
+}
+
+void Pistol::Exit()
 {
 }
