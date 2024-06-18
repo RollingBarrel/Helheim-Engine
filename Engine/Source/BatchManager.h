@@ -18,7 +18,7 @@ public:
 
 	//Once per draw call
 	void Update(const std::vector<const math::Frustum*>& frustums);
-	void Draw(unsigned int programId);
+	void Draw(unsigned int programId, const math::Frustum& frustum);
 	void EndFrameDraw();
 	unsigned int GetNumBatches() const { return mBatches.size(); }
 

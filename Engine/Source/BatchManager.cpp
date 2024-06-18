@@ -73,11 +73,11 @@ void BatchManager::Update(const std::vector<const math::Frustum*>& frustums)
 	}
 }
 
-void BatchManager::Draw(unsigned int programId)
+void BatchManager::Draw(unsigned int programId, const math::Frustum& frustum)
 {
 	for (int i = 0; i< mBatches.size(); ++i)
 	{
-		mBatches[i]->Draw(programId);
+		mBatches[i]->Draw(programId, frustum);
 	}
 }
 

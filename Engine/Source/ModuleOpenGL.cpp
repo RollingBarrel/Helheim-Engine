@@ -996,7 +996,7 @@ void ModuleOpenGL::Draw()
 	
 		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
 	
-		mBatchManager.Draw(mDepthPassProgramId);
+		mBatchManager.Draw(mDepthPassProgramId, frustum);
 	}
 
 	glViewport(0, 0, mSceneWidth, mSceneHeight);
@@ -1010,7 +1010,7 @@ void ModuleOpenGL::Draw()
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilMask(0xFF);
-	mBatchManager.Draw(mPbrGeoPassProgramId);
+	mBatchManager.Draw(mPbrGeoPassProgramId, App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	//glDeleteBuffers(1, &ibo);
 
 	//Lighting Pass

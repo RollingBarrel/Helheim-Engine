@@ -92,7 +92,7 @@ public:
 	bool EditMaterial(const MeshRendererComponent& component);
 	bool RemoveMeshComponent(const MeshRendererComponent& component);
 	void Update(const std::vector<const math::Frustum*>& frustums);
-	void Draw(unsigned int programId);
+	void Draw(unsigned int programId, const math::Frustum& frustum);
 	void EndFrameDraw();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
@@ -100,7 +100,7 @@ public:
 
 private:
 	unsigned int GetCommandsSsbo() const;
-	void ComputeCommands(unsigned int bufferIdx);
+	void ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum);
 
 	void RecreatePersistentFrustums();
 	void RecreatePersistentSsbos();
