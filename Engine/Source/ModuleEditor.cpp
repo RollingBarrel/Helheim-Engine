@@ -8,6 +8,7 @@
 #include "ModuleCamera.h"
 #include "ModuleFileSystem.h"
 #include "ModuleEngineScriptManager.h"
+#include "ModuleEngineResource.h"
 #include "Quadtree.h"
 
 #include "Panel.h"
@@ -36,7 +37,6 @@
 
 #include "OptickAdapter.h"
 #include "IconsFontAwesome6.h"
-
 
 
 
@@ -194,7 +194,7 @@ void ModuleEditor::SaveSettings()
 void ModuleEditor::ShowMainMenuBar() 
 {
 	IGFD::FileDialogConfig config;
-	config.path = "./Assets/Scenes";
+	config.path = "Assets/Scenes";
 	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("File"))
@@ -205,22 +205,22 @@ void ModuleEditor::ShowMainMenuBar()
 			}
 			if (ImGui::MenuItem("Load Scene"))
 			{
-				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".json", config);
+				ImGuiFileDialog::Instance()->OpenDialog("LoadScene", "Choose File", ".scn", config);
 			}
 			if (ImGui::MenuItem("Save"))
 			{
 				if (!EngineApp->IsPlayMode())
 				{
-					std::string str = "Assets/Scenes/";
+					std::string str = ASSETS_SCENES_PATH;
 					str += App->GetScene()->GetName();
-					str += ".json";
+					str += ".scn";
 					if (App->GetFileSystem()->Exists(str.c_str()))
 					{
 						App->GetScene()->Save(App->GetScene()->GetName().c_str());
 					}
 					else
 					{
-						ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+						ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".scn", config);
 					}
 				}
 				else
@@ -232,7 +232,7 @@ void ModuleEditor::ShowMainMenuBar()
 			{
 				if (!EngineApp->IsPlayMode())
 				{
-					ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".json", config);
+					ImGuiFileDialog::Instance()->OpenDialog("SaveScene", "Choose File", ".scn", config);
 				}
 				else
 				{
@@ -424,21 +424,34 @@ void ModuleEditor::OpenLoadScene() {
 				reinterpret_cast<EditorControlPanel*>(mPanels[EDITORCONTROLPANEL])->Stop();
 			}
 			EngineApp->GetScene()->Load(filePathName.c_str());
+
 		}
 		ImGuiFileDialog::Instance()->Close();
 	}
 }
 
-void ModuleEditor::OpenSaveScene() {
+void ModuleEditor::OpenSaveScene() 
+{
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
 	if (ImGuiFileDialog::Instance()->Display("SaveScene")) 
 	{
 		if (ImGuiFileDialog::Instance()->IsOk()) 
 		{
 			std::string filePathName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			filePathName = filePathName.substr(0, filePathName.find(".json"));
+			filePathName = filePathName.substr(0, filePathName.find(".scn"));
+			std::string str = ASSETS_SCENES_PATH;
+			str += filePathName;
+			str += ".scn";
 			EngineApp->GetScene()->GetRoot()->SetName(filePathName.c_str());
-			EngineApp->GetScene()->Save(filePathName.c_str());
+			if (!App->GetFileSystem()->Exists(str.c_str()))
+			{
+				EngineApp->GetEngineResource()->ImportFile(str.c_str(), 0u, true);
+			}
+			else
+			{
+				EngineApp->GetEngineResource()->ImportFile(str.c_str(), 0u, false);
+			}
+
 		}
 		ImGuiFileDialog::Instance()->Close();
 	}
@@ -522,7 +535,8 @@ void ModuleEditor::Style()
 	style.ChildRounding = 4;
 }
 
-void ModuleEditor::ResetFloatingPanels(bool openPanels) {
+void ModuleEditor::ResetFloatingPanels(bool openPanels) 
+{
 	Panel* timerPanel = mPanels[TIMERPANEL];
 	Panel* debugPanel = mPanels[DEBUGPANEL];
 	Panel* navMeshController = mPanels[NAVMESHPANEL];

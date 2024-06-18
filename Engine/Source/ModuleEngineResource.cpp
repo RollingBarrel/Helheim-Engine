@@ -1,14 +1,19 @@
 #include "ModuleEngineResource.h"
 #include "EngineApp.h"
 #include "ModuleFileSystem.h"
+#include "ModuleScene.h"
+#include "ModuleEditor.h"
+#include "HierarchyPanel.h"
 
 #include "Resource.h"
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
 #include "ResourceModel.h"
-#include "ResourceScript.h"
 #include "ResourceAnimation.h"
+#include "ResourceScene.h"
+#include "ResourcePrefab.h"
+#include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
 
@@ -18,6 +23,8 @@
 
 #include "ImporterTexture.h"
 #include "ImporterModel.h"
+#include "ImporterScene.h"
+#include "ImporterPrefab.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
 #include "ImporterStateMachine.h"
@@ -155,42 +162,41 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 		break;
 	case Resource::Type::Mesh:
 		break;
-	case Resource::Type::Bone:
+	case Resource::Type::Material:
 		break;
 	case Resource::Type::Animation:
-		break;
-	case Resource::Type::Material:
 		break;
 	case Resource::Type::Model:
 		ret = Importer::Model::Import(importedFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Scene:
+		ret = Importer::Scene::Import(assetsFile, uid, modifyAssets);
 		break;
-	case Resource::Type::NavMesh:
-		ret = Importer::NavMesh::Import(uid, assetsFile);
+	case Resource::Type::Prefab:
+		ret = Importer::Prefab::Import(assetsFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
 		break;
-	case Resource::Type::Prefab:
-		ret = new Resource(uid, type);
+	case Resource::Type::NavMesh:
+		ret = Importer::NavMesh::Import(uid, assetsFile);
 		break;
 	case Resource::Type::StateMachine:
 		ret = Importer::StateMachine::Import(assetsFile, uid);
+		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
 	}
 	//if ret is not nullptr
-	if (ret) {
+	if (ret) 
+	{
 		mResources[uid] = ret;
 		mResources[uid]->AddReferenceCount();
 	}
 
 	return ret;
 }
-
-
 
 std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const
 {
@@ -217,9 +223,22 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		EngineApp->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
 	}
-	case Resource::Type::Prefab:
-		assetsFilePath = importedFilePath;
+	case Resource::Type::Scene:
+	{
+		assetsFilePath = ASSETS_SCENES_PATH + assetName + extensionName;
+		EngineApp->GetScene()->Save(assetsFilePath.c_str());
 		break;
+	}
+	case Resource::Type::Prefab:
+	{
+		//TODO: LOOK AT THIS
+		assetsFilePath = ASSETS_PREFABS_PATH + assetName + extensionName;
+		if ((reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()))
+		{
+			EngineApp->GetScene()->SavePrefab(*(reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject()), assetsFilePath.c_str());
+		}
+		break;
+	}
 	case Resource::Type::Script:
 	{
 		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
@@ -234,7 +253,6 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 
 	return assetsFilePath;
 }
-
 
 Resource::Type ModuleEngineResource::DeduceResourceType(const char* assetsFile)
 {

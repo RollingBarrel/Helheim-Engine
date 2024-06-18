@@ -18,6 +18,8 @@
 #include "ModuleResource.h"
 #include "Globals.h"
 
+#include "ResourceScene.h"
+
 #include <algorithm>
 #include <iterator>
 #include "Algorithm/Random/LCG.h"
@@ -89,12 +91,12 @@ update_status ModuleScene::PostUpdate(float dt)
 	}
 	if (mClosePrefab)
 	{
-		int resourceId = SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
+		SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
 		delete mRoot;
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
-		LoadPrefab(mPrefabPath, true);
+		LoadPrefab(mPrefabPath, nullptr, true);
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
@@ -177,10 +179,10 @@ void ModuleScene::Save(const char* sceneName) const
 		return;
 	}
 
-	std::string saveFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
-	if (saveFilePath.find(".json") == std::string::npos)
+	std::string saveFilePath = sceneName;
+	if (saveFilePath.find(".scn") == std::string::npos)
 	{
-		saveFilePath += ".json";
+		saveFilePath += ".scn";
 	}
 
 	Archive doc;
@@ -213,16 +215,25 @@ void ModuleScene::Load(const char* sceneName)
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
 	}
-	std::string filePath = ASSETS_SCENES_PATH + std::string(sceneName);
 
-	if (filePath.find(".json") == std::string::npos)
+	//TODO: Request resource only works in engine 
+	//App->GetResource()->RequestResource(sceneName);
+
+	std::string loadFilePath = sceneName;
+	if (loadFilePath.find(".scn") == std::string::npos)
 	{
-		filePath += ".json";
+		loadFilePath += ".scn";
 	}
+
 
 	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(filePath.c_str(), &fileBuffer) > 0)
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0);
+	{
+		//App->GetScene()->Load(fileBuffer);
+	}
+
+	if(fileBuffer != nullptr)
 	{
 		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
@@ -231,7 +242,7 @@ void ModuleScene::Load(const char* sceneName)
 		mGameObjectsByTags.clear();
 		mRoot = new GameObject("SampleScene", nullptr);
 		Archive doc(fileBuffer);
-		delete[] fileBuffer;
+		delete fileBuffer;
 		JsonObject root = doc.GetRootObject();
 
 		JsonObject scene = root.GetJsonObject("Scene");
@@ -239,7 +250,7 @@ void ModuleScene::Load(const char* sceneName)
 
 		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
 		std::unordered_map<unsigned int, GameObject*> loadMap;
-		//Load GameObjects
+		//Load GameObjects		//TODO: REDOO Look if prefab has been overrided
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
@@ -276,75 +287,161 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 	return gameObject;
 }
 
-int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
+void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
 	gameObject->SetRotation(float3::zero);
 	gameObject->SetPosition(float3::zero);
 	gameObject->RecalculateMatrices();
-	unsigned int resourceId = LCG().Int();
-	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-	if (resource != nullptr) { resourceId = resource->GetUID(); }
-	Archive* prefabArchive = new Archive();
-	Archive* archive = new Archive();
-	std::vector<Archive> gameObjectsArchiveVector;
-	//SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
-	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	//prefabArchive->AddObject("Prefab", *archive);
+	
+	Archive doc;
+	JsonObject root = doc.GetRootObject();
+	JsonObject prefab = root.AddNewJsonObject("Prefab");
+	JsonArray gameObjects = prefab.AddNewJsonArray("GameObjects");
+	SavePrefabRecursive(objectToSave, gameObjects);
 
-	std::string out = prefabArchive->Serialize();
+	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	PathNode* root = App->GetFileSystem()->GetRootNode();
-	root->mChildren.clear();
-	App->GetFileSystem()->DiscoverFiles("Assets", root);
-	delete prefabArchive;
-	delete archive;
-	//gameObject->GetParent()->DeleteChild(gameObject);		//TODO: Why delete yourself?
-	return resourceId;
+	PathNode* rootNode = App->GetFileSystem()->GetRootNode();
+	rootNode->mChildren.clear();
+	App->GetFileSystem()->DiscoverFiles("Assets", rootNode);
+
+	gameObject->GetParent()->RemoveChild(gameObject->GetID());		//TODO: Why delete yourself?
 }
 
-GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameObject* parent)
+void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const
+{
+	JsonObject obj = gameObjects.PushBackNewObject();
+	objectToSave.Save(obj);
+	for (std::vector<GameObject*>::const_iterator it = objectToSave.GetChildren().cbegin(); it < objectToSave.GetChildren().cend(); ++it)
+	{
+		SavePrefabRecursive(*(*it), gameObjects);
+	}
+}
+
+GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent, bool update)
 {
 	GameObject* ret = nullptr;
-	if (parent == nullptr) parent = mRoot;
-	char* loadedBuffer = nullptr;
-	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
-	Resource* resource = App->GetResource()->RequestResource(saveFilePath);
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
-	if (!ok)
+	if (parent == nullptr) 
 	{
-		LOG("Object was not loaded.");
-		return nullptr;
+		parent = mRoot;
 	}
-	std::unordered_map<int, int> uuids;
 
-	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
+	char* fileBuffer = nullptr;
+
+	if (App->GetFileSystem()->Load(saveFilePath, &fileBuffer) > 0)
 	{
-		const rapidjson::Value& sceneValue = d["Prefab"];
+		Archive doc(fileBuffer);
+		delete[] fileBuffer;
 
-		if (update)
-		{
-			mRoot->LoadChangesPrefab(sceneValue, resource->GetUID());
-		}
-		else
-		{
-			int offset = mSceneGO.size();
-			//LoadGameObject(sceneValue, parent, &uuids);
-			if (mSceneGO.size() > offset)
-			{
-				mSceneGO[offset]->SetPrefabId(resource->GetUID());
-				ret = mSceneGO[offset];
-			}
-		}
+		JsonObject root = doc.GetRootObject();
 
-		//LoadGameObjectsIntoScripts(); DOES NOT EXIST NOW
-		App->GetScriptManager()->StartScripts();
+		JsonObject prefab = root.GetJsonObject("Prefab");
 		
+		std::unordered_map<unsigned int, GameObject*> loadMap;
+		JsonArray gameObjects = prefab.GetJsonArray("GameObjects");	
+		
+		unsigned int currSize = mSceneGO.empty() ? 0 : mSceneGO.size();
+
+		unsigned int idx = 0;
+		LoadPrefabRecursive(gameObjects, idx, mRoot, loadMap);
+
+		//Load Components
+		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
+		{
+			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
+			mSceneGO[currSize + i]->LoadComponents(gameObjectData, loadMap);
+		}
+	
+		ret = mSceneGO[currSize];
+
+		mRoot->RecalculateMatrices();
+		App->GetScriptManager()->AwakeScripts();
+		App->GetScriptManager()->StartScripts();
 	}
-	delete[] loadedBuffer;
 	
 	return ret;
+}
+
+void ModuleScene::LoadPrefabRecursive(JsonArray& gameObjects, unsigned int& idx, GameObject* parent, std::unordered_map<unsigned int, GameObject*>& loadMap)
+{
+	if (idx < gameObjects.Size())
+	{
+		JsonObject obj = gameObjects.GetJsonObject(idx);
+		GameObject* gO = new GameObject(obj.GetString("Name").c_str(), parent);
+		gO->LoadGameObject(obj, loadMap);
+
+		LoadPrefabRecursive(gameObjects, ++idx, loadMap[gO->GetID()], loadMap);
+	}
+	else
+	{
+		return;
+	}
+}
+
+void ModuleScene::OverridePrefab(const JsonObject& gameObject, unsigned int id)
+{
+	//if (mPrefabOverride && mPrefabId == id)
+	//{
+	//	std::vector<GameObject*> loadedObjects;
+	//	for (GameObject* child : mChildren)
+	//	{
+	//		delete child;
+	//	}
+	//	mChildren.clear();
+	//	std::unordered_map<int, int> uuids;
+	//
+	//	if (obj.HasMember("Prefab") && obj["GameObjects"].IsArray())
+	//	{
+	//		const rapidjson::Value& gameObjects = gameObject["GameObjects"];
+	//		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+	//		{
+	//			if (gameObjects[i].IsObject())
+	//			{
+	//				unsigned int parentUID{ 0 };
+	//				unsigned int uuid{ 0 };
+	//
+	//				if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
+	//				{
+	//					parentUID = gameObjects[i]["ParentUID"].GetInt();
+	//				}
+	//				if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt())
+	//				{
+	//					uuid = gameObjects[i]["UID"].GetInt();
+	//				}
+	//				if (parentUID == 1) {
+	//					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+	//					{
+	//						loadedObjects.push_back(this);
+	//						uuids[uuid] = mUid;
+	//						//LoadComponentsFromJSON(gameObjects[i]["Components"]);
+	//					}
+	//				}
+	//				else
+	//				{
+	//					//GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+	//					//loadedObjects.push_back(go);
+	//					//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+	//				}
+	//			}
+	//		}
+	//		mParent->RecalculateMatrices();
+	//		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+	//		{
+	//			if (gameObjects[i].IsObject())
+	//			{
+	//				//loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+	//			}
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	for (GameObject* child : mChildren)
+	//	{
+	//		child->LoadChangesPrefab(obj, id);
+	//	}
+	//}
 }
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
