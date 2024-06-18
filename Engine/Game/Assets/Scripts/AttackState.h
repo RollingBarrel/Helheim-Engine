@@ -1,6 +1,7 @@
 #pragma once
 #include "State.h"
-#include "Weapon.h"
+
+class Weapon;
 
 class AttackState : public State
 {

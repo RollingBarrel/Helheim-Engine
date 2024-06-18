@@ -1,6 +1,7 @@
 #pragma once
 #include "MeleeWeapon.h"
-#include "GameObject.h"
+
+class GameObject;
 
 class Bat : public MeleeWeapon
 {
