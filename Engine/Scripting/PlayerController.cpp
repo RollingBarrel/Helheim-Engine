@@ -123,7 +123,7 @@ void PlayerController::Start()
         mMeleeWeapon = (Bat*)script->GetScriptInstance();
         mBat->SetEnabled(false);
     }
-    mWeapon = mMeleeWeapon;
+    mWeapon = mRangeWeapon;
 
     // AUDIO
     if (mFootStepAudioHolder)

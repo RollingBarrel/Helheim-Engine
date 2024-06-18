@@ -20,7 +20,8 @@ struct NavMeshTileHeader
 	dtTileRef tileRef;
 	int dataSize;
 };
-void Importer::NavMesh::Save(ResourceNavMesh* navMesh, std::string name)
+
+void Importer::NavMesh::Save(ResourceNavMesh* navMesh, const char* name)
 {
 	//Preguntarle a carlos por mas del const 
 	const dtNavMesh* mesh = navMesh->GetDtNavMesh();

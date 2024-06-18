@@ -22,7 +22,9 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "DecalComponent.h"
 #include "TextComponent.h"
+#include "ModuleScriptManager.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -66,7 +68,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 	mEulerAngles(original.mEulerAngles), mRotation(original.mRotation), mLocalRotation(original.mLocalRotation), mLocalEulerAngles(original.mLocalEulerAngles),
 	mPosition(original.mPosition), mLocalPosition(original.mLocalPosition), mScale(original.mScale), mLocalScale(original.mLocalScale), 
 	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight),
-	mPrefabId(original.mPrefabId), mPrefabOverride(original.mPrefabOverride), mIsDynamic(original.mIsDynamic)
+	mPrefabId(original.mPrefabId), mIsPrefabOverride(original.mIsPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
 	SetTag(original.mTag);
 	for (Component* component : original.mComponents)
@@ -96,6 +98,8 @@ GameObject::~GameObject()
 {
 	App->GetScene()->RemoveGameObjectFromScene(this);
 
+	App->GetScriptManager()->RemoveGameObject(this);
+
 	for (Component* component : mComponents)
 	{
 		delete component;
@@ -105,6 +109,8 @@ GameObject::~GameObject()
 	{
 		delete gameObject;
 	}
+
+	
 }
 
 #pragma endregion
@@ -275,8 +281,6 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 	mIsTransformModified = true;
 }
 
-
-
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
 	mLocalRotation = rotation;
@@ -412,11 +416,15 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::PARTICLESYSTEM:
 		newComponent = new ParticleSystemComponent(this);
 		break;
+	case ComponentType::DECAL:
+		newComponent = new DecalComponent(this);
+		break;
 	case ComponentType::TRAIL:
 		newComponent = new TrailComponent(this);
 		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);
+		break;
 	default:
 		break;
 	}
@@ -536,16 +544,17 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::DeleteComponents()
 {
-	for (std::vector<Component*>::iterator deletIt = mComponentsToDelete.begin(); deletIt != mComponentsToDelete.end(); ++deletIt)
+	for (std::vector<Component*>::iterator deleteIt = mComponentsToDelete.begin(); deleteIt != mComponentsToDelete.end(); ++deleteIt)
 	{
 		for (std::vector<Component*>::iterator compIt = mComponents.begin(); compIt != mComponents.end(); ++compIt)
 		{
-			if ((*compIt)->GetType() == (*deletIt)->GetType())
-			{
+			if ((*compIt)->GetType() == (*deleteIt)->GetType())
+			{	
 				mComponents.erase(compIt);
 				break;
 			}
 		}
+		delete *deleteIt;
 	}
 	mComponentsToDelete.clear();
 }
@@ -566,12 +575,13 @@ void GameObject::Save(JsonObject& obj) const
 	}
 	obj.AddString("Name", mName.c_str());
 	obj.AddBool("Enabled", mIsEnabled);
+	obj.AddBool("Active", mIsActive);
 	obj.AddFloats("Translation", mPosition.ptr(), 3);
 	obj.AddFloats("Rotation", mRotation.ptr(), 4);
 	obj.AddFloats("Scale", mScale.ptr(), 3);
 	obj.AddString("Tag", mTag.c_str());
 	obj.AddInt("PrefabUid", mPrefabId);
-	obj.AddBool("OverridePrefab", mPrefabOverride);
+	obj.AddBool("OverridePrefab", mIsPrefabOverride);
 	obj.AddBool("Dynamic", mIsDynamic);
 
 	// Save components
@@ -587,6 +597,12 @@ void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map
 {
 	mIsEnabled = jsonObject.GetBool("Enabled");
 	float pos[3]; 
+
+	if(jsonObject.HasMember("Active"))
+	{
+		mIsActive = jsonObject.GetBool("Active");
+	}
+
 	jsonObject.GetFloats("Translation", pos);
 	SetPosition(float3(pos));
 	float rot[4]; 
@@ -598,7 +614,7 @@ void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map
 
 	SetTag(jsonObject.GetString("Tag"));
 	mPrefabId = jsonObject.GetInt("PrefabUid");
-	mPrefabOverride = jsonObject.GetBool("OverridePrefab");
+	mIsPrefabOverride = jsonObject.GetBool("OverridePrefab");
 	mIsDynamic = jsonObject.GetBool("Dynamic");
 	uidPointerMap[mUid] = this;
 }
@@ -614,72 +630,6 @@ void GameObject::LoadComponents(const JsonObject& jsonObject, const std::unorder
 		Component* component = this->CreateComponent(cType);
 		component->Load(componentData, uidPointerMap);
 	}
-}
-
-void GameObject::LoadChangesPrefab(const rapidjson::Value& gameObject, unsigned int id)
-{
-	if (mPrefabOverride && mPrefabId == id)
-	{
-		std::vector<GameObject*> loadedObjects;
-		for (GameObject* child : mChildren)
-		{
-			delete child;
-		}
-		mChildren.clear();
-		std::unordered_map<int, int> uuids;
-		
-		if (gameObject.HasMember("GameObjects") && gameObject["GameObjects"].IsArray())
-		{
-			const rapidjson::Value& gameObjects = gameObject["GameObjects"];
-			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-			{
-				if (gameObjects[i].IsObject())
-				{
-					unsigned int parentUID{ 0 };
-					unsigned int uuid{ 0 };
-
-					if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
-					{
-						parentUID = gameObjects[i]["ParentUID"].GetInt();
-					}
-					if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt())
-					{
-						uuid = gameObjects[i]["UID"].GetInt();
-					}
-					if (parentUID == 1) {
-						if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
-						{
-							loadedObjects.push_back(this);
-							uuids[uuid] = mUid;
-							//LoadComponentsFromJSON(gameObjects[i]["Components"]);
-						}
-					}
-					else
-					{
-						//GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
-						//loadedObjects.push_back(go);
-						//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-					}
-				}
-			}
-			mParent->RecalculateMatrices();
-			for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
-			{
-				if (gameObjects[i].IsObject())
-				{
-					//loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
-				}
-			}
-		}
-	}
-	else
-	{
-		for (GameObject* child : mChildren)
-		{
-			child->LoadChangesPrefab(gameObject, id);
-		}
-	}
-
 }
 #pragma endregion
 

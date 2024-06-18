@@ -97,7 +97,7 @@ void BezierCurve::Load(const JsonObject& data)
     if (data.HasMember("CurvePoints")) {
         JsonArray curvePoint = data.GetJsonArray("CurvePoints");
 
-        for (int i = 0; i < curvePoint.Size(); ++i)
+        for (unsigned int i = 0; i < curvePoint.Size(); ++i)
         {
             JsonObject pointObj = curvePoint.GetJsonObject(i);
             if (pointObj.HasMember("Point"))

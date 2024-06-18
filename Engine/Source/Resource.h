@@ -8,14 +8,13 @@ public:
 	{
 		Texture = 1,
 		Mesh,
-		Bone,
-		Animation,
 		Material,
+		Animation,
 		Model,
 		Scene,
-		NavMesh,
-		Script,
 		Prefab,
+		Script,
+		NavMesh,
 		IBL,
 		StateMachine,
 		Unknown = 0
