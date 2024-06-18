@@ -299,7 +299,6 @@ void ScenePanel::DrawScene()
 				}
 				case Resource::Type::Texture:
 				case Resource::Type::Mesh:
-				case Resource::Type::Bone:
 				case Resource::Type::Animation:
 				case Resource::Type::Material:
 				case Resource::Type::Scene:

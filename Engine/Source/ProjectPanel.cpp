@@ -144,7 +144,12 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
 			{
 				AssetDisplay* asset = current.assets[i];
-				EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
+				std::string path = asset->mPath;
+				std::string token = path.substr(path.find_last_of('.'), path.size());
+				if (token == ".prfb")
+				{
+					EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
+				}
 			}
 			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
 			{
@@ -169,9 +174,7 @@ void ProjectPanel::SavePrefab(const PathNode& dir) const
 			{
 				std::string file = dir.mName;
 				file.append('/' + object->GetName() + ".prfb");
-				unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
-				object->SetPrefabId(resourceId);
-				EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
+				EngineApp->GetEngineResource()->ImportFile(file.c_str());
 
 			}
 		}

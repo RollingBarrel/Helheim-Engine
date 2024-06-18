@@ -197,7 +197,7 @@ void EnemyRobot::RangeAttack()
     ray.dir = mGameObject->GetFront();
     
     float distance = 100.0f;
-    Physics::Raycast(hits, ray);
+    //Physics::Raycast(hits, ray);  THIS IS THE OLD RAYCAST
     
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
