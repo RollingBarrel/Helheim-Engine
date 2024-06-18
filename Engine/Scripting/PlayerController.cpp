@@ -446,14 +446,9 @@ void PlayerController::RechargeShield(float shield)
     }
 }
 
-void PlayerController::UpgradeToShotgun()
+void PlayerController::RechargeBattery(BatteryType batteryType)
 {
     LOG("Shotgun Upgrade");
-}
-
-void PlayerController::UpgradeToMachineGun()
-{
-    LOG("Machine Gun Upgrade");
 }
 
 void PlayerController::TakeDamage(float damage)

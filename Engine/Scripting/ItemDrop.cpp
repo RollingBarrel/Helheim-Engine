@@ -12,7 +12,6 @@ CREATE(ItemDrop)
 	CLASS(owner);
 
     MEMBER(MemberType::INT, mDropId);
-    MEMBER(MemberType::FLOAT, mEnergyRecovered);
     MEMBER(MemberType::FLOAT, mHealthRecovered);
     MEMBER(MemberType::FLOAT, mActivationRange);
 
@@ -58,10 +57,10 @@ void ItemDrop::Update()
                 playerScript->RechargeShield(mHealthRecovered);
                 break;
             case 2:
-                playerScript->UpgradeToShotgun(); 
+                playerScript->RechargeBattery(BatteryType::BLUE); 
                 break;
-            case 3:
-                playerScript->UpgradeToMachineGun(); 
+            case 3: 
+                playerScript->RechargeBattery(BatteryType::RED);
                 break;
             default:
                 break;
