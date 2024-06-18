@@ -238,7 +238,8 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			JsonObject obj = arr.GetJsonObject(i);
 			if (obj.HasMember("GoId"))
 			{
-				GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
+				auto& uids = App->GetScene()->GetPrefabUIDMap();
+				GameObject* ptr = uidPointerMap.at(uids.at(obj.GetInt("GoId")));
 				float matrix[16];
 				if (obj.HasMember("Matrix"))
 				{

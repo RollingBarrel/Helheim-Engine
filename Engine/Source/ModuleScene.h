@@ -68,12 +68,13 @@ public:
 	void SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
 	void SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const;
 	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent = nullptr, bool update = false);
-	void LoadPrefabRecursive(JsonArray& gameObjects, unsigned int& idx, GameObject* parent, std::unordered_map<unsigned int, GameObject*>& loadMap);
 	void OverridePrefab(const JsonObject& gameObject, unsigned int id);
 
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }
+
+	const std::unordered_map<unsigned int, unsigned int>& GetPrefabUIDMap() { return prefabOldNewUid; }
 
 private:
 	void DeleteGameObjects();
@@ -96,6 +97,8 @@ private:
 	// Prefabs
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
+
+	std::unordered_map<unsigned int, unsigned int> prefabOldNewUid;
 
 	// Others
 	std::vector<const MeshRendererComponent*> mCurrRenderComponents;
