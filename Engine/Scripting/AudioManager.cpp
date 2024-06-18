@@ -87,14 +87,14 @@ void AudioManager::PlayOneShot(SFX sfx, float3 position)
     return;
 }
 
-void AudioManager::Pause(BGM bgm, int id, bool immediate)
+void AudioManager::Pause(BGM bgm, int id, bool pause)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
     if (description == nullptr)
     {
         return;
     }
-    App->GetAudio()->Pause(description, id, immediate);
+    App->GetAudio()->Pause(description, id, pause);
     return;
 }
 

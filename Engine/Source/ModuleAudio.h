@@ -45,7 +45,7 @@ public:
 	void EngineStop();
 	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
-	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool fadeout);
+	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
 	// Kill instance
 	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);

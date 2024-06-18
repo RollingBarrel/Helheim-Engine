@@ -55,8 +55,8 @@ public:
 	int Play(SFX sfx, int id = -1, float3 position = { 0.0f, 0.0f, 0.0f });
 	void PlayOneShot(SFX sfx, float3 position = { 0.0f, 0.0f, 0.0f });
 
-	void Pause(BGM bgm, int id, bool immediate);
-	void Pause(SFX sfx, int id, bool immediate);
+	void Pause(BGM bgm, int id, bool pause);
+	void Pause(SFX sfx, int id, bool pause);
 
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
