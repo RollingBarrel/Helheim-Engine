@@ -442,6 +442,7 @@ void AnimationSMPanel::DrawMenuBar()
     {
         //Check if asset existed to use its uid
         unsigned int uid = mStateMachine->GetUID();
+        mStateMachine->SaveResource("Assets/StateMachines/", false);
         if (uid != 0)
         {
             ResourceStateMachine* existingRes = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(uid, Resource::Type::StateMachine));
@@ -450,7 +451,6 @@ void AnimationSMPanel::DrawMenuBar()
         }
         else
         {
-            mStateMachine->SaveResource("Assets/StateMachines/", false);
             std::string filePath = "Assets/StateMachines/" + mStateMachine->GetName() + ".smbin";
             uid = EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine)->GetUID();
             mStateMachine->SetUID(uid);
