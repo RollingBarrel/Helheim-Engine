@@ -222,10 +222,12 @@
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterNavMesh.cpp" />
+    <ClCompile Include="ImporterScene.cpp" />
     <ClCompile Include="ImporterScript.cpp" />
     <ClCompile Include="HierarchyPanel.cpp" />
     <ClCompile Include="ImporterMaterial.cpp" />
     <ClCompile Include="ImporterStateMachine.cpp" />
+    <ClCompile Include="ImporterPrefab.cpp" />
     <ClCompile Include="InspectorPanel.cpp" />
     <ClCompile Include="ModuleDebugDraw.cpp" />
     <ClCompile Include="ModuleEngineCamera.cpp" />
@@ -306,12 +308,14 @@
     <ClInclude Include="ImColorGradient.h" />
     <ClInclude Include="ImporterAnimation.h" />
     <ClInclude Include="ImporterNavMesh.h" />
+    <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterScript.h" />
     <ClInclude Include="IconsFontAwesome6.h" />
     <ClInclude Include="ImporterMesh.h" />
     <ClInclude Include="ImporterModel.h" />
     <ClInclude Include="ImporterMaterial.h" />
     <ClInclude Include="ImporterStateMachine.h" />
+    <ClInclude Include="ImporterPrefab.h" />
     <ClInclude Include="InspectorPanel.h" />
     <ClInclude Include="HierarchyPanel.h" />
     <ClCompile Include="EngineMain.cpp" />

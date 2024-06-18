@@ -161,7 +161,7 @@ void InspectorPanel::Draw(int windowFlags)
 
 		if (focusedObject->mPrefabId != 0) {
 			ImGui::Text("From Prefab");
-			ImGui::Checkbox("Override Prefab", &focusedObject->mPrefabOverride);
+			ImGui::Checkbox("Override Prefab", &focusedObject->mIsPrefabOverride);
 		}
 
 		DrawTransform(focusedObject);
