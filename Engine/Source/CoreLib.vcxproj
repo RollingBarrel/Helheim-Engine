@@ -178,6 +178,7 @@
     <ClCompile Include="ColorGradient.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DecalComponent.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp" />
@@ -300,6 +301,7 @@
     <ClInclude Include="ColorGradient.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DecalComponent.h" />
     <ClInclude Include="Dependencies\Bullet\include\btBulletCollisionCommon.h" />
     <ClInclude Include="Dependencies\Bullet\include\btBulletDynamicsCommon.h" />
     <ClInclude Include="Dependencies\Bullet\include\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
@@ -777,6 +779,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl" />

@@ -2,7 +2,9 @@
 #include "Module.h"
 #include "Collider.h"
 #include "Math/float3.h"
+#include "Physics.h"
 #include <vector>
+#include <set>
 
 class btDefaultCollisionConfiguration;
 class btCollisionDispatcher;
@@ -35,6 +37,7 @@ public:
 	float GetGravity() { return mGravity; }
 	void SetGravity(float gravity) { mGravity = gravity; }
 
+	void RayCast(float3 from, float3 to, std::multiset<Hit>& hits);
 
 	void CreateBoxRigidbody(BoxColliderComponent* boxCollider);
 	void RemoveBoxRigidbody(BoxColliderComponent* boxCollider);

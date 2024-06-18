@@ -22,7 +22,9 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "DecalComponent.h"
 #include "TextComponent.h"
+#include "ModuleScriptManager.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -96,6 +98,8 @@ GameObject::~GameObject()
 {
 	App->GetScene()->RemoveGameObjectFromScene(this);
 
+	App->GetScriptManager()->RemoveGameObject(this);
+
 	for (Component* component : mComponents)
 	{
 		delete component;
@@ -105,6 +109,8 @@ GameObject::~GameObject()
 	{
 		delete gameObject;
 	}
+
+	
 }
 
 #pragma endregion
@@ -275,8 +281,6 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 	mIsTransformModified = true;
 }
 
-
-
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
 	mLocalRotation = rotation;
@@ -412,11 +416,15 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::PARTICLESYSTEM:
 		newComponent = new ParticleSystemComponent(this);
 		break;
+	case ComponentType::DECAL:
+		newComponent = new DecalComponent(this);
+		break;
 	case ComponentType::TRAIL:
 		newComponent = new TrailComponent(this);
 		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);
+		break;
 	default:
 		break;
 	}
@@ -536,16 +544,17 @@ void GameObject::AddComponentToDelete(Component* component)
 
 void GameObject::DeleteComponents()
 {
-	for (std::vector<Component*>::iterator deletIt = mComponentsToDelete.begin(); deletIt != mComponentsToDelete.end(); ++deletIt)
+	for (std::vector<Component*>::iterator deleteIt = mComponentsToDelete.begin(); deleteIt != mComponentsToDelete.end(); ++deleteIt)
 	{
 		for (std::vector<Component*>::iterator compIt = mComponents.begin(); compIt != mComponents.end(); ++compIt)
 		{
-			if ((*compIt)->GetType() == (*deletIt)->GetType())
-			{
+			if ((*compIt)->GetType() == (*deleteIt)->GetType())
+			{	
 				mComponents.erase(compIt);
 				break;
 			}
 		}
+		delete *deleteIt;
 	}
 	mComponentsToDelete.clear();
 }
@@ -566,6 +575,7 @@ void GameObject::Save(JsonObject& obj) const
 	}
 	obj.AddString("Name", mName.c_str());
 	obj.AddBool("Enabled", mIsEnabled);
+	obj.AddBool("Active", mIsActive);
 	obj.AddFloats("Translation", mPosition.ptr(), 3);
 	obj.AddFloats("Rotation", mRotation.ptr(), 4);
 	obj.AddFloats("Scale", mScale.ptr(), 3);
@@ -587,6 +597,12 @@ void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map
 {
 	mIsEnabled = jsonObject.GetBool("Enabled");
 	float pos[3]; 
+
+	if(jsonObject.HasMember("Active"))
+	{
+		mIsActive = jsonObject.GetBool("Active");
+	}
+
 	jsonObject.GetFloats("Translation", pos);
 	SetPosition(float3(pos));
 	float rot[4]; 

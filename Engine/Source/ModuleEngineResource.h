@@ -27,6 +27,7 @@ private:
 		{".jpg", Resource::Type::Texture},
 		{".bmp", Resource::Type::Texture},
 		{".dds", Resource::Type::Texture},
+		{".tga", Resource::Type::Texture},
 		{".gltf", Resource::Type::Model},
 		{".h", Resource::Type::Script},
 		{".prfb", Resource::Type::Prefab},

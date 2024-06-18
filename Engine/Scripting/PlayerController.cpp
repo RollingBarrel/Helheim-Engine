@@ -112,7 +112,7 @@ void PlayerController::Start()
     // Weapons
     mMeleeWeapon = new Bat();
     mRangeWeapon = new Pistol();
-    mWeapon = mMeleeWeapon;
+    mWeapon = mRangeWeapon;
 
     // AUDIO
     if (mFootStepAudioHolder)

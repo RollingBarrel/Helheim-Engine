@@ -8,7 +8,7 @@ enum class ENGINE_API ComponentType : unsigned int
 	MESHRENDERER, POINTLIGHT, SPOTLIGHT, SCRIPT, NAVMESHOBSTACLE, AIAGENT, 
 	CAMERA, CANVAS, IMAGE, TRANSFORM2D, ANIMATION, BUTTON, SLIDER,
 	AUDIOSOURCE, AUDIOLISTENER, PARTICLESYSTEM, TEXT,
-	BOXCOLLIDER, TRAIL, NONE
+	BOXCOLLIDER, TRAIL, DECAL, NONE
 };
 
 class GameObject;
@@ -36,16 +36,7 @@ public:
 
 	static const char* GetNameFromType(ComponentType type);
 
-	void SetEnable(bool enable)
-	{
-		if (enable == mIsEnabled)
-			return;
-		mIsEnabled = enable;
-		if (mIsEnabled)
-			Enable();
-		else
-			Disable();
-	}
+	void SetEnable(bool enable);
 
 protected:
 	virtual	void Reset() = 0;
