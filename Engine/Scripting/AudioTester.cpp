@@ -62,7 +62,8 @@ void AudioTester::ControlBGM()
                 mBGM1Play = false;
             }
         }
-        else {
+        else 
+        {
             if (!mBGM1Play) 
             {
                 if (mBGM1ID == -1) 
@@ -75,7 +76,8 @@ void AudioTester::ControlBGM()
                 }
                 mBGM1Play = true;
             }
-            else {
+            else 
+            {
                 GameManager::GetInstance()->GetAudio()->Pause(BGM::LEVEL1, mBGM1ID, true);
                 mBGM1Play = false;
             }
@@ -93,7 +95,8 @@ void AudioTester::ControlBGM()
                 mBGM2Play = false;
             }
         }
-        else {
+        else
+        {
             if (!mBGM2Play)
             {
                 if (mBGM2ID == -1) 
@@ -125,19 +128,22 @@ void AudioTester::ControlBGM()
                 mBGM3Play = false;
             }
         }
-        else {
+        else
+        {
             if (!mBGM3Play) 
             {
                 if (mBGM3ID == -1) 
                 {
                     mBGM3ID = GameManager::GetInstance()->GetAudio()->Play(BGM::MAINMENU);
                 }
-                else {
+                else
+                {
                     GameManager::GetInstance()->GetAudio()->Pause(BGM::MAINMENU, mBGM3ID, false);
                 }
                 mBGM3Play = true;
             }
-            else {
+            else
+            {
                 GameManager::GetInstance()->GetAudio()->Pause(BGM::MAINMENU, mBGM3ID, true);
                 mBGM3Play = false;
             }
@@ -158,12 +164,14 @@ void AudioTester::ControlSFX()
             {
                 mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetPosition());
             }
-            else {
+            else 
+            {
                 GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetPosition());
             }
             mSFX4Play = true;
         }
-        else {
+        else
+        {
             mSFX4sID = GameManager::GetInstance()->GetAudio()->Release(SFX::GUNFIRE, mSFX4sID);
             mSFX4Play = false;
         }
@@ -180,7 +188,8 @@ void AudioTester::WalkingSimulation()
     {
         mIsMoving = true;
     }
-    else {
+    else 
+    {
         mIsMoving = false;
         mStepTimePassed = 0.0f; // Reset step timer when not moving
     }

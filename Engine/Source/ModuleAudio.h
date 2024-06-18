@@ -5,7 +5,6 @@
 #include <string>
 #include <map>
 #include "float3.h"
-#include <unordered_map>
 
 #define EVENT_BANK_UPPERLIMIT 64
 #define CheckError(result) ModuleAudio::CheckFmodError(result)
