@@ -26,12 +26,20 @@ class RangeWeapon;
 class MeleeWeapon;
 class Grenade;
 
-enum class BattleSituation {
+enum class BattleSituation 
+{
     IDLE_HIGHT_HP,
     IDLE_LOW_HP,
     BATTLE_HIGHT_HP,
     BATTLE_LOW_HP,
     DEATH
+};
+
+enum class BatteryType 
+{
+    NONE,
+    BLUE,
+    RED
 };
 
 GENERATE_BODY(PlayerController);
@@ -71,6 +79,9 @@ public:
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetReloadDuration() const { return mReloadDuration; }
     Weapon* GetWeapon() const { return mWeapon; }
+    Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
+    float GetCurrentBattery() const { return mCurrentBattery; }
+    BatteryType GetBatteryType() const { return mBatteryType; }
     const State* GetPlayerUpperState() const { return mUpperState; }
 
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
@@ -88,6 +99,7 @@ public:
     // --------------- OLD ----------------------
 
     void RechargeShield(float shield);
+    void RechargeBattery(BatteryType batteryType);
     void TakeDamage(float damage);
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
@@ -137,8 +149,20 @@ private:
 
     // WEAPONS
     Weapon* mWeapon = nullptr;
-    MeleeWeapon* mMeleeWeapon = nullptr;
-    RangeWeapon* mRangeWeapon = nullptr;
+    Weapon* mSpecialWeapon = nullptr;
+    float mCurrentBattery = 0.0f;
+    BatteryType mBatteryType = BatteryType::NONE;
+
+    // RANGED
+    Weapon* mPistol = nullptr;
+    Weapon* mMachinegun = nullptr;
+    Weapon* mShootgun = nullptr;
+
+    // MELEE
+    Weapon* mBat = nullptr;
+    Weapon* mKatana = nullptr;
+    Weapon* mHammer = nullptr;
+
     // Attack
     float mAttackCoolDown = 0.1f;
     float mSlowAttackCoolDown = 0.5f;

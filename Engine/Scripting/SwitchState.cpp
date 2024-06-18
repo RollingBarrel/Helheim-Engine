@@ -23,13 +23,13 @@ StateType SwitchState::HandleInput()
 
 void SwitchState::Update()
 {
-	mPlayerController->SwitchWeapon();
-	GameManager::GetInstance()->GetHud()->SwitchWeapon();
+
 }
 
 void SwitchState::Enter()
 {
-	mPlayerController->SetSpineAnimation("tSwitch", 0.1f);
+	//mPlayerController->SetSpineAnimation("tSwitch", 0.1f);
+	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }
 
 void SwitchState::Exit()

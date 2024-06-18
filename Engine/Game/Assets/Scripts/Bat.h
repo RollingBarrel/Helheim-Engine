@@ -1,13 +1,19 @@
 #pragma once
 #include "MeleeWeapon.h"
 
+class TrailComponent;
+
 class Bat : public MeleeWeapon
 {
 public:
 	Bat();
 	~Bat();
 
-	void BasicAttack() override;
-	void SpecialAttack() override;
+	void Enter() override;
+	void Attack() override;
+	void Exit() override;
 
+private:
+
+	TrailComponent* mTrail = nullptr;
 };

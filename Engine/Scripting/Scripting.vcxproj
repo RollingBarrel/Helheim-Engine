@@ -177,10 +177,14 @@
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GrenadeState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Hammer.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\IdleState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Katana.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h" />
@@ -191,6 +195,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ReloadState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Shootgun.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SpecialState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\State.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SwitchState.h" />
@@ -209,11 +214,15 @@
     <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GrenadeState.cpp" />
+    <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="IdleState.cpp" />
+    <ClCompile Include="ItemDrop.cpp" />
     <ClCompile Include="ItemShield.cpp" />
+    <ClCompile Include="Katana.cpp" />
     <ClCompile Include="Level1AManager.cpp" />
+    <ClCompile Include="Machinegun.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainMenuManager.cpp" />
@@ -225,6 +234,7 @@
     <ClCompile Include="PlayerController.cpp" />
     <ClCompile Include="RangeWeapon.cpp" />
     <ClCompile Include="ReloadState.cpp" />
+    <ClCompile Include="Shootgun.cpp" />
     <ClCompile Include="SpecialState.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="SwitchState.cpp" />

@@ -1,4 +1,7 @@
 #include "SpecialState.h"
+#include "Application.h"
+#include "PlayerController.h"
+#include "Weapon.h"
 
 #include "Application.h"
 #include "PlayerController.h"
@@ -18,15 +21,20 @@ StateType SpecialState::HandleInput()
 
 void SpecialState::Update()
 {
+	mSpecialWeapon->Attack();
 }
 
 void SpecialState::Enter()
 {
-	mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
+	//mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
+	mSpecialWeapon = mPlayerController->GetSpecialWeapon();
+	mSpecialWeapon->Enter();
 }
 
 void SpecialState::Exit()
 {
+	mSpecialWeapon->Exit();
+	mSpecialWeapon = nullptr;
 }
 
 StateType SpecialState::GetType()

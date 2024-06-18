@@ -1,19 +1,55 @@
 #include "Bat.h"
+#include "float3.h"
+#include <vector>
+#include "TrailComponent.h"
 
-Bat::Bat() : MeleeWeapon()
+Bat::Bat()
 {
+    mAttackTime = 3.0f;
 }
 
 Bat::~Bat()
 {
 }
 
-void Bat::BasicAttack()
+void Bat::Enter()
 {
+    mTrail->Enable();
 }
 
-void Bat::SpecialAttack()
+void Bat::Attack()
 {
+    // - Calculate hitbox and intersect it with every object to spawn sparks
+    // - Damage to enemies inside the hitbox
+    LOG("MELEE ATTACK!!")
+
+    //ModuleScene* scene = App->GetScene();
+    //std::vector<GameObject*> Enemies;
+    //scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
+    //float3 playerPosition = mGameObject->GetPosition();
+    //// Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
+    //for (auto enemy : Enemies)
+    //{
+    //    float3 enemyPosition = enemy->GetPosition();
+    //    float distanceToEnemy = (enemyPosition - playerPosition).Length();
+    //    float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
+    //    // Si el enemigo está frente al jugador y dentro del rango de ataque
+    //    float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
+    //    float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
+    //    if (distanceToEnemy < mAttackRange && dotProduct < 0)
+    //    {
+    //        Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    //        if (enemyScript) {
+    //            enemyScript->TakeDamage(mAttackDamage);
+    //            enemyScript->PushBack();
+    //        }
+    //    }
+    //}
+}
+
+void Bat::Exit()
+{
+    mTrail->Disable();
 }
 
 /*//Melee

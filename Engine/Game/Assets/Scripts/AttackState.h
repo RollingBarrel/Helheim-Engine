@@ -1,6 +1,8 @@
 #pragma once
 #include "State.h"
 
+class Weapon;
+
 class AttackState : public State
 {
 public:
@@ -15,5 +17,10 @@ public:
 
 	StateType GetType() override;
 
+
+private:
 	void PlayAudio() override;
+
+	Weapon* mWeapon = nullptr;
+	float mAttackTimer = 0.0f;
 };
