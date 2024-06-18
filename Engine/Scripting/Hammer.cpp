@@ -2,6 +2,7 @@
 
 Hammer::Hammer()
 {
+    mDamage = 7.0f;
 }
 
 Hammer::~Hammer()

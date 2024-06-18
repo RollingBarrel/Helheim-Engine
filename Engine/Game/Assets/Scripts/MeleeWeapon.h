@@ -9,5 +9,9 @@ public:
 	MeleeWeapon();
 	~MeleeWeapon();
 
+	 void Attack() override;
+
+	 void MeleeHit();
+
 };
 

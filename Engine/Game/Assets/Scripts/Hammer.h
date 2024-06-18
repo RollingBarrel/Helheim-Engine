@@ -16,4 +16,6 @@ public:
 private:
 
 	TrailComponent* mTrail = nullptr;
+	const float mEnergyCost = 10.0f;
+	const float mCooldownModifier = 1.5f;
 };

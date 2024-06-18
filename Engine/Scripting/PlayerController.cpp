@@ -194,7 +194,6 @@ void PlayerController::Update()
 void PlayerController::StateMachine()
 {
     // Check if dead
-
     mLowerState->Update();
     mUpperState->Update();
 }
