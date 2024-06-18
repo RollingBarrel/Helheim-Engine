@@ -54,6 +54,15 @@ void ResourcePanel::Draw(int windowFlags)
 						ImGui::SameLine();
 						ImGui::Text(std::to_string(it->second->GetReferenceCount()).c_str());
 						break;
+					}	
+					case Resource::Type::Scene:
+					{
+						ImGui::Text("Scene");
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(it->first).c_str());
+						ImGui::SameLine();
+						ImGui::Text(std::to_string(it->second->GetReferenceCount()).c_str());
+						break;
 					}
 				}
 			}

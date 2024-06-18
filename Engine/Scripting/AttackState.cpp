@@ -16,23 +16,34 @@ AttackState::~AttackState()
 
 StateType AttackState::HandleInput()
 {
-	return StateType::AIM;
+    mAttackTimer += App->GetDt();
+
+    if (mAttackTimer < mWeapon->GetAttackTime())
+    {
+        return StateType::ATTACK;
+    }
+    else
+    {
+        return StateType::AIM;
+    }
 }
 
 void AttackState::Update()
 {
-    Weapon* weapon = mPlayerController->GetWeapon();
-    weapon->BasicAttack();
-
+    mWeapon->BasicAttack();
     DoAudio();
 }
 
 void AttackState::Enter()
 {
+    mWeapon = mPlayerController->GetWeapon();
+    mWeapon->Enter();
 }
 
 void AttackState::Exit()
 {
+    mWeapon->Exit();
+    mWeapon = nullptr;
 }
 
 StateType AttackState::GetType()
