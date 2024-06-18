@@ -36,7 +36,11 @@
 #include "MeleeWeapon.h"
 #include "RangeWeapon.h"
 #include "Bat.h"
+#include "Katana.h"
+#include "Hammer.h"
 #include "Pistol.h"
+#include "Machinegun.h"
+#include "Shootgun.h"
 #include "Grenade.h"
 
 CREATE(PlayerController)
@@ -88,8 +92,12 @@ PlayerController::~PlayerController()
     delete mSpecialState;
     delete mReloadState;
 
-    delete mMeleeWeapon;
-    delete mRangeWeapon;
+    delete mPistol;
+    delete mBat;
+    delete mMachinegun;
+    delete mShootgun;
+    delete mKatana;
+    delete mHammer;
 }
 
 #pragma region MyRegion
@@ -113,17 +121,15 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    //mMeleeWeapon = new Bat();
-    mRangeWeapon = new Pistol();
+    mBat = new Bat();
+    mPistol = new Pistol();
+    mMachinegun = new Machinegun();
+    mShootgun = new Shootgun();
+    mKatana = new Katana();
+    mHammer = new Hammer();
 
-    // MELEE WEAPON
-    if (mBat)
-    {
-        ScriptComponent* script = (ScriptComponent*)mBat->GetComponent(ComponentType::SCRIPT);
-        mMeleeWeapon = (Bat*)script->GetScriptInstance();
-        mBat->SetEnabled(false);
-    }
-    mWeapon = mRangeWeapon;
+    mWeapon = mPistol;
+    mSpecialWeapon = nullptr;
 
     // AUDIO
     if (mFootStepAudioHolder)
@@ -326,11 +332,37 @@ void PlayerController::SwitchWeapon()
 {
     if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
     {
-        mWeapon = mMeleeWeapon;
+        mWeapon = mBat;
+
+        switch (mBatteryType) 
+        {
+        case BatteryType::BLUE:
+            mSpecialWeapon = mMachinegun;
+            break;
+        case BatteryType::RED:
+            mSpecialWeapon = mShootgun;
+            break;
+        case BatteryType::NONE:
+            mSpecialWeapon = nullptr;
+            break;
+        }
     }
     else 
     {
-        mWeapon = mRangeWeapon;
+        mWeapon = mPistol;
+
+        switch (mBatteryType)
+        {
+        case BatteryType::BLUE:
+            mSpecialWeapon = mKatana;
+            break;
+        case BatteryType::RED:
+            mSpecialWeapon = mHammer;
+            break;
+        case BatteryType::NONE:
+            mSpecialWeapon = nullptr;
+            break;
+        }
     }
 }
 

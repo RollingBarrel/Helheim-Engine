@@ -34,7 +34,7 @@ void Pistol::Enter()
 {
 }
 
-void Pistol::BasicAttack()
+void Pistol::Attack()
 {
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
@@ -69,7 +69,7 @@ void Pistol::BasicAttack()
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    //Physics::Raycast(hits, ray); THIS IS THE OLD RAYCAST
+    Physics::Raycast(hits, ray, distance); // THIS IS THE OLD RAYCAST
 
     if (!hits.empty())
     {
@@ -87,10 +87,6 @@ void Pistol::BasicAttack()
             }
         }
     }
-}
-
-void Pistol::SpecialAttack()
-{
 }
 
 void Pistol::Exit()

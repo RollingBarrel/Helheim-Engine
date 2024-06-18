@@ -1,14 +1,13 @@
 #pragma once
 #include "RangeWeapon.h"
 
-class Pistol : public RangeWeapon
+class Machinegun : public RangeWeapon
 {
 public:
-	Pistol();
-	~Pistol();
+	Machinegun();
+	~Machinegun();
 	void Enter() override;
 	void Attack() override;
 	void Exit() override;
 
 };
-

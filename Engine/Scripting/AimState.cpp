@@ -25,7 +25,7 @@ StateType AimState::HandleInput()
 
     mAttackTimer += App->GetDt();
     if (mPlayerController->GetAttackCooldown() < mAttackTimer &&
-        App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
         mAttackTimer = 0;
         return StateType::ATTACK;
@@ -33,7 +33,8 @@ StateType AimState::HandleInput()
 
     mSpecialAttackTimer += App->GetDt();
     if (mPlayerController->GetSpecialAttackCooldown() < mSpecialAttackTimer &&
-        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+        App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN &&
+        mPlayerController->GetBatteryType() != BatteryType::NONE)
     {
         mSpecialAttackTimer = 0;
         return StateType::SPECIAL;
