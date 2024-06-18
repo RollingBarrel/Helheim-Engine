@@ -232,7 +232,7 @@ void AnimationStateMachine::DeleteTransition(int index)
 	mTransitions.erase(mTransitions.begin() + index);
 }
 
-void AnimationStateMachine::SaveResource(const char* path) const
+void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 {
 	unsigned int header[3] = { GetNumClips(), GetNumStates(), GetNumTransitions() };
 	unsigned int size = sizeof(header);
@@ -327,8 +327,11 @@ void AnimationStateMachine::SaveResource(const char* path) const
 	}
 
 	std::string strpath = std::string(path);
-	strpath += mName;
-	strpath += ".smbin";
+	if (!isLibrary)
+	{
+		strpath += mName;
+		strpath += ".smbin";
+	}
 	App->GetFileSystem()->Save(strpath.c_str(), fileBuffer, size);
 
 	delete[] fileBuffer;
