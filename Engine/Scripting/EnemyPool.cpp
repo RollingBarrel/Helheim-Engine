@@ -62,6 +62,8 @@ GameObject* EnemyPool::GetEnemy(EnemyType type)
 	return nullptr;
 }
 
-GameObject* EnemyPool::CreateEnemyInstance(EnemyType type) {
-
+GameObject* EnemyPool::CreateEnemyInstance(EnemyType type)
+{
+	// TODO
+	return nullptr;
 }

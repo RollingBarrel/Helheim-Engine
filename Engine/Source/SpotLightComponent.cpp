@@ -35,14 +35,20 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
-	App->GetOpenGL()->AddSpotLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddSpotLight(*this);
+	}
 }
 
 
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
 	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias)
 {
-	App->GetOpenGL()->AddSpotLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddSpotLight(*this);
+	}
 }
 
 SpotLightComponent::~SpotLightComponent()
@@ -198,7 +204,10 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
 
+
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+	
+	
 }
 
 void SpotLightComponent::Reset()

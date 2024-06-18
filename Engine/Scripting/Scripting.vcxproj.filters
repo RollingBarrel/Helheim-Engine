@@ -77,9 +77,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h">
       <Filter>Weapons\Range</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h">
       <Filter>Weapons</Filter>
     </ClInclude>
@@ -135,6 +132,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -184,8 +184,6 @@
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="BattleArea.cpp" />
-    <ClCompile Include="ActiveBattleAreaController.cpp" />
     <ClCompile Include="State.cpp">
       <Filter>States</Filter>
     </ClCompile>
@@ -227,12 +225,6 @@
     </ClCompile>
     <ClCompile Include="Pistol.cpp">
       <Filter>Weapons\Range</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemySpawner.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyPool.cpp">
-      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -21,17 +21,25 @@ Pistol::Pistol() : RangeWeapon()
 {
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
+
+    mDamage = 10.0f;
+    mAttackRate = 1.0f;
 }
 
 Pistol::~Pistol()
 {
 }
 
+void Pistol::Enter()
+{
+}
+
 void Pistol::BasicAttack()
 {
     GameObject* bullet = nullptr;
-    if (mCurrentAmmo > 0) {
-        bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
+    if (mCurrentAmmo > 0) 
+    {
+       //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
     }
     else {
@@ -53,34 +61,38 @@ void Pistol::BasicAttack()
         bullet->SetRotation(mGameObject->GetWorldRotation());*/
     }
 
-    /*std::map<float, Hit> hits;
+    std::multiset<Hit> hits;
 
     Ray ray;
-    ray.pos = mGameObject->GetPosition();
+    ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
     ray.pos.y++;
-    ray.dir = mGameObject->GetFront();
+    ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    Physics::Raycast(ray, hits);
+    //Physics::Raycast(hits, ray); THIS IS THE OLD RAYCAST
 
     if (!hits.empty())
     {
-        for (const std::pair<float, Hit>& hit : hits)
+        for (const Hit& hit : hits)
         {
-            if (hit.second.mGameObject->GetTag()->GetName() == "Enemy")
+            if (hit.mGameObject->GetTag() == "Enemy")
             {
-                LOG("Enemy %s has been hit at distance: %f", hits.begin()->second.mGameObject->GetName().c_str(), hits.begin()->first);
+                LOG("Enemy %s has been hit at distance: %f", hits.begin()->mGameObject->GetName().c_str(), hits.begin()->mDistance);
 
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.second.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
                     enemy->TakeDamage(mDamage);
                 }
             }
         }
-    }*/
+    }
 }
 
 void Pistol::SpecialAttack()
+{
+}
+
+void Pistol::Exit()
 {
 }

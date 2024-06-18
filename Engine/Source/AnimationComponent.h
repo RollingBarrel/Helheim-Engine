@@ -58,6 +58,9 @@ public:
 
 	void StartTransition(float transitionDuration);
 
+	void SetSpineSMUID(unsigned int uid);
+	void SetSMUID(unsigned int uid);
+
 private:
 
 	void LoadGameObjects(GameObject* current);

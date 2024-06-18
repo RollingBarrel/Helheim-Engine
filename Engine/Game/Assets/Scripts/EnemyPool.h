@@ -17,6 +17,8 @@ public:
 
 	GameObject* GetEnemy(EnemyType type);
 
+	GameObject* CreateEnemyInstance(EnemyType type);
+
 private:
 	std::vector<GameObject*> mEnemies[static_cast<int>(EnemyType::COUNT)];
 	int mNumOfEnemies = 10;

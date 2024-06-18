@@ -26,6 +26,10 @@ public:
     bool UsingController() const { return mController; }
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
     EnemyPool* GetEnemyPool() const { return mEnemyPool; }
+
+    bool IsPaused() { return mPaused; }
+    void SetPaused(bool value);
+
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
 
@@ -46,5 +50,5 @@ private:
 
     bool mPaused = false;
 
-    bool mController = true;
+    bool mController = false;
 };
