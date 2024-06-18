@@ -69,7 +69,7 @@ void Pistol::BasicAttack(float time)
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    Physics::Raycast(hits, ray);
+    //Physics::Raycast(hits, ray); THIS IS THE OLD RAYCAST
 
     if (!hits.empty())
     {
