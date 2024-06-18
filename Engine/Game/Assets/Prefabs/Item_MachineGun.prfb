@@ -27,7 +27,30 @@
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
-                "Components": []
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ItemDrop",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mDropId",
+                                "MemberType": 0,
+                                "VariableData": 3
+                            },
+                            {
+                                "VariableName": "mHealthRecovered",
+                                "MemberType": 1,
+                                "VariableData": 15.0
+                            },
+                            {
+                                "VariableName": "mActivationRange",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "UID": 684100979,
