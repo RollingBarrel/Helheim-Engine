@@ -139,6 +139,7 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h">
       <Filter>Weapons\Range</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
@@ -245,6 +246,7 @@
     </ClCompile>
     <ClCompile Include="Hammer.cpp">
       <Filter>Weapons\Melee</Filter>
+    </ClCompile>
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="AudioManager.cpp">
       <Filter>Sound</Filter>
