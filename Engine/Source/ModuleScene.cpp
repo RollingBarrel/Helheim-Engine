@@ -51,7 +51,7 @@ ModuleScene::~ModuleScene()
 
 bool ModuleScene::Init()
 {
-	mRoot = new GameObject("SampleScene", nullptr);
+	mRoot = new GameObject("EmptyScene", nullptr);
 	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 	return true;
 }
@@ -239,7 +239,7 @@ void ModuleScene::Load(const char* sceneName)
 		mSceneGO.clear();
 		delete mRoot;
 		mGameObjectsByTags.clear();
-		mRoot = new GameObject("SampleScene", nullptr);
+		mRoot = new GameObject("EmptyScene", nullptr);
 		Archive doc(fileBuffer);
 		delete fileBuffer;
 		JsonObject root = doc.GetRootObject();
@@ -291,7 +291,7 @@ void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFil
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
 	gameObject->SetRotation(float3::zero);
 	gameObject->SetPosition(float3::zero);
-	//gameObject->RecalculateMatrices();
+	gameObject->RecalculateMatrices();
 	
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
@@ -320,6 +320,8 @@ void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray&
 
 GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent, bool update)
 {
+	mPrefabOldNewUid.clear();
+	
 	GameObject* ret = nullptr;
 	if (parent == nullptr) 
 	{
@@ -338,12 +340,27 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 		JsonObject prefab = root.GetJsonObject("Prefab");
 		
 		std::unordered_map<unsigned int, GameObject*> loadMap;
+
 		JsonArray gameObjects = prefab.GetJsonArray("GameObjects");	
-		
+
 		unsigned int currSize = mSceneGO.empty() ? 0 : mSceneGO.size();
 
-		unsigned int idx = 0;
-		LoadPrefabRecursive(gameObjects, idx, mRoot, loadMap);
+		//Load GameObjects
+		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
+		{
+			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
+			GameObject* gO;
+			if (i == 0)
+			{
+				gO = new GameObject(gameObjectData.GetString("Name").c_str(), parent);
+			}
+			else
+			{
+				gO = new GameObject(gameObjectData.GetString("Name").c_str(), Find(mPrefabOldNewUid[gameObjectData.GetInt("ParentUID")]));
+			}
+			mPrefabOldNewUid[gameObjectData.GetInt("UID")] = gO->GetID();
+			gO->LoadGameObject(gameObjectData, loadMap);
+		}
 
 		//Load Components
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
@@ -360,22 +377,6 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 	}
 	
 	return ret;
-}
-
-void ModuleScene::LoadPrefabRecursive(JsonArray& gameObjects, unsigned int& idx, GameObject* parent, std::unordered_map<unsigned int, GameObject*>& loadMap)
-{
-	if (idx < gameObjects.Size())
-	{
-		JsonObject obj = gameObjects.GetJsonObject(idx);
-		GameObject* gO = new GameObject(obj.GetInt("UID"),obj.GetString("Name").c_str(), parent);
-		gO->LoadGameObject(obj, loadMap);
-
-		LoadPrefabRecursive(gameObjects, ++idx, loadMap[gO->GetID()], loadMap);
-	}
-	else
-	{
-		return;
-	}
 }
 
 void ModuleScene::OverridePrefab(const JsonObject& gameObject, unsigned int id)
@@ -601,7 +602,9 @@ void ModuleScene::NewScene()
 	mSceneGO.clear();
 
 	delete mRoot;
-	mRoot = new GameObject("Untlitled", nullptr);
+	mRoot = new GameObject("EmptyScene", nullptr);
+
+	//TODO: If last selected window is game. And new scene is clicked, editor camera is not found
 }
 
 const std::string& ModuleScene::GetName() const
