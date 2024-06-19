@@ -19,7 +19,6 @@
 #include "TrailComponent.h"
 #include "GeometryBatch.h"
 
-#include "Quadtree.h"
 #include "BatchManager.h"
 
 

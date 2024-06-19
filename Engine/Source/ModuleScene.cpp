@@ -1,6 +1,5 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
-#include "Quadtree.h"
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "glew.h"
@@ -41,10 +40,6 @@ ModuleScene::~ModuleScene()
 	{
 		delete mBackgroundScene;
 	}
-	if (mQuadtreeRoot)
-	{
-		delete mQuadtreeRoot;
-	}
 }
 
 #pragma region Basic Functions
@@ -52,7 +47,6 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("EmptyScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 	return true;
 }
 
@@ -63,18 +57,8 @@ update_status ModuleScene::PreUpdate(float dt)
 
 update_status ModuleScene::Update(float dt)
 {
-	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-
-	//TODO: temporally removed the quadtree
-	//if (mShouldUpdateQuadtree)
-	//{
-	//	mQuadtreeRoot->UpdateTree();
-	//}
-	//mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
-	//mRoot->GetMeshesInChildren(mCurrRenderComponents);
 	App->GetOpenGL()->Draw();
-	//mCurrRenderComponents.clear();
 
 	return UPDATE_CONTINUE;
 }
@@ -234,7 +218,6 @@ void ModuleScene::Load(const char* sceneName)
 
 	if(fileBuffer != nullptr)
 	{
-		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		mSceneGO.clear();
 		delete mRoot;
@@ -264,7 +247,6 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mRoot->RecalculateMatrices();
-		mQuadtreeRoot->UpdateTree();
 		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
@@ -589,14 +571,8 @@ void ModuleScene::DuplicateGameObjects()
 
 #pragma region Others
 
-void ModuleScene::AddMeshToRender(const MeshRendererComponent& meshRendererComponent)
-{
-	mCurrRenderComponents.push_back(&meshRendererComponent);
-}
-
 void ModuleScene::NewScene()
 {
-	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();

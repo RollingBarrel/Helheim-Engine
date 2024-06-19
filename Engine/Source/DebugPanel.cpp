@@ -14,7 +14,6 @@
 #include "TimerPanel.h"
 #include "HierarchyPanel.h"
 #include "ResourceMesh.h"
-#include "Quadtree.h"
 
 DebugPanel::DebugPanel() : Panel(DEBUGPANEL, false)
 {
@@ -22,48 +21,6 @@ DebugPanel::DebugPanel() : Panel(DEBUGPANEL, false)
 
 DebugPanel::~DebugPanel()
 {
-}
-
-static void RenderTreeImGui(const Quadtree* qTree)
-{
-    if (strcmp(qTree->GetName(), "") == 0)
-        return;
-    bool treeNodeOpened = ImGui::TreeNode(qTree->GetName());
-
-    if (!qTree->IsLeaf() && treeNodeOpened)
-    {
-        const Quadtree* children = qTree->GetChildren();
-        for (int i = 0; i < 4; ++i)
-        {
-            RenderTreeImGui(children + i);
-        }
-    }
-    else
-    {
-        if (treeNodeOpened)
-        {
-            for (const GameObject* object : qTree->GetGameObjects())
-            {
-                ImGui::Text(object->GetName().c_str());
-            }
-        }
-    }
-
-    if (treeNodeOpened)
-        ImGui::TreePop();
-}
-
-static void DrawQuadTree(const Quadtree& qTree)
-{
-    EngineApp->GetDebugDraw()->DrawCube(qTree.GetBoundingBox(), float3(0.980392f, 0.980392f, 0.823529f)); // LightGoldenYellow
-    if (!qTree.IsLeaf())
-    {
-        const Quadtree* children = qTree.GetChildren();
-        for (int i = 0; i < 4; ++i)
-        {
-            DrawQuadTree(*(children + i));
-        }
-    }
 }
 
 void DebugPanel::Draw(int windowFlags) {
@@ -108,35 +65,6 @@ void DebugPanel::Draw(int windowFlags) {
             }
             ImGui::TreePop();
         }*/
-
-        if (ImGui::TreeNode("Quadtree##2"))
-        {
-            static bool draw = false;
-            ImGui::Checkbox("Draw quadtree", &draw);
-
-            if (draw)
-            {
-                EngineApp->GetOpenGL()->BindSceneFramebuffer();
-                Quadtree* rootQtree = EngineApp->GetScene()->GetQuadtreeRoot();
-                if (rootQtree)
-                {
-                    DrawQuadTree(*rootQtree);
-                }
-                EngineApp->GetOpenGL()->UnbindFramebuffer();
-            }
-
-            ImGui::Separator();
-            ImGui::SameLine();
-            if (ImGui::Button("Reload quadtree"))
-            {
-                EngineApp->GetScene()->GetQuadtreeRoot()->UpdateTree();
-            }
-            ImGui::Separator();
-            ImGui::Text("Quadtree nodes:");
-            RenderTreeImGui(EngineApp->GetScene()->GetQuadtreeRoot());
-            ImGui::TreePop();
-		}
-
         if (ImGui::TreeNode("Audio##2"))
         {
             ImGui::Text("FMOD Memory usage: %.6f MB", (float)App->GetAudio()->GetMemoryUsage() / (1000000));

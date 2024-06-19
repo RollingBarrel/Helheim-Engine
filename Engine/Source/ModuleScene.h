@@ -43,17 +43,6 @@ public:
 	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
 	void SwitchGameObjectsFromScene(GameObject* first, GameObject* second);
 
-	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
-
-	// Quadtree
-	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
-	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
-	void SetShouldUpdateQuadtree(bool updateQuadtree) { mShouldUpdateQuadtree = updateQuadtree; }
-
-	// Frustum Culling
-	bool GetApplyFrustumCulling() const { return mApplyculling; }
-	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
-
 	// Save / Load Scene
 	void NewScene();
 	void Save(const char* saveFilePath) const;
@@ -89,19 +78,11 @@ private:
 	std::vector<GameObject*> mGameObjectsToDuplicate;
 	std::unordered_map<std::string, std::vector<GameObject*>> mGameObjectsByTags;
 
-	// Quadtree
-	Quadtree* mQuadtreeRoot = nullptr;
-	bool mShouldUpdateQuadtree = false;
-	bool mApplyculling = false;
-
 	// Prefabs
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
 
 	std::unordered_map<unsigned int, unsigned int> mPrefabOldNewUid;
-
-	// Others
-	std::vector<const MeshRendererComponent*> mCurrRenderComponents;
 };
 
 #endif //_MODULE_SCENE_H_

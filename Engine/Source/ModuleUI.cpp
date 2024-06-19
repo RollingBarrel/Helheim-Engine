@@ -18,7 +18,6 @@
 #include "ButtonComponent.h"
 #include "ResourceTexture.h"
 #include "ScenePanel.h"
-#include "Quadtree.h"
 #include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
