@@ -16,12 +16,6 @@ AimState::~AimState()
 
 StateType AimState::HandleInput()
 {
-    /*Weapon* weapon = mPlayerController->GetWeapon();
-    if (weapon->GetType() == Weapon::WeaponType::RANGE && weapon->GetCurrentAmmo() == 0)
-    {
-        return StateType::RELOAD;
-    }*/
-
     mGrenadeTimer += App->GetDt();
     if (mPlayerController->GetGrenadeCooldown() < mGrenadeTimer &&
         App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
@@ -30,7 +24,6 @@ StateType AimState::HandleInput()
         return StateType::GRENADE;
     }
 
-    //mAttackTimer += App->GetDt();
     if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
         return StateType::ATTACK;
