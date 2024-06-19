@@ -30,6 +30,7 @@ void SwitchState::Enter()
 {
 	//mPlayerController->SetSpineAnimation("tSwitch", 0.1f);
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
+	mPlayerController->SwitchWeapon();
 }
 
 void SwitchState::Exit()

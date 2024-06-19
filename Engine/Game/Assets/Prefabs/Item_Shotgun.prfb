@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 137895147,
+                "UID": 498170636,
                 "ParentUID": 1,
                 "Name": "Item_Shotgun",
                 "Enabled": true,
@@ -36,7 +36,7 @@
                             {
                                 "VariableName": "mDropId",
                                 "MemberType": 0,
-                                "VariableData": 2
+                                "VariableData": 3
                             },
                             {
                                 "VariableName": "mHealthRecovered",
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 203408508,
-                "ParentUID": 137895147,
+                "UID": 534512798,
+                "ParentUID": 498170636,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
@@ -81,8 +81,8 @@
                 "Components": []
             },
             {
-                "UID": 231813876,
-                "ParentUID": 203408508,
+                "UID": 560063705,
+                "ParentUID": 534512798,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
