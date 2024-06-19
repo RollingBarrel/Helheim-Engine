@@ -65,9 +65,12 @@ public:
 
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
-	int SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
-	GameObject* LoadPrefab(const char* saveFilePath, bool update = false, GameObject* parent = nullptr);
-	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent) { return LoadPrefab(saveFilePath, false, parent); }
+	void SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
+	void SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const;
+	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent = nullptr, bool update = false);
+	void LoadPrefabRecursive(JsonArray& gameObjects, unsigned int& idx, GameObject* parent, std::unordered_map<unsigned int, GameObject*>& loadMap);
+	void OverridePrefab(const JsonObject& gameObject, unsigned int id);
+
 	void OpenPrefabScreen(const char* saveFilePath);
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }

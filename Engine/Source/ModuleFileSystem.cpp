@@ -110,7 +110,7 @@ unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, un
             }
             else
             {
-                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);
+                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);       //When loading a scene ModuleFilesystem should not save anything
             }
         }
 

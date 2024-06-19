@@ -6,18 +6,22 @@
 #include "ResourceTexture.h"
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
-#include "ResourceModel.h"
-#include "ResourceScript.h"
 #include "ResourceAnimation.h"
+#include "ResourceModel.h"
+#include "ResourceScene.h"
+#include "ResourcePrefab.h"
+#include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
 
-#include "SaveLoadModel.h"
+#include "SaveLoadTexture.h"
 #include "SaveLoadMesh.h"
 #include "SaveLoadMaterial.h"
 #include "SaveLoadAnimation.h"
+#include "SaveLoadModel.h"
+#include "SaveLoadScene.h"
+#include "SaveLoadPrefab.h"
 #include "SaveLoadScript.h"
-#include "SaveLoadTexture.h"
 #include "SaveLoadNavMesh.h"
 #include "SaveLoadStateMachine.h"
 
@@ -56,7 +60,8 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 
 	rapidjson::Document document;
 	rapidjson::ParseResult result = document.Parse(fileBuffer);
-	if (!result) {
+	if (!result) 
+	{
 		// Handle parsing error
 		LOG("Not able to load .emeta file");
 		RELEASE_ARRAY(fileBuffer);
@@ -102,24 +107,9 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Mesh::Load(lPath, uid);
 		break;
 	}
-	case Resource::Type::NavMesh:
-	{
-		ret = Importer::NavMesh::Load(lPath, uid);
-		break;
-	}
 	case Resource::Type::Material:
 	{
 		ret = Importer::Material::Load(lPath, uid);
-		break;
-	}
-	case Resource::Type::Model:
-	{
-		ret = Importer::Model::Load(lPath, uid);
-		break;
-	}
-	case Resource::Type::Script:
-	{
-		ret = Importer::Script::Load(lPath, uid);
 		break;
 	}
 	case Resource::Type::Animation:
@@ -127,9 +117,29 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::Animation::Load(lPath, uid);
 		break;
 	}
+	case Resource::Type::Model:
+	{
+		ret = Importer::Model::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::Scene:
+	{
+		ret = Importer::Scene::Load(lPath, uid);
+		break;
+	}
 	case Resource::Type::Prefab:
 	{
-		ret = new Resource(uid, type);
+		ret = Importer::Prefab::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::Script:
+	{
+		ret = Importer::Script::Load(lPath, uid);
+		break;
+	}
+	case Resource::Type::NavMesh:
+	{
+		ret = Importer::NavMesh::Load(lPath, uid);
 		break;
 	}
 	case Resource::Type::StateMachine:
