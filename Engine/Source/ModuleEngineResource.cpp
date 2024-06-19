@@ -226,7 +226,7 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 	case Resource::Type::Scene:
 	{
 		assetsFilePath = ASSETS_SCENES_PATH + assetName + extensionName;
-		EngineApp->GetScene()->Save(assetsFilePath.c_str());
+		//EngineApp->GetScene()->Save(assetsFilePath.c_str());
 		break;
 	}
 	case Resource::Type::Prefab:

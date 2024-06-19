@@ -30,6 +30,8 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
+    mAttackTimer += App->GetDt();
+
     mWeapon->Attack();
     PlayAudio();
 }
@@ -38,6 +40,8 @@ void AttackState::Enter()
 {
     mWeapon = mPlayerController->GetWeapon();
     mWeapon->Enter();
+
+    mWeapon->Attack();
 }
 
 void AttackState::Exit()

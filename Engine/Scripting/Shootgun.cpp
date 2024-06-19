@@ -19,3 +19,7 @@ void Shootgun::Attack()
 void Shootgun::Exit()
 {
 }
+
+void Shootgun::Reload()
+{
+}

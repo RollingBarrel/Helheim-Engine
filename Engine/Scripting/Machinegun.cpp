@@ -19,3 +19,7 @@ void Machinegun::Attack()
 void Machinegun::Exit()
 {
 }
+
+void Machinegun::Reload() 
+{
+}

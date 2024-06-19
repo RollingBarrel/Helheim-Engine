@@ -87,11 +87,11 @@ void Pistol::Attack()
     }
 }
 
-//void Pistol::Reload()
-//{
-//    mCurrentAmmo = mMaxAmmo;
-//    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
-//}
+void Pistol::Reload()
+{
+    mCurrentAmmo = mMaxAmmo;
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
 
 void Pistol::Exit()
 {
