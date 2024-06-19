@@ -58,6 +58,9 @@ public:
     float3 GetPlayerDirection() { return mPlayerDirection; }
     float3 GetPlayerAimPosition() { return mAimPosition; }
     float3 GetPlayerPosition();
+
+    Weapon* GetMeleeWeapon() const { return mBat; }
+    Weapon* GetRangeWeapon() const { return mPistol; }
    
     void SetAnimation(std::string trigger, float transitionTime);
     void PlayOneShot(std::string name);
@@ -66,6 +69,7 @@ public:
     void MoveInDirection(float3 direction);
 
     void SwitchWeapon();
+    void SwitchWeapon(Weapon* newWeapon);
 
     float GetDashCoolDown() const { return mDashCoolDown; }
     float GetDashDuration() const { return mDashDuration; }
@@ -90,6 +94,7 @@ public:
     void SetGrenadeVisuals(bool value);
     void UpdateGrenadeVisuals();
     void ThrowGrenade();
+
 
     bool CanReload() const;
     void Reload() const;

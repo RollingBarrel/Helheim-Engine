@@ -331,7 +331,7 @@ void PlayerController::SwitchWeapon()
 {
     if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
     {
-        mWeapon = mBat;
+        mWeapon = mPistol;
 
         switch (mBatteryType) 
         {
@@ -348,7 +348,7 @@ void PlayerController::SwitchWeapon()
     }
     else 
     {
-        mWeapon = mPistol;
+        mWeapon = mBat;
 
         switch (mBatteryType)
         {
@@ -364,6 +364,21 @@ void PlayerController::SwitchWeapon()
         }
     }
 }
+
+void PlayerController::SwitchWeapon(Weapon* newWeapon)
+{
+    if (mWeapon != nullptr)
+    {
+        mWeapon->Exit();
+    }
+
+    mWeapon = newWeapon;
+    if (mWeapon != nullptr)
+    {
+        mWeapon->Enter();
+    }
+}
+
 
 float3 PlayerController::GetPlayerPosition()
 {

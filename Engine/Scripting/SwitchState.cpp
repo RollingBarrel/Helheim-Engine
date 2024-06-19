@@ -5,8 +5,10 @@
 #include "Keys.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "PlayerController.h"
+#include "Weapon.h"
 
-SwitchState::SwitchState(PlayerController* player) : State(player)
+SwitchState::SwitchState(PlayerController* player) : State(player), mPlayerController(player)
 {
 }
 
@@ -27,6 +29,15 @@ void SwitchState::Update()
 
 void SwitchState::Enter()
 {
+    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+    {
+        mPlayerController->SwitchWeapon(mPlayerController->GetMeleeWeapon());
+    }
+    else
+    {
+        mPlayerController->SwitchWeapon(mPlayerController->GetRangeWeapon());
+    }
+
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }
 

@@ -19,7 +19,7 @@ Bat::~Bat()
 
 void Bat::Enter()
 {
-    mTrail->Enable();
+    //mTrail->Enable();
     mDamage = 2.0f;
 }
 
