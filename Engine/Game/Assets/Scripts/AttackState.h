@@ -41,8 +41,8 @@ private:
     bool  mIsNextComboStep = false;
     float mBreakCombo = 0.0f;
 
-    float mComboMilestone1 = 2.0f;
-    float mComboMilestone2 = 4.0f;
+    float mComboMilestone1 = 1.0f;
+    float mComboMilestone2 = 2.0f;
     float mComboDuration = 3.0f;
 
     // Player Dash
