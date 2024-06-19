@@ -321,7 +321,7 @@ void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray&
 
 GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent, bool update)
 {
-	prefabOldNewUid.clear();
+	mPrefabOldNewUid.clear();
 	
 	GameObject* ret = nullptr;
 	if (parent == nullptr) 
@@ -357,9 +357,9 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 			}
 			else
 			{
-				gO = new GameObject(gameObjectData.GetString("Name").c_str(), Find(prefabOldNewUid[gameObjectData.GetInt("ParentUID")]));
+				gO = new GameObject(gameObjectData.GetString("Name").c_str(), Find(mPrefabOldNewUid[gameObjectData.GetInt("ParentUID")]));
 			}
-			prefabOldNewUid[gameObjectData.GetInt("UID")] = gO->GetID();
+			mPrefabOldNewUid[gameObjectData.GetInt("UID")] = gO->GetID();
 			gO->LoadGameObject(gameObjectData, loadMap);
 		}
 

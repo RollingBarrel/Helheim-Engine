@@ -74,7 +74,7 @@ public:
 	void ClosePrefabScreen();
 	bool IsPrefabScene() const { return mBackgroundScene != nullptr; }
 
-	const std::unordered_map<unsigned int, unsigned int>& GetPrefabUIDMap() { return prefabOldNewUid; }
+	const std::unordered_map<unsigned int, unsigned int>& GetPrefabUIDMap() { return mPrefabOldNewUid; }
 
 private:
 	void DeleteGameObjects();
@@ -98,7 +98,7 @@ private:
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
 
-	std::unordered_map<unsigned int, unsigned int> prefabOldNewUid;
+	std::unordered_map<unsigned int, unsigned int> mPrefabOldNewUid;
 
 	// Others
 	std::vector<const MeshRendererComponent*> mCurrRenderComponents;
