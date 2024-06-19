@@ -166,6 +166,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
@@ -182,7 +184,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\IdleState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Katana.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h" />
@@ -203,6 +204,8 @@
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioTester.cpp" />
     <ClCompile Include="AimState.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="Bat.cpp" />
@@ -219,7 +222,6 @@
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="ItemDrop.cpp" />
     <ClCompile Include="Katana.cpp" />
-    <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Machinegun.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />

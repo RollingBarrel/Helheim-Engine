@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "PlayerController.h"
+#include "Weapon.h"
 
 AimState::AimState(PlayerController* player) : State(player)
 {
@@ -23,11 +24,8 @@ StateType AimState::HandleInput()
         return StateType::GRENADE;
     }
 
-    mAttackTimer += App->GetDt();
-    if (mPlayerController->GetAttackCooldown() < mAttackTimer &&
-        App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+    if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
     {
-        mAttackTimer = 0;
         return StateType::ATTACK;
     }
 
@@ -54,7 +52,6 @@ StateType AimState::HandleInput()
         return StateType::RELOAD;
     }
 
-    
 	return StateType::AIM;
 }
 
@@ -64,6 +61,9 @@ void AimState::Update()
 
 void AimState::Enter()
 {
+    //It can't be done when entering because in that case the others animations would be one frame
+    //Maybe with buffers
+    mPlayerController->SetSpineAnimation("tAim", 0.1f);
 }
 
 void AimState::Exit()
@@ -73,4 +73,8 @@ void AimState::Exit()
 StateType AimState::GetType()
 {
     return StateType::AIM;
+}
+
+void AimState::PlayAudio()
+{
 }

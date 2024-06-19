@@ -9,5 +9,5 @@ public:
 	void Enter() override;
 	void Attack() override;
 	void Exit() override;
-
+	void Reload() override;
 };

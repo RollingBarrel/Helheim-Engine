@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 
 class Weapon
 {
@@ -25,8 +25,8 @@ protected:
 	WeaponType mType;
 
 	float mDamage = 0.0f;
-	float mAttackRate = 0.0f;
-	float mAttackTime = 20.0f;
+	//float mAttackRate = 0.0f;
+	float mAttackTime = 0.0f;
 	float mAttackRange = 0.0f;
 
 	int mCurrentAmmo = 0;

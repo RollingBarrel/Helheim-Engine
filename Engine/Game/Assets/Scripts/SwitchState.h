@@ -17,9 +17,9 @@ public:
 
 	StateType GetType() override;
 
-
 private:
 
 	PlayerController* mPlayerController;
+	void PlayAudio() override;
 
 };

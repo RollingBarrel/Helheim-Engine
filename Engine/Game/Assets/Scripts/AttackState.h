@@ -20,9 +20,9 @@ public:
 
 
 private:
-	void DoAudio();
-    PlayerController* mPlayerController;
 
+    PlayerController* mPlayerController;
+	void PlayAudio() override;
 
 	Weapon* mWeapon = nullptr;
 	float mAttackTimer = 0.0f;

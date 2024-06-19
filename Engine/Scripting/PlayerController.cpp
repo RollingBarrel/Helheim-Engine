@@ -128,7 +128,7 @@ void PlayerController::Start()
     mKatana = new Katana();
     mHammer = new Hammer();
 
-    mWeapon = mPistol;
+    mWeapon = mShootgun;
     mSpecialWeapon = nullptr;
 
     // AUDIO
@@ -271,7 +271,10 @@ void PlayerController::HandleRotation()
 {
     // TODO: Not aim on melee state? and dash?
 
-    if (GameManager::GetInstance()->UsingController())
+    GameManager* gameManager = GameManager::GetInstance();
+    bool controller = gameManager->UsingController();
+
+    if (controller)
     {
         float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
         float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
@@ -300,18 +303,31 @@ void PlayerController::HandleRotation()
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 {
-    mAnimationComponent->SendTrigger(trigger, transitionTime);
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendTrigger(trigger, transitionTime);
+    }
+    
+}
+
+void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
+{
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
+    }
+    
 }
 
 void PlayerController::PlayOneShot(std::string name)
 {
     if (strcmp(name.c_str(), "Step")) 
     {
-        mFootStepAudio->PlayOneShot();
+        //mFootStepAudio->PlayOneShot();
     }
     if (strcmp(name.c_str(), "Shot")) 
     {
-        mGunfireAudio->PlayOneShot();
+        //mGunfireAudio->PlayOneShot();
     }
 }
 
@@ -467,7 +483,37 @@ void PlayerController::RechargeShield(float shield)
 
 void PlayerController::RechargeBattery(BatteryType batteryType)
 {
-    LOG("Shotgun Upgrade");
+    mCurrentBattery = 100.0f;
+    GameManager* managerInstance = GameManager::GetInstance();
+    managerInstance->GetHud()->SetEnergy(int(mCurrentBattery));
+
+    switch (batteryType)
+    {
+    case BatteryType::NONE:
+        break;
+    case BatteryType::BLUE:
+        managerInstance->GetHud()->SetEnergyColor(float3(0.0f,0.0f,255.0f));
+        managerInstance->GetHud()->SetEnergyTextColor(float3(0.0f, 0.0f, 255.0f));
+        break;
+    case BatteryType::RED:
+        managerInstance->GetHud()->SetEnergyColor(float3(255.0f, 0.0f, 0.0f));
+        managerInstance->GetHud()->SetEnergyTextColor(float3(255.0f, 0.0f, 0.0f));
+        break;
+    default:
+        break;
+    }
+
+    
+}
+
+void PlayerController::UseEnergy(float energy)
+{
+    mCurrentBattery -= energy;
+
+    if (mCurrentBattery <= 0.0f)
+    {
+        mBatteryType == BatteryType::NONE;
+    }
 }
 
 void PlayerController::TakeDamage(float damage)

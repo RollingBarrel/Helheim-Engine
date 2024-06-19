@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -14,6 +15,7 @@ CREATE(GameManager)
     MEMBER(MemberType::BOOL, mController);
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     END_CREATE;
 }
 
@@ -46,6 +48,12 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
         mHudController = static_cast<HudController*>(script->GetScriptInstance());
+    }
+
+    if (mAudioManagerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
+        mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
     }
 }
 

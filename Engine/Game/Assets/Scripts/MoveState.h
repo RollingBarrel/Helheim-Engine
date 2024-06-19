@@ -20,7 +20,8 @@ public:
 
 private:
 	void DoAnimation();
-	void DoAudio();
+
+	void PlayAudio() override;
 
 	float2 SetMovingDirection();
 
