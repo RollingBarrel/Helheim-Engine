@@ -507,6 +507,7 @@ void PlayerController::RechargeBattery(BatteryType batteryType)
 void PlayerController::UseEnergy(float energy)
 {
     mCurrentBattery -= energy;
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentBattery);
 
     if (mCurrentBattery <= 0.0f)
     {
