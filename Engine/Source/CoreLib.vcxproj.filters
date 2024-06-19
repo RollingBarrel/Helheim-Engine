@@ -426,6 +426,9 @@
     <ClCompile Include="MotionState.cpp">
       <Filter>Utils\Physics</Filter>
     </ClCompile>
+    <ClCompile Include="AudioUnit.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
     <ClCompile Include="BlendMode.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -1921,6 +1924,9 @@
     </ClInclude>
     <ClInclude Include="MotionState.h">
       <Filter>Utils\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="AudioUnit.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="BlendMode.h">
       <Filter>Utils</Filter>
