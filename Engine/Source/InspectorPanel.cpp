@@ -1,4 +1,4 @@
-#include "InspectorPanel.h"
+﻿#include "InspectorPanel.h"
 
 #include "ImBezier.h"
 #include "imgui.h"
@@ -45,6 +45,7 @@
 #include "Script.h"
 #include "AnimationController.h"
 #include "BezierCurve.h"
+#include "AudioUnit.h"
 #include "TrailComponent.h"
 
 #include "ResourceMaterial.h"
@@ -1308,69 +1309,98 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component)
-{
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
+	// List event and add
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
-
-	if (ImGui::Button("Play"))
-	{
-		component->Play();
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Stop"))
-	{
-		component->Stop(false);
-	}
 
 	ImGui::Text("Launch event");
 	ImGui::SameLine();
 
-	std::string name = component->GetName();
-
-	if (ImGui::BeginCombo("##audiosourceevent", name.c_str()))
+	static std::string selectedEventName = "";
+	if (ImGui::BeginCombo("##audiosourceevent", selectedEventName.c_str()))
 	{
-		for (auto i = 0; i < events.size(); i++) 
+		for (auto i = 0; i < events.size(); i++)
 		{
 			if (ImGui::Selectable(events[i]))
 			{
-				component->SetEventByName(events[i]);
+				selectedEventName = events[i];
 			}
 		}
-
 		ImGui::EndCombo();
 	}
 
-	ImGui::Separator();
-	ImGui::Text("Event parameters");
-
-	std::vector<int> parameterKeys;
-	std::vector<const char*> names;
-	std::vector<float> parameterValues;
-
-	component->GetParametersNameAndValue(parameterKeys, names, parameterValues);
-
-	for (auto i = 0; i < parameterKeys.size(); i++)
+	if (ImGui::Button("Add Event"))
 	{
-		const char* name = names[i];
-		float value = parameterValues[i];
-
-		float max = 0;
-		float min = 0;
-
-		component->GetParametersMaxMin(name, max, min);
-
-		ImGui::Text("%s: ", name);
-		ImGui::SameLine();
-
-		std::string str(name);
-		std::string tagName = "##" + str;
-
-		if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f")) 
-		{
-			component->UpdateParameterValueByIndex(parameterKeys[i], value);
-		}
+		component->AddNewAudioByName(selectedEventName.c_str());
 	}
 
+	// Set event one by one
+	ImGui::Separator();
+	int counter = 1;
+	for (auto audioUnit : component->GetAudios())
+	{
+		ImGui::Text("%i : %s",counter, audioUnit->GetName().c_str());
+		ImGui::PushID(audioUnit);
+		if (ImGui::Button("Play"))
+		{
+			audioUnit->Play();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Stop"))
+		{
+			audioUnit->Release();
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Remove"))
+		{
+			component->RemoveAudio(audioUnit);
+			ImGui::PopID();
+			return;
+		}
+		
+		ImGui::SameLine();
+		ImGui::Separator();
+		
+
+		std::vector<int> parameterKeys;
+		std::vector<const char*> names;
+		std::vector<float> parameterValues;
+
+		if (audioUnit->GetPreviewID() == -1)
+		{
+			ImGui::Text("Press 'Play' to view parameters");
+		}
+		else 
+		{
+			audioUnit->GetParametersNameAndValue(parameterKeys, names, parameterValues);
+			ImGui::Text("Num Event parameters: %i", parameterKeys.size());
+		}
+	
+		for (auto i = 0; i < parameterKeys.size(); i++)
+		{
+			const char* paramName = names[i];
+			float value = parameterValues[i];
+
+			float max = 0;
+			float min = 0;
+			audioUnit->GetParametersMaxMin(paramName, max, min);
+
+			ImGui::Text("%s: ", paramName);
+			ImGui::SameLine();
+
+			std::string str(paramName);
+			std::string tagName = "##" + str;
+
+			if (ImGui::SliderFloat(tagName.c_str(), &value, min, max, "%.0f"))
+			{
+				//audioUnit->UpdateParameterValueByIndex(parameterKeys[i], value);
+				audioUnit->UpdateParameterValueByName(paramName, value);
+			}
+		}
+		ImGui::PopID();
+		counter++;
+		ImGui::Separator();
+	}
 }
 
 void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)

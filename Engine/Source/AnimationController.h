@@ -44,7 +44,6 @@ public:
 
 	//Animation Resource
 	void SetCurrentAnimation(ResourceAnimation* animation) { mCurrentAnimation = animation; }
-	void SetNextAnimation(ResourceAnimation* animation) { mNextAnimation = animation; }
 
 	//Blending
 	void SetTransitionDuration(float time) { mTransitionDuration = time; }
@@ -76,5 +75,4 @@ private:
 	bool mLoop = true;
 
 	ResourceAnimation* mCurrentAnimation = nullptr;
-	ResourceAnimation* mNextAnimation = nullptr;
 };

@@ -4,6 +4,7 @@
 
 class ButtonComponent;
 class HudController;
+class AudioManager;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -20,6 +21,7 @@ public:
     void Update();
 
     GameObject* GetPlayer() { return mPlayer; };
+    AudioManager* GetAudio() const {return mAudioManager;};
     HudController* GetHud() { return mHudController; };
     bool UsingController() { return mController; }
 
@@ -38,8 +40,10 @@ private:
     
     GameObject* mPlayer = nullptr;
     GameObject* mHudControllerGO = nullptr;
+    GameObject* mAudioManagerGO = nullptr;
 
     HudController* mHudController = nullptr;
+    AudioManager* mAudioManager = nullptr;
 
     bool mPaused = false;
 

@@ -1,4 +1,6 @@
 #include "MainMenuManager.h"
+#include "GameManager.h"
+#include "AudioManager.h"
 #include "AudioSourceComponent.h"
 #include "GameObject.h"
 
@@ -6,8 +8,6 @@ CREATE(MainMenuManager)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mMainMenuThemeHolder);
-    MEMBER(MemberType::GAMEOBJECT, mOKSFXHolder);
-    MEMBER(MemberType::GAMEOBJECT, mSelectSFXHolder);
     END_CREATE;
 }
 
@@ -24,17 +24,7 @@ void MainMenuManager::Start()
     if (mMainMenuThemeHolder != nullptr) 
     {
         mMainMenuTheme = (AudioSourceComponent*)mMainMenuThemeHolder->GetComponent(ComponentType::AUDIOSOURCE);
-        mMainMenuTheme->Play();
-    }
-
-    if (mOKSFXHolder != nullptr) 
-    {
-        mOKSFX = (AudioSourceComponent*)mOKSFXHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
-
-    if (mSelectSFXHolder != nullptr) 
-    {
-        mSelectSFX = (AudioSourceComponent*)mSelectSFXHolder->GetComponent(ComponentType::AUDIOSOURCE);
+        //mMainMenuTheme->Play();
     }
 }
 
@@ -44,10 +34,10 @@ void MainMenuManager::Update()
 
 void MainMenuManager::PlayOKSFX()
 {
-    mOKSFX->PlayOneShot();
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
 }
 
 void MainMenuManager::PlaySelectSFX()
 {
-    mSelectSFX->PlayOneShot();
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
