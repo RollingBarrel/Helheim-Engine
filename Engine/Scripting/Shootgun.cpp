@@ -10,10 +10,13 @@
 
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
+#include <PlayerController.h>
 
 Shootgun::Shootgun()
 {
     mDamage = 0.1f;
+    mAttackRange = 100.0f;
+    mAttackTime = 1.0f;
 }
 
 Shootgun::~Shootgun()
@@ -29,34 +32,17 @@ void Shootgun::Attack()
 {
     unsigned int numBullets = 10;
 
-
-    GameObject* bullet = nullptr;
-    if (mCurrentAmmo > 0)
+    //TODO: Rethink this
+    reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
+   
+    //Audio
+    if (GameManager::GetInstance()->GetAudio())
     {
-        //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
-        mCurrentAmmo--;
-    }
-    else {
-        mCurrentAmmo = mMaxAmmo;
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
     }
 
-
-    //mPlayerController->PlayOneShot("Shot");
-    //mAnimationComponent->SendTrigger("tShooting", 0.2f);
-    //GameManager::GetInstance()->GetAudio()->PlayOneShot();
-
-    if (bullet != nullptr)
-    {
-        /*bullet->SetPosition(mPlayerCharacter->GetPosition());
-
-        mShootPoint->SetEnabled(false);
-        mShootPoint->SetEnabled(true); // Reset particles
-
-        bullet->SetRotation(mGameObject->GetWorldRotation());*/
-    }
-
+    //Shoot Logic
     int count = 0;
-    float distance = 100.0f;
     for (unsigned int i = 0; i < numBullets; ++i)
     {
         Ray ray;
@@ -72,7 +58,7 @@ void Shootgun::Attack()
 
 
         Hit hit;
-        Physics::Raycast(hit, ray, distance);
+        Physics::Raycast(hit, ray, mAttackRange);
 
         if (hit.IsValid())
         {
@@ -92,7 +78,7 @@ void Shootgun::Attack()
         }
     }
     
-    LOG("balas falladas = %i", count);
+    LOG("Missed bullets = %i", count);
 }
 
 void Shootgun::Exit()
