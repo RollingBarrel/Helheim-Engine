@@ -308,11 +308,11 @@ void PlayerController::PlayOneShot(std::string name)
 {
     if (strcmp(name.c_str(), "Step")) 
     {
-        mFootStepAudio->PlayOneShot();
+        //mFootStepAudio->PlayOneShot();
     }
     if (strcmp(name.c_str(), "Shot")) 
     {
-        mGunfireAudio->PlayOneShot();
+        //mGunfireAudio->PlayOneShot();
     }
 }
 
