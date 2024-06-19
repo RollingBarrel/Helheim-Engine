@@ -26,6 +26,8 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
     SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mContinueBtnGO);
@@ -113,6 +115,9 @@ void HudController::Start()
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
 
+    if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
+
+    if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
 }
 
 void HudController::Update()
@@ -178,6 +183,21 @@ void HudController::Loading()
 void HudController::SetAmmo(int ammo)
 {
     if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
+}
+
+void HudController::SetEnergy(int energy)
+{
+    if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
+}
+
+void HudController::SetEnergyColor(float3 color)
+{
+    if (mEnergyImage) mEnergyImage->SetColor(color);
+}
+
+void HudController::SetEnergyTextColor(float3 color)
+{
+    if (mEnergyText) mEnergyText->SetTextColor(color);
 }
 
 void HudController::SetHealth(float health)

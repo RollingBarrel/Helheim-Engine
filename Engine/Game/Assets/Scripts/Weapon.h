@@ -26,8 +26,8 @@ public:
 protected:
 	WeaponType mType;
 
-	int mDamage = 0.0f;
-	float mAttackRate = 0.0f;
+	float mDamage = 0.0f;
+	//float mAttackRate = 0.0f;
 	float mAttackTime = 0.0f;
 	float mAttackRange = 0.0f;
 

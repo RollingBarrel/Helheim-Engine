@@ -147,6 +147,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -254,5 +256,7 @@
     <ClCompile Include="AudioTester.cpp">
       <Filter>Sound\Test</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioTester.cpp" />
   </ItemGroup>
 </Project>

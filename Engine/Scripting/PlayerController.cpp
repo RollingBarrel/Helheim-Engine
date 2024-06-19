@@ -301,7 +301,20 @@ void PlayerController::HandleRotation()
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 {
-    mAnimationComponent->SendTrigger(trigger, transitionTime);
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendTrigger(trigger, transitionTime);
+    }
+    
+}
+
+void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
+{
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
+    }
+    
 }
 
 void PlayerController::PlayOneShot(std::string name)
@@ -459,7 +472,27 @@ void PlayerController::RechargeShield(float shield)
 
 void PlayerController::RechargeBattery(BatteryType batteryType)
 {
-    LOG("Shotgun Upgrade");
+    mCurrentBattery = 100.0f;
+    GameManager* managerInstance = GameManager::GetInstance();
+    managerInstance->GetHud()->SetEnergy(int(mCurrentBattery));
+
+    switch (batteryType)
+    {
+    case BatteryType::NONE:
+        break;
+    case BatteryType::BLUE:
+        managerInstance->GetHud()->SetEnergyColor(float3(0.0f,0.0f,255.0f));
+        managerInstance->GetHud()->SetEnergyTextColor(float3(0.0f, 0.0f, 255.0f));
+        break;
+    case BatteryType::RED:
+        managerInstance->GetHud()->SetEnergyColor(float3(255.0f, 0.0f, 0.0f));
+        managerInstance->GetHud()->SetEnergyTextColor(float3(255.0f, 0.0f, 0.0f));
+        break;
+    default:
+        break;
+    }
+
+    
 }
 
 void PlayerController::TakeDamage(float damage)

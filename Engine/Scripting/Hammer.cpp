@@ -14,6 +14,7 @@ void Hammer::Enter()
 
 void Hammer::Attack()
 {
+
 }
 
 void Hammer::Exit()
