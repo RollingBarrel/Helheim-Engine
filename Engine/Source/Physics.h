@@ -16,6 +16,8 @@ struct Hit
 	{
 		return mDistance < otherHit.mDistance;
 	}
+
+	bool IsValid() { return mDistance >= 0.0f; }
 };
 
 inline bool operator<(const Hit& hit, const Hit& otherHit)
@@ -27,5 +29,6 @@ inline bool operator<(const Hit& hit, const Hit& otherHit)
 namespace Physics
 {
 	ENGINE_API void Raycast(std::multiset<Hit>& hits, const Ray& ray, float maxDistance = 10000.0f);
+	ENGINE_API void Raycast(Hit& hit, const Ray& ray, float maxDistance = 10000.0f);
 	ENGINE_API Ray ScreenPointToRay(float2 screenPoint);
 };

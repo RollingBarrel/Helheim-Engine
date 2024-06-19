@@ -1,4 +1,10 @@
 #include "SpecialState.h"
+#include "Application.h"
+#include "PlayerController.h"
+#include "Weapon.h"
+
+#include "Application.h"
+#include "PlayerController.h"
 
 SpecialState::SpecialState(PlayerController* player) : State(player)
 {
@@ -15,17 +21,27 @@ StateType SpecialState::HandleInput()
 
 void SpecialState::Update()
 {
+	mSpecialWeapon->Attack();
 }
 
 void SpecialState::Enter()
 {
+	//mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
+	mSpecialWeapon = mPlayerController->GetSpecialWeapon();
+	mSpecialWeapon->Enter();
 }
 
 void SpecialState::Exit()
 {
+	mSpecialWeapon->Exit();
+	mSpecialWeapon = nullptr;
 }
 
 StateType SpecialState::GetType()
 {
 	return StateType::SPECIAL;
+}
+
+void SpecialState::PlayAudio()
+{
 }

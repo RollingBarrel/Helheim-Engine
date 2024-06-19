@@ -26,9 +26,11 @@ class Enemy : public Script
 	protected:
 		bool Delay(float delay);
 		bool IsPlayerInRange(float range);		
-		void DropShield();
+		void DropItem();
 		
 		int mShieldDropRate = 20;
+		int mShotgunDropRate = 35;
+		int mMachineGunDropRate = 45;
 		float mHealth = 0.0f;
 		float mMaxHealth = 6.0f;
 		float mSpeed = 1.0f;

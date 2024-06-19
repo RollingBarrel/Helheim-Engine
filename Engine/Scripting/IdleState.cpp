@@ -58,3 +58,7 @@ StateType IdleState::GetType()
 {
     return StateType::IDLE;
 }
+
+void IdleState::PlayAudio()
+{
+}

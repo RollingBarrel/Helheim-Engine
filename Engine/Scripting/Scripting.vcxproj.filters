@@ -59,10 +59,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
+    <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
@@ -128,12 +125,27 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Hammer.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Katana.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Shootgun.h">
+      <Filter>Weapons\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h">
+      <Filter>Weapons\Range</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
+      <Filter>Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +169,7 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="ItemShield.cpp">
+    <ClCompile Include="ItemDrop.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
@@ -223,6 +235,18 @@
     <ClCompile Include="HudController.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Machinegun.cpp">
+      <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="Shootgun.cpp">
+      <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="Katana.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="Hammer.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
     <ClCompile Include="HudController.cpp" />
     <ClCompile Include="AudioManager.cpp">
       <Filter>Sound</Filter>
@@ -230,5 +254,7 @@
     <ClCompile Include="AudioTester.cpp">
       <Filter>Sound\Test</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioTester.cpp" />
   </ItemGroup>
 </Project>

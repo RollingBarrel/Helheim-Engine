@@ -34,6 +34,9 @@ void GrenadeState::Update()
 
 void GrenadeState::Enter()
 {
+    //mPlayerController->SetSpineAnimation("tGranade", 0.1f);
+
+   //GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
     mPlayerController->SetGrenadeVisuals(true);
 }
 
@@ -47,4 +50,8 @@ void GrenadeState::Exit()
 StateType GrenadeState::GetType()
 {
     return StateType::GRENADE;
+}
+
+void GrenadeState::PlayAudio()
+{
 }
