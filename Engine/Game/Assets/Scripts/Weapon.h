@@ -11,14 +11,17 @@ public:
 	Weapon();
 	~Weapon();
 
+	virtual void Enter() = 0;
 	virtual void BasicAttack() = 0;
 	virtual void SpecialAttack() = 0;
+	virtual void Exit() = 0;
 
 	WeaponType GetType() { return mType; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
 	int GetDamage() { return mDamage; }
-
+	float GetAttackTime() { return mAttackTime; }
+	
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
 	void SetDamage(int value) { mDamage = value; }
 protected:
@@ -26,6 +29,8 @@ protected:
 
 	int mDamage = 0.0f;
 	float mAttackRate = 0.0f;
+	float mAttackTime = 0.0f;
+	float mAttackRange = 0.0f;
 
 	int mCurrentAmmo = 0;
 	int mMaxAmmo = 0;

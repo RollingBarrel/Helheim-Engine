@@ -142,6 +142,8 @@ private:
     Weapon* mWeapon = nullptr;
     MeleeWeapon* mMeleeWeapon = nullptr;
     RangeWeapon* mRangeWeapon = nullptr;
+    GameObject* mBat = nullptr;
+
     // Attack
     float mAttackCoolDown = 0.1f;
     float mSpecialAttackCoolDown = 5.0f;
