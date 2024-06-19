@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 658480451,
+                "UID": 2050794152,
                 "ParentUID": 1,
                 "Name": "Item_MachineGun",
                 "Enabled": true,
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 684100979,
-                "ParentUID": 658480451,
+                "UID": 2107256783,
+                "ParentUID": 2050794152,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
@@ -81,8 +81,8 @@
                 "Components": []
             },
             {
-                "UID": 699835325,
-                "ParentUID": 684100979,
+                "UID": 2133295037,
+                "ParentUID": 2107256783,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,

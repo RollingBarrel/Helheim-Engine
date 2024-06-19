@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 489490015,
+                "UID": 1416210042,
                 "ParentUID": 1,
                 "Name": "Item_Shield",
                 "Enabled": true,
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 518800456,
-                "ParentUID": 489490015,
+                "UID": 1456729464,
+                "ParentUID": 1416210042,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
@@ -81,8 +81,8 @@
                 "Components": []
             },
             {
-                "UID": 533768971,
-                "ParentUID": 518800456,
+                "UID": 1482837339,
+                "ParentUID": 1456729464,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
