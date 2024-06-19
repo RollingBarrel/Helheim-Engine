@@ -100,6 +100,7 @@ public:
 
     void RechargeShield(float shield);
     void RechargeBattery(BatteryType batteryType);
+    void UseEnergy(float energy);
     void TakeDamage(float damage);
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };

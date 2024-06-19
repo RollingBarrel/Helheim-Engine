@@ -59,9 +59,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -147,8 +144,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">

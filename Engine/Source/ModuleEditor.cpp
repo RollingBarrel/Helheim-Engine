@@ -216,7 +216,7 @@ void ModuleEditor::ShowMainMenuBar()
 					str += ".scn";
 					if (App->GetFileSystem()->Exists(str.c_str()))
 					{
-						App->GetScene()->Save(App->GetScene()->GetName().c_str());
+						App->GetScene()->Save(str.c_str());
 					}
 					else
 					{
@@ -445,11 +445,13 @@ void ModuleEditor::OpenSaveScene()
 			EngineApp->GetScene()->GetRoot()->SetName(filePathName.c_str());
 			if (!App->GetFileSystem()->Exists(str.c_str()))
 			{
-				EngineApp->GetEngineResource()->ImportFile(str.c_str(), 0u, true);
+				//EngineApp->GetEngineResource()->ImportFile(str.c_str(), 0u, true); TODO: FIX
+				App->GetScene()->Save(str.c_str());
 			}
 			else
 			{
-				EngineApp->GetEngineResource()->ImportFile(str.c_str(), 0u, false);
+				//EngineApp->GetEngineResource()->ImportFile(str.c_str(), 0u, false); TODO: FIX
+				App->GetScene()->Save(str.c_str());
 			}
 
 		}

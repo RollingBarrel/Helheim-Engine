@@ -117,6 +117,52 @@ void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits)
 	}	
 }
 
+void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
+{
+	btVector3 fromBt(from.x, from.y, from.z);
+	btVector3 toBt(to.x, to.y, to.z);
+	btCollisionWorld::AllHitsRayResultCallback callback(fromBt, toBt);
+	mWorld->rayTest(fromBt, toBt, callback);
+
+	
+	if (callback.hasHit())
+	{
+		Hit closestHit;
+		closestHit.mDistance = FLT_MAX;
+
+		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
+		{
+			LOG("RayCast %i", i);
+			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
+			if (collider)
+			{
+				Component* component = (Component*)collider->mCollider;
+				if (component)
+				{
+					float3 hitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
+					
+					float distance = from.Distance(hitPoint);
+					if (distance < closestHit.mDistance)
+					{
+						closestHit.mDistance = distance;
+						closestHit.mGameObject = component->GetOwner();;
+						closestHit.mHitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
+					}
+				}
+			}
+		}
+
+		hit = closestHit;
+
+	}
+	else
+	{
+		hit.mDistance = -1.0f;
+	}
+}
+
+
+
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
 	// Set up the motion state for the box collider
