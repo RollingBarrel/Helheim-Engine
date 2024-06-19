@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Application.h"
+#include "ModuleScene.h"
 
 Bat::Bat() : MeleeWeapon()
 {
@@ -34,113 +35,45 @@ void Bat::DealDamage(GameObject* enemy) {
     Enemy* enemyScript = dynamic_cast<Enemy*>(enemy->GetComponent(ComponentType::SCRIPT));
     if (enemyScript) {
         enemyScript->TakeDamage(mDamage);
+        enemyScript->PushBack();
     }
 }
 
 
 void Bat::Attack()
 {
-    // - Calculate hitbox and intersect it with every object to spawn sparks
-    // - Damage to enemies inside the hitbox
-    LOG("MELEE ATTACK!!")
-    mComboTimer = 0.0f;
+	ModuleScene* scene = App->GetScene();
+	std::vector<GameObject*> Enemies;
 
-    bool firstHit = false;
-    if (!mIsComboActive)
+    Enemies = scene->FindGameObjectsWithTag("Enemy");
+    mPlayerGO = scene->FindGameObjectWithTag("Player");
+
+    float3 playerPosition = mPlayerGO->GetPosition();
+
+	// Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
+    for (auto enemy : Enemies)
     {
-        // First hit
-        // mAnimationComponent->SendTrigger("tMelee", 0.2f);
-        // DealDamage();
-        mIsComboActive = true;
-        mComboCurrentTime = 0.0f;
-        mComboStep = 2;
-        firstHit = true;
+		MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
+		float3 enemyPosition = enemy->GetPosition();
+		float distanceToEnemy = (enemyPosition - playerPosition).Length();
+		float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
 
-    }
-    if (!mIsNextComboStep)
-    {
-        mIsNextComboStep = !firstHit;
-        mBreakCombo = 0.0f;
+		// Si el enemigo está frente al jugador y dentro del rango de ataque
+		float3 playerFrontNormalized = mPlayerGO->GetFront().Normalized();
+		float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
 
+        if (distanceToEnemy < mRange && dotProduct < 0)
+        {
+			DealDamage(enemy);
 
-    }
-    mComboCurrentTime += App->GetDt();
-    if (mComboCurrentTime > mComboMilestone1 && mComboCurrentTime < mComboMilestone2 && mIsNextComboStep && mComboStep == 2)
-    {
-        // Second hit
-        // mAnimationComponent->SendTrigger("tMelee", 0.2f);
-        // DealDamage();
-        mComboStep = 3;
-        mIsNextComboStep = false;
-        mBreakCombo = 0.0f;
-
-
-    }
-    else if (mComboCurrentTime > mComboMilestone2 && mComboCurrentTime < mComboDuration && mComboStep == 3 && mIsNextComboStep)
-    {
-        // Dashing
-        //mAnimationComponent->SendTrigger("tMelee", 0.2f);
-        // DealDamage();
-        float meleeSpeed = mMoveRange / mMoveDuration;
-       // float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
-       // mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-        mComboTimer = 0.0f;
-
-    }
-    else if (mComboCurrentTime > mComboDuration && mComboStep == 3 && mIsNextComboStep)
-    {
-        //End combo
-        //mAnimationComponent->SendTrigger("tIdle", 0.2f);
-        mComboCurrentTime = false;
-        mComboCurrentTime = 0.0f;
-        mComboStep = 0; //this variable is weird, refactor how it works in next updates
-        mIsNextComboStep = false;
-        mBreakCombo = 0.0f;
-
-    }
-    else if (!mIsNextComboStep)
-    {
-        mBreakCombo += App->GetDt();
-    }
-
-    float breakTime = 10.0f;
-    switch (mComboStep)
-    {
-    case 1:
-        breakTime = 10.0f;
-        break;
-    case 2:
-        breakTime = 1.1f;
-        break;
-    case 3:
-        breakTime = 0.9f;
-        break;
-    default:
-        break;
-    }
-
-    if (mBreakCombo > breakTime)
-    {
-        //mAnimationComponent->SendTrigger("tIdle", 0.2f);
-        mIsComboActive = false;
-        mComboCurrentTime = 0.0f;
-        //mCurrentState = PlayerState::IDLE;
-        mComboStep = 1; //this variable is weird, refactor how it works in next updates
-        mIsNextComboStep = false;
-        mBreakCombo = 0.0f;
-
-    }
-
-    if (mComboCurrentTime > mComboDuration + 2.0f)
-    {
-        mComboCurrentTime = 0.0f;
-    }
+		}
+	}   
 
 }
 
 void Bat::Exit()
 {
-    mTrail->Disable();
+  //  mTrail->Disable();
 }
 
 /*//Melee

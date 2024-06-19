@@ -429,6 +429,11 @@ void PlayerController::ThrowGrenade()
     mGrenade->SetDestination(mGrenadePosition);
 }
 
+void PlayerController::SetPlayerPosition(float3 position)
+{
+    mGameObject->SetPosition(position);
+}
+
 bool PlayerController::CanReload() const
 {
     if (mWeapon->GetCurrentAmmo() == mWeapon->GetMaxAmmo()) return false;

@@ -94,6 +94,7 @@ public:
     void SetGrenadeVisuals(bool value);
     void UpdateGrenadeVisuals();
     void ThrowGrenade();
+    void SetPlayerPosition(float3 position);
 
 
     bool CanReload() const;
