@@ -39,17 +39,18 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
-    mAttackTimer += App->GetDt();
-
-    if (mAttackTimer > mWeapon->GetAttackTime()) 
+    if (mAttackTimer == 0) 
     {
         mWeapon->Attack();
         PlayAudio();
     }
+
+    mAttackTimer += App->GetDt();
 }
 
 void AttackState::Enter()
 {
+    mAttackTimer = 0;
     mWeapon = mPlayerController->GetWeapon();
     mWeapon->Enter();
 }
