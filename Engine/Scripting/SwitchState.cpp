@@ -5,6 +5,7 @@
 #include "Keys.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "PlayerController.h"
 
 SwitchState::SwitchState(PlayerController* player) : State(player)
 {
@@ -16,17 +17,18 @@ SwitchState::~SwitchState()
 
 StateType SwitchState::HandleInput()
 {
+	//TODO: Should not be immediate
 	return StateType::AIM;
-
-	//return State::HandleInput();
 }
 
 void SwitchState::Update()
 {
+
 }
 
 void SwitchState::Enter()
 {
+	//mPlayerController->SetSpineAnimation("tSwitch", 0.1f);
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }
 
@@ -37,4 +39,8 @@ void SwitchState::Exit()
 StateType SwitchState::GetType()
 {
 	return StateType::SWITCH;
+}
+
+void SwitchState::PlayAudio() 
+{
 }

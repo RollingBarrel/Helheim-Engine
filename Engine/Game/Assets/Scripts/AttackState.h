@@ -19,7 +19,7 @@ public:
 
 
 private:
-	void DoAudio();
+	void PlayAudio() override;
 
 	Weapon* mWeapon = nullptr;
 	float mAttackTimer = 0.0f;

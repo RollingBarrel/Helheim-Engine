@@ -23,7 +23,7 @@ Pistol::Pistol() : RangeWeapon()
     mMaxAmmo = 16;
 
     mDamage = 10.0f;
-    mAttackRate = 1.0f;
+    //mAttackRate = 1.0f;
 }
 
 Pistol::~Pistol()
@@ -41,9 +41,7 @@ void Pistol::Attack()
     {
        //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
-    }
-    else {
-        mCurrentAmmo = mMaxAmmo;
+        LOG("Bullets: %i", mCurrentAmmo);
     }
     
 
@@ -89,6 +87,13 @@ void Pistol::Attack()
     }
 }
 
+void Pistol::Reload()
+{
+    mCurrentAmmo = mMaxAmmo;
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
 void Pistol::Exit()
 {
+
 }

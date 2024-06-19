@@ -16,7 +16,7 @@ AttackState::~AttackState()
 
 StateType AttackState::HandleInput()
 {
-    mAttackTimer += App->GetDt();
+    
 
     if (mAttackTimer < mWeapon->GetAttackTime())
     {
@@ -24,14 +24,28 @@ StateType AttackState::HandleInput()
     }
     else
     {
+        mAttackTimer = 0;
+        if (mWeapon->GetType() == Weapon::WeaponType::RANGE && mWeapon->GetCurrentAmmo() == 0)
+        {
+            return StateType::RELOAD;
+        }
+        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+        {
+            return StateType::ATTACK;
+        }
         return StateType::AIM;
     }
 }
 
 void AttackState::Update()
 {
-    mWeapon->Attack();
-    DoAudio();
+    mAttackTimer += App->GetDt();
+
+    if (mAttackTimer > mWeapon->GetAttackTime()) 
+    {
+        mWeapon->Attack();
+        PlayAudio();
+    }
 }
 
 void AttackState::Enter()
@@ -51,6 +65,7 @@ StateType AttackState::GetType()
     return StateType::ATTACK;
 }
 
-void AttackState::DoAudio()
+void AttackState::PlayAudio()
 {
+
 }

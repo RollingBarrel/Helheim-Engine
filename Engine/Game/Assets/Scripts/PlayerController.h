@@ -60,6 +60,7 @@ public:
     float3 GetPlayerPosition();
    
     void SetAnimation(std::string trigger, float transitionTime);
+    void SetSpineAnimation(std::string trigger, float transitionTime);
     void PlayOneShot(std::string name);
 
     void MoveToPosition(float3 position);
@@ -73,6 +74,7 @@ public:
     float GetGrenadeCooldown() const { return mGrenadeCoolDown; }
     float GetGrenadeRange() const { return mGrenadeRange;  }
     float GetAttackCooldown() const { return mAttackCoolDown; }
+    float GetSlowAttackCooldown() const { return mSlowAttackCoolDown; }
     float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetReloadDuration() const { return mReloadDuration; }
@@ -163,6 +165,7 @@ private:
 
     // Attack
     float mAttackCoolDown = 0.1f;
+    float mSlowAttackCoolDown = 0.5f;
     float mSpecialAttackCoolDown = 5.0f;
     float mSwitchCoolDown = 0.2f;
     float mReloadDuration = 0.5;
