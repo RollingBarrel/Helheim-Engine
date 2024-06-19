@@ -18,7 +18,9 @@ public:
 	void PlayAudio() override;
 
 private:
-	float mAttackTimer = 0.0f;
+	//float mAttackTimer = 0.0f;	Moved to attack state
+
+	//The other timers should go in their own class also?
 	float mSpecialAttackTimer = 0.0f;
 	float mGrenadeTimer = 0.0f;
 	float mSwitchTimer = 0.0f;
