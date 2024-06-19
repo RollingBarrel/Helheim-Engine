@@ -1,4 +1,4 @@
-#include "ItemShield.h"
+#include "ItemDrop.h"
 #include "PlayerController.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -7,19 +7,20 @@
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
 
-CREATE(ItemShield)
+CREATE(ItemDrop)
 {
 	CLASS(owner);
 
+    MEMBER(MemberType::INT, mDropId);
     MEMBER(MemberType::FLOAT, mHealthRecovered);
     MEMBER(MemberType::FLOAT, mActivationRange);
 
 	END_CREATE;
 }
 
-ItemShield::ItemShield(GameObject* owner) : Script(owner) {}
+ItemDrop::ItemDrop(GameObject* owner) : Script(owner) {}
 
-void ItemShield::Start()
+void ItemDrop::Start()
 {
     ModuleScene* scene = App->GetScene();
     mPlayer = GameManager::GetInstance()->GetPlayer();
@@ -41,7 +42,7 @@ void ItemShield::Start()
     
 }
 
-void ItemShield::Update()
+void ItemDrop::Update()
 {
     if (IsPlayerInRange(mActivationRange))
     {
@@ -50,12 +51,26 @@ void ItemShield::Update()
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
         {
-            playerScript->RechargeShield(mHealthRecovered);
+            switch (mDropId)
+            {
+            case 1:
+                playerScript->RechargeShield(mHealthRecovered);
+                break;
+            case 2:
+                playerScript->RechargeBattery(BatteryType::BLUE); 
+                break;
+            case 3: 
+                playerScript->RechargeBattery(BatteryType::RED);
+                break;
+            default:
+                break;
+            }
+            
         }
     }
 }
 
-bool ItemShield::IsPlayerInRange(float range)
+bool ItemDrop::IsPlayerInRange(float range)
 {
     float distance = 0.0f;
     distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;

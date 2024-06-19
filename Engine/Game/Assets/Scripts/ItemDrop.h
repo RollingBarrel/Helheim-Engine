@@ -3,23 +3,25 @@
 #include "Macros.h"
 #include "GameObject.h"
 
-GENERATE_BODY(ItemShield);
+GENERATE_BODY(ItemDrop);
 
 class AnimationComponent;
+enum class BatteryType;
 
-class ItemShield : public Script
+class ItemDrop : public Script
 {
-    FRIEND(ItemShield)
+    FRIEND(ItemDrop)
 
 public:
-    ItemShield(GameObject* owner);
-    ~ItemShield() {}
+    ItemDrop(GameObject* owner);
+    ~ItemDrop() {}
     void Start() override;
     void Update() override;
     
 private:
     bool IsPlayerInRange(float range);
 
+    int mDropId;
     float mActivationRange = 1.0f;
     float mHealthRecovered = 15.0f;
     GameObject* mPlayer = nullptr;

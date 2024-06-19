@@ -3,11 +3,11 @@
 
 class TrailComponent;
 
-class Bat : public MeleeWeapon
+class Katana : public MeleeWeapon
 {
 public:
-	Bat();
-	~Bat();
+	Katana();
+	~Katana();
 
 	void Enter() override;
 	void Attack() override;

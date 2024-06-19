@@ -1,7 +1,7 @@
 #include "Bat.h"
 #include "float3.h"
 #include <vector>
-#include "GameObject.h"
+#include "TrailComponent.h"
 
 Bat::Bat()
 {
@@ -14,10 +14,10 @@ Bat::~Bat()
 
 void Bat::Enter()
 {
-    mTrail->SetEnabled(true);
+    mTrail->Enable();
 }
 
-void Bat::BasicAttack()
+void Bat::Attack()
 {
     // - Calculate hitbox and intersect it with every object to spawn sparks
     // - Damage to enemies inside the hitbox
@@ -47,13 +47,9 @@ void Bat::BasicAttack()
     //}
 }
 
-void Bat::SpecialAttack()
-{
-}
-
 void Bat::Exit()
 {
-    mTrail->SetEnabled(false);
+    mTrail->Disable();
 }
 
 /*//Melee

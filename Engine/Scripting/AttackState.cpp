@@ -30,7 +30,7 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
-    mWeapon->BasicAttack();
+    mWeapon->Attack();
     DoAudio();
 }
 
