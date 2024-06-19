@@ -183,9 +183,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\IdleState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Katana.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h" />
@@ -224,9 +222,7 @@
     <ClCompile Include="Grenade.cpp" />
     <ClCompile Include="IdleState.cpp" />
     <ClCompile Include="ItemDrop.cpp" />
-    <ClCompile Include="ItemShield.cpp" />
     <ClCompile Include="Katana.cpp" />
-    <ClCompile Include="Level1AManager.cpp" />
     <ClCompile Include="Machinegun.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
