@@ -40,13 +40,15 @@
     <Filter Include="Sound\Test">
       <UniqueIdentifier>{a76f27bd-e8d6-4a04-80b8-3f021cb5f28f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Pools">
+      <UniqueIdentifier>{475c614c-9d94-4dab-9927-3f6f3e127db0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h">
       <Filter>Weapons</Filter>
     </ClInclude>
@@ -122,9 +124,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
-      <Filter>UI</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Hammer.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
@@ -147,13 +146,18 @@
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
+      <Filter>Pools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="TestScript.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Weapon.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
@@ -232,9 +236,6 @@
     <ClCompile Include="Pistol.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
-    <ClCompile Include="HudController.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="Machinegun.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
@@ -253,6 +254,12 @@
     </ClCompile>
     <ClCompile Include="AudioTester.cpp">
       <Filter>Sound\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Pools</Filter>
+    </ClCompile>
+    <ClCompile Include="HudController.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
