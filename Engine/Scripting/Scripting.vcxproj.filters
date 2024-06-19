@@ -140,6 +140,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h">
       <Filter>Weapons\Range</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -240,5 +242,7 @@
     <ClCompile Include="Hammer.cpp">
       <Filter>Weapons\Melee</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioTester.cpp" />
   </ItemGroup>
 </Project>

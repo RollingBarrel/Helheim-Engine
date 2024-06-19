@@ -26,6 +26,9 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
+    void SetEnergy(int energy);
+    void SetEnergyColor(float3 color);
+    void SetEnergyTextColor(float3 color);
     void SetHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
@@ -77,11 +80,15 @@ private:
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mSecondWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
+    GameObject* mEnergyGO = nullptr;
+    GameObject* mEnergyImageGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
     SliderComponent* mHealthSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
+    TextComponent* mEnergyText = nullptr;
+    ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
 
     float mTargetHealth = 1;

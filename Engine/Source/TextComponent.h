@@ -37,6 +37,7 @@ public:
     int* GetLineWidth() { return &mLineWidth; }
 
     void SetText(std::string text) { mText = text; }
+    void SetTextColor(float3 color) { mColor = color; }
 
 private:
     void InitFreeType();
