@@ -128,7 +128,7 @@ void PlayerController::Start()
     mKatana = new Katana();
     mHammer = new Hammer();
 
-    mWeapon = mPistol;
+    mWeapon = mShootgun;
     mSpecialWeapon = nullptr;
 
     // AUDIO
@@ -272,7 +272,10 @@ void PlayerController::HandleRotation()
 {
     // TODO: Not aim on melee state? and dash?
 
-    if (GameManager::GetInstance()->UsingController())
+    GameManager* gameManager = GameManager::GetInstance();
+    bool controller = gameManager->UsingController();
+
+    if (controller)
     {
         float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
         float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);

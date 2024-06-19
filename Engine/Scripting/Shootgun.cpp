@@ -1,11 +1,14 @@
 #include "Shootgun.h"
-#include "GameObject.h"
 #include "GameManager.h"
 #include "HudController.h"
-#include <Physics.h>
+#include "Enemy.h"
+
+#include "GameObject.h"
+#include "ScriptComponent.h"
+#include "Physics.h"
+
 #include "Geometry/Ray.h"
-#include <Enemy.h>
-#include <ScriptComponent.h>
+#include "Algorithm/Random/LCG.h"
 
 Shootgun::Shootgun()
 {
@@ -52,18 +55,22 @@ void Shootgun::Attack()
         bullet->SetRotation(mGameObject->GetWorldRotation());*/
     }
 
-    std::vector<Hit> hits;
-    hits.reserve(numBullets);
-
-
-    Ray ray;
-    ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
-    ray.pos.y++;
-    ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
-
+    int count = 0;
     float distance = 100.0f;
     for (unsigned int i = 0; i < numBullets; ++i)
     {
+        Ray ray;
+        ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
+        ray.pos.y++;
+        ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
+
+        float3 spread = float3::zero;
+        spread += GameManager::GetInstance()->GetPlayer()->GetUp() * LCG().Float(-1.0f, 1.0f);
+        spread += GameManager::GetInstance()->GetPlayer()->GetRight() * LCG().Float(-1.0f, 1.0f);
+
+        ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
+
+
         Hit hit;
         Physics::Raycast(hit, ray, distance);
 
@@ -79,8 +86,13 @@ void Shootgun::Attack()
                 }
             }
         }
+        else
+        {
+            count++;
+        }
     }
     
+    LOG("balas falladas = %i", count);
 }
 
 void Shootgun::Exit()
