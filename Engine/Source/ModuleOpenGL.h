@@ -31,6 +31,7 @@ class SpotLightComponent;
 class ParticleSystemComponent;
 class TrailComponent;
 class CameraComponent;
+class DecalComponent;
 struct PointLight;
 struct SpotLight;
 struct SDL_Texture;
@@ -80,7 +81,8 @@ public:
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
 	unsigned int GetGBufferNormals() const { return mGNormals; }
-	unsigned int GetGBufferDepth() const { return mGColDepth; }
+	unsigned int GetGBufferDepth() const { return mGDepth; }
+	unsigned int GetGBufferPos() const { return mGPosition; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -111,6 +113,9 @@ public:
 	void AddHighLight(const GameObject& gameObject);
 	void RemoveHighLight(const GameObject& gameObject);
 
+	void AddDecal(const DecalComponent& decal);
+	void RemoveDecal(const DecalComponent& decal);
+
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
@@ -135,10 +140,12 @@ private:
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
 	unsigned int mGSpecularRough;
-	unsigned int mGEmissive;
+	unsigned int mGPosition;
 	unsigned int mGNormals;
+	unsigned int mGEmissive;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
+
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	//void Draw();
 
@@ -169,7 +176,8 @@ private:
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
 	unsigned int mDepthPassProgramId = 0;
-	
+	unsigned int DecalPassProgramId = 0;
+
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
 
@@ -189,7 +197,11 @@ private:
 	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
 	OpenGLBuffer* mShadowsBuffer = nullptr;
 
-
+	//Decals
+	unsigned int mDecalsVao = 0;
+	unsigned int mDecalsVbo = 0;
+	void InitDecals();
+	std::vector<const DecalComponent*> mDecalComponents;
 
 
 	//Lighting uniforms

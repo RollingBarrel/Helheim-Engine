@@ -23,11 +23,11 @@ StateType SwitchState::HandleInput()
 
 void SwitchState::Update()
 {
-	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }
 
 void SwitchState::Enter()
 {
+	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }
 
 void SwitchState::Exit()

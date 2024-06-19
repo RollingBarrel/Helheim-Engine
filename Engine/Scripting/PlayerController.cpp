@@ -52,6 +52,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
 
+    SEPARATOR("MELEE");
+    MEMBER(MemberType::GAMEOBJECT, mBat);
+
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
@@ -110,9 +113,17 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    mMeleeWeapon = new Bat();
+    //mMeleeWeapon = new Bat();
     mRangeWeapon = new Pistol();
-    mWeapon = mMeleeWeapon;
+
+    // MELEE WEAPON
+    if (mBat)
+    {
+        ScriptComponent* script = (ScriptComponent*)mBat->GetComponent(ComponentType::SCRIPT);
+        mMeleeWeapon = (Bat*)script->GetScriptInstance();
+        mBat->SetEnabled(false);
+    }
+    mWeapon = mRangeWeapon;
 
     // AUDIO
     if (mFootStepAudioHolder)
@@ -156,6 +167,8 @@ void PlayerController::Start()
 
 void PlayerController::Update()
 {
+    if (GameManager::GetInstance()->IsPaused()) return;
+
     // Check input
     CheckInput();
 
@@ -289,11 +302,11 @@ void PlayerController::PlayOneShot(std::string name)
 {
     if (strcmp(name.c_str(), "Step")) 
     {
-        mFootStepAudio->PlayOneShot();
+        //mFootStepAudio->PlayOneShot();
     }
     if (strcmp(name.c_str(), "Shot")) 
     {
-        mGunfireAudio->PlayOneShot();
+        //mGunfireAudio->PlayOneShot();
     }
 }
 

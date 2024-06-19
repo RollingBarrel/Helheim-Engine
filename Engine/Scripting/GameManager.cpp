@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
@@ -14,6 +15,7 @@ CREATE(GameManager)
     MEMBER(MemberType::BOOL, mController);
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     END_CREATE;
 }
 
@@ -47,25 +49,39 @@ void GameManager::Start()
         ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
         mHudController = static_cast<HudController*>(script->GetScriptInstance());
     }
+
+    if (mAudioManagerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
+        mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
+    }
 }
 
 void GameManager::Update()
 {
+    //App->GetInput()->SetGameControllerRumble(65535, 0, 10);
+
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        mHudController->SetScreen(SCREEN::PAUSE, !mPaused);
+        SetPaused(!mPaused);
     }
+}
+
+void GameManager::SetPaused(bool value)
+{
+    mPaused = value;
+    mHudController->SetScreen(SCREEN::PAUSE, mPaused);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
 {
-    mHudController->mHealthGradualSlider = nullptr;
+    mHudController->mHealthGradualSlider = nullptr; // TODO: needed?
     App->GetScene()->Load(LevelName);
 }
 
 void GameManager::Victory()
 {
-    //TODO: PAUSE GAME
+    mPaused = true;
 
     mHudController->SetScreen(SCREEN::WIN, true);
 
@@ -74,7 +90,7 @@ void GameManager::Victory()
 
 void GameManager::GameOver()
 {
-    // TODO: PAUSE GAME
+    mPaused = true;
 
     mHudController->SetScreen(SCREEN::LOSE, true);
 
