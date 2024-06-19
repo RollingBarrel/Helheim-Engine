@@ -1,6 +1,7 @@
 #include "Shootgun.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "AudioManager.h"
 #include "Enemy.h"
 
 #include "GameObject.h"
@@ -30,7 +31,6 @@ void Shootgun::Attack()
 
 
     GameObject* bullet = nullptr;
-
     if (mCurrentAmmo > 0)
     {
         //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
@@ -43,7 +43,7 @@ void Shootgun::Attack()
 
     //mPlayerController->PlayOneShot("Shot");
     //mAnimationComponent->SendTrigger("tShooting", 0.2f);
-    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot();
 
     if (bullet != nullptr)
     {
