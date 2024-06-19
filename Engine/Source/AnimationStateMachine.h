@@ -105,7 +105,7 @@ public:
 	void PushBackState(const AnimationState& state) { mStates.push_back(state); };
 	void PushBackTransition(const AnimationTransition& transition) { mTransitions.push_back(transition); };
 
-	void SaveResource(const char* path) const;
+	void SaveResource(const char* path, bool isLibrary) const;
 	void LoadResource(const char* fileName);
 
 	void SetName(const std::string& name) { mName = name; }
