@@ -18,7 +18,6 @@ public:
 	update_status Update(float dt) override;
 	
 	void Pause(bool pause);
-	void StartScripts() override;
 
 private:
 	void UpdateScripts();

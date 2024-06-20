@@ -25,6 +25,8 @@ EngineApplication::EngineApplication()
 {
 	EngineApp = this;
 
+	mIsPlayMode = false;
+
 	mEngineTimer = new Timer();
 	mGameTimer = new Timer();
 	
