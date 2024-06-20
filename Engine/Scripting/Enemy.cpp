@@ -54,7 +54,7 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    DropShield();
+    DropItem();
 }
 
 void Enemy::AddFootStepAudio(GameObject* audio)
@@ -101,7 +101,7 @@ void Enemy::Reset()
     mHealth = mMaxHealth;
 }
 
-void Enemy::DropShield()
+void Enemy::DropItem()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;
@@ -109,12 +109,38 @@ void Enemy::DropShield()
     if (randomValue < mShieldDropRate)
     {
         float3 enemyPosition = mGameObject->GetPosition();
-        float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
         GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
-        shield->SetPosition(shieldPosition);
+        shield->SetPosition(dropPosition);
 
         float3 scale = float3(0.25f, 0.25f, 0.25f);
         shield->SetScale(scale);
+    }
+    else if (randomValue < mShotgunDropRate) 
+    {
+        float3 enemyPosition = mGameObject->GetPosition();
+        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_MachineGun.prfb");
+        upgrade->SetPosition(dropPosition);
+
+        float3 scale = float3(0.25f, 0.25f, 0.25f);
+        upgrade->SetScale(scale);
+    }
+    else if (randomValue < mMachineGunDropRate) 
+    {
+        float3 enemyPosition = mGameObject->GetPosition();
+        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_Shotgun.prfb");
+        upgrade->SetPosition(dropPosition);
+
+        float3 scale = float3(0.25f, 0.25f, 0.25f);
+        upgrade->SetScale(scale);
+    }
+    else
+    {
+        return;
     }
 }

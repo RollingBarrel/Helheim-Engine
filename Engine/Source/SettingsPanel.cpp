@@ -203,7 +203,7 @@ void SettingsPanel::LoadUserSettings()
 		name += ".scn";
 		str += name;
 		if(App->GetFileSystem()->Exists(str.c_str()))
-			App->GetScene()->Load(name.c_str());	//TODO: Request Resource id and load 
+			App->GetScene()->Load(str.c_str());	//TODO: Request Resource id and load 
 	}	
 }
 

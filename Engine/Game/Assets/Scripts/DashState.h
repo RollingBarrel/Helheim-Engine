@@ -15,8 +15,9 @@ public:
 
 	StateType GetType() override;
 
-
 private:
+
+	void PlayAudio() override;
 
 	float mDashTimer = 0.0f;
 	float mDashDuration = 0.5f;

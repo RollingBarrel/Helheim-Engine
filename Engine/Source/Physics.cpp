@@ -19,6 +19,14 @@ void Physics::Raycast(std::multiset<Hit>& hits, const Ray& ray, float maxDistanc
 	App->GetPhysics()->RayCast(from, to, hits);
 }
 
+ENGINE_API void Physics::Raycast(Hit& hit, const Ray& ray, float maxDistance)
+{
+	float3 from = float3(ray.pos);
+	float3 to = float3(ray.dir * maxDistance);
+
+	App->GetPhysics()->RayCast(from, to, hit);
+}
+
 /* //JORDI SOLUTION
 Ray Physics::ScreenPointToRay(float2 screenPoint)
 {

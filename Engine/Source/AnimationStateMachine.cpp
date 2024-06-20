@@ -446,6 +446,7 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 			{
 				assert(false); // Hi, you have a corrupted state machine, make sure all transitions exist for the state machine "smname"!
 				//Specially check the transitions with trigger_name = "name".
+				//You can press continue to resume engine execution without further issues.
 				continue;
 			}
 			transition.mSource = GetStateName(sourceID);
