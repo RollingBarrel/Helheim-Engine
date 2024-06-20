@@ -13,6 +13,16 @@
 
 ModuleFileSystem::ModuleFileSystem() 
 {
+}
+
+// Destructor
+ModuleFileSystem::~ModuleFileSystem()
+{
+    PHYSFS_deinit();
+}
+
+bool ModuleFileSystem::Init()
+{
     PHYSFS_init(nullptr);
 
     if (PHYSFS_setWriteDir(".") == 0)
@@ -24,7 +34,7 @@ ModuleFileSystem::ModuleFileSystem()
     AddToSearchPath(".");
     //AddToSearchPath(LIBRARY_PATH);
     //AddToSearchPath(ASSETS_PATH);
-    
+
     CreateDirectory(ASSETS_PATH);
     CreateDirectory(ASSETS_MODEL_PATH);
     CreateDirectory(ASSETS_TEXTURE_PATH);
@@ -36,12 +46,7 @@ ModuleFileSystem::ModuleFileSystem()
 
     mRoot = new PathNode("Assets");
     DiscoverFiles("Assets", mRoot);
-}
-
-// Destructor
-ModuleFileSystem::~ModuleFileSystem()
-{
-    PHYSFS_deinit();
+    return true;
 }
 
 // Called before quitting
