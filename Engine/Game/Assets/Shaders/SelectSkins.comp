@@ -27,7 +27,7 @@ void main()
 				vec4 currPlane = frustumPlanes[j*6+i];
 				for(uint k = 0; k<8; ++k)
 				{
-					if((dot(currPlane.xyz, obb.points[k]) - currPlane.w) <= 0.0)
+					if((dot(currPlane.xyz, obb.points[k]) - currPlane.w) < 0.0)
 					{
 						inOneFrustum = true;
 						break;

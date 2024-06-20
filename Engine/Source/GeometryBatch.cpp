@@ -206,7 +206,13 @@ void GeometryBatch::RecreatePersistentSsbos()
 	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 	{
 		const MeshRendererComponent& bMesh = *mMeshComponents[i].component;
-		bMesh.GetOriginalAABB().GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[0][i * 32]));
+		float3 points[8];
+		bMesh.GetOriginalAABB().GetCornerPoints(points);
+		for (int k = 0; k < 8; ++k)
+		{
+			memcpy(&mSsboObbsData[0][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+		}
+		//bMesh.GetOriginalAABB().GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[0][i * 32]));
 	}
 	for (int i = 1; i < NUM_BUFFERS; ++i)
 	{
@@ -285,10 +291,6 @@ void GeometryBatch::RecreateSkinningSsbos()
 	}
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
 
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinDispatchIndirectBuffer);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, mNumSkins * sizeof(unsigned int) * 3, nullptr, GL_STATIC_DRAW);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
-
 	glDeleteBuffers(1, &mSkinDispatchIndirectBuffer);
 	glGenBuffers(1, &mSkinDispatchIndirectBuffer);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinDispatchIndirectBuffer);
@@ -299,6 +301,8 @@ void GeometryBatch::RecreateSkinningSsbos()
 	{
 		mSkinDispatchIndirectBufferData[i] = mSkinDispatchIndirectBufferData[0] + ((size * i) / sizeof(unsigned int));
 	}
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	mSkinningFlag = false;
 }
@@ -580,7 +584,13 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
 			//Transform the obb points as we set identity as the model matrix
 			math::OBB obb = bComp.component->GetOriginalAABB().Transform(bComp.component->GetOwner()->GetWorldTransform());
-			obb.GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[idx][i * 32]));
+			float3 points[8];
+			obb.GetCornerPoints(points);
+			for (int k = 0; k < 8; ++k)
+			{
+				memcpy(&mSsboObbsData[0][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+			}
+			//obb.GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[idx][i * 32]));
 			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][i * 32], sizeof(float3) * 8);
 			mSkinDispatchIndirectBufferData[idx][currSkin*3] = (bComp.component->GetResourceMesh()->GetNumberVertices() + 63)/64;
 			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 1] = 1;

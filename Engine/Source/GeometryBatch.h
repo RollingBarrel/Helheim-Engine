@@ -141,7 +141,6 @@ private:
 
 	unsigned int mFrustumsSsbo = 0;
 	unsigned int mFrustumsSsboCapacity = 0;
-	unsigned int mCurrFrustumIdx = 0;
 	float* mSsboFrustumsData[NUM_BUFFERS];
 
 	float* mVboData = nullptr;
