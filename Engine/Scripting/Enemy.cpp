@@ -21,8 +21,7 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
-    mBeAttracted = false;
-
+    if (GameManager::GetInstance()->IsPaused()) return;
 }
 
 void Enemy::ActivateEnemy() 
@@ -67,7 +66,7 @@ void Enemy::AddFootStepAudio(GameObject* audio)
         if (mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE) != nullptr)
         {
             AudioSourceComponent* audio = reinterpret_cast<AudioSourceComponent*>(mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE));
-            audio->Play();
+            //audio->Play();
         }
     }
 }

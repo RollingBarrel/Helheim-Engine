@@ -17,8 +17,6 @@ public:
 	void Draw(int windowFlags) override;
 	void Close() override;
 	void SetStateMachine(AnimationStateMachine* stateMachine) { mStateMachine = stateMachine; LoadConfig(); }
-	void SetComponent(AnimationComponent* component) { mComponent = component; }
-	void SetIsSpine(bool isSpine) { mIsSpine = isSpine; }
 
 private:
 
@@ -36,8 +34,6 @@ private:
 
 
 	AnimationStateMachine* mStateMachine;
-	AnimationComponent* mComponent;
-	bool mIsSpine = false;
 
 
 	ed::EditorContext* mEditorContext;

@@ -29,7 +29,7 @@ ResourceNavMesh* Importer::NavMesh::Import(unsigned int uid,const char* assetsFi
 
 	std::string navMeshName = App->GetScene()->GetRoot()->GetName();
 
-	Importer::NavMesh::Save(resourceNavMesh, navMeshName);
+	Importer::NavMesh::Save(resourceNavMesh, navMeshName.c_str());
 
 	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
 

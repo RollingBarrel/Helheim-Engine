@@ -2,19 +2,20 @@
 #include "GameObject.h"
 #include "Algorithm/Random/LCG.h"
 
-Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int()){}
+Component::Component(GameObject* owner, ComponentType type): mOwner(owner), mType(type), mID(LCG().Int())
+{
+	mIsEnabled = mOwner->IsActive();
+}
 
 void Component::Save(JsonObject& obj) const
 {
-	obj.AddInt("ID", GetID());
+	//obj.AddInt("ID", GetID());
 	obj.AddInt("ComponentType", static_cast<int>(GetType()));
 	obj.AddBool("IsEnabled", IsEnabled());
 }
 
 void Component::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	if(data.HasMember("ID"))
-		mID = data.GetInt("ID");
 	if(data.HasMember("ComponentType"))
 		mType = (ComponentType) data.GetInt("ComponentType");
 	if(data.HasMember("IsEnabled"))
@@ -63,7 +64,20 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Box Collider";
 		case ComponentType::TRAIL:
 			return "Trail";
+		case ComponentType::DECAL:
+			return "Decal Projector";
 		default:
 			return "None";
 		}
+}
+
+void Component::SetEnable(bool enable)
+{
+	if (enable == mIsEnabled)
+		return;
+	mIsEnabled = enable;
+	if (mIsEnabled)
+		Enable();
+	else
+		Disable();
 }
