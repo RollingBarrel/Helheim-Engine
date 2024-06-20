@@ -372,13 +372,26 @@ bool ModuleOpenGL::CleanUp()
 	delete mSpotsBuffer;
 	delete mDLightUniBuffer;
 
-	glDeleteProgram(mSkyBoxProgramId);
-	glDeleteProgram(mUIImageProgramId);
-	glDeleteProgram(mDepthPassProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteVertexArrays(1, &mEmptyVAO);
 	glDeleteBuffers(1, &mSkyVbo);
 	glDeleteFramebuffers(1, &sFbo);
+	glDeleteProgram(mPbrGeoPassProgramId);
+	glDeleteProgram(mPbrLightingPassProgramId);
+	glDeleteProgram(mPassThroughProgramId);
+	glDeleteProgram(mSkyBoxProgramId);
+	glDeleteProgram(mDebugDrawProgramId);
+	glDeleteProgram(mUIImageProgramId);
+	glDeleteProgram(mTextProgramId);
+	glDeleteProgram(mSkinningProgramId);
+	glDeleteProgram(mSelectSkinsProgramId);
+	glDeleteProgram(mSelectCommandsProgramId);
+	glDeleteProgram(mEnvironmentProgramId);
+	glDeleteProgram(mIrradianceProgramId);
+	glDeleteProgram(mSpecPrefilteredProgramId);
+	glDeleteProgram(mSpecEnvBRDFProgramId);
+	glDeleteProgram(mHighLightProgramId);
+	glDeleteProgram(DecalPassProgramId);
 	glDeleteTextures(1, &sceneTexture);
 	glDeleteTextures(1, &depthStencil);
 
@@ -1106,7 +1119,7 @@ void ModuleOpenGL::Draw()
 	
 		mShadowsBuffer->UpdateData(&shadow, sizeof(Shadow), sizeof(Shadow) * i);
 	
-		mBatchManager.Draw(mDepthPassProgramId, frustum);
+		mBatchManager.Draw(mPassThroughProgramId, frustum);
 	}
 
 	glViewport(0, 0, mSceneWidth, mSceneHeight);

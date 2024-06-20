@@ -177,7 +177,6 @@ private:
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
-	unsigned int mDepthPassProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
