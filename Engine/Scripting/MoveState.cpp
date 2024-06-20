@@ -148,7 +148,7 @@ void MoveState::DoAnimation()
         { // Looking RIGHT
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
-        LOG("x:%f ", animation);
+        //LOG("x:%f ", animation);
         mPlayerController->SetAnimation(animation, 0.3f);
     }
 }

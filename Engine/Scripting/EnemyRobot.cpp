@@ -96,7 +96,7 @@ void EnemyRobot::Chase()
         if (agentComponent)
         {
             agentComponent->MoveAgent(mPlayer->GetPosition(), mSpeed);
-            float3 direction = mPlayer->GetPosition() - agentComponent->GetOwner()->GetPosition();
+            float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
             direction.y = 0;
             direction.Normalize();
             float angle = std::atan2(direction.x, direction.z);
