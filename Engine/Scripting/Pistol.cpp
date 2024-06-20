@@ -22,6 +22,7 @@ Pistol::Pistol() : RangeWeapon()
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
     mDamage = 1.0f;
+    //mAttackRate = 1.0f;
     mAttackTime = 1.0f;
 }
 
@@ -33,7 +34,7 @@ void Pistol::Enter()
 {
 }
 
-void Pistol::Attack()
+void Pistol::Attack(float time)
 {
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
@@ -66,7 +67,7 @@ void Pistol::Attack()
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    Physics::Raycast(hits, ray, distance);
+    Physics::Raycast(hits, ray, distance); // THIS IS THE OLD RAYCAST
 
     if (!hits.empty())
     {

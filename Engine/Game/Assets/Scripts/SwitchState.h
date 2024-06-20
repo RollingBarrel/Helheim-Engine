@@ -1,6 +1,8 @@
 #pragma once
 #include "State.h"
 
+class PlayerController;
+
 class SwitchState : public State
 {
 public:
@@ -17,6 +19,7 @@ public:
 
 private:
 
-	void PlayAudio() override;
+	PlayerController* mPlayerController;
+	//void PlayAudio() override;
 
 };

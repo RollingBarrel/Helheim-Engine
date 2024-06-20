@@ -10,10 +10,12 @@ public:
 	~Hammer();
 
 	void Enter() override;
-	void Attack() override;
+	void Attack(float time) override;
 	void Exit() override;
 
 private:
 
 	TrailComponent* mTrail = nullptr;
+	const float mEnergyCost = 10.0f;
+	const float mCooldownModifier = 1.5f;
 };

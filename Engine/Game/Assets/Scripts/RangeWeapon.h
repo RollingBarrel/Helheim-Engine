@@ -12,6 +12,7 @@ public:
 	int GetMaxAmmo() { return mMaxAmmo; }
 
 	virtual void Reload() = 0;
+	float GetAttackTime() override { return mAttackTime; }
 
 protected:
 

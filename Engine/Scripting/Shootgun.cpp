@@ -28,9 +28,9 @@ void Shootgun::Enter()
    
 }
 
-void Shootgun::Attack()
+void Shootgun::Attack(float time)
 {
-    unsigned int numBullets = 10;
+    int numBullets = 10;
 
     //TODO: Rethink this
     reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
@@ -43,7 +43,7 @@ void Shootgun::Attack()
 
     //Shoot Logic
     int count = 0;
-    for (unsigned int i = 0; i < numBullets; ++i)
+    for (int i = 0; i < numBullets; ++i)
     {
         Ray ray;
         ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();

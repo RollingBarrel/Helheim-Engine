@@ -9,8 +9,10 @@ class ButtonComponent;
 class SliderComponent;
 class TextComponent;
 class ImageComponent;
+class PlayerController;
+enum class EnergyType;
 
-enum SCREEN {
+enum class SCREEN {
     LOAD,
     LOSE,
     WIN,
@@ -26,9 +28,7 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(int energy);
-    void SetEnergyColor(float3 color);
-    void SetEnergyTextColor(float3 color);
+    void SetEnergy(int energy, EnergyType type);
     void SetHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
@@ -40,7 +40,6 @@ private:
     ~HudController();
 
     void Loading();
-    void Controls();
     bool Delay(float delay);
 
     void OnWinButtonClick();

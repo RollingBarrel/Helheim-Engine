@@ -12,13 +12,13 @@ public:
 	~Weapon();
 
 	virtual void Enter() = 0;
-	virtual void Attack() = 0;
+	virtual void Attack(float time) = 0;
 	virtual void Exit() = 0;
 
 	WeaponType GetType() { return mType; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
-	float GetAttackTime() { return mAttackTime; }
+	virtual float GetAttackTime() = 0;
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
 
 protected:

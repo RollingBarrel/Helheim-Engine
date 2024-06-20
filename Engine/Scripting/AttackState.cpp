@@ -5,8 +5,11 @@
 #include "Keys.h"
 #include "PlayerController.h"
 #include "Weapon.h"
+#include "ModuleDetourNavigation.h"
+#include "MeleeWeapon.h"
 
-AttackState::AttackState(PlayerController* player) : State(player)
+
+AttackState::AttackState(PlayerController* player) : State(player), mPlayerController(player)
 {
 }
 
@@ -20,18 +23,27 @@ StateType AttackState::HandleInput()
 
     if (mAttackTimer < mWeapon->GetAttackTime())
     {
+        if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
+            App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+        {
+            reinterpret_cast<MeleeWeapon*>(mWeapon)->IncreaseComboStep();
+        }
         return StateType::ATTACK;
     }
     else
     {
         mAttackTimer = 0;
-        if (mWeapon->GetType() == Weapon::WeaponType::RANGE && mWeapon->GetCurrentAmmo() == 0)
+        if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
         {
-            return StateType::RELOAD;
-        }
-        if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN || App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
-        {
-            return StateType::ATTACK;
+            if (mWeapon->GetCurrentAmmo() == 0)
+            {
+                return StateType::RELOAD;
+            }
+            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN || 
+                App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT)
+            {
+                return StateType::ATTACK;
+            }
         }
         return StateType::AIM;
     }
@@ -39,14 +51,12 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
-    if (mAttackTimer == 0) 
-    {
-        mWeapon->Attack();
-        PlayAudio();
-    }
-
     mAttackTimer += App->GetDt();
+    mWeapon->Attack(mAttackTimer);
+    //DoAudio();
 }
+
+
 
 void AttackState::Enter()
 {

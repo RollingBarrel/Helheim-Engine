@@ -30,7 +30,7 @@ void Machinegun::Enter()
 {
 }
 
-void Machinegun::Attack()
+void Machinegun::Attack(float time)
 {
 	//Audio
 	if (GameManager::GetInstance()->GetAudio())

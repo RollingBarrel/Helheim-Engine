@@ -21,7 +21,7 @@ StateType SpecialState::HandleInput()
 
 void SpecialState::Update()
 {
-	mSpecialWeapon->Attack();
+	mSpecialWeapon->Attack(mAttackTimer);
 }
 
 void SpecialState::Enter()
