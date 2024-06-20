@@ -893,7 +893,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 			
 			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)component->mScript) + member->mOffset));
 			const char* str = "";
-			if (!gameObject || !*gameObject)
+			if (!gameObject && !*gameObject)
 			{
 				str = "None (Game Object)";
 			}
