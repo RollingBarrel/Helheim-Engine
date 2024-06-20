@@ -412,9 +412,8 @@ FodyWeavers.xsd
 
 # IMGUI
 /Engine/Game/imgui.ini
-
 /Engine/Game/Library/*
-/Engine/Game/Assets/Scenes/TemporalScene.json
+/Engine/Game/Assets/Scenes/TemporalScene.scn
 /Engine/Game/Scripting.dll
 /Engine/Game/userSettings.txt
 /Engine/Scripting/Output/*

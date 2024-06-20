@@ -116,19 +116,19 @@ private:
     State* mLowerState = nullptr;
     StateType mLowerStateType;
 
-    DashState* mDashState;
-    IdleState* mIdleState;
-    MoveState* mMoveState;
+    DashState* mDashState = nullptr;
+    IdleState* mIdleState = nullptr;
+    MoveState* mMoveState = nullptr;
 
     State* mUpperState = nullptr;
     StateType mUpperStateType;
 
-    AimState* mAimState;
-    AttackState* mAttackState;
-    GrenadeState* mGrenadeState;
-    SwitchState* mSwitchState;
-    SpecialState* mSpecialState;
-    ReloadState* mReloadState;
+    AimState* mAimState = nullptr;
+    AttackState* mAttackState = nullptr;
+    GrenadeState* mGrenadeState = nullptr;
+    SwitchState* mSwitchState = nullptr;
+    SpecialState* mSpecialState = nullptr;
+    ReloadState* mReloadState = nullptr;
 
     // MOUSE
     float3 mPlayerDirection;

@@ -56,8 +56,8 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
 
-    SEPARATOR("MELEE");
-    MEMBER(MemberType::GAMEOBJECT, mBat);
+    //SEPARATOR("MELEE");
+    //MEMBER(MemberType::GAMEOBJECT, mBat); //TODO: WHEN THIS ENABLED, INSPECTOR CRASHES IN PLAYMODE (maybe because the variable is initialized later in the start)
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
