@@ -50,6 +50,10 @@ void Bat::Update(float deltaTime)
 void Bat::OnCollisionEnter(CollisionData* collisionData)
 {
     LOG("Colliding with melee!")
+    if (collisionData->collidedWith->GetTag().compare("Enemy"))
+    {
+        DealDamage(collisionData->collidedWith);
+    }
 }
 
 void Bat::DealDamage(GameObject* enemy) 
@@ -60,7 +64,7 @@ void Bat::DealDamage(GameObject* enemy)
     Enemy* enemyScript = dynamic_cast<Enemy*>(enemy->GetComponent(ComponentType::SCRIPT));
     if (enemyScript) {
         enemyScript->TakeDamage(mDamage);
-        enemyScript->PushBack();
+        enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
     }
 }
 
@@ -74,7 +78,6 @@ void Bat::Attack(float time)
     if (time > mComboMilestone1 and mComboStep == 1)
     {
         LOG("MELEE ATTACK 1!!")
-
         // DealDamage();
         if (mNextComboStep == 2)
         {
@@ -85,7 +88,6 @@ void Bat::Attack(float time)
     else if (time > mComboMilestone2 and mComboStep == 2)
     {
         LOG("MELEE ATTACK 2!!")
-
         // DealDamage();
         if (mNextComboStep == 3)
         {
@@ -96,7 +98,6 @@ void Bat::Attack(float time)
     else if (time > mComboDuration and mComboStep == 3)
     {
         LOG("MELEE ATTACK 3!!")
-
         // DealDamage();
     }
 
