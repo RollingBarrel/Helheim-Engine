@@ -17,7 +17,12 @@ bool ModuleAudio::Init()
 {
 	// Instantiate Fmod studio
 	CheckError( FMOD::Studio::System::create(&mSystem) ); // Create the Studio System object.
+#if _DEBUG
+	CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0));
+	LOG("Debug");
+#else
 	CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+#endif
 
 	CheckError( mSystem->getCoreSystem(&mCoreSystem));
 
