@@ -5,6 +5,8 @@
 class ButtonComponent;
 class HudController;
 class AudioManager;
+class BattleArea;
+class EnemyPool;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -20,15 +22,18 @@ public:
     void Start();
     void Update();
 
-    GameObject* GetPlayer() { return mPlayer; };
-    AudioManager* GetAudio() const {return mAudioManager;};
-    HudController* GetHud() { return mHudController; };
-    bool UsingController() { return mController; }
+    GameObject* GetPlayer() const { return mPlayer; };
+    AudioManager* GetAudio() const { return mAudioManager;};
+    HudController* GetHud() const { return mHudController; };
+    bool UsingController() const { return mController; }
+    BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
+    EnemyPool* GetEnemyPool() const { return mEnemyPool; }
 
     bool IsPaused() { return mPaused; }
     void SetPaused(bool value);
 
     void LoadLevel(const char* LevelName);
+    void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
 
     void Victory();
     void GameOver();
@@ -42,6 +47,8 @@ private:
     GameObject* mHudControllerGO = nullptr;
     GameObject* mAudioManagerGO = nullptr;
 
+    BattleArea* mActiveBattleArea = nullptr;
+    EnemyPool* mEnemyPool = nullptr;
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
 
