@@ -28,7 +28,10 @@ void SpecialState::Enter()
 {
 	//mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
 	mSpecialWeapon = mPlayerController->GetSpecialWeapon();
-	mSpecialWeapon->Enter();
+	if (mSpecialWeapon)
+	{
+		mSpecialWeapon->Enter();
+	}
 }
 
 void SpecialState::Exit()

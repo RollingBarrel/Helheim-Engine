@@ -23,6 +23,7 @@ Pistol::Pistol() : RangeWeapon()
     mMaxAmmo = 16;
     mDamage = 1.0f;
     //mAttackRate = 1.0f;
+    mAttackTime = 1.0f;
 }
 
 Pistol::~Pistol()

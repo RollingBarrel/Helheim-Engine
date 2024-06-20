@@ -32,6 +32,7 @@ void SwitchState::Enter()
     mPlayerController->SwitchWeapon();
 
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
+	mPlayerController->SwitchWeapon();
 }
 
 void SwitchState::Exit()

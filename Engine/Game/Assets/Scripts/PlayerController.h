@@ -88,6 +88,7 @@ public:
     BatteryType GetBatteryType() const { return mBatteryType; }
     const State* GetPlayerUpperState() const { return mUpperState; }
 
+    void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
