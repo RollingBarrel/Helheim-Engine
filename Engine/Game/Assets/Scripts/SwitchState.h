@@ -18,8 +18,5 @@ public:
 	StateType GetType() override;
 
 private:
-
-	PlayerController* mPlayerController;
-	//void PlayAudio() override;
-
+	float mSwitchTimer = 0.0f;
 };

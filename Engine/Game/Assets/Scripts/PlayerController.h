@@ -61,7 +61,6 @@ public:
    
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
-    void PlayOneShot(std::string name);
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
@@ -74,15 +73,18 @@ public:
     float GetGrenadeCooldown() const { return mGrenadeCoolDown; }
     float GetGrenadeRange() const { return mGrenadeRange;  }
     float GetAttackCooldown() const { return mAttackCoolDown; }
-    float GetSlowAttackCooldown() const { return mSlowAttackCoolDown; }
     float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
+    float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
+
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
-    float GetCurrentBattery() const { return mCurrentEnergy; }
-    EnergyType GetBatteryType() const { return mEnergyType; }
-    const State* GetPlayerUpperState() const { return mUpperState; }
+    float GetCurrentEnergy() const { return mCurrentEnergy; }
+    EnergyType GetEnergyType() const { return mEnergyType; }
+
+    State* GetPlayerLowerState() const { return mLowerState; }
+    State* GetPlayerUpperState() const { return mUpperState; }
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
@@ -97,20 +99,18 @@ public:
     bool CanReload() const;
     void Reload() const;
     
-    // --------------- OLD ----------------------
-
     void RechargeShield(float shield);
-    void RechargeBattery(EnergyType batteryType);
-    void UseEnergy(int energy);
     void TakeDamage(float damage);
 
-    BattleSituation GetBattleSituation() { return mCurrentSituation; };
+    void RechargeBattery(EnergyType batteryType);
+    void UseEnergy(int energy);
 
 private:
     void CheckInput();
     void StateMachine();
     void HandleRotation();
     void CheckDebugOptions();
+    void OnCollisionEnter(CollisionData* collisionData);
 
     // STATES
     State* mLowerState = nullptr;
@@ -171,7 +171,9 @@ private:
     float mSlowAttackCoolDown = 0.5f;
     float mSpecialAttackCoolDown = 5.0f;
     float mSwitchCoolDown = 0.2f;
+    float mSwitchDuration = 0.2f;
     float mReloadDuration = 0.5;
+
     // Grenade
     float mGrenadeCoolDown = 5.0f;
     float mGrenadeRange = 5.0f;
@@ -180,26 +182,20 @@ private:
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeAimAreaGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+    
+    // Collider
+    BoxColliderComponent* mCollider = nullptr;
+
+    // Camera
+    GameObject* mCamera = nullptr;
+
+    // Debug
+    bool mGodMode = false;
 
     // -------- PROVISIONAL --------
 
-    // AUIDO
-    // Footstep
-    GameObject* mFootStepAudioHolder = nullptr;
-    AudioSourceComponent* mFootStepAudio = nullptr;
-    // Gunfire
-    GameObject* mGunfireAudioHolder = nullptr;
-    AudioSourceComponent* mGunfireAudio = nullptr;
-
-    void OnCollisionEnter(CollisionData* collisionData);
     void UpdateBattleSituation();
-
-
-    bool mGodMode = false;
-
-    GameObject* mCamera = nullptr;
-
-    BoxColliderComponent* mCollider = nullptr;
+    BattleSituation GetBattleSituation() { return mCurrentSituation; };
 
     BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
     float mBattleStateTransitionTime = 0.0f;

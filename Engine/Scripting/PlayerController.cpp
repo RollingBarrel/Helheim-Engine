@@ -69,15 +69,13 @@ CREATE(PlayerController)
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
-    SEPARATOR("AUDIO");
-    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
-    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
-
     END_CREATE;
 }
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
+    mLowerStateType = StateType::NONE;
+    mUpperStateType = StateType::NONE;
 }
 
 PlayerController::~PlayerController()
@@ -139,17 +137,6 @@ void PlayerController::Start()
 
     mWeapon = mPistol;
     mSpecialWeapon = nullptr;
-
-    // AUDIO
-    if (mFootStepAudioHolder)
-    {
-        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
-
-    if (mGunfireAudioHolder)
-    {
-        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -326,18 +313,6 @@ void PlayerController::SetSpineAnimation(std::string trigger, float transitionTi
         mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
     }
     
-}
-
-void PlayerController::PlayOneShot(std::string name)
-{
-    if (strcmp(name.c_str(), "Step")) 
-    {
-        //mFootStepAudio->PlayOneShot();
-    }
-    if (strcmp(name.c_str(), "Shot")) 
-    {
-        //mGunfireAudio->PlayOneShot();
-    }
 }
 
 void PlayerController::MoveInDirection(float3 direction)

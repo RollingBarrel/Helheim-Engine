@@ -20,12 +20,8 @@ public:
 
 
 private:
-
-    PlayerController* mPlayerController;
-	void PlayAudio() override;
-
 	Weapon* mWeapon = nullptr;
-	float mAttackTimer = 0.0f;
+	float mSpecialAttackTimer = 0.0f;
 
     float3 mDashDirection;
     float mEnergyCost = 10.0f;

@@ -2,7 +2,7 @@
 #include <Script.h>
 #include "Macros.h"
 
-class CollisionData;
+struct CollisionData;
 class EnemySpawner;
 
 GENERATE_BODY(BattleArea);
