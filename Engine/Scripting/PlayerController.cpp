@@ -128,7 +128,7 @@ void PlayerController::Start()
     mKatana = new Katana();
     mHammer = new Hammer();
 
-    mWeapon = mShootgun;
+    mWeapon = mPistol;
     mSpecialWeapon = nullptr;
 
     // AUDIO
@@ -304,7 +304,20 @@ void PlayerController::HandleRotation()
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 {
-    mAnimationComponent->SendTrigger(trigger, transitionTime);
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendTrigger(trigger, transitionTime);
+    }
+    
+}
+
+void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
+{
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
+    }
+    
 }
 
 void PlayerController::PlayOneShot(std::string name)
@@ -340,10 +353,10 @@ void PlayerController::SwitchWeapon()
         switch (mBatteryType) 
         {
         case BatteryType::BLUE:
-            mSpecialWeapon = mMachinegun;
+            mSpecialWeapon = mKatana;
             break;
         case BatteryType::RED:
-            mSpecialWeapon = mShootgun;
+            mSpecialWeapon = mHammer;
             break;
         case BatteryType::NONE:
             mSpecialWeapon = nullptr;
@@ -357,10 +370,10 @@ void PlayerController::SwitchWeapon()
         switch (mBatteryType)
         {
         case BatteryType::BLUE:
-            mSpecialWeapon = mKatana;
+            mSpecialWeapon = mMachinegun;
             break;
         case BatteryType::RED:
-            mSpecialWeapon = mHammer;
+            mSpecialWeapon = mShootgun;
             break;
         case BatteryType::NONE:
             mSpecialWeapon = nullptr;
@@ -451,16 +464,55 @@ void PlayerController::RechargeShield(float shield)
 
 void PlayerController::RechargeBattery(BatteryType batteryType)
 {
-    LOG("Shotgun Upgrade");
+    mCurrentBattery = 100.0f;
+    GameManager* managerInstance = GameManager::GetInstance();
+    managerInstance->GetHud()->SetEnergy(int(mCurrentBattery));
+    mBatteryType = batteryType;
+
+    switch (mBatteryType)
+    {
+    case BatteryType::NONE:
+        break;
+    case BatteryType::BLUE:
+        managerInstance->GetHud()->SetEnergyColor(float3(0.0f,0.0f,255.0f));
+        managerInstance->GetHud()->SetEnergyTextColor(float3(0.0f, 0.0f, 255.0f));
+        if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+        {
+            mSpecialWeapon = mMachinegun;
+        }
+        else
+        {
+            mSpecialWeapon = mKatana;
+        }
+        break;
+    case BatteryType::RED:
+        managerInstance->GetHud()->SetEnergyColor(float3(255.0f, 0.0f, 0.0f));
+        managerInstance->GetHud()->SetEnergyTextColor(float3(255.0f, 0.0f, 0.0f));
+        if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+        {
+            mSpecialWeapon = mShootgun;
+        }
+        else
+        {
+            mSpecialWeapon = mHammer;
+        }
+        break;
+    default:
+        break;
+    }
+
+
 }
 
 void PlayerController::UseEnergy(float energy)
 {
     mCurrentBattery -= energy;
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentBattery);
 
     if (mCurrentBattery <= 0.0f)
     {
         mBatteryType == BatteryType::NONE;
+        mSpecialWeapon = nullptr;
     }
 }
 

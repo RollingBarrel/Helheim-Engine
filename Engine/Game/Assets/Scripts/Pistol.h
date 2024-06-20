@@ -10,5 +10,7 @@ public:
 	void Attack() override;
 	void Exit() override;
 
+	void Reload() override;
+
 };
 

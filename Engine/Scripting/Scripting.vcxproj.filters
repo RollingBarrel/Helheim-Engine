@@ -261,5 +261,7 @@
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp" />
+    <ClCompile Include="AudioTester.cpp" />
   </ItemGroup>
 </Project>
