@@ -35,7 +35,7 @@ enum class BattleSituation
     DEATH
 };
 
-enum class BatteryType 
+enum class EnergyType 
 {
     NONE,
     BLUE,
@@ -58,9 +58,6 @@ public:
     float3 GetPlayerDirection() { return mPlayerDirection; }
     float3 GetPlayerAimPosition() { return mAimPosition; }
     float3 GetPlayerPosition();
-
-    Weapon* GetMeleeWeapon() const { return mBat; }
-    Weapon* GetRangeWeapon() const { return mPistol; }
    
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
@@ -70,7 +67,6 @@ public:
     void MoveInDirection(float3 direction);
 
     void SwitchWeapon();
-    void SwitchWeapon(Weapon* newWeapon);
 
     float GetDashCoolDown() const { return mDashCoolDown; }
     float GetDashDuration() const { return mDashDuration; }
@@ -84,8 +80,8 @@ public:
     float GetReloadDuration() const { return mReloadDuration; }
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
-    float GetCurrentBattery() const { return mCurrentBattery; }
-    BatteryType GetBatteryType() const { return mBatteryType; }
+    float GetCurrentBattery() const { return mCurrentEnergy; }
+    EnergyType GetBatteryType() const { return mEnergyType; }
     const State* GetPlayerUpperState() const { return mUpperState; }
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
@@ -97,8 +93,6 @@ public:
     void SetGrenadeVisuals(bool value);
     void UpdateGrenadeVisuals();
     void ThrowGrenade();
-    void SetPlayerPosition(float3 position);
-
 
     bool CanReload() const;
     void Reload() const;
@@ -106,8 +100,8 @@ public:
     // --------------- OLD ----------------------
 
     void RechargeShield(float shield);
-    void RechargeBattery(BatteryType batteryType);
-    void UseEnergy(float energy);
+    void RechargeBattery(EnergyType batteryType);
+    void UseEnergy(int energy);
     void TakeDamage(float damage);
 
     BattleSituation GetBattleSituation() { return mCurrentSituation; };
@@ -158,8 +152,8 @@ private:
     // WEAPONS
     Weapon* mWeapon = nullptr;
     Weapon* mSpecialWeapon = nullptr;
-    float mCurrentBattery = 0.0f;
-    BatteryType mBatteryType = BatteryType::NONE;
+    int mCurrentEnergy = 0;
+    EnergyType mEnergyType = EnergyType::NONE;
 
     // RANGED
     Weapon* mPistol = nullptr;

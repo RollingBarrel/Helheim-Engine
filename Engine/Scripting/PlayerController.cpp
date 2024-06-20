@@ -354,19 +354,20 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
+    mWeapon->Exit();
     if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
         mWeapon = mPistol;
 
-        switch (mBatteryType) 
+        switch (mEnergyType) 
         {
-        case BatteryType::BLUE:
-            mSpecialWeapon = mKatana;
+        case EnergyType::BLUE:
+            mSpecialWeapon = mMachinegun;
             break;
-        case BatteryType::RED:
-            mSpecialWeapon = mHammer;
+        case EnergyType::RED:
+            mSpecialWeapon = mShootgun;
             break;
-        case BatteryType::NONE:
+        case EnergyType::NONE:
             mSpecialWeapon = nullptr;
             break;
         }
@@ -375,35 +376,21 @@ void PlayerController::SwitchWeapon()
     {
         mWeapon = mBat;
 
-        switch (mBatteryType)
+        switch (mEnergyType)
         {
-        case BatteryType::BLUE:
-            mSpecialWeapon = mMachinegun;
+        case EnergyType::BLUE:
+            mSpecialWeapon = mKatana;
             break;
-        case BatteryType::RED:
-            mSpecialWeapon = mShootgun;
+        case EnergyType::RED:
+            mSpecialWeapon = mHammer;
             break;
-        case BatteryType::NONE:
+        case EnergyType::NONE:
             mSpecialWeapon = nullptr;
             break;
         }
     }
+    mWeapon->Enter();
 }
-
-void PlayerController::SwitchWeapon(Weapon* newWeapon)
-{
-    if (mWeapon != nullptr)
-    {
-        mWeapon->Exit();
-    }
-
-    mWeapon = newWeapon;
-    if (mWeapon != nullptr)
-    {
-        mWeapon->Enter();
-    }
-}
-
 
 float3 PlayerController::GetPlayerPosition()
 {
@@ -454,11 +441,6 @@ void PlayerController::ThrowGrenade()
     mGrenade->SetDestination(mGrenadePosition);
 }
 
-void PlayerController::SetPlayerPosition(float3 position)
-{
-    mGameObject->SetPosition(position);
-}
-
 bool PlayerController::CanReload() const
 {
     if (mWeapon->GetCurrentAmmo() == mWeapon->GetMaxAmmo()) return false;
@@ -490,58 +472,54 @@ void PlayerController::RechargeShield(float shield)
     }
 }
 
-void PlayerController::RechargeBattery(BatteryType batteryType)
+void PlayerController::RechargeBattery(EnergyType batteryType)
 {
-    mCurrentBattery = 100.0f;
-    GameManager* managerInstance = GameManager::GetInstance();
-    managerInstance->GetHud()->SetEnergy(int(mCurrentBattery));
-    mBatteryType = batteryType;
+    mCurrentEnergy = 100.0f;
+    mEnergyType = batteryType;
 
-    switch (mBatteryType)
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+
+    switch (mEnergyType)
     {
-    case BatteryType::NONE:
-        break;
-    case BatteryType::BLUE:
-        managerInstance->GetHud()->SetEnergyColor(float3(0.0f,0.0f,255.0f));
-        managerInstance->GetHud()->SetEnergyTextColor(float3(0.0f, 0.0f, 255.0f));
-        if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
-        {
-            mSpecialWeapon = mMachinegun;
-        }
-        else
-        {
-            mSpecialWeapon = mKatana;
-        }
-        break;
-    case BatteryType::RED:
-        managerInstance->GetHud()->SetEnergyColor(float3(255.0f, 0.0f, 0.0f));
-        managerInstance->GetHud()->SetEnergyTextColor(float3(255.0f, 0.0f, 0.0f));
-        if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
-        {
-            mSpecialWeapon = mShootgun;
-        }
-        else
-        {
-            mSpecialWeapon = mHammer;
-        }
-        break;
-    default:
-        break;
+        case EnergyType::NONE:
+            break;
+        case EnergyType::BLUE:
+            if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+            {
+                mSpecialWeapon = mMachinegun;
+            }
+            else
+            {
+                mSpecialWeapon = mKatana;
+            }
+            break;
+        case EnergyType::RED:
+            if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+            {
+                mSpecialWeapon = mShootgun;
+            }
+            else
+            {
+                mSpecialWeapon = mHammer;
+            }
+            break;
+        default:
+            break;
     }
-
-
 }
 
-void PlayerController::UseEnergy(float energy)
+void PlayerController::UseEnergy(int energy)
 {
-    mCurrentBattery -= energy;
-    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentBattery);
+    mCurrentEnergy -= energy;
 
-    if (mCurrentBattery <= 0.0f)
+    if (mCurrentEnergy <= 0)
     {
-        mBatteryType == BatteryType::NONE;
+        mCurrentEnergy = 0;
+        mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
     }
+        
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
 void PlayerController::TakeDamage(float damage)

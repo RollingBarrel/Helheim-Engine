@@ -69,12 +69,6 @@ void EnemyRobot::Start()
 {
     Enemy::Start();
 
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
-    }
-
     mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
 
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
@@ -257,12 +251,4 @@ void EnemyRobot::RangeAttack()
                 }
             }
         }
-}
-
-void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
-{
-    if (collisionData->collidedWith->GetName().find("Bullet") != std::string::npos)
-    {
-        TakeDamage(1.0f);
-    }
 }
