@@ -55,6 +55,7 @@ public:
 	ModuleFileSystem();
 	~ModuleFileSystem();
 
+	bool Init() override;
 	bool CleanUp() override;
 
 	unsigned int Load(const char* filePath, char** buffer) const;

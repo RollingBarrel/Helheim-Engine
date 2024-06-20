@@ -3,7 +3,6 @@
 #include "GameObject.h"
 #include "CameraComponent.h"
 #include "Physics.h"
-#include "Quadtree.h"
 
 #include "Geometry/AABB.h"
 #include "Geometry/Sphere.h"
@@ -119,8 +118,6 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 
 	bool intersects = false;
 	bool intersectsTriangle = false;
-
-	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
 
 	if (!reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
 	{

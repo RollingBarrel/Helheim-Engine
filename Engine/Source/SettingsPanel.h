@@ -38,8 +38,6 @@ private:
 
 	void SaveProjectSettings() const;		//Project Settings -> Tags & Layers (Yes)
 
-
-	bool mCulling = false;
 	bool mEngineVsyncEnabled = false;
 	bool mGameVsyncEnabled = false;
 	bool mEngineFpsLimitEnabled = false;

@@ -253,7 +253,6 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
-    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="RandomFloat.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
@@ -754,7 +753,6 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
-    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="RandomFloat.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceAnimation.h" />
@@ -802,7 +800,8 @@
     <None Include="..\Game\Assets\Shaders\PBRCT_GeometryPass.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
-    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\SelectComands.comp" />
+    <None Include="..\Game\Assets\Shaders\SelectSkins.comp" />
     <None Include="..\Game\Assets\Shaders\skinning.comp" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
