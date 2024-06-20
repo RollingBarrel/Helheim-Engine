@@ -29,8 +29,6 @@ void SwitchState::Update()
 
 void SwitchState::Enter()
 {
-    mPlayerController->SwitchWeapon();
-
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 	mPlayerController->SwitchWeapon();
 }

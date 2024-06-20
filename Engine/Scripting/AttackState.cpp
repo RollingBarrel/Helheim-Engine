@@ -51,6 +51,7 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
+    mAttackTimer += App->GetDt();
     mWeapon->Attack(mAttackTimer);
     //DoAudio();
 }
