@@ -40,14 +40,20 @@ bool ModuleEngineScriptManager::Init()
 
 update_status ModuleEngineScriptManager::PreUpdate(float dt)
 {
-	//UpdateScripts();
-	//
-	//int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
-	//if (mLastModificationTime != modificationTime && !EngineApp->IsPlayMode())
-	//{
-	//	mLastModificationTime = modificationTime;
-	//	HotReload();
-	//}
+	mUpdateScriptsTimer += dt;
+	if (mUpdateScriptsTimer > 1.5f)
+	{
+		UpdateScripts();
+
+		int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
+		if (mLastModificationTime != modificationTime && !EngineApp->IsPlayMode())
+		{
+			mLastModificationTime = modificationTime;
+			HotReload();
+		}
+
+		mUpdateScriptsTimer = 0.0f;
+	}
 
 	return update_status::UPDATE_CONTINUE;
 }
