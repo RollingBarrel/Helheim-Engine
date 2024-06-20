@@ -275,9 +275,6 @@
       <Filter>Weapons\Melee</Filter>
     </ClCompile>
     <ClCompile Include="HudController.cpp" />
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
     <ClCompile Include="AudioTester.cpp">
       <Filter>Sound\Test</Filter>
     </ClCompile>
@@ -289,5 +286,8 @@
     </ClCompile>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="AudioTester.cpp" />
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
