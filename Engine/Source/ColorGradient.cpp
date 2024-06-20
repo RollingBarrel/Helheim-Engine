@@ -27,7 +27,8 @@ void ColorGradient::RemoveColorGradientMark(float position)
 float* ColorGradient::GetColor(float pos)
 {
     //assert(mColorMarks.find(pos) != mColorMarks.end() && "Position not found in ColorGradient");
-    if (mColorMarks.find(pos) == mColorMarks.end()) return nullptr;
+    if (mColorMarks.find(pos) == mColorMarks.end()) 
+        return mColorMarks.begin()->second.ptr();
     return mColorMarks[pos].ptr();
 }
 
