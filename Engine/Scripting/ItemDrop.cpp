@@ -57,10 +57,10 @@ void ItemDrop::Update()
                 playerScript->RechargeShield(mHealthRecovered);
                 break;
             case 2:
-                playerScript->RechargeBattery(BatteryType::BLUE); 
+                playerScript->RechargeBattery(EnergyType::BLUE); 
                 break;
             case 3: 
-                playerScript->RechargeBattery(BatteryType::RED);
+                playerScript->RechargeBattery(EnergyType::RED);
                 break;
             default:
                 break;
