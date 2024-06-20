@@ -119,13 +119,17 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    BoxColliderComponent* collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
-    if (collider)
+    BoxColliderComponent* collider = nullptr;
+    if (mMeleeCollider) 
     {
-        collider->AddCollisionEventHandler(
-            CollisionEventType::ON_COLLISION_ENTER,
-            new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
-        );
+        collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        if (collider)
+        {
+            collider->AddCollisionEventHandler(
+                CollisionEventType::ON_COLLISION_ENTER,
+                new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
+            );
+        }
     }
 
     mBat = new Bat(collider);
@@ -426,6 +430,7 @@ bool PlayerController::CanReload() const
 void PlayerController::Reload() const
 {
     mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
+    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
 }
 
 void PlayerController::CheckDebugOptions()

@@ -21,8 +21,8 @@ StateType AttackState::HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
-    mSpecialAttackTimer += App->GetDt();
-    if (mSpecialAttackTimer < mWeapon->GetAttackTime())
+    mAttackTimer += App->GetDt();
+    if (mAttackTimer < mWeapon->GetAttackTime())
     {
         // MOVE TO WEAPON
         /*if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
@@ -38,14 +38,14 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
-    mWeapon->Attack(mSpecialAttackTimer);
 }
 
 void AttackState::Enter()
 {
-    mSpecialAttackTimer = 0.0f;
+    mAttackTimer = 0.0f;
     mWeapon = mPlayerController->GetWeapon();
     mWeapon->Enter();
+    mWeapon->Attack(mAttackTimer);
 }
 
 void AttackState::Exit()

@@ -21,7 +21,7 @@ public:
 
 private:
 	Weapon* mWeapon = nullptr;
-	float mSpecialAttackTimer = 0.0f;
+	float mAttackTimer = 0.0f;
 
     float3 mDashDirection;
     float mEnergyCost = 10.0f;
