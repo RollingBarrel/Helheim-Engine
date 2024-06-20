@@ -4,7 +4,9 @@
 #include "Macros.h"
 
 class TrailComponent;
+class BoxColliderComponent;
 class GameObject;
+struct CollisionData;
 
 enum class WeaponUpgrade {
     NONE,
@@ -15,11 +17,12 @@ enum class WeaponUpgrade {
 class Bat : public MeleeWeapon
 {
 public:
-	Bat();
+	Bat(BoxColliderComponent* collider);
 	~Bat();
 
 	void Enter() override;
     void Update(float deltaTime);
+    void OnCollisionEnter(CollisionData* collisionData);
     void DealDamage(GameObject* enemy);
 	void Attack(float time) override;
 	void Exit() override;
@@ -27,6 +30,7 @@ public:
 private:
 
 	TrailComponent* mTrail = nullptr;
+    BoxColliderComponent* mCollider = nullptr;
 
     float mEnergyCost = 10.0f;       
     float mCooldownModifier = 1.f;

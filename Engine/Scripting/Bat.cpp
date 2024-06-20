@@ -2,12 +2,13 @@
 #include "float3.h"
 #include <vector>
 #include "TrailComponent.h"
+#include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
 
-Bat::Bat() : MeleeWeapon()
+Bat::Bat(BoxColliderComponent* collider) : MeleeWeapon()
 {
     mAttackTime = 3.0f;
     mDamage = 2.0f;
@@ -15,6 +16,18 @@ Bat::Bat() : MeleeWeapon()
     mComboMilestone1 = 1.0f;
     mComboMilestone2 = 2.0f;
     mComboDuration = 3.0f;
+    mCollider = collider;
+
+    // Do it in playerController to pass collider
+    //mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(
+            CollisionEventType::ON_COLLISION_ENTER, 
+            new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, this, std::placeholders::_1))
+        );
+    }
+
 }
 
 Bat::~Bat()
@@ -24,6 +37,7 @@ Bat::~Bat()
 void Bat::Enter()
 {
     //mTrail->Enable();
+    mCollider->SetEnable(true);
     mComboStep = 1;
 }
 
@@ -33,12 +47,16 @@ void Bat::Update(float deltaTime)
 
 }
 
+void Bat::OnCollisionEnter(CollisionData* collisionData)
+{
+    LOG("Colliding with melee!")
+}
+
 void Bat::DealDamage(GameObject* enemy) 
 {
     // This must generate the box colider, detect the gameObjects that are inside, 
     // apply damage to the enemies and 
     // pop particles from the game object
-
     Enemy* enemyScript = dynamic_cast<Enemy*>(enemy->GetComponent(ComponentType::SCRIPT));
     if (enemyScript) {
         enemyScript->TakeDamage(mDamage);
@@ -87,5 +105,7 @@ void Bat::Attack(float time)
 void Bat::Exit()
 {
     //mTrail->Disable();
+    mCollider->SetEnable(false);
+
 }
 

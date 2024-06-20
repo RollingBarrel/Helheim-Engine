@@ -57,7 +57,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE");
-    MEMBER(MemberType::GAMEOBJECT, mBat);
+    MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
@@ -121,7 +121,16 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    mBat = new Bat();
+    BoxColliderComponent* collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+    if (collider)
+    {
+        collider->AddCollisionEventHandler(
+            CollisionEventType::ON_COLLISION_ENTER,
+            new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
+        );
+    }
+
+    mBat = new Bat(collider);
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();

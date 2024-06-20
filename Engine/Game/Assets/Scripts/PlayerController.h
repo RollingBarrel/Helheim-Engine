@@ -170,6 +170,7 @@ private:
     Weapon* mBat = nullptr;
     Weapon* mKatana = nullptr;
     Weapon* mHammer = nullptr;
+    GameObject* mMeleeCollider = nullptr;
 
     // Attack
     float mAttackCoolDown = 0.1f;
