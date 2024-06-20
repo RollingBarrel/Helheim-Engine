@@ -4,6 +4,7 @@
 
 class ButtonComponent;
 class HudController;
+class AudioManager;
 class BattleArea;
 class EnemyPool;
 
@@ -22,6 +23,7 @@ public:
     void Update();
 
     GameObject* GetPlayer() const { return mPlayer; };
+    AudioManager* GetAudio() const { return mAudioManager;};
     HudController* GetHud() const { return mHudController; };
     bool UsingController() const { return mController; }
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
@@ -43,10 +45,12 @@ private:
     
     GameObject* mPlayer = nullptr;
     GameObject* mHudControllerGO = nullptr;
+    GameObject* mAudioManagerGO = nullptr;
 
     BattleArea* mActiveBattleArea = nullptr;
     EnemyPool* mEnemyPool = nullptr;
     HudController* mHudController = nullptr;
+    AudioManager* mAudioManager = nullptr;
 
     bool mPaused = false;
 

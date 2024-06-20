@@ -11,7 +11,7 @@ public:
     ~ResourceStateMachine();
 
     AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
-
+    void SetStateMachine(AnimationStateMachine* statemachine) { mStateMachine = statemachine; }
 private:
 
     AnimationStateMachine* mStateMachine;
