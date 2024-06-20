@@ -154,7 +154,7 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h">
-       <Filter>Managers</Filter>
+      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
