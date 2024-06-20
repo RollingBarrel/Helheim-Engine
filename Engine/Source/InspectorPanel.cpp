@@ -1249,6 +1249,11 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		imageComponent->SetMaskable(maskable);
 		imageComponent->UpdateMaskedImageStatus();
 	}
+	bool isMask = imageComponent->GetIsMask();
+	if (ImGui::Checkbox("Is Mask", &isMask))
+	{
+		imageComponent->SetMask(isMask);
+	}
 }
 
 void InspectorPanel::DrawMaskComponent(MaskComponent* component)

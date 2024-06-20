@@ -38,6 +38,7 @@ public:
     bool* GetMantainRatio() { return &mMantainRatio; }
     bool GetIsMaskable() { return mIsMaskable; }
     bool GetShouldDraw() { return mShouldDraw; }
+    bool GetIsMask() { return mIsMask; }
     
     inline void SetFileName(const char* fileName) { mFileName = fileName; }
     inline void SetImage(unsigned int resourceId);
@@ -46,6 +47,7 @@ public:
     inline void SetMantainRatio(bool ratio) { mMantainRatio = ratio; }
     inline void SetMaskable(bool maskable) { mIsMaskable = maskable; }
     inline void SetShouldDraw(bool draw) { mShouldDraw = draw; }
+    inline void SetMask(bool isMask) { mIsMask = isMask; }
 
     bool IsSpritesheet() const { return mIsSpritesheet; }
     void SetIsSpritesheet(bool isSpritesheet) { mIsSpritesheet = isSpritesheet; }
@@ -63,14 +65,12 @@ public:
     void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
-
 private:
     std::vector<unsigned char> GetPixelData(ResourceTexture* texture);
     float2 CalculateTextureOffset();
 
     ResourceTexture* mImage = nullptr;
     ResourceTexture* mMaskableImage = nullptr;
-    ResourceTexture* mImageToDraw = nullptr;
     ResourceTexture* mMask = nullptr;
     unsigned int mResourceId = 148626881; // Default white texture
 
@@ -86,6 +86,7 @@ private:
     bool mMantainRatio = true;
     bool mShouldDraw = true;
     bool mIsMaskable = false;
+    bool mIsMask = false;
 
     unsigned int mQuadVBO = 0;
     unsigned int mQuadVAO = 0;

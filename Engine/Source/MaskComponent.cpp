@@ -32,7 +32,6 @@ MaskComponent::~MaskComponent()
 
 void MaskComponent::Update()
 {
-    ApplyMaskToChildren();
 }
 
 bool MaskComponent::CleanUp()
@@ -43,23 +42,6 @@ bool MaskComponent::CleanUp()
 Component* MaskComponent::Clone(GameObject* owner) const
 {
     return new MaskComponent(*this, owner);
-}
-
-void MaskComponent::ApplyMaskToChildren()
-{
-    if (mMask == nullptr)
-    {
-        return;
-    }
-
-    for (GameObject* child : GetOwner()->GetChildren())
-    {
-        ImageComponent* childImage = static_cast<ImageComponent*>(child->GetComponent(ComponentType::IMAGE));
-        if (childImage && childImage->GetIsMaskable())
-        {
-            //childImage->ApplyMask(mMask);
-        }
-    }
 }
 
 void MaskComponent::Save(JsonObject& obj) const

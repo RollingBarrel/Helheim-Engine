@@ -64,7 +64,6 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 
 	mImage = original.mImage;
 	mMaskableImage = original.mMaskableImage;
-	mImageToDraw = original.mImageToDraw;
 	mResourceId = original.mResourceId;
 
 	mFileName = original.mFileName;
@@ -125,7 +124,33 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 { 
-	mImageToDraw = mIsMaskable ? mMaskableImage : mImage;
+	if (mIsMask) // Assuming IsMask() identifies if the component is a mask
+	{
+		// Step 1: Enable the stencil test
+		glEnable(GL_STENCIL_TEST);
+
+		// Step 2: Configure stencil operations for the mask
+		glStencilFunc(GL_ALWAYS, 1, 0xFF); // Pass the stencil test always
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // Replace stencil buffer value with 1 where rendered
+		glStencilMask(0xFF); // Enable writing to the stencil buffer
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // Disable writing to the color buffer
+
+		// Draw the mask (Texture A) here...
+		// This should update the stencil buffer without rendering to the screen
+
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Re-enable color buffer
+	}
+	if (mIsMaskable) // Assuming IsMaskable() identifies if the component should be masked
+	{
+		// Step 3: Render the maskable texture (Texture B) within the mask's bounds
+		glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass stencil test if stencil buffer value is 1
+		glStencilMask(0x00); // Disable writing to the stencil buffer
+
+		// Draw the maskable texture (Texture B) here...
+		// It will only render where the stencil buffer was marked by the mask
+
+		glDisable(GL_STENCIL_TEST); // Optionally disable stencil test if no more masking is needed
+	}
 
 	if (mIsSpritesheet)
 	{
@@ -177,23 +202,8 @@ void ImageComponent::Draw()
 		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mImageToDraw->GetOpenGLId());
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 		glUniform1i(glGetUniformLocation(UIImageProgram, "Texture"), 0);
-
-		if (mIsMaskable && mMask != nullptr)
-		{
-			float2 textureOffset = CalculateTextureOffset();
-			glActiveTexture(GL_TEXTURE1);
-			glBindTexture(GL_TEXTURE_2D, mMask->GetOpenGLId());
-			GLint textureOffsetLocation = glGetUniformLocation(UIImageProgram, "textureOffset");
-			glUniform2f(textureOffsetLocation, textureOffset.x, textureOffset.y);
-			glUniform1i(glGetUniformLocation(UIImageProgram, "maskTexture"), 1);
-			glUniform1i(glGetUniformLocation(UIImageProgram, "useMask"), 1);
-		}
-		else
-		{
-			glUniform1i(glGetUniformLocation(UIImageProgram, "useMask"), 0); // No mask used
-		}
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
@@ -414,7 +424,24 @@ float2 ImageComponent::CalculateTextureOffset()
 
 bool ImageComponent::CleanUp()
 {
-	glDeleteBuffers(1, &mQuadVBO);
-	glDeleteVertexArrays(1, &mQuadVAO);
+	if (mQuadVBO != 0)
+	{
+		glDeleteBuffers(1, &mQuadVBO);
+	}
+
+	if (mQuadVAO != 0)
+	{
+		glDeleteVertexArrays(1, &mQuadVAO);
+	}
+
+	if (mImage != nullptr)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	}
+
+	if (mMaskableImage != nullptr && mMaskableImage != mImage)
+	{
+		App->GetResource()->ReleaseResource(mMaskableImage->GetUID());
+	}
 	return true;
 }
