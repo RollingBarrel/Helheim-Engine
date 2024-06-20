@@ -181,6 +181,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ElectricTrapController.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -320,5 +321,6 @@
     <ClCompile Include="TimerScript.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ElectricTrapController.cpp" />
   </ItemGroup>
 </Project>

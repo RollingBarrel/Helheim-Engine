@@ -212,6 +212,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
+    <ClInclude Include="ElectricTrapController.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletEnemy.cpp" />
     <ClCompile Include="DashState.cpp" />
+    <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyPool.cpp" />
