@@ -109,11 +109,11 @@ void ImageComponent::Draw()
 	}
 	if (mImage && mCanvas)
 	{
-
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
 
 		glEnable(GL_BLEND);
+		glDepthMask(GL_TRUE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		glUseProgram(UIImageProgram);
@@ -122,30 +122,83 @@ void ImageComponent::Draw()
 		float4x4 model = float4x4::identity;
 		float4x4 view = float4x4::identity;
 
-		if (mCanvas->GetScreenSpace()) //Ortographic Mode
+		switch (mCanvas->GetRenderSpace())
 		{
-			Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-			if (component != nullptr)
+		case RenderSpace::Screen: //Ortographic Mode
 			{
-				model = component->GetGlobalMatrix();
+				Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+				if (component != nullptr)
+				{
+					model = component->GetGlobalMatrix();
 
-				//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
-				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+					//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+					float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
-				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+					model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
 
+				}
+				glEnable(GL_CULL_FACE);
+				break;
 			}
-			glEnable(GL_CULL_FACE);
-		}
-		else //World Mode
-		{
-			const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		case RenderSpace::World: //World Mode
+			{
+				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-			proj = camera->GetProjectionMatrix();
-			model = GetOwner()->GetWorldTransform();
-			view = camera->GetViewMatrix();
-			glDisable(GL_CULL_FACE);
+				proj = camera->GetProjectionMatrix();
+				model = GetOwner()->GetWorldTransform();
+				view = camera->GetViewMatrix();
+				glDisable(GL_CULL_FACE);
+				break;
+			}
+		case RenderSpace::Billboard: //World Mode aligned to the camera
+			{
+				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+				proj = camera->GetProjectionMatrix();
+				view = camera->GetViewMatrix();
+				float3 pos = GetOwner()->GetPosition();
+				float3 scale = GetOwner()->GetScale();
+				float3x3 scaleMatrix = float3x3::identity;
+				scaleMatrix[0][0] = scale.x;
+				scaleMatrix[1][1] = scale.y;
+				scaleMatrix[2][2] = scale.z;
+
+				float3 norm = camera->GetFrustum().front;
+				float3 up = camera->GetFrustum().up;
+				float3 right = up.Cross(norm).Normalized();
+				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+				model = model * scaleMatrix;
+				//model.Transpose();
+
+				glDisable(GL_CULL_FACE);
+				break;
+			}
+		case RenderSpace::WorldAxisBillboard: //World Mode aligned to the camera
+			{
+				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+
+				proj = camera->GetProjectionMatrix();
+				view = camera->GetViewMatrix();
+				float3 pos = GetOwner()->GetPosition();
+				float3 scale = GetOwner()->GetScale();
+				float3x3 scaleMatrix = float3x3::identity;
+				scaleMatrix[0][0] = scale.x;
+				scaleMatrix[1][1] = scale.y;
+				scaleMatrix[2][2] = scale.z;
+
+				float3 norm = (pos - camera->GetFrustum().pos).Normalized();
+				float3 up = float3::unitY;
+				float3 right = up.Cross(norm).Normalized();
+				norm = up.Cross(right).Normalized();
+				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+				model = model * scaleMatrix;
+				//model.Transpose();
+
+				glDisable(GL_CULL_FACE);
+				break;
+			}
 		}
+
 
 		glBindVertexArray(mQuadVAO);
 
@@ -203,80 +256,34 @@ void ImageComponent::StopAnimation()
 	mElapsedTime = 0;
 }
 
-void ImageComponent::Save(Archive& archive) const
+void ImageComponent::Save(JsonObject& obj) const
 {
-    archive.AddInt("ImageID", mImage->GetUID());
-    archive.AddInt("ComponentType", static_cast<int>(GetType()));
-	archive.AddFloat3("Color", mColor);
-	archive.AddFloat("Alpha", mAlpha);
-
-	archive.AddBool("IsSpritesheet", mIsSpritesheet);
-	archive.AddInt("Columns", mColumns);
-	archive.AddInt("Rows", mRows);
-	archive.AddInt("Speed", mFPS);
-	archive.AddBool("IsPlaying", mIsPlaying);
+	Component::Save(obj);
+	obj.AddInt("ImageID", mImage->GetUID());
+	obj.AddFloats("Color", mColor.ptr(), 3);;
+	obj.AddFloat("Alpha", mAlpha);
+	obj.AddBool("IsSpritesheet", mIsSpritesheet);
+	obj.AddInt("Columns", mColumns);
+	obj.AddInt("Rows", mRows);
+	obj.AddInt("Speed", mFPS);
+	obj.AddBool("IsPlaying", mIsPlaying);
 }
 
-void ImageComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    
-    if (data.HasMember("ImageID") && data["ImageID"].IsInt()) 
-	{
-		const rapidjson::Value& imageIdValue = data["ImageID"];
-		
-		mResourceId = imageIdValue.GetInt();
-		SetImage(mResourceId);
-    }
+	Component::Load(data, uidPointerMap);
+	mResourceId = data.GetInt("ImageID");
+	SetImage(mResourceId);
 
-	if (data.HasMember("Color") && data["Color"].IsArray()) 
-	{
-		const rapidjson::Value& colorValues = data["Color"];
-		float x{ 0.0f }, y{ 0.0f }, z{ 0.0f };
-		if (colorValues.Size() == 3 && colorValues[0].IsFloat() && colorValues[1].IsFloat() && colorValues[2].IsFloat()) 
-		{
-			x = colorValues[0].GetFloat();
-			y = colorValues[1].GetFloat();
-			z = colorValues[2].GetFloat();
-		}
-
-		mColor = float3(x, y, z);
-	}
-
-	if (data.HasMember("Alpha") && data["Alpha"].IsFloat()) 
-	{
-		const rapidjson::Value& alphaValue = data["Alpha"];
-		mAlpha = alphaValue.GetFloat();
-	}
-
-	if (data.HasMember("IsSpritesheet") && data["IsSpritesheet"].IsBool())
-	{
-		const rapidjson::Value& isSpritesheetValue = data["IsSpritesheet"];
-		mIsSpritesheet = isSpritesheetValue.GetBool();
-	}
-
-	if (data.HasMember("Columns") && data["Columns"].IsInt())
-	{
-		const rapidjson::Value& columnsValue = data["Columns"];
-		mColumns = columnsValue.GetInt();
-	}
-
-	if (data.HasMember("Rows") && data["Rows"].IsInt())
-	{
-		const rapidjson::Value& rowsValue = data["Rows"];
-		mRows = rowsValue.GetInt();
-	}
-
-	if (data.HasMember("Speed") && data["Speed"].IsInt())
-	{
-		const rapidjson::Value& speedValue = data["Speed"];
-		mFPS = speedValue.GetInt();
-	}
-
-	if (data.HasMember("IsPlaying") && data["IsPlaying"].IsBool())
-	{
-		const rapidjson::Value& isPlaying = data["IsPlaying"];
-		mIsPlaying = isPlaying.GetBool();
-	}
+	float col[3];
+	data.GetFloats("Color", col);
+	mColor = float3(col);
+	mAlpha = data.GetFloat("Alpha");
+	mIsSpritesheet = data.GetBool("IsSpritesheet");
+	mColumns = data.GetInt("Columns");
+	mRows = data.GetInt("Rows");
+	mFPS = data.GetInt("Speed");
+	mIsPlaying = data.GetBool("IsPlaying");
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) 
@@ -358,7 +365,7 @@ void ImageComponent::CreateVAO()
 void ImageComponent::ResizeByRatio()
 {
 	float originalRatio = mImage->GetWidth() / mImage->GetHeight() ;
-	if (mCanvas->GetScreenSpace()) //Ortographic Mode
+	if (mCanvas->GetRenderSpace() == RenderSpace::Screen) //Ortographic Mode
 	{
 		Transform2DComponent* component = ((Transform2DComponent*)GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 		float currentRatio = component->GetSize().x / component->GetSize().y;

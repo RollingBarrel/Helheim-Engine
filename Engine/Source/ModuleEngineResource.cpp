@@ -10,6 +10,7 @@
 #include "ResourceScript.h"
 #include "ResourceAnimation.h"
 #include "ResourceNavMesh.h"
+#include "ResourceStateMachine.h"
 
 #include <algorithm>
 
@@ -19,6 +20,7 @@
 #include "ImporterModel.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
+#include "ImporterStateMachine.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -170,9 +172,11 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Script:
 		ret = Importer::Script::Import(importedFile, uid);
 		break;
-	case Resource::Type::Object:
+	case Resource::Type::Prefab:
 		ret = new Resource(uid, type);
 		break;
+	case Resource::Type::StateMachine:
+		ret = Importer::StateMachine::Import(assetsFile, uid);
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
@@ -213,7 +217,7 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		EngineApp->GetFileSystem()->CopyAbsolutePath(importedBinFilePath.c_str(), std::string(ASSETS_MODEL_PATH + assetName + ".bin").c_str());
 		break;
 	}
-	case Resource::Type::Object:
+	case Resource::Type::Prefab:
 		assetsFilePath = importedFilePath;
 		break;
 	case Resource::Type::Script:

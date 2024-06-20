@@ -56,14 +56,14 @@ void ButtonComponent::TriggerEvent(EventType eventType)
     }
 }
 
-void ButtonComponent::Save(Archive& archive) const 
+void ButtonComponent::Save(JsonObject& obj) const 
 {
-    Component::Save(archive);
+    Component::Save(obj);
 }
 
-void ButtonComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
+void ButtonComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-    Component::LoadFromJSON(data, owner);
+    Component::Load(data, uidPointerMap);
 }
 
 

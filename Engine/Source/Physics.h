@@ -8,9 +8,9 @@ class GameObject;
 
 struct Hit
 {
-	const GameObject* mGameObject;
+	const GameObject* mGameObject = nullptr;
 	float3 mHitPoint;
-	float mDistance;
+	float mDistance = 0;
 };
 
 namespace Physics

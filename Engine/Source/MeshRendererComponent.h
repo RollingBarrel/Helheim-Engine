@@ -3,12 +3,14 @@
 #include "Geometry/OBB.h"
 #include "Geometry/AABB.h"
 #include <vector>
+#include <unordered_map>
 #include "Math/float4x4.h"
 
 class ResourceMesh;
 class ResourceMaterial;
 class GeometryBatch;
 class AnimationComponent;
+class ResourceModel;
 
 
 class ENGINE_API MeshRendererComponent : public Component
@@ -31,10 +33,23 @@ public:
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
 	void SetMesh(unsigned int uid);
 	void SetMaterial(unsigned int uid);
+	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
+	void UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
+	void UpdateSkletonGoIds();
+
+	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
+	bool HasSkinning() const { return mHasSkinning; };
+
+	void Enable() override;
+	void Disable() override;
+
 
 private:
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
+
+	void UpdatePalette();
+
 
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;
@@ -44,4 +59,12 @@ private:
 	AABB mOriginalAABB;
 	AABB mAABBWorld;
 	int mTemporalID = -1;
+
+
+	//Skinning
+	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
+	std::vector<float4x4> mPalette;
+	const MeshRendererComponent* mPaletteOwner = nullptr;
+	bool mHasSkinning = false;
+
 };

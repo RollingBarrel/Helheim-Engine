@@ -38,27 +38,24 @@ void CanvasComponent::Reset()
 {
 }
 
-void CanvasComponent::Save(Archive& archive) const 
+void CanvasComponent::Save(JsonObject& obj)const 
 {
-	Component::Save(archive);
-
-	archive.AddFloat2("Size", mSize);
+	Component::Save(obj);
+	
+	obj.AddFloats("Size", mSize.ptr(), 2);
+	obj.AddInt("Render", static_cast<int>(mRenderSpace));
 }
 
-void CanvasComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner) 
+void CanvasComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::LoadFromJSON(data, owner);
-
-	if (data.HasMember("Size") && data["Size"].IsArray()) 
+	Component::Load(data, uidPointerMap);
+	
+	float size[2];
+	data.GetFloats("Size", size);
+	mSize = float2(size);
+	if (data.HasMember("Render"))
 	{
-		const rapidjson::Value& values = data["Size"];
-		float x{ 0.0f }, y{ 0.0f };
-		if (values.Size() == 2 && values[0].IsFloat() && values[1].IsFloat()) 
-		{
-			x = values[0].GetFloat();
-			y = values[1].GetFloat();
-		}
-
-		mSize = float2(x, y);
+		mRenderSpace = static_cast<RenderSpace>(data.GetInt("Render"));
 	}
+	
 }

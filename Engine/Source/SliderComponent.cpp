@@ -1,7 +1,10 @@
 #pragma once
 #include "SliderComponent.h"
+
 #include "ImageComponent.h"
 #include "CanvasComponent.h"
+#include "GameObject.h"
+#include "Transform2DComponent.h"
 
 SliderComponent::SliderComponent(GameObject* owner, bool active) : Component(owner, ComponentType::SLIDER)
 {
@@ -22,20 +25,16 @@ SliderComponent::SliderComponent(GameObject* owner) : Component(owner, Component
 	if (self->GetChildren().empty()) 
 	{
 		self->SetName("Slider");
-		mFill = new GameObject("Fill", self);
-		mBackground = new GameObject("Background", self);
-
 		mSliderTransform2D = new Transform2DComponent(self);
-		mBgImage = new ImageComponent(mBackground);
-		mFillImage = new ImageComponent(mFill);
-		mBgTransform2D = new Transform2DComponent(mBackground);
-		mFillTransform2D = new Transform2DComponent(mFill);
 
-		self->AddComponent(mSliderTransform2D, this);
-		mBackground->AddComponent(mBgTransform2D, this);
-		mBackground->AddComponent(mBgImage, this);
-		mFill->AddComponent(mFillTransform2D, this);
-		mFill->AddComponent(mFillImage, this);
+		mBackground = new GameObject("Background", self);
+		mFill = new GameObject("Fill", self);
+
+		self->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::TRANSFORM2D);
+		mBackground->CreateComponent(ComponentType::IMAGE);
+		mFill->CreateComponent(ComponentType::TRANSFORM2D);
+		mFill->CreateComponent(ComponentType::IMAGE);
 	}
 	else 
 	{
@@ -67,7 +66,7 @@ void SliderComponent::SetValue(float fillPercent)
 	float fillWidth = backgroundWidth * fillPercent;
 	float fillPositionX = (backgroundWidth - fillWidth) / 2 * -1; // Center the fill
 
-	if (mCanvas->GetScreenSpace())
+	if (mCanvas->GetRenderSpace() == RenderSpace::Screen)
 	{
 		mFillTransform2D->SetPosition(float3(fillPositionX, 0, 0));
 		mFillTransform2D->SetSize(float2(fillWidth, mFillTransform2D->GetSize().y));
@@ -79,14 +78,14 @@ void SliderComponent::SetValue(float fillPercent)
 	}
 }
 
-void SliderComponent::Save(Archive& archive) const
+void SliderComponent::Save(JsonObject& obj) const
 {
-	Component::Save(archive);
+	Component::Save(obj);
 }
 
-void SliderComponent::LoadFromJSON(const rapidjson::Value& data, GameObject* owner)
+void SliderComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
-	Component::LoadFromJSON(data, owner);
+	Component::Load(data, uidPointerMap);
 }
 
 SliderComponent:: ~SliderComponent()

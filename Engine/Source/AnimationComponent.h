@@ -7,7 +7,6 @@
 
 class AnimationController;
 class AnimationStateMachine;
-class ResourceModel;
 
 
 class ENGINE_API AnimationComponent : public Component {
@@ -20,26 +19,24 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
-	void Save(Archive& archive) const override;
-	void LoadFromJSON(const rapidjson::Value& data, GameObject* owner) override;
-	
+	void Save(JsonObject& obj) const override;
+	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
+
 	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop);
 
 	bool GetIsPlaying() const { return mIsPlaying; }
 	void SetIsPlaying(bool isPlaying) { mIsPlaying = isPlaying; }
 
-	void OnStart();
+	void StartUp();
 	void OnStop();
 	void OnRestart();
 
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
-	
-	//Pallete calculations
-	const std::vector<float4x4> GetPalette() const { return mPalette; }
+	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }
 
-	void LoadAllChildJoints(GameObject* currentObject, ResourceModel* model);
-
+	void SetStateMachine(AnimationStateMachine* sm) { mStateMachine = sm; }
+	void SetSpineStateMachine(AnimationStateMachine* sm) { mSpineStateMachine = sm; }
 
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
@@ -48,18 +45,23 @@ public:
 	std::string GetCurrentStateName();
 	void SendTrigger(std::string trigger, float transitionTime);
 	void ChangeState(std::string stateName, float transitionTime);
-	//Model UUID
-	unsigned int GetModelUUID() const { return mModelUid; }
-	void SetModelUUID(unsigned int modelUid); 
-
 	
+	std::string GetCurrentSpineStateName();
+	void SendSpineTrigger(std::string trigger, float transitionTime);
+	void ChangeSpineState(std::string stateName, float transitionTime);
+
+	//Animations UUIDs
+	void SetAnimationsUids(const std::vector<unsigned int>& uids) { mAnimationsUIDs = uids; }
+	const  std::vector<unsigned int>& GetAnimationUids() const { return mAnimationsUIDs; }
+
+	bool HasSpine() const { return mHasSpine; }
 
 	void StartTransition(float transitionDuration);
 
 private:
-	void AddJointNode(GameObject* node, ResourceModel* model);
-	void UpdatePalette();
 
+	void LoadGameObjects(GameObject* current);
+	void LoadSpineChildren(GameObject* current);
 
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
@@ -68,14 +70,19 @@ private:
 	bool mLoop = true;
 	bool mIsPlaying = false;
 
-	std::vector<std::pair<GameObject*, float4x4>> mGameobjectsInverseMatrices;
-	std::vector<float4x4> mPalette;
-
 	float mSpeed;
 
-	unsigned int mModelUid;
 
-	
+	//Locomotion
+	AnimationController* mSpineController;
+	AnimationStateMachine* mSpineStateMachine;
+	int mCurrentSpineState = 0;
+	bool mHasSpine = false;
+
+	std::vector<GameObject*> mSpineObjects;
+	std::vector<GameObject*> mDefaultObjects;
+	std::vector<unsigned int> mAnimationsUIDs;
+
 };
 
 #endif

@@ -39,20 +39,13 @@ AnimationController::~AnimationController()
 	}
 }
 
-void AnimationController::Update(GameObject* model)
+void AnimationController::Update()
 {
 	mCurrentTime += App->GetDt() * mSpeed;
-	if (!mTransition)
-	{
-		GetTransform(model);
-	}
-	else 
+	if (mTransition)
 	{
 		mCurrentTransitionTime += App->GetDt();
-
-		GetTransform_Blending(model);
 	}
-	
 }
 
 void AnimationController::Restart()
@@ -97,6 +90,16 @@ void AnimationController::SetEndTime(float time)
 {
 	mEndTime = std::min(time, mCurrentAnimation->GetDuration());
 
+}
+
+void AnimationController::EndBlending()
+{
+	mCurrentTime = mClipStartTime;
+	mCurrentTransitionTime = 0.0f;
+
+	//Change the animations once the transition is done
+	mCurrentAnimation = mNextAnimation;
+	mNextAnimation = nullptr;
 }
 
 void AnimationController::GetTransform(GameObject* model)
@@ -155,10 +158,12 @@ void AnimationController::GetTransform(GameObject* model)
 
 		model->RecalculateMatrices();
 	}
+	/*
 	for (const auto& child : model->GetChildren())
 	{
 		GetTransform(child);
 	}
+	*/
 }
 
 void AnimationController::GetTransform_Blending(GameObject* model)
@@ -227,20 +232,16 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 
 			model->RecalculateMatrices();
 		}
+		/*
 		for (const auto& child : model->GetChildren())
 		{
 			GetTransform_Blending(child);
 		}
+		*/
 	}
 	else 
 	{
 		mTransition = false;
-		mCurrentTime = mClipStartTime;
-		mCurrentTransitionTime = 0.0f;
-
-		//Change the animations once the transition is done
-		mCurrentAnimation = mNextAnimation;
-		mNextAnimation = nullptr;
 	}
 }
 

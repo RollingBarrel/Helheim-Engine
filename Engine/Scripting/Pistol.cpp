@@ -12,28 +12,19 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "HudController.h"
+#include "GameManager.h"
 
 #include <map>
+#include "Bat.h"
 
-CREATE(Pistol)
+Pistol::Pistol() : RangeWeapon()
 {
-    CLASS(owner);
-    //SEPARATOR("STATS");
-    MEMBER(MemberType::GAMEOBJECT, mShootPoint);
-
-    SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
-
-    END_CREATE;
+    mCurrentAmmo = 16;
+    mMaxAmmo = 16;
 }
 
-void Pistol::Start()
+Pistol::~Pistol()
 {
-    if (mHudControllerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
-        mHudController = static_cast<HudController*>(script->GetScriptInstance());
-    }
 }
 
 void Pistol::BasicAttack()
@@ -47,19 +38,19 @@ void Pistol::BasicAttack()
         mCurrentAmmo = mMaxAmmo;
     }
     
-    mHudController->SetAmmo(mCurrentAmmo);
+
+    //mPlayerController->PlayOneShot("Shot");
+    //mAnimationComponent->SendTrigger("tShooting", 0.2f);
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 
     if (bullet != nullptr)
     {
-        if (mShootPoint)
-        {
-            LOG("%f, %f, %f", mShootPoint->GetWorldPosition().x, mShootPoint->GetWorldPosition().y, mShootPoint->GetWorldPosition().z);
-            bullet->SetPosition(mShootPoint->GetWorldPosition());
+        /*bullet->SetPosition(mPlayerCharacter->GetPosition());
 
-            mShootPoint->SetEnabled(false);
-            mShootPoint->SetEnabled(true); // Reset particles
-        }
-        bullet->SetRotation(mGameObject->GetWorldRotation());
+        mShootPoint->SetEnabled(false);
+        mShootPoint->SetEnabled(true); // Reset particles
+        
+        bullet->SetRotation(mGameObject->GetWorldRotation());*/
     }
 
     /*std::map<float, Hit> hits;
