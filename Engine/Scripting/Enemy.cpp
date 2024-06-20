@@ -5,9 +5,7 @@
 #include "AudioSourceComponent.h"
 #include "Math/MathFunc.h"
 #include "GameObject.h"
-
-
-
+#include "BattleArea.h"
 
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
@@ -54,6 +52,7 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->GetActiveBattleArea()->DestroyEnemy();
     DropItem();
 }
 

@@ -124,7 +124,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -165,6 +164,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
