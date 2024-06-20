@@ -249,6 +249,8 @@ bool ModuleOpenGL::Init()
 	mSkinningProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "SelectComands.comp";
 	mSelectCommandsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "SelectSkins.comp";
+	mSelectSkinsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
@@ -1078,7 +1080,6 @@ void ModuleOpenGL::Draw()
 		mRenderFrustums.push_back(&chosenLights[i]->GetFrustum());
 	}
 	mRenderFrustums.push_back(&App->GetCamera()->GetCurrentCamera()->GetFrustum());
-	//TODO: sestan fent els skins cada frame
 	mBatchManager.Update(mRenderFrustums);
 	//START THE DRAW
 	

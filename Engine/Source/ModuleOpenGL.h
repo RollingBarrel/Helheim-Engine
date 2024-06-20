@@ -91,6 +91,7 @@ public:
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
+	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
@@ -169,6 +170,7 @@ private:
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
+	unsigned int mSelectSkinsProgramId = 0;
 	unsigned int mSelectCommandsProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;

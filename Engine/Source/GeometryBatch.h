@@ -157,6 +157,12 @@ private:
 	unsigned int mBiggestPaletteSize = 0;
 	unsigned int mSkinSsbo = 0;
 	unsigned int mSkinBufferSize = 0;
+	unsigned int mSkinDispatchIndirectBuffer = 0;
+	unsigned int* mSkinDispatchIndirectBufferData[NUM_BUFFERS];
+	unsigned int mSkinSsboObbs = 0;
+	float* mSkinSsboObbsData[NUM_BUFFERS];
+	unsigned int mNumSkins = 0;
+	unsigned int mCurrSkinIdx = 0;
 
 	int mSsboAligment = 0;
 };
