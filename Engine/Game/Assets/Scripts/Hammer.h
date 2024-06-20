@@ -10,7 +10,7 @@ public:
 	~Hammer();
 
 	void Enter() override;
-	void Attack() override;
+	void Attack(float time) override;
 	void Exit() override;
 
 private:

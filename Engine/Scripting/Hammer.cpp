@@ -13,7 +13,7 @@ void Hammer::Enter()
 {
 }
 
-void Hammer::Attack()
+void Hammer::Attack(float time)
 {
 
 }

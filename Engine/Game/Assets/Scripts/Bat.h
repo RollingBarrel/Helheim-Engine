@@ -21,9 +21,8 @@ public:
 	void Enter() override;
     void Update(float deltaTime);
     void DealDamage(GameObject* enemy);
-	void Attack() override;
+	void Attack(float time) override;
 	void Exit() override;
-
 
 private:
 
@@ -32,9 +31,15 @@ private:
     float mEnergyCost = 10.0f;       
     float mCooldownModifier = 1.f;
 
-    float mRange = 1.0f;
+    float mComboTimer = 0.0f;
+    float mComboCurrentTime = 0.0f;
+    bool  mIsComboActive = false;
+    bool  mIsNextComboStep = false;
+    float mBreakCombo = 0.0f;
 
-    GameObject* mPlayerGO = nullptr;
+    // Player Dash
+    float  mMoveRange = 15.f;
+    float  mMoveDuration = 4.0f;
 
 
 

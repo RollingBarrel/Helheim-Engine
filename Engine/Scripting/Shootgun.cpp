@@ -28,7 +28,7 @@ void Shootgun::Enter()
    
 }
 
-void Shootgun::Attack()
+void Shootgun::Attack(float time)
 {
     unsigned int numBullets = 10;
 

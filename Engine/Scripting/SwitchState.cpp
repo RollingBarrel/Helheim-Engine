@@ -29,14 +29,7 @@ void SwitchState::Update()
 
 void SwitchState::Enter()
 {
-    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
-    {
-        mPlayerController->SwitchWeapon(mPlayerController->GetMeleeWeapon());
-    }
-    else
-    {
-        mPlayerController->SwitchWeapon(mPlayerController->GetRangeWeapon());
-    }
+    mPlayerController->SwitchWeapon();
 
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
 }

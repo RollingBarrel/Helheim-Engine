@@ -345,7 +345,7 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
+    if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
         mWeapon = mPistol;
 

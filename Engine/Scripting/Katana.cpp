@@ -12,7 +12,7 @@ void Katana::Enter()
 {
 }
 
-void Katana::Attack()
+void Katana::Attack(float time)
 {
 }
 

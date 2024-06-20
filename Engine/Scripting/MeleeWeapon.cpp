@@ -10,11 +10,27 @@ MeleeWeapon::~MeleeWeapon()
 {
 }
 
-void MeleeWeapon::Attack()
+void MeleeWeapon::IncreaseComboStep()
 {
-
-
+    mNextComboStep = mComboStep + 1;
 }
+
+
+float MeleeWeapon::GetAttackTime()
+{
+    switch (mComboStep) 
+    {
+    case 1:
+        return mComboMilestone1;
+    case 2:
+        return mComboMilestone2;
+    case 3:
+        return mComboDuration;
+    }
+    return mAttackTime;
+}
+
+
 
 void MeleeWeapon::MeleeHit() {
 
