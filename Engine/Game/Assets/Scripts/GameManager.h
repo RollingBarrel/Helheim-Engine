@@ -4,7 +4,11 @@
 
 class ButtonComponent;
 class HudController;
+class PlayerController;
 class AudioManager;
+class BattleArea;
+class EnemyPool;
+class PoolManager;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -20,15 +24,20 @@ public:
     void Start();
     void Update();
 
-    GameObject* GetPlayer() { return mPlayer; };
-    AudioManager* GetAudio() const {return mAudioManager;};
-    HudController* GetHud() { return mHudController; };
-    bool UsingController() { return mController; }
+    GameObject* GetPlayer() const { return mPlayer; }
+    PlayerController* GetPlayerController() const { return mPlayerController; }
+    AudioManager* GetAudio() const { return mAudioManager;}
+    HudController* GetHud() const { return mHudController; }
+    bool UsingController() const { return mController; }
+    BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
+    GameObject* GetEnemyPool() const { return mEnemyPool; }
+    PoolManager* GetPoolManager() const;
 
     bool IsPaused() { return mPaused; }
     void SetPaused(bool value);
 
     void LoadLevel(const char* LevelName);
+    void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
 
     void Victory();
     void GameOver();
@@ -42,8 +51,12 @@ private:
     GameObject* mHudControllerGO = nullptr;
     GameObject* mAudioManagerGO = nullptr;
 
+    PlayerController* mPlayerController = nullptr;
+    BattleArea* mActiveBattleArea = nullptr;
+    GameObject* mEnemyPool = nullptr;
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
+    GameObject* mPoolManager = nullptr;
 
     bool mPaused = false;
 

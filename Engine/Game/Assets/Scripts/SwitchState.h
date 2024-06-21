@@ -1,10 +1,12 @@
 #pragma once
 #include "State.h"
 
+class PlayerController;
+
 class SwitchState : public State
 {
 public:
-	explicit SwitchState(PlayerController* player);
+	explicit SwitchState(PlayerController* player, float cooldown);
 	~SwitchState();
 
 	StateType HandleInput() override;
@@ -15,7 +17,6 @@ public:
 
 	StateType GetType() override;
 
-
 private:
-
+	float mSwitchTimer = 0.0f;
 };

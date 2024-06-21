@@ -36,7 +36,11 @@
 #include "MeleeWeapon.h"
 #include "RangeWeapon.h"
 #include "Bat.h"
+#include "Katana.h"
+#include "Hammer.h"
 #include "Pistol.h"
+#include "Machinegun.h"
+#include "Shootgun.h"
 #include "Grenade.h"
 
 CREATE(PlayerController)
@@ -53,7 +57,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE");
-    MEMBER(MemberType::GAMEOBJECT, mBat);
+    MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
@@ -65,15 +69,13 @@ CREATE(PlayerController)
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
-    SEPARATOR("AUDIO");
-    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
-    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
-
     END_CREATE;
 }
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
+    mLowerStateType = StateType::NONE;
+    mUpperStateType = StateType::NONE;
 }
 
 PlayerController::~PlayerController()
@@ -88,8 +90,12 @@ PlayerController::~PlayerController()
     delete mSpecialState;
     delete mReloadState;
 
-    delete mMeleeWeapon;
-    delete mRangeWeapon;
+    delete mPistol;
+    delete mBat;
+    delete mMachinegun;
+    delete mShootgun;
+    delete mKatana;
+    delete mHammer;
 }
 
 #pragma region MyRegion
@@ -97,15 +103,15 @@ PlayerController::~PlayerController()
 void PlayerController::Start()
 {
     // States
-    mDashState = new DashState(this);
-    mIdleState = new IdleState(this);
-    mMoveState = new MoveState(this);
-    mAimState = new AimState(this);
-    mAttackState = new AttackState(this);
-    mGrenadeState = new GrenadeState(this);
-    mSwitchState = new SwitchState(this);
-    mSpecialState = new SpecialState(this);
-    mReloadState = new ReloadState(this);
+    mDashState = new DashState(this, mDashCoolDown);
+    mIdleState = new IdleState(this, 0.0f);
+    mMoveState = new MoveState(this, 0.0f);
+    mAimState = new AimState(this, 0.0f);
+    mGrenadeState = new GrenadeState(this, mGrenadeCoolDown);
+    mSwitchState = new SwitchState(this, mSwitchCoolDown);
+    mAttackState = new AttackState(this, 0.0f); // Is later changed when having a weapon
+    mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
+    mReloadState = new ReloadState(this, 0.0f);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;
@@ -113,28 +119,29 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    //mMeleeWeapon = new Bat();
-    mRangeWeapon = new Pistol();
-
-    // MELEE WEAPON
-    if (mBat)
+    BoxColliderComponent* weaponCollider = nullptr;
+    if (mMeleeCollider) 
     {
-        ScriptComponent* script = (ScriptComponent*)mBat->GetComponent(ComponentType::SCRIPT);
-        mMeleeWeapon = (Bat*)script->GetScriptInstance();
-        mBat->SetEnabled(false);
-    }
-    mWeapon = mRangeWeapon;
-
-    // AUDIO
-    if (mFootStepAudioHolder)
-    {
-        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
+        weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        if (weaponCollider)
+        {
+            weaponCollider->AddCollisionEventHandler(
+                CollisionEventType::ON_COLLISION_ENTER,
+                new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
+            );
+        }
     }
 
-    if (mGunfireAudioHolder)
-    {
-        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
+    mBat = new Bat(weaponCollider);
+    mPistol = new Pistol();
+    mMachinegun = new Machinegun();
+    mShootgun = new Shootgun();
+    mKatana = new Katana();
+    mHammer = new Hammer();
+
+    mWeapon = mPistol;
+    mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
+    mSpecialWeapon = nullptr;
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -188,7 +195,6 @@ void PlayerController::Update()
 void PlayerController::StateMachine()
 {
     // Check if dead
-
     mLowerState->Update();
     mUpperState->Update();
 }
@@ -199,7 +205,7 @@ void PlayerController::CheckInput()
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
     {
-        LOG(("LOWER: " + std::to_string(type)).c_str());
+        //LOG(("LOWER: " + std::to_string(type)).c_str());
         mLowerStateType = type;
         mLowerState->Exit();
 
@@ -228,7 +234,7 @@ void PlayerController::CheckInput()
     type = mUpperState->HandleInput();
     if (mUpperStateType != type)
     {
-        LOG(("UPPER: " + std::to_string(type)).c_str());
+        //LOG(("UPPER: " + std::to_string(type)).c_str());
         mUpperStateType = type;
         mUpperState->Exit();
 
@@ -264,9 +270,15 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    // TODO: Not aim on melee state? and dash?
+    if (mLowerState->GetType() == StateType::DASH ||
+        mUpperState->GetType() == StateType::ATTACK ||
+        mUpperState->GetType() == StateType::SPECIAL)
+        return;
 
-    if (GameManager::GetInstance()->UsingController())
+    GameManager* gameManager = GameManager::GetInstance();
+    bool controller = gameManager->UsingController();
+
+    if (controller)
     {
         float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
         float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
@@ -295,19 +307,20 @@ void PlayerController::HandleRotation()
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
 {
-    mAnimationComponent->SendTrigger(trigger, transitionTime);
+    if (mAnimationComponent) 
+    {
+        mAnimationComponent->SendTrigger(trigger, transitionTime);
+    }
+    
 }
 
-void PlayerController::PlayOneShot(std::string name)
+void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
 {
-    if (strcmp(name.c_str(), "Step")) 
+    if (mAnimationComponent) 
     {
-        //mFootStepAudio->PlayOneShot();
+        mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
     }
-    if (strcmp(name.c_str(), "Shot")) 
-    {
-        //mGunfireAudio->PlayOneShot();
-    }
+    
 }
 
 void PlayerController::MoveInDirection(float3 direction)
@@ -324,19 +337,61 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
+    mWeapon->Exit();
+    if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
-        mWeapon = mMeleeWeapon;
+        mWeapon = mPistol;
+
+        switch (mEnergyType) 
+        {
+        case EnergyType::BLUE:
+            mSpecialWeapon = mMachinegun;
+            break;
+        case EnergyType::RED:
+            mSpecialWeapon = mShootgun;
+            break;
+        case EnergyType::NONE:
+            mSpecialWeapon = nullptr;
+            break;
+        }
     }
     else 
     {
-        mWeapon = mRangeWeapon;
+        mWeapon = mBat;
+
+        switch (mEnergyType)
+        {
+        case EnergyType::BLUE:
+            mSpecialWeapon = mKatana;
+            break;
+        case EnergyType::RED:
+            mSpecialWeapon = mHammer;
+            break;
+        case EnergyType::NONE:
+            mSpecialWeapon = nullptr;
+            break;
+        }
     }
+    mWeapon->Enter();
+
+    mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
+    if (mSpecialWeapon) mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }
 
 float3 PlayerController::GetPlayerPosition()
 {
     return  mGameObject->GetPosition(); 
+}
+
+void PlayerController::SetWeaponDamage(float percentage)
+{
+    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+}
+
+void PlayerController::SetMaxShield(float percentage)
+{
+    mMaxShield *= percentage; 
+    GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
 void PlayerController::SetGrenadeVisuals(bool value)
@@ -355,7 +410,7 @@ void PlayerController::UpdateGrenadeVisuals()
     float3 diff;
     if (GameManager::GetInstance()->UsingController())
     {
-        mGrenadePosition = mGameObject->GetPosition() + mAimPosition * mGrenadeRange;
+        mGrenadePosition = mGameObject->GetPosition() + (mAimPosition- mGameObject->GetPosition()) * mGrenadeRange;
     }
     else
     {
@@ -393,6 +448,7 @@ bool PlayerController::CanReload() const
 void PlayerController::Reload() const
 {
     mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
+    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
 }
 
 void PlayerController::CheckDebugOptions()
@@ -414,6 +470,58 @@ void PlayerController::RechargeShield(float shield)
     }
 }
 
+void PlayerController::RechargeBattery(EnergyType batteryType)
+{
+    mCurrentEnergy = 100.0f;
+    mEnergyType = batteryType;
+
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+
+    switch (mEnergyType)
+    {
+        case EnergyType::NONE:
+            break;
+        case EnergyType::BLUE:
+            if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+            {
+                mSpecialWeapon = mMachinegun;
+            }
+            else
+            {
+                mSpecialWeapon = mKatana;
+            }
+            break;
+        case EnergyType::RED:
+            if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+            {
+                mSpecialWeapon = mShootgun;
+            }
+            else
+            {
+                mSpecialWeapon = mHammer;
+            }
+            break;
+        default:
+            break;
+    }
+
+    mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
+}
+
+void PlayerController::UseEnergy(int energy)
+{
+    mCurrentEnergy -= energy;
+
+    if (mCurrentEnergy <= 0)
+    {
+        mCurrentEnergy = 0;
+        mEnergyType = EnergyType::NONE;
+        mSpecialWeapon = nullptr;
+    }
+        
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+}
+
 void PlayerController::TakeDamage(float damage)
 {
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
@@ -421,15 +529,15 @@ void PlayerController::TakeDamage(float damage)
         return;
     }
 
-    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
-
-    float healthRatio = mShield / mMaxShield;
-    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
-
-    if (mShield < 0.0f)
+    if (mShield <= 0.0f)
     {
         GameManager::GetInstance()->GameOver();
     }
+
+    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    float healthRatio = mShield / mMaxShield;
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)

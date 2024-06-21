@@ -1,6 +1,10 @@
 #pragma once
 #include "Enemy.h"
 
+
+struct CollisionData;
+class BoxColliderComponent;
+class GameObject;
 GENERATE_BODY(EnemyExplosive);
 class EnemyExplosive : public Enemy
 {
@@ -10,35 +14,35 @@ class EnemyExplosive : public Enemy
 		~EnemyExplosive() {}
 		void Start() override;
 		void Update() override;
+		void Idle();
+		void Chase();
 		void TakeDamage(float damage) override;
 
 	private:
 		enum class EnemyState {
-			Deploy,
-			Forward,
-			Backward,
-			Left,
-			Right,
-			Armed,
-			Explosion
+			IDLE,
+			CHASE,
+			CHARGING,
+			EXPLOSION,
+			DEATH
 		};
 
-		void ChangeState(EnemyState newState);
-		void StateMachine();
-		//void SearchPlayer() override;
-		void Armed();
+		void Charging();
 		void Explosion();
-		bool IsMoving();
+		void ChargeWarningArea();
+		void Die();
+		void OnCollisionEnter(CollisionData* collisionData);
 
-		//*****************************************************
-		//FOR TEST UNTIL AI WILL BE AVAILABLE
-		//void Test_Forward() override;
-		//void Test_Backward() override;
-		//void Test_Left() override;
-		//void Test_Right() override;
-		//*****************************************************
+		EnemyState mCurrentState = EnemyState::IDLE;
 
-		EnemyState mCurrentState;	
-
-		float mArmedDistance;
+		float mChargingDistance = 1.0f;
+		float mExplosionDistance = 5.0f;
+		float mExplosionDamage = 10.0f;
+		GameObject* mExplosionWarningGO = nullptr;
+		float mWarningInitialSize = 0.1f;
+		float mWarningTimer = 0.0f;
+		float mExplosionDelay = 2.0f;
+		float3 mWarningSize = float3(0.1f,0.1f,0.1f);
+		//Collider
+		BoxColliderComponent* mCollider = nullptr;
 };

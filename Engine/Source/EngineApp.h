@@ -18,7 +18,6 @@ public:
 	update_status Update(float dt);
 	bool CleanUp();
 
-	bool IsPlayMode() { return mIsPlayMode; }
 	Timer* GetEngineClock() const { return mEngineTimer; }
 	Timer* GetGameClock() const { return mGameTimer; }
 	void SetCurrentClock(Timer* clock) { mCurrentTimer = clock; }
@@ -52,7 +51,6 @@ private:
 
 	Timer* mEngineTimer = nullptr;
 	Timer* mGameTimer = nullptr;
-	bool mIsPlayMode = false;
 };
 
 extern EngineApplication* EngineApp;

@@ -6,7 +6,7 @@
 #include "GameManager.h"
 #include "PlayerController.h"
 
-IdleState::IdleState(PlayerController* player) : State(player)
+IdleState::IdleState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 

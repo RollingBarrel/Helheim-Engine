@@ -21,9 +21,10 @@ Pistol::Pistol() : RangeWeapon()
 {
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
-
-    mDamage = 10.0f;
-    mAttackRate = 1.0f;
+    mDamage = 2.0f;
+    //mAttackRate = 1.0f;
+    mAttackDuration = 0.0f;
+    mAttackCooldown = 0.2f;
 }
 
 Pistol::~Pistol()
@@ -34,16 +35,15 @@ void Pistol::Enter()
 {
 }
 
-void Pistol::BasicAttack()
+void Pistol::Attack(float time)
 {
+    LOG("Pistol Attack");
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
     {
        //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
-    }
-    else {
-        mCurrentAmmo = mMaxAmmo;
+        LOG("Bullets: %i", mCurrentAmmo);
     }
     
 
@@ -69,7 +69,7 @@ void Pistol::BasicAttack()
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    //Physics::Raycast(hits, ray); THIS IS THE OLD RAYCAST
+    Physics::Raycast(hits, ray, distance); // THIS IS THE OLD RAYCAST
 
     if (!hits.empty())
     {
@@ -89,10 +89,13 @@ void Pistol::BasicAttack()
     }
 }
 
-void Pistol::SpecialAttack()
+void Pistol::Reload()
 {
+    mCurrentAmmo = mMaxAmmo;
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }
 
 void Pistol::Exit()
 {
+
 }

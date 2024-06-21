@@ -178,7 +178,17 @@ void GameObject::SetParent(GameObject* newParent)
 	mParent = newParent;
 	mParent->AddChild(this);
 
-	RecalculateMatrices();
+	if (mParent->mWorldTransformMatrix.Determinant4() != 0)
+	{
+		mLocalTransformMatrix = mParent->mWorldTransformMatrix.Inverted().Mul(mWorldTransformMatrix);
+	}
+	else
+	{
+		mLocalTransformMatrix = float4x4::identity;
+	}
+	mLocalTransformMatrix.Decompose(mLocalPosition, mLocalRotation, mLocalScale);
+	mLocalEulerAngles = mLocalRotation.ToEulerXYZ();
+
 	SetActive(mParent->mIsActive && mIsEnabled);
 }
 
