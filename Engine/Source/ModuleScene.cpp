@@ -211,7 +211,7 @@ void ModuleScene::Load(const char* sceneName)
 
 	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0);
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0)
 	{
 		//App->GetScene()->Load(fileBuffer);
 	}

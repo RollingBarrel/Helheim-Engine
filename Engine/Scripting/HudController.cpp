@@ -141,7 +141,7 @@ void HudController::Update()
     }
 
     // Decrease the damage feedback
-    if (mFeedbackImage && *(mFeedbackImage->GetAlpha()) != 0.0f) {
+    if (mFeedbackImage && *(mFeedbackImage->GetAlpha()) >= 0.0f) {
         mFeedbackImage->SetAlpha(*(mFeedbackImage->GetAlpha()) - 0.4f * App->GetDt());
     }
 
