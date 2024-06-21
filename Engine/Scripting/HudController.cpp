@@ -219,8 +219,17 @@ void HudController::SetEnergy(int energy, EnergyType type)
 
 void HudController::SetHealth(float health)
 {
-    if (health < mHealthSlider->GetValue()) mFeedbackImage->SetAlpha(1.0f);
-    if (mHealthSlider) mHealthSlider->SetValue(health);
+    if (health == 0) 
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(-1.0f);
+        if (mHealthSlider) mHealthSlider->SetValue(health);
+    }
+    else if (health < mHealthSlider->GetValue())
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
+        if (mHealthSlider) mHealthSlider->SetValue(health);
+    }
+
     mTargetHealth = health;
 }
 

@@ -529,15 +529,15 @@ void PlayerController::TakeDamage(float damage)
         return;
     }
 
-    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
-
-    float healthRatio = mShield / mMaxShield;
-    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
-
     if (mShield <= 0.0f)
     {
         GameManager::GetInstance()->GameOver();
     }
+
+    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    float healthRatio = mShield / mMaxShield;
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
