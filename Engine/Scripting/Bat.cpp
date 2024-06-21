@@ -27,7 +27,7 @@ Bat::Bat(BoxColliderComponent* collider) : MeleeWeapon()
             new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, this, std::placeholders::_1))
         );
     }
-
+    mCollider->SetEnable(false);
 }
 
 Bat::~Bat()
@@ -61,7 +61,7 @@ void Bat::DealDamage(GameObject* enemy)
     // This must generate the box colider, detect the gameObjects that are inside, 
     // apply damage to the enemies and 
     // pop particles from the game object
-    Enemy* enemyScript = dynamic_cast<Enemy*>(enemy->GetComponent(ComponentType::SCRIPT));
+     Enemy* enemyScript = dynamic_cast<Enemy*>(enemy->GetComponent(ComponentType::SCRIPT));
     if (enemyScript) {
         enemyScript->TakeDamage(mDamage);
         enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
@@ -74,10 +74,13 @@ void Bat::Attack(float time)
     // - Calculate hitbox and intersect it with every object to spawn sparks
     // - Damage to enemies inside the hitbox
     // LOG("MELEE ATTACK!!")
+    if (mCollider->IsEnabled()) mCollider->SetEnable(false);
+
 
     if (time > mComboMilestone1 and mComboStep == 1)
     {
         LOG("MELEE ATTACK 1!!")
+        mCollider->SetEnable(true);
         // DealDamage();
         if (mNextComboStep == 2)
         {
@@ -88,6 +91,7 @@ void Bat::Attack(float time)
     else if (time > mComboMilestone2 and mComboStep == 2)
     {
         LOG("MELEE ATTACK 2!!")
+        mCollider->SetEnable(true);
         // DealDamage();
         if (mNextComboStep == 3)
         {
@@ -98,6 +102,7 @@ void Bat::Attack(float time)
     else if (time > mComboDuration and mComboStep == 3)
     {
         LOG("MELEE ATTACK 3!!")
+        mCollider->SetEnable(true);
         // DealDamage();
     }
 
