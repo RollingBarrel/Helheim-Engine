@@ -43,6 +43,7 @@ void EnemyExplosive::Start()
     {
         mWarningSize = mExplosionWarningGO->GetScale();
         mExplosionWarningGO->SetLocalPosition(float3(0.0f,0.1f,0.0f));
+        mExplosionWarningGO->SetEnabled(false);
     }
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
@@ -103,6 +104,7 @@ void EnemyExplosive::Chase()
         if (IsPlayerInRange(mChargingDistance))
         {
             mCurrentState = EnemyState::CHARGING;
+            mExplosionWarningGO->SetEnabled(true);
         }
 }
 
@@ -113,11 +115,10 @@ void EnemyExplosive::TakeDamage(float damage)
 void EnemyExplosive::Charging()
 {
     mAnimationComponent->SendTrigger("tCharging", 0.2f);
-    LOG("CHARGING")
+
        
         if(mWarningTimer>= mExplosionDelay)
         {
-            LOG("CHANGE TO EXPLOSION")
                 mWarningTimer = 0.0f;
                 mCurrentState = EnemyState::EXPLOSION;
         }
@@ -126,8 +127,6 @@ void EnemyExplosive::Charging()
 
 void EnemyExplosive::Explosion()
 {
-    mAnimationComponent->SendTrigger("tExplosion", 0.2f);
-
     LOG("BOOM");
     mExplosionWarningGO->SetScale(float3(0.1f));
     if (IsPlayerInRange(mExplosionDistance))
@@ -157,7 +156,7 @@ void EnemyExplosive::ChargeWarningArea()
 void EnemyExplosive::Die()
 {
     mAnimationComponent->SendTrigger("tDeath", 0.2f);
-    if (Delay(5.0f))
+    if (Delay(0.5f))
     {
         Death();
     }
