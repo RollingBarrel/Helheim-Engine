@@ -27,12 +27,12 @@ StateType AimState::HandleInput()
         return StateType::GRENADE;
     }
 
-    mSpecialAttackTimer += App->GetDt();
-    if (mPlayerController->GetWeapon()->GetAttackTime() < mSpecialAttackTimer &&
+    mAttackTimer += App->GetDt();
+    if (mPlayerController->GetWeapon()->GetAttackTime() < mAttackTimer &&
        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN))
     {
-        mSpecialAttackTimer = 0.0f;
+        mAttackTimer = 0.0f;
         return StateType::ATTACK;
     }
 

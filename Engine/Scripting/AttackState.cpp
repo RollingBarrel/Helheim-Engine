@@ -38,6 +38,7 @@ StateType AttackState::HandleInput()
 
 void AttackState::Update()
 {
+    mWeapon->Attack(mAttackTimer);
 }
 
 void AttackState::Enter()
@@ -45,7 +46,6 @@ void AttackState::Enter()
     mAttackTimer = 0.0f;
     mWeapon = mPlayerController->GetWeapon();
     mWeapon->Enter();
-    mWeapon->Attack(mAttackTimer);
 }
 
 void AttackState::Exit()
