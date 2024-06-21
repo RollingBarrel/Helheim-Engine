@@ -165,6 +165,9 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h">
+      <Filter>Pools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -287,6 +290,9 @@
     <ClCompile Include="AudioTester.cpp" />
     <ClCompile Include="AudioManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="PoolManager.cpp">
+      <Filter>Pools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

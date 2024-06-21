@@ -531,6 +531,23 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 	}
 }
 
+GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
+{
+	std::unordered_map<const GameObject*, GameObject*> originalToNew;
+	std::vector<MeshRendererComponent*>mRenderers;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	for (MeshRendererComponent* mRend : mRenderers)
+	{
+		if (mRend->HasSkinning())
+		{
+			mRend->UpdateSkeletonObjects(originalToNew);
+		}
+	}
+	AddGameObjectToDuplicate(duplicatedGameObject);
+
+	return duplicatedGameObject;
+}
+
 void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)
 {
 	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)

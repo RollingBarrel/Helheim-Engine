@@ -3,15 +3,24 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 
-ObjectPool::ObjectPool(const char* name, unsigned int size)
+ObjectPool::ObjectPool(const char* PrefabFileName, unsigned int size, GameObject* parent)
 {
-	mObjects.reserve(size);
-	GameObject* prefab = App->GetScene()->InstantiatePrefab(name);
-	mObjects.push_back(prefab);
+	if (!parent)
+	{
+		parent = App->GetScene()->GetRoot();
+	}
+	
 
+	mObjects.reserve(size);
+	GameObject* prefab = App->GetScene()->InstantiatePrefab(PrefabFileName, parent);
+	prefab->SetEnabled(false);
+	mObjects.push_back(prefab);
+	
 	for (unsigned int i = 1; i < size; ++i)
 	{
-		mObjects.push_back(new GameObject(*prefab, App->GetScene()->GetRoot()));
+		GameObject* duplicatedGameObject = App->GetScene()->DuplicateGameObject(prefab);
+		duplicatedGameObject->SetEnabled(false);
+		mObjects.push_back(duplicatedGameObject);
 	}
 }
 

@@ -197,6 +197,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PlayerController.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RangeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ReloadState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Sanity.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="Pistol.cpp" />
     <ClCompile Include="PlayerCamera.cpp" />
     <ClCompile Include="PlayerController.cpp" />
+    <ClCompile Include="PoolManager.cpp" />
     <ClCompile Include="RangeWeapon.cpp" />
     <ClCompile Include="ReloadState.cpp" />
     <ClCompile Include="Sanity.cpp" />

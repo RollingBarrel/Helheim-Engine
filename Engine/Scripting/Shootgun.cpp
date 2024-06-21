@@ -17,6 +17,7 @@ Shootgun::Shootgun()
     mDamage = 0.1f;
     mAttackRange = 100.0f;
     mAttackDuration = 1.0f;
+    mAttackCooldown = 0.5f;
 }
 
 Shootgun::~Shootgun()
@@ -30,6 +31,7 @@ void Shootgun::Enter()
 
 void Shootgun::Attack(float time)
 {
+    LOG("ShotGun Attack");
     int numBullets = 10;
 
     //TODO: Rethink this
@@ -87,6 +89,6 @@ void Shootgun::Exit()
 
 void Shootgun::Reload()
 {
-    mCurrentAmmo = mMaxAmmo;
-    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+    //mCurrentAmmo = mMaxAmmo;
+    //GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }

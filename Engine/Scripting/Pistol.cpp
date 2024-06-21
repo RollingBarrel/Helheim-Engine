@@ -24,6 +24,7 @@ Pistol::Pistol() : RangeWeapon()
     mDamage = 1.0f;
     //mAttackRate = 1.0f;
     mAttackDuration = 1.0f;
+    mAttackCooldown = 0.2f;
 }
 
 Pistol::~Pistol()
@@ -36,6 +37,7 @@ void Pistol::Enter()
 
 void Pistol::Attack(float time)
 {
+    LOG("Pistol Attack");
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
     {

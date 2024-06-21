@@ -71,6 +71,7 @@ void Bat::DealDamage(GameObject* enemy)
 
 void Bat::Attack(float time)
 {
+    LOG("Bat Attack");
     // - Calculate hitbox and intersect it with every object to spawn sparks
     // - Damage to enemies inside the hitbox
     // LOG("MELEE ATTACK!!")
