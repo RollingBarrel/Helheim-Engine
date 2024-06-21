@@ -21,9 +21,9 @@ Pistol::Pistol() : RangeWeapon()
 {
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
-    mDamage = 1.0f;
+    mDamage = 2.0f;
     //mAttackRate = 1.0f;
-    mAttackDuration = 1.0f;
+    mAttackDuration = 0.0f;
     mAttackCooldown = 0.2f;
 }
 

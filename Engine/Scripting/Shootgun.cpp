@@ -14,9 +14,9 @@
 
 Shootgun::Shootgun()
 {
-    mDamage = 0.1f;
+    mDamage = 2.0f;
     mAttackRange = 100.0f;
-    mAttackDuration = 1.0f;
+    mAttackDuration = 0.0f;
     mAttackCooldown = 0.5f;
 }
 
