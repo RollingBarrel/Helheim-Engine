@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 595225949,
+                "UID": 1257506098,
                 "ParentUID": 1,
                 "Name": "Item_BlueEnergy",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.25,
-                    0.25,
-                    0.25
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -42,11 +42,6 @@
                                 "VariableName": "mHealthRecovered",
                                 "MemberType": 1,
                                 "VariableData": 15.0
-                            },
-                            {
-                                "VariableName": "mActivationRange",
-                                "MemberType": 1,
-                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -55,13 +50,13 @@
                         "IsEnabled": true,
                         "Center": [
                             0.0,
-                            0.0,
+                            0.20000000298023225,
                             0.0
                         ],
                         "Size": [
-                            0.44999998807907107,
-                            0.550000011920929,
-                            0.550000011920929
+                            0.5,
+                            0.5,
+                            0.5
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -69,9 +64,9 @@
                 ]
             },
             {
-                "UID": 616575694,
-                "ParentUID": 595225949,
-                "Name": "Sphere",
+                "UID": 1465371202,
+                "ParentUID": 1257506098,
+                "Name": "OB_blue_battery_particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -97,9 +92,9 @@
                 "Components": []
             },
             {
-                "UID": 717014895,
-                "ParentUID": 616575694,
-                "Name": "Sphere",
+                "UID": 285549834,
+                "ParentUID": 1465371202,
+                "Name": "OB_battery_particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -125,9 +120,9 @@
                 "Components": []
             },
             {
-                "UID": 153548240,
-                "ParentUID": 717014895,
-                "Name": "Sphere",
+                "UID": 1165559274,
+                "ParentUID": 285549834,
+                "Name": "OB_battery_particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -154,8 +149,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 81892183,
-                        "MaterialID": 999999999,
+                        "MeshID": 849721201,
+                        "MaterialID": 849721204,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
