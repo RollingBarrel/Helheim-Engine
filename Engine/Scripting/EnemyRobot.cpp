@@ -16,7 +16,6 @@ CREATE(EnemyRobot){
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::INT, mShieldDropRate);
     MEMBER(MemberType::FLOAT, mChaseDelay);
 

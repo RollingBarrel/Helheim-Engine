@@ -83,6 +83,8 @@ private:
 	bool mClosePrefab = false;
 
 	std::unordered_map<unsigned int, unsigned int> mPrefabOldNewUid;
+
+	static const std::vector<GameObject*> mEmptyVector; //This is used to avoid creating objects in methods and returning them as reference.
 };
 
 #endif //_MODULE_SCENE_H_

@@ -9,7 +9,6 @@ CREATE(EnemyExplosive)
 
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::FLOAT, mArmedDistance);
 
     END_CREATE;
@@ -20,7 +19,6 @@ EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
 {
     mCurrentState = EnemyState::Deploy;
     mHealth = 15;
-    mActivationRange = 10.0f;
     mArmedDistance = 5.0f;
 }
 

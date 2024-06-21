@@ -29,7 +29,7 @@ public:
     HudController* GetHud() const { return mHudController; }
     bool UsingController() const { return mController; }
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
-    EnemyPool* GetEnemyPool() const { return mEnemyPool; }
+    GameObject* GetEnemyPool() const { return mEnemyPool; }
 
     bool IsPaused() { return mPaused; }
     void SetPaused(bool value);
@@ -51,7 +51,7 @@ private:
 
     PlayerController* mPlayerController = nullptr;
     BattleArea* mActiveBattleArea = nullptr;
-    EnemyPool* mEnemyPool = nullptr;
+    GameObject* mEnemyPool = nullptr;
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
 

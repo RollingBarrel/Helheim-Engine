@@ -26,6 +26,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
+const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
+
 ModuleScene::ModuleScene() 
 {
 }
@@ -115,13 +117,10 @@ const std::vector<GameObject*>& ModuleScene::FindGameObjectsWithTag(const std::s
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (!mGameObjectsByTags[tag].empty())
-		{
-			return mGameObjectsByTags[tag];
-		}
+		return mGameObjectsByTags[tag];
 	}
 
-	return std::vector<GameObject*>();
+	return ModuleScene::mEmptyVector;
 }
 
 void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)

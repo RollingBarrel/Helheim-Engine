@@ -44,7 +44,7 @@ class Enemy : public Script
 		float mMaxHealth = 6.0f;
 		float mSpeed = 1.75f;
 		float mRotationSpeed = 1.0f;
-		float mActivationRange = 15.0f;
+		float mActivationRange = 250.0f;
 		float mChaseDelay = 1.25f;
 		bool mBeAttracted = false;
 		GameObject* mPlayer = nullptr;
