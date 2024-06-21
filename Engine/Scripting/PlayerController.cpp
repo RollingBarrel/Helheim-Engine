@@ -403,7 +403,7 @@ void PlayerController::UpdateGrenadeVisuals()
     float3 diff;
     if (GameManager::GetInstance()->UsingController())
     {
-        mGrenadePosition = mGameObject->GetPosition() + mAimPosition * mGrenadeRange;
+        mGrenadePosition = mGameObject->GetPosition() + (mAimPosition- mGameObject->GetPosition()) * mGrenadeRange;
     }
     else
     {
