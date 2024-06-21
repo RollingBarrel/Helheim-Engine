@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 498170636,
+                "UID": 769602511,
                 "ParentUID": 1,
                 "Name": "Item_Shotgun",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.25,
+                    0.25,
+                    0.25
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -49,12 +49,28 @@
                                 "VariableData": 1.0
                             }
                         ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.6000000238418579,
+                            0.6000000238418579,
+                            0.6000000238418579
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             },
             {
-                "UID": 534512798,
-                "ParentUID": 498170636,
+                "UID": 829546192,
+                "ParentUID": 769602511,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,
@@ -81,8 +97,8 @@
                 "Components": []
             },
             {
-                "UID": 560063705,
-                "ParentUID": 534512798,
+                "UID": 855166720,
+                "ParentUID": 829546192,
                 "Name": "Cube",
                 "Enabled": true,
                 "Active": true,

@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1004217987,
+                "UID": 595225949,
                 "ParentUID": 1,
-                "Name": "Item_MachineGun",
+                "Name": "Item_BlueEnergy",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.25,
+                    0.25,
+                    0.25
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -49,13 +49,29 @@
                                 "VariableData": 1.0
                             }
                         ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.44999998807907107,
+                            0.550000011920929,
+                            0.550000011920929
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             },
             {
-                "UID": 1058661609,
-                "ParentUID": 1004217987,
-                "Name": "Cube",
+                "UID": 616575694,
+                "ParentUID": 595225949,
+                "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -81,9 +97,37 @@
                 "Components": []
             },
             {
-                "UID": 1083237822,
-                "ParentUID": 1058661609,
-                "Name": "Cube",
+                "UID": 717014895,
+                "ParentUID": 616575694,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 153548240,
+                "ParentUID": 717014895,
+                "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -110,7 +154,7 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 496453540,
+                        "MeshID": 81892183,
                         "MaterialID": 999999999,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
