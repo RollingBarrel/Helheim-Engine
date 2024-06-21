@@ -1,6 +1,6 @@
 #include "Hammer.h"
 
-Hammer::Hammer()
+Hammer::Hammer(BoxColliderComponent* collider) : MeleeWeapon(collider)
 {
     mDamage = 7.0f;
 }

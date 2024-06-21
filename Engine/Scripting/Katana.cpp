@@ -1,6 +1,6 @@
 #include "Katana.h"
 
-Katana::Katana()
+Katana::Katana(BoxColliderComponent* collider) : MeleeWeapon(collider)
 {
 }
 

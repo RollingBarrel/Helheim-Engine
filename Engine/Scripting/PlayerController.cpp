@@ -136,8 +136,8 @@ void PlayerController::Start()
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
-    mKatana = new Katana();
-    mHammer = new Hammer();
+    mKatana = new Katana(collider);
+    mHammer = new Hammer(collider);
 
     mWeapon = mPistol;
     mSpecialWeapon = nullptr;

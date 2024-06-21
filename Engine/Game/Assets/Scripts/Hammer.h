@@ -6,7 +6,7 @@ class TrailComponent;
 class Hammer : public MeleeWeapon
 {
 public:
-	Hammer();
+	Hammer(BoxColliderComponent* collider);
 	~Hammer();
 
 	void Enter() override;
