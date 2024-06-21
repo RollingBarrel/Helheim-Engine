@@ -5,8 +5,13 @@
 #include "Keys.h"
 #include "PlayerController.h"
 #include "Weapon.h"
+#include "GrenadeState.h"
+#include "AttackState.h"
+#include "SpecialState.h"
+#include "SwitchState.h"
+#include "ReloadState.h"
 
-AimState::AimState(PlayerController* player) : State(player)
+AimState::AimState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 
@@ -18,46 +23,43 @@ StateType AimState::HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
-    mGrenadeTimer += App->GetDt();
-    if (mPlayerController->GetGrenadeCooldown() < mGrenadeTimer &&
+    if (mPlayerController->GetGrenadeState()->IsReady() &&
        (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN || 
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
     {
-        mGrenadeTimer = 0.0f;
+        mPlayerController->GetGrenadeState()->ResetCooldown();
         return StateType::GRENADE;
     }
 
-    mAttackTimer += App->GetDt();
-    if (mPlayerController->GetWeapon()->GetAttackTime() < mAttackTimer &&
+    if (mPlayerController->GetAttackState()->IsReady() &&
        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN))
     {
-        mAttackTimer = 0.0f;
+        mPlayerController->GetAttackState()->ResetCooldown();
         return StateType::ATTACK;
     }
 
-    mSpecialAttackTimer += App->GetDt();
-    if (mPlayerController->GetSpecialAttackCooldown() < mSpecialAttackTimer && mPlayerController->GetEnergyType() != EnergyType::NONE &&
+    if (mPlayerController->GetSpecialState()->IsReady() &&
        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN))
     {
-        mSpecialAttackTimer = 0.0f;
+        mPlayerController->GetSpecialState()->ResetCooldown();
         return StateType::SPECIAL;
     }
 
-    mSwitchTimer += App->GetDt();
-    if (mPlayerController->GetSwitchCooldown() < mSwitchTimer &&
+    if (mPlayerController->GetSwitchState()->IsReady() &&
        (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
     {
-        mSwitchTimer = 0.0f;
+        mPlayerController->GetSwitchState()->ResetCooldown();
         return StateType::SWITCH;
     }
 
-    if (mPlayerController->CanReload() &&
+    if (mPlayerController->GetReloadState()->IsReady() &&
        (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN))
     {
+        mPlayerController->GetReloadState()->ResetCooldown();
         return StateType::RELOAD;
     }
 

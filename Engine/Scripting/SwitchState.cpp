@@ -8,7 +8,7 @@
 #include "PlayerController.h"
 #include "Weapon.h"
 
-SwitchState::SwitchState(PlayerController* player) : State(player)
+SwitchState::SwitchState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 

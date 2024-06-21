@@ -4,7 +4,7 @@
 class DashState : public State
 {
 public:
-	explicit DashState(PlayerController* player);
+	explicit DashState(PlayerController* player, float cooldown);
 	~DashState();
 
 	StateType HandleInput() override;

@@ -16,7 +16,7 @@ Machinegun::Machinegun()
 {
 	mAttackRange = 100.0f;
 	mDamage = 0.4f;
-	mAttackTime = 0.1f;
+	mAttackDuration = 0.1f;
 	
 	mCurrentAmmo = 32;
 	mMaxAmmo = 32;

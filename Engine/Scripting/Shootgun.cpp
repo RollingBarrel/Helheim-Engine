@@ -16,7 +16,7 @@ Shootgun::Shootgun()
 {
     mDamage = 0.1f;
     mAttackRange = 100.0f;
-    mAttackTime = 1.0f;
+    mAttackDuration = 1.0f;
 }
 
 Shootgun::~Shootgun()

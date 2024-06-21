@@ -8,7 +8,7 @@
 #include "PlayerController.h"
 #include "GameManager.h"
 
-DashState::DashState(PlayerController* player) : State(player)
+DashState::DashState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 

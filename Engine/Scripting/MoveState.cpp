@@ -10,7 +10,7 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 
-MoveState::MoveState(PlayerController* player) : State(player)
+MoveState::MoveState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
     mMoveDirection = float3::zero;
     mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();

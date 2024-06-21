@@ -72,8 +72,6 @@ public:
     float GetDashRange() const { return mDashRange; }
     float GetGrenadeCooldown() const { return mGrenadeCoolDown; }
     float GetGrenadeRange() const { return mGrenadeRange;  }
-    float GetAttackCooldown() const { return mAttackCoolDown; }
-    float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
@@ -110,6 +108,17 @@ public:
 
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
+
+    // States
+    DashState* GetDashState() { return mDashState; }
+    IdleState* GetIdleState() { return mIdleState; }
+    MoveState* GetMoveState() { return mMoveState; }
+    AimState* GetAimState() { return mAimState; }
+    AttackState* GetAttackState() { return mAttackState; }
+    GrenadeState* GetGrenadeState() { return mGrenadeState; }
+    SwitchState* GetSwitchState() { return mSwitchState; }
+    SpecialState* GetSpecialState() { return mSpecialState; }
+    ReloadState* GetReloadState() { return mReloadState; }
 
 private:
     void CheckInput();
@@ -173,9 +182,6 @@ private:
     GameObject* mMeleeCollider = nullptr;
 
     // Attack
-    float mAttackCoolDown = 0.1f;
-    float mSlowAttackCoolDown = 0.5f;
-    float mSpecialAttackCoolDown = 5.0f;
     float mSwitchCoolDown = 0.2f;
     float mSwitchDuration = 0.2f;
     float mReloadDuration = 0.5;

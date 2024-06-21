@@ -6,7 +6,7 @@
 #include "Application.h"
 #include "PlayerController.h"
 
-SpecialState::SpecialState(PlayerController* player) : State(player)
+SpecialState::SpecialState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 
@@ -19,7 +19,7 @@ StateType SpecialState::HandleInput()
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
     mSpecialAttackTimer += App->GetDt();
-    if (mSpecialAttackTimer < mSpecialWeapon->GetAttackTime())
+    if (mSpecialAttackTimer < mSpecialWeapon->GetAttackDuration())
     {
         return StateType::SPECIAL;
     }
@@ -54,4 +54,11 @@ void SpecialState::Exit()
 StateType SpecialState::GetType()
 {
 	return StateType::SPECIAL;
+}
+
+bool SpecialState::IsReady()
+{
+	mStateTimer += App->GetDt();
+	if (mStateTimer >= mStateCooldown && mPlayerController->GetEnergyType() != EnergyType::NONE) return true;
+	return false;
 }
