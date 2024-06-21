@@ -1,5 +1,14 @@
 #include "EnemyExplosive.h"
 #include "GameManager.h"
+#include "ModuleScene.h"
+#include "Application.h"
+#include "PlayerController.h"
+#include "AnimationComponent.h"
+#include "AIAGentComponent.h"
+#include "Physics.h"
+#include "BoxColliderComponent.h"
+#include "GameObject.h"
+#include "ScriptComponent.h"
 
 CREATE(EnemyExplosive)
 {
@@ -7,24 +16,42 @@ CREATE(EnemyExplosive)
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
 
-    MEMBER(MemberType::FLOAT, mSpeed);
-    MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mArmedDistance);
-
+    MEMBER(MemberType::FLOAT, mSpeed);;
+    MEMBER(MemberType::FLOAT, mChargingDistance);
+    MEMBER(MemberType::FLOAT, mExplosionDistance);
+    MEMBER(MemberType::FLOAT, mExplosionDamage);
+    MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
     END_CREATE;
 
 }
 
 EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
 {
-    mCurrentState = EnemyState::Deploy;
     mHealth = 15;
-    mArmedDistance = 5.0f;
 }
 
 void EnemyExplosive::Start()
 {
     Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyExplosive::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+    if (mExplosionWarningGO)
+    {
+        mWarningSize = mExplosionWarningGO->GetScale();
+        mExplosionWarningGO->SetLocalPosition(float3(0.0f,0.1f,0.0f));
+        mExplosionWarningGO->SetEnabled(false);
+    }
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(true);
+    }
 }
 
 void EnemyExplosive::Update()
@@ -32,129 +59,116 @@ void EnemyExplosive::Update()
     if (GameManager::GetInstance()->IsPaused()) return;
 
     Enemy::Update();
+    if (!mBeAttracted)
+    {
+        switch (mCurrentState)
+        {
+        case EnemyState::IDLE:
+            Idle();
+            break;
+        case EnemyState::CHASE:
+            Chase();
+            break;
+        case EnemyState::CHARGING:
+            Charging();
+            break;
+        case EnemyState::EXPLOSION:
+            Explosion();
+            break;
+        case EnemyState::DEATH:
+            Die();
+        }
+    }
+
+    mBeAttracted = false;
+}
+
+void EnemyExplosive::Idle()
+{
+    mAnimationComponent->SendTrigger("tIdle",0.2f);
+   mCurrentState = EnemyState::CHASE;
+
+}
+
+void EnemyExplosive::Chase()
+{
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAnimationComponent->SendTrigger("tMovement", 0.2f);
+        if (mAiAgentComponent)
+        {
+            mAiAgentComponent->MoveAgent(mSpeed);
+            float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
+            direction.y = 0;
+            direction.Normalize();
+            float angle = std::atan2(direction.x, direction.z);
+            mGameObject->SetRotation(float3(0, angle, 0));
+        }
+
+        if (IsPlayerInRange(mChargingDistance))
+        {
+            mCurrentState = EnemyState::CHARGING;
+            mExplosionWarningGO->SetEnabled(true);
+        }
 }
 
 void EnemyExplosive::TakeDamage(float damage)
 {
 }
 
-bool EnemyExplosive::IsMoving()
+void EnemyExplosive::Charging()
 {
-    return false;
+    mAnimationComponent->SendTrigger("tCharging", 0.2f);
+
+       
+        if(mWarningTimer>= mExplosionDelay)
+        {
+                mWarningTimer = 0.0f;
+                mCurrentState = EnemyState::EXPLOSION;
+        }
+    ChargeWarningArea();
 }
 
-/*
-//Change actual animation state of the enemy
-void EnemyExplosive::ChangeState(EnemyState newState) 
+void EnemyExplosive::Explosion()
 {
-    mCurrentState = newState;
-    StateMachine();
-}
-
-//Shows actual animation state of the enemy
-void EnemyExplosive::StateMachine() 
-{
-    switch (mCurrentState) 
+    LOG("BOOM");
+    mExplosionWarningGO->SetScale(float3(0.1f));
+    if (IsPlayerInRange(mExplosionDistance))
     {
-        //******************************************************
-        //FOR TEST UNTIL AI WILL BE AVAILABLE (will be changed the system to call the State Machine)
-        case EnemyState::Deploy:
-            LOG("Deploy animation");
-            break;
-        case EnemyState::Forward:
-            LOG("Forward animation");
-            break;
-        case EnemyState::Backward:
-            LOG("Backward animation");
-            break;
-        case EnemyState::Left:
-            LOG("Left animation");
-            break;
-        case EnemyState::Right:
-            LOG("Right animation");
-            break;
-        //******************************************************
-        case EnemyState::Armed:
-            Armed();
-            break;
-        case EnemyState::Explosion:
-            Explosion();
-            break;
+        PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+        if (playerScript != nullptr)
+        {
+            playerScript->TakeDamage(mExplosionDamage);
+        }
     }
+
+    mCurrentState = EnemyState::DEATH;
+        
+
 }
 
-void EnemyExplosive::SearchPlayer() 
+void EnemyExplosive::ChargeWarningArea()
 {
-    Enemy::SearchPlayer();
+    mWarningTimer += App->GetDt();
+    float increment = (mExplosionDistance - mExplosionWarningGO->GetScale().x) * App->GetDt();
+    float3 newWarningSize = float3(mWarningSize.x += increment, mWarningSize.y, mWarningSize.z += increment);
 
-    if (OpponentDistance(mArmedDistance)) {
-        mInAttackDistance = true;
-        ChangeState(EnemyState::Armed);
-    }
+    mExplosionWarningGO->SetScale(newWarningSize);
+    LOG("WarningTimer: %f", mWarningTimer);
+    
 }
-
-void EnemyExplosive::Hit(float damage) 
+void EnemyExplosive::Die()
 {
-    Enemy::Hit(damage);
-
-    if (mHealth == 0.0f) 
+    mAnimationComponent->SendTrigger("tDeath", 0.2f);
+    if (Delay(0.5f))
     {
-        ChangeState(EnemyState::Armed);
+        Death();
     }
+ 
 }
 
-void EnemyExplosive::Armed() 
-{  
-    LOG("Armed explosive animation");
-
-    if (Delay(5.0f)) 
-    {
-        ChangeState(EnemyState::Explosion);
-    }  
-}
-
-void EnemyExplosive::Explosion() 
+void EnemyExplosive::OnCollisionEnter(CollisionData* collisionData)
 {
-    mInAttackDistance = false;
-
-    //*******************************
-    mGameObject->SetEnabled(false);
-    //*******************************
-
-    LOG("Explosion animation");
-
-    if (OpponentDistance(mArmedDistance))
-    {
-        //DAMAGE PLAYER AND OTHER ENEMIES IN DISTANCE RANGE
-    }
 }
 
-//************************************************************************
-//FOR TEST UNTIL AI WILL BE AVAILABLE
-void EnemyExplosive::Test_Forward() 
-{
-    Enemy::Test_Forward();
-    ChangeState(EnemyState::Forward);
-}
 
-void EnemyExplosive::Test_Backward() 
-{
-    Enemy::Test_Backward();
-    ChangeState(EnemyState::Backward);
-}
 
-void EnemyExplosive::Test_Left() 
-{
-    Enemy::Test_Left();
-    ChangeState(EnemyState::Left);
-}
-
-void EnemyExplosive::Test_Right() 
-{
-    Enemy::Test_Right();
-    ChangeState(EnemyState::Right);
-}
-
-//************************************************************************
-
-*/
