@@ -140,60 +140,98 @@ void TextComponent::CreateBuffers()
 void TextComponent::RenderText(const std::string& text)
 {
     glBindVertexArray(mQuadVAO);
-    int x = 0, y = 0;
-    const int lineHeight = mFontSize + mLineSpacing; // Adjust line height based on your font size
+    int y = 0;
+    const int lineHeight = mFontSize + mLineSpacing;
 
-    for (char c : text)
-    {
-        if (c == '\n')
-        {
-            y -= lineHeight;
-            x = 0;
-            continue;
+    // Split text into words and calculate their widths once
+    std::istringstream iss(text);
+    std::vector<std::pair<std::string, int>> words;
+    std::string word;
+    while (iss >> word) {
+        int wordWidth = 0;
+        for (char c : word) {
+            if (c == '\n') break;
+            wordWidth += (mCharacters[c].Advance >> 6);
         }
-
-        Character ch = mCharacters[c];
-
-        if (x + (static_cast<int>(ch.Advance) >> 6 >> 6) > mLineWidth && mLineWidth != 0)
-        {
-            y -= lineHeight;
-            x = 0;
-        }
-
-        float xpos = x + ch.Bearing.x;
-        float ypos = y - (ch.Size.y - ch.Bearing.y);
-        float w = ch.Size.x;
-        float h = ch.Size.y;
-
-        if (c == ' ')
-        {
-            x += (ch.Advance >> 6);
-            continue;
-        }
-
-        float vertices[] =
-        {
-             xpos,     ypos + h,   0.0f, 0.0f,
-             xpos,     ypos,       0.0f, 1.0f,
-             xpos + w, ypos,       1.0f, 1.0f,
-
-             xpos + w, ypos + h,   1.0f, 0.0f,
-             xpos,     ypos + h,   0.0f, 0.0f,
-             xpos + w, ypos,       1.0f, 1.0f
-        };
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ch.TextureID);
-        glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
-        glDrawArrays(GL_TRIANGLES, 0, 6);
-
-        x += (ch.Advance >> 6);
+        words.emplace_back(word, wordWidth);
     }
+
+    // Handle lines separately for alignment
+    std::vector<std::pair<std::vector<std::string>, int>> lines;
+    std::vector<std::string> currentLine;
+    int currentLineWidth = 0;
+
+    for (const auto& wordPair : words) {
+        if (currentLineWidth + wordPair.second > mLineWidth && mLineWidth != 0) {
+            lines.emplace_back(currentLine, currentLineWidth);
+            currentLine.clear();
+            currentLineWidth = 0;
+        }
+        currentLine.push_back(wordPair.first);
+        currentLineWidth += wordPair.second + (mCharacters[' '].Advance >> 6);
+    }
+
+    if (!currentLine.empty()) {
+        lines.emplace_back(currentLine, currentLineWidth);
+    }
+
+    for (const auto& line : lines) {
+        const auto& lineWords = line.first;
+        int lineWidth = line.second;
+
+        int x = 0;
+        if (mAlignment == TextAlignment::CENTER) {
+            x = (mLineWidth - lineWidth) / 2;
+        }
+        else if (mAlignment == TextAlignment::RIGHT) {
+            x = mLineWidth - lineWidth;
+        }
+
+        for (const std::string& word : lineWords) {
+            for (char c : word) {
+                Character ch = mCharacters[c];
+
+                float xpos = x + ch.Bearing.x;
+                float ypos = y - (ch.Size.y - ch.Bearing.y);
+                float w = ch.Size.x;
+                float h = ch.Size.y;
+
+                if (c != ' ') {
+                    float vertices[] = {
+                        xpos,     ypos + h,   0.0f, 0.0f,
+                        xpos,     ypos,       0.0f, 1.0f,
+                        xpos + w, ypos,       1.0f, 1.0f,
+
+                        xpos + w, ypos + h,   1.0f, 0.0f,
+                        xpos,     ypos + h,   0.0f, 0.0f,
+                        xpos + w, ypos,       1.0f, 1.0f
+                    };
+
+                    glActiveTexture(GL_TEXTURE0);
+                    glBindTexture(GL_TEXTURE_2D, ch.TextureID);
+                    glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+                    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+                    glDrawArrays(GL_TRIANGLES, 0, 6);
+                }
+
+                x += (ch.Advance >> 6);
+            }
+
+            // Add a space after the word if it is not the last word
+            if (&word != &lineWords.back()) {
+                x += (mCharacters[' '].Advance >> 6);
+            }
+        }
+
+        y -= lineHeight;
+    }
+
     glBindVertexArray(0);
     glBindTexture(GL_TEXTURE_2D, 0);
     glUseProgram(0);
 }
+
+
 
 void TextComponent::Save(JsonObject& obj) const
 {
@@ -202,19 +240,46 @@ void TextComponent::Save(JsonObject& obj) const
     obj.AddString("Text", mText.c_str());
     obj.AddFloats("Color", mColor.ptr(), 3);
     obj.AddFloat("Alpha", mAlpha);
+    obj.AddInt("LineWidth", mLineWidth);
+    obj.AddInt("LineSpacing", mLineSpacing);
+    obj.AddInt("Alignment", (int)mAlignment);
 }
 
 void TextComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
     Component::Load(data, uidPointerMap);
 
-    mText = data.GetString("Text");
+    if (data.HasMember("Text")) mText = data.GetString("Text");
+    
+    if (data.HasMember("Text"))
+    {
+        float col[3];
+        data.GetFloats("Color", col);
+        mColor = float3(col);
+    }
 
-    float col[3];
-    data.GetFloats("Color", col);
-    mColor = float3(col);
+    if (data.HasMember("Alpha")) mAlpha = data.GetFloat("Alpha");
+    if (data.HasMember("LineWidth")) mLineWidth = data.GetInt("LineWidth");
+    if (data.HasMember("LineSpacing")) mLineSpacing = data.GetInt("LineSpacing");
 
-    mAlpha = data.GetFloat("Alpha");
+    if (data.HasMember("Alignment"))
+    {
+        int align = data.GetInt("Alignment");
+        switch (align)
+        {
+            case 0:
+                mAlignment = TextAlignment::LEFT;
+                break;
+            case 1:
+                mAlignment = TextAlignment::CENTER;
+                break;
+            case 2:
+                mAlignment = TextAlignment::RIGHT;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void TextComponent::Draw() 

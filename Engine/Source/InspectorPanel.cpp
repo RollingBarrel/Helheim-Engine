@@ -1786,11 +1786,26 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("##Color", (float*)color);
 	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("##Alpha", alpha, 0.0f, 1.0f);
+	
+	ImGui::Text("Alignment:");
+	if (ImGui::Button("Left"))
+	{
+		component->SetAlignment(TextAlignment::LEFT);
+	}
+	ImGui::SameLine(); 
+	if (ImGui::Button("Center"))
+	{
+		component->SetAlignment(TextAlignment::CENTER);
+	}
+	ImGui::SameLine(); 
+	if (ImGui::Button("Right"))
+	{
+		component->SetAlignment(TextAlignment::RIGHT);
+	}
 
 	ImGui::Text("Font Size:"); ImGui::SameLine(); ImGui::DragInt("##Font Size", fontSize);
 	ImGui::Text("Line Spacing:"); ImGui::SameLine(); ImGui::DragInt("##Line Space", lineSpacing);
 	ImGui::Text("Line Width:"); ImGui::SameLine(); ImGui::DragInt("##Line Width", lineWidth);
-	
 }
 
 void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)

@@ -21,7 +21,6 @@ public:
 	int GetDamage() { return mDamage; }
 	float GetAttackTime() { return mAttackTime; }
 	
-	virtual float GetAttackTime() = 0;
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
 	void SetDamage(int value) { mDamage = value; }
 protected:
