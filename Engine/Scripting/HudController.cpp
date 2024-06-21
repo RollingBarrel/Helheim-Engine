@@ -201,8 +201,8 @@ void HudController::SetEnergyTextColor(float3 color)
 
 void HudController::SetHealth(float health)
 {
-    //if (mHealthSlider) mHealthSlider->SetValue(health);
-    //mTargetHealth = health;
+    if (mHealthSlider) mHealthSlider->SetValue(health);
+    mTargetHealth = health;
 }
 
 void HudController::SwitchWeapon()
