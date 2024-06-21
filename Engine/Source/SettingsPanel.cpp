@@ -329,5 +329,15 @@ void SettingsPanel::LoadEditorLayout()
 		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
 		in_file.close();
 	}
+	else
+	{
+		in_file = std::ifstream("./InternalAssets/default_imgui.ini");
+		if (in_file.is_open())
+		{
+			std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
+			ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
+			in_file.close();
+		}
+	}
 }
 

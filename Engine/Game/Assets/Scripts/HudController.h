@@ -9,8 +9,10 @@ class ButtonComponent;
 class SliderComponent;
 class TextComponent;
 class ImageComponent;
+class PlayerController;
+enum class EnergyType;
 
-enum SCREEN {
+enum class SCREEN {
     LOAD,
     LOSE,
     WIN,
@@ -26,9 +28,7 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(int energy);
-    void SetEnergyColor(float3 color);
-    void SetEnergyTextColor(float3 color);
+    void SetEnergy(int energy, EnergyType type);
     void SetHealth(float health);
     void SetMaxHealth(float health);
     void SwitchWeapon();
@@ -41,7 +41,6 @@ private:
     ~HudController();
 
     void Loading();
-    void Controls();
     bool Delay(float delay);
 
     void OnWinButtonClick();
@@ -83,6 +82,7 @@ private:
     GameObject* mGrenadeSliderGO = nullptr;
     GameObject* mEnergyGO = nullptr;
     GameObject* mEnergyImageGO = nullptr;
+    GameObject* mFeedbackGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
@@ -91,6 +91,7 @@ private:
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
+    ImageComponent* mFeedbackImage = nullptr;
 
     float mTargetHealth = 1;
 

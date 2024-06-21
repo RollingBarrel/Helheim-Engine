@@ -57,7 +57,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE");
-    MEMBER(MemberType::GAMEOBJECT, mBat);
+    MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
@@ -69,15 +69,13 @@ CREATE(PlayerController)
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
-    SEPARATOR("AUDIO");
-    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
-    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
-
     END_CREATE;
 }
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
+    mLowerStateType = StateType::NONE;
+    mUpperStateType = StateType::NONE;
 }
 
 PlayerController::~PlayerController()
@@ -121,7 +119,20 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    mBat = new Bat();
+    BoxColliderComponent* collider = nullptr;
+    if (mMeleeCollider) 
+    {
+        collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        if (collider)
+        {
+            collider->AddCollisionEventHandler(
+                CollisionEventType::ON_COLLISION_ENTER,
+                new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
+            );
+        }
+    }
+
+    mBat = new Bat(collider);
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
@@ -130,17 +141,6 @@ void PlayerController::Start()
 
     mWeapon = mPistol;
     mSpecialWeapon = nullptr;
-
-    // AUDIO
-    if (mFootStepAudioHolder)
-    {
-        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
-
-    if (mGunfireAudioHolder)
-    {
-        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -194,7 +194,6 @@ void PlayerController::Update()
 void PlayerController::StateMachine()
 {
     // Check if dead
-
     mLowerState->Update();
     mUpperState->Update();
 }
@@ -272,7 +271,10 @@ void PlayerController::HandleRotation()
 {
     // TODO: Not aim on melee state? and dash?
 
-    if (GameManager::GetInstance()->UsingController())
+    GameManager* gameManager = GameManager::GetInstance();
+    bool controller = gameManager->UsingController();
+
+    if (controller)
     {
         float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
         float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
@@ -317,18 +319,6 @@ void PlayerController::SetSpineAnimation(std::string trigger, float transitionTi
     
 }
 
-void PlayerController::PlayOneShot(std::string name)
-{
-    if (strcmp(name.c_str(), "Step")) 
-    {
-        //mFootStepAudio->PlayOneShot();
-    }
-    if (strcmp(name.c_str(), "Shot")) 
-    {
-        //mGunfireAudio->PlayOneShot();
-    }
-}
-
 void PlayerController::MoveInDirection(float3 direction)
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
@@ -343,40 +333,42 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    if (mWeapon->GetType() == Weapon::WeaponType::RANGE) 
+    mWeapon->Exit();
+    if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
-        mWeapon = mBat;
+        mWeapon = mPistol;
 
-        switch (mBatteryType) 
+        switch (mEnergyType) 
         {
-        case BatteryType::BLUE:
+        case EnergyType::BLUE:
             mSpecialWeapon = mMachinegun;
             break;
-        case BatteryType::RED:
+        case EnergyType::RED:
             mSpecialWeapon = mShootgun;
             break;
-        case BatteryType::NONE:
+        case EnergyType::NONE:
             mSpecialWeapon = nullptr;
             break;
         }
     }
     else 
     {
-        mWeapon = mPistol;
+        mWeapon = mBat;
 
-        switch (mBatteryType)
+        switch (mEnergyType)
         {
-        case BatteryType::BLUE:
+        case EnergyType::BLUE:
             mSpecialWeapon = mKatana;
             break;
-        case BatteryType::RED:
+        case EnergyType::RED:
             mSpecialWeapon = mHammer;
             break;
-        case BatteryType::NONE:
+        case EnergyType::NONE:
             mSpecialWeapon = nullptr;
             break;
         }
     }
+    mWeapon->Enter();
 }
 
 float3 PlayerController::GetPlayerPosition()
@@ -449,6 +441,7 @@ bool PlayerController::CanReload() const
 void PlayerController::Reload() const
 {
     mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
+    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
 }
 
 void PlayerController::CheckDebugOptions()
@@ -470,29 +463,54 @@ void PlayerController::RechargeShield(float shield)
     }
 }
 
-void PlayerController::RechargeBattery(BatteryType batteryType)
+void PlayerController::RechargeBattery(EnergyType batteryType)
 {
-    mCurrentBattery = 100.0f;
-    GameManager* managerInstance = GameManager::GetInstance();
-    managerInstance->GetHud()->SetEnergy(int(mCurrentBattery));
+    mCurrentEnergy = 100.0f;
+    mEnergyType = batteryType;
 
-    switch (batteryType)
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+
+    switch (mEnergyType)
     {
-    case BatteryType::NONE:
-        break;
-    case BatteryType::BLUE:
-        managerInstance->GetHud()->SetEnergyColor(float3(0.0f,0.0f,255.0f));
-        managerInstance->GetHud()->SetEnergyTextColor(float3(0.0f, 0.0f, 255.0f));
-        break;
-    case BatteryType::RED:
-        managerInstance->GetHud()->SetEnergyColor(float3(255.0f, 0.0f, 0.0f));
-        managerInstance->GetHud()->SetEnergyTextColor(float3(255.0f, 0.0f, 0.0f));
-        break;
-    default:
-        break;
+        case EnergyType::NONE:
+            break;
+        case EnergyType::BLUE:
+            if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+            {
+                mSpecialWeapon = mMachinegun;
+            }
+            else
+            {
+                mSpecialWeapon = mKatana;
+            }
+            break;
+        case EnergyType::RED:
+            if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
+            {
+                mSpecialWeapon = mShootgun;
+            }
+            else
+            {
+                mSpecialWeapon = mHammer;
+            }
+            break;
+        default:
+            break;
     }
+}
 
-    
+void PlayerController::UseEnergy(int energy)
+{
+    mCurrentEnergy -= energy;
+
+    if (mCurrentEnergy <= 0)
+    {
+        mCurrentEnergy = 0;
+        mEnergyType = EnergyType::NONE;
+        mSpecialWeapon = nullptr;
+    }
+        
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
 void PlayerController::TakeDamage(float damage)

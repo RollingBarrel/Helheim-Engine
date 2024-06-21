@@ -1,6 +1,8 @@
 #pragma once
 #include "State.h"
 
+class PlayerController;
+
 class SwitchState : public State
 {
 public:
@@ -16,7 +18,5 @@ public:
 	StateType GetType() override;
 
 private:
-
-	void PlayAudio() override;
-
+	float mSwitchTimer = 0.0f;
 };

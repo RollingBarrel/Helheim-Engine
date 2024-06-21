@@ -268,7 +268,12 @@ void ModuleScene::Load(const char* sceneName)
 		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartScripts();
+		}
+		
 	}
 }
 #pragma endregion
@@ -372,8 +377,13 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 		ret = mSceneGO[currSize];
 
 		mRoot->RecalculateMatrices();
-		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		App->GetScriptManager()->AwakeGameObjectScripts(ret);
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartGameObjectScripts(ret);
+		}
+		
 	}
 	
 	return ret;

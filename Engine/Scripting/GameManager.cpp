@@ -9,6 +9,7 @@
 #include "ScriptComponent.h"
 #include "HudController.h"
 #include "PlayerController.h"
+#include "EnemyPool.h"
 
 CREATE(GameManager)
 {
@@ -17,6 +18,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyPool);
     END_CREATE;
 }
 
@@ -40,6 +42,7 @@ GameManager::~GameManager()
 
 void GameManager::Awake()
 {
+    assert(!mInstance);
     mInstance = this;
 }
 

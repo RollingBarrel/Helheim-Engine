@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "PlayerController.h"
 
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
@@ -28,6 +29,7 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
+    MEMBER(MemberType::GAMEOBJECT, mFeedbackGO);
     SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mContinueBtnGO);
@@ -114,10 +116,9 @@ void HudController::Start()
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
-
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
-
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
+    if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
 }
 
 void HudController::Update()
@@ -127,7 +128,7 @@ void HudController::Update()
     if (GameManager::GetInstance()->IsPaused()) return;
 
     // Gradually decrease the gradual health slider
-    if (mHealthGradualSlider != nullptr)
+    if (mHealthGradualSlider)
     {
         if (mHealthGradualSlider->GetValue() > mTargetHealth)
         {
@@ -137,6 +138,11 @@ void HudController::Update()
         {
             mHealthGradualSlider->SetValue(mTargetHealth);
         }
+    }
+
+    // Decrease the damage feedback
+    if (mFeedbackImage && *(mFeedbackImage->GetAlpha()) != 0.0f) {
+        mFeedbackImage->SetAlpha(*(mFeedbackImage->GetAlpha()) - 0.4f * App->GetDt());
     }
 
     // Grenade cooldown update
@@ -185,23 +191,35 @@ void HudController::SetAmmo(int ammo)
     if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
 }
 
-void HudController::SetEnergy(int energy)
+void HudController::SetEnergy(int energy, EnergyType type)
 {
     if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
-}
 
-void HudController::SetEnergyColor(float3 color)
-{
+    float3 color;
+    switch (type)
+    {
+    case EnergyType::NONE:
+        color = float3(100.0f,100.0f,100.0f);
+        break;
+    case EnergyType::BLUE:
+        color = float3(0.0f, 0.0f, 200.0f);
+        break;
+    case EnergyType::RED:
+        color = float3(200.0f, 0.0f, 0.0f);
+        break;
+    default:
+        color = float3(100.0f, 100.0f, 100.0f);
+        break;
+    }
+
     if (mEnergyImage) mEnergyImage->SetColor(color);
-}
-
-void HudController::SetEnergyTextColor(float3 color)
-{
     if (mEnergyText) mEnergyText->SetTextColor(color);
+
 }
 
 void HudController::SetHealth(float health)
 {
+    if (health < mHealthSlider->GetValue()) mFeedbackImage->SetAlpha(1.0f);
     if (mHealthSlider) mHealthSlider->SetValue(health);
     mTargetHealth = health;
 }

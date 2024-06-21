@@ -5,9 +5,7 @@
 #include "AudioSourceComponent.h"
 #include "Math/MathFunc.h"
 #include "GameObject.h"
-
-
-
+#include "BattleArea.h"
 
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
@@ -54,6 +52,7 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->GetActiveBattleArea()->DestroyEnemy();
     DropItem();
 }
 
@@ -96,6 +95,11 @@ bool Enemy::IsMoving()
     return false;
 }
 
+void Enemy::Reset()
+{
+    mHealth = mMaxHealth;
+}
+
 void Enemy::DropItem()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -117,7 +121,7 @@ void Enemy::DropItem()
         float3 enemyPosition = mGameObject->GetPosition();
         float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
-        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_Shotgun.prfb");
+        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_MachineGun.prfb");
         upgrade->SetPosition(dropPosition);
 
         float3 scale = float3(0.25f, 0.25f, 0.25f);
@@ -128,7 +132,7 @@ void Enemy::DropItem()
         float3 enemyPosition = mGameObject->GetPosition();
         float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
-        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_MachineGun.prfb");
+        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_Shotgun.prfb");
         upgrade->SetPosition(dropPosition);
 
         float3 scale = float3(0.25f, 0.25f, 0.25f);

@@ -67,7 +67,3 @@ StateType DashState::GetType()
 {
     return StateType::DASH;
 }
-
-void DashState::PlayAudio()
-{
-}

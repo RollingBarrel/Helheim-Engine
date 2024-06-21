@@ -16,7 +16,5 @@ public:
 	StateType GetType() override;
 
 private:
-
-	void PlayAudio() override;
-
+	bool mThrowGrenade = false;
 };

@@ -16,19 +16,33 @@ SpecialState::~SpecialState()
 
 StateType SpecialState::HandleInput()
 {
-	return StateType::AIM;
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+
+    mSpecialAttackTimer += App->GetDt();
+    if (mSpecialAttackTimer < mSpecialWeapon->GetAttackTime())
+    {
+        return StateType::SPECIAL;
+    }
+
+    return StateType::AIM;
 }
 
 void SpecialState::Update()
 {
-	mSpecialWeapon->Attack();
+	mSpecialWeapon->Attack(mSpecialAttackTimer);
 }
 
 void SpecialState::Enter()
 {
-	//mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
+	mSpecialAttackTimer = 0.0f;
+	
 	mSpecialWeapon = mPlayerController->GetSpecialWeapon();
-	mSpecialWeapon->Enter();
+	if (mSpecialWeapon)
+	{
+		mSpecialWeapon->Enter();
+	}
+
+	//mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
 }
 
 void SpecialState::Exit()
@@ -40,8 +54,4 @@ void SpecialState::Exit()
 StateType SpecialState::GetType()
 {
 	return StateType::SPECIAL;
-}
-
-void SpecialState::PlayAudio()
-{
 }

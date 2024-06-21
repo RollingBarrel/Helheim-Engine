@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include "HudController.h"
 #include "PlayerController.h"
+#include "Weapon.h"
 
 SwitchState::SwitchState(PlayerController* player) : State(player)
 {
@@ -17,19 +18,27 @@ SwitchState::~SwitchState()
 
 StateType SwitchState::HandleInput()
 {
-	//TODO: Should not be immediate
-	return StateType::AIM;
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+
+    mSwitchTimer += App->GetDt();
+    if (mSwitchTimer < mPlayerController->GetSwitchDuration())
+    {
+        return StateType::SWITCH;
+    }
+
+    return StateType::AIM;
 }
 
 void SwitchState::Update()
 {
-
 }
 
 void SwitchState::Enter()
 {
-	//mPlayerController->SetSpineAnimation("tSwitch", 0.1f);
+    mSwitchTimer = 0.0f;
+
 	GameManager::GetInstance()->GetHud()->SwitchWeapon();
+	mPlayerController->SwitchWeapon();
 }
 
 void SwitchState::Exit()
@@ -39,8 +48,4 @@ void SwitchState::Exit()
 StateType SwitchState::GetType()
 {
 	return StateType::SWITCH;
-}
-
-void SwitchState::PlayAudio() 
-{
 }

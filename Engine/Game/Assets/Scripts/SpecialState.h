@@ -19,7 +19,5 @@ public:
 
 private:
 	Weapon* mSpecialWeapon = nullptr;
-	float mAttackTimer = 0.0f;
-
-	void PlayAudio() override;
+	float mSpecialAttackTimer = 0.0f;
 };

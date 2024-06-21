@@ -19,8 +19,12 @@ GrenadeState::~GrenadeState()
 
 StateType GrenadeState::HandleInput()
 {
-    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP)
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+
+    if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_UP)
     {
+        mThrowGrenade = true;
         return StateType::AIM;
     }
 
@@ -34,24 +38,24 @@ void GrenadeState::Update()
 
 void GrenadeState::Enter()
 {
-    //mPlayerController->SetSpineAnimation("tGranade", 0.1f);
+    mThrowGrenade = false;
 
-   //GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
     mPlayerController->SetGrenadeVisuals(true);
+    //mPlayerController->SetSpineAnimation("tGranade", 0.1f);
 }
 
 void GrenadeState::Exit()
 {
     mPlayerController->SetGrenadeVisuals(false);
-    mPlayerController->ThrowGrenade();
-    GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
+    
+    if (mThrowGrenade) 
+    {
+        mPlayerController->ThrowGrenade();
+        GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
+    }
 }
 
 StateType GrenadeState::GetType()
 {
     return StateType::GRENADE;
-}
-
-void GrenadeState::PlayAudio()
-{
 }

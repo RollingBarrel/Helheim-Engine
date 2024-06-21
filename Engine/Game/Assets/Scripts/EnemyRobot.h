@@ -38,7 +38,6 @@ private:
 
 	void MeleeAttack();
 	void RangeAttack();
-	void OnCollisionEnter(CollisionData* collisionData);
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;

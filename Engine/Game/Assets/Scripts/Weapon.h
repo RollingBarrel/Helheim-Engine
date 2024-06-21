@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 
 class Weapon
 {
@@ -12,7 +12,7 @@ public:
 	~Weapon();
 
 	virtual void Enter() = 0;
-	virtual void Attack() = 0;
+	virtual void Attack(float time) = 0;
 	virtual void Exit() = 0;
 
 	WeaponType GetType() { return mType; }
@@ -21,6 +21,7 @@ public:
 	int GetDamage() { return mDamage; }
 	float GetAttackTime() { return mAttackTime; }
 	
+	virtual float GetAttackTime() = 0;
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
 	void SetDamage(int value) { mDamage = value; }
 protected:
