@@ -33,7 +33,10 @@ EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
 void EnemyExplosive::Start()
 {
     Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyExplosive::OnCollisionEnter, this, std::placeholders::_1)));
@@ -84,15 +87,16 @@ void EnemyExplosive::Idle()
 {
     mAnimationComponent->SendTrigger("tIdle",0.2f);
    mCurrentState = EnemyState::CHASE;
+
 }
 
 void EnemyExplosive::Chase()
 {
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
         mAnimationComponent->SendTrigger("tMovement", 0.2f);
-        AIAgentComponent* agentComponent = (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
-        if (agentComponent)
+        if (mAiAgentComponent)
         {
-            agentComponent->MoveAgent(mPlayer->GetPosition(), mSpeed);
+            mAiAgentComponent->MoveAgent(mSpeed);
             float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
             direction.y = 0;
             direction.Normalize();

@@ -42,7 +42,7 @@ class Enemy : public Script
 		int mMachineGunDropRate = 45;
 		float mHealth = 0.0f;
 		float mMaxHealth = 6.0f;
-		float mSpeed = 1.75f;
+		float mSpeed = 1.0f;
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 250.0f;
 		float mChaseDelay = 1.25f;
