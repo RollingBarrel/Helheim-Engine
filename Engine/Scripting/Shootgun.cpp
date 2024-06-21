@@ -87,4 +87,6 @@ void Shootgun::Exit()
 
 void Shootgun::Reload()
 {
+    mCurrentAmmo = mMaxAmmo;
+    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }

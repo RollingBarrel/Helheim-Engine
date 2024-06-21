@@ -1,6 +1,5 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
-#include "Quadtree.h"
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "glew.h"
@@ -41,10 +40,6 @@ ModuleScene::~ModuleScene()
 	{
 		delete mBackgroundScene;
 	}
-	if (mQuadtreeRoot)
-	{
-		delete mQuadtreeRoot;
-	}
 }
 
 #pragma region Basic Functions
@@ -52,7 +47,6 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("EmptyScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
 	return true;
 }
 
@@ -63,18 +57,8 @@ update_status ModuleScene::PreUpdate(float dt)
 
 update_status ModuleScene::Update(float dt)
 {
-	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-
-	//TODO: temporally removed the quadtree
-	//if (mShouldUpdateQuadtree)
-	//{
-	//	mQuadtreeRoot->UpdateTree();
-	//}
-	//mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
-	mRoot->GetMeshesInChildren(mCurrRenderComponents);
-	App->GetOpenGL()->Draw(mCurrRenderComponents);
-	mCurrRenderComponents.clear();
+	App->GetOpenGL()->Draw();
 
 	return UPDATE_CONTINUE;
 }
@@ -227,14 +211,13 @@ void ModuleScene::Load(const char* sceneName)
 
 	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0);
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0)
 	{
 		//App->GetScene()->Load(fileBuffer);
 	}
 
 	if(fileBuffer != nullptr)
 	{
-		mQuadtreeRoot->CleanUp();
 		App->GetUI()->CleanUp();
 		mSceneGO.clear();
 		delete mRoot;
@@ -264,11 +247,15 @@ void ModuleScene::Load(const char* sceneName)
 		}
 
 		mRoot->RecalculateMatrices();
-		mQuadtreeRoot->UpdateTree();
 		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartScripts();
+		}
+		
 	}
 }
 #pragma endregion
@@ -372,8 +359,13 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 		ret = mSceneGO[currSize];
 
 		mRoot->RecalculateMatrices();
-		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		App->GetScriptManager()->AwakeGameObjectScripts(ret);
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartGameObjectScripts(ret);
+		}
+		
 	}
 	
 	return ret;
@@ -589,14 +581,8 @@ void ModuleScene::DuplicateGameObjects()
 
 #pragma region Others
 
-void ModuleScene::AddMeshToRender(const MeshRendererComponent& meshRendererComponent)
-{
-	mCurrRenderComponents.push_back(&meshRendererComponent);
-}
-
 void ModuleScene::NewScene()
 {
-	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();

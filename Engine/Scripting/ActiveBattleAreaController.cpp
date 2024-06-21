@@ -46,7 +46,7 @@ void ActiveBattleAreaController::OnCollisionEnter(CollisionData* collisionData)
     if (mBattleArea && collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
         GameManager::GetInstance()->SetActiveBattleArea(mBattleArea);
-        mBattleArea->ActivateArea();
+        mBattleArea->ActivateArea(true); //maybe has to be false idk
         LOG("PLAYER COLLISION");
         mBattleArea = nullptr;
     }

@@ -16,7 +16,7 @@ void MeleeWeapon::IncreaseComboStep()
 }
 
 
-float MeleeWeapon::GetAttackTime()
+/*float MeleeWeapon::GetAttackTime() override
 {
     switch (mComboStep) 
     {
@@ -28,7 +28,7 @@ float MeleeWeapon::GetAttackTime()
         return mComboDuration;
     }
     return mAttackTime;
-}
+}*/
 
 
 

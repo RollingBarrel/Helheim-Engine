@@ -42,6 +42,7 @@ public:
     Timer* GetCurrentClock() const { return mCurrentTimer; }
     float GetDt() const;
 
+    bool IsPlayMode() { return mIsPlayMode; }
     void Exit() { mExit = true; }
 
 protected:
@@ -61,7 +62,7 @@ protected:
 
     Timer* mCurrentTimer = nullptr;
     bool mEnableVsync = true;
-    
+    bool mIsPlayMode = false;
     bool mExit = false;
 };
 

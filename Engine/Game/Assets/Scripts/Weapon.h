@@ -18,9 +18,11 @@ public:
 	WeaponType GetType() { return mType; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
-	virtual float GetAttackTime() = 0;
+	int GetDamage() { return mDamage; }
+	float GetAttackTime() { return mAttackTime; }
+	
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
-
+	void SetDamage(int value) { mDamage = value; }
 protected:
 	WeaponType mType;
 

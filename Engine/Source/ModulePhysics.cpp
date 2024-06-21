@@ -42,41 +42,44 @@ bool ModulePhysics::CleanUp()
 
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	for (btRigidBody* rigidBody : mRigidBodiesToRemove)
+	if (App->IsPlayMode())
 	{
-		mWorld->removeCollisionObject(rigidBody);
-		btCollisionShape* shape = rigidBody->getCollisionShape();
-		delete shape;
-		delete rigidBody;
-	}
-	mRigidBodiesToRemove.clear();
-
-	
-	mWorld->stepSimulation(dt, 15);
-
-	int numManifolds = mWorld->getDispatcher()->getNumManifolds();
-	for (int i = 0; i < numManifolds; i++)
-	{
-		btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
-
-		int numContacts = contactManifold->getNumContacts();
-		if (numContacts > 0)
+		for (btRigidBody* rigidBody : mRigidBodiesToRemove)
 		{
-			Collider* bodyA = (Collider*)obA->getUserPointer();
-			Collider* bodyB = (Collider*)obB->getUserPointer();
+			mWorld->removeCollisionObject(rigidBody);
+			btCollisionShape* shape = rigidBody->getCollisionShape();
+			delete shape;
+			delete rigidBody;
+		}
+		mRigidBodiesToRemove.clear();
 
-			if (bodyA && bodyB)
+
+		mWorld->stepSimulation(dt, 15);
+
+		int numManifolds = mWorld->getDispatcher()->getNumManifolds();
+		for (int i = 0; i < numManifolds; i++)
+		{
+			btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+
+			int numContacts = contactManifold->getNumContacts();
+			if (numContacts > 0)
 			{
-				float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
-				float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
+				Collider* bodyA = (Collider*)obA->getUserPointer();
+				Collider* bodyB = (Collider*)obB->getUserPointer();
 
-				float3 diff = contactOnB - contactOnA;
-				float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
+				if (bodyA && bodyB)
+				{
+					float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
+					float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
 
-				ProcessCollision(bodyA, bodyB, collisionNormal, diff);
-				ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
+					float3 diff = contactOnB - contactOnA;
+					float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
+
+					ProcessCollision(bodyA, bodyB, collisionNormal, diff);
+					ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
+				}
 			}
 		}
 	}

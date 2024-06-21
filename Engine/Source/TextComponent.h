@@ -12,6 +12,12 @@ class CanvasComponent;
 class GameObject;
 class Component;
 
+enum class TextAlignment {
+    LEFT,
+    CENTER,
+    RIGHT
+};
+
 class ENGINE_API TextComponent : public Component
 {
 public:
@@ -35,9 +41,11 @@ public:
     int* GetFontSize() { return &mFontSize; }
     int* GetLineSpacing() { return &mLineSpacing; }
     int* GetLineWidth() { return &mLineWidth; }
+    TextAlignment* GetAlignment() { return &mAlignment; }
 
     void SetText(std::string text) { mText = text; }
     void SetTextColor(float3 color) { mColor = color; }
+    void SetAlignment(TextAlignment alignment) { mAlignment = alignment; }
 
 private:
     void InitFreeType();
@@ -62,6 +70,7 @@ private:
     int mFontSize = 48;
     int mLineSpacing = 0;
     int mLineWidth = 0;
+    TextAlignment mAlignment = TextAlignment::LEFT;
 
     float3 mColor = float3(1.f,1.f,1.f);
     float mAlpha = 1.0f;

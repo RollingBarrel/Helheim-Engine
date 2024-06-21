@@ -69,15 +69,13 @@ CREATE(PlayerController)
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
-    SEPARATOR("AUDIO");
-    MEMBER(MemberType::GAMEOBJECT, mFootStepAudioHolder);
-    MEMBER(MemberType::GAMEOBJECT, mGunfireAudioHolder);
-
     END_CREATE;
 }
 
 PlayerController::PlayerController(GameObject* owner) : Script(owner)
 {
+    mLowerStateType = StateType::NONE;
+    mUpperStateType = StateType::NONE;
 }
 
 PlayerController::~PlayerController()
@@ -121,13 +119,17 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    BoxColliderComponent* collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
-    if (collider)
+    BoxColliderComponent* collider = nullptr;
+    if (mMeleeCollider) 
     {
-        collider->AddCollisionEventHandler(
-            CollisionEventType::ON_COLLISION_ENTER,
-            new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
-        );
+        collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        if (collider)
+        {
+            collider->AddCollisionEventHandler(
+                CollisionEventType::ON_COLLISION_ENTER,
+                new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
+            );
+        }
     }
 
     mBat = new Bat(collider);
@@ -139,17 +141,6 @@ void PlayerController::Start()
 
     mWeapon = mPistol;
     mSpecialWeapon = nullptr;
-
-    // AUDIO
-    if (mFootStepAudioHolder)
-    {
-        mFootStepAudio = (AudioSourceComponent*)mFootStepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
-
-    if (mGunfireAudioHolder)
-    {
-        mGunfireAudio = (AudioSourceComponent*)mGunfireAudioHolder->GetComponent(ComponentType::AUDIOSOURCE);
-    }
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -328,18 +319,6 @@ void PlayerController::SetSpineAnimation(std::string trigger, float transitionTi
     
 }
 
-void PlayerController::PlayOneShot(std::string name)
-{
-    if (strcmp(name.c_str(), "Step")) 
-    {
-        //mFootStepAudio->PlayOneShot();
-    }
-    if (strcmp(name.c_str(), "Shot")) 
-    {
-        //mGunfireAudio->PlayOneShot();
-    }
-}
-
 void PlayerController::MoveInDirection(float3 direction)
 {
     float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
@@ -397,6 +376,17 @@ float3 PlayerController::GetPlayerPosition()
     return  mGameObject->GetPosition(); 
 }
 
+void PlayerController::SetWeaponDamage(float percentage)
+{
+    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+}
+
+void PlayerController::SetMaxShield(float percentage)
+{
+    mMaxShield *= percentage; 
+    GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
+}
+
 void PlayerController::SetGrenadeVisuals(bool value)
 {
     mGrenadeAimAreaGO->SetEnabled(value);
@@ -413,7 +403,7 @@ void PlayerController::UpdateGrenadeVisuals()
     float3 diff;
     if (GameManager::GetInstance()->UsingController())
     {
-        mGrenadePosition = mGameObject->GetPosition() + mAimPosition * mGrenadeRange;
+        mGrenadePosition = mGameObject->GetPosition() + (mAimPosition- mGameObject->GetPosition()) * mGrenadeRange;
     }
     else
     {
@@ -451,6 +441,7 @@ bool PlayerController::CanReload() const
 void PlayerController::Reload() const
 {
     mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
+    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
 }
 
 void PlayerController::CheckDebugOptions()

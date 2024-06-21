@@ -12,8 +12,6 @@ public:
 	void IncreaseComboStep();
 	void MeleeHit();
 
-	float GetAttackTime() override;
-
 protected:
 	 int mComboStep = 0;
 	 int mNextComboStep = 0;

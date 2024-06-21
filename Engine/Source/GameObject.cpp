@@ -29,7 +29,6 @@
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
 #include "MathFunc.h"
-#include "Quadtree.h"
 
 
 #pragma region Constructors and Destructors
@@ -442,10 +441,6 @@ Component* GameObject::CreateComponent(ComponentType type)
 	if (newComponent)
 	{
 		mComponents.push_back(newComponent);
-	}
-	if (type == ComponentType::MESHRENDERER)		//TODO: WTF is this doing here?
-	{
-		App->GetScene()->GetQuadtreeRoot()->AddObject(this);
 	}
 	return newComponent;
 }

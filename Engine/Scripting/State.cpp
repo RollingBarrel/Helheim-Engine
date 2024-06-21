@@ -32,7 +32,3 @@ StateType State::GetType()
 {
 	return StateType::NONE;
 }
-
-void State::PlayAudio() 
-{
-}

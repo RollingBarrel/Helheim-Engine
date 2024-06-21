@@ -30,8 +30,6 @@ public:
 
 	virtual StateType GetType();
 
-	virtual void PlayAudio();
-
 protected:
 	PlayerController* mPlayerController = nullptr;
 

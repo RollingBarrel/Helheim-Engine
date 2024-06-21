@@ -25,7 +25,7 @@ void EnemyPool::Start()
 		mEnemies[i].reserve(mNumOfEnemies);
 		for (int j = 0; j < mNumOfEnemies; j++)
 		{
-			GameObject* newEnemy = App->GetScene()->InstantiatePrefab(enemyType);
+			GameObject* newEnemy = App->GetScene()->InstantiatePrefab(enemyType); //TODO: Copy prefabs instead of instantiating all enemies
 			if (newEnemy)
 			{
 				newEnemy->SetParent(mGameObject);

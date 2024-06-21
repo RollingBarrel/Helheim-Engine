@@ -37,7 +37,7 @@ Bat::~Bat()
 void Bat::Enter()
 {
     //mTrail->Enable();
-    mCollider->SetEnable(true);
+    if(mCollider) mCollider->SetEnable(true);
     mComboStep = 1;
 }
 
@@ -111,7 +111,7 @@ void Bat::Attack(float time)
 void Bat::Exit()
 {
     //mTrail->Disable();
-    mCollider->SetEnable(false);
+    if(mCollider) mCollider->SetEnable(false);
 
 }
 

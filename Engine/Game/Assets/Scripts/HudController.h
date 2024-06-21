@@ -30,6 +30,7 @@ public:
     void SetAmmo(int ammo);
     void SetEnergy(int energy, EnergyType type);
     void SetHealth(float health);
+    void SetMaxHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);
@@ -81,6 +82,7 @@ private:
     GameObject* mGrenadeSliderGO = nullptr;
     GameObject* mEnergyGO = nullptr;
     GameObject* mEnergyImageGO = nullptr;
+    GameObject* mFeedbackGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
@@ -89,6 +91,7 @@ private:
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
+    ImageComponent* mFeedbackImage = nullptr;
 
     float mTargetHealth = 1;
 

@@ -12,6 +12,8 @@
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
 #include "AnimationComponent.h"
+#include "Geometry/Frustum.h"
+#include "Geometry/AABB.h"
 
 GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 {
@@ -20,7 +22,6 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 	for (int i = 0; i < NUM_BUFFERS; ++i)
 	{
 		mSsboModelMatricesData[i] = nullptr;
-		mSsboIndicesData[i] = nullptr;
 	}
 	memset(mSync, 0, sizeof(mSync)*NUM_BUFFERS);
 
@@ -35,11 +36,17 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, mEbo);
 	glGenBuffers(1, &mSsboModelMatrices);
 	glGenBuffers(1, &mSsboMaterials);
-	glGenBuffers(1, &mSsboIndices);
-	glGenBuffers(1, &mIbo);
-
+	glGenBuffers(1, &mSsboIndicesCommands);
 	glGenBuffers(1, &mPaletteSsbo);
 	glGenBuffers(1, &mSkinSsbo);
+	glGenBuffers(1, &mFrustumsSsbo);
+	glGenBuffers(1, &mSkinSsboObbs);
+	glGenBuffers(1, &mSkinDispatchIndirectBuffer);
+
+	glGenBuffers(1, &mParameterBuffer);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
+	unsigned int startValue = 0;
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(startValue), &startValue, GL_DYNAMIC_DRAW);
 
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, mPaletteSsbo);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mSkinSsbo);
@@ -88,11 +95,13 @@ GeometryBatch::~GeometryBatch()
 	glDeleteBuffers(1, &mEbo);
 	glDeleteBuffers(1, &mSsboModelMatrices);
 	glDeleteBuffers(1, &mSsboMaterials);
-	glDeleteBuffers(1, &mSsboIndices);
-	glDeleteBuffers(1, &mIbo);
-
+	glDeleteBuffers(1, &mSsboIndicesCommands);
+	glDeleteBuffers(1, &mFrustumsSsbo);
+	glDeleteBuffers(1, &mParameterBuffer);
 	glDeleteBuffers(1, &mPaletteSsbo);
 	glDeleteBuffers(1, &mSkinSsbo);
+	glDeleteBuffers(1, &mSkinSsboObbs);
+	glDeleteBuffers(1, &mSkinDispatchIndirectBuffer);
 }
 
 void GeometryBatch::GetAttributes(std::vector<Attribute>& attributes) const
@@ -128,6 +137,23 @@ bool GeometryBatch::EditMaterial(const MeshRendererComponent& cMesh)
 	return true;
 }
 
+void GeometryBatch::RecreatePersistentFrustums()
+{
+	mFrustumsSsboCapacity += mSsboAligment;
+	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
+
+	glDeleteBuffers(1, &mFrustumsSsbo);
+	glGenBuffers(1, &mFrustumsSsbo);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mFrustumsSsbo);
+	const unsigned int size = sizeof(float)*24 * mFrustumsSsboCapacity;
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
+	mSsboFrustumsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		mSsboFrustumsData[i] = mSsboFrustumsData[0] + ((size * i) / sizeof(float));
+	}
+}
+
 void GeometryBatch::RecreatePersistentSsbos()
 {
 	GLbitfield flags = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT;
@@ -138,31 +164,112 @@ void GeometryBatch::RecreatePersistentSsbos()
 	unsigned int size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
 	mSsboModelMatricesData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
-	for (int i = 1; i < NUM_BUFFERS; ++i)
+	for (unsigned int i = 1; i < NUM_BUFFERS; ++i)
 	{
 		mSsboModelMatricesData[i] = mSsboModelMatricesData[0] + ((size * i) / sizeof(float));
 	}
 
-	glDeleteBuffers(1, &mSsboIndices);
-	glGenBuffers(1, &mSsboIndices);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboIndices);
-	size = mMeshComponents.size() * ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
+	glDeleteBuffers(1, &mSsboIndicesCommands);
+	glGenBuffers(1, &mSsboIndicesCommands);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboIndicesCommands);
+	size = mMeshComponents.size() * sizeof(uint32_t);
+	unsigned int inBetweenOffset = ALIGNED_STRUCT_SIZE(size, mSsboAligment) - size;
+	size += inBetweenOffset;
+	size += sizeof(Command) * mMeshComponents.size();
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size, nullptr, flags);
+	mSsboMatIndicesCommandsData = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size, flags));
+
+	unsigned int offset = mMeshComponents.size() + ((inBetweenOffset + sizeof(uint32_t) - 1) / sizeof(uint32_t));
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+	{
+		BatchMeshRendererComponent& bMesh = mMeshComponents[i];
+		bMesh.baseInstance = i;
+		mSsboMatIndicesCommandsData[i] = bMesh.bMaterialIdx;
+		mSsboMatIndicesCommandsData[offset + i * 5] = mUniqueMeshes[bMesh.bMeshIdx].resource->GetNumberIndices();//Count: Number of indices in the mesh
+		mSsboMatIndicesCommandsData[offset + i * 5 + 1] = 1; //InstanceCount: Number of instances to render
+		mSsboMatIndicesCommandsData[offset + i * 5 + 2] = mUniqueMeshes[bMesh.bMeshIdx].firstIndex;	 //FirstIndex: Index offset in the EBO
+		mSsboMatIndicesCommandsData[offset + i * 5 + 3] = mUniqueMeshes[bMesh.bMeshIdx].baseVertex;	 //BaseVertex: Vertex offset in the VBO
+		mSsboMatIndicesCommandsData[offset + i * 5 + 4] = i;   //BaseInstance Instance Index
+	}
+
+	glDeleteBuffers(1, &mSsboObbs);
+	glGenBuffers(1, &mSsboObbs);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboObbs);
+	size = mMeshComponents.size() * sizeof(float) * 32;
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
-	mSsboIndicesData[0] = reinterpret_cast<uint32_t*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+	mSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
 	for (int i = 1; i < NUM_BUFFERS; ++i)
 	{
-		mSsboIndicesData[i] = mSsboIndicesData[0] + ((size * i) / sizeof(uint32_t));
+		mSsboObbsData[i] = mSsboObbsData[0] + ((size * i) / sizeof(float));
 	}
 
-	//TODO: Move and correct
-	int i = 0;
-	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 	{
-		it->second.baseInstance = i;
-		++i;
+		const MeshRendererComponent& bMesh = *mMeshComponents[i].component;
+		float3 points[8];
+		bMesh.GetOriginalAABB().GetCornerPoints(points);
+		for (int k = 0; k < 8; ++k)
+		{
+			memcpy(&mSsboObbsData[0][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+		}
+		//bMesh.GetOriginalAABB().GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[0][i * 32]));
+	}
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		memcpy(mSsboObbsData[i], mSsboObbsData[0], size);
 	}
 
+	glDeleteBuffers(1, &mSkinSsboObbs);
+	glGenBuffers(1, &mSkinSsboObbs);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinSsboObbs);
+	size = mNumSkins * sizeof(float) * 32;
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
+	mSkinSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		mSkinSsboObbsData[i] = mSkinSsboObbsData[0] + ((size * i) / sizeof(float));
+	}
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 	mPersistentsFlag = false;
+}
+
+unsigned int GeometryBatch::GetCommandsSsbo() const
+{
+	unsigned int ret;
+	glGenBuffers(1, &ret);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ret);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_DYNAMIC_DRAW);
+
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
+	unsigned int startValue = 0;
+	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(startValue), &startValue);
+
+	return ret;
+}
+
+void GeometryBatch::ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum)
+{
+	const unsigned int idx = mDrawCount % NUM_BUFFERS;
+	glUseProgram(App->GetOpenGL()->GetSelectCommandsProgramId());
+	glUniform1ui(0, mMeshComponents.size());
+	float planes[24];
+	frustum.GetPlanes(reinterpret_cast<Plane*>(planes));
+	glUniform4fv(1, 24, planes);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 22, bufferIdx);
+	unsigned int sizeMatIdxs = mMeshComponents.size() * sizeof(unsigned int);
+	sizeMatIdxs += ALIGNED_STRUCT_SIZE(sizeMatIdxs, mSsboAligment) - sizeMatIdxs;
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 13, mSsboIndicesCommands, sizeMatIdxs, mMeshComponents.size()* sizeof(Command));
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * sizeof(float) * 16, mMeshComponents.size() * sizeof(float) * 16);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 14, mSsboObbs);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 23, mParameterBuffer);
+	const unsigned int sizeFrustums = mFrustumsSsboCapacity * sizeof(float) * 24;
+	glDispatchCompute((mMeshComponents.size() + 63) / 64, 1, 1);
+	
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
+	//unsigned int startValue = 1;
+	//glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(startValue), &startValue);
+	mIboFlag = true;
 }
 
 void GeometryBatch::RecreateSkinningSsbos()
@@ -171,8 +278,9 @@ void GeometryBatch::RecreateSkinningSsbos()
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mSkinBufferSize, nullptr, GL_STATIC_DRAW);
 	char* memory = reinterpret_cast<char*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY));
 	unsigned int offset = 0;
-	for (BatchMeshResource& mesh : mUniqueMeshes)
+	for (int i = 0; i<mUniqueMeshes.size(); ++i)
 	{
+		BatchMeshResource& mesh = mUniqueMeshes[i];
 		if (mesh.HasSkinning())
 		{
 			unsigned int size;
@@ -182,6 +290,18 @@ void GeometryBatch::RecreateSkinningSsbos()
 		}
 	}
 	glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
+
+	glDeleteBuffers(1, &mSkinDispatchIndirectBuffer);
+	glGenBuffers(1, &mSkinDispatchIndirectBuffer);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinDispatchIndirectBuffer);
+	unsigned int size = mNumSkins * sizeof(unsigned int) * 3;
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
+	mSkinDispatchIndirectBufferData[0] = reinterpret_cast<unsigned int*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
+	for (int i = 1; i < NUM_BUFFERS; ++i)
+	{
+		mSkinDispatchIndirectBufferData[i] = mSkinDispatchIndirectBufferData[0] + ((size * i) / sizeof(unsigned int));
+	}
+
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, 0);
 
 	mSkinningFlag = false;
@@ -216,6 +336,7 @@ void GeometryBatch::RecreateVboAndEbo()
 
 void GeometryBatch::RecreateMaterials()
 {
+	//TODO: fer un glMapBuffer !!!
 	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), sizeof(float)*3);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * materialSize, nullptr, GL_STATIC_DRAW);
@@ -305,6 +426,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent& cMesh)
 		mUniqueMeshes.back().skinOffset = mSkinBufferSize;
 		mSkinBufferSize += rMesh.GetVertexSize(Attribute::Usage::ANIMATION) * rMesh.GetNumberVertices();
 		mSkinningFlag = true;
+		++mNumSkins;
 	}
 	else
 	{
@@ -323,7 +445,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent& cMesh)
 			AddUniqueMesh(cMesh, meshIdx);
 		}
 	}
-	mMeshComponents[cMesh.GetID()] = { meshIdx, matIdx };
+	mMeshComponents.emplace_back(meshIdx, matIdx, &cMesh);
 	mPersistentsFlag = true;
 }
 
@@ -332,15 +454,18 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 	unsigned int bMeshIdx = 0;
 	unsigned int bMaterialIdx = 0;
 	bool found = false;
-	auto mapIterator = mMeshComponents.find(component.GetID());
-	if (mapIterator != mMeshComponents.end())
+	for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 	{
-		found = true;
-		bMeshIdx = mapIterator->second.bMeshIdx;
-		bMaterialIdx = mapIterator->second.bMaterialIdx;
-		if (component.HasSkinning())
-			mSkinningFlag = true;
-		mMeshComponents.erase(mapIterator);
+		if (component.GetID() == it->component->GetID())
+		{
+			found = true;
+			bMeshIdx = it->bMeshIdx;
+			bMaterialIdx = it->bMaterialIdx;
+			if (component.HasSkinning())
+				mSkinningFlag = true;
+			mMeshComponents.erase(it);
+			break;
+		}
 	}
 	if (!found)
 		return false;
@@ -352,12 +477,13 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 		{
 			mSkinBufferSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::ANIMATION);
 			mSkinningFlag = true;
+			--mNumSkins;
 		}
 		mUniqueMeshes.erase(mUniqueMeshes.begin() + bMeshIdx);
 		for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
-			if (it->second.bMeshIdx > bMeshIdx)
-				--(it->second.bMeshIdx);
+			if (it->bMeshIdx > bMeshIdx)
+				--(it->bMeshIdx);
 		}
 		mVboDataSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::RENDER);
 		mEboDataSize -= rMesh.GetNumberIndices() * sizeof(unsigned int);
@@ -369,9 +495,9 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 		mMaterialFlag = true;
 		for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
-			if (it->second.bMaterialIdx > bMaterialIdx)
+			if (it->bMaterialIdx > bMaterialIdx)
 			{
-				--(it->second.bMaterialIdx);
+				--(it->bMaterialIdx);
 			}
 		}
 	}
@@ -381,60 +507,23 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 	return true;
 }
 
-bool GeometryBatch::AddToDraw(const MeshRendererComponent& component)
+void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 {
-	if (mMeshComponents.find(component.GetID()) == mMeshComponents.end())
-	{
-		return false;
-	}
-	if (mComandsMap.find(component.GetID()) != mComandsMap.end())
-	{
-		mCommands.emplace_back(mComandsMap[component.GetID()]);
-		mIboFlag = true;
-		return true;
-	}
-
-	if (mVBOFlag)
-		RecreateVboAndEbo();
-	if (mMaterialFlag)
-		RecreateMaterials();
-	if (mPersistentsFlag)
-		RecreatePersistentSsbos();
-	if (mSkinningFlag)
-		RecreateSkinningSsbos();
-	
-	ComputeSkinning(component);
-
-	unsigned int idx = mDrawCount % NUM_BUFFERS;
-
-	const BatchMeshRendererComponent& bComp = mMeshComponents[component.GetID()];
-	const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
-	if (component.HasSkinning())
-	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
-	}
-	else
-	{
-		memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, component.GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
-	}
-
-	memcpy(mSsboIndicesData[idx] + bComp.baseInstance, &bComp.bMaterialIdx, sizeof(uint32_t));
-	
-	mCommands.emplace_back(component.GetResourceMesh()->GetNumberIndices(), 1, bRes.firstIndex, bRes.baseVertex, bComp.baseInstance);
-	mComandsMap[component.GetID()] = mCommands.back();
-	mIboFlag = true;
-	return true;
-}
-
-void GeometryBatch::Draw()
-{
-	if (mMeshComponents.size() == 0 || mCommands.size() == 0)
+	if (mMeshComponents.size() == 0)
 		return;
+
+	unsigned int ibo = GetCommandsSsbo();
+	ComputeCommands(ibo, frustum);
 
 	if (mSkinningApplied)
 	{
 		glMemoryBarrier(GL_VERTEX_ATTRIB_ARRAY_BARRIER_BIT);
 		mSkinningApplied = false;
+	}
+	if (mIboFlag)
+	{
+		glMemoryBarrier(GL_COMMAND_BARRIER_BIT);
+		mIboFlag = false;
 	}
 
 	//Wait for GPU
@@ -448,68 +537,123 @@ void GeometryBatch::Draw()
 		}
 	}
 
+	glUseProgram(programId);
 	glBindVertexArray(mVao);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mIbo);
-	if (mIboFlag)
-	{
-		glBufferData(GL_DRAW_INDIRECT_BUFFER, mCommands.size() * sizeof(Command), mCommands.data(), GL_STATIC_DRAW);
-		mIboFlag = false;
-	}
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
+	glBindBuffer(GL_PARAMETER_BUFFER, mParameterBuffer);
 
 	unsigned int structSize = ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 11, mSsboMaterials);
-	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), mSsboAligment);
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndices, idx * mMeshComponents.size() * structSize, mMeshComponents.size() * structSize);
-	glMultiDrawElementsIndirect(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, mCommands.size(), 0);
+	structSize = ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 12, mSsboIndicesCommands, 0, ALIGNED_STRUCT_SIZE(sizeof(BufferIndices), 4) * mMeshComponents.size());
+	glMultiDrawElementsIndirectCount(GL_TRIANGLES, GL_UNSIGNED_INT, (GLvoid*)0, 0, mMeshComponents.size(), 0);
 
 	//CleanUp
 	glBindVertexArray(0);
+	glDeleteBuffers(1, &ibo);
 }
 
-void GeometryBatch::CleanUpCommands()
+void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 {
-	mCommands.clear();
+	if (mVBOFlag)
+		RecreateVboAndEbo();
+	if (mMaterialFlag)
+		RecreateMaterials();
+	if (mPersistentsFlag)
+		RecreatePersistentSsbos();
+	if (mSkinningFlag)
+		RecreateSkinningSsbos();
+	if (frustums.size() > mFrustumsSsboCapacity)
+		RecreatePersistentFrustums();
+
+	const unsigned int idx = mDrawCount % NUM_BUFFERS;
+	for (int i = 0; i < frustums.size(); ++i)
+	{
+		frustums[i]->GetPlanes(reinterpret_cast<Plane*>(mSsboFrustumsData[idx] + 24 * i));
+	}
+	unsigned int currSkin = 0;
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+	{
+		const BatchMeshRendererComponent& bComp = mMeshComponents[i];
+		//ComputeSkinning(bComp);
+
+		const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
+		if (bComp.component->HasSkinning())
+		{
+			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
+			//Transform the obb points as we set identity as the model matrix
+			math::OBB obb = bComp.component->GetOriginalAABB().Transform(bComp.component->GetOwner()->GetWorldTransform());
+			float3 points[8];
+			obb.GetCornerPoints(points);
+			for (int k = 0; k < 8; ++k)
+			{
+				memcpy(&mSsboObbsData[0][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+			}
+			//obb.GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[idx][i * 32]));
+			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][i * 32], sizeof(float3) * 8);
+			mSkinDispatchIndirectBufferData[idx][currSkin*3] = (bComp.component->GetResourceMesh()->GetNumberVertices() + 63)/64;
+			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 1] = 1;
+			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 2] = 1;
+			++currSkin;
+		}
+		else
+		{
+			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+		}
+	}
+	glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
+	glUniform1ui(0, mNumSkins);
+	glUniform1ui(1, frustums.size());
+	const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
+	glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
+	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+	glBindBuffer(GL_DISPATCH_INDIRECT_BUFFER, mSkinDispatchIndirectBuffer);
+	for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+	{
+		if (mMeshComponents[i].component->HasSkinning())
+		{
+			ComputeSkinning(mMeshComponents[i]);
+		}
+	}
 }
 
 void GeometryBatch::EndFrameDraw()
 {
-	CleanUpCommands();
-	mComandsMap.clear();
 	unsigned int idx = mDrawCount % NUM_BUFFERS;
 	glDeleteSync(mSync[idx]);
 	mSync[idx] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	++mDrawCount;
+	mCurrSkinIdx = 0;
 }
 
-void GeometryBatch::ComputeSkinning(const MeshRendererComponent& cMesh)
+void GeometryBatch::ComputeSkinning(const BatchMeshRendererComponent& bMesh)
 {
-	BatchMeshRendererComponent& batchMeshRenderer = mMeshComponents[cMesh.GetID()];
+	const MeshRendererComponent& cMesh = *bMesh.component;
 	const ResourceMesh* rMesh = cMesh.GetResourceMesh();
-	const unsigned int idx = mDrawCount % NUM_BUFFERS;
-	if (cMesh.HasSkinning())
-	{
-		glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
-		const BatchMeshResource& bRes = mUniqueMeshes[batchMeshRenderer.bMeshIdx];
-		//TODO: El buffer range de los vertices dskin entre 2 batches no funcionara
-		assert(bRes.skinOffset != -1 && "Skin mesh does not have the offset set");
-		glUniform1ui(0, bRes.skinOffset);
+	glUseProgram(App->GetOpenGL()->GetSkinningProgramId());
+	const BatchMeshResource& bRes = mUniqueMeshes[bMesh.bMeshIdx];
+	//TODO: El buffer range de los vertices dskin entre 2 batches no funcionara
+	assert(bRes.skinOffset != -1 && "Skin mesh does not have the offset set");
+	glUniform1ui(0, bRes.skinOffset);
 
-		const std::vector<float4x4>& palette = cMesh.GetPalette();
-		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
-		if (palette.size() > mBiggestPaletteSize)
-		{
-			glBufferData(GL_SHADER_STORAGE_BUFFER, palette.size() * sizeof(float) * 16, palette.data(), GL_DYNAMIC_DRAW);
-			mBiggestPaletteSize = palette.size();
-		}
-		else
-		{
-			glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, palette.size() * sizeof(float) * 16, palette.data());
-		}
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, bRes.baseVertex * mVertexSize, mVertexSize * rMesh->GetNumberVertices());
-		glUniform1i(25, rMesh->GetNumberVertices());
-		glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
-		mSkinningApplied = true;
+	const std::vector<float4x4>& palette = cMesh.GetPalette();
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mPaletteSsbo);
+	if (palette.size() > mBiggestPaletteSize)
+	{
+		glBufferData(GL_SHADER_STORAGE_BUFFER, palette.size() * sizeof(float) * 16, palette.data(), GL_DYNAMIC_DRAW);
+		mBiggestPaletteSize = palette.size();
 	}
-	glUseProgram(0);
+	else
+	{
+		glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, palette.size() * sizeof(float) * 16, palette.data());
+	}
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, bRes.baseVertex * mVertexSize, mVertexSize * rMesh->GetNumberVertices());
+	glUniform1i(25, rMesh->GetNumberVertices());
+	glDispatchComputeIndirect(sizeof(unsigned int)*3*mCurrSkinIdx++);
+	//glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
+	mSkinningApplied = true;
 }

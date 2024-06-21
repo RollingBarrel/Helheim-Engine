@@ -6,7 +6,6 @@
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 
-#include "Quadtree.h"
 #include "MeshRendererComponent.h"
 
 #include "Math/MathConstants.h"

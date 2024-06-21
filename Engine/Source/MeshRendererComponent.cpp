@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
-#include "Quadtree.h"
 #include "ModuleScene.h"
 
 #include "float4.h"
@@ -42,10 +41,6 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 
 MeshRendererComponent::~MeshRendererComponent()
 {
-	if (mMesh && mMaterial)
-	{
-		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
-	}
 	App->GetOpenGL()->BatchRemoveMesh(*this);
 	if (mMesh)
 	{
@@ -72,7 +67,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 			if (mMaterial)
 			{
 				App->GetOpenGL()->BatchRemoveMesh(*this);
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
 			mMesh = nullptr;
@@ -86,7 +80,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		if (mMaterial)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);
-			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 
 	}
@@ -103,7 +96,6 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 			if (mMesh)
 			{
 				App->GetOpenGL()->BatchRemoveMesh(*this);
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
 			mMaterial = nullptr;
@@ -113,7 +105,6 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		if (mMesh)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);
-			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 	}
 	//TODO: Material Default

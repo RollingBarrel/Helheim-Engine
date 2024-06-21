@@ -1,12 +1,14 @@
 #pragma once
 #include <vector>
-#include <unordered_map>
-#include "float4.h"
 #include "ResourceMesh.h"
+#include "MathGeoLibFwd.h"
 
 class AnimationComponent;
 class MeshRendererComponent;
 class ResourceMaterial;
+namespace math {
+	class Frustum;
+};
 typedef struct __GLsync* GLsync;
 
 class Command
@@ -70,12 +72,13 @@ class GeometryBatch
 	class BatchMeshRendererComponent
 	{
 	public:
-		BatchMeshRendererComponent() : bMeshIdx(0), bMaterialIdx(0), baseInstance(-1) {}
-		BatchMeshRendererComponent(unsigned int meshIdx, unsigned int materialIdx) :
-			bMeshIdx(meshIdx), bMaterialIdx(materialIdx), baseInstance(-1) {}
+		BatchMeshRendererComponent() : bMeshIdx(0), bMaterialIdx(0), baseInstance(-1), component(nullptr) {}
+		BatchMeshRendererComponent(unsigned int meshIdx, unsigned int materialIdx, const MeshRendererComponent* mComponent) :
+			bMeshIdx(meshIdx), bMaterialIdx(materialIdx), baseInstance(-1), component(mComponent) {}
 		uint32_t bMeshIdx;
 		uint32_t bMaterialIdx;
 		unsigned int baseInstance;
+		const MeshRendererComponent* component;
 	};
 
 public:
@@ -88,15 +91,18 @@ public:
 	void AddMeshComponent(const MeshRendererComponent& component);
 	bool EditMaterial(const MeshRendererComponent& component);
 	bool RemoveMeshComponent(const MeshRendererComponent& component);
-	bool AddToDraw(const MeshRendererComponent& component);
-	void Draw();
+	void Update(const std::vector<const math::Frustum*>& frustums);
+	void Draw(unsigned int programId, const math::Frustum& frustum);
 	void EndFrameDraw();
-	void CleanUpCommands();
 
 	bool HasMeshesToDraw() const { return mMeshComponents.size() != 0; }
-	void ComputeSkinning(const MeshRendererComponent& cMesh);
+	void ComputeSkinning(const BatchMeshRendererComponent& cMesh);
 
 private:
+	unsigned int GetCommandsSsbo() const;
+	void ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum);
+
+	void RecreatePersistentFrustums();
 	void RecreatePersistentSsbos();
 	void RecreateSkinningSsbos();
 	void RecreateVboAndEbo();
@@ -109,28 +115,33 @@ private:
 	bool mIboFlag = false;
 	bool mSkinningFlag = false;
 	
-	std::unordered_map<unsigned int, BatchMeshRendererComponent> mMeshComponents;
+	std::vector<BatchMeshRendererComponent> mMeshComponents;
 	std::vector<BatchMeshResource> mUniqueMeshes;
 	std::vector<BatchMaterialResource> mUniqueMaterials;
 	std::vector<Attribute> mAttributes;
-	std::vector<Command> mCommands;
-	std::unordered_map<unsigned int, Command> mComandsMap;
 
 	unsigned int mVertexSize = 0;
 
 	unsigned int mVao = 0;
 	unsigned int mVbo = 0;
 	unsigned int mEbo = 0;
-	unsigned int mIbo = 0;
+	//unsigned int mIbo = 0;
 
 	uint64_t mDrawCount = 0;
 	unsigned int mSsboModelMatrices = 0;
 	float* mSsboModelMatricesData[NUM_BUFFERS];
-	unsigned int mSsboIndices = 0;
-	uint32_t* mSsboIndicesData[NUM_BUFFERS];
+	unsigned int mSsboIndicesCommands = 0;
+	uint32_t* mSsboMatIndicesCommandsData = nullptr;
+	unsigned int mSsboObbs = 0;
+	float* mSsboObbsData[NUM_BUFFERS];
 	GLsync mSync[NUM_BUFFERS];
+	unsigned int mParameterBuffer = 0;
 
 	unsigned int mSsboMaterials = 0;
+
+	unsigned int mFrustumsSsbo = 0;
+	unsigned int mFrustumsSsboCapacity = 0;
+	float* mSsboFrustumsData[NUM_BUFFERS];
 
 	float* mVboData = nullptr;
 	unsigned int mVboDataSize = 0;
@@ -145,6 +156,12 @@ private:
 	unsigned int mBiggestPaletteSize = 0;
 	unsigned int mSkinSsbo = 0;
 	unsigned int mSkinBufferSize = 0;
+	unsigned int mSkinDispatchIndirectBuffer = 0;
+	unsigned int* mSkinDispatchIndirectBufferData[NUM_BUFFERS];
+	unsigned int mSkinSsboObbs = 0;
+	float* mSkinSsboObbsData[NUM_BUFFERS];
+	unsigned int mNumSkins = 0;
+	unsigned int mCurrSkinIdx = 0;
 
 	int mSsboAligment = 0;
 };

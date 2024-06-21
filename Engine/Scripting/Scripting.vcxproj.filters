@@ -124,13 +124,13 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Hammer.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
@@ -143,7 +143,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h">
       <Filter>Weapons\Range</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\HudController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
     </ClInclude>
@@ -165,6 +164,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -262,6 +262,7 @@
     <ClCompile Include="ActiveBattleAreaController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Sanity.cpp" />
     <ClCompile Include="Machinegun.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
@@ -274,10 +275,6 @@
     <ClCompile Include="Hammer.cpp">
       <Filter>Weapons\Melee</Filter>
     </ClCompile>
-    <ClCompile Include="HudController.cpp" />
-    <ClCompile Include="AudioManager.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
     <ClCompile Include="AudioTester.cpp">
       <Filter>Sound\Test</Filter>
     </ClCompile>
@@ -287,7 +284,9 @@
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="AudioTester.cpp" />
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

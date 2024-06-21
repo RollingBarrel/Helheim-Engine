@@ -72,7 +72,7 @@ public:
 
 	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
-	void SceneFramebufferResized(unsigned width, unsigned height);
+	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
 	void BindGFramebuffer();
@@ -91,9 +91,11 @@ public:
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
+	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
@@ -106,7 +108,7 @@ public:
 	void BatchAddMesh(const MeshRendererComponent& mesh);
 	void BatchRemoveMesh(const MeshRendererComponent& mesh);
 	void BatchEditMaterial(const MeshRendererComponent& mesh);
-	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
+	void Draw();
 	void SetWireframe(bool wireframe);
 
 	void AddHighLight(const GameObject& gameObject);
@@ -124,7 +126,8 @@ public:
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
 	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
-
+	unsigned int GetSceneWidth() const { return mSceneWidth; }
+	unsigned int GetSceneHeight() const { return mSceneHeight; }
 private:
 	void* context = nullptr;
 
@@ -167,12 +170,13 @@ private:
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
+	unsigned int mSelectSkinsProgramId = 0;
+	unsigned int mSelectCommandsProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
-	unsigned int mDepthPassProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
@@ -215,6 +219,9 @@ private:
 
 	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 	std::vector<const GameObject*> mHighlightedObjects;
+
+	unsigned int mSceneWidth = 1;
+	unsigned int mSceneHeight = 1;
 };
 
 #endif /* _MODULEOPENGL_H_ */
