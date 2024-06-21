@@ -15,7 +15,7 @@ public:
 	~BattleArea();
 	void Start() override;
 	void Update() override;
-	void DestroyEnemy();
+	void EnemyDestroyed();
 	void ActivateArea(bool activate);;
 	void OnCollisionEnter(CollisionData* collisionData);
 

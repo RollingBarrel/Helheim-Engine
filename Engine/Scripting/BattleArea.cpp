@@ -91,10 +91,10 @@ void BattleArea::Update()
     }
 }
 
-void BattleArea::DestroyEnemy()
+void BattleArea::EnemyDestroyed()
 {
     --mCurrentEnemies;
-    if (mTotalNumEnemies <= 0)
+    if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0)
     {
         ActivateArea(false);
         return;
@@ -123,6 +123,11 @@ inline void BattleArea::ActivateArea(bool activate)
         mEnemySpawner4->Active(activate);
     }
  
+    if (!activate)
+    {
+        //SANITY HERE
+        LOG("Sanity");
+    }
 }
 
 

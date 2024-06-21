@@ -9,7 +9,7 @@ ObjectPool::ObjectPool(const char* name, unsigned int size)
 	GameObject* prefab = App->GetScene()->InstantiatePrefab(name);
 	mObjects.push_back(prefab);
 
-	for (unsigned int i = 1; i < mObjects.size(); ++i)
+	for (unsigned int i = 1; i < size; ++i)
 	{
 		mObjects.push_back(new GameObject(*prefab, App->GetScene()->GetRoot()));
 	}
@@ -32,7 +32,7 @@ GameObject* ObjectPool::GetObject()
 
 	if (!mObjects.empty())
 	{
-		assert("MORE OBJECTS NEEDED IN THE POOL");
+		assert(false && "MORE OBJECTS NEEDED IN THE POOL");
 		GameObject* newGameObject = new GameObject(*mObjects[0], App->GetScene()->GetRoot());
 		mObjects.push_back(newGameObject);
 		return newGameObject;

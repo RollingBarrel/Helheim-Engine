@@ -56,7 +56,7 @@ void Enemy::Death()
     BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
     if (activeBattleArea)
     {
-        activeBattleArea->DestroyEnemy();
+        activeBattleArea->EnemyDestroyed();
     }
 
     DropItem();
