@@ -1,5 +1,5 @@
 #pragma once
-
+// Link to design
 //https://www.figma.com/design/J6S4FzW8Yn38GOiMe7XdYm/GAME_UI?node-id=625-249&t=mL60BsxKQdYvFkMC-0
 
 #include <Script.h>
@@ -9,8 +9,11 @@ class ButtonComponent;
 class SliderComponent;
 class TextComponent;
 class ImageComponent;
+class PlayerController;
+class Sanity;
+enum class EnergyType;
 
-enum SCREEN {
+enum class SCREEN {
     LOAD,
     LOSE,
     WIN,
@@ -26,21 +29,21 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(int energy);
-    void SetEnergyColor(float3 color);
-    void SetEnergyTextColor(float3 color);
+    void SetEnergy(int energy, EnergyType type);
     void SetHealth(float health);
+    void SetMaxHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);
 
     SliderComponent* mHealthGradualSlider = nullptr;
+
+    void SetSanity();
 private:
     HudController(GameObject* owner);
     ~HudController();
 
     void Loading();
-    void Controls();
     bool Delay(float delay);
 
     void OnWinButtonClick();
@@ -82,6 +85,7 @@ private:
     GameObject* mGrenadeSliderGO = nullptr;
     GameObject* mEnergyGO = nullptr;
     GameObject* mEnergyImageGO = nullptr;
+    GameObject* mFeedbackGO = nullptr;
 
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
@@ -90,6 +94,7 @@ private:
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
+    ImageComponent* mFeedbackImage = nullptr;
 
     float mTargetHealth = 1;
 
@@ -102,4 +107,9 @@ private:
 
     float mGrenadeCooldown = 0.0f;
     float mGrenadeTimer = 0.0f;
+
+    // Sanity
+    GameObject* mSanityGO = nullptr;
+    Sanity* mSanity = nullptr;
+    int mArenaCounter = 0;
 };

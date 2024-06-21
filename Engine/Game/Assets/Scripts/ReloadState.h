@@ -4,7 +4,7 @@
 class ReloadState : public State
 {
 public:
-	explicit ReloadState(PlayerController* player);
+	explicit ReloadState(PlayerController* player, float cooldown);
 	~ReloadState();
 
 	StateType HandleInput() override;
@@ -15,10 +15,8 @@ public:
 
 	StateType GetType() override;
 
+	bool IsReady() override;
+
 private:
-
-	void PlayAudio() override;
-
-	float mReloadTimer = 0;
-	bool mReloaded = false;
+	float mReloadTimer = 0.0f;
 };

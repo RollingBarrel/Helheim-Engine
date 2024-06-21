@@ -7,7 +7,7 @@
 class MoveState : public State
 {
 public:
-	explicit MoveState(PlayerController* player);
+	explicit MoveState(PlayerController* player, float cooldown);
 	~MoveState();
 
 	StateType HandleInput() override;
@@ -20,8 +20,7 @@ public:
 
 private:
 	void DoAnimation();
-
-	void PlayAudio() override;
+	void PlayAudio();
 
 	float2 SetMovingDirection();
 

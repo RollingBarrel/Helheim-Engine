@@ -369,9 +369,6 @@
     <ClCompile Include="ModuleWindow.cpp">
       <Filter>Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Quadtree.cpp">
-      <Filter>Utils</Filter>
-    </ClCompile>
     <ClCompile Include="Script.cpp">
       <Filter>Utils\Scripting</Filter>
     </ClCompile>
@@ -1021,9 +1018,6 @@
     </ClInclude>
     <ClInclude Include="ModuleWindow.h">
       <Filter>Modules</Filter>
-    </ClInclude>
-    <ClInclude Include="Quadtree.h">
-      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Application.h">
       <Filter>Core</Filter>
@@ -2065,7 +2059,10 @@
     <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl">
+    <None Include="..\Game\Assets\Shaders\SelectComands.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SelectSkins.comp">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

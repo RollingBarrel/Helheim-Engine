@@ -4,7 +4,7 @@
 class AimState : public State
 {
 public:
-	explicit AimState(PlayerController* player);
+	explicit AimState(PlayerController* player, float cooldown);
 	~AimState();
 
 	StateType HandleInput() override;
@@ -15,12 +15,8 @@ public:
 
 	StateType GetType() override;
 
-	void PlayAudio() override;
-
 private:
-	//float mAttackTimer = 0.0f;	Moved to attack state
-
-	//The other timers should go in their own class also?
+	float mAttackTimer = 0.0f;
 	float mSpecialAttackTimer = 0.0f;
 	float mGrenadeTimer = 0.0f;
 	float mSwitchTimer = 0.0f;

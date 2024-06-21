@@ -28,7 +28,6 @@ CREATE(EnemyExplosive)
 EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
 {
     mHealth = 15;
-
 }
 
 void EnemyExplosive::Start()

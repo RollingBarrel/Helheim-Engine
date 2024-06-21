@@ -402,7 +402,6 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 					mStateMachine = resSM->GetStateMachine();
 					mStateMachine->SetUID(resSM->GetUID());
 					App->GetResource()->ReleaseResource(resSM->GetUID());
-
 				}
 				else
 				{

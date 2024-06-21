@@ -4,7 +4,7 @@
 class GrenadeState : public State
 {
 public:
-	explicit GrenadeState(PlayerController* player);
+	explicit GrenadeState(PlayerController* player, float cooldown);
 	~GrenadeState();
 
 	StateType HandleInput() override;
@@ -16,7 +16,5 @@ public:
 	StateType GetType() override;
 
 private:
-
-	void PlayAudio() override;
-
+	bool mThrowGrenade = false;
 };

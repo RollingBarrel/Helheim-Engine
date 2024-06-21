@@ -27,6 +27,7 @@ public:
 	void RefreshBoundingBoxes();
 	const OBB& GetOBB() const { return mOBB; }
 	const AABB& GetAABB() const { return mAABB; }
+	const AABB& GetOriginalAABB() const { return mOriginalAABB; }
 	const AABB& GetAABBWorld() const { return mAABBWorld; }
 
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
@@ -42,7 +43,7 @@ public:
 
 	void Enable() override;
 	void Disable() override;
-
+	
 
 private:
 	void Save(JsonObject& obj) const override;
@@ -54,6 +55,7 @@ private:
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;
 
+	OBB mLocalOBB;
 	OBB mOBB;
 	AABB mAABB;
 	AABB mOriginalAABB;

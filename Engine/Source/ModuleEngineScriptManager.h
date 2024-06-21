@@ -18,7 +18,6 @@ public:
 	update_status Update(float dt) override;
 	
 	void Pause(bool pause);
-	void StartScripts() override;
 
 private:
 	void UpdateScripts();
@@ -27,5 +26,6 @@ private:
 	void SaveOldScript(std::vector<std::vector<std::pair<Member, void*>>>& oldScripts);
 	int64_t mLastModificationTime = 0;
 	bool mPause = false;
+	float mUpdateScriptsTimer = 0.0f;
 };
 

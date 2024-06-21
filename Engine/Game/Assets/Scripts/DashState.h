@@ -4,7 +4,7 @@
 class DashState : public State
 {
 public:
-	explicit DashState(PlayerController* player);
+	explicit DashState(PlayerController* player, float cooldown);
 	~DashState();
 
 	StateType HandleInput() override;
@@ -16,9 +16,6 @@ public:
 	StateType GetType() override;
 
 private:
-
-	void PlayAudio() override;
-
 	float mDashTimer = 0.0f;
 	float mDashDuration = 0.5f;
 };

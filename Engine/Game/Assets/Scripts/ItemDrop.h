@@ -6,7 +6,7 @@
 GENERATE_BODY(ItemDrop);
 
 class AnimationComponent;
-enum class BatteryType;
+enum class EnergyType;
 
 class ItemDrop : public Script
 {

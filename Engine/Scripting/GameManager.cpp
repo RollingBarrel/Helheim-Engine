@@ -8,6 +8,8 @@
 #include "Keys.h"
 #include "ScriptComponent.h"
 #include "HudController.h"
+#include "PlayerController.h"
+#include "EnemyPool.h"
 
 CREATE(GameManager)
 {
@@ -16,6 +18,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyPool);
     END_CREATE;
 }
 
@@ -39,6 +42,7 @@ GameManager::~GameManager()
 
 void GameManager::Awake()
 {
+    assert(!mInstance);
     mInstance = this;
 }
 
@@ -50,6 +54,12 @@ void GameManager::Start()
         mHudController = static_cast<HudController*>(script->GetScriptInstance());
     }
 
+    if (mPlayer)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT));
+        mPlayerController = static_cast<PlayerController*>(script->GetScriptInstance());
+    }
+    
     if (mAudioManagerGO)
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));

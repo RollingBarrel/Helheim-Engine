@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"
+#include "AnimationComponent.h"
 #include "Physics.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
@@ -15,8 +16,8 @@ CREATE(EnemyRobot){
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::INT, mShieldDropRate);
+    MEMBER(MemberType::FLOAT, mChaseDelay);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);
@@ -34,18 +35,6 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
-void EnemyRobot::Start()
-{
-    Enemy::Start();
-
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
-    }
-
-    
-}
 
 void EnemyRobot::Update()
 {
@@ -75,6 +64,36 @@ void EnemyRobot::Update()
     mBeAttracted = false;
 }
 
+void EnemyRobot::Start()
+{
+    Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mStateMachine = mAnimationComponent->GetStateMachine();
+
+    }
+    if (mStateMachine)
+    {
+        std::string clip = "Character";
+
+        std::string defaultState = "default";
+        std::string sIdle = "Idle";
+        std::string sWalkForward = "Walk Forward";
+        std::string sAttack = "Attack";
+
+
+        std::string idleTrigger = "tIdle";
+        std::string forwardTrigger = "tWalkForward";
+        std::string attackTrigger = "tAttack";
+
+    }
+}
+
+
 void EnemyRobot::Idle()
 {
     
@@ -82,6 +101,8 @@ void EnemyRobot::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAnimationComponent->SendTrigger("tWalkForward", 0.2f);
     }
 }
 
@@ -92,15 +113,29 @@ void EnemyRobot::Chase()
     float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
     {
-        AIAgentComponent* agentComponent = (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
-        if (agentComponent)
+        if (mAiAgentComponent)
         {
-            agentComponent->MoveAgent(mPlayer->GetPosition(), mSpeed);
-            float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
-            direction.y = 0;
-            direction.Normalize();
-            float angle = std::atan2(direction.x, direction.z);
-            mGameObject->SetRotation(float3(0, angle, 0));
+            if(Delay(mChaseDelay)) 
+            {
+                mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+                float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
+                direction.y = 0;
+                direction.Normalize();
+                float angle = std::atan2(direction.x, direction.z);;
+
+                if (mGameObject->GetRotation().y != angle)
+                {
+                    mGameObject->SetRotation(float3(0, angle, 0));
+
+                }
+
+            }
+             
+
+
+
+            mAiAgentComponent->MoveAgent(mSpeed);
+
         }
         switch (mType)
         {
@@ -145,6 +180,8 @@ void EnemyRobot::Attack()
     {
 
         mCurrentState = EnemyState::CHASE;
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAnimationComponent->SendTrigger("tWalkForward", 0.3f);
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange) 
@@ -213,12 +250,4 @@ void EnemyRobot::RangeAttack()
                 }
             }
         }
-}
-
-void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
-{
-    if (collisionData->collidedWith->GetName().find("Bullet") != std::string::npos)
-    {
-        TakeDamage(1.0f);
-    }
 }

@@ -35,7 +35,7 @@ enum class BattleSituation
     DEATH
 };
 
-enum class BatteryType 
+enum class EnergyType 
 {
     NONE,
     BLUE,
@@ -61,7 +61,6 @@ public:
    
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
-    void PlayOneShot(std::string name);
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
@@ -73,20 +72,28 @@ public:
     float GetDashRange() const { return mDashRange; }
     float GetGrenadeCooldown() const { return mGrenadeCoolDown; }
     float GetGrenadeRange() const { return mGrenadeRange;  }
-    float GetAttackCooldown() const { return mAttackCoolDown; }
-    float GetSlowAttackCooldown() const { return mSlowAttackCoolDown; }
-    float GetSpecialAttackCooldown() const { return mSpecialAttackCoolDown; }
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
+    float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
+
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
-    float GetCurrentBattery() const { return mCurrentBattery; }
-    BatteryType GetBatteryType() const { return mBatteryType; }
-    const State* GetPlayerUpperState() const { return mUpperState; }
+    int GetCurrentEnergy() const { return mCurrentEnergy; }
+    EnergyType GetEnergyType() const { return mEnergyType; }
 
+    void SetMovementSpeed(float percentage) { mPlayerSpeed *= percentage; }
+    void SetWeaponDamage(float percentage); 
+    void SetMaxShield(float percentage); 
+
+    State* GetPlayerLowerState() const { return mLowerState; }
+    State* GetPlayerUpperState() const { return mUpperState; }
+
+    void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
+
+    // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
     void SetGrenadeRange(float value) { mGrenadeRange = value; }
     void SetGrenadeVisuals(bool value);
@@ -96,38 +103,47 @@ public:
     bool CanReload() const;
     void Reload() const;
     
-    // --------------- OLD ----------------------
-
     void RechargeShield(float shield);
-    void RechargeBattery(BatteryType batteryType);
-    void UseEnergy(float energy);
     void TakeDamage(float damage);
 
-    BattleSituation GetBattleSituation() { return mCurrentSituation; };
+    void RechargeBattery(EnergyType batteryType);
+    void UseEnergy(int energy);
+
+    // States
+    DashState* GetDashState() { return mDashState; }
+    IdleState* GetIdleState() { return mIdleState; }
+    MoveState* GetMoveState() { return mMoveState; }
+    AimState* GetAimState() { return mAimState; }
+    AttackState* GetAttackState() { return mAttackState; }
+    GrenadeState* GetGrenadeState() { return mGrenadeState; }
+    SwitchState* GetSwitchState() { return mSwitchState; }
+    SpecialState* GetSpecialState() { return mSpecialState; }
+    ReloadState* GetReloadState() { return mReloadState; }
 
 private:
     void CheckInput();
     void StateMachine();
     void HandleRotation();
     void CheckDebugOptions();
+    void OnCollisionEnter(CollisionData* collisionData);
 
     // STATES
     State* mLowerState = nullptr;
     StateType mLowerStateType;
 
-    DashState* mDashState;
-    IdleState* mIdleState;
-    MoveState* mMoveState;
+    DashState* mDashState = nullptr;
+    IdleState* mIdleState = nullptr;
+    MoveState* mMoveState = nullptr;
 
     State* mUpperState = nullptr;
     StateType mUpperStateType;
 
-    AimState* mAimState;
-    AttackState* mAttackState;
-    GrenadeState* mGrenadeState;
-    SwitchState* mSwitchState;
-    SpecialState* mSpecialState;
-    ReloadState* mReloadState;
+    AimState* mAimState = nullptr;
+    AttackState* mAttackState = nullptr;
+    GrenadeState* mGrenadeState = nullptr;
+    SwitchState* mSwitchState = nullptr;
+    SpecialState* mSpecialState = nullptr;
+    ReloadState* mReloadState = nullptr;
 
     // MOUSE
     float3 mPlayerDirection;
@@ -151,8 +167,8 @@ private:
     // WEAPONS
     Weapon* mWeapon = nullptr;
     Weapon* mSpecialWeapon = nullptr;
-    float mCurrentBattery = 0.0f;
-    BatteryType mBatteryType = BatteryType::NONE;
+    int mCurrentEnergy = 0;
+    EnergyType mEnergyType = EnergyType::NONE;
 
     // RANGED
     Weapon* mPistol = nullptr;
@@ -163,13 +179,13 @@ private:
     Weapon* mBat = nullptr;
     Weapon* mKatana = nullptr;
     Weapon* mHammer = nullptr;
+    GameObject* mMeleeCollider = nullptr;
 
     // Attack
-    float mAttackCoolDown = 0.1f;
-    float mSlowAttackCoolDown = 0.5f;
-    float mSpecialAttackCoolDown = 5.0f;
     float mSwitchCoolDown = 0.2f;
+    float mSwitchDuration = 0.2f;
     float mReloadDuration = 0.5;
+
     // Grenade
     float mGrenadeCoolDown = 5.0f;
     float mGrenadeRange = 5.0f;
@@ -178,26 +194,20 @@ private:
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeAimAreaGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+    
+    // Collider
+    BoxColliderComponent* mCollider = nullptr;
+
+    // Camera
+    GameObject* mCamera = nullptr;
+
+    // Debug
+    bool mGodMode = false;
 
     // -------- PROVISIONAL --------
 
-    // AUIDO
-    // Footstep
-    GameObject* mFootStepAudioHolder = nullptr;
-    AudioSourceComponent* mFootStepAudio = nullptr;
-    // Gunfire
-    GameObject* mGunfireAudioHolder = nullptr;
-    AudioSourceComponent* mGunfireAudio = nullptr;
-
-    void OnCollisionEnter(CollisionData* collisionData);
     void UpdateBattleSituation();
-
-
-    bool mGodMode = false;
-
-    GameObject* mCamera = nullptr;
-
-    BoxColliderComponent* mCollider = nullptr;
+    BattleSituation GetBattleSituation() { return mCurrentSituation; };
 
     BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
     float mBattleStateTransitionTime = 0.0f;
