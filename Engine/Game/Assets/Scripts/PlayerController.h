@@ -162,14 +162,14 @@ private:
     EnergyType mEnergyType = EnergyType::NONE;
 
     // RANGED
-    Weapon* mPistol = nullptr;
-    Weapon* mMachinegun = nullptr;
-    Weapon* mShootgun = nullptr;
+    RangeWeapon* mPistol = nullptr;
+    RangeWeapon* mMachinegun = nullptr;
+    RangeWeapon* mShootgun = nullptr;
 
     // MELEE
-    Weapon* mBat = nullptr;
-    Weapon* mKatana = nullptr;
-    Weapon* mHammer = nullptr;
+    MeleeWeapon* mBat = nullptr;
+    MeleeWeapon* mKatana = nullptr;
+    MeleeWeapon* mHammer = nullptr;
     GameObject* mMeleeCollider = nullptr;
 
     // Attack

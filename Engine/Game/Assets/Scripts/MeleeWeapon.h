@@ -9,6 +9,8 @@ public:
 	MeleeWeapon();
 	~MeleeWeapon();
 
+	float GetAttackTime() override;
+
 	void IncreaseComboStep();
 	void MeleeHit();
 

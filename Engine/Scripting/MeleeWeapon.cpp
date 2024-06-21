@@ -10,6 +10,18 @@ MeleeWeapon::~MeleeWeapon()
 {
 }
 
+float MeleeWeapon::GetAttackTime()
+{
+    switch (mComboStep)
+    {
+    case 1: mAttackTime = mComboMilestone1; break;
+    case 2: mAttackTime = mComboMilestone2; break;
+    case 3: mAttackTime = mComboDuration; break;
+    default: break;
+    }
+    return mAttackTime;
+}
+
 void MeleeWeapon::IncreaseComboStep()
 {
     mNextComboStep = mComboStep + 1;

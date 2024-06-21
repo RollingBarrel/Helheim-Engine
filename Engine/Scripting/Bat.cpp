@@ -75,11 +75,12 @@ void Bat::Attack(float time)
     // - Damage to enemies inside the hitbox
     // LOG("MELEE ATTACK!!")
     if (mCollider->IsEnabled()) mCollider->SetEnable(false);
+    LOG("MELEE: %f", time)
 
 
     if (time > mComboMilestone1 and mComboStep == 1)
     {
-        LOG("MELEE ATTACK 1!!")
+        LOG("MELEE: ATTACK 1!!")
         mCollider->SetEnable(true);
         // DealDamage();
         if (mNextComboStep == 2)
