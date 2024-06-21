@@ -32,19 +32,25 @@ void BattleArea::Start()
 {
     if (mSpawnerGO1)
     {
-        mEnemySpawner1 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT)));
+        mEnemySpawner1 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
     if (mSpawnerGO2)
     {
-        mEnemySpawner2 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO2->GetComponent(ComponentType::SCRIPT)));
+        mEnemySpawner2 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
     if (mSpawnerGO3)
     {
-        mEnemySpawner3 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO3->GetComponent(ComponentType::SCRIPT)));
+        mEnemySpawner3 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
     if (mSpawnerGO4)
     {
-        mEnemySpawner4 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT)));
+        mEnemySpawner4 = reinterpret_cast<EnemySpawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    }
+
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
     }
 
 }
@@ -55,23 +61,32 @@ void BattleArea::Update()
     {
             if (mEnemySpawner1 && mCurrentEnemies < mMaxSimulNumEnemies)
             {
-                mEnemySpawner1->Spawn();
-                mCurrentEnemies++;
+                if (mEnemySpawner1->Spawn())
+                {
+                    mCurrentEnemies++;
+                    mTotalNumEnemies--;
+                }
             }
             if (mEnemySpawner2 && mCurrentEnemies < mMaxSimulNumEnemies)
             {
-                mEnemySpawner2->Spawn();
-                mCurrentEnemies++;
+                if (mEnemySpawner2->Spawn())
+                {
+                    mCurrentEnemies++;
+                }
             }
             if (mEnemySpawner3 && mCurrentEnemies < mMaxSimulNumEnemies)
             {
-                mEnemySpawner3->Spawn();
-                mCurrentEnemies++;
+                if (mEnemySpawner3->Spawn())
+                {
+                    mCurrentEnemies++;
+                }
             }
             if (mEnemySpawner4 && mCurrentEnemies < mMaxSimulNumEnemies)
             {
-                mEnemySpawner4->Spawn();
-                mCurrentEnemies++;
+                if (mEnemySpawner4->Spawn())
+                {
+                    mCurrentEnemies++;
+                }
             }
     }
 }
@@ -79,20 +94,41 @@ void BattleArea::Update()
 void BattleArea::DestroyEnemy()
 {
     --mCurrentEnemies;
-    --mTotalNumEnemies;
-    if (mTotalNumEnemies != 0)
+    if (mTotalNumEnemies <= 0)
     {
-        mIsActive = false;
+        ActivateArea(false);
         return;
     }
 
     LOG("REMAINING ENEMIES: %i", mTotalNumEnemies);
 }
 
+inline void BattleArea::ActivateArea(bool activate) 
+{ 
+    mIsActive = activate;
+    if (mEnemySpawner1)
+    {
+        mEnemySpawner1->Active(activate);
+    }
+    if (mEnemySpawner2)
+    {
+        mEnemySpawner2->Active(activate);
+    }
+    if (mEnemySpawner3)
+    {
+        mEnemySpawner3->Active(activate);
+    }
+    if (mEnemySpawner4)
+    {
+        mEnemySpawner4->Active(activate);
+    }
+ 
+}
+
 
 void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetTag().compare("Player") == 0)
+    if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mIsActive)
     {
         GameManager::GetInstance()->SetActiveBattleArea(this);
         ActivateArea(true);

@@ -18,7 +18,8 @@ EnemySpawner::EnemySpawner(GameObject* owner) : Script(owner) {}
 
 void EnemySpawner::Start()
 {
-
+	mEnemyPool = reinterpret_cast<EnemyPool*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetEnemyPool()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+	LOG("fds");
 }
 
 void EnemySpawner::Update()
@@ -29,23 +30,25 @@ void EnemySpawner::Update()
 	}
 }
 
-void EnemySpawner::Spawn()
+bool EnemySpawner::Spawn()
 {
 	if (mIsActive)
 	{
 		if (mLastSpawnTime >= mSpawnRate)
 		{
-			GameObject* enemy = GameManager::GetInstance()->GetEnemyPool()->GetEnemy(mEnemyType);
+			GameObject* enemy = mEnemyPool->GetEnemy(mEnemyType);
 			if (enemy)
 			{
-				ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
-				Enemy* enemyScript = static_cast<Enemy*>(script->GetScriptInstance());
+				ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
+				Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
 				enemyScript->Reset();
 				enemy->SetPosition(mGameObject->GetPosition());
 				enemy->SetEnabled(true);
 
 				mLastSpawnTime = 0.0f;
+				return true;
 			}
 		}
 	}
+	return false;
 }
