@@ -45,10 +45,16 @@ TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
     LoadFont("Assets\\Fonts\\Akshar-Regular.ttf");
 }
 
-TextComponent::~TextComponent() 
+TextComponent::~TextComponent()
 {
+    // Clean up OpenGL buffers
     glDeleteBuffers(1, &mQuadVBO);
     glDeleteVertexArrays(1, &mQuadVAO);
+
+    // Clean up textures for each character
+    for (auto& pair : mCharacters) {
+        glDeleteTextures(1, &pair.second.TextureID);
+    }
 }
 
 Component* TextComponent::Clone(GameObject* owner) const
