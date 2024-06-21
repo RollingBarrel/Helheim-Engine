@@ -1,0 +1,45 @@
+#version 460 core
+
+struct Box
+{
+	vec3 points[8];
+};
+layout(std430, binding = 17) readonly buffer AnimOBBS
+{
+	Box OBBs[];
+};
+layout(std430, binding = 18) readonly buffer Frustums {vec4 frustumPlanes[];};
+layout(std430, binding = 16) writeonly buffer IndirectBuffer { uvec3 DispatchGroupSizes[];};
+layout(location = 0) uniform uint numAnimations;
+layout(location = 1) uniform uint numFrustums;
+
+layout(local_size_x = 64, local_size_y = 1, local_size_z = 1) in;
+void main()
+{
+	if(gl_GlobalInvocationID.x < numAnimations) 
+    {
+		bool inOneFrustum = false;
+		Box obb = OBBs[gl_GlobalInvocationID.x];
+		for(uint j = 0; j<numFrustums; ++j)
+		{
+			for(uint i = 0; i<6; ++i)
+			{
+				vec4 currPlane = frustumPlanes[j*6+i];
+				for(uint k = 0; k<8; ++k)
+				{
+					if((dot(currPlane.xyz, obb.points[k]) - currPlane.w) < 0.0)
+					{
+						inOneFrustum = true;
+						break;
+					}
+				}
+				if(inOneFrustum)
+					break;
+			}
+			if(inOneFrustum)
+				break;
+		}
+		if(!inOneFrustum)
+			DispatchGroupSizes[gl_GlobalInvocationID.x].xyz = uvec3(0);
+	}
+}

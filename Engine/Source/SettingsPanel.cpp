@@ -29,7 +29,6 @@ void SettingsPanel::Draw(int windowFlags)
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags)) 
 	{
 		//Config settings update
-		mCulling = EngineApp->GetScene()->GetApplyFrustumCulling();
 		mEngineVsyncEnabled = EngineApp->GetEngineClock()->GetVsyncStatus();
 		mGameVsyncEnabled = EngineApp->GetGameClock()->GetVsyncStatus();
 		mEngineFpsLimitEnabled = EngineApp->GetEngineClock()->IsFpsLimitEnabled();
@@ -48,10 +47,6 @@ void SettingsPanel::Draw(int windowFlags)
 		if(ImGui::CollapsingHeader("Graphics"))
 		{
 			ImGui::SeparatorText("Graphic settings");
-			if (ImGui::Checkbox("EngineApply frustum culling", &mCulling))
-			{
-				EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
-			}
 			ImGui::Indent();
 			ImGui::SeparatorText("Engine");
 			ImGui::Checkbox("Engine Vsync enabled", &mEngineVsyncEnabled);
@@ -137,7 +132,6 @@ void SettingsPanel::SaveUserSettings() const
 	JsonObject root = doc.GetRootObject();
 	JsonObject engine = root.AddNewJsonObject("Engine Settings");
 	engine.AddBool("Draw Grid", mGrid);
-	engine.AddBool("Frustum Culling", mCulling);
 	engine.AddBool("Vsync", mEngineVsyncEnabled);
 	engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
 	engine.AddFloat("FPS Limit", mEngineFpsLimit);
@@ -171,8 +165,6 @@ void SettingsPanel::LoadUserSettings()
 		JsonObject engine = root.GetJsonObject("Engine Settings");
 		mGrid = engine.GetBool("Draw Grid");
 		EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
-		mCulling = engine.GetBool("Frustum Culling");
-		EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
 		mEngineVsyncEnabled = engine.GetBool("Vsync");
 		EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
 		mEngineFpsLimitEnabled = engine.GetBool("Enable FPS Limit");
