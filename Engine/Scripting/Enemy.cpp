@@ -52,7 +52,13 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    GameManager::GetInstance()->GetActiveBattleArea()->DestroyEnemy();
+
+    BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+    if (activeBattleArea)
+    {
+        activeBattleArea->DestroyEnemy();
+    }
+
     DropItem();
 }
 
