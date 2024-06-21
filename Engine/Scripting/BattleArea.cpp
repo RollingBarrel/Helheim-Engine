@@ -4,7 +4,7 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "EnemySpawner.h"
-
+#include "HudController.h"
 
 CREATE(BattleArea)
 {
@@ -125,7 +125,7 @@ inline void BattleArea::ActivateArea(bool activate)
  
     if (!activate)
     {
-        //SANITY HERE
+        GameManager::GetInstance()->GetHud()->SetSanity();
         LOG("Sanity");
     }
 }

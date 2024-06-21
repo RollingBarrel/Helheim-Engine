@@ -38,6 +38,7 @@ void Sanity::Start()
     {
         const std::vector<GameObject*> children1 = mCard1GO->GetChildren();
         mCard1Image = static_cast<ImageComponent*>(mCard1GO->GetComponent(ComponentType::IMAGE));
+        mCard1Image->SetAlpha(0.7f);
         mCard1TitleText = static_cast<TextComponent*>(children1[0]->GetComponent(ComponentType::TEXT));
         mCard1BuffImage = static_cast<ImageComponent*>(children1[1]->GetComponent(ComponentType::IMAGE));
         mCard1Text = static_cast<TextComponent*>(children1[2]->GetComponent(ComponentType::TEXT));
@@ -51,6 +52,7 @@ void Sanity::Start()
     {
         const std::vector<GameObject*> children2 = mCard2GO->GetChildren();
         mCard2Image = static_cast<ImageComponent*>(mCard2GO->GetComponent(ComponentType::IMAGE));
+        mCard2Image->SetAlpha(0.7f);
         mCard2TitleText = static_cast<TextComponent*>(children2[0]->GetComponent(ComponentType::TEXT));
         mCard2BuffImage = static_cast<ImageComponent*>(children2[1]->GetComponent(ComponentType::IMAGE));
         mCard2Text = static_cast<TextComponent*>(children2[2]->GetComponent(ComponentType::TEXT));
@@ -64,6 +66,7 @@ void Sanity::Start()
     {
         const std::vector<GameObject*> children3 = mCard3GO->GetChildren();
         mCard3Image = static_cast<ImageComponent*>(mCard3GO->GetComponent(ComponentType::IMAGE));
+        mCard3Image->SetAlpha(0.7f);
         mCard3TitleText = static_cast<TextComponent*>(children3[0]->GetComponent(ComponentType::TEXT));
         mCard3BuffImage = static_cast<ImageComponent*>(children3[1]->GetComponent(ComponentType::IMAGE));
         mCard3Text = static_cast<TextComponent*>(children3[2]->GetComponent(ComponentType::TEXT));
@@ -92,7 +95,7 @@ void Sanity::CreateSelection(int arena)
         Buff buff1 = mCurrentBuffs[0];
         mCard1TitleText->SetText(GetBuffTitle(buff1));
         mCard1Text->SetText(GetBuffDescription(buff1));
-        mCard1BuffImage->SetImage(GetImage(buff1));
+        //mCard1BuffImage->SetImage(GetImage(buff1));
     }
 
     // Card 2
@@ -101,7 +104,7 @@ void Sanity::CreateSelection(int arena)
         Buff buff2 = mCurrentBuffs[1];
         mCard2TitleText->SetText(GetBuffTitle(buff2));
         mCard2Text->SetText(GetBuffDescription(buff2));
-        mCard2BuffImage->SetImage(GetImage(buff2));
+        //mCard2BuffImage->SetImage(GetImage(buff2));
     }
 
     // Card 3
@@ -110,7 +113,7 @@ void Sanity::CreateSelection(int arena)
         Buff buff3 = mCurrentBuffs[2];
         mCard3TitleText->SetText(GetBuffTitle(buff3));
         mCard3Text->SetText(GetBuffDescription(buff3));
-        mCard3BuffImage->SetImage(GetImage(buff3));
+        //mCard3BuffImage->SetImage(GetImage(buff3));
     }
 }
 
@@ -131,7 +134,7 @@ std::string Sanity::GetBuffTitle(const Buff& buff)
 
 std::string Sanity::GetBuffDescription(const Buff& buff)
 {
-    switch (buff.getStatType()) 
+    switch (buff.getStatType())
     {
         case Buff::StatType::MOVEMENT:
             return "Increases movement speed by " + std::to_string(buff.getValue()) + "%";
@@ -181,6 +184,8 @@ void Sanity::OnCard1Click()
 {
     if (!mCurrentBuffs.empty())
         mCurrentBuffs.at(0).Consume();
+
+    mGameObject->SetEnabled(false);
 }
 
 void Sanity::OnCard1HoverOn()
@@ -199,6 +204,8 @@ void Sanity::OnCard2Click()
 {
     if (mCurrentBuffs.size() > 1)
         mCurrentBuffs.at(1).Consume();
+
+    mGameObject->SetEnabled(false);
 }
 
 void Sanity::OnCard2HoverOn()
@@ -217,6 +224,8 @@ void Sanity::OnCard3Click()
 {
     if (mCurrentBuffs.size() > 2)
         mCurrentBuffs.at(2).Consume();
+
+    mGameObject->SetEnabled(false);
 }
 
 void Sanity::OnCard3HoverOn()
