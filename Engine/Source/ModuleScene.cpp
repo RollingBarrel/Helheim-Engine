@@ -355,7 +355,6 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 	
 		ret = mSceneGO[currSize];
 
-		mRoot->RecalculateMatrices();
 		App->GetScriptManager()->AwakeGameObjectScripts(ret);
 		
 		if (App->IsPlayMode())
