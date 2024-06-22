@@ -37,13 +37,17 @@ public:
     void SetPaused(bool value);
 
     void LoadLevel(const char* LevelName);
-    void SetActiveBattleArea(BattleArea* activeArea) { mActiveBattleArea = activeArea; }
+    void SetActiveBattleArea(BattleArea* activeArea);
 
     void Victory();
     void GameOver();
 
 private:
+    void StartAudio();
+    void HandleAudio();
+    void EndAudio();
 
+    void HandleLevel1Audio();
 
     static GameManager* mInstance;
     
@@ -61,4 +65,7 @@ private:
     bool mPaused = false;
 
     bool mController = false;
+
+    int mBackgroundAudioID = -1;
+    int mLastAudioID = -1;
 };

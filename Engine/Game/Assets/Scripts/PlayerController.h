@@ -75,6 +75,7 @@ public:
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
+    int GetShieldPercetage() const { return static_cast<int>(mShield / mMaxShield) * 100.0f;}
 
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
