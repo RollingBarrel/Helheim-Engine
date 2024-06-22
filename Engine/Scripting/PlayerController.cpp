@@ -139,7 +139,7 @@ void PlayerController::Start()
     mKatana = new Katana();
     mHammer = new Hammer();
 
-    mWeapon = mPistol;
+    mWeapon = mMachinegun;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     mSpecialWeapon = nullptr;
 

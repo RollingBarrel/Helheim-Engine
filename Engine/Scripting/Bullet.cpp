@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include <TrailComponent.h>
 
 CREATE(Bullet)
 {
@@ -32,7 +33,7 @@ void Bullet::Start()
 	mHitParticles = *(mGameObject->GetChildren().begin());
 	if (mHitParticles)
 	{
-		//mHitParticles->SetEnabled(false);
+		mHitParticles->SetEnabled(false);
 	}
 
 }
@@ -61,7 +62,7 @@ void Bullet::Update()
 	}
 }
 
-void Bullet::Init(float3 position, float3 direction, float speed , float size)
+void Bullet::Init(const float3& position, const float3& direction, float speed, float size,  ColorGradient* gradient)
 {
 	mTotalMovement = 0;
 
@@ -69,6 +70,19 @@ void Bullet::Init(float3 position, float3 direction, float speed , float size)
 	mGameObject->SetScale(float3(size, size, size));
 	mDirection = direction;
 	mSpeed = speed;
+
+	
+
+	mHitParticles = *(mGameObject->GetChildren().begin());
+	if (mHitParticles)
+	{
+		mHitParticles->SetEnabled(true);
+		if (gradient)
+		{
+			reinterpret_cast<TrailComponent*>(mHitParticles->GetComponent(ComponentType::TRAIL))->SetColorGradient(*gradient);
+		}
+	}
+
 }
 
 
