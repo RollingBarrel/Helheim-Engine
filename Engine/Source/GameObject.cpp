@@ -120,10 +120,6 @@ void GameObject::Update()
 {
 	if (IsActive())
 	{
-		if (mIsTransformModified)
-		{
-			RecalculateMatrices();
-		}
 		for (size_t i = 0; i < mComponents.size(); i++)
 		{
 			mComponents[i]->Update();
@@ -133,12 +129,15 @@ void GameObject::Update()
 		{
 			mChildren[i]->Update();
 		}
-		mIsTransformModified = false;
 	}
 
 	if (mComponentsToDelete.size() > 0)
 	{
 		DeleteComponents();
+	}
+	if (mUpdatedTransform)
+	{
+		mUpdatedTransform = false;
 	}
 }
 
@@ -177,8 +176,18 @@ void GameObject::SetParent(GameObject* newParent)
 	mParent->RemoveChild(mUid);
 	mParent = newParent;
 	mParent->AddChild(this);
+	if (mParent->GetWorldTransform().Determinant4() != 0)
+	{
+		mLocalTransformMatrix = mParent->GetWorldTransform().Inverted().Mul(GetWorldTransform());
+	}
+	else
+	{
+		mLocalTransformMatrix = float4x4::identity;
+	}
+	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
+	mLocalEulerAngles = mLocalRotation.ToEulerXYZ();
+	SetTransformsDirtyFlag();
 
-	RecalculateMatrices();
 	SetActive(mParent->mIsActive && mIsEnabled);
 }
 
@@ -217,38 +226,55 @@ void GameObject::SetActive(bool active)
 #pragma endregion
 
 #pragma region Transform
-void GameObject::RecalculateMatrices() //TODO: REDO
+void GameObject::RecalculateMatrices() const
 {
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-
 	mWorldTransformMatrix = mLocalTransformMatrix;
-	if (mParent != nullptr)
+	GameObject* parent = mParent;
+	while (parent != nullptr)
 	{
-		mWorldTransformMatrix = mParent->GetWorldTransform() * mLocalTransformMatrix;
+		mWorldTransformMatrix = parent->GetLocalTransform() * mWorldTransformMatrix;
+		parent = parent->mParent;
 	}
 
 	mFront = (mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized();
 	mUp = (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized();
 	mRight = (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized();
 
-	for (size_t i = 0; i < mChildren.size(); i++)
-	{
-		mChildren[i]->RecalculateMatrices();
-	}
+	mIsTransformModified = false;
+	mUpdatedTransform = true;
+}
 
+void GameObject::SetTransformsDirtyFlag() const
+{
+	//if (mIsTransformModified)
+	//	return;
+
+	for (int i = 0; i < mChildren.size(); ++i)
+	{
+		mChildren[i]->SetTransformsDirtyFlag();
+	}
+	mIsTransformModified = true;
 }
 
 //Position
 void GameObject::SetPosition(const float3& position)
 {
-	mPosition = position;
-	mIsTransformModified = true;
+	float3 pos = position;
+	if (mParent)
+	{
+		assert(mParent->GetWorldTransform().IsInvertible());
+		pos = mParent->GetWorldTransform().Inverted().MulPos(position);
+	}
+	mPosition = pos;
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetLocalPosition(const float3& position)
 {
-	mLocalPosition = position;
-	mIsTransformModified = true;
+	mPosition = position;
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetRotation(const float3& rotationInRadians)
@@ -259,14 +285,26 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 	mRotation = yQuat * xQuat * zQuat;
 
 	mEulerAngles = rotationInRadians;
-	mIsTransformModified = true;
+
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetRotation(const Quat& rotation)
 {
-	mRotation = rotation;
 	mEulerAngles = rotation.ToEulerXYZ();
-	mIsTransformModified = true;
+	if (mParent)
+	{
+		assert(mParent->GetWorldTransform().IsInvertible());
+		mEulerAngles = mParent->GetWorldTransform().Inverted().Mul(rotation).ToEulerXYZ();
+	}
+	math::Quat xQuat = Quat::FromEulerXYZ(mEulerAngles.x, 0, 0);
+	math::Quat yQuat = Quat::FromEulerXYZ(0, mEulerAngles.y, 0);
+	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, mEulerAngles.z);
+	mRotation = yQuat * xQuat * zQuat;
+	//mEulerAngles = rotation.ToEulerXYZ();
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetLocalRotation(const float3& rotationInRadians)
@@ -274,41 +312,39 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 	math::Quat xQuat = Quat::FromEulerXYZ(rotationInRadians.x, 0, 0);
 	math::Quat yQuat = Quat::FromEulerXYZ(0, rotationInRadians.y, 0);
 	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, rotationInRadians.z);
-	mLocalRotation = yQuat * xQuat * zQuat;
+	mRotation = yQuat * xQuat * zQuat;
 
-	mLocalEulerAngles = rotationInRadians;
-	mIsTransformModified = true;
+	mEulerAngles = rotationInRadians;
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
-	mLocalRotation = rotation;
-	mLocalEulerAngles = rotation.ToEulerXYZ();
-	mIsTransformModified = true;
+	mRotation = rotation;
+	mEulerAngles = rotation.ToEulerXYZ();
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetScale(const float3& scale)
 {
-	mScale = scale;
-	mIsTransformModified = true;
+	float3 scalee = scale;
+	if (mParent)
+	{
+		assert(mParent && mParent->GetWorldTransform().IsInvertible());
+		scalee = (mParent->GetWorldTransform().Inverted().Mul(float4(scale, 1.0f))).xyz();
+	}
+	mScale = scalee;
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetLocalScale(const float3& scale)
 {
-	mLocalScale = scale;
-	mIsTransformModified = true;
-}
-
-const bool GameObject::HasUpdatedTransform() const
-{
-	if (!mIsTransformModified && mParent != nullptr)
-	{
-		if (mParent->HasUpdatedTransform())
-		{
-			return true;
-		}
-	}
-	return mIsTransformModified;
+	mScale = scale;
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::Translate(const float3& translation)
@@ -338,14 +374,19 @@ void GameObject::LookAt(const float3& target)
 	mRotation = Quat(rotationMatrix);
 	mEulerAngles = mRotation.ToEulerXYZ();
 
-	mIsTransformModified = true;
+
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 void GameObject::ResetTransform()
 {
-	SetPosition(float3::zero);
-	SetRotation(float3::zero);
-	SetScale(float3::one);
+	mPosition = float3::zero;
+	mRotation = Quat::identity;
+	mEulerAngles = float3(0.0f);
+	mScale = float3::one;
+	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	SetTransformsDirtyFlag();
 }
 
 #pragma endregion
@@ -599,13 +640,13 @@ void GameObject::LoadGameObject(const JsonObject& jsonObject, std::unordered_map
 	}
 
 	jsonObject.GetFloats("Translation", pos);
-	SetPosition(float3(pos));
+	SetLocalPosition(float3(pos));
 	float rot[4]; 
 	jsonObject.GetFloats("Rotation", rot);
-	SetRotation(Quat(rot));
+	SetLocalRotation(Quat(rot));
 	float scale[3]; 
 	jsonObject.GetFloats("Scale", scale);
-	SetScale(float3(scale));
+	SetLocalScale(float3(scale));
 
 	SetTag(jsonObject.GetString("Tag"));
 	mPrefabId = jsonObject.GetInt("PrefabUid");
@@ -632,7 +673,7 @@ void GameObject::LoadComponents(const JsonObject& jsonObject, const std::unorder
 
 void GameObject::AddChild(GameObject* child)
 {
-	mChildren.push_back(child);	
+	mChildren.push_back(child);
 }
 
 GameObject* GameObject::RemoveChild(const int id)

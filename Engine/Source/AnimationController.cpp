@@ -146,8 +146,6 @@ void AnimationController::GetTransform(GameObject* model)
 		}
 
 		else { return; }
-
-		model->RecalculateMatrices();
 	}
 
 }
@@ -212,8 +210,6 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 			}
 
 			else { return; }
-
-			model->RecalculateMatrices();
 		}
 
 	}

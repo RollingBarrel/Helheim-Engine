@@ -46,7 +46,6 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 	gameObject->SetPosition(node.mTranslation);
 	gameObject->SetRotation(node.mRotation);
 	gameObject->SetScale(node.mScale);
-	gameObject->RecalculateMatrices();
 
 	if (isRoot && nodeNumber == 0)
 	{
@@ -332,7 +331,6 @@ void ScenePanel::DrawScene()
 		//If there's a selected object in the hierarchy and it's not the root
 		if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
 		{
-			const float4x4* transform = &selectedGameObject->GetWorldTransform();
 			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
 			//Draws the Guizmo axis

@@ -39,9 +39,9 @@ public:
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	unsigned int GetID() const { return mUid; }
-	const float3& GetFront() const { return mFront; }
-	const float3& GetUp() const { return mUp; }
-	const float3& GetRight() const { return mRight; }
+	const float3& GetFront() const { if (mIsTransformModified) RecalculateMatrices(); return mFront; }
+	const float3& GetUp() const { if (mIsTransformModified) RecalculateMatrices(); return mUp; }
+	const float3& GetRight() const { if (mIsTransformModified) RecalculateMatrices(); return mRight; }
 	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
 	bool IsDynamic() const { return mIsDynamic; }
@@ -60,10 +60,13 @@ public:
 	void AddChild(GameObject* child);
 	GameObject* RemoveChild(const int id);	//Remove from mChildren does not delete
 
-	//Transform
-	const float4x4& GetWorldTransform() const { return mWorldTransformMatrix; }
+	//Matrices
+	const float4x4& GetWorldTransform() const { 
+		if (mIsTransformModified) 
+			RecalculateMatrices();
+		return mWorldTransformMatrix; 
+	}
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
-	void RecalculateMatrices();															//TODO: REVIEW METHOD
 
 	//Position
 	const float3& GetPosition() const { return mPosition; }
@@ -88,7 +91,7 @@ public:
 	void SetLocalScale(const float3& scale);
 
 	// Transform
-	const bool HasUpdatedTransform() const;
+	bool HasUpdatedTransform() const { return mUpdatedTransform; };
 	void Translate(const float3& translation);
 	void LookAt(const float3& target);
 	void ResetTransform();
@@ -125,14 +128,16 @@ private:
 	std::vector<GameObject*> mChildren;
 	GameObject* mParent = nullptr;
 
+	void RecalculateMatrices() const;
+	void SetTransformsDirtyFlag() const;
 	// Transform
-	float4x4 mWorldTransformMatrix = float4x4::identity;
+	mutable float4x4 mWorldTransformMatrix = float4x4::identity;
 	float4x4 mLocalTransformMatrix = float4x4::identity;
 
 	//Direction
-	float3 mFront;
-	float3 mUp;
-	float3 mRight;
+	mutable float3 mFront;
+	mutable float3 mUp;
+	mutable float3 mRight;
 
 	//Position
 	float3 mPosition = float3::zero;
@@ -163,6 +168,7 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool mIsDynamic = false;
-	bool mIsTransformModified = false;
+	mutable bool mIsTransformModified = false;
+	mutable bool mUpdatedTransform = false;
 	const bool mIsRoot = false;
 };

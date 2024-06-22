@@ -247,7 +247,7 @@ void InspectorPanel::DrawTransform(GameObject* object)
 
 			bool modifiedTransform = false;
 			float3 newPosition = object->mPosition;
-			float3 newRotation = RadToDeg(object->mLocalEulerAngles);
+			float3 newRotation = RadToDeg(object->mEulerAngles);
 			float3 newScale = object->mScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
@@ -279,10 +279,9 @@ void InspectorPanel::DrawTransform(GameObject* object)
 
 			if (modifiedTransform) 
 			{
-
-				object->SetPosition(newPosition);
-				object->SetRotation(DegToRad(newRotation));
-				object->SetScale(newScale);
+				object->SetLocalPosition(newPosition);
+				object->SetLocalRotation(DegToRad(newRotation));
+				object->SetLocalScale(newScale);
 			}
 		}
 		ImGui::EndTable();
