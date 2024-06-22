@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Application.h"
+#include "ScriptComponent.h"
 
 
 MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider) : Weapon()
@@ -98,9 +99,10 @@ void MeleeWeapon::Exit()
 
 void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 {
+    // pop particles on collision
     if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
     {
-        DealDamage(collisionData->collidedWith);
+        //DealDamage(collisionData->collidedWith);
         LOG("Colliding with melee!");
 
     }
@@ -108,13 +110,9 @@ void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 
 void MeleeWeapon::DealDamage(GameObject* enemy)
 {
-    // This must generate the box colider, detect the gameObjects that are inside, 
-    // apply damage to the enemies and 
-    // pop particles from the game object
-
-    Enemy* enemyScript = dynamic_cast<Enemy*>(enemy->GetComponent(ComponentType::SCRIPT));
+    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (enemyScript) {
         enemyScript->TakeDamage(mDamage);
-        enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
+        //enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
     }
 }
