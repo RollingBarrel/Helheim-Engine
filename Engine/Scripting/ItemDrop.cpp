@@ -12,24 +12,17 @@
 CREATE(ItemDrop)
 {
 	CLASS(owner);
-
     MEMBER(MemberType::INT, mDropId);
     MEMBER(MemberType::FLOAT, mHealthRecovered);
-    MEMBER(MemberType::FLOAT, mActivationRange);
-
 	END_CREATE;
 }
 
 ItemDrop::ItemDrop(GameObject* owner) : Script(owner) {}
 
-void ItemDrop::Start()
+void ItemDrop::Init()
 {
-    ModuleScene* scene = App->GetScene();
-    mPlayer = GameManager::GetInstance()->GetPlayer();
-
     std::vector<Component*> components;
     mGameObject->GetComponentsInChildren(ComponentType::ANIMATION, components);
-
 
     if (!components.empty())
     {
@@ -39,6 +32,15 @@ void ItemDrop::Start()
             mAnimation->SetIsPlaying(true);
         }
     }
+
+    mDespawnTimer = 30.0f;
+
+}
+
+void ItemDrop::Start()
+{
+    ModuleScene* scene = App->GetScene();
+    mPlayer = GameManager::GetInstance()->GetPlayer();
     
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
@@ -46,10 +48,16 @@ void ItemDrop::Start()
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ItemDrop::OnCollisionEnter, this, std::placeholders::_1)));
     }
 
+    Init();
 }
 
 void ItemDrop::Update()
 {
+    mDespawnTimer -= App->GetDt();
+    if (mDespawnTimer <= 0.0f)
+    {
+        mGameObject->SetEnabled(false);
+    }
 }
 
 void ItemDrop::OnCollisionEnter(CollisionData* collisionData)

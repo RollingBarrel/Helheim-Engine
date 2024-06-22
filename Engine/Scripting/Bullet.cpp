@@ -7,8 +7,6 @@
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
 
-unsigned int Bullet::mNumBullets = 0;
-
 CREATE(Bullet)
 {
 	CLASS(owner);
@@ -17,17 +15,14 @@ CREATE(Bullet)
 
 Bullet::Bullet(GameObject* owner) : Script(owner)
 {
-	mNumBullets++;
 }
 
 Bullet::~Bullet()
 {
-	mNumBullets--;
 }
 
 void Bullet::Start()
 {
-	mDirection = GameManager::GetInstance()->GetPlayer()->GetFront();
 	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
@@ -37,7 +32,7 @@ void Bullet::Start()
 	mHitParticles = *(mGameObject->GetChildren().begin());
 	if (mHitParticles)
 	{
-		mHitParticles->SetEnabled(false);
+		//mHitParticles->SetEnabled(false);
 	}
 
 }
@@ -54,18 +49,28 @@ void Bullet::Update()
 		}
 		else
 		{
-			App->GetScene()->AddGameObjectToDelete(mGameObject);
+			mGameObject->SetEnabled(false);
 		}
 	}
 	else
 	{
 		if (Delay(1.0f)) 
 		{
-		  App->GetScene()->AddGameObjectToDelete(mGameObject);
+			mGameObject->SetEnabled(false);
 		}
 	}
-	
 }
+
+void Bullet::Init(float3 position, float3 direction, float speed , float size)
+{
+	mTotalMovement = 0;
+
+	mGameObject->SetPosition(position);
+	mGameObject->SetScale(float3(size, size, size));
+	mDirection = direction;
+	mSpeed = speed;
+}
+
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {

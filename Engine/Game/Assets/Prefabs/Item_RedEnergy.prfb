@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 769602511,
+                "UID": 582131675,
                 "ParentUID": 1,
                 "Name": "Item_Shotgun",
                 "Enabled": true,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.25,
-                    0.25,
-                    0.25
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -42,11 +42,6 @@
                                 "VariableName": "mHealthRecovered",
                                 "MemberType": 1,
                                 "VariableData": 15.0
-                            },
-                            {
-                                "VariableName": "mActivationRange",
-                                "MemberType": 1,
-                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -55,13 +50,13 @@
                         "IsEnabled": true,
                         "Center": [
                             0.0,
-                            0.0,
+                            0.20000000298023225,
                             0.0
                         ],
                         "Size": [
-                            0.6000000238418579,
-                            0.6000000238418579,
-                            0.6000000238418579
+                            0.5,
+                            0.5,
+                            0.5
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -69,9 +64,9 @@
                 ]
             },
             {
-                "UID": 829546192,
-                "ParentUID": 769602511,
-                "Name": "Cube",
+                "UID": 1001226652,
+                "ParentUID": 582131675,
+                "Name": "OB_red_battery_particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -97,9 +92,37 @@
                 "Components": []
             },
             {
-                "UID": 855166720,
-                "ParentUID": 829546192,
-                "Name": "Cube",
+                "UID": 2052851857,
+                "ParentUID": 1001226652,
+                "Name": "OB_battery_particle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 836131359,
+                "ParentUID": 2052851857,
+                "Name": "OB_battery_particle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -126,8 +149,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 496453540,
-                        "MaterialID": 999999999,
+                        "MeshID": 484617294,
+                        "MaterialID": 484617297,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []

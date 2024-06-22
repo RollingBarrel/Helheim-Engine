@@ -19,6 +19,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mEnemyPool);
+    MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     END_CREATE;
 }
 
@@ -75,6 +76,11 @@ void GameManager::Update()
     {
         SetPaused(!mPaused);
     }
+}
+
+PoolManager* GameManager::GetPoolManager() const 
+{ 
+    return reinterpret_cast<PoolManager*>(reinterpret_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 void GameManager::SetPaused(bool value)

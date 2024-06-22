@@ -165,17 +165,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				std::unordered_set<GameObject*> selectAfter;
 				for (GameObject* object : FilterMarked()) 
 				{
-					std::unordered_map<const GameObject*, GameObject*> originalToNew;
-					std::vector<MeshRendererComponent*>mRenderers;
-					GameObject* gameObject = new GameObject(*object, object->GetParent(), &originalToNew, &mRenderers);
-					for (MeshRendererComponent* mRend : mRenderers)
-					{
-						if (mRend->HasSkinning())
-						{
-							mRend->UpdateSkeletonObjects(originalToNew);
-						}
-					}
-					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
+					GameObject* gameObject = App->GetScene()->DuplicateGameObject(object);
 					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();
 					InternalSetFocus(gameObject);

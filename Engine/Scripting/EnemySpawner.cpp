@@ -19,7 +19,6 @@ EnemySpawner::EnemySpawner(GameObject* owner) : Script(owner) {}
 void EnemySpawner::Start()
 {
 	mEnemyPool = reinterpret_cast<EnemyPool*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetEnemyPool()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-	LOG("fds");
 }
 
 void EnemySpawner::Update()

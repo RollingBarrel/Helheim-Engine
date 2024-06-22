@@ -32,6 +32,7 @@ void Machinegun::Enter()
 
 void Machinegun::Attack(float time)
 {
+    LOG("MachineGun Attack");
 	//Audio
 	if (GameManager::GetInstance()->GetAudio())
 	{

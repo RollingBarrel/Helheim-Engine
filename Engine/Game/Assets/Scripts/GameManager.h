@@ -8,6 +8,7 @@ class PlayerController;
 class AudioManager;
 class BattleArea;
 class EnemyPool;
+class PoolManager;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -30,6 +31,7 @@ public:
     bool UsingController() const { return mController; }
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
     GameObject* GetEnemyPool() const { return mEnemyPool; }
+    PoolManager* GetPoolManager() const;
 
     bool IsPaused() { return mPaused; }
     void SetPaused(bool value);
@@ -54,6 +56,7 @@ private:
     GameObject* mEnemyPool = nullptr;
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
+    GameObject* mPoolManager = nullptr;
 
     bool mPaused = false;
 
