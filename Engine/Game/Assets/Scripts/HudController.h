@@ -1,5 +1,5 @@
 #pragma once
-
+// Link to design
 //https://www.figma.com/design/J6S4FzW8Yn38GOiMe7XdYm/GAME_UI?node-id=625-249&t=mL60BsxKQdYvFkMC-0
 
 #include <Script.h>
@@ -10,6 +10,7 @@ class SliderComponent;
 class TextComponent;
 class ImageComponent;
 class PlayerController;
+class Sanity;
 enum class EnergyType;
 
 enum class SCREEN {
@@ -36,6 +37,8 @@ public:
     void SetScreen(SCREEN menu, bool active);
 
     SliderComponent* mHealthGradualSlider = nullptr;
+
+    void SetSanity();
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -104,4 +107,9 @@ private:
 
     float mGrenadeCooldown = 0.0f;
     float mGrenadeTimer = 0.0f;
+
+    // Sanity
+    GameObject* mSanityGO = nullptr;
+    Sanity* mSanity = nullptr;
+    int mArenaCounter = 0;
 };

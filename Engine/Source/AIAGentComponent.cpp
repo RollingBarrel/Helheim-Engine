@@ -58,12 +58,12 @@ void AIAgentComponent::MoveAgent(float speed ) const
 
 	if (mNavPositions.size() > 1 )
 	{
-		LOG("START")
+		//LOG("START")
 		for(float3 nav : mNavPositions)
 		{
-			LOG("%f, %f, %f", nav.x, nav.y, nav.z);
+			//LOG("%f, %f, %f", nav.x, nav.y, nav.z);
 		}
-		LOG("END")
+		//LOG("END")
 			float3 direction = (mNavPositions[1] - mNavPositions[0]).Normalized();
 			direction = direction / 50 * speed;
 			GetOwner()->SetPosition(GetOwner()->GetPosition() + direction);

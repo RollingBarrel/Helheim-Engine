@@ -174,7 +174,6 @@ void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
 {
 
 	std::string currentStateName = GetCurrentStateName();
-
 	for (size_t i = 0; i < mStateMachine->GetNumTransitions(); i++)
 	{
 		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))

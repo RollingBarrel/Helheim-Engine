@@ -16,6 +16,10 @@
 #define ASSETS_NAVMESH_PATH "Assets/NavMeshes/"
 #define ASSETS_SCRIPT_PATH "Assets/Scripts/"
 
+#define INTERNAL_ASSETS_PATH "InternalAssets/"
+#define INTERNAL_ASSETS_SCENES_PATH "InternalAssets/Scenes/"
+#define INTERNAL_ASSETS_FONTS_PATH "InternalAssets/Fonts/"
+
 
 
 #include <vector>

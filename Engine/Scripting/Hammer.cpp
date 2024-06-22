@@ -1,4 +1,5 @@
 #include "Hammer.h"
+#include "Application.h"
 
 Hammer::Hammer(BoxColliderComponent* collider) : MeleeWeapon(collider)
 {
@@ -15,7 +16,7 @@ void Hammer::Enter()
 
 void Hammer::Attack(float time)
 {
-
+    LOG("Hammer Attack");
 }
 
 void Hammer::Exit()

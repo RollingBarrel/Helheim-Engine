@@ -38,13 +38,13 @@ class Enemy : public Script
 		void DropItem();
 		
 		int mShieldDropRate = 20;
-		int mShotgunDropRate = 35;
-		int mMachineGunDropRate = 45;
-		float mHealth = 0.0f;
+		int mRedEnergyDropRate = 35;
+		int mBlueEnergyDropRate = 45;
+		float mHealth = 10.0f;
 		float mMaxHealth = 6.0f;
-		float mSpeed = 1.75f;
+		float mSpeed = 1.0f;
 		float mRotationSpeed = 1.0f;
-		float mActivationRange = 15.0f;
+		float mActivationRange = 250.0f;
 		float mChaseDelay = 1.25f;
 		bool mBeAttracted = false;
 		GameObject* mPlayer = nullptr;

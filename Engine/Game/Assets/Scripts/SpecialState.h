@@ -6,7 +6,7 @@ class Weapon;
 class SpecialState : public State
 {
 public:
-	explicit SpecialState(PlayerController* player);
+	explicit SpecialState(PlayerController* player, float cooldown);
 	~SpecialState();
 
 	StateType HandleInput() override;
@@ -16,6 +16,8 @@ public:
 	void Exit() override;
 
 	StateType GetType() override;
+
+	bool IsReady() override;
 
 private:
 	Weapon* mSpecialWeapon = nullptr;

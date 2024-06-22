@@ -2,7 +2,7 @@
 
 Bat::Bat(BoxColliderComponent* collider) : MeleeWeapon(collider)
 {
-    mAttackTime = 3.0f;
+    mAttackDuration = 3.0f;
     mDamage = 2.0f;
     mComboStep = 0;
     mCombo1st = 1.0f;

@@ -1,11 +1,16 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "GameManager.h"
 #include "AudioSourceComponent.h"
-#include "Math/MathFunc.h"
+#include "ScriptComponent.h"
 #include "GameObject.h"
+
+#include "GameManager.h"
+#include "PoolManager.h"
+#include "ItemDrop.h"
 #include "BattleArea.h"
+
+#include "Math/MathFunc.h"
 
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
@@ -52,7 +57,13 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    GameManager::GetInstance()->GetActiveBattleArea()->DestroyEnemy();
+
+    BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+    if (activeBattleArea)
+    {
+        activeBattleArea->EnemyDestroyed();
+    }
+
     DropItem();
 }
 
@@ -105,41 +116,31 @@ void Enemy::DropItem()
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;
 
+    PoolType poolType = PoolType::LAST;
+
     if (randomValue < mShieldDropRate)
     {
-        float3 enemyPosition = mGameObject->GetPosition();
-        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
-
-        GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
-        shield->SetPosition(dropPosition);
-
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        shield->SetScale(scale);
+        poolType = PoolType::SHIELD;
     }
-    else if (randomValue < mShotgunDropRate) 
+    else if (randomValue < mRedEnergyDropRate)
     {
-        float3 enemyPosition = mGameObject->GetPosition();
-        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
-
-        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_MachineGun.prfb");
-        upgrade->SetPosition(dropPosition);
-
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        upgrade->SetScale(scale);
+        poolType = PoolType::RED_ENERGY;
     }
-    else if (randomValue < mMachineGunDropRate) 
+    else if (randomValue < mBlueEnergyDropRate)
     {
-        float3 enemyPosition = mGameObject->GetPosition();
-        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
-
-        GameObject* upgrade = App->GetScene()->InstantiatePrefab("Item_Shotgun.prfb");
-        upgrade->SetPosition(dropPosition);
-
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        upgrade->SetScale(scale);
+        poolType = PoolType::BLUE_ENERGY;
     }
-    else
+
+    if (poolType != PoolType::LAST)
     {
-        return;
+       float3 enemyPosition = mGameObject->GetPosition();
+       float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+       GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
+       itemGameObject->SetPosition(dropPosition);
+       ItemDrop* item = reinterpret_cast<ItemDrop*>(reinterpret_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+       item->Init();
     }
+
+
 }

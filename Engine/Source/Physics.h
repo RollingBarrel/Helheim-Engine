@@ -17,7 +17,7 @@ struct Hit
 		return mDistance < otherHit.mDistance;
 	}
 
-	bool IsValid() { return mDistance >= 0.0f; }
+	bool IsValid() { return mGameObject && mDistance >= 0.0f; }
 };
 
 inline bool operator<(const Hit& hit, const Hit& otherHit)

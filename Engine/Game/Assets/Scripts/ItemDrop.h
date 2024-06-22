@@ -6,6 +6,8 @@
 GENERATE_BODY(ItemDrop);
 
 class AnimationComponent;
+class BoxColliderComponent;
+struct CollisionData;
 enum class EnergyType;
 
 class ItemDrop : public Script
@@ -15,15 +17,19 @@ class ItemDrop : public Script
 public:
     ItemDrop(GameObject* owner);
     ~ItemDrop() {}
+
+    void Init(); 
     void Start() override;
     void Update() override;
-    
-private:
-    bool IsPlayerInRange(float range);
+    void OnCollisionEnter(CollisionData* collisionData);
 
-    int mDropId;
-    float mActivationRange = 1.0f;
+private:
+    int mDropId = -1;
     float mHealthRecovered = 15.0f;
     GameObject* mPlayer = nullptr;
     AnimationComponent* mAnimation = nullptr;
+    BoxColliderComponent* mCollider = nullptr;
+
+    float mDespawnTimer = 0.0f;
+    
 };

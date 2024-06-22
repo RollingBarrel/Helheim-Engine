@@ -9,21 +9,23 @@
 #include "Physics.h"
 #include "Geometry/Ray.h"
 
+#include "GameManager.h"
+#include "PoolManager.h"
+#include "HudController.h"
 #include "Enemy.h"
 #include "Bullet.h"
-#include "HudController.h"
-#include "GameManager.h"
+#include "Bat.h"
+#include "TrailComponent.h"
 
 #include <map>
-#include "Bat.h"
 
 Pistol::Pistol() : RangeWeapon()
 {
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
-    mDamage = 1.0f;
-    //mAttackRate = 1.0f;
-    mAttackTime = 1.0f;
+    mDamage = 2.0f;
+    mAttackDuration = 0.0f;
+    mAttackCooldown = 0.2f;
 }
 
 Pistol::~Pistol()
@@ -36,28 +38,15 @@ void Pistol::Enter()
 
 void Pistol::Attack(float time)
 {
+    LOG("Pistol Attack");
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
     {
-       //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
         LOG("Bullets: %i", mCurrentAmmo);
     }
     
-
-    //mPlayerController->PlayOneShot("Shot");
-    //mAnimationComponent->SendTrigger("tShooting", 0.2f);
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
-
-    if (bullet != nullptr)
-    {
-        /*bullet->SetPosition(mPlayerCharacter->GetPosition());
-
-        mShootPoint->SetEnabled(false);
-        mShootPoint->SetEnabled(true); // Reset particles
-        
-        bullet->SetRotation(mGameObject->GetWorldRotation());*/
-    }
 
     std::multiset<Hit> hits;
 
@@ -67,7 +56,7 @@ void Pistol::Attack(float time)
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    Physics::Raycast(hits, ray, distance); // THIS IS THE OLD RAYCAST
+    Physics::Raycast(hits, ray, distance);
 
     if (!hits.empty())
     {
@@ -84,6 +73,17 @@ void Pistol::Attack(float time)
                 }
             }
         }
+    }
+
+    //PARTICLES
+    if (GameManager::GetInstance()->GetPoolManager())
+    {
+        GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+        Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        ColorGradient gradient;
+        gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
+        
+        bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
     }
 }
 

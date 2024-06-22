@@ -9,7 +9,7 @@
 #include "MeleeWeapon.h"
 
 
-AttackState::AttackState(PlayerController* player) : State(player)
+AttackState::AttackState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 
@@ -22,7 +22,7 @@ StateType AttackState::HandleInput()
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
     mAttackTimer += App->GetDt();
-    if (mAttackTimer < mWeapon->GetAttackTime())
+    if (mAttackTimer < mWeapon->GetAttackDuration())
     {
         // MOVE TO WEAPON
         /*if (mWeapon->GetType() == Weapon::WeaponType::MELEE and

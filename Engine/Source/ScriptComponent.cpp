@@ -270,8 +270,9 @@ void ScriptComponent::Enable()
 {
 	App->GetScriptManager()->AddScript(this);
 	
-	if (mHasStarted)
+	if (!mHasStarted)
 	{
+		mHasStarted = true;
 		mScript->Start();
 	}
 }

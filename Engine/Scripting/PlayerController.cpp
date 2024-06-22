@@ -103,15 +103,15 @@ PlayerController::~PlayerController()
 void PlayerController::Start()
 {
     // States
-    mDashState = new DashState(this);
-    mIdleState = new IdleState(this);
-    mMoveState = new MoveState(this);
-    mAimState = new AimState(this);
-    mAttackState = new AttackState(this);
-    mGrenadeState = new GrenadeState(this);
-    mSwitchState = new SwitchState(this);
-    mSpecialState = new SpecialState(this);
-    mReloadState = new ReloadState(this);
+    mDashState = new DashState(this, mDashCoolDown);
+    mIdleState = new IdleState(this, 0.0f);
+    mMoveState = new MoveState(this, 0.0f);
+    mAimState = new AimState(this, 0.0f);
+    mGrenadeState = new GrenadeState(this, mGrenadeCoolDown);
+    mSwitchState = new SwitchState(this, mSwitchCoolDown);
+    mAttackState = new AttackState(this, 0.0f); // Is later changed when having a weapon
+    mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
+    mReloadState = new ReloadState(this, 0.0f);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;
@@ -119,27 +119,28 @@ void PlayerController::Start()
     mLowerState = mIdleState;
 
     // Weapons
-    BoxColliderComponent* collider = nullptr;
+    BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
     {
-        collider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
-        if (collider)
+        weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        if (weaponCollider)
         {
-            collider->AddCollisionEventHandler(
+            weaponCollider->AddCollisionEventHandler(
                 CollisionEventType::ON_COLLISION_ENTER,
                 new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
             );
         }
     }
 
-    mBat = new Bat(collider);
+    mBat = new Bat(weaponCollider);
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
     mKatana = new Katana(collider);
     mHammer = new Hammer(collider);
 
-    mWeapon = mPistol;
+    mWeapon = mMachinegun;
+    mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     mSpecialWeapon = nullptr;
 
     // COLLIDER
@@ -204,7 +205,7 @@ void PlayerController::CheckInput()
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
     {
-        LOG(("LOWER: " + std::to_string(type)).c_str());
+        //LOG(("LOWER: " + std::to_string(type)).c_str());
         mLowerStateType = type;
         mLowerState->Exit();
 
@@ -233,7 +234,7 @@ void PlayerController::CheckInput()
     type = mUpperState->HandleInput();
     if (mUpperStateType != type)
     {
-        LOG(("UPPER: " + std::to_string(type)).c_str());
+        //LOG(("UPPER: " + std::to_string(type)).c_str());
         mUpperStateType = type;
         mUpperState->Exit();
 
@@ -269,7 +270,10 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    // TODO: Not aim on melee state? and dash?
+    if (mLowerState->GetType() == StateType::DASH ||
+        mUpperState->GetType() == StateType::ATTACK ||
+        mUpperState->GetType() == StateType::SPECIAL)
+        return;
 
     GameManager* gameManager = GameManager::GetInstance();
     bool controller = gameManager->UsingController();
@@ -369,6 +373,9 @@ void PlayerController::SwitchWeapon()
         }
     }
     mWeapon->Enter();
+
+    mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
+    if (mSpecialWeapon) mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }
 
 float3 PlayerController::GetPlayerPosition()
@@ -497,6 +504,8 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
         default:
             break;
     }
+
+    mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }
 
 void PlayerController::UseEnergy(int energy)
@@ -520,15 +529,15 @@ void PlayerController::TakeDamage(float damage)
         return;
     }
 
-    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
-
-    float healthRatio = mShield / mMaxShield;
-    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
-
-    if (mShield < 0.0f)
+    if (mShield <= 0.0f)
     {
         GameManager::GetInstance()->GameOver();
     }
+
+    mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    float healthRatio = mShield / mMaxShield;
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)

@@ -1,54 +1,72 @@
 #include "ItemDrop.h"
-#include "PlayerController.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "GameManager.h"
-#include "Math/MathFunc.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "BoxColliderComponent.h"
+
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "Math/MathFunc.h"
 
 CREATE(ItemDrop)
 {
 	CLASS(owner);
-
     MEMBER(MemberType::INT, mDropId);
     MEMBER(MemberType::FLOAT, mHealthRecovered);
-    MEMBER(MemberType::FLOAT, mActivationRange);
-
 	END_CREATE;
 }
 
 ItemDrop::ItemDrop(GameObject* owner) : Script(owner) {}
 
-void ItemDrop::Start()
+void ItemDrop::Init()
 {
-    ModuleScene* scene = App->GetScene();
-    mPlayer = GameManager::GetInstance()->GetPlayer();
-
-
     std::vector<Component*> components;
     mGameObject->GetComponentsInChildren(ComponentType::ANIMATION, components);
-
 
     if (!components.empty())
     {
         mAnimation = reinterpret_cast<AnimationComponent*>(*components.begin());
-
         if (mAnimation)
         {
             mAnimation->SetIsPlaying(true);
         }
     }
+
+    mDespawnTimer = 30.0f;
+
+}
+
+void ItemDrop::Start()
+{
+    ModuleScene* scene = App->GetScene();
+    mPlayer = GameManager::GetInstance()->GetPlayer();
     
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ItemDrop::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+
+    Init();
 }
 
 void ItemDrop::Update()
 {
-    if (IsPlayerInRange(mActivationRange))
+    mDespawnTimer -= App->GetDt();
+    if (mDespawnTimer <= 0.0f)
+    {
+        mGameObject->SetEnabled(false);
+    }
+}
+
+void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
+{
+    if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
         mGameObject->SetEnabled(false);
 
-        PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+        PlayerController* playerScript =  reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (playerScript != nullptr)
         {
             switch (mDropId)
@@ -57,23 +75,14 @@ void ItemDrop::Update()
                 playerScript->RechargeShield(mHealthRecovered);
                 break;
             case 2:
-                playerScript->RechargeBattery(EnergyType::BLUE); 
+                playerScript->RechargeBattery(EnergyType::BLUE);
                 break;
-            case 3: 
+            case 3:
                 playerScript->RechargeBattery(EnergyType::RED);
                 break;
             default:
                 break;
             }
-            
         }
     }
-}
-
-bool ItemDrop::IsPlayerInRange(float range)
-{
-    float distance = 0.0f;
-    distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;
-
-    return (distance <= range);
 }

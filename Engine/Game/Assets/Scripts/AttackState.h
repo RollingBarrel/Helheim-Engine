@@ -7,7 +7,7 @@ class Weapon;
 class AttackState : public State
 {
 public:
-	explicit AttackState(PlayerController* player);
+	explicit AttackState(PlayerController* player, float cooldown);
 	~AttackState();
 
 	StateType HandleInput() override;

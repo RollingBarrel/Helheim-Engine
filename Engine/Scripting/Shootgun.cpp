@@ -1,22 +1,26 @@
 #include "Shootgun.h"
 #include "GameManager.h"
+#include "PoolManager.h"
 #include "HudController.h"
 #include "AudioManager.h"
 #include "Enemy.h"
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
+#include "TrailComponent.h"
 #include "Physics.h"
 
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
+#include <Bullet.h>
 
 Shootgun::Shootgun()
 {
-    mDamage = 0.1f;
+    mDamage = 2.0f;
     mAttackRange = 100.0f;
-    mAttackTime = 1.0f;
+    mAttackDuration = 0.0f;
+    mAttackCooldown = 0.5f;
 }
 
 Shootgun::~Shootgun()
@@ -30,6 +34,7 @@ void Shootgun::Enter()
 
 void Shootgun::Attack(float time)
 {
+    LOG("ShotGun Attack");
     int numBullets = 10;
 
     //TODO: Rethink this
@@ -45,6 +50,8 @@ void Shootgun::Attack(float time)
     int count = 0;
     for (int i = 0; i < numBullets; ++i)
     {
+        
+
         Ray ray;
         ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
         ray.pos.y++;
@@ -55,7 +62,6 @@ void Shootgun::Attack(float time)
         spread += GameManager::GetInstance()->GetPlayer()->GetRight() * LCG().Float(-1.0f, 1.0f);
 
         ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
-
 
         Hit hit;
         Physics::Raycast(hit, ray, mAttackRange);
@@ -76,6 +82,23 @@ void Shootgun::Attack(float time)
         {
             count++;
         }
+
+        //PARTICLES
+        if (GameManager::GetInstance()->GetPoolManager())
+        {
+            GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+            Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+            
+            ColorGradient gradient;
+            gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
+            gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
+            
+            
+            bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
+        }
+
+
+
     }
     
     LOG("Missed bullets = %i", count);
@@ -87,6 +110,6 @@ void Shootgun::Exit()
 
 void Shootgun::Reload()
 {
-    mCurrentAmmo = mMaxAmmo;
-    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+    //mCurrentAmmo = mMaxAmmo;
+    //GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }

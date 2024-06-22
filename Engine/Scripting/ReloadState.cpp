@@ -4,8 +4,12 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "PlayerController.h"
+#include "GrenadeState.h"
+#include "AttackState.h"
+#include "SpecialState.h"
+#include "SwitchState.h"
 
-ReloadState::ReloadState(PlayerController* player) : State(player)
+ReloadState::ReloadState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 
@@ -17,40 +21,36 @@ StateType ReloadState::HandleInput()
 {
 	if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
-    //mSpecialAttackTimer += App->GetDt(); THIS TIMER SHOULD BE COORDINATED WITH THE ONE ON AIM STATE
-    if (/*mPlayerController->GetWeapon()->GetAttackTime() < mSpecialAttackTimer &&
-        (*/App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN)//)
+    if (mPlayerController->GetGrenadeState()->IsReady() &&
+        (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
     {
-        //mSpecialAttackTimer = 0.0f;
+        mPlayerController->GetGrenadeState()->ResetCooldown();
+        return StateType::GRENADE;
+    }
+
+    if (mPlayerController->GetAttackState()->IsReady() &&
+        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN))
+    {
+        mPlayerController->GetAttackState()->ResetCooldown();
         return StateType::ATTACK;
     }
 
-    //mSpecialAttackTimer += App->GetDt(); THIS TIMER SHOULD BE COORDINATED WITH THE ONE ON AIM STATE
-    if (/*mPlayerController->GetSpecialAttackCooldown() < mSpecialAttackTimer && mPlayerController->GetEnergyType() != EnergyType::NONE &&
-        (*/App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)//)
+    if (mPlayerController->GetSpecialState()->IsReady() &&
+        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN))
     {
-        //mSpecialAttackTimer = 0.0f;
+        mPlayerController->GetSpecialState()->ResetCooldown();
         return StateType::SPECIAL;
     }
 
-    //mSwitchTimer += App->GetDt(); THIS TIMER SHOULD BE COORDINATED WITH THE ONE ON AIM STATE
-    if (/*mPlayerController->GetSwitchCooldown() < mSwitchTimer &&
-        (*/App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)//)
+    if (mPlayerController->GetSwitchState()->IsReady() &&
+        (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
     {
-        //mSwitchTimer = 0.0f;
+        mPlayerController->GetSwitchState()->ResetCooldown();
         return StateType::SWITCH;
-    }
-
-    //mGrenadeTimer += App->GetDt(); THIS TIMER SHOULD BE COORDINATED WITH THE ONE ON AIM STATE
-    if (/*mPlayerController->GetGrenadeCooldown() < mGrenadeTimer &&
-        (*/App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)//)
-    {
-        //mGrenadeTimer = 0.0f;
-        return StateType::GRENADE;
     }
 
 	mReloadTimer += App->GetDt();
@@ -81,4 +81,11 @@ void ReloadState::Exit()
 StateType ReloadState::GetType()
 {
 	return StateType::RELOAD;
+}
+
+bool ReloadState::IsReady()
+{
+    mStateTimer += App->GetDt();
+    if (mStateTimer >= mStateCooldown && mPlayerController->CanReload()) return true;
+    return false;
 }

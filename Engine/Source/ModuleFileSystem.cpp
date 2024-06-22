@@ -44,6 +44,10 @@ bool ModuleFileSystem::Init()
     CreateDirectory(ASSETS_NAVMESH_PATH);
     CreateDirectory(LIBRARY_PATH);
 
+    CreateDirectory(INTERNAL_ASSETS_PATH);
+    CreateDirectory(INTERNAL_ASSETS_SCENES_PATH);
+    CreateDirectory(INTERNAL_ASSETS_FONTS_PATH);
+
     mRoot = new PathNode("Assets");
     DiscoverFiles("Assets", mRoot);
     return true;

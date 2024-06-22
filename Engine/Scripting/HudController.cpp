@@ -13,6 +13,8 @@
 #include "TextComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
+#include "ScriptComponent.h"
+#include "Sanity.h"
 
 
 CREATE(HudController)
@@ -40,10 +42,12 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    SEPARATOR("Sanity");
+    MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     END_CREATE;
 }
 
-HudController::HudController(GameObject* owner) : Script(owner) 
+HudController::HudController(GameObject* owner) : Script(owner)
 {
 }
 
@@ -119,6 +123,8 @@ void HudController::Start()
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
+
+    if (mSanityGO) mSanity = reinterpret_cast<Sanity*>(reinterpret_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 void HudController::Update()
@@ -186,6 +192,13 @@ void HudController::Loading()
     }
 }
 
+void HudController::SetSanity()
+{
+    mArenaCounter++;
+    mSanityGO->SetEnabled(true);
+    mSanity->CreateSelection(mArenaCounter);
+}
+
 void HudController::SetAmmo(int ammo)
 {
     if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
@@ -219,8 +232,17 @@ void HudController::SetEnergy(int energy, EnergyType type)
 
 void HudController::SetHealth(float health)
 {
-    if (health < mHealthSlider->GetValue()) mFeedbackImage->SetAlpha(1.0f);
-    if (mHealthSlider) mHealthSlider->SetValue(health);
+    if (health == 0) 
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(-1.0f);
+        if (mHealthSlider) mHealthSlider->SetValue(health);
+    }
+    else if (health < mHealthSlider->GetValue())
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
+        if (mHealthSlider) mHealthSlider->SetValue(health);
+    }
+
     mTargetHealth = health;
 }
 

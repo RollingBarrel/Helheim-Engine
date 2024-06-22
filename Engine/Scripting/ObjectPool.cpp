@@ -3,15 +3,24 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
 
-ObjectPool::ObjectPool(const char* name, unsigned int size)
+ObjectPool::ObjectPool(const char* PrefabFileName, unsigned int size, GameObject* parent)
 {
-	mObjects.reserve(size);
-	GameObject* prefab = App->GetScene()->InstantiatePrefab(name);
-	mObjects.push_back(prefab);
-
-	for (unsigned int i = 1; i < mObjects.size(); ++i)
+	if (!parent)
 	{
-		mObjects.push_back(new GameObject(*prefab, App->GetScene()->GetRoot()));
+		parent = App->GetScene()->GetRoot();
+	}
+	
+
+	mObjects.reserve(size);
+	GameObject* prefab = App->GetScene()->InstantiatePrefab(PrefabFileName, parent);
+	prefab->SetEnabled(false);
+	mObjects.push_back(prefab);
+	
+	for (unsigned int i = 1; i < size; ++i)
+	{
+		GameObject* duplicatedGameObject = App->GetScene()->DuplicateGameObject(prefab);
+		duplicatedGameObject->SetEnabled(false);
+		mObjects.push_back(duplicatedGameObject);
 	}
 }
 
@@ -32,7 +41,7 @@ GameObject* ObjectPool::GetObject()
 
 	if (!mObjects.empty())
 	{
-		assert("MORE OBJECTS NEEDED IN THE POOL");
+		assert(false && "MORE OBJECTS NEEDED IN THE POOL");
 		GameObject* newGameObject = new GameObject(*mObjects[0], App->GetScene()->GetRoot());
 		mObjects.push_back(newGameObject);
 		return newGameObject;

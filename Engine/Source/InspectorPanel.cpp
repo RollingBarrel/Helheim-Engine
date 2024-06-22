@@ -783,7 +783,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 	if (ImGui::BeginCombo("##combo", currentItem)) 
 	{
 		std::vector<std::string> scriptNames;
-		EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".emeta", scriptNames);
+		EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_SCRIPT_PATH, ".h", scriptNames);
 		for (int i = 0; i < scriptNames.size(); ++i)
 		{
 			

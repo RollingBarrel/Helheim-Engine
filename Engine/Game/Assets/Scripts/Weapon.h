@@ -19,7 +19,8 @@ public:
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
 	int GetDamage() { return mDamage; }
-	virtual float GetAttackTime() = 0;
+	float GetAttackDuration() { return mAttackDuration; }
+	float GetAttackCooldown() { return mAttackCooldown; }
 	
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
 	void SetDamage(int value) { mDamage = value; }
@@ -27,9 +28,10 @@ protected:
 	WeaponType mType;
 
 	float mDamage = 0.0f;
-	//float mAttackRate = 0.0f;
-	float mAttackTime = 0.0f;
 	float mAttackRange = 0.0f;
+
+	float mAttackCooldown = 0.0f;
+	float mAttackDuration = 0.0f;
 
 	int mCurrentAmmo = 0;
 	int mMaxAmmo = 0;

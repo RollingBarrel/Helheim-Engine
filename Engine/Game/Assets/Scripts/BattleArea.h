@@ -4,6 +4,7 @@
 
 struct CollisionData;
 class EnemySpawner;
+class BoxColliderComponent;
 
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
@@ -14,8 +15,8 @@ public:
 	~BattleArea();
 	void Start() override;
 	void Update() override;
-	void DestroyEnemy();
-	void ActivateArea(bool activate) { mIsActive = activate; };
+	void EnemyDestroyed();
+	void ActivateArea(bool activate);;
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private:
@@ -32,5 +33,7 @@ private:
 	EnemySpawner* mEnemySpawner2 = nullptr;
 	EnemySpawner* mEnemySpawner3 = nullptr;
 	EnemySpawner* mEnemySpawner4 = nullptr;
+
+	BoxColliderComponent* mCollider = nullptr;
 };
 

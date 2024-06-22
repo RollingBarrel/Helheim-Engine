@@ -26,6 +26,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
+const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
+
 ModuleScene::ModuleScene() 
 {
 }
@@ -115,13 +117,10 @@ const std::vector<GameObject*>& ModuleScene::FindGameObjectsWithTag(const std::s
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (!mGameObjectsByTags[tag].empty())
-		{
-			return mGameObjectsByTags[tag];
-		}
+		return mGameObjectsByTags[tag];
 	}
 
-	return std::vector<GameObject*>();
+	return ModuleScene::mEmptyVector;
 }
 
 void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)
@@ -530,6 +529,23 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 			break;
 		}
 	}
+}
+
+GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
+{
+	std::unordered_map<const GameObject*, GameObject*> originalToNew;
+	std::vector<MeshRendererComponent*>mRenderers;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	for (MeshRendererComponent* mRend : mRenderers)
+	{
+		if (mRend->HasSkinning())
+		{
+			mRend->UpdateSkeletonObjects(originalToNew);
+		}
+	}
+	AddGameObjectToDuplicate(duplicatedGameObject);
+
+	return duplicatedGameObject;
 }
 
 void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)
