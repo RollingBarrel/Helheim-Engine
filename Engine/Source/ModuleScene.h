@@ -40,7 +40,7 @@ public:
 	void RemoveGameObjectFromScene(int id); 
 	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
-	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
+	GameObject* DuplicateGameObject(GameObject* gameObject);
 	void SwitchGameObjectsFromScene(GameObject* first, GameObject* second);
 
 	// Save / Load Scene
@@ -66,8 +66,9 @@ public:
 	const std::unordered_map<unsigned int, unsigned int>& GetPrefabUIDMap() { return mPrefabOldNewUid; }
 
 private:
-	void DeleteGameObjects();
+	void AddGameObjectToDuplicate(GameObject* gameObject) { mGameObjectsToDuplicate.push_back(gameObject); }
 	void DuplicateGameObjects();
+	void DeleteGameObjects();
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
@@ -83,6 +84,8 @@ private:
 	bool mClosePrefab = false;
 
 	std::unordered_map<unsigned int, unsigned int> mPrefabOldNewUid;
+
+	static const std::vector<GameObject*> mEmptyVector; //This is used to avoid creating objects in methods and returning them as reference.
 };
 
 #endif //_MODULE_SCENE_H_

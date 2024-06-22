@@ -42,41 +42,44 @@ bool ModulePhysics::CleanUp()
 
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	for (btRigidBody* rigidBody : mRigidBodiesToRemove)
+	if (App->IsPlayMode())
 	{
-		mWorld->removeCollisionObject(rigidBody);
-		btCollisionShape* shape = rigidBody->getCollisionShape();
-		delete shape;
-		delete rigidBody;
-	}
-	mRigidBodiesToRemove.clear();
-
-	
-	mWorld->stepSimulation(dt, 15);
-
-	int numManifolds = mWorld->getDispatcher()->getNumManifolds();
-	for (int i = 0; i < numManifolds; i++)
-	{
-		btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
-		btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
-		btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
-
-		int numContacts = contactManifold->getNumContacts();
-		if (numContacts > 0)
+		for (btRigidBody* rigidBody : mRigidBodiesToRemove)
 		{
-			Collider* bodyA = (Collider*)obA->getUserPointer();
-			Collider* bodyB = (Collider*)obB->getUserPointer();
+			mWorld->removeCollisionObject(rigidBody);
+			btCollisionShape* shape = rigidBody->getCollisionShape();
+			delete shape;
+			delete rigidBody;
+		}
+		mRigidBodiesToRemove.clear();
 
-			if (bodyA && bodyB)
+
+		mWorld->stepSimulation(dt, 15);
+
+		int numManifolds = mWorld->getDispatcher()->getNumManifolds();
+		for (int i = 0; i < numManifolds; i++)
+		{
+			btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
+			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
+			btCollisionObject* obB = (btCollisionObject*)(contactManifold->getBody1());
+
+			int numContacts = contactManifold->getNumContacts();
+			if (numContacts > 0)
 			{
-				float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
-				float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
+				Collider* bodyA = (Collider*)obA->getUserPointer();
+				Collider* bodyB = (Collider*)obB->getUserPointer();
 
-				float3 diff = contactOnB - contactOnA;
-				float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
+				if (bodyA && bodyB)
+				{
+					float3 contactOnA = float3(contactManifold->getContactPoint(0).getPositionWorldOnA());
+					float3 contactOnB = float3(contactManifold->getContactPoint(0).getPositionWorldOnB());
 
-				ProcessCollision(bodyA, bodyB, collisionNormal, diff);
-				ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
+					float3 diff = contactOnB - contactOnA;
+					float3 collisionNormal = float3(contactManifold->getContactPoint(0).m_normalWorldOnB);
+
+					ProcessCollision(bodyA, bodyB, collisionNormal, diff);
+					ProcessCollision(bodyB, bodyA, -collisionNormal, -diff);
+				}
 			}
 		}
 	}
@@ -116,6 +119,52 @@ void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits)
 		}
 	}	
 }
+
+void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
+{
+	btVector3 fromBt(from.x, from.y, from.z);
+	btVector3 toBt(to.x, to.y, to.z);
+	btCollisionWorld::AllHitsRayResultCallback callback(fromBt, toBt);
+	mWorld->rayTest(fromBt, toBt, callback);
+
+	
+	if (callback.hasHit())
+	{
+		Hit closestHit;
+		closestHit.mDistance = FLT_MAX;
+
+		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
+		{
+			LOG("RayCast %i", i);
+			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
+			if (collider)
+			{
+				Component* component = (Component*)collider->mCollider;
+				if (component)
+				{
+					float3 hitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
+					
+					float distance = from.Distance(hitPoint);
+					if (distance < closestHit.mDistance)
+					{
+						closestHit.mDistance = distance;
+						closestHit.mGameObject = component->GetOwner();;
+						closestHit.mHitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
+					}
+				}
+			}
+		}
+
+		hit = closestHit;
+
+	}
+	else
+	{
+		hit.mDistance = -1.0f;
+	}
+}
+
+
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {

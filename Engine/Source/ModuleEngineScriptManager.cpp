@@ -187,13 +187,8 @@ void ModuleEngineScriptManager::Pause(bool pause)
 	mPause = pause;
 }
 
-void ModuleEngineScriptManager::StartScripts()
-{
-	if (EngineApp->IsPlayMode())
-	{
-		ModuleScriptManager::StartScripts();
-	}
-}
+
+
 
 
 void ModuleEngineScriptManager::UpdateScripts()

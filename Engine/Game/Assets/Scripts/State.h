@@ -19,7 +19,7 @@ enum StateType
 class State
 {
 public:
-	explicit State(PlayerController* player);
+	explicit State(PlayerController* player, float cooldown);
 	~State();
 
 	virtual StateType HandleInput();
@@ -30,8 +30,15 @@ public:
 
 	virtual StateType GetType();
 
+	virtual bool IsReady();
+	void ResetCooldown() { mStateTimer = 0.0f; }
+	void SetCooldown(float cooldown) { mStateCooldown = cooldown; }
+
 protected:
 	PlayerController* mPlayerController = nullptr;
+
+	float mStateCooldown = 0.0f;
+	float mStateTimer = 0.0f;
 
 private:
 };

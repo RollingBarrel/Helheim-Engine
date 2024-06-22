@@ -174,7 +174,6 @@ void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
 {
 
 	std::string currentStateName = GetCurrentStateName();
-
 	for (size_t i = 0; i < mStateMachine->GetNumTransitions(); i++)
 	{
 		if (currentStateName == mStateMachine->GetTransitionSource(i) && trigger == mStateMachine->GetTransitionTrigger(i))
@@ -231,7 +230,8 @@ void AnimationComponent::ChangeState(std::string stateName, float transitionTime
 
 std::string AnimationComponent::GetCurrentSpineStateName()
 {
-	assert(!mHasSpine);
+	//Changed from !mHasSpine to mHasSpine
+	assert(mHasSpine);
 	std::string currentStateName;
 
 	if (mStateMachine != nullptr && mCurrentSpineState < mStateMachine->GetNumStates())
@@ -244,7 +244,8 @@ std::string AnimationComponent::GetCurrentSpineStateName()
 
 void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionTime)
 {
-	assert(!mHasSpine);
+	//Changed from !mHasSpine to mHasSpine
+	assert(mHasSpine);
 
 	std::string currentStateName = GetCurrentSpineStateName();
 
@@ -400,6 +401,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 					ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
 					mStateMachine = resSM->GetStateMachine();
 					mStateMachine->SetUID(resSM->GetUID());
+					App->GetResource()->ReleaseResource(resSM->GetUID());
 				}
 				else
 				{

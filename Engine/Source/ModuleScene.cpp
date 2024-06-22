@@ -26,6 +26,8 @@
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
 
+const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
+
 ModuleScene::ModuleScene() 
 {
 }
@@ -115,13 +117,10 @@ const std::vector<GameObject*>& ModuleScene::FindGameObjectsWithTag(const std::s
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (!mGameObjectsByTags[tag].empty())
-		{
-			return mGameObjectsByTags[tag];
-		}
+		return mGameObjectsByTags[tag];
 	}
 
-	return std::vector<GameObject*>();
+	return ModuleScene::mEmptyVector;
 }
 
 void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)
@@ -211,7 +210,7 @@ void ModuleScene::Load(const char* sceneName)
 
 	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0);
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0)
 	{
 		//App->GetScene()->Load(fileBuffer);
 	}
@@ -249,7 +248,12 @@ void ModuleScene::Load(const char* sceneName)
 		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartScripts();
+		}
+		
 	}
 }
 #pragma endregion
@@ -351,8 +355,14 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 	
 		ret = mSceneGO[currSize];
 
-		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		mRoot->RecalculateMatrices();
+		App->GetScriptManager()->AwakeGameObjectScripts(ret);
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartGameObjectScripts(ret);
+		}
+		
 	}
 	
 	return ret;
@@ -517,6 +527,23 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 			break;
 		}
 	}
+}
+
+GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
+{
+	std::unordered_map<const GameObject*, GameObject*> originalToNew;
+	std::vector<MeshRendererComponent*>mRenderers;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	for (MeshRendererComponent* mRend : mRenderers)
+	{
+		if (mRend->HasSkinning())
+		{
+			mRend->UpdateSkeletonObjects(originalToNew);
+		}
+	}
+	AddGameObjectToDuplicate(duplicatedGameObject);
+
+	return duplicatedGameObject;
 }
 
 void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)

@@ -5,8 +5,11 @@
 #include "Keys.h"
 #include "PlayerController.h"
 #include "Weapon.h"
+#include "ModuleDetourNavigation.h"
+#include "MeleeWeapon.h"
 
-AttackState::AttackState(PlayerController* player) : State(player)
+
+AttackState::AttackState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 
@@ -16,26 +19,31 @@ AttackState::~AttackState()
 
 StateType AttackState::HandleInput()
 {
-    mAttackTimer += App->GetDt();
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
-    if (mAttackTimer < mWeapon->GetAttackTime())
+    mAttackTimer += App->GetDt();
+    if (mAttackTimer < mWeapon->GetAttackDuration())
     {
+        // MOVE TO WEAPON
+        /*if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
+            App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+        {
+            reinterpret_cast<MeleeWeapon*>(mWeapon)->IncreaseComboStep();
+        }*/ 
         return StateType::ATTACK;
     }
-    else
-    {
-        return StateType::AIM;
-    }
+       
+    return StateType::AIM;
 }
 
 void AttackState::Update()
 {
-    mWeapon->BasicAttack();
-    DoAudio();
+    mWeapon->Attack(mAttackTimer);
 }
 
 void AttackState::Enter()
 {
+    mAttackTimer = 0.0f;
     mWeapon = mPlayerController->GetWeapon();
     mWeapon->Enter();
 }
@@ -49,8 +57,4 @@ void AttackState::Exit()
 StateType AttackState::GetType()
 {
     return StateType::ATTACK;
-}
-
-void AttackState::DoAudio()
-{
 }

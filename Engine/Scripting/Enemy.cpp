@@ -1,13 +1,16 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "GameManager.h"
 #include "AudioSourceComponent.h"
-#include "Math/MathFunc.h"
+#include "ScriptComponent.h"
 #include "GameObject.h"
 
+#include "GameManager.h"
+#include "PoolManager.h"
+#include "ItemDrop.h"
+#include "BattleArea.h"
 
-
+#include "Math/MathFunc.h"
 
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
@@ -54,7 +57,14 @@ void Enemy::TakeDamage(float damage)
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    DropShield();
+
+    BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+    if (activeBattleArea)
+    {
+        activeBattleArea->EnemyDestroyed();
+    }
+
+    DropItem();
 }
 
 void Enemy::AddFootStepAudio(GameObject* audio)
@@ -96,20 +106,41 @@ bool Enemy::IsMoving()
     return false;
 }
 
-void Enemy::DropShield()
+void Enemy::Reset()
+{
+    mHealth = mMaxHealth;
+}
+
+void Enemy::DropItem()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;
 
+    PoolType poolType = PoolType::LAST;
+
     if (randomValue < mShieldDropRate)
     {
-        float3 enemyPosition = mGameObject->GetPosition();
-        float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
-
-        GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
-        shield->SetPosition(shieldPosition);
-
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        shield->SetScale(scale);
+        poolType = PoolType::SHIELD;
     }
+    else if (randomValue < mRedEnergyDropRate)
+    {
+        poolType = PoolType::RED_ENERGY;
+    }
+    else if (randomValue < mBlueEnergyDropRate)
+    {
+        poolType = PoolType::BLUE_ENERGY;
+    }
+
+    if (poolType != PoolType::LAST)
+    {
+       float3 enemyPosition = mGameObject->GetPosition();
+       float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+       GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
+       itemGameObject->SetPosition(dropPosition);
+       ItemDrop* item = reinterpret_cast<ItemDrop*>(reinterpret_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+       item->Init();
+    }
+
+
 }

@@ -21,6 +21,9 @@ GameApplication* GameApp = NULL;
 GameApplication::GameApplication()
 {
 	GameApp = this;
+
+	mIsPlayMode = true;
+	
 	mCurrentTimer = new Timer();
 	
 	modules[0] = input = new ModuleInput();

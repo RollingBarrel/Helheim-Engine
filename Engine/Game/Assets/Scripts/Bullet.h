@@ -32,7 +32,7 @@ private:
 	float3 mDirection = float3::zero;
 	float mTimePassed = 0.0f;
 	float mTotalMovement = 0.0f;
-	BoxColliderComponent* mCollider;
+	BoxColliderComponent* mCollider = nullptr;
 	bool mHasCollided = false;
 	GameObject* mHitParticles = nullptr;
 };

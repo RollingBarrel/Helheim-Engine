@@ -102,6 +102,36 @@ void ModuleScriptManager::AwakeScripts()
 	}
 }
 
+void ModuleScriptManager::AwakeGameObjectScripts(GameObject* gameobject)
+{
+	std::vector<Component*> components;
+	gameobject->GetComponentsInChildren(ComponentType::SCRIPT, components);
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		ScriptComponent* scriptComponent = reinterpret_cast<ScriptComponent*>(components[i]);
+		if (scriptComponent->mScript)
+		{
+			scriptComponent->mScript->Awake();
+		}
+	}
+}
+
+void ModuleScriptManager::StartGameObjectScripts(GameObject* gameobject)
+{
+	std::vector<Component*> components;
+	gameobject->GetComponentsInChildren(ComponentType::SCRIPT, components);
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		ScriptComponent* scriptComponent = reinterpret_cast<ScriptComponent*>(components[i]);
+		if (scriptComponent->mScript)
+		{
+			scriptComponent->mScript->Start();
+		}
+	}
+}
+
 void ModuleScriptManager::StartScripts()
 {
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
