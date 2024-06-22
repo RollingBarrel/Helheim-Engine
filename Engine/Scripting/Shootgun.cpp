@@ -1,5 +1,6 @@
 #include "Shootgun.h"
 #include "GameManager.h"
+#include "PoolManager.h"
 #include "HudController.h"
 #include "AudioManager.h"
 #include "Enemy.h"
@@ -11,6 +12,7 @@
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
+#include <Bullet.h>
 
 Shootgun::Shootgun()
 {
@@ -47,6 +49,8 @@ void Shootgun::Attack(float time)
     int count = 0;
     for (int i = 0; i < numBullets; ++i)
     {
+        
+
         Ray ray;
         ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
         ray.pos.y++;
@@ -57,7 +61,6 @@ void Shootgun::Attack(float time)
         spread += GameManager::GetInstance()->GetPlayer()->GetRight() * LCG().Float(-1.0f, 1.0f);
 
         ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
-
 
         Hit hit;
         Physics::Raycast(hit, ray, mAttackRange);
@@ -78,6 +81,17 @@ void Shootgun::Attack(float time)
         {
             count++;
         }
+
+        //PARTICLES
+        if (GameManager::GetInstance()->GetPoolManager())
+        {
+            GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+            Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+            bulletScript->Init(ray.pos, ray.dir);
+        }
+
+
+
     }
     
     LOG("Missed bullets = %i", count);

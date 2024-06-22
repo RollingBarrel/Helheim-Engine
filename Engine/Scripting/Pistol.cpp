@@ -9,20 +9,20 @@
 #include "Physics.h"
 #include "Geometry/Ray.h"
 
+#include "GameManager.h"
+#include "PoolManager.h"
+#include "HudController.h"
 #include "Enemy.h"
 #include "Bullet.h"
-#include "HudController.h"
-#include "GameManager.h"
+#include "Bat.h"
 
 #include <map>
-#include "Bat.h"
 
 Pistol::Pistol() : RangeWeapon()
 {
     mCurrentAmmo = 16;
     mMaxAmmo = 16;
     mDamage = 2.0f;
-    //mAttackRate = 1.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.2f;
 }
@@ -41,25 +41,11 @@ void Pistol::Attack(float time)
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
     {
-       //bullet = App->GetScene()->InstantiatePrefab("PistolBullet.prfb");
         mCurrentAmmo--;
         LOG("Bullets: %i", mCurrentAmmo);
     }
     
-
-    //mPlayerController->PlayOneShot("Shot");
-    //mAnimationComponent->SendTrigger("tShooting", 0.2f);
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
-
-    if (bullet != nullptr)
-    {
-        /*bullet->SetPosition(mPlayerCharacter->GetPosition());
-
-        mShootPoint->SetEnabled(false);
-        mShootPoint->SetEnabled(true); // Reset particles
-        
-        bullet->SetRotation(mGameObject->GetWorldRotation());*/
-    }
 
     std::multiset<Hit> hits;
 
@@ -69,7 +55,7 @@ void Pistol::Attack(float time)
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
     float distance = 100.0f;
-    Physics::Raycast(hits, ray, distance); // THIS IS THE OLD RAYCAST
+    Physics::Raycast(hits, ray, distance);
 
     if (!hits.empty())
     {
@@ -86,6 +72,14 @@ void Pistol::Attack(float time)
                 }
             }
         }
+    }
+
+    //PARTICLES
+    if (GameManager::GetInstance()->GetPoolManager())
+    {
+        GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+        Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        bulletScript->Init(ray.pos, ray.dir);
     }
 }
 
