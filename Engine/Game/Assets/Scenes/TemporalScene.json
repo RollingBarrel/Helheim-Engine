@@ -1,0 +1,1064 @@
+{
+    "Scene": {
+        "Name": "ExplosiveEnemyTest",
+        "GameObjects": [
+            {
+                "UID": 980587329,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -0.5409145355224609,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    16.850000381469728,
+                    1.0,
+                    14.199999809265137
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1009549665,
+                "ParentUID": 980587329,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1033847394,
+                "ParentUID": 1009549665,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1654303231,
+                "ParentUID": 1,
+                "Name": "Player",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -7.130722999572754,
+                    3.132228374481201,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Player",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayerController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mMaxShield",
+                                "MemberType": 1,
+                                "VariableData": 100.0
+                            },
+                            {
+                                "VariableName": "mPlayerSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "DASH",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDashRange",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mDashCoolDown",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mDashDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "Grenade",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mGrenadeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGrenadeAimAreaGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGrenadeExplotionPreviewAreaGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGrenadeRange",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mGrenadeCoolDown",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "DEBUG MODE",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mGodMode",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "AUDIO",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mFootStepAudioHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mGunfireAudioHolder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.699999988079071,
+                            0.0
+                        ],
+                        "Size": [
+                            2.0999999046325685,
+                            3.4000000953674318,
+                            2.200000047683716
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1670873029,
+                "ParentUID": 1654303231,
+                "Name": "node_damagedHelmet_-6514",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    -0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1688347900,
+                "ParentUID": 1670873029,
+                "Name": "node_damagedHelmet_-6514",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 539182079,
+                        "MaterialID": 539182084,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1571711065,
+                "ParentUID": 1,
+                "Name": "GameManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "GameManager",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mController",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mPlayer",
+                                "MemberType": 3,
+                                "VariableData": 1654303231
+                            },
+                            {
+                                "VariableName": "mHudControllerGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1000081711,
+                "ParentUID": 1,
+                "Name": "Camera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayerCamera",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mFollowTarget",
+                                "MemberType": 3,
+                                "VariableData": 1654303231
+                            },
+                            {
+                                "VariableName": "mYawAngle",
+                                "MemberType": 1,
+                                "VariableData": 45.0
+                            },
+                            {
+                                "VariableName": "mPitchAngle",
+                                "MemberType": 1,
+                                "VariableData": 53.0
+                            },
+                            {
+                                "VariableName": "mDistanceToPlayer",
+                                "MemberType": 1,
+                                "VariableData": 18.0
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 6,
+                        "IsEnabled": true,
+                        "AspectRatio": 1.8978978395462037,
+                        "FieldOfView": 90.0,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 963292783,
+                "ParentUID": 1,
+                "Name": "ExplosiveWarning",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    7.668590068817139,
+                    -0.8202173113822937
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.10000000149011612,
+                    0.10000000149011612,
+                    0.10000000149011612
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1004299552,
+                "ParentUID": 963292783,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1019128825,
+                "ParentUID": 1004299552,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 81892183,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2095030910,
+                "ParentUID": 1,
+                "Name": "OB_enemy_explosive_ball_lvl_1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationsUIDs": [
+                            1561757136
+                        ],
+                        "NumAnimationUIDs": 1,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 2115221000,
+                "ParentUID": 2095030910,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 117422503,
+                "ParentUID": 2115221000,
+                "Name": "OB_exploding_ball_lower_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 127587169,
+                "ParentUID": 117422503,
+                "Name": "OB_exploding_ball_lower_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1561757129,
+                        "MaterialID": 1561757134,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1263422509,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1274631490,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -210.64471435546876,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916602849960328,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1281663211,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -93.33578491210938,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916604042053223,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 834835633,
+                "ParentUID": 2115221000,
+                "Name": "OB_exploding_ball_upper_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 859133362,
+                "ParentUID": 834835633,
+                "Name": "OB_exploding_ball_upper_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1561757135,
+                        "MaterialID": 1561757134,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1263422509,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1274631490,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -210.64471435546876,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916602849960328,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1281663211,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -93.33578491210938,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916604042053223,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1263422509,
+                "ParentUID": 2115221000,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071067690849304,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1274631490,
+                "ParentUID": 1263422509,
+                "Name": "UpperPart",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.5706655979156496,
+                    210.64471435546876,
+                    -1.1916604042053223
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1281663211,
+                "ParentUID": 1263422509,
+                "Name": "LowerPart",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.5706655979156496,
+                    93.3357925415039,
+                    -1.1916604042053223
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1869854631,
+                "ParentUID": 1,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.188501238822937,
+                    2.258213520050049,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemyExplosive",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "STATS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHealth",
+                                "MemberType": 0,
+                                "VariableData": 1097859072
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mChargingDistance",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mExplosionDistance",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mExplosionDamage",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mExplosionWarningGO",
+                                "MemberType": 3,
+                                "VariableData": 963292783
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 5,
+                        "IsEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1894430844,
+                "ParentUID": 1869854631,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1907589213,
+                "ParentUID": 1894430844,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}

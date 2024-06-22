@@ -17,6 +17,5 @@ ResourceStateMachine* Importer::StateMachine::Load(const char* fileName, unsigne
 	AnimationStateMachine* newSm = new AnimationStateMachine();
 
 	newSm->LoadResource(fileName); //Check the full path in debug
-
 	return new ResourceStateMachine(uid, newSm);
 }

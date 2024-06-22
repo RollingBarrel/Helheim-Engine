@@ -165,6 +165,12 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -287,6 +293,12 @@
     <ClCompile Include="AudioTester.cpp" />
     <ClCompile Include="AudioManager.cpp">
       <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobotRange.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobotMelee.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
