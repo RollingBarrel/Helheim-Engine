@@ -143,7 +143,7 @@ void MeleeWeapon::MeleeHit() {
         float distanceToEnemy = (enemyPosition - playerPosition).Length();
         float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
 
-        // Si el enemigo está frente al jugador y dentro del rango de ataque
+        // Si el enemigo est?frente al jugador y dentro del rango de ataque
         float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
         float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
 

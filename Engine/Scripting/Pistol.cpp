@@ -16,6 +16,9 @@
 #include "Bullet.h"
 #include "Bat.h"
 #include "TrailComponent.h"
+#include "HudController.h"
+#include "GameManager.h"
+#include "AudioManager.h"
 
 #include <map>
 
@@ -39,6 +42,8 @@ void Pistol::Enter()
 void Pistol::Attack(float time)
 {
     LOG("Pistol Attack");
+    PlayHitSound();
+
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
     {
@@ -91,6 +96,11 @@ void Pistol::Reload()
 {
     mCurrentAmmo = mMaxAmmo;
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
+void Pistol::PlayHitSound()
+{
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
 }
 
 void Pistol::Exit()

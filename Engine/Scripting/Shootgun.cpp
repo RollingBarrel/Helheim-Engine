@@ -43,7 +43,7 @@ void Shootgun::Attack(float time)
     //Audio
     if (GameManager::GetInstance()->GetAudio())
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
+        PlayHitSound();
     }
 
     //Shoot Logic
@@ -112,4 +112,9 @@ void Shootgun::Reload()
 {
     //mCurrentAmmo = mMaxAmmo;
     //GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
+void Shootgun::PlayHitSound()
+{
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
 }

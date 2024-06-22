@@ -203,12 +203,4 @@ private:
 
     // Debug
     bool mGodMode = false;
-
-    // -------- PROVISIONAL --------
-
-    void UpdateBattleSituation();
-    BattleSituation GetBattleSituation() { return mCurrentSituation; };
-
-    BattleSituation mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-    float mBattleStateTransitionTime = 0.0f;
 };

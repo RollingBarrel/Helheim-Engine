@@ -7,7 +7,8 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-
+#include "AudioManager.h"
+#include "GameManager.h"
 Bat::Bat(BoxColliderComponent* collider) : MeleeWeapon()
 {
     mAttackDuration = 3.0f;
@@ -58,6 +59,8 @@ void Bat::OnCollisionEnter(CollisionData* collisionData)
 
 void Bat::DealDamage(GameObject* enemy) 
 {
+    PlayHitSound();
+
     // This must generate the box colider, detect the gameObjects that are inside, 
     // apply damage to the enemies and 
     // pop particles from the game object
@@ -101,7 +104,6 @@ void Bat::Attack(float time)
         LOG("MELEE ATTACK 3!!")
         // DealDamage();
     }
-
 }
 
 void Bat::Exit()
@@ -109,5 +111,15 @@ void Bat::Exit()
     //mTrail->Disable();
     if(mCollider) mCollider->SetEnable(false);
 
+}
+
+void Bat::PlayHitSound()
+{
+    const char* parameterName = "Speed";
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(
+        SFX::MEELEE,
+        GameManager::GetInstance()->GetPlayer()->GetPosition(),
+        { { parameterName, 0.0f } }
+    );
 }
 

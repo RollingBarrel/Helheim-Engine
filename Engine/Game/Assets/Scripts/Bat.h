@@ -28,7 +28,7 @@ public:
 	void Exit() override;
 
 private:
-
+    void PlayHitSound();
 	TrailComponent* mTrail = nullptr;
     BoxColliderComponent* mCollider = nullptr;
 

@@ -25,6 +25,7 @@ public:
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }
 	void SetDamage(int value) { mDamage = value; }
 protected:
+	virtual void PlayHitSound() = 0;
 	WeaponType mType;
 
 	float mDamage = 0.0f;
