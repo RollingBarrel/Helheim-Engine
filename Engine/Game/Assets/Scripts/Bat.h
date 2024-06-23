@@ -12,4 +12,6 @@ class Bat : public MeleeWeapon
 public:
 	Bat(BoxColliderComponent* collider, TrailComponent* trail);
 	~Bat();
+private:
+	void PlayHitSound();
 };

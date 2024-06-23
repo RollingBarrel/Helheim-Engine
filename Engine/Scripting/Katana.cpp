@@ -12,21 +12,6 @@ Katana::~Katana()
 {
 }
 
-void Katana::Enter()
-{
-}
-
-void Katana::Attack(float time)
-{
-	LOG("Katana Attack");
-    
-    PlayHitSound();
-}
-
-void Katana::Exit()
-{
-}
-
 void Katana::PlayHitSound()
 {
     const char* parameterName = "Speed";

@@ -9,11 +9,6 @@ public:
 	Katana(BoxColliderComponent* collider, TrailComponent* trail);
 	~Katana();
 
-	void Enter() override;
-	void Attack(float time) override;
-	void Exit() override;
-
 private:
 	void PlayHitSound();
-	TrailComponent* mTrail = nullptr;
 };

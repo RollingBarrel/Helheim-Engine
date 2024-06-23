@@ -6,6 +6,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ScriptComponent.h"
+#include "GameManager.h"
+#include "PlayerController.h"
 
 
 MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) : Weapon()
@@ -18,7 +20,6 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) 
         CollisionEventType::ON_COLLISION_ENTER,
         new std::function<void(CollisionData*)>(std::bind(&MeleeWeapon::OnCollisionEnter, this, std::placeholders::_1))
     );
-    mCollider->SetEnable(false);
     mTrail = trail;
 }
 
@@ -52,6 +53,7 @@ void MeleeWeapon::Enter()
     LOG("MELEE ENTER");
     mColliderAtivated = false;
     mComboStep = 1;
+    mNextComboStep = 1;
     mHasHitted = false;
     // animation hit 1
 }
@@ -108,6 +110,8 @@ void MeleeWeapon::Attack(float time)
         mComboStep = 2;
         mHasHitted = false;
         // animation hit 2
+        //GameManager::GetInstance()->GetPlayerController()->SetAnimation(trigger, transitionTime);
+
     }
     else if (time > mCombo1st + mCombo2nd and mNextComboStep == 3 and mComboStep == 2 and mHasHitted)
     {
@@ -115,6 +119,7 @@ void MeleeWeapon::Attack(float time)
         mComboStep = 3;
         mHasHitted = false;
         // animation hit 3
+
     }
 }
 
