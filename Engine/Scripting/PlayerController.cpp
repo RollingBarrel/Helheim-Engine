@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleDetourNavigation.h"
+#include "ModuleResource.h"
 #include "GameObject.h"
 #include "Physics.h"
 
@@ -12,6 +13,8 @@
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
@@ -169,6 +172,15 @@ void PlayerController::Start()
         mAnimationComponent->SetIsPlaying(true);
     }
 
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+    mMaterialIds.reserve(mMeshComponents.size());
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
+    }
+
+
 }
 
 void PlayerController::Update()
@@ -186,6 +198,32 @@ void PlayerController::Update()
 
     CheckDebugOptions();
 
+    //Hit Effect
+    if (mHit)
+    {
+        if (Delay(0.1f)) 
+        {
+            mHit = false;
+
+            for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+            {
+                reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+                App->GetResource()->ReleaseResource(mMaterialIds[i]);
+            }
+        }
+    }
+}
+
+bool PlayerController::Delay(float delay)
+{
+    mTimePassed += App->GetDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
 }
 
 void PlayerController::StateMachine()
@@ -569,6 +607,15 @@ void PlayerController::TakeDamage(float damage)
 
     float healthRatio = mShield / mMaxShield;
     GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
+
+
+    //Hit Effect
+    mHit = true;
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    }
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
