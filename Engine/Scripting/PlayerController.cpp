@@ -58,6 +58,7 @@ CREATE(PlayerController)
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
+    MEMBER(MemberType::GAMEOBJECT, mMeleeTrail);
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
@@ -123,21 +124,19 @@ void PlayerController::Start()
     if (mMeleeCollider) 
     {
         weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
-        if (weaponCollider)
-        {
-            weaponCollider->AddCollisionEventHandler(
-                CollisionEventType::ON_COLLISION_ENTER,
-                new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
-            );
-        }
+    }
+    TrailComponent* meleeTrail = nullptr;
+    if (mMeleeTrail)
+    {
+        meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
     }
 
-    mBat = new Bat(weaponCollider);
+    mBat = new Bat(weaponCollider, meleeTrail);
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
-    mKatana = new Katana(collider);
-    mHammer = new Hammer(collider);
+    mKatana = new Katana(weaponCollider, meleeTrail);
+    mHammer = new Hammer(weaponCollider, meleeTrail);
 
     mWeapon = mMachinegun;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());

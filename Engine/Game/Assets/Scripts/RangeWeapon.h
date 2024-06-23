@@ -8,7 +8,7 @@ public:
 	RangeWeapon();
 	~RangeWeapon();
 
-	float GetAttackTime() override { return mAttackTime; }
+	float GetAttackDuration() override { return mAttackDuration; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
 

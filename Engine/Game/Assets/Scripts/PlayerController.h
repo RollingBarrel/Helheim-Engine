@@ -180,6 +180,7 @@ private:
     MeleeWeapon* mKatana = nullptr;
     MeleeWeapon* mHammer = nullptr;
     GameObject* mMeleeCollider = nullptr;
+    GameObject* mMeleeTrail = nullptr;
 
     // Attack
     float mSwitchCoolDown = 0.2f;

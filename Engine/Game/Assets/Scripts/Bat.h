@@ -10,6 +10,6 @@ struct CollisionData;
 class Bat : public MeleeWeapon
 {
 public:
-	Bat(BoxColliderComponent* collider);
+	Bat(BoxColliderComponent* collider, TrailComponent* trail);
 	~Bat();
 };

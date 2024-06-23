@@ -6,7 +6,7 @@ class TrailComponent;
 class Katana : public MeleeWeapon
 {
 public:
-	Katana(BoxColliderComponent* collider);
+	Katana(BoxColliderComponent* collider, TrailComponent* trail);
 	~Katana();
 
 	void Enter() override;

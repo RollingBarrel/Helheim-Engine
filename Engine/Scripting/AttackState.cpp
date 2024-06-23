@@ -25,11 +25,11 @@ StateType AttackState::HandleInput()
     if (mAttackTimer < mWeapon->GetAttackDuration())
     {
         // MOVE TO WEAPON
-        /*if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
+        if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
             App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
         {
             reinterpret_cast<MeleeWeapon*>(mWeapon)->IncreaseComboStep();
-        }*/ 
+        } 
         return StateType::ATTACK;
     }
        

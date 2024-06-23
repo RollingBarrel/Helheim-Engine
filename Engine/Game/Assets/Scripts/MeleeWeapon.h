@@ -9,10 +9,10 @@ struct CollisionData;
 class MeleeWeapon : public Weapon
 {
 public:
-	MeleeWeapon(BoxColliderComponent* collider);
+	MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail);
 	~MeleeWeapon();
 
-	float GetAttackTime() override;
+	float GetAttackDuration() override;
 
 	void IncreaseComboStep();
 
@@ -35,5 +35,6 @@ protected:
 	float mComboEnd = 1.0f;
 	float mHitTime = 0.9f;
 	bool mColliderAtivated = false;
+	bool mHasHitted = false;
 };
 

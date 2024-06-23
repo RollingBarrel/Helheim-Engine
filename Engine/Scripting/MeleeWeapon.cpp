@@ -4,10 +4,11 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Application.h"
+#include "ModuleInput.h"
 #include "ScriptComponent.h"
 
 
-MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider) : Weapon()
+MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) : Weapon()
 {
 	mType = WeaponType::MELEE;
     mCollider = collider;
@@ -18,22 +19,23 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider) : Weapon()
         new std::function<void(CollisionData*)>(std::bind(&MeleeWeapon::OnCollisionEnter, this, std::placeholders::_1))
     );
     mCollider->SetEnable(false);
+    mTrail = trail;
 }
 
 MeleeWeapon::~MeleeWeapon()
 {
 }
 
-float MeleeWeapon::GetAttackTime()
+float MeleeWeapon::GetAttackDuration()
 {
-    switch (mComboStep)
+    switch (std::max(mComboStep, mNextComboStep))
     {
-    case 1: mAttackTime = mCombo1st; break;
-    case 2: mAttackTime = mCombo1st + mCombo2nd; break;
-    case 3: mAttackTime = mCombo1st + mCombo2nd + mComboEnd; break;
-    default: break;
+    case 1: mAttackDuration = mCombo1st; break;
+    case 2: mAttackDuration = mCombo1st + mCombo2nd; break;
+    case 3: mAttackDuration = mCombo1st + mCombo2nd + mComboEnd; break;
+    default: LOG("Should not happend?")break;
     }
-    return mAttackTime;
+    return mAttackDuration;
 }
 
 void MeleeWeapon::IncreaseComboStep()
@@ -43,56 +45,82 @@ void MeleeWeapon::IncreaseComboStep()
 
 void MeleeWeapon::Enter()
 {
-    //mTrail->Enable();
-    if (mCollider) mCollider->SetEnable(true);
+    if (mTrail) 
+    {
+        mTrail->SetEnable(true);
+    }
+    LOG("MELEE ENTER");
+    mColliderAtivated = false;
     mComboStep = 1;
+    mHasHitted = false;
+    // animation hit 1
 }
 
 void MeleeWeapon::Attack(float time)
 {
-    //if (mCollider->IsEnabled()) mCollider->SetEnable(false);
-
-    if (time > mCombo1st * mHitTime and 
-        mComboStep == 1 and !mColliderAtivated)
+    // Deactivates the collider 1 frame after the collider gets activated
+    if (time > mCombo1st * mHitTime and
+        mComboStep == 1 and mColliderAtivated)
     {
-        LOG("MELEE: ATTACK 1!!");
-        //mCollider->SetEnable(true);
+        LOG("MELEE: Finish 1    Time: %f", time);
+        mColliderAtivated = false;
+        mHasHitted = true;
+    }
+    else if (time > mCombo1st + mCombo2nd * mHitTime and
+        mComboStep == 2 and mColliderAtivated)
+    {
+        LOG("MELEE: Finish 2    Time: %f", time);
+        mColliderAtivated = false;
+        mHasHitted = true;
+    }
+    else if (time > mCombo1st + mCombo2nd + mComboEnd * mHitTime and
+        mComboStep == 3 and mColliderAtivated)
+    {
+        LOG("MELEE: Finish 3    Time: %f", time);
+        mColliderAtivated = false;
+        mHasHitted = true;
+    }
+    
+    // Activates the collider damage effect
+    if (time > mCombo1st * mHitTime and 
+        mComboStep == 1 and !mColliderAtivated and !mHasHitted)
+    {
+        LOG("MELEE: Start 1    Time: %f", time);
         mColliderAtivated = true;
-        if (mNextComboStep == 2)
-        {
-            mComboStep = 2;
-            mColliderAtivated = false;
-            // mAnimationComponent->SendTrigger("tMelee", 0.2f);
-        }
     }
     else if (time > mCombo1st + mCombo2nd * mHitTime and 
-        mComboStep == 2 and !mColliderAtivated)
+        mComboStep == 2 and !mColliderAtivated and !mHasHitted)
     {
-        LOG("MELEE ATTACK 2!!");
-        //mCollider->SetEnable(true);
+        LOG("MELEE: Start 2    Time: %f", time);
         mColliderAtivated = true;
-        // DealDamage();
-        if (mNextComboStep == 3)
-        {
-            mComboStep = 3;
-            // mAnimationComponent->SendTrigger("tMelee", 0.2f);
-        }
     }
     else if (time > mCombo1st + mCombo2nd + mComboEnd * mHitTime and 
-        mComboStep == 3 and !mColliderAtivated)
+        mComboStep == 3 and !mColliderAtivated and !mHasHitted)
     {
-        LOG("MELEE ATTACK 3!!");
-        //mCollider->SetEnable(true);
+        LOG("MELEE: Start 3    Time: %f", time);
         mColliderAtivated = true;
-        // DealDamage();
     }
 
+    // Increase the combo step after activating the collider effect
+    if (time > mCombo1st and mNextComboStep == 2 and mComboStep == 1 and mHasHitted)
+    {
+        LOG("MELEE: Combo 2    Time: %f", time);
+        mComboStep = 2;
+        mHasHitted = false;
+        // animation hit 2
+    }
+    else if (time > mCombo1st + mCombo2nd and mNextComboStep == 3 and mComboStep == 2 and mHasHitted)
+    {
+        LOG("MELEE: Combo 3    Time: %f", time);
+        mComboStep = 3;
+        mHasHitted = false;
+        // animation hit 3
+    }
 }
 
 void MeleeWeapon::Exit()
 {
-    //mTrail->Disable();
-    if (mCollider) mCollider->SetEnable(false);
+    if (mTrail) mTrail->SetEnable(false);
     mColliderAtivated = false;
 
 }
@@ -100,9 +128,9 @@ void MeleeWeapon::Exit()
 void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 {
     // pop particles on collision
-    if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
+    if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 and mColliderAtivated)
     {
-        //DealDamage(collisionData->collidedWith);
+        DealDamage(collisionData->collidedWith);
         LOG("Colliding with melee!");
 
     }
