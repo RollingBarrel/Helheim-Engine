@@ -371,7 +371,6 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    mWeapon->Exit();
     if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
         mWeapon = mPistol;
@@ -406,8 +405,6 @@ void PlayerController::SwitchWeapon()
             break;
         }
     }
-    mWeapon->Enter();
-
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     if (mSpecialWeapon) mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }

@@ -46,6 +46,10 @@ void MeleeWeapon::IncreaseComboStep()
 
 void MeleeWeapon::Enter()
 {
+    if (mCollider)
+    {
+        mCollider->SetEnable(true);
+    }
     if (mTrail) 
     {
         mTrail->SetEnable(true);
@@ -125,6 +129,10 @@ void MeleeWeapon::Attack(float time)
 
 void MeleeWeapon::Exit()
 {
+    if (mCollider)
+    {
+        mCollider->SetEnable(false);
+    }
     if (mTrail) mTrail->SetEnable(false);
     mColliderAtivated = false;
 
