@@ -61,7 +61,9 @@ CREATE(PlayerController)
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
-    MEMBER(MemberType::GAMEOBJECT, mMeleeTrail);
+    MEMBER(MemberType::GAMEOBJECT, mBatTrail);
+    MEMBER(MemberType::GAMEOBJECT, mKatanaTrail);
+    MEMBER(MemberType::GAMEOBJECT, mHammerTrail);
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
@@ -128,28 +130,28 @@ void PlayerController::Start()
     {
         weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
     }
-    TrailComponent* meleeTrail = nullptr;
-    if (mMeleeTrail)
+    TrailComponent* batTrail = nullptr;
+    if (mBatTrail)
     {
-        meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
+        batTrail = reinterpret_cast<TrailComponent*>(mBatTrail->GetComponent(ComponentType::TRAIL));
     }
-    //TrailComponent* meleeTrail = nullptr;
-    //if (mMeleeTrail)
-    //{
-    //    meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
-    //}
-    //TrailComponent* meleeTrail = nullptr;
-    //if (mMeleeTrail)
-    //{
-    //    meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
-    //}
+    TrailComponent* katanaTrail = nullptr;
+    if (mKatanaTrail)
+    {
+        katanaTrail = reinterpret_cast<TrailComponent*>(mKatanaTrail->GetComponent(ComponentType::TRAIL));
+    }
+    TrailComponent* hammerTrail = nullptr;
+    if (mHammerTrail)
+    {
+        hammerTrail = reinterpret_cast<TrailComponent*>(mHammerTrail->GetComponent(ComponentType::TRAIL));
+    }
 
-    mBat = new Bat(weaponCollider, meleeTrail);
+    mBat = new Bat(weaponCollider, batTrail);
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
-    mKatana = new Katana(weaponCollider, meleeTrail);
-    mHammer = new Hammer(weaponCollider, meleeTrail);
+    mKatana = new Katana(weaponCollider, katanaTrail);
+    mHammer = new Hammer(weaponCollider, hammerTrail);
 
     mWeapon = mMachinegun;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
