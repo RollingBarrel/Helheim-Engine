@@ -176,7 +176,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 		ret = Importer::Prefab::Import(assetsFile, uid, modifyAssets);
 		break;
 	case Resource::Type::Script:
-		ret = Importer::Script::Import(importedFile, uid);
+		//ret = Importer::Script::Import(importedFile, uid);
 		break;
 	case Resource::Type::NavMesh:
 		ret = Importer::NavMesh::Import(uid, assetsFile);

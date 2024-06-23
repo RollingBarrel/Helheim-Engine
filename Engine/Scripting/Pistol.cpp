@@ -15,6 +15,10 @@
 #include "Enemy.h"
 #include "Bullet.h"
 #include "Bat.h"
+#include "TrailComponent.h"
+#include "HudController.h"
+#include "GameManager.h"
+#include "AudioManager.h"
 
 #include <map>
 
@@ -38,6 +42,8 @@ void Pistol::Enter()
 void Pistol::Attack(float time)
 {
     LOG("Pistol Attack");
+    PlayHitSound();
+
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
     {
@@ -79,7 +85,10 @@ void Pistol::Attack(float time)
     {
         GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
         Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        bulletScript->Init(ray.pos, ray.dir);
+        ColorGradient gradient;
+        gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
+        
+        bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
     }
 }
 
@@ -87,6 +96,11 @@ void Pistol::Reload()
 {
     mCurrentAmmo = mMaxAmmo;
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
+void Pistol::PlayHitSound()
+{
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
 }
 
 void Pistol::Exit()

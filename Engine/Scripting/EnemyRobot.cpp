@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 CREATE(EnemyRobot){
     CLASS(owner);
@@ -108,8 +109,7 @@ void EnemyRobot::Idle()
 
 void EnemyRobot::Chase()
 {
-    
-
+    PlayStepAudio();
     float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
     {
@@ -200,7 +200,7 @@ void EnemyRobot::MeleeAttack()
 {
     if ( mTimerAttack > mMeleeAttackCoolDown )
     {
-       
+        PlayMeleeAudio();
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
         float3 playerPosition = mPlayer->GetPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
@@ -250,4 +250,25 @@ void EnemyRobot::RangeAttack()
                 }
             }
         }
+}
+
+void EnemyRobot::PlayStepAudio()
+{
+    // TODO: play sound according the animation
+    mStepTimer += App->GetDt();
+    if (mStepTimer >= mStepCooldown)
+    {
+       mStepTimer = 0;
+       GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetPosition());
+    }
+}
+
+void EnemyRobot::PlayMeleeAudio()
+{
+    const char* parameterName = "Speed";
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(
+        SFX::MEELEE,
+        mGameObject->GetPosition(),
+        { { parameterName, 0.0f } }
+    );
 }

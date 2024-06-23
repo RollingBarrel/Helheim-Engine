@@ -6,6 +6,7 @@
 class BoxColliderComponent;
 class ParticleSystemComponent;
 struct CollisionData;
+class ColorGradient;
 
 GENERATE_BODY(Bullet);
 class Bullet : public Script
@@ -18,7 +19,7 @@ public:
 	void Start() override;
 	void Update() override; 
 
-	void Init(float3 position,float3 direction, float speed = 1.0f, float size = 1.0f);
+	void Init(const float3& position, const float3& direction, float speed = 1.0f, float size = 1.0f, ColorGradient* gradient = nullptr);
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private: 

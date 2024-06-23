@@ -7,6 +7,7 @@
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
+#include "TrailComponent.h"
 #include "Physics.h"
 
 #include "Geometry/Ray.h"
@@ -42,7 +43,7 @@ void Shootgun::Attack(float time)
     //Audio
     if (GameManager::GetInstance()->GetAudio())
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
+        PlayHitSound();
     }
 
     //Shoot Logic
@@ -87,7 +88,13 @@ void Shootgun::Attack(float time)
         {
             GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
             Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-            bulletScript->Init(ray.pos, ray.dir);
+            
+            ColorGradient gradient;
+            gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
+            gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
+            
+            
+            bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
 
 
@@ -105,4 +112,9 @@ void Shootgun::Reload()
 {
     //mCurrentAmmo = mMaxAmmo;
     //GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
+void Shootgun::PlayHitSound()
+{
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
 }

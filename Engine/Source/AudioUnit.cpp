@@ -108,6 +108,7 @@ void AudioUnit::Release()
 	if (mPreviewPlayID != -1)
 	{
 		Pause(true);
+		App->GetAudio()->Stop(mEventDescription, mPreviewPlayID);
 		App->GetAudio()->Release(mEventDescription, mPreviewPlayID);
 		mPreviewPlayID = -1;
 	}

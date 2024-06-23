@@ -15,6 +15,6 @@ public:
 
 protected:
 
-
+	virtual void PlayHitSound() = 0;
 };
 

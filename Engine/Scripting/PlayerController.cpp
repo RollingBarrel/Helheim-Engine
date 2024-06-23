@@ -139,7 +139,7 @@ void PlayerController::Start()
     mKatana = new Katana();
     mHammer = new Hammer();
 
-    mWeapon = mPistol;
+    mWeapon = mMachinegun;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     mSpecialWeapon = nullptr;
 
@@ -186,9 +186,6 @@ void PlayerController::Update()
     HandleRotation();
 
     CheckDebugOptions();
-
-    // Provisional
-    UpdateBattleSituation();
 
 }
 
@@ -453,9 +450,44 @@ void PlayerController::Reload() const
 
 void PlayerController::CheckDebugOptions()
 {
-    if (App->GetInput()->GetKey(Keys::Keys_G) == KeyState::KEY_REPEAT)
+    const ModuleInput* input = App->GetInput();
+    if (input->GetKey(Keys::Keys_G) == KeyState::KEY_REPEAT)
     {
         mGodMode = !mGodMode;
+    }
+
+    if (mGodMode) 
+    {
+        if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to PISTOL");
+            mWeapon = mPistol;
+        }
+        else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to MACHINEGUN");
+            mWeapon = mMachinegun;
+        }
+        else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to SHOTGUN");
+            mWeapon = mShootgun;
+        }
+        else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to KATANA");
+            mWeapon = mKatana;
+        }
+        else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to HUMMER");
+            mWeapon = mHammer;
+        }
+        else if (input->GetKey(Keys::Keys_6) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to BAT");
+            mWeapon = mBat;
+        }
     }
 }
 
@@ -542,47 +574,8 @@ void PlayerController::TakeDamage(float damage)
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetName() == "WinArea")
+    if (collisionData->collidedWith->GetTag() == "WinArea")
     {
         GameManager::GetInstance()->Victory();
     }
-}
-
-// PROVISIONAL
-void PlayerController::UpdateBattleSituation()
-{
-    float hpRate = mShield / mMaxShield;
-
-    /*if (mCurrentState == PlayerState::DEATH)
-    {
-        mCurrentSituation = BattleSituation::DEATH;
-    }
-    else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
-        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK))
-    {
-        mBattleStateTransitionTime += App->GetDt();
-        if (mBattleStateTransitionTime >= 8.0f)
-        {
-            if (hpRate <= 0.3)
-            {
-                mCurrentSituation = BattleSituation::IDLE_LOW_HP;
-            }
-            else
-            {
-                mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-            }
-        }
-    }
-    else
-    {
-        mBattleStateTransitionTime = 0.0f;
-
-        if (hpRate <= 0.3)
-        {
-            mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
-        }
-        else {
-            mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
-        }
-    }*/
 }

@@ -33,7 +33,7 @@ bool ModuleEngineScriptManager::Init()
 	int b = GetLastError();
 	mLastModificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
 
-	UpdateScripts();
+	//UpdateScripts();
 
 	return true;
 }
@@ -43,7 +43,7 @@ update_status ModuleEngineScriptManager::PreUpdate(float dt)
 	mUpdateScriptsTimer += dt;
 	if (mUpdateScriptsTimer > 1.5f)
 	{
-		UpdateScripts();
+		//UpdateScripts();
 
 		int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
 		if (mLastModificationTime != modificationTime && !EngineApp->IsPlayMode())

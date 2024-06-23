@@ -1,12 +1,17 @@
 #include "Machinegun.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "PoolManager.h"
 #include "AudioManager.h"
+#include "Bullet.h"
 #include "Enemy.h"
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
+#include "TrailComponent.h"
 #include "Physics.h"
+
+
 
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
@@ -16,7 +21,7 @@ Machinegun::Machinegun()
 {
 	mAttackRange = 100.0f;
 	mDamage = 0.4f;
-	mAttackDuration = 0.1f;
+	mAttackDuration = 0.0f;
 	
 	mCurrentAmmo = 32;
 	mMaxAmmo = 32;
@@ -36,7 +41,7 @@ void Machinegun::Attack(float time)
 	//Audio
 	if (GameManager::GetInstance()->GetAudio())
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
+        PlayHitSound();
 	}
 
 	//Shoot Logic
@@ -67,6 +72,21 @@ void Machinegun::Attack(float time)
         //Log position where bullet has to be destroyed and track bullet postion, modifying it with bulletSpeed until it reaches (surpasses) that position
     }
 
+    //PARTICLES
+    if (GameManager::GetInstance()->GetPoolManager())
+    {
+        GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+        Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+
+        ColorGradient gradient;
+        gradient.AddColorGradientMark(0.1f, float4(0.686f, 0.0f, 1.0f, 1.0f));
+        gradient.AddColorGradientMark(0.6f, float4(0.0f, 0.0f, 1.0f, 1.0f));
+
+
+        bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
+    }
+
+
 }
 
 void Machinegun::Exit()
@@ -77,4 +97,9 @@ void Machinegun::Reload()
 {
     mCurrentAmmo = mMaxAmmo;
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+}
+
+void Machinegun::PlayHitSound()
+{
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
 }

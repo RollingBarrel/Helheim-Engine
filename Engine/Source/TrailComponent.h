@@ -36,6 +36,8 @@ public:
 	void Save(JsonObject& archive) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
+	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
+
 private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
