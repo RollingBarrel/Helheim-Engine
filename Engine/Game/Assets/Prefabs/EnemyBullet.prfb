@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1552909199,
+                "UID": 15295616,
                 "ParentUID": 1,
                 "Name": "EnemyBullet",
                 "Enabled": true,
@@ -44,12 +44,28 @@
                                 "VariableData": 1.0
                             }
                         ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.4000000059604645,
+                            0.5,
+                            0.4000000059604645
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             },
             {
-                "UID": 1614663026,
-                "ParentUID": 1552909199,
+                "UID": 68207576,
+                "ParentUID": 15295616,
                 "Name": "node_damagedHelmet_-6514",
                 "Enabled": true,
                 "Active": true,
@@ -76,8 +92,8 @@
                 "Components": []
             },
             {
-                "UID": 1659986297,
-                "ParentUID": 1614663026,
+                "UID": 97866122,
+                "ParentUID": 68207576,
                 "Name": "node_damagedHelmet_-6514",
                 "Enabled": true,
                 "Active": true,

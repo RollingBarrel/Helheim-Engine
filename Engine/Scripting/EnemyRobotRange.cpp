@@ -40,7 +40,7 @@ void EnemyRobotRange::Start()
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
-        mAnimationComponent->SetIsPlaying(true);
+      /*  mAnimationComponent->SetIsPlaying(true);*/
 
     }
     mAttackCD = mTimerAttack;
@@ -109,6 +109,7 @@ void EnemyRobotRange::Chase()
             }
 
             mAiAgentComponent->MoveAgent(mSpeed);
+            mBulletOrigin->SetPosition(mGameObject->GetPosition());
 
         }
 
@@ -126,8 +127,19 @@ void EnemyRobotRange::Chase()
 
 void EnemyRobotRange::Attack()
 {
+    float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
+    direction.y = 0;
+    direction.Normalize();
+    float angle = std::atan2(direction.x, direction.z);;
+
+    if (mGameObject->GetRotation().y != angle)
+    {
+        mGameObject->SetRotation(float3(0, angle, 0));
+
+    }
     if (mAttackCD >= mTimerAttack) 
     {
+
         RangeAttack();
         mAttackCD = 0.0f;
     }
@@ -158,9 +170,10 @@ bool EnemyRobotRange::IsMoving()
 
 
 
+
 void EnemyRobotRange::RangeAttack()
 {
-
+    LOG("I NEED MORE BOOLETS")
     float3 bulletOriginPosition = mBulletOrigin->GetPosition();
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
     bulletGO->SetPosition(bulletOriginPosition);
@@ -168,5 +181,15 @@ void EnemyRobotRange::RangeAttack()
     BulletEnemy* bulletScript=reinterpret_cast<BulletEnemy*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     bulletScript->Init();
 
+
+}
+
+void EnemyRobotRange::Death()
+{
+    //mAnimationComponent->SendTrigger("tDeath", 0.3f);
+    if (Delay(0.5f))
+    {
+        Enemy::Death();
+    }
 
 }

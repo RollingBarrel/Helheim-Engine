@@ -38,13 +38,10 @@ GameObject* ObjectPool::GetObject()
 			return mObjects[i];
 		}
 	}
+	assert(!mObjects.empty()&& "POOL IS EMPTY");
+	assert(false && "MORE OBJECTS NEEDED IN THE POOL");
+	GameObject* newGameObject = new GameObject(*mObjects[0], App->GetScene()->GetRoot());
+	mObjects.push_back(newGameObject);
+	return newGameObject;
 
-	if (mObjects.empty())
-	{
-		assert(false && "MORE OBJECTS NEEDED IN THE POOL");
-		GameObject* newGameObject = new GameObject(*mObjects[0], App->GetScene()->GetRoot());
-		mObjects.push_back(newGameObject);
-		return newGameObject;
-	}
-	return nullptr;
 }

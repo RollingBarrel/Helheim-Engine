@@ -43,13 +43,14 @@ void BulletEnemy::Start()
 
 void BulletEnemy::Update()
 {
+	/*LOG("BUUULEEETT");*/
 	if (!mHasCollided)
 	{
 		if (mTotalMovement <= mRange)
 		{
 			mTotalMovement += mGameObject->GetPosition().Distance((mGameObject->GetPosition() + mGameObject->GetFront().Mul(mSpeed)));
 			mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mSpeed);
-			LOG("Position: %f,%f,%f ", mGameObject->GetPosition().x, mGameObject->GetPosition().y, mGameObject->GetPosition().z);
+			//LOG("Position: %f,%f,%f ", mGameObject->GetPosition().x, mGameObject->GetPosition().y, mGameObject->GetPosition().z);
 		}
 		else
 		{
@@ -67,7 +68,8 @@ void BulletEnemy::Update()
 
 void BulletEnemy::Init()
 {
-
+	mHasCollided = false;
+	mTotalMovement = 0.0f;
 }
 
 
@@ -84,6 +86,7 @@ void BulletEnemy::OnCollisionEnter(CollisionData* collisionData)
 			//mHitParticles->SetEnabled(true);
 		}
 		mHasCollided = true;
+		mGameObject->SetEnabled(false);
 	}
 }
 

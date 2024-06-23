@@ -30,7 +30,7 @@ private:
 	void Chase();
 	void Attack();
 	bool IsMoving();
-
+	void  Death() override;
 	void RangeAttack();
 
 	EnemyState mCurrentState = EnemyState::IDLE;

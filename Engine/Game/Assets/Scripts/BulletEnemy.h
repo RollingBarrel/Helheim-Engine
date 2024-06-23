@@ -24,7 +24,7 @@ public:
 private:
 	bool Delay(float delay);
 
-	float mRange = 150.0f;
+	float mRange = 100.0f;
 	float mSpeed = 0.1f;
 	float mDamage = 1.0f;
 	float3 mDirection = float3::zero;
