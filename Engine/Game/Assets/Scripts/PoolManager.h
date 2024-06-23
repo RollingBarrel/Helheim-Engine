@@ -12,6 +12,7 @@ enum class PoolType
 	BLUE_ENERGY,
 	RED_ENERGY,
 	BULLET,
+	ENEMYBULLET,
 	
 	LAST
 };

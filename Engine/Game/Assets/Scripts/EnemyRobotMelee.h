@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include "Geometry/Ray.h"
 
-class AnimationStateMachine;
 struct CollisionData;
 class BoxColliderComponent;
 
@@ -38,8 +37,6 @@ private:
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 
-
-	AnimationStateMachine* mStateMachine = nullptr;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;

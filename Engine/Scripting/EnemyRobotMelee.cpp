@@ -68,7 +68,7 @@ void EnemyRobotMelee::Start()
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
-        mStateMachine = mAnimationComponent->GetStateMachine();
+        mAnimationComponent->SetIsPlaying(true);
 
     }
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));

@@ -5,6 +5,7 @@
 class AnimationStateMachine;
 struct CollisionData;
 class BoxColliderComponent;
+class GameObject;
 
 enum class EnemyState
 {
@@ -34,14 +35,14 @@ private:
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 
-	AnimationStateMachine* mStateMachine = nullptr;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
 
-	float mTimerAttack = 0.0f;
+	float mTimerAttack = 2.0f;
+	float mAttackCD = 0.0f;
 	float mTimerDisengage = 0.0f;
-
+	GameObject* mBulletOrigin = nullptr;
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
 };

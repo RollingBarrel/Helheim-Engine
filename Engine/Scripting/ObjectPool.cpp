@@ -39,7 +39,7 @@ GameObject* ObjectPool::GetObject()
 		}
 	}
 
-	if (!mObjects.empty())
+	if (mObjects.empty())
 	{
 		assert(false && "MORE OBJECTS NEEDED IN THE POOL");
 		GameObject* newGameObject = new GameObject(*mObjects[0], App->GetScene()->GetRoot());

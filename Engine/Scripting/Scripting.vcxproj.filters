@@ -174,6 +174,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h">
       <Filter>Pools</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -305,6 +308,9 @@
     </ClCompile>
     <ClCompile Include="PoolManager.cpp">
       <Filter>Pools</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEnemy.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

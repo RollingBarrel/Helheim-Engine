@@ -9,18 +9,19 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
-
+#include "PoolManager.h"
+#include "BulletEnemy.h"
 CREATE(EnemyRobotRange) {
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::INT, mShieldDropRate);
     MEMBER(MemberType::FLOAT, mChaseDelay);
     MEMBER(MemberType::FLOAT, mRangeDistance);
     MEMBER(MemberType::FLOAT, mRangeDamage);
-
+    MEMBER(MemberType::FLOAT, mTimerAttack);
+    MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
 
     END_CREATE;
 }
@@ -29,6 +30,21 @@ EnemyRobotRange::EnemyRobotRange(GameObject* owner) : Enemy(owner)
 {
 }
 
+
+void EnemyRobotRange::Start()
+{
+    Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(true);
+
+    }
+    mAttackCD = mTimerAttack;
+}
 
 void EnemyRobotRange::Update()
 {
@@ -41,15 +57,16 @@ void EnemyRobotRange::Update()
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-
+            //mAnimationComponent->SendTrigger("tIdle", 0.2f);
             Idle();
 
             break;
         case EnemyState::CHASE:
-
+            //mAnimationComponent->SendTrigger("tChase", 0.2f);
             Chase();
             break;
         case EnemyState::ATTACK:
+            //mAnimationComponent->SendTrigger("tAttack", 0.2f);
             Attack();
             break;
         }
@@ -57,21 +74,6 @@ void EnemyRobotRange::Update()
 
     mBeAttracted = false;
 }
-
-void EnemyRobotRange::Start()
-{
-    Enemy::Start();
-
-    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
-
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-    if (mAnimationComponent)
-    {
-        mStateMachine = mAnimationComponent->GetStateMachine();
-
-    }
-}
-
 
 void EnemyRobotRange::Idle()
 {
@@ -81,15 +83,11 @@ void EnemyRobotRange::Idle()
     {
         mCurrentState = EnemyState::CHASE;
         mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
-        mAnimationComponent->SendTrigger("tWalkForward", 0.2f);
     }
 }
 
 void EnemyRobotRange::Chase()
 {
-
-
-    float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
     {
         if (mAiAgentComponent)
@@ -113,11 +111,10 @@ void EnemyRobotRange::Chase()
             mAiAgentComponent->MoveAgent(mSpeed);
 
         }
-            range = mRangeDistance;
 
         }
 
-        if (IsPlayerInRange(range))
+        if (IsPlayerInRange(mRangeDistance))
         {
             mCurrentState = EnemyState::ATTACK;       
         }
@@ -129,21 +126,22 @@ void EnemyRobotRange::Chase()
 
 void EnemyRobotRange::Attack()
 {
-    float range = 0.0f;
-
-
+    if (mAttackCD >= mTimerAttack) 
+    {
         RangeAttack();
-        range = mRangeDistance;
-        
-
-    bool playerInRange = IsPlayerInRange(range);
+        mAttackCD = 0.0f;
+    }
+    else
+    {
+        mAttackCD += App->GetDt();
+    }
+   
+    bool playerInRange = IsPlayerInRange(mRangeDistance);
 
     if (!playerInRange && mTimerDisengage > 1.0f)
     {
-
         mCurrentState = EnemyState::CHASE;
         mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
-        mAnimationComponent->SendTrigger("tWalkForward", 0.3f);
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange)
@@ -162,27 +160,13 @@ bool EnemyRobotRange::IsMoving()
 
 void EnemyRobotRange::RangeAttack()
 {
-    std::multiset<Hit> hits;
-    Ray ray;
-    ray.pos = mGameObject->GetPosition();
-    ray.pos.y++;
-    ray.dir = mGameObject->GetFront();
 
-    float distance = 100.0f;
-    //Physics::Raycast(hits, ray);  THIS IS THE OLD RAYCAST
+    float3 bulletOriginPosition = mBulletOrigin->GetPosition();
+    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
+    bulletGO->SetPosition(bulletOriginPosition);
+    bulletGO->SetRotation(mGameObject->GetRotation());
+    BulletEnemy* bulletScript=reinterpret_cast<BulletEnemy*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    bulletScript->Init();
 
-    //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
 
-        //recorrer todos los hits y hacer da�o a los objetos que tengan tag = target
-    for (const Hit& hit : hits)
-    {
-        if (hit.mGameObject->GetTag() == "Player")
-        {
-            PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (playerScript != nullptr)
-            {
-                playerScript->TakeDamage(mRangeDamage);
-            }
-        }
-    }
 }
