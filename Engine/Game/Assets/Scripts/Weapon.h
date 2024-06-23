@@ -19,7 +19,7 @@ public:
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
 	int GetDamage() { return mDamage; }
-	float GetAttackDuration() { return mAttackDuration; }
+	virtual float GetAttackDuration() = 0;
 	float GetAttackCooldown() { return mAttackCooldown; }
 	
 	void SetCurrentAmmo(int value) { mCurrentAmmo = value; }

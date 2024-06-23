@@ -8,6 +8,7 @@ class AnimationStateMachine;
 class AudioSourceComponent;
 struct CollisionData;
 class BoxColliderComponent;
+class Component;
 
 class State;
 class DashState;
@@ -172,15 +173,18 @@ private:
     EnergyType mEnergyType = EnergyType::NONE;
 
     // RANGED
-    Weapon* mPistol = nullptr;
-    Weapon* mMachinegun = nullptr;
-    Weapon* mShootgun = nullptr;
+    RangeWeapon* mPistol = nullptr;
+    RangeWeapon* mMachinegun = nullptr;
+    RangeWeapon* mShootgun = nullptr;
 
     // MELEE
-    Weapon* mBat = nullptr;
-    Weapon* mKatana = nullptr;
-    Weapon* mHammer = nullptr;
+    MeleeWeapon* mBat = nullptr;
+    MeleeWeapon* mKatana = nullptr;
+    MeleeWeapon* mHammer = nullptr;
     GameObject* mMeleeCollider = nullptr;
+    GameObject* mBatTrail = nullptr;
+    GameObject* mKatanaTrail = nullptr;
+    GameObject* mHammerTrail = nullptr;
 
     // Attack
     float mSwitchCoolDown = 0.2f;
@@ -204,4 +208,13 @@ private:
 
     // Debug
     bool mGodMode = false;
+
+
+    //Hit Effect
+    bool mHit = false;
+    float mTimePassed = 0.0f;
+    std::vector<Component*> mMeshComponents;
+    std::vector<unsigned int> mMaterialIds;
+    bool Delay(float delay);
+  
 };

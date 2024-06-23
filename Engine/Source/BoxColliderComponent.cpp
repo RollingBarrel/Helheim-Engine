@@ -72,7 +72,13 @@ void BoxColliderComponent::ComputeBoundingBox()
 	float3 sizeIncrement = mSize * 0.5f;
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
-	mWorldOBB.Transform(float4x4(mOwner->GetRotation(), mOwner->GetPosition()));
+	// TODO: Reacer esto despues del refactor de transforms
+	float3 position, scale;
+	Quat rotation;
+	mOwner->GetWorldTransform().Decompose(position, rotation, scale);
+	//---------------
+	mWorldOBB.Transform(float4x4(rotation, position));
+
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)
