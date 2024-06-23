@@ -574,7 +574,7 @@ void PlayerController::TakeDamage(float damage)
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetName() == "WinArea")
+    if (collisionData->collidedWith->GetTag() == "WinArea")
     {
         GameManager::GetInstance()->Victory();
     }
