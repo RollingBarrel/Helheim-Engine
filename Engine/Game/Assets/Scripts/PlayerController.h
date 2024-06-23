@@ -8,6 +8,7 @@ class AnimationStateMachine;
 class AudioSourceComponent;
 struct CollisionData;
 class BoxColliderComponent;
+class Component;
 
 class State;
 class DashState;
@@ -204,4 +205,13 @@ private:
 
     // Debug
     bool mGodMode = false;
+
+
+    //Hit Effect
+    bool mHit = false;
+    float mTimePassed = 0.0f;
+    std::vector<Component*> mMeshComponents;
+    std::vector<unsigned int> mMaterialIds;
+    bool Delay(float delay);
+  
 };

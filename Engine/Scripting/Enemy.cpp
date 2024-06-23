@@ -12,6 +12,11 @@
 
 #include "Math/MathFunc.h"
 
+//Hit Effect
+#include "ModuleResource.h"
+#include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
+
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
@@ -20,18 +25,56 @@ void Enemy::Start()
     ModuleScene* scene = App->GetScene();
     mPlayer = GameManager::GetInstance()->GetPlayer();
     mHealth = mMaxHealth;  
+
+
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+    mMaterialIds.reserve(mMeshComponents.size());
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
+    }
+
 }
 
 void Enemy::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
+
+    //Hit Effect
+    if (mHit)
+    {
+        if (Delay(0.1f))
+        {
+            mHit = false;
+
+            for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+            {
+                reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+                App->GetResource()->ReleaseResource(mMaterialIds[i]);
+            }
+        }
+    }
+
 }
 
 void Enemy::ActivateEnemy() 
 {
 }
 
-bool Enemy::IsPlayerInRange(float range) 
+bool Enemy::Delay(float delay)
+{
+    mTimePassed += App->GetDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
+}
+
+bool Enemy::IsPlayerInRange(float range)
 {
     float distance = 0.0f;
     distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;
@@ -52,6 +95,14 @@ void Enemy::TakeDamage(float damage)
     }
 
     //LOG("Enemy Health: %f", mHealth);
+
+    //Hit Effect
+    mHit = true;
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    }
 }
 
 void Enemy::Death()
@@ -81,18 +132,7 @@ void Enemy::AddFootStepAudio(GameObject* audio)
     }
 }
 
-bool Enemy::Delay(float delay) //Lapse of time for doing some action
-{
-   static float timePassed = 0.0f;
-   timePassed += App->GetDt();
 
-    if (timePassed >= delay)
-    {
-        timePassed = 0;
-        return true;
-    }
-    else return false;
-}
 
 void Enemy::PushBack() 
 {

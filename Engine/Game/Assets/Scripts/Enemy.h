@@ -6,6 +6,7 @@ class GameObject;
 class NavMeshController;
 class AnimationComponent;
 class AIAgentComponent;
+class Component;
 
 enum class EnemyType : int
 {
@@ -57,4 +58,9 @@ class Enemy : public Script
 		NavMeshController* mNavMeshControl = nullptr;	
 		GameObject* mFootstepAudioHolder = nullptr;
 		
+		//Hit Effect
+		bool mHit = false;
+		float mTimePassed = 0.0f;
+		std::vector<Component*> mMeshComponents;
+		std::vector<unsigned int> mMaterialIds;
 };
