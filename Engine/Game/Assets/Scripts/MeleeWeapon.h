@@ -34,7 +34,14 @@ protected:
 	float mCombo2nd = 1.0f;
 	float mComboEnd = 1.0f;
 	float mHitTime = 0.9f;
+	float mMoveSpeed = 0.0f;
 	bool mColliderAtivated = false;
 	bool mHasHitted = false;
+
+	float mLastComboStartTime = 0.0f;
+	bool mMovingForward = false;
+	float totalMoveDistance = 5.0f;
+
+	GameObject* mPlayerGO = nullptr;
 };
 
