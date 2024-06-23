@@ -133,6 +133,16 @@ void PlayerController::Start()
     {
         meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
     }
+    //TrailComponent* meleeTrail = nullptr;
+    //if (mMeleeTrail)
+    //{
+    //    meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
+    //}
+    //TrailComponent* meleeTrail = nullptr;
+    //if (mMeleeTrail)
+    //{
+    //    meleeTrail = reinterpret_cast<TrailComponent*>(mMeleeTrail->GetComponent(ComponentType::TRAIL));
+    //}
 
     mBat = new Bat(weaponCollider, meleeTrail);
     mPistol = new Pistol();
