@@ -11,4 +11,6 @@ public:
 	void Attack(float time) override;
 	void Exit() override;
 	void Reload() override;
+private:
+	void PlayHitSound();
 };

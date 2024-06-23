@@ -12,7 +12,8 @@ public:
 	void Exit() override;
 
 	void Reload() override;
-
+private:
+	void PlayHitSound();
 
 };
 

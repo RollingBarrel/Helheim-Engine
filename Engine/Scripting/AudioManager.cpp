@@ -14,9 +14,13 @@ CREATE(AudioManager)
     END_CREATE;
 }
 
-void AudioManager::Start()
+void AudioManager::Awake()
 {
     mAudioSources = reinterpret_cast<AudioSourceComponent*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCE));
+}
+
+void AudioManager::Start()
+{
 }
 
 void AudioManager::Update()
@@ -72,7 +76,7 @@ int AudioManager::Play(SFX sfx, int id, float3 position)
     return newid;
 }
 
-void AudioManager::PlayOneShot(SFX sfx, float3 position)
+void AudioManager::PlayOneShot(SFX sfx, float3 position, const std::unordered_map<const char*, float>& parameters)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
     if (description == nullptr)
@@ -82,6 +86,14 @@ void AudioManager::PlayOneShot(SFX sfx, float3 position)
 
     int newid = App->GetAudio()->Play(description);
     SetPosition(description, newid, position);
+
+    if (parameters.size() > 0)
+    {
+        for (auto parameter : parameters)
+        {
+            UpdateParameterValueByName(sfx, newid, parameter.first, parameter.second);
+        }
+    }
 
     App->GetAudio()->Release(description, newid);
     return;
