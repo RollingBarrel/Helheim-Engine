@@ -150,6 +150,7 @@ void MeleeWeapon::Attack(float time)
         {
             moveAmount = totalMoveDistance;
             mMovingForward = false;
+            IncreaseComboStep();
         }
 
         mPlayerGO->SetPosition(mPlayerGO->GetPosition() + forward * moveAmount);
@@ -188,6 +189,5 @@ void MeleeWeapon::DealDamage(GameObject* enemy)
     if (enemyScript) 
     {
         enemyScript->TakeDamage(mDamage);
-        //enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
     }
 }
