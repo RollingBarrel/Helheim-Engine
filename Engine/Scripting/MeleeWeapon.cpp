@@ -16,11 +16,13 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) 
     mType = WeaponType::MELEE;
     mCollider = collider;
 
-    assert(mCollider);
-    mCollider->AddCollisionEventHandler(
-        CollisionEventType::ON_COLLISION_ENTER,
-        new std::function<void(CollisionData*)>(std::bind(&MeleeWeapon::OnCollisionEnter, this, std::placeholders::_1))
-    );
+    if (mCollider) 
+    {
+        mCollider->AddCollisionEventHandler(
+            CollisionEventType::ON_COLLISION_ENTER,
+            new std::function<void(CollisionData*)>(std::bind(&MeleeWeapon::OnCollisionEnter, this, std::placeholders::_1))
+        );
+    }
     mTrail = trail;
 
     mPlayerGO = GameManager::GetInstance()->GetPlayer();
