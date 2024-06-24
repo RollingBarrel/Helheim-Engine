@@ -3,7 +3,9 @@
 
 Hammer::Hammer(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
-    mDamage = 7.0f;
+    mDamage = mHeavyDamage;
+    mEnergyCost = mHeavyEnergyCost;
+    mCooldownMultiplier = mHeavyCooldownMultiplier;
 }
 
 Hammer::~Hammer()
@@ -11,6 +13,10 @@ Hammer::~Hammer()
 }
 
 void Hammer::PlayHitSound()
+{
+}
+
+void Hammer::ApplySpecialEffects(GameObject* enemy)
 {
 }
 

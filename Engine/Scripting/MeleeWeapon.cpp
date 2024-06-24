@@ -8,6 +8,8 @@
 #include "ScriptComponent.h"
 #include "GameManager.h"
 #include "PlayerController.h"
+#include "Hammer.h"
+#include "Katana.h"
 
 MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) : Weapon()
 {
@@ -24,6 +26,8 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) 
     mPlayerGO = GameManager::GetInstance()->GetPlayer();
     mLastComboStartTime = 0.0f;
     mMovingForward = false;
+
+
 }
 
 MeleeWeapon::~MeleeWeapon()
@@ -45,6 +49,10 @@ float MeleeWeapon::GetAttackDuration()
 void MeleeWeapon::IncreaseComboStep()
 {
     mNextComboStep = mComboStep + 1;
+    if (mNextComboStep < 1 || mNextComboStep > 3) {
+        LOG("Invalid combo step detected: %d", mNextComboStep);
+        mNextComboStep = 1; 
+    }
 }
 
 void MeleeWeapon::Enter()
@@ -138,7 +146,6 @@ void MeleeWeapon::Attack(float time)
         float3 forward = mPlayerGO->GetFront();
         float moveAmount = moveSpeed * (time - mLastComboStartTime);
 
-        // Check if the movement is complete
         if (moveAmount >= totalMoveDistance)
         {
             moveAmount = totalMoveDistance;
@@ -163,10 +170,14 @@ void MeleeWeapon::Exit()
 void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 {
     // pop particles on collision
-    if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 && mColliderAtivated)
-    {
-        DealDamage(collisionData->collidedWith);
-        LOG("Colliding with melee!");
+
+    if (mColliderAtivated) {
+         if (collisionData->collidedWith->GetTag() == "Enemy")
+        {
+            DealDamage(collisionData->collidedWith);
+            ApplySpecialEffects(collisionData->collidedWith);
+            LOG("Colliding with melee!");
+        }
     }
 }
 
@@ -175,6 +186,7 @@ void MeleeWeapon::DealDamage(GameObject* enemy)
     Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (enemyScript) {
         enemyScript->TakeDamage(mDamage);
+        LOG("Colliding with enemy!");
         //enemyScript->PushBack(); // TODO: It's best to push it back with CollisionData normal
     }
 }

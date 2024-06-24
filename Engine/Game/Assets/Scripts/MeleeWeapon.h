@@ -24,6 +24,8 @@ public:
 	void DealDamage(GameObject* enemy);
 
 protected:
+
+	//Common
 	BoxColliderComponent* mCollider = nullptr;
 	TrailComponent* mTrail = nullptr;
 
@@ -43,5 +45,17 @@ protected:
 	float totalMoveDistance = 5.0f;
 
 	GameObject* mPlayerGO = nullptr;
+
+	//Specific 
+	float mRange = 1.0f;
+	float mDamage = 1;
+	int mEnergyCost = 0;
+	float mCooldownMultiplier = 1.0f;
+
+	//Methods
+	virtual void PlayHitSound() = 0;  
+	virtual void ApplySpecialEffects(GameObject* enemy) = 0;  
+
+
 };
 

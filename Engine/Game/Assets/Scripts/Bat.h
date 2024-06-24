@@ -13,5 +13,7 @@ public:
 	Bat(BoxColliderComponent* collider, TrailComponent* trail);
 	~Bat();
 private:
-	void PlayHitSound();
+	void PlayHitSound() override;
+	void ApplySpecialEffects(GameObject* enemy) override;
+
 };
