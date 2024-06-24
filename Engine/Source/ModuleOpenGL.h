@@ -7,8 +7,8 @@
 #include "BatchManager.h"
 #include <vector>
 
-#define NUM_SHADOW_MAPS 4
-#define SHADOW_MAPS_SIZE 512
+#define NUM_SHADOW_MAPS 6
+#define SHADOW_MAPS_SIZE 1024
 
 
 typedef struct Shadow

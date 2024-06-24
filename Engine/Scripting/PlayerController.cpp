@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleDetourNavigation.h"
+#include "ModuleResource.h"
 #include "GameObject.h"
 #include "Physics.h"
 
@@ -12,6 +13,8 @@
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
@@ -58,6 +61,9 @@ CREATE(PlayerController)
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
+    MEMBER(MemberType::GAMEOBJECT, mBatTrail);
+    MEMBER(MemberType::GAMEOBJECT, mKatanaTrail);
+    MEMBER(MemberType::GAMEOBJECT, mHammerTrail);
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
@@ -123,21 +129,29 @@ void PlayerController::Start()
     if (mMeleeCollider) 
     {
         weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
-        if (weaponCollider)
-        {
-            weaponCollider->AddCollisionEventHandler(
-                CollisionEventType::ON_COLLISION_ENTER,
-                new std::function<void(CollisionData*)>(std::bind(&Bat::OnCollisionEnter, (Bat*)mBat, std::placeholders::_1))
-            );
-        }
+    }
+    TrailComponent* batTrail = nullptr;
+    if (mBatTrail)
+    {
+        batTrail = reinterpret_cast<TrailComponent*>(mBatTrail->GetComponent(ComponentType::TRAIL));
+    }
+    TrailComponent* katanaTrail = nullptr;
+    if (mKatanaTrail)
+    {
+        katanaTrail = reinterpret_cast<TrailComponent*>(mKatanaTrail->GetComponent(ComponentType::TRAIL));
+    }
+    TrailComponent* hammerTrail = nullptr;
+    if (mHammerTrail)
+    {
+        hammerTrail = reinterpret_cast<TrailComponent*>(mHammerTrail->GetComponent(ComponentType::TRAIL));
     }
 
-    mBat = new Bat(weaponCollider);
+    mBat = new Bat(weaponCollider, batTrail);
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
-    mKatana = new Katana();
-    mHammer = new Hammer();
+    mKatana = new Katana(weaponCollider, katanaTrail);
+    mHammer = new Hammer(weaponCollider, hammerTrail);
 
     mWeapon = mPistol;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
@@ -170,6 +184,15 @@ void PlayerController::Start()
         mAnimationComponent->SetIsPlaying(true);
     }
 
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+    mMaterialIds.reserve(mMeshComponents.size());
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
+    }
+
+
 }
 
 void PlayerController::Update()
@@ -187,9 +210,32 @@ void PlayerController::Update()
 
     CheckDebugOptions();
 
-    // Provisional
-    UpdateBattleSituation();
+    //Hit Effect
+    if (mHit)
+    {
+        if (Delay(0.1f)) 
+        {
+            mHit = false;
 
+            for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+            {
+                reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+                App->GetResource()->ReleaseResource(mMaterialIds[i]);
+            }
+        }
+    }
+}
+
+bool PlayerController::Delay(float delay)
+{
+    mTimePassed += App->GetDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
 }
 
 void PlayerController::StateMachine()
@@ -337,7 +383,6 @@ void PlayerController::MoveToPosition(float3 position)
 
 void PlayerController::SwitchWeapon() 
 {
-    mWeapon->Exit();
     if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
         mWeapon = mPistol;
@@ -372,8 +417,6 @@ void PlayerController::SwitchWeapon()
             break;
         }
     }
-    mWeapon->Enter();
-
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     if (mSpecialWeapon) mSpecialState->SetCooldown(mSpecialWeapon->GetAttackCooldown());
 }
@@ -453,9 +496,44 @@ void PlayerController::Reload() const
 
 void PlayerController::CheckDebugOptions()
 {
-    if (App->GetInput()->GetKey(Keys::Keys_G) == KeyState::KEY_REPEAT)
+    const ModuleInput* input = App->GetInput();
+    if (input->GetKey(Keys::Keys_G) == KeyState::KEY_REPEAT)
     {
         mGodMode = !mGodMode;
+    }
+
+    if (mGodMode) 
+    {
+        if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to PISTOL");
+            mWeapon = mPistol;
+        }
+        else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to MACHINEGUN");
+            mWeapon = mMachinegun;
+        }
+        else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to SHOTGUN");
+            mWeapon = mShootgun;
+        }
+        else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to KATANA");
+            mWeapon = mKatana;
+        }
+        else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to HUMMER");
+            mWeapon = mHammer;
+        }
+        else if (input->GetKey(Keys::Keys_6) == KeyState::KEY_DOWN) 
+        {
+            LOG("Force switch weapon to BAT");
+            mWeapon = mBat;
+        }
     }
 }
 
@@ -538,51 +616,21 @@ void PlayerController::TakeDamage(float damage)
 
     float healthRatio = mShield / mMaxShield;
     GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
+
+
+    //Hit Effect
+    mHit = true;
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    }
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetName() == "WinArea")
+    if (collisionData->collidedWith->GetTag() == "WinArea")
     {
         GameManager::GetInstance()->Victory();
     }
-}
-
-// PROVISIONAL
-void PlayerController::UpdateBattleSituation()
-{
-    float hpRate = mShield / mMaxShield;
-
-    /*if (mCurrentState == PlayerState::DEATH)
-    {
-        mCurrentSituation = BattleSituation::DEATH;
-    }
-    else if ((mPreviousState != PlayerState::ATTACK && mPreviousState != PlayerState::MOVE_ATTACK) &&
-        (mCurrentState != PlayerState::ATTACK && mCurrentState != PlayerState::MOVE_ATTACK))
-    {
-        mBattleStateTransitionTime += App->GetDt();
-        if (mBattleStateTransitionTime >= 8.0f)
-        {
-            if (hpRate <= 0.3)
-            {
-                mCurrentSituation = BattleSituation::IDLE_LOW_HP;
-            }
-            else
-            {
-                mCurrentSituation = BattleSituation::IDLE_HIGHT_HP;
-            }
-        }
-    }
-    else
-    {
-        mBattleStateTransitionTime = 0.0f;
-
-        if (hpRate <= 0.3)
-        {
-            mCurrentSituation = BattleSituation::BATTLE_LOW_HP;
-        }
-        else {
-            mCurrentSituation = BattleSituation::BATTLE_HIGHT_HP;
-        }
-    }*/
 }

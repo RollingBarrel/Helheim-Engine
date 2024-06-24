@@ -96,14 +96,15 @@ void EnemyExplosive::Chase()
         mAnimationComponent->SendTrigger("tMovement", 0.2f);
         if (mAiAgentComponent)
         {
-            mAiAgentComponent->MoveAgent(mSpeed);
+           
             float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
             direction.y = 0;
             direction.Normalize();
             float angle = std::atan2(direction.x, direction.z);
             mGameObject->SetRotation(float3(0, angle, 0));
+            mAiAgentComponent->MoveAgent(mSpeed);
         }
-
+        
         if (IsPlayerInRange(mChargingDistance))
         {
             mCurrentState = EnemyState::CHARGING;

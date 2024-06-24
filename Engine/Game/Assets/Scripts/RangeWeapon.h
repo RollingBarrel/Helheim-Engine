@@ -8,6 +8,7 @@ public:
 	RangeWeapon();
 	~RangeWeapon();
 
+	float GetAttackDuration() override { return mAttackDuration; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
 
@@ -15,6 +16,6 @@ public:
 
 protected:
 
-
+	virtual void PlayHitSound() = 0;
 };
 
