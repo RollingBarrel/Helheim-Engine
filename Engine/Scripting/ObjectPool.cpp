@@ -40,7 +40,8 @@ GameObject* ObjectPool::GetObject()
 	}
 	assert(!mObjects.empty()&& "POOL IS EMPTY");
 	assert(false && "MORE OBJECTS NEEDED IN THE POOL");
-	GameObject* newGameObject = new GameObject(*mObjects[0], App->GetScene()->GetRoot());
+	GameObject* newGameObject = App->GetScene()->DuplicateGameObject(mObjects[0]);
+	newGameObject->SetEnabled(true);
 	mObjects.push_back(newGameObject);
 	return newGameObject;
 
