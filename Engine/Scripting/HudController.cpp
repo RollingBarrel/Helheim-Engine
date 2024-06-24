@@ -230,6 +230,32 @@ void HudController::SetEnergy(int energy, EnergyType type)
 
 }
 
+void HudController::SetEnergy(int energy, EnergyType type)
+{
+    if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
+
+    float3 color;
+    switch (type)
+    {
+    case EnergyType::NONE:
+        color = float3(100.0f,100.0f,100.0f);
+        break;
+    case EnergyType::BLUE:
+        color = float3(0.0f, 0.0f, 200.0f);
+        break;
+    case EnergyType::RED:
+        color = float3(200.0f, 0.0f, 0.0f);
+        break;
+    default:
+        color = float3(100.0f, 100.0f, 100.0f);
+        break;
+    }
+
+    if (mEnergyImage) mEnergyImage->SetColor(color);
+    if (mEnergyText) mEnergyText->SetTextColor(color);
+
+}
+
 void HudController::SetHealth(float health)
 {
     if (health == 0) 
