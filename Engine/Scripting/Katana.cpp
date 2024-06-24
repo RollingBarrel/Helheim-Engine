@@ -3,9 +3,19 @@
 #include "AudioManager.h"
 #include "GameManager.h"
 #include "GameObject.h"
+#include "BoxColliderComponent.h"
+#include "Enemy.h"
+#include "ScriptComponent.h"
+#include "GameObject.h"
 
 Katana::Katana(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
+    mDamage = 4.f;
+    mEnergyCost = 10.f;
+    mCooldownMultiplier = 0.5f;
+    mCombo1st = 0.5f;
+    mCombo2nd = 0.5f;
+    mComboEnd = 0.5f;
 }
 
 Katana::~Katana()
@@ -20,4 +30,13 @@ void Katana::PlayHitSound()
         GameManager::GetInstance()->GetPlayer()->GetPosition(),
         { { parameterName, 8.0f } }
     );
+}
+
+void Katana::HitEffect(GameObject* enemy)
+{
+    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (enemyScript)
+    {
+        enemyScript->TakeDamage(mDamage);
+    }
 }

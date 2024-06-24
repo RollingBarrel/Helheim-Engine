@@ -615,7 +615,7 @@ void PlayerController::TakeDamage(float damage)
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
 
     float healthRatio = mShield / mMaxShield;
-    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
+    //GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 
 
     //Hit Effect

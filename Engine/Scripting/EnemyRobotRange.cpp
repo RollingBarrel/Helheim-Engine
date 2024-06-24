@@ -40,7 +40,7 @@ void EnemyRobotRange::Start()
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
-      /*  mAnimationComponent->SetIsPlaying(true);*/
+        mAnimationComponent->SetIsPlaying(true);
 
     }
     mAttackCD = mTimerAttack;
@@ -57,16 +57,16 @@ void EnemyRobotRange::Update()
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-            //mAnimationComponent->SendTrigger("tIdle", 0.2f);
+            mAnimationComponent->SendTrigger("tIdle", 0.2f);
             Idle();
 
             break;
         case EnemyState::CHASE:
-            //mAnimationComponent->SendTrigger("tChase", 0.2f);
+            
             Chase();
             break;
         case EnemyState::ATTACK:
-            //mAnimationComponent->SendTrigger("tAttack", 0.2f);
+            
             Attack();
             break;
         }
@@ -92,8 +92,13 @@ void EnemyRobotRange::Chase()
     {
         if (mAiAgentComponent)
         {
+            if (IsPlayerInRange(mRangeDistance))
+            {
+                mCurrentState = EnemyState::ATTACK;       
+            }
             if (Delay(mChaseDelay))
             {
+                
                 mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
                 float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
                 direction.y = 0;
@@ -107,22 +112,17 @@ void EnemyRobotRange::Chase()
                 }
 
             }
-
+            mAnimationComponent->SendTrigger("tChase", 0.2f);
             mAiAgentComponent->MoveAgent(mSpeed);
             mBulletOrigin->SetPosition(mGameObject->GetPosition());
 
         }
 
-        }
-
-        if (IsPlayerInRange(mRangeDistance))
-        {
-            mCurrentState = EnemyState::ATTACK;       
-        }
-        else
-        {
-        mCurrentState = EnemyState::IDLE;
-        }
+    }
+    else
+    {
+          mCurrentState = EnemyState::IDLE;
+    }
 }
 
 void EnemyRobotRange::Attack()
@@ -130,7 +130,7 @@ void EnemyRobotRange::Attack()
     float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
     direction.y = 0;
     direction.Normalize();
-    float angle = std::atan2(direction.x, direction.z);;
+    float angle = std::atan2(direction.x, direction.z);
 
     if (mGameObject->GetRotation().y != angle)
     {
@@ -139,7 +139,7 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCD >= mTimerAttack) 
     {
-
+        mAnimationComponent->SendTrigger("tAttack", 0.2f);
         RangeAttack();
         mAttackCD = 0.0f;
     }
@@ -186,7 +186,7 @@ void EnemyRobotRange::RangeAttack()
 
 void EnemyRobotRange::Death()
 {
-    //mAnimationComponent->SendTrigger("tDeath", 0.3f);
+    mAnimationComponent->SendTrigger("tDeath", 0.3f);
     if (Delay(0.5f))
     {
         Enemy::Death();
