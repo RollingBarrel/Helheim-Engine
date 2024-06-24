@@ -13,4 +13,10 @@ public:
 	void Reload() override;
 private:
 	void PlayHitSound();
+	bool Delay(float delay);
+
+	unsigned int mNumBullets;
+	unsigned int mShootDuration;
+
+	float mTimePassed = 0.0f;
 };

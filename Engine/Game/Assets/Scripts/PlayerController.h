@@ -216,5 +216,5 @@ private:
     std::vector<Component*> mMeshComponents;
     std::vector<unsigned int> mMaterialIds;
     bool Delay(float delay);
-  
+ 
 };
