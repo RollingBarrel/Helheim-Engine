@@ -94,7 +94,7 @@ void Enemy::TakeDamage(float damage)
         }
     }
 
-    //LOG("Enemy Health: %f", mHealth);
+    LOG("Enemy Health: %f", mHealth);
 
     //Hit Effect
     mHit = true;

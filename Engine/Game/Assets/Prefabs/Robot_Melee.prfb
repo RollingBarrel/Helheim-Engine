@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1023896290,
+                "UID": 1662671021,
                 "ParentUID": 1,
                 "Name": "Robot_Melee",
                 "Enabled": true,
@@ -23,7 +23,7 @@
                     0.004999999888241291,
                     0.004999999888241291
                 ],
-                "Tag": "Untagged",
+                "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": true,
@@ -98,13 +98,13 @@
                         "IsEnabled": true,
                         "Center": [
                             0.0,
-                            0.0,
+                            0.8999999761581421,
                             0.0
                         ],
                         "Size": [
-                            0.949999988079071,
-                            3.4000000953674318,
-                            0.8999999761581421
+                            1.899999976158142,
+                            1.75,
+                            1.2999999523162842
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -112,8 +112,8 @@
                 ]
             },
             {
-                "UID": 182224119,
-                "ParentUID": 1023896290,
+                "UID": 1280218966,
+                "ParentUID": 1662671021,
                 "Name": "Armature.001",
                 "Enabled": true,
                 "Active": true,
@@ -140,8 +140,8 @@
                 "Components": []
             },
             {
-                "UID": 1201475559,
-                "ParentUID": 182224119,
+                "UID": 415989591,
+                "ParentUID": 1280218966,
                 "Name": "OB_enemy_robot_sword",
                 "Enabled": true,
                 "Active": true,
@@ -168,8 +168,8 @@
                 "Components": []
             },
             {
-                "UID": 1816368231,
-                "ParentUID": 1201475559,
+                "UID": 1704117333,
+                "ParentUID": 415989591,
                 "Name": "OB_enemy_robot_sword",
                 "Enabled": true,
                 "Active": true,
@@ -203,7 +203,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 556064987,
+                                "GoId": 843229766,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -224,7 +224,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1162255034,
+                                "GoId": 2128503047,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -245,7 +245,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1767888113,
+                                "GoId": 1273324402,
                                 "Matrix": [
                                     1.0,
                                     5.4343041178128718e-9,
@@ -266,7 +266,7 @@
                                 ]
                             },
                             {
-                                "GoId": 219841276,
+                                "GoId": 412645698,
                                 "Matrix": [
                                     1.0,
                                     4.441134032286186e-16,
@@ -287,7 +287,7 @@
                                 ]
                             },
                             {
-                                "GoId": 828468058,
+                                "GoId": 1704324111,
                                 "Matrix": [
                                     1.0,
                                     -1.576227392343173e-23,
@@ -308,7 +308,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1509500680,
+                                "GoId": 927120986,
                                 "Matrix": [
                                     1.0,
                                     -1.576227392343173e-23,
@@ -329,7 +329,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2123070553,
+                                "GoId": 85309573,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -350,7 +350,7 @@
                                 ]
                             },
                             {
-                                "GoId": 577599693,
+                                "GoId": 1379981689,
                                 "Matrix": [
                                     0.011339239776134491,
                                     0.0019305744208395482,
@@ -371,7 +371,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1173764316,
+                                "GoId": 528910683,
                                 "Matrix": [
                                     -0.046247728168964389,
                                     0.02437630109488964,
@@ -392,7 +392,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1787264568,
+                                "GoId": 1822538484,
                                 "Matrix": [
                                     0.05395394191145897,
                                     0.0147097771987319,
@@ -413,7 +413,7 @@
                                 ]
                             },
                             {
-                                "GoId": 259755926,
+                                "GoId": 965967419,
                                 "Matrix": [
                                     0.2655128240585327,
                                     0.019162723794579507,
@@ -434,7 +434,7 @@
                                 ]
                             },
                             {
-                                "GoId": 862813028,
+                                "GoId": 111484984,
                                 "Matrix": [
                                     -0.07361201196908951,
                                     0.9969637393951416,
@@ -455,7 +455,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1486965293,
+                                "GoId": 1409081182,
                                 "Matrix": [
                                     -0.0736112892627716,
                                     0.9969636797904968,
@@ -476,7 +476,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2088838838,
+                                "GoId": 553554432,
                                 "Matrix": [
                                     -0.07361167669296265,
                                     0.996963620185852,
@@ -497,7 +497,7 @@
                                 ]
                             },
                             {
-                                "GoId": 541348969,
+                                "GoId": 1909632270,
                                 "Matrix": [
                                     -0.07361168414354325,
                                     0.996963620185852,
@@ -518,7 +518,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1143570619,
+                                "GoId": 1055985287,
                                 "Matrix": [
                                     -0.008646167814731598,
                                     -0.004975548945367336,
@@ -539,7 +539,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1742450461,
+                                "GoId": 232484197,
                                 "Matrix": [
                                     -0.0032137061934918167,
                                     -0.0028569563291966917,
@@ -560,7 +560,7 @@
                                 ]
                             },
                             {
-                                "GoId": 206865783,
+                                "GoId": 1533909550,
                                 "Matrix": [
                                     0.12003543227910996,
                                     0.008928174152970314,
@@ -581,7 +581,7 @@
                                 ]
                             },
                             {
-                                "GoId": 812011515,
+                                "GoId": 672325773,
                                 "Matrix": [
                                     -0.06490956246852875,
                                     0.012892834842205048,
@@ -602,7 +602,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1419176256,
+                                "GoId": 1978415733,
                                 "Matrix": [
                                     -0.12017010152339935,
                                     0.013538052327930928,
@@ -623,7 +623,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2023695399,
+                                "GoId": 1144610735,
                                 "Matrix": [
                                     -0.12017014622688294,
                                     0.013537940569221974,
@@ -644,7 +644,7 @@
                                 ]
                             },
                             {
-                                "GoId": 490547456,
+                                "GoId": 396926914,
                                 "Matrix": [
                                     -0.12017003446817398,
                                     0.013537894003093243,
@@ -665,7 +665,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1106832548,
+                                "GoId": 1722093028,
                                 "Matrix": [
                                     -0.1201702132821083,
                                     0.013538110069930554,
@@ -686,7 +686,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1793086745,
+                                "GoId": 865034616,
                                 "Matrix": [
                                     -0.9992714524269104,
                                     -0.038099467754364017,
@@ -707,7 +707,7 @@
                                 ]
                             },
                             {
-                                "GoId": 275742769,
+                                "GoId": 21204194,
                                 "Matrix": [
                                     -0.9999988079071045,
                                     0.000150180741911754,
@@ -728,7 +728,7 @@
                                 ]
                             },
                             {
-                                "GoId": 887224012,
+                                "GoId": 1315040858,
                                 "Matrix": [
                                     -0.9994460940361023,
                                     0.005532741546630859,
@@ -749,7 +749,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1491464671,
+                                "GoId": 473507929,
                                 "Matrix": [
                                     -0.9973685145378113,
                                     0.07185599952936173,
@@ -770,7 +770,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2102458567,
+                                "GoId": 1777439638,
                                 "Matrix": [
                                     -0.9973685145378113,
                                     0.07185591012239456,
@@ -791,7 +791,7 @@
                                 ]
                             },
                             {
-                                "GoId": 560399136,
+                                "GoId": 933400353,
                                 "Matrix": [
                                     -0.999271035194397,
                                     0.038138434290885928,
@@ -812,7 +812,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1165196763,
+                                "GoId": 81493895,
                                 "Matrix": [
                                     -0.9999992847442627,
                                     -0.00015048927161842585,
@@ -833,7 +833,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1771526052,
+                                "GoId": 1444464212,
                                 "Matrix": [
                                     -0.9994620084762573,
                                     -0.005838611163198948,
@@ -854,7 +854,7 @@
                                 ]
                             },
                             {
-                                "GoId": 227934959,
+                                "GoId": 597848950,
                                 "Matrix": [
                                     -0.9973667860031128,
                                     -0.07189547270536423,
@@ -875,7 +875,7 @@
                                 ]
                             },
                             {
-                                "GoId": 857378420,
+                                "GoId": 1900388239,
                                 "Matrix": [
                                     -0.9973669052124023,
                                     -0.07189527899026871,
@@ -900,8 +900,8 @@
                 ]
             },
             {
-                "UID": 556064987,
-                "ParentUID": 182224119,
+                "UID": 843229766,
+                "ParentUID": 1280218966,
                 "Name": "mixamorig:Hips",
                 "Enabled": true,
                 "Active": true,
@@ -928,8 +928,8 @@
                 "Components": []
             },
             {
-                "UID": 1162255034,
-                "ParentUID": 556064987,
+                "UID": 2128503047,
+                "ParentUID": 843229766,
                 "Name": "mixamorig:Spine",
                 "Enabled": true,
                 "Active": true,
@@ -956,8 +956,8 @@
                 "Components": []
             },
             {
-                "UID": 1767888113,
-                "ParentUID": 1162255034,
+                "UID": 1273324402,
+                "ParentUID": 2128503047,
                 "Name": "mixamorig:Spine1",
                 "Enabled": true,
                 "Active": true,
@@ -984,8 +984,8 @@
                 "Components": []
             },
             {
-                "UID": 219841276,
-                "ParentUID": 1767888113,
+                "UID": 412645698,
+                "ParentUID": 1273324402,
                 "Name": "mixamorig:Spine2",
                 "Enabled": true,
                 "Active": true,
@@ -1012,8 +1012,8 @@
                 "Components": []
             },
             {
-                "UID": 828468058,
-                "ParentUID": 219841276,
+                "UID": 1704324111,
+                "ParentUID": 412645698,
                 "Name": "mixamorig:Neck",
                 "Enabled": true,
                 "Active": true,
@@ -1040,8 +1040,8 @@
                 "Components": []
             },
             {
-                "UID": 1509500680,
-                "ParentUID": 828468058,
+                "UID": 927120986,
+                "ParentUID": 1704324111,
                 "Name": "mixamorig:Head",
                 "Enabled": true,
                 "Active": true,
@@ -1068,8 +1068,8 @@
                 "Components": []
             },
             {
-                "UID": 2123070553,
-                "ParentUID": 1509500680,
+                "UID": 85309573,
+                "ParentUID": 927120986,
                 "Name": "mixamorig:HeadTop_End",
                 "Enabled": true,
                 "Active": true,
@@ -1096,8 +1096,8 @@
                 "Components": []
             },
             {
-                "UID": 577599693,
-                "ParentUID": 219841276,
+                "UID": 1379981689,
+                "ParentUID": 412645698,
                 "Name": "mixamorig:LeftShoulder",
                 "Enabled": true,
                 "Active": true,
@@ -1124,8 +1124,8 @@
                 "Components": []
             },
             {
-                "UID": 1173764316,
-                "ParentUID": 577599693,
+                "UID": 528910683,
+                "ParentUID": 1379981689,
                 "Name": "mixamorig:LeftArm",
                 "Enabled": true,
                 "Active": true,
@@ -1152,8 +1152,8 @@
                 "Components": []
             },
             {
-                "UID": 1787264568,
-                "ParentUID": 1173764316,
+                "UID": 1822538484,
+                "ParentUID": 528910683,
                 "Name": "mixamorig:LeftForeArm",
                 "Enabled": true,
                 "Active": true,
@@ -1180,8 +1180,8 @@
                 "Components": []
             },
             {
-                "UID": 259755926,
-                "ParentUID": 1787264568,
+                "UID": 965967419,
+                "ParentUID": 1822538484,
                 "Name": "mixamorig:LeftHand",
                 "Enabled": true,
                 "Active": true,
@@ -1208,8 +1208,8 @@
                 "Components": []
             },
             {
-                "UID": 862813028,
-                "ParentUID": 259755926,
+                "UID": 111484984,
+                "ParentUID": 965967419,
                 "Name": "mixamorig:LeftHandIndex1",
                 "Enabled": true,
                 "Active": true,
@@ -1236,8 +1236,8 @@
                 "Components": []
             },
             {
-                "UID": 1486965293,
-                "ParentUID": 862813028,
+                "UID": 1409081182,
+                "ParentUID": 111484984,
                 "Name": "mixamorig:LeftHandIndex2",
                 "Enabled": true,
                 "Active": true,
@@ -1264,8 +1264,8 @@
                 "Components": []
             },
             {
-                "UID": 2088838838,
-                "ParentUID": 1486965293,
+                "UID": 553554432,
+                "ParentUID": 1409081182,
                 "Name": "mixamorig:LeftHandIndex3",
                 "Enabled": true,
                 "Active": true,
@@ -1292,8 +1292,8 @@
                 "Components": []
             },
             {
-                "UID": 541348969,
-                "ParentUID": 2088838838,
+                "UID": 1909632270,
+                "ParentUID": 553554432,
                 "Name": "mixamorig:LeftHandIndex4",
                 "Enabled": true,
                 "Active": true,
@@ -1320,8 +1320,8 @@
                 "Components": []
             },
             {
-                "UID": 1143570619,
-                "ParentUID": 219841276,
+                "UID": 1055985287,
+                "ParentUID": 412645698,
                 "Name": "mixamorig:RightShoulder",
                 "Enabled": true,
                 "Active": true,
@@ -1348,8 +1348,8 @@
                 "Components": []
             },
             {
-                "UID": 1742450461,
-                "ParentUID": 1143570619,
+                "UID": 232484197,
+                "ParentUID": 1055985287,
                 "Name": "mixamorig:RightArm",
                 "Enabled": true,
                 "Active": true,
@@ -1376,8 +1376,8 @@
                 "Components": []
             },
             {
-                "UID": 206865783,
-                "ParentUID": 1742450461,
+                "UID": 1533909550,
+                "ParentUID": 232484197,
                 "Name": "mixamorig:RightForeArm",
                 "Enabled": true,
                 "Active": true,
@@ -1404,8 +1404,8 @@
                 "Components": []
             },
             {
-                "UID": 812011515,
-                "ParentUID": 206865783,
+                "UID": 672325773,
+                "ParentUID": 1533909550,
                 "Name": "mixamorig:RightHand",
                 "Enabled": true,
                 "Active": true,
@@ -1432,8 +1432,8 @@
                 "Components": []
             },
             {
-                "UID": 1419176256,
-                "ParentUID": 812011515,
+                "UID": 1978415733,
+                "ParentUID": 672325773,
                 "Name": "mixamorig:RightHandIndex1",
                 "Enabled": true,
                 "Active": true,
@@ -1460,8 +1460,8 @@
                 "Components": []
             },
             {
-                "UID": 2023695399,
-                "ParentUID": 1419176256,
+                "UID": 1144610735,
+                "ParentUID": 1978415733,
                 "Name": "mixamorig:RightHandIndex2",
                 "Enabled": true,
                 "Active": true,
@@ -1488,8 +1488,8 @@
                 "Components": []
             },
             {
-                "UID": 490547456,
-                "ParentUID": 2023695399,
+                "UID": 396926914,
+                "ParentUID": 1144610735,
                 "Name": "mixamorig:RightHandIndex3",
                 "Enabled": true,
                 "Active": true,
@@ -1516,8 +1516,8 @@
                 "Components": []
             },
             {
-                "UID": 1106832548,
-                "ParentUID": 490547456,
+                "UID": 1722093028,
+                "ParentUID": 396926914,
                 "Name": "mixamorig:RightHandIndex4",
                 "Enabled": true,
                 "Active": true,
@@ -1544,8 +1544,8 @@
                 "Components": []
             },
             {
-                "UID": 1793086745,
-                "ParentUID": 556064987,
+                "UID": 865034616,
+                "ParentUID": 843229766,
                 "Name": "mixamorig:LeftUpLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1572,8 +1572,8 @@
                 "Components": []
             },
             {
-                "UID": 275742769,
-                "ParentUID": 1793086745,
+                "UID": 21204194,
+                "ParentUID": 865034616,
                 "Name": "mixamorig:LeftLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1600,8 +1600,8 @@
                 "Components": []
             },
             {
-                "UID": 887224012,
-                "ParentUID": 275742769,
+                "UID": 1315040858,
+                "ParentUID": 21204194,
                 "Name": "mixamorig:LeftFoot",
                 "Enabled": true,
                 "Active": true,
@@ -1628,8 +1628,8 @@
                 "Components": []
             },
             {
-                "UID": 1491464671,
-                "ParentUID": 887224012,
+                "UID": 473507929,
+                "ParentUID": 1315040858,
                 "Name": "mixamorig:LeftToeBase",
                 "Enabled": true,
                 "Active": true,
@@ -1656,8 +1656,8 @@
                 "Components": []
             },
             {
-                "UID": 2102458567,
-                "ParentUID": 1491464671,
+                "UID": 1777439638,
+                "ParentUID": 473507929,
                 "Name": "mixamorig:LeftToe_End",
                 "Enabled": true,
                 "Active": true,
@@ -1684,8 +1684,8 @@
                 "Components": []
             },
             {
-                "UID": 560399136,
-                "ParentUID": 556064987,
+                "UID": 933400353,
+                "ParentUID": 843229766,
                 "Name": "mixamorig:RightUpLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1712,8 +1712,8 @@
                 "Components": []
             },
             {
-                "UID": 1165196763,
-                "ParentUID": 560399136,
+                "UID": 81493895,
+                "ParentUID": 933400353,
                 "Name": "mixamorig:RightLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1740,8 +1740,8 @@
                 "Components": []
             },
             {
-                "UID": 1771526052,
-                "ParentUID": 1165196763,
+                "UID": 1444464212,
+                "ParentUID": 81493895,
                 "Name": "mixamorig:RightFoot",
                 "Enabled": true,
                 "Active": true,
@@ -1768,8 +1768,8 @@
                 "Components": []
             },
             {
-                "UID": 227934959,
-                "ParentUID": 1771526052,
+                "UID": 597848950,
+                "ParentUID": 1444464212,
                 "Name": "mixamorig:RightToeBase",
                 "Enabled": true,
                 "Active": true,
@@ -1796,8 +1796,8 @@
                 "Components": []
             },
             {
-                "UID": 857378420,
-                "ParentUID": 227934959,
+                "UID": 1900388239,
+                "ParentUID": 597848950,
                 "Name": "mixamorig:RightToe_End",
                 "Enabled": true,
                 "Active": true,
