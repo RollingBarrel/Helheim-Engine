@@ -20,8 +20,8 @@ Machinegun::Machinegun()
 {
 	mAttackRange = 100.0f;
 	mDamage = 0.4f;
-	mAttackDuration = 1.5f;
-    mAttackCooldown = 0.5f;
+	mAttackDuration = 0.7f;
+    mAttackCooldown = 0.3f;
     mNumBullets = 3;
 
     mShootDuration = mAttackDuration / static_cast<float>(mNumBullets);
@@ -39,20 +39,26 @@ void Machinegun::Attack(float time)
 {
     LOG("MachineGun Attack");
 
-    //Shoot Logic
-    Ray ray;
-    ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
-    ray.pos.y++;
-    ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
-
-
-    if (Delay(mShootDuration))
+    float delay = mShootDuration;
+    if (mFirstShoot)
+    {
+        mFirstShoot = false;
+        delay = 0.0f;
+    }
+   
+    if (Delay(delay))
     {
         //Audio
         if (GameManager::GetInstance()->GetAudio())
         {
             PlayHitSound();
         }
+
+        //Shoot Logic
+        Ray ray;
+        ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
+        ray.pos.y++;
+        ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
         //Bullets go straigh for now
         //ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
@@ -91,6 +97,7 @@ void Machinegun::Attack(float time)
 
 void Machinegun::Exit()
 {
+    mFirstShoot = true;
 }
 
 void Machinegun::Reload() 

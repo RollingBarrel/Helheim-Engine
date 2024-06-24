@@ -16,7 +16,7 @@ private:
 	bool Delay(float delay);
 
 	unsigned int mNumBullets;
-	unsigned int mShootDuration;
-
+	float mShootDuration;
+	bool mFirstShoot = true;
 	float mTimePassed = 0.0f;
 };
