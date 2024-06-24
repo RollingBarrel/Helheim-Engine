@@ -32,6 +32,22 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+	
+	GameObject* parent = GetOwner()->GetParent();
+	MaskComponent* maskComponent = nullptr;
+	if (parent != nullptr) {
+		maskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+	}
+	if (maskComponent != nullptr) {
+		mMask = maskComponent->GetMask();
+	}
+
+	//If the object has a mask component, set this image as the mask
+	Component* mask = owner->GetComponent(ComponentType::MASK);
+	if (mask != nullptr)
+	{
+		static_cast<MaskComponent*>(mask)->SetMask(this);
+	}
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
@@ -47,6 +63,22 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	}
 
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+	
+	GameObject* parent = GetOwner()->GetParent();
+	MaskComponent* maskComponent = nullptr;
+	if (parent != nullptr) {
+		maskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+	}
+	if (maskComponent != nullptr) {
+		mMask = maskComponent->GetMask();
+	}
+
+	//If the object has a mask component, set this image as the mask
+	Component* mask = owner->GetComponent(ComponentType::MASK);
+	if (mask != nullptr)
+	{
+		static_cast<MaskComponent*>(mask)->SetMask(this);
+	}
 
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
 	if (component != nullptr) 
@@ -63,14 +95,13 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	CreateVAO();
 
 	mImage = original.mImage;
-	mMaskableImage = original.mMaskableImage;
+	mMask = original.mMask;
 	mResourceId = original.mResourceId;
 
 	mFileName = original.mFileName;
 
 	mColor = original.mColor;
 	mAlpha = original.mAlpha;
-	mMaskedPixels = original.mMaskedPixels;
 
 	mTexOffset = original.mTexOffset;
 	mHasDiffuse = original.mHasDiffuse;
@@ -124,32 +155,22 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 { 
-	if (mIsMask) // Assuming IsMask() identifies if the component is a mask
+	if (mIsMaskable)
 	{
-		// Step 1: Enable the stencil test
 		glEnable(GL_STENCIL_TEST);
 
-		// Step 2: Configure stencil operations for the mask
 		glStencilFunc(GL_ALWAYS, 1, 0xFF); // Pass the stencil test always
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // Replace stencil buffer value with 1 where rendered
 		glStencilMask(0xFF); // Enable writing to the stencil buffer
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // Disable writing to the color buffer
 
-		// Draw the mask (Texture A) here...
-		// This should update the stencil buffer without rendering to the screen
+		mMask->Draw();
 
-		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Re-enable color buffer
-	}
-	if (mIsMaskable) // Assuming IsMaskable() identifies if the component should be masked
-	{
-		// Step 3: Render the maskable texture (Texture B) within the mask's bounds
 		glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass stencil test if stencil buffer value is 1
 		glStencilMask(0x00); // Disable writing to the stencil buffer
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Re-enable color buffer
 
-		// Draw the maskable texture (Texture B) here...
-		// It will only render where the stencil buffer was marked by the mask
-
-		glDisable(GL_STENCIL_TEST); // Optionally disable stencil test if no more masking is needed
+		//glDisable(GL_STENCIL_TEST); // Optionally disable stencil test if no more masking is needed
 	}
 
 	if (mIsSpritesheet)
@@ -220,6 +241,7 @@ void ImageComponent::Draw()
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
 	}
+	if(mIsMaskable) glDisable(GL_STENCIL_TEST);
 }
 
 Component* ImageComponent::Clone(GameObject* owner) const
@@ -284,7 +306,6 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 void ImageComponent::SetImage(unsigned int resourceId) 
 {
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
-	mMaskedPixels = GetPixelData(mImage);
 }
 
 void ImageComponent::FillVBO()
@@ -393,16 +414,6 @@ void ImageComponent::Update()
 	}
 }
 
-void ImageComponent::UpdateMaskedImageStatus()
-{
-	if (mIsMaskable && mMaskableImage == nullptr)
-	{
-		// Create a copy of mImage
-		mMaskableImage = new ResourceTexture(*mImage);
-		mMask = static_cast<MaskComponent*>(GetOwner()->GetParent()->GetComponent(ComponentType::MASK))->GetMask()->GetImage();
-	}
-}
-
 std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture)
 {
 	int numPixels = texture->GetWidth() * texture->GetHeight();
@@ -417,11 +428,6 @@ std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture
 	return pixels;
 }
 
-float2 ImageComponent::CalculateTextureOffset()
-{
-	return mTransform->GetPosition().xy();
-}
-
 bool ImageComponent::CleanUp()
 {
 	if (mQuadVBO != 0)
@@ -433,15 +439,9 @@ bool ImageComponent::CleanUp()
 	{
 		glDeleteVertexArrays(1, &mQuadVAO);
 	}
-
 	if (mImage != nullptr)
 	{
 		App->GetResource()->ReleaseResource(mImage->GetUID());
-	}
-
-	if (mMaskableImage != nullptr && mMaskableImage != mImage)
-	{
-		App->GetResource()->ReleaseResource(mMaskableImage->GetUID());
 	}
 	return true;
 }

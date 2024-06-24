@@ -22,12 +22,12 @@ public:
     void SetMask(ImageComponent* mask) { mMask = mask; }
     void SetDrawMask(bool state);
 
-    void ApplyMaskToChildren();
-
     void Save(JsonObject& obj) const override;
     void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 private:
-    ImageComponent* mMask;
+    void UpdateMaskToChilds();
+
+    ImageComponent* mMask = nullptr;
     bool mDrawMask = true;
 };
