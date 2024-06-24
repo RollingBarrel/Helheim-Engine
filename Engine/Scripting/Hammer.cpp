@@ -21,11 +21,12 @@ void Hammer::PlayHitSound()
 {
 }
 
-void Hammer::ApplySpecialEffects(GameObject* enemy)
+void Hammer::HitEffect(GameObject* enemy)
 {
     Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (enemyScript)
     {
+        enemyScript->TakeDamage(mDamage);
         enemyScript->PushBack();
     }
 }

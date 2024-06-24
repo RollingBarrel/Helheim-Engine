@@ -11,9 +11,5 @@ public:
 
 protected:
 	void PlayHitSound();
-	void ApplySpecialEffects(GameObject* enemy) override;
-
-	float mFastDamage = 4;
-	int mFastEnergyCost = 10;
-	float mFastCooldownMultiplier = 0.5f;
+	void HitEffect(GameObject* enemy) override;
 };

@@ -4,6 +4,9 @@
 #include "GameManager.h"
 #include "GameObject.h"
 #include "BoxColliderComponent.h"
+#include "Enemy.h"
+#include "ScriptComponent.h"
+#include "GameObject.h"
 
 Katana::Katana(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
@@ -29,10 +32,11 @@ void Katana::PlayHitSound()
     );
 }
 
-void Katana::ApplySpecialEffects(GameObject* enemy)
+void Katana::HitEffect(GameObject* enemy)
 {
-    if (mCollider)
+    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (enemyScript)
     {
-		mCollider->SetSize(mCollider->GetSize() * 1.4f);
-	}
+        enemyScript->TakeDamage(mDamage);
+    }
 }

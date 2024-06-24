@@ -21,9 +21,11 @@ public:
 	void Exit() override;
 
 	void OnCollisionEnter(CollisionData* collisionData);
-	void DealDamage(GameObject* enemy);
 
 protected:
+	//Methods
+	virtual void PlayHitSound() = 0;  
+	virtual void HitEffect(GameObject* enemy) = 0;  
 
 	//Common
 	BoxColliderComponent* mCollider = nullptr;
@@ -52,9 +54,6 @@ protected:
 	int mEnergyCost = 0;
 	float mCooldownMultiplier = 1.0f;
 
-	//Methods
-	virtual void PlayHitSound() = 0;  
-	virtual void ApplySpecialEffects(GameObject* enemy) = 0;  
 
 
 };

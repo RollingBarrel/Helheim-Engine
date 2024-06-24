@@ -178,18 +178,8 @@ void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
     {
          if (collisionData->collidedWith->GetTag() == "Enemy")
         {
-            DealDamage(collisionData->collidedWith);
-            ApplySpecialEffects(collisionData->collidedWith);
+            HitEffect(collisionData->collidedWith);
             LOG("Colliding with enemy!");
         }
-    }
-}
-
-void MeleeWeapon::DealDamage(GameObject* enemy)
-{
-    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    if (enemyScript) 
-    {
-        enemyScript->TakeDamage(mDamage);
     }
 }
