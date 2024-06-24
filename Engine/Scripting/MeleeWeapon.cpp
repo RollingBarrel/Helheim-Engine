@@ -49,7 +49,8 @@ float MeleeWeapon::GetAttackDuration()
 void MeleeWeapon::IncreaseComboStep()
 {
     mNextComboStep = mComboStep + 1;
-    if (mNextComboStep < 1 || mNextComboStep > 3) {
+    if (mNextComboStep < 1 || mNextComboStep > 3) 
+    {
         LOG("Invalid combo step detected: %d", mNextComboStep);
         mNextComboStep = 1; 
     }
@@ -61,7 +62,6 @@ void MeleeWeapon::Enter()
     {
         mCollider->SetEnable(true);
     }
-
     if (mTrail) 
     {
         mTrail->SetEnable(true);
@@ -171,12 +171,13 @@ void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 {
     // pop particles on collision
 
-    if (mColliderAtivated) {
+    if (mColliderAtivated) 
+    {
          if (collisionData->collidedWith->GetTag() == "Enemy")
         {
             DealDamage(collisionData->collidedWith);
             ApplySpecialEffects(collisionData->collidedWith);
-            LOG("Colliding with melee!");
+            LOG("Colliding with enemy!");
         }
     }
 }
@@ -184,9 +185,9 @@ void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 void MeleeWeapon::DealDamage(GameObject* enemy)
 {
     Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    if (enemyScript) {
+    if (enemyScript) 
+    {
         enemyScript->TakeDamage(mDamage);
-        LOG("Colliding with enemy!");
-        //enemyScript->PushBack(); // TODO: It's best to push it back with CollisionData normal
+        //enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
     }
 }

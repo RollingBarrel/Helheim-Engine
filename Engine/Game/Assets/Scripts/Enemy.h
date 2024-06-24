@@ -3,7 +3,6 @@
 #include "Macros.h"
 
 class GameObject;
-class NavMeshController;
 class AnimationComponent;
 class AIAgentComponent;
 class Component;
@@ -55,7 +54,6 @@ class Enemy : public Script
 	private:
 		void ActivateEnemy();
 
-		NavMeshController* mNavMeshControl = nullptr;	
 		GameObject* mFootstepAudioHolder = nullptr;
 		
 		//Hit Effect
