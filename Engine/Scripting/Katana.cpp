@@ -7,9 +7,12 @@
 
 Katana::Katana(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
-    mDamage = mFastDamage;
-    mEnergyCost = mFastEnergyCost;
-    mCooldownMultiplier = mFastCooldownMultiplier;
+    mDamage = 4.f;
+    mEnergyCost = 10.f;
+    mCooldownMultiplier = 0.5f;
+    mCombo1st = 0.5f;
+    mCombo2nd = 0.5f;
+    mComboEnd = 0.5f;
 }
 
 Katana::~Katana()
