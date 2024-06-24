@@ -14,5 +14,7 @@ public:
 	~Bat();
 
 private:
-	void PlayHitSound();
+	void PlayHitSound() override;
+	void ApplySpecialEffects(GameObject* enemy) override;
+
 };

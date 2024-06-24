@@ -24,6 +24,8 @@ public:
 	void DealDamage(GameObject* enemy);
 
 protected:
+
+	//Common
 	BoxColliderComponent* mCollider = nullptr;
 	TrailComponent* mTrail = nullptr;
 
@@ -34,7 +36,26 @@ protected:
 	float mCombo2nd = 1.0f;
 	float mComboEnd = 1.0f;
 	float mHitTime = 0.9f;
+	float mMoveSpeed = 0.0f;
 	bool mColliderAtivated = false;
 	bool mHasHitted = false;
+
+	float mLastComboStartTime = 0.0f;
+	bool mMovingForward = false;
+	float totalMoveDistance = 5.0f;
+
+	GameObject* mPlayerGO = nullptr;
+
+	//Specific 
+	float mRange = 1.0f;
+	float mDamage = 1;
+	int mEnergyCost = 0;
+	float mCooldownMultiplier = 1.0f;
+
+	//Methods
+	virtual void PlayHitSound() = 0;  
+	virtual void ApplySpecialEffects(GameObject* enemy) = 0;  
+
+
 };
 

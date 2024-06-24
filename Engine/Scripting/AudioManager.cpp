@@ -202,7 +202,7 @@ const AudioUnit* AudioManager::GetAudioUnit(BGM bgm)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+        //LOG("Audio not found");
         return nullptr;
     }
     else 
@@ -218,7 +218,7 @@ const AudioUnit* AudioManager::GetAudioUnit(SFX sfx)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+         //LOG("Audio not found");
         return nullptr;
     }
     else
@@ -234,7 +234,7 @@ const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(BGM bgm)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+        //LOG("Audio not found");
         return nullptr;
     }
     else 
@@ -250,7 +250,7 @@ const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(SFX sfx)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+        //LOG("Audio not found");
         return nullptr;
     }
     else 
