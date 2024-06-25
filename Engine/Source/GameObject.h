@@ -140,7 +140,7 @@ private:
 	mutable Quat mWorldRotation = Quat::identity;
 
 	//Rotation in Euler Angles (Rads Always)
-	float3 mWorldEulerAngles = float3::zero;
+	mutable float3 mWorldEulerAngles = float3::zero;
 	float3 mLocalEulerAngles = float3::zero;
 
 	//Scale

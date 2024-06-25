@@ -245,6 +245,7 @@ void GameObject::RecalculateMatrices() const
 
 		float3 trans;
 		mWorldTransformMatrix.Decompose(trans, mWorldRotation, mWorldScale);
+		mWorldEulerAngles = mWorldRotation.ToEulerXYZ();
 
 		mIsTransformModified = false;
 		mUpdatedTransform = true;
