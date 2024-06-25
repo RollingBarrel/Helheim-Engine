@@ -618,13 +618,13 @@ void PlayerController::TakeDamage(float damage)
     //GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 
 
-    //Hit Effect
-    mHit = true;
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    }
+    ////Hit Effect
+    //mHit = true;
+    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //{
+    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    //}
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
