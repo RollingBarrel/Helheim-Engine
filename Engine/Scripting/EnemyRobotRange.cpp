@@ -100,9 +100,9 @@ void EnemyRobotRange::Chase()
                 direction.Normalize();
                 float angle = std::atan2(direction.x, direction.z);;
 
-                if (mGameObject->GetRotation().y != angle)
+                if (mGameObject->GetWorldRotation().y != angle)
                 {
-                    mGameObject->SetRotation(float3(0, angle, 0));
+                    mGameObject->SetWorldRotation(float3(0, angle, 0));
 
                 }
 
@@ -132,9 +132,9 @@ void EnemyRobotRange::Attack()
     direction.Normalize();
     float angle = std::atan2(direction.x, direction.z);;
 
-    if (mGameObject->GetRotation().y != angle)
+    if (mGameObject->GetWorldRotation().y != angle)
     {
-        mGameObject->SetRotation(float3(0, angle, 0));
+        mGameObject->SetWorldRotation(float3(0, angle, 0));
 
     }
     if (mAttackCD >= mTimerAttack) 
@@ -177,7 +177,7 @@ void EnemyRobotRange::RangeAttack()
     float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->SetRotation(mGameObject->GetRotation());
+    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     BulletEnemy* bulletScript=reinterpret_cast<BulletEnemy*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     bulletScript->Init();
 

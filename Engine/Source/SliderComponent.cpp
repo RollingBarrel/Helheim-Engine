@@ -73,7 +73,7 @@ void SliderComponent::SetValue(float fillPercent)
 	else
 	{
 		mFill->SetWorldPosition(float3(fillPositionX, 0, 0));
-		mFill->SetScale(float3(fillPercent, 1.0f, 1.0f));
+		mFill->SetWorldScale(float3(fillPercent, 1.0f, 1.0f));
 	}
 }
 

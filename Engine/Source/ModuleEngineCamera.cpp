@@ -223,11 +223,11 @@ void ModuleEngineCamera::CameraControls(float dt)
 			float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(-mX));
 			float3x3 rotation = rotationY.Mul(rotationX);
 
-			Quat quatOriginal = mEditorCameraGameObject->GetRotation();
+			Quat quatOriginal = mEditorCameraGameObject->GetWorldRotation();
 			Quat newQuat = Quat(rotation);
 			newQuat =  newQuat * quatOriginal;
 			float3 eulerRotation = newQuat.ToEulerXYZ();
-			mEditorCameraGameObject->SetRotation(newQuat);
+			mEditorCameraGameObject->SetWorldRotation(newQuat);
 
 			MouseFix();
 

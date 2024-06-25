@@ -123,9 +123,9 @@ void EnemyRobot::Chase()
                 direction.Normalize();
                 float angle = std::atan2(direction.x, direction.z);;
 
-                if (mGameObject->GetRotation().y != angle)
+                if (mGameObject->GetWorldRotation().y != angle)
                 {
-                    mGameObject->SetRotation(float3(0, angle, 0));
+                    mGameObject->SetWorldRotation(float3(0, angle, 0));
 
                 }
 

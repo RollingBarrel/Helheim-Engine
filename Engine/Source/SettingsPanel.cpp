@@ -143,7 +143,7 @@ void SettingsPanel::SaveUserSettings() const
 
 	JsonObject camera = root.AddNewJsonObject("Camera Settings");
 	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldPosition().ptr(), 3);
-	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation().ptr(), 4);
+	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldRotation().ptr(), 4);
 
 	JsonObject scene = root.AddNewJsonObject("Scene Settings");
 	scene.AddString("Name", EngineApp->GetScene()->GetName().c_str());
@@ -187,7 +187,7 @@ void SettingsPanel::LoadUserSettings()
 
 		float rotation[4];
 		camera.GetFloats("Rotation", rotation);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(Quat(rotation));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldRotation(Quat(rotation));
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");

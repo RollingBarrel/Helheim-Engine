@@ -71,19 +71,19 @@ public:
 	void SetLocalPosition(const float3& position);
 
 	//Rotation
-	const Quat& GetRotation() const { return mRotation; }
+	const Quat& GetWorldRotation() const { RecalculateMatrices(); return mWorldRotation; }
 	const Quat& GetLocalRotation() const { return mLocalRotation; }
-	const float3& GetEulerAngles() const { return mEulerAngles; }
+	const float3& GetWorldEulerAngles() const { RecalculateMatrices(); return mWorldEulerAngles; }
 	const float3& GetLocalEulerAngles() const { return mLocalEulerAngles; }
-	void SetRotation(const float3& rotation);
+	void SetWorldRotation(const float3& rotation);
 	void SetLocalRotation(const float3& rotation);
-	void SetRotation(const Quat& rotation);
+	void SetWorldRotation(const Quat& rotation);
 	void SetLocalRotation(const Quat& rotation);
 
 	//Scale
-	const float3& GetScale() const { return mScale; }
+	const float3& GetWorldScale() const { RecalculateMatrices(); return mWorldScale; }
 	const float3& GetLocalScale() const { return mLocalScale; }
-	void SetScale(const float3& scale);
+	void SetWorldScale(const float3& scale);
 	void SetLocalScale(const float3& scale);
 
 	// Transform
@@ -136,15 +136,15 @@ private:
 	mutable float3 mRight = float3::unitX;
 
 	//Rotation
-	Quat mRotation = Quat::identity;
 	Quat mLocalRotation = Quat::identity;
+	mutable Quat mWorldRotation = Quat::identity;
 
 	//Rotation in Euler Angles (Rads Always)
-	float3 mEulerAngles = float3::zero;
+	float3 mWorldEulerAngles = float3::zero;
 	float3 mLocalEulerAngles = float3::zero;
 
 	//Scale
-	float3 mScale = float3::one;
+	mutable float3 mWorldScale = float3::one;
 	float3 mLocalScale = float3::one;
 
 	// Components

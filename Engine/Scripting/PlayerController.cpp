@@ -440,10 +440,10 @@ void PlayerController::SetMaxShield(float percentage)
 void PlayerController::SetGrenadeVisuals(bool value)
 {
     mGrenadeAimAreaGO->SetEnabled(value);
-    mGrenadeAimAreaGO->SetScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
+    mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
 
     mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-    mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+    mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
 }
 
 void PlayerController::UpdateGrenadeVisuals()

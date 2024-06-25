@@ -247,8 +247,8 @@ void InspectorPanel::DrawTransform(GameObject* object)
 
 			bool modifiedTransform = false;
 			float3 newPosition = object->GetLocalPosition();
-			float3 newRotation = RadToDeg(object->mEulerAngles);
-			float3 newScale = object->mScale;
+			float3 newRotation = RadToDeg(object->mWorldEulerAngles);
+			float3 newScale = object->mWorldScale;
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
 			const char* axisLabels[3] = { "X", "Y", "Z" };

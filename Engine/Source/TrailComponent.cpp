@@ -131,7 +131,7 @@ void TrailComponent::Draw() const
                 }
                 else
                 {
-                    direction = RotationToVector(mOwner->GetRotation());
+                    direction = RotationToVector(mOwner->GetWorldRotation());
                 }
                 
             }

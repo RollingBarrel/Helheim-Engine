@@ -142,7 +142,7 @@ void AnimationController::GetTransform(GameObject* model)
 		{
 			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-			model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+			model->SetWorldRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
 
 		else { return; }
@@ -206,7 +206,7 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
+				model->SetWorldRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
 
 			else { return; }

@@ -321,10 +321,10 @@ void ImageComponent::ResizeByRatio()
 	}
 	else 
 	{
-		float currentRatio = GetOwner()->GetScale().x / GetOwner()->GetScale().y;
+		float currentRatio = GetOwner()->GetWorldScale().x / GetOwner()->GetWorldScale().y;
 		float ratio = currentRatio / originalRatio;
-		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
-		GetOwner()->SetScale(newScale);
+		float3 newScale = float3(GetOwner()->GetWorldScale().x, GetOwner()->GetWorldScale().y * ratio, GetOwner()->GetWorldScale().z);
+		GetOwner()->SetWorldScale(newScale);
 	}
 }
 

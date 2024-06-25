@@ -44,8 +44,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 	GameObject* gameObject = new GameObject(name, parent);
 
 	gameObject->SetWorldPosition(node.mTranslation);
-	gameObject->SetRotation(node.mRotation);
-	gameObject->SetScale(node.mScale);
+	gameObject->SetWorldRotation(node.mRotation);
+	gameObject->SetWorldScale(node.mScale);
 
 	if (isRoot && nodeNumber == 0)
 	{
@@ -361,10 +361,10 @@ void ScenePanel::DrawScene()
 					selectedGameObject->SetWorldPosition(modelMatrix.TranslatePart());
 					break;
 				case ImGuizmo::ROTATE:
-					selectedGameObject->SetRotation(rotation);
+					selectedGameObject->SetWorldRotation(rotation);
 					break;
 				case ImGuizmo::SCALE:
-					selectedGameObject->SetScale(scale);
+					selectedGameObject->SetWorldScale(scale);
 					break;
 				}
 			}

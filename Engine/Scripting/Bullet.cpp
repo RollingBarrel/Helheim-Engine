@@ -67,7 +67,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	mTotalMovement = 0;
 
 	mGameObject->SetWorldPosition(position);
-	mGameObject->SetScale(float3(size, size, size));
+	mGameObject->SetWorldScale(float3(size, size, size));
 	mDirection = direction;
 	mSpeed = speed;
 
