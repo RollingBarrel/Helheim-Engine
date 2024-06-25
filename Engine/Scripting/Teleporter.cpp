@@ -37,6 +37,6 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "Player")
     {
-        collisionData->collidedWith->SetPosition(mDestination->GetPosition());
+        collisionData->collidedWith->SetWorldPosition(mDestination->GetWorldPosition());
     }
 }

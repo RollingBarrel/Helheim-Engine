@@ -155,7 +155,7 @@ void MeleeWeapon::Attack(float time)
             IncreaseComboStep();
         }
 
-        mPlayerGO->SetPosition(mPlayerGO->GetPosition() + forward * moveAmount);
+        mPlayerGO->SetWorldPosition(mPlayerGO->GetWorldPosition() + forward * moveAmount);
     }
 }
 
