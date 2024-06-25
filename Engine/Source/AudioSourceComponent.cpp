@@ -80,6 +80,17 @@ void AudioSourceComponent::AddNewAudio(FMOD::Studio::EventInstance* event)
 
 void AudioSourceComponent::AddNewAudioByName(const char* name)
 {
+    // Check if the audio with the given name already exists
+    for (const auto& audio : mAudiosVector)
+    {
+        if (strcmp(audio->GetName().c_str(), name) == 0)
+        {
+            // Audio already exists, do nothing
+            return;
+        }
+    }
+
+    // If not found, add the new audio
     AudioUnit* newAudio = new AudioUnit();
     newAudio->SetEventByName(name);
     mAudiosVector.push_back(newAudio);

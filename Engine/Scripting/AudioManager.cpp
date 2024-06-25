@@ -175,6 +175,16 @@ void AudioManager::SetPosition(const FMOD::Studio::EventDescription* description
     App->GetAudio()->SetEventPosition(description, id, position);
 }
 
+void AudioManager::AddAudioToASComponent(BGM bgm)
+{
+    mAudioSources->AddNewAudioByName(GetBGMName(bgm).c_str());
+}
+
+void AudioManager::AddAudioToASComponent(SFX sfx)
+{
+    mAudioSources->AddNewAudioByName(GetSFXName(sfx).c_str());
+}
+
 std::string AudioManager::GetBGMName(BGM bgm)
 {
     auto it = mBGMToString.find(bgm);

@@ -123,11 +123,28 @@ void GameManager::GameOver()
     // Loading activated from HUD controller on Btn Click.
 }
 
-void GameManager::StartAudio()
+void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
+    {
+        mAudioManager->AddAudioToASComponent(BGM::LEVEL1);
+
+        mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
+        mAudioManager->AddAudioToASComponent(SFX::GUNFIRE);
+        mAudioManager->AddAudioToASComponent(SFX::MEELEE);
+        mAudioManager->AddAudioToASComponent(SFX::MACHINE_GUN);
+        mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    }
+}
+
+void GameManager::StartAudio()
+{
+    PrepareAudio();
+    std::string sceneName = App->GetScene()->GetName();
+
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL1);
     }

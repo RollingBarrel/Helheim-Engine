@@ -43,6 +43,7 @@ public:
     void GameOver();
 
 private:
+    void PrepareAudio();
     void StartAudio();
     void HandleAudio();
     void EndAudio();
