@@ -60,13 +60,13 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
 {
     for (auto& enemy : enemies)
     {
-        float3 direction = mGameObject->GetPosition() - enemy->GetPosition();
+        float3 direction = mGameObject->GetWorldPosition() - enemy->GetWorldPosition();
         float distance = direction.Length();
         if (distance > 0)
         {
             float3 normalizedDirection = float3(direction.x / distance, direction.y / distance, direction.z / distance);
             float pullStrength = 1.0f * App->GetDt();
-            enemy->SetPosition(enemy->GetPosition() + normalizedDirection * pullStrength);
+            enemy->SetWorldPosition(enemy->GetWorldPosition() + normalizedDirection * pullStrength);
 
             ScriptComponent* script = (ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT);
             Enemy* target = (Enemy*)script->GetScriptInstance();
@@ -96,7 +96,7 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     // TODO: Check hit with physic
     for (const auto& e : AllEnemies)
     {
-        float3 diff = e->GetPosition() - mGameObject->GetPosition();
+        float3 diff = e->GetWorldPosition() - mGameObject->GetWorldPosition();
         float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
         if (distanceSquared <= (mGrenadeRadius * mGrenadeRadius))
@@ -110,7 +110,7 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
 
 void Grenade::SetDestination(float3 destination)
 {
-	mGameObject->SetPosition(destination);
+	mGameObject->SetWorldPosition(destination);
     mGameObject->SetEnabled(true);
 	mExplotionStart = true;
 }

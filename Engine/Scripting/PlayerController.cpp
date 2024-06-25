@@ -331,7 +331,7 @@ void PlayerController::HandleRotation()
 
         if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
 
-        float3 position = mGameObject->GetPosition();
+        float3 position = mGameObject->GetWorldPosition();
         mAimPosition.x = position.x - rightX;
         mAimPosition.y = position.y;
         mAimPosition.z = position.z - rightY;
@@ -339,7 +339,7 @@ void PlayerController::HandleRotation()
     else
     {
         Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-        Plane plane(mGameObject->GetPosition(), float3::unitY);
+        Plane plane(mGameObject->GetWorldPosition(), float3::unitY);
 
         float distance;
         if (plane.Intersects(ray, &distance))
@@ -371,14 +371,14 @@ void PlayerController::SetSpineAnimation(std::string trigger, float transitionTi
 
 void PlayerController::MoveInDirection(float3 direction)
 {
-    float3 newPos = (mGameObject->GetPosition() + direction * App->GetDt() * mPlayerSpeed);
+    float3 newPos = (mGameObject->GetWorldPosition() + direction * App->GetDt() * mPlayerSpeed);
     mPlayerDirection = direction;
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+    mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
 }
 
 void PlayerController::MoveToPosition(float3 position)
 {
-    mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(position, float3(10.0f)));
+    mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(position, float3(10.0f)));
 }
 
 void PlayerController::SwitchWeapon() 
@@ -423,7 +423,7 @@ void PlayerController::SwitchWeapon()
 
 float3 PlayerController::GetPlayerPosition()
 {
-    return  mGameObject->GetPosition(); 
+    return  mGameObject->GetWorldPosition(); 
 }
 
 void PlayerController::SetWeaponDamage(float percentage)
@@ -440,24 +440,24 @@ void PlayerController::SetMaxShield(float percentage)
 void PlayerController::SetGrenadeVisuals(bool value)
 {
     mGrenadeAimAreaGO->SetEnabled(value);
-    mGrenadeAimAreaGO->SetScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
+    mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
 
     mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-    mGrenadeExplotionPreviewAreaGO->SetScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+    mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
 }
 
 void PlayerController::UpdateGrenadeVisuals()
 {
-    mGrenadeAimAreaGO->SetPosition(mGameObject->GetPosition());
+    mGrenadeAimAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
 
     float3 diff;
     if (GameManager::GetInstance()->UsingController())
     {
-        mGrenadePosition = mGameObject->GetPosition() + (mAimPosition- mGameObject->GetPosition()) * mGrenadeRange;
+        mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition- mGameObject->GetWorldPosition()) * mGrenadeRange;
     }
     else
     {
-        diff = mAimPosition - mGameObject->GetPosition();
+        diff = mAimPosition - mGameObject->GetWorldPosition();
         float distanceSquared = diff.LengthSq();
         float radiusSquared = mGrenadeRange * mGrenadeRange;
 
@@ -468,11 +468,11 @@ void PlayerController::UpdateGrenadeVisuals()
         else 
         {
             diff.Normalize();
-            mGrenadePosition = mGameObject->GetPosition() + diff * mGrenadeRange;
+            mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
         }
     }
     
-    mGrenadeExplotionPreviewAreaGO->SetPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
+    mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
 }
 
 void PlayerController::ThrowGrenade()

@@ -87,7 +87,7 @@ void EnemyRobotMelee::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
     }
 }
 
@@ -100,15 +100,15 @@ void EnemyRobotMelee::Chase()
         {
             if (Delay(mChaseDelay))
             {
-                mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
-                float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
+                mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+                float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
                 direction.y = 0;
                 direction.Normalize();
                 float angle = std::atan2(direction.x, direction.z);;
 
-                if (mGameObject->GetRotation().y != angle)
+                if (mGameObject->GetWorldRotation().y != angle)
                 {
-                    mGameObject->SetRotation(float3(0, angle, 0));
+                    mGameObject->SetWorldRotation(float3(0, angle, 0));
 
                 }
 
@@ -137,7 +137,7 @@ void EnemyRobotMelee::Attack()
     {
 
         mCurrentState = EnemyState::CHASE;
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange)
@@ -158,10 +158,10 @@ void EnemyRobotMelee::MeleeAttack()
     {
 
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
-        float3 playerPosition = mPlayer->GetPosition();
-        float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
+        float3 playerPosition = mPlayer->GetWorldPosition();
+        float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
         float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
-        float3 playerToEnemy = (mGameObject->GetPosition() - playerPosition).Normalized();
+        float3 playerToEnemy = (mGameObject->GetWorldPosition() - playerPosition).Normalized();
         float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
 
         if (distanceToEnemy < 2.0f && dotProduct < 0)

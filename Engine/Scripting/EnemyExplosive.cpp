@@ -43,7 +43,7 @@ void EnemyExplosive::Start()
     }
     if (mExplosionWarningGO)
     {
-        mWarningSize = mExplosionWarningGO->GetScale();
+        mWarningSize = mExplosionWarningGO->GetWorldScale();
         mExplosionWarningGO->SetLocalPosition(float3(0.0f,0.1f,0.0f));
         mExplosionWarningGO->SetEnabled(false);
     }
@@ -92,16 +92,16 @@ void EnemyExplosive::Idle()
 
 void EnemyExplosive::Chase()
 {
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
         mAnimationComponent->SendTrigger("tMovement", 0.2f);
         if (mAiAgentComponent)
         {
            
-            float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
+            float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
             direction.y = 0;
             direction.Normalize();
             float angle = std::atan2(direction.x, direction.z);
-            mGameObject->SetRotation(float3(0, angle, 0));
+            mGameObject->SetWorldRotation(float3(0, angle, 0));
             mAiAgentComponent->MoveAgent(mSpeed);
         }
         
@@ -132,7 +132,7 @@ void EnemyExplosive::Charging()
 void EnemyExplosive::Explosion()
 {
     LOG("BOOM");
-    mExplosionWarningGO->SetScale(float3(0.1f));
+    mExplosionWarningGO->SetWorldScale(float3(0.1f));
     if (IsPlayerInRange(mExplosionDistance))
     {
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
@@ -150,10 +150,10 @@ void EnemyExplosive::Explosion()
 void EnemyExplosive::ChargeWarningArea()
 {
     mWarningTimer += App->GetDt();
-    float increment = (mExplosionDistance - mExplosionWarningGO->GetScale().x) * App->GetDt();
+    float increment = (mExplosionDistance - mExplosionWarningGO->GetWorldScale().x) * App->GetDt();
     float3 newWarningSize = float3(mWarningSize.x += increment, mWarningSize.y, mWarningSize.z += increment);
 
-    mExplosionWarningGO->SetScale(newWarningSize);
+    mExplosionWarningGO->SetWorldScale(newWarningSize);
     LOG("WarningTimer: %f", mWarningTimer);
     
 }

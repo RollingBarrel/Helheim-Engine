@@ -45,8 +45,8 @@ void Bullet::Update()
 	{
 		if (mTotalMovement <= mRange)
 		{
-			mTotalMovement += mGameObject->GetPosition().Distance((mGameObject->GetPosition() + mGameObject->GetFront().Mul(mSpeed)));
-			mGameObject->SetPosition(mGameObject->GetPosition() + mDirection * mSpeed);
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
+			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed);
 		}
 		else
 		{
@@ -66,8 +66,8 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 {
 	mTotalMovement = 0;
 
-	mGameObject->SetPosition(position);
-	mGameObject->SetScale(float3(size, size, size));
+	mGameObject->SetWorldPosition(position);
+	mGameObject->SetWorldScale(float3(size, size, size));
 	mDirection = direction;
 	mSpeed = speed;
 

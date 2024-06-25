@@ -245,7 +245,6 @@ void ModuleScene::Load(const char* sceneName)
 			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		mRoot->RecalculateMatrices();
 		App->GetNavigation()->LoadResourceData();
 
 		App->GetScriptManager()->AwakeScripts();
@@ -275,9 +274,8 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
-	gameObject->SetRotation(float3::zero);
-	gameObject->SetPosition(float3::zero);
-	gameObject->RecalculateMatrices();
+	gameObject->SetWorldRotation(float3::zero);
+	gameObject->SetWorldPosition(float3::zero);
 	
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
@@ -357,7 +355,6 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 	
 		ret = mSceneGO[currSize];
 
-		mRoot->RecalculateMatrices();
 		App->GetScriptManager()->AwakeGameObjectScripts(ret);
 		
 		if (App->IsPlayMode())

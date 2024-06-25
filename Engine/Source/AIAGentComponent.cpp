@@ -50,7 +50,7 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 }
 void AIAgentComponent::SetNavigationPath(const float3& destination) 
 {
-	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetPosition(), destination);
+	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
 }
 
 void AIAgentComponent::MoveAgent(float speed ) const
@@ -66,7 +66,7 @@ void AIAgentComponent::MoveAgent(float speed ) const
 		//LOG("END")
 			float3 direction = (mNavPositions[1] - mNavPositions[0]).Normalized();
 			direction = direction / 50 * speed;
-			GetOwner()->SetPosition(GetOwner()->GetPosition() + direction);
+			GetOwner()->SetWorldPosition(GetOwner()->GetWorldPosition() + direction);
 	}
 	
 }

@@ -29,7 +29,7 @@ void EnemyPool::Start()
 			if (newEnemy)
 			{
 				newEnemy->SetParent(mGameObject);
-				newEnemy->SetPosition(float3::zero);
+				newEnemy->SetWorldPosition(float3::zero);
 				newEnemy->SetEnabled(false);
 				std::string newName = newEnemy->GetName() + std::to_string(j);
 				newEnemy->SetName(newName.c_str());
