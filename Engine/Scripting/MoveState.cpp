@@ -65,7 +65,7 @@ StateType MoveState::HandleInput()
 void MoveState::Update()
 {
     mMoveDirection = float3::zero;
-
+    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized(); //TODO: Let this only in start when transforms fixed
     if (GameManager::GetInstance()->UsingController())
     {
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
