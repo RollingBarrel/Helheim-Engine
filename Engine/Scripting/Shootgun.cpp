@@ -116,7 +116,7 @@ void Shootgun::Attack(float time)
     {
         mFire->SetEnabled(false);
         mFire->SetEnabled(true);
-        mFire->SetPosition(GameManager::GetInstance()->GetPlayer()->GetPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
+        mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
     }
 
 

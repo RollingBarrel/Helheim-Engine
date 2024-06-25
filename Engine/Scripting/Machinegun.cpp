@@ -94,7 +94,7 @@ void Machinegun::Attack(float time)
         {
             mFire->SetEnabled(false);
             mFire->SetEnabled(true);
-            mFire->SetPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
+            mFire->SetLocalPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
         }
 
         if (GameManager::GetInstance()->GetPoolManager())
