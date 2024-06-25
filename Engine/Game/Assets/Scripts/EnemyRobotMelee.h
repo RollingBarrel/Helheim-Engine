@@ -33,6 +33,7 @@ private:
 
 	void MeleeAttack();
 	void  Death() override;
+	void Reset() override;
 	void OnCollisionEnter(CollisionData* collisionData);
 
 	EnemyState mCurrentState = EnemyState::IDLE;
