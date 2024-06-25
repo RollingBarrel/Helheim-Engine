@@ -41,6 +41,11 @@ void Enemy::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
+    if (mDeath)
+    {
+        Death();
+    }
+
     //Hit Effect
     if (mHit)
     {
@@ -84,15 +89,17 @@ bool Enemy::IsPlayerInRange(float range)
 
 void Enemy::TakeDamage(float damage) 
 {   
-    if (mHealth > 0)
+    if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
         mHealth -= damage;
 
         if (mHealth <= 0)
         {
-            Death();
+            mDeath = true;
         }
     }
+        
+    
 
     LOG("Enemy Health: %f", mHealth);
 

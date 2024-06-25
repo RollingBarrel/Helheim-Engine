@@ -8,12 +8,15 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "TrailComponent.h"
-#include "Physics.h"
-
-#include "Geometry/Ray.h"
-#include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
 #include <Bullet.h>
+
+#include "Application.h"
+#include "ModuleScene.h"
+
+#include "Physics.h"
+#include "Geometry/Ray.h"
+#include "Algorithm/Random/LCG.h"
 
 Shootgun::Shootgun()
 {
@@ -21,6 +24,13 @@ Shootgun::Shootgun()
     mAttackRange = 100.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.5f;
+
+    mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
+
 }
 
 Shootgun::~Shootgun()
@@ -101,6 +111,15 @@ void Shootgun::Attack(float time)
 
     }
     
+    //PARTICLES
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+        mFire->SetEnabled(true);
+        mFire->SetPosition(GameManager::GetInstance()->GetPlayer()->GetPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
+    }
+
+
     LOG("Missed bullets = %i", count);
 }
 
