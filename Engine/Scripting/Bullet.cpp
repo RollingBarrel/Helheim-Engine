@@ -7,10 +7,13 @@
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
 #include <TrailComponent.h>
-
+#include "ScriptComponent.h"
+#include "PlayerController.h"
 CREATE(Bullet)
 {
 	CLASS(owner);
+	MEMBER(MemberType::FLOAT, mDamage);
+	MEMBER(MemberType::BOOL, mShooterIsPlayer);
 	END_CREATE;
 }
 
@@ -62,14 +65,16 @@ void Bullet::Update()
 	}
 }
 
-void Bullet::Init(const float3& position, const float3& direction, float speed, float size,  ColorGradient* gradient)
+void Bullet::Init(const float3& position, const float3& direction, float speed, float size, ColorGradient* gradient, float damage = 0.0f)
 {
-	mTotalMovement = 0;
+	mTotalMovement = 0.0f;
+	mHasCollided = false;
 
 	mGameObject->SetWorldPosition(position);
 	mGameObject->SetWorldScale(float3(size, size, size));
 	mDirection = direction;
 	mSpeed = speed;
+	mDamage = damage;
 
 	
 
@@ -88,14 +93,44 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {
-	if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 || collisionData->collidedWith->GetTag().compare("Wall") == 0)
+	if (mShooterIsPlayer)
 	{
-		if (mHitParticles)
+		if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 || collisionData->collidedWith->GetTag().compare("Wall") == 0)
 		{
-			mHitParticles->SetEnabled(true);
+			if (mHitParticles)
+			{
+				mHitParticles->SetEnabled(true);
+			}
+			mHasCollided = true;
+			return;
 		}
-		mHasCollided = true;
 	}
+	else
+	{
+		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
+		{
+			if (mHitParticles)
+			{
+				mHitParticles->SetEnabled(true);
+			}
+			mHasCollided = true;
+			return;
+		}
+		if (collisionData->collidedWith->GetTag().compare("Player") == 0)
+		{
+			LOG("Collided with player")
+				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+			PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+			player->TakeDamage(mDamage);
+			if (mHitParticles)
+			{
+				mHitParticles->SetEnabled(true);
+			}
+			mHasCollided = true;
+			mGameObject->SetEnabled(false);
+		}
+	}
+
 }
 
 bool Bullet::Delay(float delay)

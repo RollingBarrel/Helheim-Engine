@@ -10,7 +10,8 @@
 #include "ScriptComponent.h"
 #include "GameManager.h"
 #include "PoolManager.h"
-#include "BulletEnemy.h"
+#include "Bullet.h"
+#include "TrailComponent.h"
 CREATE(EnemyRobotRange) {
     CLASS(owner);
     SEPARATOR("STATS");
@@ -20,6 +21,7 @@ CREATE(EnemyRobotRange) {
     MEMBER(MemberType::FLOAT, mChaseDelay);
     MEMBER(MemberType::FLOAT, mRangeDistance);
     MEMBER(MemberType::FLOAT, mRangeDamage);
+    MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mTimerAttack);
     MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
 
@@ -177,8 +179,10 @@ void EnemyRobotRange::RangeAttack()
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
-    BulletEnemy* bulletScript=reinterpret_cast<BulletEnemy*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    bulletScript->Init();
+    Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    ColorGradient gradient;
+    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
+    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
 
 
 }
