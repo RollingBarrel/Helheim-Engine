@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "Geometry/Ray.h"
+#include "TimerScript.h"
 
 class AnimationStateMachine;
 struct CollisionData;
@@ -31,10 +32,12 @@ private:
 	void Attack();
 	bool IsMoving();
 	void  Death() override;
+	void Reset() override;
 	void RangeAttack();
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 
+	TimerScript mDeathTimer;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;

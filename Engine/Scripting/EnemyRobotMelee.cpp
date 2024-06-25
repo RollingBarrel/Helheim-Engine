@@ -183,10 +183,14 @@ void EnemyRobotMelee::MeleeAttack()
 void EnemyRobotMelee::Death() 
 {
     mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    if(Delay(0.5f))
+    if(mDeathTimer.Delay(1.4f))
     {
         Enemy::Death();
     }
+}
+void EnemyRobotMelee::Reset()
+{
+    mAnimationComponent->SendTrigger("tIdle", 0.3f);
 }
 void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)
 {

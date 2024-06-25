@@ -155,6 +155,7 @@ bool Enemy::IsMoving()
 
 void Enemy::Reset()
 {
+    mDeath = false;
     mHealth = mMaxHealth;
 }
 

@@ -194,15 +194,29 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 								{
 									if (data.HasMember("VariableData"))
 									{
-										int  UID = data.GetInt("VariableData");
+										int UID = data.GetInt("VariableData");
 										if (UID != -1)
-										{
-											std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(UID);
-											if (got != uidPointerMap.end())
+										{		
+											const std::unordered_map<unsigned int, unsigned int>& uids = App->GetScene()->GetPrefabUIDMap();
+											if (!uids.empty())
 											{
-												*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
-												App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
+												std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(UID));
+												if (got != uidPointerMap.end())
+												{
+													*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(uids.at(UID));
+													App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
+												}
 											}
+											else
+											{
+												std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(UID);
+												if (got != uidPointerMap.end())
+												{
+													*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+													App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
+												}
+											}
+											
 										}
 									}
 									break;

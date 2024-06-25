@@ -187,9 +187,14 @@ void EnemyRobotRange::RangeAttack()
 void EnemyRobotRange::Death()
 {
     mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    if (Delay(0.5f))
+    if (mDeathTimer.Delay(1.4f))
     {
         Enemy::Death();
     }
 
+}
+
+void EnemyRobotRange::Reset()
+{
+    mAnimationComponent->SendTrigger("tIdle", 0.3f);
 }
