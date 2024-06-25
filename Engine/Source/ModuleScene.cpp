@@ -217,6 +217,7 @@ void ModuleScene::Load(const char* sceneName)
 
 	if(fileBuffer != nullptr)
 	{
+		mPrefabOldNewUid.clear();
 		App->GetUI()->CleanUp();
 		mSceneGO.clear();
 		delete mRoot;

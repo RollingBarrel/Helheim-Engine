@@ -631,6 +631,6 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "WinArea")
     {
-        GameManager::GetInstance()->Victory();
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
     }
 }
