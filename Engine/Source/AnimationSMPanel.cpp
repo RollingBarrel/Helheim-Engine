@@ -448,6 +448,7 @@ void AnimationSMPanel::DrawMenuBar()
             ResourceStateMachine* existingRes = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(uid, Resource::Type::StateMachine));
             existingRes->SetStateMachine(mStateMachine);
             Importer::StateMachine::Save(existingRes);
+            App->GetResource()->ReleaseResource(uid);
         }
         else
         {

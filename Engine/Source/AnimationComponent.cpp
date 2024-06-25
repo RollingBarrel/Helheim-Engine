@@ -424,6 +424,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 					mSpineController = new AnimationController(tmpAnimation, true);
 					mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
 					mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
+					App->GetResource()->ReleaseResource(upperStateMachine);
 
 
 				}

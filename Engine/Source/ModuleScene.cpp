@@ -239,6 +239,7 @@ void ModuleScene::Load(const char* sceneName)
 			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));
 			gO->LoadGameObject(gameObjectData, loadMap);
 		}
+		
 		//Load Components
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
