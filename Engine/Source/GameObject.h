@@ -39,9 +39,9 @@ public:
 	const std::string& GetName() const { return mName; }
 	const std::vector<GameObject*>& GetChildren() const { return mChildren; }
 	unsigned int GetID() const { return mUid; }
-	const float3& GetFront() const { if (mIsTransformModified) RecalculateMatrices(); return mFront; }
-	const float3& GetUp() const { if (mIsTransformModified) RecalculateMatrices(); return mUp; }
-	const float3& GetRight() const { if (mIsTransformModified) RecalculateMatrices(); return mRight; }
+	const float3& GetFront() const { RecalculateMatrices(); return mFront; }
+	const float3& GetUp() const { RecalculateMatrices(); return mUp; }
+	const float3& GetRight() const { RecalculateMatrices(); return mRight; }
 	const std::string& GetTag() const { return mTag; }
 	AABB GetAABB();
 	bool IsDynamic() const { return mIsDynamic; }
@@ -61,17 +61,13 @@ public:
 	GameObject* RemoveChild(const int id);	//Remove from mChildren does not delete
 
 	//Matrices
-	const float4x4& GetWorldTransform() const { 
-		if (mIsTransformModified) 
-			RecalculateMatrices();
-		return mWorldTransformMatrix; 
-	}
+	const float4x4& GetWorldTransform() const { RecalculateMatrices(); return mWorldTransformMatrix; }
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 
 	//Position
-	const float3& GetPosition() const { return mPosition; }
-	const float3& GetLocalPosition() const { return mLocalPosition; }
-	void SetPosition(const float3& position);
+	const float3& GetWorldPosition() const { return GetWorldTransform().TransformPos(mPosition); }
+	const float3& GetLocalPosition() const { return mPosition; }
+	void SetWorldPosition(const float3& position);
 	void SetLocalPosition(const float3& position);
 
 	//Rotation

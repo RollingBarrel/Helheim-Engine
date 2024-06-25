@@ -228,20 +228,23 @@ void GameObject::SetActive(bool active)
 #pragma region Transform
 void GameObject::RecalculateMatrices() const
 {
-	mWorldTransformMatrix = mLocalTransformMatrix;
-	GameObject* parent = mParent;
-	while (parent != nullptr)
+	if (mIsTransformModified)
 	{
-		mWorldTransformMatrix = parent->GetLocalTransform() * mWorldTransformMatrix;
-		parent = parent->mParent;
+		mWorldTransformMatrix = mLocalTransformMatrix;
+		GameObject* parent = mParent;
+		while (parent != nullptr)
+		{
+			mWorldTransformMatrix = parent->GetLocalTransform() * mWorldTransformMatrix;
+			parent = parent->mParent;
+		}
+
+		mFront = (mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized();
+		mUp = (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized();
+		mRight = (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized();
+
+		mIsTransformModified = false;
+		mUpdatedTransform = true;
 	}
-
-	mFront = (mWorldTransformMatrix * float4(float3::unitZ, 0)).xyz().Normalized();
-	mUp = (mWorldTransformMatrix * float4(float3::unitY, 0)).xyz().Normalized();
-	mRight = (mWorldTransformMatrix * float4(float3::unitX, 0)).xyz().Normalized();
-
-	mIsTransformModified = false;
-	mUpdatedTransform = true;
 }
 
 void GameObject::SetTransformsDirtyFlag() const
@@ -257,23 +260,25 @@ void GameObject::SetTransformsDirtyFlag() const
 }
 
 //Position
-void GameObject::SetPosition(const float3& position)
+void GameObject::SetWorldPosition(const float3& position)
 {
-	float3 pos = position;
-	if (mParent)
+	if (mParent && mParent->GetID() != App->GetScene()->GetRoot()->GetID())
 	{
 		assert(mParent->GetWorldTransform().IsInvertible());
-		pos = mParent->GetWorldTransform().Inverted().MulPos(position);
+		float3 pos = mParent->GetWorldTransform().Inverted().TransformPos(position);
+		SetLocalPosition(pos);
 	}
-	mPosition = pos;
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-	SetTransformsDirtyFlag();
+	else
+	{
+		SetLocalPosition(position);
+	}
 }
 
 void GameObject::SetLocalPosition(const float3& position)
 {
 	mPosition = position;
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	//mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix.SetTranslatePart(mPosition);
 	SetTransformsDirtyFlag();
 }
 
@@ -349,14 +354,14 @@ void GameObject::SetLocalScale(const float3& scale)
 
 void GameObject::Translate(const float3& translation)
 {
-	SetPosition(mPosition + translation);
+	SetWorldPosition(GetWorldPosition() + translation);
 }
 
 void GameObject::LookAt(const float3& target)
 {
 	float4x4 rotationMatrix = float4x4::identity;
 
-	float3 forward = -(target - GetPosition()).Normalized();
+	float3 forward = -(target - GetWorldPosition()).Normalized();
 	float3 right = Cross(forward, float3::unitY).Normalized();
 	float3 up = Cross(right, forward).Normalized();
 
