@@ -96,13 +96,13 @@ void Enemy::TakeDamage(float damage)
 
     LOG("Enemy Health: %f", mHealth);
 
-    //Hit Effect
-    mHit = true;
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    }
+    ////Hit Effect
+    //mHit = true;
+    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //{
+    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    //}
 }
 
 void Enemy::Death()
