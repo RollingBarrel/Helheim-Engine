@@ -246,7 +246,7 @@ void InspectorPanel::DrawTransform(GameObject* object)
 			//ImGui::TableSetupColumn("columns", 0 , -FLT_MIN);
 
 			bool modifiedTransform = false;
-			float3 newPosition = object->mPosition;
+			float3 newPosition = object->GetLocalPosition();
 			float3 newRotation = RadToDeg(object->mEulerAngles);
 			float3 newScale = object->mScale;
 

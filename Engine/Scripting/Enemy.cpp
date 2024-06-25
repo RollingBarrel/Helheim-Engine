@@ -77,7 +77,7 @@ bool Enemy::Delay(float delay)
 bool Enemy::IsPlayerInRange(float range)
 {
     float distance = 0.0f;
-    distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;
+    distance = (mPlayer) ? mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition()) : inf;
 
     return (distance <= range);
 }
@@ -136,9 +136,9 @@ void Enemy::AddFootStepAudio(GameObject* audio)
 
 void Enemy::PushBack() 
 {
-    float3 direction = mGameObject->GetPosition() - mPlayer->GetPosition();
+    float3 direction = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
     direction.Normalize();
-    mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
+    mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + direction * 2.0f);
 }
 
 bool Enemy::IsMoving()
@@ -173,11 +173,11 @@ void Enemy::DropItem()
 
     if (poolType != PoolType::LAST)
     {
-       float3 enemyPosition = mGameObject->GetPosition();
+       float3 enemyPosition = mGameObject->GetWorldPosition();
        float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
 
        GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
-       itemGameObject->SetPosition(dropPosition);
+       itemGameObject->SetWorldPosition(dropPosition);
        ItemDrop* item = reinterpret_cast<ItemDrop*>(reinterpret_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
        item->Init();
     }

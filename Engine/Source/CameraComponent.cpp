@@ -13,7 +13,7 @@
 
 CameraComponent::CameraComponent(GameObject* owner) :Component(owner, ComponentType::CAMERA)
 {
-    mFrustum.pos = owner->GetPosition();
+    mFrustum.pos = owner->GetWorldPosition();
     mFrustum.type = FrustumType::PerspectiveFrustum;
     mFrustum.nearPlaneDistance = 0.01f;
     mFrustum.farPlaneDistance = 1000.0f;
@@ -57,11 +57,11 @@ void CameraComponent::Update()
 {
     if (mOwner->HasUpdatedTransform())
     {
-        float3 position = mOwner->GetPosition();
+        float3 position = mOwner->GetWorldPosition();
         mFrustum.pos = position;
 
 
-        mFrustum.pos = mOwner->GetPosition();
+        mFrustum.pos = mOwner->GetWorldPosition();
         mFrustum.front = mOwner->GetFront();
         mFrustum.up = mOwner->GetUp();
         App->GetOpenGL()->SetOpenGlCameraUniforms();

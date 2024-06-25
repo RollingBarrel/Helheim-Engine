@@ -142,7 +142,7 @@ void SettingsPanel::SaveUserSettings() const
 	game.AddFloat("FPS Limit", mGameFpsLimit);
 
 	JsonObject camera = root.AddNewJsonObject("Camera Settings");
-	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition().ptr(), 3);
+	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldPosition().ptr(), 3);
 	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation().ptr(), 4);
 
 	JsonObject scene = root.AddNewJsonObject("Scene Settings");
@@ -183,7 +183,7 @@ void SettingsPanel::LoadUserSettings()
 		JsonObject camera = root.GetJsonObject("Camera Settings");
 		float position[3];
 		camera.GetFloats("Position", position);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(float3(position));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldPosition(float3(position));
 
 		float rotation[4];
 		camera.GetFloats("Rotation", rotation);

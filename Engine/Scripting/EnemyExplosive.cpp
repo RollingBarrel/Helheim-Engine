@@ -92,12 +92,12 @@ void EnemyExplosive::Idle()
 
 void EnemyExplosive::Chase()
 {
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
         mAnimationComponent->SendTrigger("tMovement", 0.2f);
         if (mAiAgentComponent)
         {
            
-            float3 direction = mPlayer->GetPosition() - mGameObject->GetPosition();
+            float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
             direction.y = 0;
             direction.Normalize();
             float angle = std::atan2(direction.x, direction.z);

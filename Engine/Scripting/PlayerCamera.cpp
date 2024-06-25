@@ -26,7 +26,7 @@ void PlayerCamera::Awake()
 
 void PlayerCamera::Start()
 {
-    mGameObject->SetPosition(mFollowTarget->GetPosition());
+    mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     mGameObject->SetRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
 }
@@ -35,7 +35,7 @@ void PlayerCamera::Update()
 {
     // TODO: Change to offset when camera values are defined.
 
-    mGameObject->SetPosition(mFollowTarget->GetPosition());
+    mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     mGameObject->SetRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront())*mDistanceToPlayer);
 }

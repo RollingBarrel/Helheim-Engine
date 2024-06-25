@@ -63,9 +63,9 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
-	mWorldTransformMatrix(original.mWorldTransformMatrix), mLocalTransformMatrix(original.mLocalTransformMatrix),
+	mWorldTransformMatrix(original.GetWorldTransform()), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mEulerAngles(original.mEulerAngles), mRotation(original.mRotation), mLocalRotation(original.mLocalRotation), mLocalEulerAngles(original.mLocalEulerAngles),
-	mPosition(original.mPosition), mLocalPosition(original.mLocalPosition), mScale(original.mScale), mLocalScale(original.mLocalScale), 
+	mScale(original.mScale), mLocalScale(original.mLocalScale), 
 	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight),
 	mPrefabId(original.mPrefabId), mIsPrefabOverride(original.mIsPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
@@ -184,7 +184,8 @@ void GameObject::SetParent(GameObject* newParent)
 	{
 		mLocalTransformMatrix = float4x4::identity;
 	}
-	mLocalTransformMatrix.Decompose(mPosition, mRotation, mScale);
+	float3 localPos;
+	mLocalTransformMatrix.Decompose(localPos, mRotation, mScale);
 	mLocalEulerAngles = mLocalRotation.ToEulerXYZ();
 	SetTransformsDirtyFlag();
 
@@ -276,9 +277,7 @@ void GameObject::SetWorldPosition(const float3& position)
 
 void GameObject::SetLocalPosition(const float3& position)
 {
-	mPosition = position;
-	//mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
-	mLocalTransformMatrix.SetTranslatePart(mPosition);
+	mLocalTransformMatrix.SetTranslatePart(position);
 	SetTransformsDirtyFlag();
 }
 
@@ -291,7 +290,7 @@ void GameObject::SetRotation(const float3& rotationInRadians)
 
 	mEulerAngles = rotationInRadians;
 
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
@@ -308,7 +307,7 @@ void GameObject::SetRotation(const Quat& rotation)
 	math::Quat zQuat = Quat::FromEulerXYZ(0, 0, mEulerAngles.z);
 	mRotation = yQuat * xQuat * zQuat;
 	//mEulerAngles = rotation.ToEulerXYZ();
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
@@ -320,7 +319,7 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 	mRotation = yQuat * xQuat * zQuat;
 
 	mEulerAngles = rotationInRadians;
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
@@ -328,7 +327,7 @@ void GameObject::SetLocalRotation(const Quat& rotation)
 {
 	mRotation = rotation;
 	mEulerAngles = rotation.ToEulerXYZ();
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
@@ -341,20 +340,20 @@ void GameObject::SetScale(const float3& scale)
 		scalee = (mParent->GetWorldTransform().Inverted().Mul(float4(scale, 1.0f))).xyz();
 	}
 	mScale = scalee;
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
 void GameObject::SetLocalScale(const float3& scale)
 {
 	mScale = scale;
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
 void GameObject::Translate(const float3& translation)
 {
-	SetWorldPosition(GetWorldPosition() + translation);
+	SetLocalPosition(GetLocalPosition() + translation);
 }
 
 void GameObject::LookAt(const float3& target)
@@ -380,17 +379,16 @@ void GameObject::LookAt(const float3& target)
 	mEulerAngles = mRotation.ToEulerXYZ();
 
 
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
 void GameObject::ResetTransform()
 {
-	mPosition = float3::zero;
 	mRotation = Quat::identity;
 	mEulerAngles = float3(0.0f);
 	mScale = float3::one;
-	mLocalTransformMatrix = float4x4::FromTRS(mPosition, mRotation, mScale);
+	mLocalTransformMatrix = float4x4::FromTRS(float3::zero, mRotation, mScale);
 	SetTransformsDirtyFlag();
 }
 
@@ -617,7 +615,7 @@ void GameObject::Save(JsonObject& obj) const
 	obj.AddString("Name", mName.c_str());
 	obj.AddBool("Enabled", mIsEnabled);
 	obj.AddBool("Active", mIsActive);
-	obj.AddFloats("Translation", mPosition.ptr(), 3);
+	obj.AddFloats("Translation", GetLocalPosition().ptr(), 3);
 	obj.AddFloats("Rotation", mRotation.ptr(), 4);
 	obj.AddFloats("Scale", mScale.ptr(), 3);
 	obj.AddString("Tag", mTag.c_str());

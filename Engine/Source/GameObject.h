@@ -65,8 +65,8 @@ public:
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 
 	//Position
-	const float3& GetWorldPosition() const { return GetWorldTransform().TransformPos(mPosition); }
-	const float3& GetLocalPosition() const { return mPosition; }
+	float3 GetWorldPosition() const { return GetWorldTransform().TranslatePart(); }
+	float3 GetLocalPosition() const { return GetLocalTransform().TranslatePart(); }
 	void SetWorldPosition(const float3& position);
 	void SetLocalPosition(const float3& position);
 
@@ -131,13 +131,9 @@ private:
 	float4x4 mLocalTransformMatrix = float4x4::identity;
 
 	//Direction
-	mutable float3 mFront;
-	mutable float3 mUp;
-	mutable float3 mRight;
-
-	//Position
-	float3 mPosition = float3::zero;
-	float3 mLocalPosition = float3::zero;
+	mutable float3 mFront = float3::unitZ;
+	mutable float3 mUp = float3::unitY;
+	mutable float3 mRight = float3::unitX;
 
 	//Rotation
 	Quat mRotation = Quat::identity;

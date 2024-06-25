@@ -43,7 +43,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 
 	GameObject* gameObject = new GameObject(name, parent);
 
-	gameObject->SetPosition(node.mTranslation);
+	gameObject->SetWorldPosition(node.mTranslation);
 	gameObject->SetRotation(node.mRotation);
 	gameObject->SetScale(node.mScale);
 
@@ -338,6 +338,7 @@ void ScenePanel::DrawScene()
 
 			if (ImGuizmo::IsUsing())
 			{
+				modelMatrix.Transpose();
 				mIsGuizmoUsing = true;
 				GameObject* parent = selectedGameObject->GetParent();
 				float4x4 inverseParentMatrix = float4x4::identity;
@@ -351,13 +352,13 @@ void ScenePanel::DrawScene()
 					inverseParentMatrix = parent->GetWorldTransform().Inverted();
 				}
 
-				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix;
 				localMatrix.Decompose(translation, rotation, scale);
 
 				switch (currentGuizmoOperation)
 				{
 				case ImGuizmo::TRANSLATE:
-					selectedGameObject->SetPosition(translation);
+					selectedGameObject->SetWorldPosition(modelMatrix.TranslatePart());
 					break;
 				case ImGuizmo::ROTATE:
 					selectedGameObject->SetRotation(rotation);

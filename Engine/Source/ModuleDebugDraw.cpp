@@ -672,7 +672,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         if (spotLight)
         {
             float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
-            DrawCone(spotLight->GetOwner()->GetPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
+            DrawCone(spotLight->GetOwner()->GetWorldPosition().ptr(), (spotLight->GetOwner()->GetFront() * spotLight->GetRange()).ptr(), spotLight->GetColor(), radius);
             //Frustum ShadowFrustum = spotLight->GetFrustum();
             //DrawFrustum(spotLight->GetFrustum());
         }
@@ -694,7 +694,7 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         {
             OBB obb = OBB(AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f)));
             obb.Transform(focusGameObject->GetWorldTransform());
-            dd::arrow(focusGameObject->GetPosition(), focusGameObject->GetPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
+            dd::arrow(focusGameObject->GetWorldPosition(), focusGameObject->GetWorldPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
         }
 

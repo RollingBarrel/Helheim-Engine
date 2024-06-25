@@ -17,7 +17,7 @@ void Katana::PlayHitSound()
     const char* parameterName = "Speed";
     GameManager::GetInstance()->GetAudio()->PlayOneShot(
         SFX::MEELEE,
-        GameManager::GetInstance()->GetPlayer()->GetPosition(),
+        GameManager::GetInstance()->GetPlayer()->GetWorldPosition(),
         { { parameterName, 8.0f } }
     );
 }

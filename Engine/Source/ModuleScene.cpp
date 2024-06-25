@@ -275,7 +275,7 @@ void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFil
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
 	gameObject->SetRotation(float3::zero);
-	gameObject->SetPosition(float3::zero);
+	gameObject->SetWorldPosition(float3::zero);
 	
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
