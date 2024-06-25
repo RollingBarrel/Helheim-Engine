@@ -64,7 +64,7 @@ void Pistol::Attack(float time)
     std::multiset<Hit> hits;
 
     Ray ray;
-    ray.pos = GameManager::GetInstance()->GetPlayer()->GetPosition();
+    ray.pos = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
     ray.pos.y++;
     ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
@@ -115,10 +115,7 @@ void Pistol::Reload()
 
 void Pistol::PlayHitSound()
 {
-    if (GameManager::GetInstance()->GetAudio())
-    {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
-    }
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }
 
 void Pistol::Exit()

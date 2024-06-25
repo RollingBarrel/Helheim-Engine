@@ -1069,7 +1069,7 @@ void ModuleOpenGL::Draw()
 	{
 		if (spotLight->CanCastShadow())
 		{
-			float distance = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetPosition().Distance(spotLight->GetOwner()->GetPosition());
+			float distance = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetWorldPosition().Distance(spotLight->GetOwner()->GetWorldPosition());
 			orderedLights.insert(std::pair<float, const SpotLightComponent*>(distance, spotLight));
 		}
 		const_cast<SpotLightComponent*>(spotLight)->SetShadowIndex(-1);

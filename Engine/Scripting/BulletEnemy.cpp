@@ -48,8 +48,8 @@ void BulletEnemy::Update()
 	{
 		if (mTotalMovement <= mRange)
 		{
-			mTotalMovement += mGameObject->GetPosition().Distance((mGameObject->GetPosition() + mGameObject->GetFront().Mul(mSpeed)));
-			mGameObject->SetPosition(mGameObject->GetPosition() + mGameObject->GetFront() * mSpeed);
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
+			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mGameObject->GetFront() * mSpeed);
 			//LOG("Position: %f,%f,%f ", mGameObject->GetPosition().x, mGameObject->GetPosition().y, mGameObject->GetPosition().z);
 		}
 		else

@@ -82,7 +82,7 @@ void EnemyRobotRange::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
     }
 }
 
@@ -98,23 +98,22 @@ void EnemyRobotRange::Chase()
             }
             if (Delay(mChaseDelay))
             {
-                
-                mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
-                float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
+                mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+                float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
                 direction.y = 0;
                 direction.Normalize();
                 float angle = std::atan2(direction.x, direction.z);;
 
-                if (mGameObject->GetRotation().y != angle)
+                if (mGameObject->GetWorldRotation().y != angle)
                 {
-                    mGameObject->SetRotation(float3(0, angle, 0));
+                    mGameObject->SetWorldRotation(float3(0, angle, 0));
 
                 }
 
             }
             mAnimationComponent->SendTrigger("tChase", 0.2f);
             mAiAgentComponent->MoveAgent(mSpeed);
-            mBulletOrigin->SetPosition(mGameObject->GetPosition());
+            mBulletOrigin->SetWorldPosition(mGameObject->GetWorldPosition());
 
         }
 
@@ -127,14 +126,14 @@ void EnemyRobotRange::Chase()
 
 void EnemyRobotRange::Attack()
 {
-    float3 direction = (mPlayer->GetPosition() - mGameObject->GetPosition());
+    float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
     direction.y = 0;
     direction.Normalize();
     float angle = std::atan2(direction.x, direction.z);
 
-    if (mGameObject->GetRotation().y != angle)
+    if (mGameObject->GetWorldRotation().y != angle)
     {
-        mGameObject->SetRotation(float3(0, angle, 0));
+        mGameObject->SetWorldRotation(float3(0, angle, 0));
 
     }
     if (mAttackCD >= mTimerAttack) 
@@ -153,7 +152,7 @@ void EnemyRobotRange::Attack()
     if (!playerInRange && mTimerDisengage > 1.0f)
     {
         mCurrentState = EnemyState::CHASE;
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetPosition());
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange)
@@ -174,10 +173,10 @@ bool EnemyRobotRange::IsMoving()
 void EnemyRobotRange::RangeAttack()
 {
     LOG("I NEED MORE BOOLETS")
-    float3 bulletOriginPosition = mBulletOrigin->GetPosition();
+    float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
-    bulletGO->SetPosition(bulletOriginPosition);
-    bulletGO->SetRotation(mGameObject->GetRotation());
+    bulletGO->SetWorldPosition(bulletOriginPosition);
+    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     BulletEnemy* bulletScript=reinterpret_cast<BulletEnemy*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     bulletScript->Init();
 

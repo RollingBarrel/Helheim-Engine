@@ -142,8 +142,8 @@ void SettingsPanel::SaveUserSettings() const
 	game.AddFloat("FPS Limit", mGameFpsLimit);
 
 	JsonObject camera = root.AddNewJsonObject("Camera Settings");
-	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition().ptr(), 3);
-	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation().ptr(), 4);
+	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldPosition().ptr(), 3);
+	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldRotation().ptr(), 4);
 
 	JsonObject scene = root.AddNewJsonObject("Scene Settings");
 	scene.AddString("Name", EngineApp->GetScene()->GetName().c_str());
@@ -183,11 +183,11 @@ void SettingsPanel::LoadUserSettings()
 		JsonObject camera = root.GetJsonObject("Camera Settings");
 		float position[3];
 		camera.GetFloats("Position", position);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(float3(position));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldPosition(float3(position));
 
 		float rotation[4];
 		camera.GetFloats("Rotation", rotation);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(Quat(rotation));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldRotation(Quat(rotation));
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");
