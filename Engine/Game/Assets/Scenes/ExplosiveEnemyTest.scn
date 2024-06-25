@@ -980,7 +980,7 @@
             {
                 "UID": 719322258,
                 "ParentUID": 1,
-                "Name": "Robot_Melee",
+                "Name": "MeleeRobot",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1076,13 +1076,13 @@
                         "IsEnabled": true,
                         "Center": [
                             0.10000000149011612,
-                            0.8999999761581421,
+                            1.9500000476837159,
                             0.0
                         ],
                         "Size": [
-                            1.899999976158142,
-                            1.75,
-                            1.2999999523162842
+                            1.2000000476837159,
+                            2.299999952316284,
+                            1.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -2706,7 +2706,7 @@
             {
                 "UID": 178869175,
                 "ParentUID": 1,
-                "Name": "Robot_Range",
+                "Name": "RangeRobot",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -2801,12 +2801,12 @@
                         "IsEnabled": true,
                         "Center": [
                             0.0,
-                            1.649999976158142,
+                            1.7000000476837159,
                             0.0
                         ],
                         "Size": [
                             1.2999999523162842,
-                            3.4000000953674318,
+                            2.5,
                             1.0
                         ],
                         "ColliderType": 0,
