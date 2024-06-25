@@ -81,7 +81,7 @@ void MainMenu::Update()
 {
     if (mLoadlevel == true && Delay(0.1f)) 
     {
-        App->GetScene()->Load("Level1Scene");
+        App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
     
     /*int mouseWheelDelta = GetMouseWheelDelta();

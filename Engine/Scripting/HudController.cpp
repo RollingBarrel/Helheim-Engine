@@ -187,7 +187,7 @@ void HudController::Loading()
         if (Delay(0.1f))
         {
             mLoading = false;
-            GameManager::GetInstance()->LoadLevel("MainMenu.json");
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
         }
     }
 }
@@ -372,7 +372,7 @@ void HudController::OnOptionsBtnHoverOff()
 
 void HudController::OnMainMenuBtnClick()
 {
-    GameManager::GetInstance()->LoadLevel("MainMenu");
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void HudController::OnMainMenuBtnHoverOn()
