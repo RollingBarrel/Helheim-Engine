@@ -4,7 +4,7 @@
 #include "EngineApp.h"
 #include "ModuleEngineResource.h"
 #include "ModuleFileSystem.h"
-
+#include <cassert>
 
 ResourceStateMachine* Importer::StateMachine::Import(const char* assetsPath, unsigned int uid)
 {
@@ -13,6 +13,7 @@ ResourceStateMachine* Importer::StateMachine::Import(const char* assetsPath, uns
     newSM->LoadResource(assetsPath);
     ResourceStateMachine* newResource = new ResourceStateMachine(uid, newSM);
 
+	assert(newSM->GetNumStates() > 0);
 
 	const char* libraryFile = EngineApp->GetFileSystem()->GetLibraryFile(uid);
 

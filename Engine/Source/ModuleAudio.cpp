@@ -151,7 +151,7 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	AddIntoEventList(eventDescription);
 	// Returns: -1 Continue an audio | else: play new audio 
 	FMOD::Studio::EventInstance* eventInstance = nullptr;
-	// Continue audio
+	// Restart audio
 	if (id == -1)
 	{
 		// Play new audio
@@ -270,8 +270,9 @@ int ModuleAudio::GetMemoryUsage() const
 	return currentAllocated;
 }
 
-std::map<std::string, int>& ModuleAudio::GetInstances() const {
-	std::map<std::string, int> result;
+void ModuleAudio::GetInstances(std::map<std::string, int>& instances) const
+{
+	instances.clear();
 
 	for (const auto& eventDescription : mActiveEvent)
 	{
@@ -285,10 +286,8 @@ std::map<std::string, int>& ModuleAudio::GetInstances() const {
 		CheckError(eventDescription->getInstanceCount(&instanceCount));
 
 		// Store the path and instance count in the map
-		result[std::string(path)] = instanceCount - 1;
+		instances[std::string(path)] = instanceCount - 1;
 	}
-
-	return result;
 }
 
 float ModuleAudio::GetVolume(std::string busname) const

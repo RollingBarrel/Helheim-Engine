@@ -165,8 +165,17 @@
       <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h">
       <Filter>Pools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -291,8 +300,17 @@
     <ClCompile Include="AudioManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyRobotRange.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobotMelee.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
     <ClCompile Include="PoolManager.cpp">
       <Filter>Pools</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEnemy.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

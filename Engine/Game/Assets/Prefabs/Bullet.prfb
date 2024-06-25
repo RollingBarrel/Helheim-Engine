@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1042200091,
+                "UID": 278360458,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -27,11 +27,18 @@
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
-                "Components": []
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Bullet",
+                        "ScriptVariables": []
+                    }
+                ]
             },
             {
-                "UID": 1031656199,
-                "ParentUID": 1042200091,
+                "UID": 315235686,
+                "ParentUID": 278360458,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,

@@ -11,6 +11,8 @@ enum class PoolType
 	SHIELD,
 	BLUE_ENERGY,
 	RED_ENERGY,
+	BULLET,
+	ENEMYBULLET,
 	
 	LAST
 };

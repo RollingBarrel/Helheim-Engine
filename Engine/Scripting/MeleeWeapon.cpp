@@ -1,13 +1,44 @@
 #include "MeleeWeapon.h"
 #include "TrailComponent.h"
+#include "BoxColliderComponent.h"
+#include "GameObject.h"
+#include "Enemy.h"
+#include "Application.h"
+#include "ModuleInput.h"
+#include "ScriptComponent.h"
+#include "GameManager.h"
+#include "PlayerController.h"
 
-MeleeWeapon::MeleeWeapon() : Weapon()
+
+MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) : Weapon()
 {
 	mType = WeaponType::MELEE;
+    mCollider = collider;
+
+    if (mCollider) 
+    {
+        mCollider->AddCollisionEventHandler(
+            CollisionEventType::ON_COLLISION_ENTER,
+            new std::function<void(CollisionData*)>(std::bind(&MeleeWeapon::OnCollisionEnter, this, std::placeholders::_1))
+        );
+    }
+    mTrail = trail;
 }
 
 MeleeWeapon::~MeleeWeapon()
 {
+}
+
+float MeleeWeapon::GetAttackDuration()
+{
+    switch (std::max(mComboStep, mNextComboStep))
+    {
+    case 1: mAttackDuration = mCombo1st; break;
+    case 2: mAttackDuration = mCombo1st + mCombo2nd; break;
+    case 3: mAttackDuration = mCombo1st + mCombo2nd + mComboEnd; break;
+    default: LOG("Should not happend?")break;
+    }
+    return mAttackDuration;
 }
 
 void MeleeWeapon::IncreaseComboStep()
@@ -15,145 +46,116 @@ void MeleeWeapon::IncreaseComboStep()
     mNextComboStep = mComboStep + 1;
 }
 
-
-/*float MeleeWeapon::GetAttackTime() override
+void MeleeWeapon::Enter()
 {
-    switch (mComboStep) 
+    if (mCollider)
     {
-    case 1:
-        return mComboMilestone1;
-    case 2:
-        return mComboMilestone2;
-    case 3:
-        return mComboDuration;
+        mCollider->SetEnable(true);
     }
-    return mAttackTime;
-}*/
-
-
-
-void MeleeWeapon::MeleeHit() {
-
-    /*mMeleeBaseComboTimer = 0.0f;
-    bool firstHit = false;
-    if (!mIsMeleeBaseComboActive)
+    if (mTrail) 
     {
-        // First hit
-        mAnimationComponent->SendTrigger("tMelee", 0.2f);
-        mIsMeleeBaseComboActive = true;
-        mMeleComboCurrentTime = 0.0f;
-        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseComboStep = 2;
-        firstHit = true;
-
+        mTrail->SetEnable(true);
     }
-    if (mLeftMouseButtonPressed && !mNextComboStep)
+    LOG("MELEE ENTER");
+    mColliderAtivated = false;
+    mComboStep = 1;
+    mNextComboStep = 1;
+    mHasHitted = false;
+    // animation hit 1
+}
+
+void MeleeWeapon::Attack(float time)
+{
+    // Deactivates the collider 1 frame after the collider gets activated
+    if (time > mCombo1st * mHitTime and
+        mComboStep == 1 and mColliderAtivated)
     {
-        mNextComboStep = !firstHit;
-        mLeftMouseButtonPressed = false;
-        mBreakMeleeCombo = 0.0f;
-
-
+        LOG("MELEE: Finish 1    Time: %f", time);
+        mColliderAtivated = false;
+        mHasHitted = true;
     }
-    mMeleComboCurrentTime += App->GetDt();
-    if (mMeleComboCurrentTime > mMeleeComboMilestone1 && mMeleComboCurrentTime < mMeleeComboMilestone2 && mNextComboStep && mMeleeBaseComboStep == 2)
+    else if (time > mCombo1st + mCombo2nd * mHitTime and
+        mComboStep == 2 and mColliderAtivated)
     {
-        // Second hit
-        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mMeleeBaseComboStep = 3;
-        mNextComboStep = false;
-        mLeftMouseButtonPressed = false;
-        mBreakMeleeCombo = 0.0f;
-
-
+        LOG("MELEE: Finish 2    Time: %f", time);
+        mColliderAtivated = false;
+        mHasHitted = true;
     }
-    else if (mMeleComboCurrentTime > mMeleeComboMilestone2 && mMeleComboCurrentTime < mMeleeComboDuration && mMeleeBaseComboStep == 3 && mNextComboStep)
+    else if (time > mCombo1st + mCombo2nd + mComboEnd * mHitTime and
+        mComboStep == 3 and mColliderAtivated)
     {
-        // Dashing
-        float meleeSpeed = mMeleeBaseMoveRange / mMeleeBaseMoveDuration;
-        float3 newPos = (mGameObject->GetPosition() + mGameObject->GetFront() * meleeSpeed * App->GetDt());
-        mGameObject->SetPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(5.0f)));
-        mBreakMeleeCombo = 0.0f;
-
+        LOG("MELEE: Finish 3    Time: %f", time);
+        mColliderAtivated = false;
+        mHasHitted = true;
     }
-    else if (mMeleComboCurrentTime > mMeleeComboDuration && mMeleeBaseComboStep == 3 && mNextComboStep)
+    
+    // Activates the collider damage effect
+    if (time > mCombo1st * mHitTime and 
+        mComboStep == 1 and !mColliderAtivated and !mHasHitted)
     {
-        //End combo
-        MeleeHit(mMeleeBaseRange, mMeleeBaseDamage);
-        mAnimationComponent->SendTrigger("tIdle", 0.2f);
-        mIsMeleeBaseComboActive = false;
-        mMeleComboCurrentTime = 0.0f;
-        //mCurrentState = PlayerState::IDLE;
-        mMeleeBaseComboStep = 4; //this variable is weird, refactor how it works in next updates
-        mNextComboStep = false;
-        mLeftMouseButtonPressed = false;
-        mBreakMeleeCombo = 0.0f;
-
+        LOG("MELEE: Start 1    Time: %f", time);
+        mColliderAtivated = true;
     }
-    else if (!mNextComboStep)
+    else if (time > mCombo1st + mCombo2nd * mHitTime and 
+        mComboStep == 2 and !mColliderAtivated and !mHasHitted)
     {
-        mBreakMeleeCombo += App->GetDt();
+        LOG("MELEE: Start 2    Time: %f", time);
+        mColliderAtivated = true;
+    }
+    else if (time > mCombo1st + mCombo2nd + mComboEnd * mHitTime and 
+        mComboStep == 3 and !mColliderAtivated and !mHasHitted)
+    {
+        LOG("MELEE: Start 3    Time: %f", time);
+        mColliderAtivated = true;
     }
 
-    float breakTime = 10.0f;
-    switch (mMeleeBaseComboStep)
+    // Increase the combo step after activating the collider effect
+    if (time > mCombo1st and mNextComboStep == 2 and mComboStep == 1 and mHasHitted)
     {
-    case 1:
-        breakTime = 10.0f;
-        break;
-    case 2:
-        breakTime = 1.1f;
-        break;
-    case 3:
-        breakTime = 0.9f;
-        break;
-    default:
-        break;
-    }
-
-    if (mBreakMeleeCombo > breakTime)
-    {
-        mAnimationComponent->SendTrigger("tIdle", 0.2f);
-        mIsMeleeBaseComboActive = false;
-        mMeleComboCurrentTime = 0.0f;
-        //mCurrentState = PlayerState::IDLE;
-        mMeleeBaseComboStep = 1; //this variable is weird, refactor how it works in next updates
-        mNextComboStep = false;
-        mLeftMouseButtonPressed = false;
-        mBreakMeleeCombo = 0.0f;
+        LOG("MELEE: Combo 2    Time: %f", time);
+        mComboStep = 2;
+        mHasHitted = false;
+        // animation hit 2
+        //GameManager::GetInstance()->GetPlayerController()->SetAnimation(trigger, transitionTime);
 
     }
-
-    if (mMeleComboCurrentTime > mMeleeComboDuration + 2.0f)
+    else if (time > mCombo1st + mCombo2nd and mNextComboStep == 3 and mComboStep == 2 and mHasHitted)
     {
-        mMeleComboCurrentTime = 0.0f;
+        LOG("MELEE: Combo 3    Time: %f", time);
+        mComboStep = 3;
+        mHasHitted = false;
+        // animation hit 3
+
     }
 }
-    /*
-    std::vector<GameObject*> Enemies;
 
-    scene->FindGameObjectsWithTag(scene->GetTagByName("Enemy")->GetID(), Enemies);
-    float3 playerPosition = mGameObject->GetPosition();
-
-    // Recorrer el vector de enemigos y comprobar si hay colisión con el jugador
-    for (auto enemy : Enemies)
+void MeleeWeapon::Exit()
+{
+    if (mCollider)
     {
-        MeshRendererComponent* enemyMesh = (MeshRendererComponent*)enemy->GetComponent(ComponentType::MESHRENDERER);
-        float3 enemyPosition = enemy->GetPosition();
-        float distanceToEnemy = (enemyPosition - playerPosition).Length();
-        float3 enemyToPlayer = (playerPosition - enemyPosition).Normalized();
+        mCollider->SetEnable(false);
+    }
+    if (mTrail) mTrail->SetEnable(false);
+    mColliderAtivated = false;
 
-        // Si el enemigo está frente al jugador y dentro del rango de ataque
-        float3 playerFrontNormalized = mGameObject->GetFront().Normalized();
-        float dotProduct = enemyToPlayer.Dot(playerFrontNormalized);
+}
 
-        if (distanceToEnemy < AttackRange && dotProduct < 0)
-        {
-            Enemy* enemyScript = (Enemy*)((ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (enemyScript) {
-                enemyScript->TakeDamage(AttackDamage);
-                enemyScript->PushBack();
-            }
-        }
-    }*/
+void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
+{
+    // pop particles on collision
+    if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 and mColliderAtivated)
+    {
+        DealDamage(collisionData->collidedWith);
+        LOG("Colliding with melee!");
+
+    }
+}
+
+void MeleeWeapon::DealDamage(GameObject* enemy)
+{
+    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (enemyScript) {
+        enemyScript->TakeDamage(mDamage);
+        //enemyScript->PushBack(); // TODO: Its best to push it back with CollisionData normal
+    }
 }

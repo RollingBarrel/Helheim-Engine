@@ -20,6 +20,8 @@ enum class SFX
 	// PLAYER
 	PLAYER_FOOTSTEP,
 	GUNFIRE,
+	MACHINE_GUN,
+	MEELEE,
 
 	// ENEMY
 	ENEMY_ROBOT_FOOTSTEP,
@@ -46,6 +48,7 @@ public:
 	AudioManager(GameObject* owner);
 	~AudioManager();
 
+	void Awake();
 	void Start();
 	void Update();
 
@@ -53,7 +56,7 @@ public:
 	// Use Play(SFX) only if you want to ajust SFX later (like manually pause shot sound)
 	// Other wise, call `PlayOneShot(SFX sfx)`
 	int Play(SFX sfx, int id = -1, float3 position = { 0.0f, 0.0f, 0.0f });
-	void PlayOneShot(SFX sfx, float3 position = { 0.0f, 0.0f, 0.0f });
+	void PlayOneShot(SFX sfx, float3 position = { 0.0f, 0.0f, 0.0f }, const std::unordered_map <const char*, float>& parameters = {});
 
 	void Pause(BGM bgm, int id, bool pause);
 	void Pause(SFX sfx, int id, bool pause);
@@ -93,6 +96,8 @@ private:
 		// PLAYER
 		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},
 		{SFX::GUNFIRE, "event:/Weapons/Pistol"},
+		{SFX::MACHINE_GUN, "event:/Weapons/Machine Gun"},
+		{SFX::MEELEE, "event:/Interactables/Wooden Collision"},
 
 		// ENEMY
 		{SFX::ENEMY_ROBOT_FOOTSTEP, "event:/Character/Enemy Footsteps"},

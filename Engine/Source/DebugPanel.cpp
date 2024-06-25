@@ -67,7 +67,7 @@ void DebugPanel::Draw(int windowFlags) {
         }*/
         if (ImGui::TreeNode("Audio##2"))
         {
-            ImGui::Text("FMOD Memory usage: %.6f MB", (float)App->GetAudio()->GetMemoryUsage() / (1000000));
+            ImGui::Text("FMOD Memory usage: %.6f MB", (float)App->GetAudio()->GetMemoryUsage() / (1000000.0f));
             ImGui::Separator();
             float value = App->GetAudio()->GetVolume("bus:/");
             if (ImGui::SliderFloat("Main Volume", &value, 0, 1, "%.1f"))
@@ -76,7 +76,9 @@ void DebugPanel::Draw(int windowFlags) {
             }
             ImGui::Separator();
 
-            std::map<std::string, int> events = App->GetAudio()->GetInstances();
+            std::map<std::string, int> events;
+            App->GetAudio()->GetInstances(events);
+
             for (const auto& event : events) 
             {
                 ImGui::Text("%s: %d instances", event.first.c_str(), event.second);
