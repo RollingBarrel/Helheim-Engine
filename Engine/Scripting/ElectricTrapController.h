@@ -17,6 +17,7 @@ private:
 
 	BoxColliderComponent* mCollider = nullptr;
 
+	float mArea = 1.0f;
 
 };
 
