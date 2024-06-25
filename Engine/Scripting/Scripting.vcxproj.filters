@@ -178,7 +178,7 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\Timer.h">
+    <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -317,7 +317,7 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Teleporter.cpp" />
-    <ClCompile Include="Timer.cpp">
+    <ClCompile Include="TimerScript.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>

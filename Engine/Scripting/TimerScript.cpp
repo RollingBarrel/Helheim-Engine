@@ -1,7 +1,7 @@
-#include "Timer.h"
+#include "TimerScript.h"
 #include "Application.h"
 
-bool Timer::Delay(float time)
+bool TimerScript::Delay(float time)
 {
 	mTimePassed += App->GetDt();
 

@@ -1,5 +1,5 @@
 #pragma once
-class Timer
+class TimerScript
 {
 public:
 
