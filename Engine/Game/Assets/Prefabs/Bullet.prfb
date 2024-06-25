@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 278360458,
+                "UID": 507535990,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -33,12 +33,28 @@
                         "IsEnabled": true,
                         "ScriptName": "Bullet",
                         "ScriptVariables": []
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.5,
+                            0.5,
+                            0.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             },
             {
-                "UID": 315235686,
-                "ParentUID": 278360458,
+                "UID": 579430581,
+                "ParentUID": 507535990,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,

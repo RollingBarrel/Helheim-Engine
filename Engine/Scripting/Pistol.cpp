@@ -29,6 +29,13 @@ Pistol::Pistol() : RangeWeapon()
     mDamage = 2.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.2f;
+
+    mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
+    
 }
 
 Pistol::~Pistol()
@@ -81,6 +88,13 @@ void Pistol::Attack(float time)
     }
 
     //PARTICLES
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+        mFire->SetEnabled(true);
+        mFire->SetPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
+    }
+    
     if (GameManager::GetInstance()->GetPoolManager())
     {
         GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
@@ -108,5 +122,4 @@ void Pistol::PlayHitSound()
 
 void Pistol::Exit()
 {
-
 }

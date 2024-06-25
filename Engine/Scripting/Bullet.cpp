@@ -88,7 +88,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {
-	if (collisionData->collidedWith->GetTag().compare("Enemy") == 0) 
+	if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 || collisionData->collidedWith->GetTag().compare("Wall") == 0)
 	{
 		if (mHitParticles)
 		{

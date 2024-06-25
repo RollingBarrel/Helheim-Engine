@@ -12,6 +12,9 @@
 #include "TrailComponent.h"
 #include "Physics.h"
 
+#include "Application.h"
+#include "ModuleScene.h"
+
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
@@ -25,6 +28,12 @@ Machinegun::Machinegun()
     mNumBullets = 3;
 
     mShootDuration = mAttackDuration / static_cast<float>(mNumBullets);
+
+    mFire = App->GetScene()->InstantiatePrefab("MachingunFire.prfb");
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
 }
 
 Machinegun::~Machinegun()
@@ -80,6 +89,14 @@ void Machinegun::Attack(float time)
         }
 
         //PARTICLES
+
+        if (mFire)
+        {
+            mFire->SetEnabled(false);
+            mFire->SetEnabled(true);
+            mFire->SetPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
+        }
+
         if (GameManager::GetInstance()->GetPoolManager())
         {
             GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);

@@ -1,6 +1,8 @@
 #pragma once
 #include "Weapon.h"
 
+class GameObject;
+
 class RangeWeapon : public Weapon
 {
 
@@ -15,7 +17,7 @@ public:
 	virtual void Reload() = 0;
 
 protected:
-
+	GameObject* mFire = nullptr;
 	virtual void PlayHitSound() = 0;
 };
 
