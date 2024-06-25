@@ -49,6 +49,7 @@ void Pistol::Enter()
 void Pistol::Attack(float time)
 {
     LOG("Pistol Attack");
+    
     PlayHitSound();
 
     GameObject* bullet = nullptr;

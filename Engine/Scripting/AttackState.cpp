@@ -45,11 +45,16 @@ void AttackState::Enter()
 {
     mAttackTimer = 0.0f;
     mWeapon = mPlayerController->GetWeapon();
+    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+        mPlayerController->SetSpineAnimation("tAttackRanged", 0.3f);
+    else
+        mPlayerController->SetSpineAnimation("tAttackMelee", 0.3f);
     mWeapon->Enter();
 }
 
 void AttackState::Exit()
 {
+
     mWeapon->Exit();
     mWeapon = nullptr;
 }

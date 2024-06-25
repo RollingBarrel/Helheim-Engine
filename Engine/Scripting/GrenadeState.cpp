@@ -77,7 +77,7 @@ void GrenadeState::Enter()
     mThrowGrenade = false;
 
     mPlayerController->SetGrenadeVisuals(true);
-    //mPlayerController->SetSpineAnimation("tGranade", 0.1f);
+    mPlayerController->SetSpineAnimation("tGrenade", 0.3f);
 }
 
 void GrenadeState::Exit()
