@@ -445,46 +445,59 @@ void PlayerController::SetMaxShield(float percentage)
 
 void PlayerController::SetGrenadeVisuals(bool value)
 {
-    mGrenadeAimAreaGO->SetEnabled(value);
-    mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
-
-    mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-    mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+    if (mGrenadeAimAreaGO)
+    {
+        mGrenadeAimAreaGO->SetEnabled(value);
+        mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
+    }
+    
+    if (mGrenadeExplotionPreviewAreaGO)
+    {
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+    }
 }
 
 void PlayerController::UpdateGrenadeVisuals()
 {
-    mGrenadeAimAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
-
-    float3 diff;
-    if (GameManager::GetInstance()->UsingController())
+    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
     {
-        mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition- mGameObject->GetWorldPosition()) * mGrenadeRange;
-    }
-    else
-    {
-        diff = mAimPosition - mGameObject->GetWorldPosition();
-        float distanceSquared = diff.LengthSq();
-        float radiusSquared = mGrenadeRange * mGrenadeRange;
+        mGrenadeAimAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
 
-        if (distanceSquared <= radiusSquared)
+
+        float3 diff;
+        if (GameManager::GetInstance()->UsingController())
         {
-            mGrenadePosition = mAimPosition;
+            mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition - mGameObject->GetWorldPosition()) * mGrenadeRange;
         }
-        else 
+        else
         {
-            diff.Normalize();
-            mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+            diff = mAimPosition - mGameObject->GetWorldPosition();
+            float distanceSquared = diff.LengthSq();
+            float radiusSquared = mGrenadeRange * mGrenadeRange;
+
+            if (distanceSquared <= radiusSquared)
+            {
+                mGrenadePosition = mAimPosition;
+            }
+            else
+            {
+                diff.Normalize();
+                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+            }
         }
+
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
     }
-    
-    mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
 }
 
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
-    mGrenade->SetDestination(mGrenadePosition);
+    if (mGrenade)
+    {
+        mGrenade->SetDestination(mGrenadePosition);
+    }  
 }
 
 bool PlayerController::CanReload() const

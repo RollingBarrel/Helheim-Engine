@@ -87,7 +87,10 @@ void GrenadeState::Exit()
     if (mThrowGrenade) 
     {
         mPlayerController->ThrowGrenade();
-        GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
+        if (GameManager::GetInstance()->GetHud())
+        {
+            GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
+        }
     }
 }
 
