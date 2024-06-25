@@ -100,7 +100,10 @@ void Pistol::Reload()
 
 void Pistol::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
+    if (GameManager::GetInstance()->GetAudio())
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetPosition());
+    }
 }
 
 void Pistol::Exit()

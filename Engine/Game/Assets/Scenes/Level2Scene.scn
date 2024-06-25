@@ -57,12 +57,12 @@
                             {
                                 "VariableName": "mEnemyPool",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 11401077
                             },
                             {
                                 "VariableName": "mPoolManager",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 2015268249
                             }
                         ]
                     }
@@ -10780,6 +10780,187 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
+            },
+            {
+                "UID": 11401077,
+                "ParentUID": 1,
+                "Name": "EnemyPool",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemyPool",
+                        "ScriptVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 2015268249,
+                "ParentUID": 1,
+                "Name": "PoolManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PoolManager",
+                        "ScriptVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 1223800112,
+                "ParentUID": 1,
+                "Name": "WinArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -131.23736572265626,
+                    0.11660170555114746,
+                    -44.03788757324219
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    5.718088626861572,
+                    1.0,
+                    4.871864318847656
+                ],
+                "Tag": "WinArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            11.800000190734864,
+                            2.799999952316284,
+                            10.25
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1286946359,
+                "ParentUID": 1223800112,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1324820183,
+                "ParentUID": 1286946359,
+                "Name": "Cube",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 496453540,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
             }
         ]
     }
