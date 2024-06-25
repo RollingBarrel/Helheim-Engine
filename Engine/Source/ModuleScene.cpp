@@ -274,7 +274,7 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 	return gameObject;
 }
 
-void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
+void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath)
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
 	gameObject->SetRotation(float3::zero);
@@ -294,6 +294,7 @@ void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFil
 	App->GetFileSystem()->DiscoverFiles("Assets", rootNode);
 
 	gameObject->GetParent()->RemoveChild(gameObject->GetID());		//TODO: Why delete yourself?
+	AddGameObjectToDelete(gameObject);
 }
 
 void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const
@@ -578,7 +579,6 @@ void ModuleScene::DeleteGameObjects()
 	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->RemoveChild(gameObject->GetID());
-		RemoveGameObjectFromScene(gameObject->GetName());
 		delete gameObject;
 	}
 
