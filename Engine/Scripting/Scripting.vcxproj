@@ -208,6 +208,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\SpecialState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\State.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SwitchState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Keys.h" />
@@ -256,6 +257,7 @@
     <ClCompile Include="SpecialState.cpp" />
     <ClCompile Include="State.cpp" />
     <ClCompile Include="SwitchState.cpp" />
+    <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>

@@ -177,6 +177,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -312,5 +313,6 @@
     <ClCompile Include="BulletEnemy.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Teleporter.cpp" />
   </ItemGroup>
 </Project>
