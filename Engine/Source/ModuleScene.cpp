@@ -59,7 +59,6 @@ update_status ModuleScene::PreUpdate(float dt)
 
 update_status ModuleScene::Update(float dt)
 {
-	mSceneGO;
 	mRoot->Update();
 	App->GetOpenGL()->Draw();
 
