@@ -6,9 +6,10 @@
 #include "GameManager.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
-#include <TrailComponent.h>
+#include "TrailComponent.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+
 CREATE(Bullet)
 {
 	CLASS(owner);
