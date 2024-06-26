@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 244725157,
+                "UID": 546546259,
                 "ParentUID": 1,
                 "Name": "Lights_Lab2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 281624287,
-                "ParentUID": 244725157,
+                "UID": 581008654,
+                "ParentUID": 546546259,
                 "Name": "Point_Lab2_Door1",
                 "Enabled": true,
                 "Active": true,
@@ -75,8 +75,8 @@
                 ]
             },
             {
-                "UID": 291788953,
-                "ParentUID": 244725157,
+                "UID": 601337986,
+                "ParentUID": 546546259,
                 "Name": "Point_Lab2_Door2",
                 "Enabled": true,
                 "Active": true,
@@ -120,8 +120,8 @@
                 ]
             },
             {
-                "UID": 301535893,
-                "ParentUID": 244725157,
+                "UID": 611015305,
+                "ParentUID": 546546259,
                 "Name": "Point_Lab2_1",
                 "Enabled": true,
                 "Active": true,
@@ -165,8 +165,8 @@
                 ]
             },
             {
-                "UID": 310934728,
-                "ParentUID": 244725157,
+                "UID": 620762245,
+                "ParentUID": 546546259,
                 "Name": "Point_Lab2_2",
                 "Enabled": true,
                 "Active": true,
@@ -210,8 +210,8 @@
                 ]
             },
             {
-                "UID": 320403184,
-                "ParentUID": 244725157,
+                "UID": 630509185,
+                "ParentUID": 546546259,
                 "Name": "Point_Generators_Left",
                 "Enabled": true,
                 "Active": true,
@@ -255,8 +255,8 @@
                 ]
             },
             {
-                "UID": 330080503,
-                "ParentUID": 244725157,
+                "UID": 640256125,
+                "ParentUID": 546546259,
                 "Name": "Point_Generators_Right",
                 "Enabled": true,
                 "Active": true,
@@ -300,8 +300,8 @@
                 ]
             },
             {
-                "UID": 339548959,
-                "ParentUID": 244725157,
+                "UID": 649724581,
+                "ParentUID": 546546259,
                 "Name": "Point_ElevatorWall1",
                 "Enabled": true,
                 "Active": true,
@@ -345,8 +345,8 @@
                 ]
             },
             {
-                "UID": 349226278,
-                "ParentUID": 244725157,
+                "UID": 659332279,
+                "ParentUID": 546546259,
                 "Name": "Point_ElevatorWall2",
                 "Enabled": true,
                 "Active": true,
@@ -390,8 +390,8 @@
                 ]
             },
             {
-                "UID": 362036542,
-                "ParentUID": 244725157,
+                "UID": 669566566,
+                "ParentUID": 546546259,
                 "Name": "Point_ElevatorDoor",
                 "Enabled": true,
                 "Active": true,
@@ -435,8 +435,8 @@
                 ]
             },
             {
-                "UID": 371644240,
-                "ParentUID": 244725157,
+                "UID": 689060446,
+                "ParentUID": 546546259,
                 "Name": "Point_Left_Hole",
                 "Enabled": true,
                 "Active": true,
@@ -480,8 +480,8 @@
                 ]
             },
             {
-                "UID": 381530422,
-                "ParentUID": 244725157,
+                "UID": 698459281,
+                "ParentUID": 546546259,
                 "Name": "Spot_Alarm1",
                 "Enabled": true,
                 "Active": true,
@@ -534,8 +534,8 @@
                 ]
             },
             {
-                "UID": 390859636,
-                "ParentUID": 244725157,
+                "UID": 707858116,
+                "ParentUID": 546546259,
                 "Name": "Point_Alarm1",
                 "Enabled": true,
                 "Active": true,
@@ -579,8 +579,8 @@
                 ]
             },
             {
-                "UID": 400258471,
-                "ParentUID": 244725157,
+                "UID": 717117709,
+                "ParentUID": 546546259,
                 "Name": "Spot_Alarm2",
                 "Enabled": true,
                 "Active": true,
@@ -633,8 +633,8 @@
                 ]
             },
             {
-                "UID": 410423137,
-                "ParentUID": 244725157,
+                "UID": 727003891,
+                "ParentUID": 546546259,
                 "Name": "Point_Alarm2",
                 "Enabled": true,
                 "Active": true,
@@ -678,8 +678,8 @@
                 ]
             },
             {
-                "UID": 419891593,
-                "ParentUID": 244725157,
+                "UID": 736263484,
+                "ParentUID": 546546259,
                 "Name": "Spot_Alarm3",
                 "Enabled": true,
                 "Active": true,
@@ -732,8 +732,8 @@
                 ]
             },
             {
-                "UID": 429151186,
-                "ParentUID": 244725157,
+                "UID": 745592698,
+                "ParentUID": 546546259,
                 "Name": "Point_Alarm3",
                 "Enabled": true,
                 "Active": true,
@@ -777,8 +777,8 @@
                 ]
             },
             {
-                "UID": 438550021,
-                "ParentUID": 244725157,
+                "UID": 754921912,
+                "ParentUID": 546546259,
                 "Name": "Point_Alarm_Hole",
                 "Enabled": true,
                 "Active": true,
@@ -822,8 +822,8 @@
                 ]
             },
             {
-                "UID": 448088098,
-                "ParentUID": 244725157,
+                "UID": 764320747,
+                "ParentUID": 546546259,
                 "Name": "Point_Tank",
                 "Enabled": true,
                 "Active": true,
@@ -867,9 +867,9 @@
                 ]
             },
             {
-                "UID": 457347691,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left1",
+                "UID": 773649961,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -912,9 +912,9 @@
                 ]
             },
             {
-                "UID": 466746526,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left2",
+                "UID": 783466522,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -957,9 +957,9 @@
                 ]
             },
             {
-                "UID": 476632708,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left3",
+                "UID": 792795736,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1002,9 +1002,9 @@
                 ]
             },
             {
-                "UID": 486031543,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left4",
+                "UID": 802124950,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1047,9 +1047,9 @@
                 ]
             },
             {
-                "UID": 495360757,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left5",
+                "UID": 811454164,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1092,9 +1092,9 @@
                 ]
             },
             {
-                "UID": 504759592,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left6",
+                "UID": 820852999,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left6",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1137,9 +1137,9 @@
                 ]
             },
             {
-                "UID": 514019185,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left7",
+                "UID": 830182213,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left7",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1182,9 +1182,9 @@
                 ]
             },
             {
-                "UID": 523278778,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left8",
+                "UID": 839511427,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left8",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1227,9 +1227,9 @@
                 ]
             },
             {
-                "UID": 532607992,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Left9",
+                "UID": 848840641,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Left9",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1272,9 +1272,9 @@
                 ]
             },
             {
-                "UID": 542076448,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right1",
+                "UID": 858796444,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1317,9 +1317,9 @@
                 ]
             },
             {
-                "UID": 551475283,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right2",
+                "UID": 868404142,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1362,9 +1362,9 @@
                 ]
             },
             {
-                "UID": 561222223,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right3",
+                "UID": 877872598,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1407,9 +1407,9 @@
                 ]
             },
             {
-                "UID": 570690679,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right4",
+                "UID": 887201812,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1452,9 +1452,9 @@
                 ]
             },
             {
-                "UID": 580228756,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right5",
+                "UID": 896670268,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1497,9 +1497,9 @@
                 ]
             },
             {
-                "UID": 589488349,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right6",
+                "UID": 905999482,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right6",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1542,9 +1542,9 @@
                 ]
             },
             {
-                "UID": 598956805,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right7",
+                "UID": 915328696,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right7",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1587,9 +1587,9 @@
                 ]
             },
             {
-                "UID": 608355640,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right8",
+                "UID": 924588289,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right8",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1632,9 +1632,9 @@
                 ]
             },
             {
-                "UID": 617684854,
-                "ParentUID": 244725157,
-                "Name": "Cryo_Light_Right9",
+                "UID": 933917503,
+                "ParentUID": 546546259,
+                "Name": "Point_Cryo_Light_Right9",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1677,8 +1677,8 @@
                 ]
             },
             {
-                "UID": 627014068,
-                "ParentUID": 244725157,
+                "UID": 971512843,
+                "ParentUID": 546546259,
                 "Name": "Spot_General1_Red",
                 "Enabled": true,
                 "Active": true,
@@ -1726,13 +1726,13 @@
                         ],
                         "Range": 74.5,
                         "CastShadow": true,
-                        "Bias": 0.000910000002477318
+                        "Bias": 0.000009999999747378752
                     }
                 ]
             },
             {
-                "UID": 636412903,
-                "ParentUID": 244725157,
+                "UID": 327082025,
+                "ParentUID": 546546259,
                 "Name": "Point_ElevatorWall3",
                 "Enabled": true,
                 "Active": true,
@@ -1776,8 +1776,8 @@
                 ]
             },
             {
-                "UID": 645742117,
-                "ParentUID": 244725157,
+                "UID": 1680076980,
+                "ParentUID": 546546259,
                 "Name": "Point_ElevatorWall4",
                 "Enabled": true,
                 "Active": true,
@@ -1821,8 +1821,8 @@
                 ]
             },
             {
-                "UID": 655071331,
-                "ParentUID": 244725157,
+                "UID": 1148875276,
+                "ParentUID": 546546259,
                 "Name": "Point_ElevatorDoor2",
                 "Enabled": true,
                 "Active": true,

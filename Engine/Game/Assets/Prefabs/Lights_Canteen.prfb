@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 995572455,
+                "UID": 1607173698,
                 "ParentUID": 1,
                 "Name": "Lights_Canteen",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1035674151,
-                "ParentUID": 995572455,
+                "UID": 1141305107,
+                "ParentUID": 1607173698,
                 "Name": "Spot_General1",
                 "Enabled": true,
                 "Active": true,
@@ -79,13 +79,13 @@
                         ],
                         "Range": 100.0,
                         "CastShadow": true,
-                        "Bias": 0.000910000002477318
+                        "Bias": 0.000009999999747378752
                     }
                 ]
             },
             {
-                "UID": 1046117301,
-                "ParentUID": 995572455,
+                "UID": 1924513299,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door1",
                 "Enabled": true,
                 "Active": true,
@@ -129,8 +129,8 @@
                 ]
             },
             {
-                "UID": 1055933862,
-                "ParentUID": 995572455,
+                "UID": 1393833093,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door2",
                 "Enabled": true,
                 "Active": true,
@@ -174,8 +174,8 @@
                 ]
             },
             {
-                "UID": 1065611181,
-                "ParentUID": 995572455,
+                "UID": 1290963001,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door_Name_1",
                 "Enabled": true,
                 "Active": true,
@@ -219,8 +219,8 @@
                 ]
             },
             {
-                "UID": 1075288500,
-                "ParentUID": 995572455,
+                "UID": 615823294,
+                "ParentUID": 1607173698,
                 "Name": "Point_Pilar1",
                 "Enabled": true,
                 "Active": true,
@@ -264,8 +264,8 @@
                 ]
             },
             {
-                "UID": 1085035440,
-                "ParentUID": 995572455,
+                "UID": 515016200,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door4",
                 "Enabled": true,
                 "Active": true,
@@ -309,8 +309,8 @@
                 ]
             },
             {
-                "UID": 1094434275,
-                "ParentUID": 995572455,
+                "UID": 1392707176,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door5",
                 "Enabled": true,
                 "Active": true,
@@ -354,8 +354,8 @@
                 ]
             },
             {
-                "UID": 1104320457,
-                "ParentUID": 995572455,
+                "UID": 1448501096,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door_Name_2",
                 "Enabled": true,
                 "Active": true,
@@ -399,8 +399,8 @@
                 ]
             },
             {
-                "UID": 1114763607,
-                "ParentUID": 995572455,
+                "UID": 1204585288,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles1",
                 "Enabled": true,
                 "Active": true,
@@ -444,8 +444,8 @@
                 ]
             },
             {
-                "UID": 1124371305,
-                "ParentUID": 995572455,
+                "UID": 570055023,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles2",
                 "Enabled": true,
                 "Active": true,
@@ -489,8 +489,8 @@
                 ]
             },
             {
-                "UID": 1134466350,
-                "ParentUID": 995572455,
+                "UID": 178110468,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles3",
                 "Enabled": true,
                 "Active": true,
@@ -534,8 +534,8 @@
                 ]
             },
             {
-                "UID": 1143795564,
-                "ParentUID": 995572455,
+                "UID": 1717077313,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles4",
                 "Enabled": true,
                 "Active": true,
@@ -579,8 +579,8 @@
                 ]
             },
             {
-                "UID": 1153124778,
-                "ParentUID": 995572455,
+                "UID": 1455942716,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles5",
                 "Enabled": true,
                 "Active": true,
@@ -624,8 +624,8 @@
                 ]
             },
             {
-                "UID": 1162523613,
-                "ParentUID": 995572455,
+                "UID": 577166471,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles6",
                 "Enabled": true,
                 "Active": true,
@@ -669,8 +669,8 @@
                 ]
             },
             {
-                "UID": 1172340174,
-                "ParentUID": 995572455,
+                "UID": 1847304902,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles7",
                 "Enabled": true,
                 "Active": true,
@@ -714,8 +714,8 @@
                 ]
             },
             {
-                "UID": 1181808630,
-                "ParentUID": 995572455,
+                "UID": 95563129,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Circles8",
                 "Enabled": true,
                 "Active": true,
@@ -759,8 +759,8 @@
                 ]
             },
             {
-                "UID": 1191137844,
-                "ParentUID": 995572455,
+                "UID": 454087486,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Pilar2",
                 "Enabled": true,
                 "Active": true,
@@ -804,8 +804,8 @@
                 ]
             },
             {
-                "UID": 1200675921,
-                "ParentUID": 995572455,
+                "UID": 171382068,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Pilar3",
                 "Enabled": true,
                 "Active": true,
@@ -849,8 +849,8 @@
                 ]
             },
             {
-                "UID": 1210074756,
-                "ParentUID": 995572455,
+                "UID": 542619875,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Pilar4",
                 "Enabled": true,
                 "Active": true,
@@ -894,8 +894,8 @@
                 ]
             },
             {
-                "UID": 1219612833,
-                "ParentUID": 995572455,
+                "UID": 1420920623,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Pilar5",
                 "Enabled": true,
                 "Active": true,
@@ -939,8 +939,8 @@
                 ]
             },
             {
-                "UID": 1229568636,
-                "ParentUID": 995572455,
+                "UID": 2099733122,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Pilar6",
                 "Enabled": true,
                 "Active": true,
@@ -984,8 +984,8 @@
                 ]
             },
             {
-                "UID": 1238967471,
-                "ParentUID": 995572455,
+                "UID": 882272058,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Sofa1",
                 "Enabled": true,
                 "Active": true,
@@ -1029,8 +1029,8 @@
                 ]
             },
             {
-                "UID": 1248435927,
-                "ParentUID": 995572455,
+                "UID": 982301345,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Sofa2",
                 "Enabled": true,
                 "Active": true,
@@ -1074,8 +1074,8 @@
                 ]
             },
             {
-                "UID": 1257765141,
-                "ParentUID": 995572455,
+                "UID": 1846548826,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Sofa3",
                 "Enabled": true,
                 "Active": true,
@@ -1119,8 +1119,8 @@
                 ]
             },
             {
-                "UID": 1267233597,
-                "ParentUID": 995572455,
+                "UID": 2004044619,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Sofa4",
                 "Enabled": true,
                 "Active": true,
@@ -1164,8 +1164,8 @@
                 ]
             },
             {
-                "UID": 1312556868,
-                "ParentUID": 995572455,
+                "UID": 552806786,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Sofa5",
                 "Enabled": true,
                 "Active": true,
@@ -1209,8 +1209,8 @@
                 ]
             },
             {
-                "UID": 1327525383,
-                "ParentUID": 995572455,
+                "UID": 1506047703,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Sofa6",
                 "Enabled": true,
                 "Active": true,
@@ -1254,9 +1254,9 @@
                 ]
             },
             {
-                "UID": 1337272323,
-                "ParentUID": 995572455,
-                "Name": "Packed_Energy",
+                "UID": 746904223,
+                "ParentUID": 1607173698,
+                "Name": "Point_Packed_Energy",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1299,8 +1299,8 @@
                 ]
             },
             {
-                "UID": 1346740779,
-                "ParentUID": 995572455,
+                "UID": 598901723,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Window1",
                 "Enabled": true,
                 "Active": true,
@@ -1344,8 +1344,8 @@
                 ]
             },
             {
-                "UID": 1356557340,
-                "ParentUID": 995572455,
+                "UID": 1627718053,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Window2",
                 "Enabled": true,
                 "Active": true,
@@ -1389,8 +1389,8 @@
                 ]
             },
             {
-                "UID": 1367209353,
-                "ParentUID": 995572455,
+                "UID": 1602457519,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Window3",
                 "Enabled": true,
                 "Active": true,
@@ -1434,9 +1434,9 @@
                 ]
             },
             {
-                "UID": 1376747430,
-                "ParentUID": 995572455,
-                "Name": "Beer_Time",
+                "UID": 820002355,
+                "ParentUID": 1607173698,
+                "Name": "Point_Beer_Time",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1479,9 +1479,9 @@
                 ]
             },
             {
-                "UID": 1386146265,
-                "ParentUID": 995572455,
-                "Name": "Bar1",
+                "UID": 1171533835,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bar1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1524,9 +1524,9 @@
                 ]
             },
             {
-                "UID": 1395545100,
-                "ParentUID": 995572455,
-                "Name": "Bar2",
+                "UID": 936174370,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bar2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1569,9 +1569,9 @@
                 ]
             },
             {
-                "UID": 1404804693,
-                "ParentUID": 995572455,
-                "Name": "Bar3",
+                "UID": 915086412,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bar3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1614,9 +1614,9 @@
                 ]
             },
             {
-                "UID": 1414203528,
-                "ParentUID": 995572455,
-                "Name": "Bar4",
+                "UID": 111719094,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bar4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1659,9 +1659,9 @@
                 ]
             },
             {
-                "UID": 1423880847,
-                "ParentUID": 995572455,
-                "Name": "Bar5",
+                "UID": 1839389174,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bar5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1704,9 +1704,9 @@
                 ]
             },
             {
-                "UID": 1433279682,
-                "ParentUID": 995572455,
-                "Name": "Mashine1",
+                "UID": 1039061491,
+                "ParentUID": 1607173698,
+                "Name": "Point_Mashine1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1749,9 +1749,9 @@
                 ]
             },
             {
-                "UID": 1442608896,
-                "ParentUID": 995572455,
-                "Name": "Mashine2",
+                "UID": 295051729,
+                "ParentUID": 1607173698,
+                "Name": "Point_Mashine2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1794,9 +1794,9 @@
                 ]
             },
             {
-                "UID": 1452007731,
-                "ParentUID": 995572455,
-                "Name": "Mashine3",
+                "UID": 1080573727,
+                "ParentUID": 1607173698,
+                "Name": "Point_Mashine3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1839,9 +1839,9 @@
                 ]
             },
             {
-                "UID": 1461267324,
-                "ParentUID": 995572455,
-                "Name": "Mashine4",
+                "UID": 1547191790,
+                "ParentUID": 1607173698,
+                "Name": "Point_Mashine4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1884,9 +1884,9 @@
                 ]
             },
             {
-                "UID": 1470666159,
-                "ParentUID": 995572455,
-                "Name": "Bridge",
+                "UID": 437168792,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bridge",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1929,9 +1929,9 @@
                 ]
             },
             {
-                "UID": 1479995373,
-                "ParentUID": 995572455,
-                "Name": "Bridge_Level2",
+                "UID": 922543318,
+                "ParentUID": 1607173698,
+                "Name": "Point_Bridge_Level2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -1974,8 +1974,8 @@
                 ]
             },
             {
-                "UID": 1490020797,
-                "ParentUID": 995572455,
+                "UID": 154247027,
+                "ParentUID": 1607173698,
                 "Name": "Point_Level2_Terrace",
                 "Enabled": true,
                 "Active": true,
@@ -2019,8 +2019,8 @@
                 ]
             },
             {
-                "UID": 1499489253,
-                "ParentUID": 995572455,
+                "UID": 378079087,
+                "ParentUID": 1607173698,
                 "Name": "Point_Level2",
                 "Enabled": true,
                 "Active": true,
@@ -2064,8 +2064,8 @@
                 ]
             },
             {
-                "UID": 1508888088,
-                "ParentUID": 995572455,
+                "UID": 1697441590,
+                "ParentUID": 1607173698,
                 "Name": "Point_Level3",
                 "Enabled": true,
                 "Active": true,
@@ -2109,8 +2109,8 @@
                 ]
             },
             {
-                "UID": 1518286923,
-                "ParentUID": 995572455,
+                "UID": 646661533,
+                "ParentUID": 1607173698,
                 "Name": "Point_Terrace_Circles1",
                 "Enabled": true,
                 "Active": true,
@@ -2154,8 +2154,8 @@
                 ]
             },
             {
-                "UID": 1527685758,
-                "ParentUID": 995572455,
+                "UID": 2055457225,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door3",
                 "Enabled": true,
                 "Active": true,
@@ -2199,8 +2199,8 @@
                 ]
             },
             {
-                "UID": 1537223835,
-                "ParentUID": 995572455,
+                "UID": 1510563682,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door4",
                 "Enabled": true,
                 "Active": true,
@@ -2244,8 +2244,8 @@
                 ]
             },
             {
-                "UID": 1546622670,
-                "ParentUID": 995572455,
+                "UID": 1452439405,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Pilar7",
                 "Enabled": true,
                 "Active": true,
@@ -2289,8 +2289,8 @@
                 ]
             },
             {
-                "UID": 1556091126,
-                "ParentUID": 995572455,
+                "UID": 1060448783,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door_Name_2",
                 "Enabled": true,
                 "Active": true,
@@ -2334,8 +2334,8 @@
                 ]
             },
             {
-                "UID": 1565489961,
-                "ParentUID": 995572455,
+                "UID": 1752543026,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Window4",
                 "Enabled": true,
                 "Active": true,
@@ -2379,8 +2379,8 @@
                 ]
             },
             {
-                "UID": 1574888796,
-                "ParentUID": 995572455,
+                "UID": 2023097803,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Window5",
                 "Enabled": true,
                 "Active": true,
@@ -2424,8 +2424,8 @@
                 ]
             },
             {
-                "UID": 1584287631,
-                "ParentUID": 995572455,
+                "UID": 764116397,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Window6",
                 "Enabled": true,
                 "Active": true,
@@ -2469,8 +2469,8 @@
                 ]
             },
             {
-                "UID": 1593616845,
-                "ParentUID": 995572455,
+                "UID": 1058518174,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door6",
                 "Enabled": true,
                 "Active": true,
@@ -2514,8 +2514,8 @@
                 ]
             },
             {
-                "UID": 1603015680,
-                "ParentUID": 995572455,
+                "UID": 1422180578,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door7",
                 "Enabled": true,
                 "Active": true,
@@ -2559,8 +2559,8 @@
                 ]
             },
             {
-                "UID": 1613041104,
-                "ParentUID": 995572455,
+                "UID": 11487466,
+                "ParentUID": 1607173698,
                 "Name": "Point_Canteen_Door_Name_3",
                 "Enabled": true,
                 "Active": true,
@@ -2604,9 +2604,9 @@
                 ]
             },
             {
-                "UID": 1622579181,
-                "ParentUID": 995572455,
-                "Name": "Mashine5",
+                "UID": 1743550805,
+                "ParentUID": 1607173698,
+                "Name": "Point_Mashine5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -2649,9 +2649,9 @@
                 ]
             },
             {
-                "UID": 1631908395,
-                "ParentUID": 995572455,
-                "Name": "Mashine6",
+                "UID": 2001845067,
+                "ParentUID": 1607173698,
+                "Name": "Point_Mashine6",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -2694,8 +2694,8 @@
                 ]
             },
             {
-                "UID": 1641237609,
-                "ParentUID": 995572455,
+                "UID": 994894453,
+                "ParentUID": 1607173698,
                 "Name": "Spot_Terrace",
                 "Enabled": true,
                 "Active": true,
@@ -2743,7 +2743,7 @@
                         ],
                         "Range": 50.0,
                         "CastShadow": true,
-                        "Bias": 0.000910000002477318
+                        "Bias": 0.000009999999747378752
                     }
                 ]
             }
