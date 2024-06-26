@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1851991545,
+                "UID": 428711152,
                 "ParentUID": 1,
                 "Name": "EnemyBullet",
                 "Enabled": true,
@@ -59,8 +59,8 @@
                 ]
             },
             {
-                "UID": 1929201234,
-                "ParentUID": 1851991545,
+                "UID": 465749524,
+                "ParentUID": 428711152,
                 "Name": "VFX",
                 "Enabled": true,
                 "Active": true,
@@ -253,8 +253,8 @@
                 ]
             },
             {
-                "UID": 1989562641,
-                "ParentUID": 1851991545,
+                "UID": 486357340,
+                "ParentUID": 428711152,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
@@ -270,9 +270,9 @@
                     1.0
                 ],
                 "Scale": [
-                    0.44999998807907107,
-                    0.30000001192092898,
-                    0.550000011920929
+                    0.25,
+                    0.25,
+                    0.15000000596046449
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -281,8 +281,8 @@
                 "Components": []
             },
             {
-                "UID": 2049854427,
-                "ParentUID": 1989562641,
+                "UID": 507034777,
+                "ParentUID": 486357340,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
@@ -309,8 +309,8 @@
                 "Components": []
             },
             {
-                "UID": 2110006971,
-                "ParentUID": 2049854427,
+                "UID": 527224867,
+                "ParentUID": 507034777,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
