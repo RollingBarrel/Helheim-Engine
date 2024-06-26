@@ -44,6 +44,8 @@ Machinegun::~Machinegun()
 
 void Machinegun::Enter()
 {
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(40000, 0, 100);
 }
 
 void Machinegun::Attack(float time)
@@ -111,8 +113,6 @@ void Machinegun::Attack(float time)
             bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
 
-        //CONTROLLER VIBRATION
-        App->GetInput()->SetGameControllerRumble(30000, 0, 5);
     }
 }
 
@@ -121,7 +121,7 @@ void Machinegun::Exit()
     mFirstShoot = true;
 }
 
-void Machinegun::Reload() 
+void Machinegun::Reload()
 {
     mCurrentAmmo = mMaxAmmo;
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);

@@ -46,6 +46,8 @@ Pistol::~Pistol()
 
 void Pistol::Enter()
 {
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(45000, 0, 100);
 }
 
 void Pistol::Attack(float time)
@@ -111,9 +113,6 @@ void Pistol::Attack(float time)
         bullet->SetEnabled(false);
         bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
     }
-
-    //CONTROLLER VIBRATION
-    App->GetInput()->SetGameControllerRumble(25000, 0, 10);
 }
 
 void Pistol::Reload()
