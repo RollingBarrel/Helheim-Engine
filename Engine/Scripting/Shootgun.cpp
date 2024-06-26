@@ -18,6 +18,8 @@
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 
+#include "ModuleInput.h"
+
 Shootgun::Shootgun()
 {
     mDamage = 2.0f;
@@ -50,6 +52,7 @@ void Shootgun::Attack(float time)
     //TODO: Rethink this
     reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
    
+
     //Audio
     if (GameManager::GetInstance()->GetAudio())
     {
@@ -119,6 +122,8 @@ void Shootgun::Attack(float time)
         mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
     }
 
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(45000, 0, 15);
 
     LOG("Missed bullets = %i", count);
 }

@@ -20,6 +20,8 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 
+#include "ModuleInput.h"
+
 #include <map>
 
 Pistol::Pistol() : RangeWeapon()
@@ -50,7 +52,11 @@ void Pistol::Attack(float time)
 {
     LOG("Pistol Attack");
     
-    PlayHitSound();
+    //Audio
+    if (GameManager::GetInstance()->GetAudio())
+    {
+        PlayHitSound();
+    }
 
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
@@ -105,6 +111,9 @@ void Pistol::Attack(float time)
         bullet->SetEnabled(false);
         bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
     }
+
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(25000, 0, 10);
 }
 
 void Pistol::Reload()

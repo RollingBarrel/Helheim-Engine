@@ -19,6 +19,8 @@
 #include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
 
+#include "ModuleInput.h"
+
 Machinegun::Machinegun()
 {
 	mAttackRange = 100.0f;
@@ -108,6 +110,9 @@ void Machinegun::Attack(float time)
             bullet->SetEnabled(false);
             bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
+
+        //CONTROLLER VIBRATION
+        App->GetInput()->SetGameControllerRumble(30000, 0, 5);
     }
 }
 

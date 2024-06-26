@@ -618,9 +618,15 @@ void PlayerController::TakeDamage(float damage)
     if (mShield <= 0.0f)
     {
         GameManager::GetInstance()->GameOver();
+
+        //CONTROLLER VIBRATION
+        App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(40000, 30000, 10);
 
     float healthRatio = mShield / mMaxShield;
     //GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
