@@ -12,7 +12,6 @@
 CREATE(Bullet)
 {
 	CLASS(owner);
-	MEMBER(MemberType::FLOAT, mDamage);
 	MEMBER(MemberType::BOOL, mShooterIsPlayer);
 	END_CREATE;
 }
@@ -65,7 +64,7 @@ void Bullet::Update()
 	}
 }
 
-void Bullet::Init(const float3& position, const float3& direction, float speed, float size, ColorGradient* gradient, float damage = 0.0f)
+void Bullet::Init(const float3& position, const float3& direction, float speed, float size, ColorGradient* gradient, float damage)
 {
 	mTotalMovement = 0.0f;
 	mHasCollided = false;

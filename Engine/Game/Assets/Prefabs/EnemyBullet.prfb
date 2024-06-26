@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 15295616,
+                "UID": 1823347708,
                 "ParentUID": 1,
                 "Name": "EnemyBullet",
                 "Enabled": true,
@@ -31,17 +31,12 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "BulletEnemy",
+                        "ScriptName": "Bullet",
                         "ScriptVariables": [
                             {
-                                "VariableName": "mSpeed",
-                                "MemberType": 1,
-                                "VariableData": 0.10000000149011612
-                            },
-                            {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 1.0
+                                "VariableName": "mShooterIsPlayer",
+                                "MemberType": 2,
+                                "VariableData": false
                             }
                         ]
                     },
@@ -64,8 +59,8 @@
                 ]
             },
             {
-                "UID": 68207576,
-                "ParentUID": 15295616,
+                "UID": 1046423067,
+                "ParentUID": 1823347708,
                 "Name": "node_damagedHelmet_-6514",
                 "Enabled": true,
                 "Active": true,
@@ -81,9 +76,9 @@
                     0.7071068286895752
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.015625,
+                    0.008000004105269909,
+                    0.015625005587935449
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -92,8 +87,8 @@
                 "Components": []
             },
             {
-                "UID": 97866122,
-                "ParentUID": 68207576,
+                "UID": 200921741,
+                "ParentUID": 1046423067,
                 "Name": "node_damagedHelmet_-6514",
                 "Enabled": true,
                 "Active": true,
@@ -109,9 +104,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.000244140625,
+                    0.00006400006532203406,
+                    0.00024414079962298274
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,

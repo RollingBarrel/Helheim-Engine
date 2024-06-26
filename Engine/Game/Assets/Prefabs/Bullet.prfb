@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 507535990,
+                "UID": 1323776155,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -32,7 +32,13 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "Bullet",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mShooterIsPlayer",
+                                "MemberType": 2,
+                                "VariableData": true
+                            }
+                        ]
                     },
                     {
                         "ComponentType": 17,
@@ -53,8 +59,8 @@
                 ]
             },
             {
-                "UID": 579430581,
-                "ParentUID": 507535990,
+                "UID": 946127949,
+                "ParentUID": 1323776155,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
