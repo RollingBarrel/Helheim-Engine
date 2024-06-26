@@ -5,6 +5,7 @@
 
 class BoxColliderComponent;
 class ParticleSystemComponent;
+class TrailComponent;
 struct CollisionData;
 class ColorGradient;
 
@@ -32,7 +33,8 @@ private:
 	float mTotalMovement = 0.0f;
 	BoxColliderComponent* mCollider = nullptr;
 	bool mHasCollided = false;
-	GameObject* mHitParticles = nullptr;
+	ParticleSystemComponent* mHitParticles = nullptr;
+	TrailComponent* mBulletTrail = nullptr;
 
 
 };

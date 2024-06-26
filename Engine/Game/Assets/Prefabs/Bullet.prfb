@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 507535990,
+                "UID": 987256224,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -53,9 +53,9 @@
                 ]
             },
             {
-                "UID": 579430581,
-                "ParentUID": 507535990,
-                "Name": "Trail",
+                "UID": 176774261,
+                "ParentUID": 987256224,
+                "Name": "VFX",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -117,6 +117,64 @@
                         "Gradient": {
                             "Color Gradient": []
                         }
+                    },
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1760568024,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 20,
+                        "Looping": false,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.4000000059604645,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 6.300000190734863,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 4.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 5.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    0.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
