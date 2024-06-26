@@ -159,6 +159,7 @@ void MoveState::DoAnimation()
         }
         //LOG("x:%f ", animation);
         mPlayerController->SetAnimation(animation, 0.3f);
+        mPlayerController->SetSpineAnimation(animation, 0.3f);
     }
 }
 

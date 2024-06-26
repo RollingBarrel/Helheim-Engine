@@ -348,11 +348,11 @@ void AnimationSMPanel::ManageCreate()
                     {
                         if (startIsInput)
                         {
-                            mStateMachine->AddTransition(mStateMachine->GetStateName(endNode), mStateMachine->GetStateName(startNode), std::string("DefaultTransition"));
+                            mStateMachine->AddTransition(mStateMachine->GetStateName(endNode), mStateMachine->GetStateName(startNode), std::string("t"+ mStateMachine->GetStateName(startNode)));
                         }
                         else
                         {
-                            mStateMachine->AddTransition(mStateMachine->GetStateName(startNode), mStateMachine->GetStateName(endNode), std::string("DefaultTransition"));
+                            mStateMachine->AddTransition(mStateMachine->GetStateName(startNode), mStateMachine->GetStateName(endNode), std::string("t"+ mStateMachine->GetStateName(endNode)));
                         }
 
                         //animation->Save();
