@@ -197,7 +197,6 @@ private:
     float3 mGrenadePosition;
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
-    GameObject* mGrenadeAimAreaGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
     
     // Collider

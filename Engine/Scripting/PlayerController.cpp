@@ -67,7 +67,6 @@ CREATE(PlayerController)
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
@@ -173,7 +172,6 @@ void PlayerController::Start()
         ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
         mGrenadeGO->SetEnabled(false);
-        if (mGrenadeAimAreaGO) mGrenadeAimAreaGO->SetEnabled(false);
         if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
@@ -445,26 +443,17 @@ void PlayerController::SetMaxShield(float percentage)
 
 void PlayerController::SetGrenadeVisuals(bool value)
 {
-    if (mGrenadeAimAreaGO)
-    {
-        mGrenadeAimAreaGO->SetEnabled(value);
-        mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
-    }
-    
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
     }
 }
 
 void PlayerController::UpdateGrenadeVisuals()
 {
-    if (mGrenadeAimAreaGO && mGrenadeExplotionPreviewAreaGO)
+    if (mGrenadeExplotionPreviewAreaGO)
     {
-        mGrenadeAimAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
-
-
         float3 diff;
         if (GameManager::GetInstance()->UsingController())
         {
@@ -487,7 +476,7 @@ void PlayerController::UpdateGrenadeVisuals()
             }
         }
 
-        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.1f, mGrenadePosition.z));
     }
 }
 
