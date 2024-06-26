@@ -803,7 +803,7 @@ void ModuleDebugDraw::DrawSkeleton(GameObject* model)
     {
         if (child->GetComponent(ComponentType::MESHRENDERER) == nullptr)
         {
-            DrawLine(child->GetWorldTransform().TranslatePart(), model->GetWorldTransform().TranslatePart(), dd::colors::Blue);
+            DrawLine(child->GetWorldPosition(), model->GetWorldPosition(), dd::colors::Blue);
         }
         DrawSkeleton(child);
     }
