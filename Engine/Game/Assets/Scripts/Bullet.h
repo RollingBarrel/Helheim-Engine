@@ -26,7 +26,7 @@ public:
 private: 
 	bool Delay(float delay);
 
-	float mRange = 150.0f;
+	float mRange = 1500000.0f;
 	float mSpeed = 0.1f;
 	float mDamage = 1.0f;
 	bool mShooterIsPlayer = false;
