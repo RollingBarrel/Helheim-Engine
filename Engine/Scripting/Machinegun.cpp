@@ -19,6 +19,8 @@
 #include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
 
+#include "ModuleInput.h"
+
 Machinegun::Machinegun()
 {
 	mAttackRange = 100.0f;
@@ -42,6 +44,8 @@ Machinegun::~Machinegun()
 
 void Machinegun::Enter()
 {
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(40000, 0, 100);
 }
 
 void Machinegun::Attack(float time)
@@ -105,10 +109,10 @@ void Machinegun::Attack(float time)
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(0.686f, 0.0f, 1.0f, 1.0f));
             gradient.AddColorGradientMark(0.6f, float4(0.0f, 0.0f, 1.0f, 1.0f));
-
-
+            bullet->SetEnabled(false);
             bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
+
     }
 }
 
@@ -117,7 +121,7 @@ void Machinegun::Exit()
     mFirstShoot = true;
 }
 
-void Machinegun::Reload() 
+void Machinegun::Reload()
 {
     mCurrentAmmo = mMaxAmmo;
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);

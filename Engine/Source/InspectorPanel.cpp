@@ -247,8 +247,8 @@ void InspectorPanel::DrawTransform(GameObject* object)
 
 			bool modifiedTransform = false;
 			float3 newPosition = object->GetLocalPosition();
-			float3 newRotation = RadToDeg(object->mWorldEulerAngles);
-			float3 newScale = object->mWorldScale;
+			float3 newRotation = RadToDeg(object->GetLocalEulerAngles());
+			float3 newScale = object->GetLocalScale();
 
 			const char* labels[3] = { "Position", "Rotation", "Scale" };
 			const char* axisLabels[3] = { "X", "Y", "Z" };
@@ -1259,19 +1259,14 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
 {
 	const char* renderModes[] = { "World Space", "Screen Space" };
-	static int selectedRenderMode = 1;
+	int selectedRenderMode = canvasComponent->GetScreenSpace();
 
 	ImGui::Text("Render Mode");
 	ImGui::SameLine();
-	ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes));
 
-	if (selectedRenderMode == 0) 
+	if (ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes))) 
 	{
-		canvasComponent->SetScreenSpace(false);
-	}
-	else 
-	{
-		canvasComponent->SetScreenSpace(true);
+		canvasComponent->SetScreenSpace(selectedRenderMode);
 	}
 
 	if (ImGui::BeginTable("transformTable", 4)) 

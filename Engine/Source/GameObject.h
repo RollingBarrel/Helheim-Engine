@@ -65,7 +65,7 @@ public:
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 
 	//Position
-	float3 GetWorldPosition() const { return GetWorldTransform().TranslatePart(); }
+	float3 GetWorldPosition() const { RecalculateMatrices(); return GetWorldTransform().TranslatePart(); }
 	float3 GetLocalPosition() const { return GetLocalTransform().TranslatePart(); }
 	void SetWorldPosition(const float3& position);
 	void SetLocalPosition(const float3& position);
@@ -78,6 +78,7 @@ public:
 	void SetWorldRotation(const float3& rotation);
 	void SetLocalRotation(const float3& rotation);
 	void SetWorldRotation(const Quat& rotation);
+	//Using EulerYXZ to create the quaternion
 	void SetLocalRotation(const Quat& rotation);
 
 	//Scale
@@ -160,7 +161,7 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool mIsDynamic = false;
-	mutable bool mIsTransformModified = false;
-	mutable bool mUpdatedTransform = false;
+	mutable bool mIsTransformModified = true;
+	mutable bool mUpdatedTransform = true;
 	const bool mIsRoot = false;
 };

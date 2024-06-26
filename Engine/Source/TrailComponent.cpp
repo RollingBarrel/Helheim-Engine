@@ -43,13 +43,12 @@ Component* TrailComponent::Clone(GameObject* owner) const
 
 void TrailComponent::Init()
 {
-    float3 position, scale;
-    Quat rotationQ;
-    mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
+    mPoints.clear();
+    float3 position = mOwner->GetWorldPosition();
+    Quat rotationQ = mOwner->GetWorldRotation();
     float3 rotation = RotationToVector(rotationQ);
     mPoints.push_front(TrailPoint({ position, rotation, mTrailTime }));
     mPoints.push_front(TrailPoint({ position, rotation, mTrailTime }));
-
 
     SetImage(mResourceId);
 

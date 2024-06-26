@@ -31,13 +31,6 @@ void Bullet::Start()
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Bullet::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-	
-	mHitParticles = *(mGameObject->GetChildren().begin());
-	if (mHitParticles)
-	{
-		mHitParticles->SetEnabled(false);
-	}
-
 }
 
 
@@ -75,15 +68,24 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	mSpeed = speed;
 	mDamage = damage;
 
-	
+	mGameObject->SetEnabled(true);
 
-	mHitParticles = *(mGameObject->GetChildren().begin());
-	if (mHitParticles)
+	GameObject* firstChild = *(mGameObject->GetChildren().begin());
+	if (firstChild)
 	{
-		mHitParticles->SetEnabled(true);
+		mHitParticles = reinterpret_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
+		mBulletTrail = reinterpret_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
+		if (mBulletTrail)
+		{
+			mBulletTrail->SetEnable(true);
+		}
+		if (mHitParticles)
+		{
+			mHitParticles->SetEnable(false);
+		}
 		if (gradient)
 		{
-			reinterpret_cast<TrailComponent*>(mHitParticles->GetComponent(ComponentType::TRAIL))->SetColorGradient(*gradient);
+			mBulletTrail->SetColorGradient(*gradient);
 		}
 	}
 

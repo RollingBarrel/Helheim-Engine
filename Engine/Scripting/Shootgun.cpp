@@ -18,6 +18,8 @@
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 
+#include "ModuleInput.h"
+
 Shootgun::Shootgun()
 {
     mDamage = 2.0f;
@@ -39,7 +41,8 @@ Shootgun::~Shootgun()
 
 void Shootgun::Enter()
 {
-   
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(50000, 0, 150);
 }
 
 void Shootgun::Attack(float time)
@@ -50,6 +53,7 @@ void Shootgun::Attack(float time)
     //TODO: Rethink this
     reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
    
+
     //Audio
     if (GameManager::GetInstance()->GetAudio())
     {
@@ -102,8 +106,8 @@ void Shootgun::Attack(float time)
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
             gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
-            
-            
+
+            bullet->SetEnabled(false);
             bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
 

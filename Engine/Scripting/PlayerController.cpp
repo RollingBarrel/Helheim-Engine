@@ -67,7 +67,6 @@ CREATE(PlayerController)
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
@@ -124,6 +123,7 @@ void PlayerController::Start()
     mUpperState = mAimState;
     mLowerState = mIdleState;
 
+
     // Weapons
     BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
@@ -173,7 +173,6 @@ void PlayerController::Start()
         ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
         mGrenadeGO->SetEnabled(false);
-        if (mGrenadeAimAreaGO) mGrenadeAimAreaGO->SetEnabled(false);
         if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
@@ -322,9 +321,7 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    if (mLowerState->GetType() == StateType::DASH ||
-        mUpperState->GetType() == StateType::ATTACK ||
-        mUpperState->GetType() == StateType::SPECIAL)
+    if (mLowerState->GetType() == StateType::DASH)
         return;
 
     GameManager* gameManager = GameManager::GetInstance();
@@ -445,46 +442,50 @@ void PlayerController::SetMaxShield(float percentage)
 
 void PlayerController::SetGrenadeVisuals(bool value)
 {
-    mGrenadeAimAreaGO->SetEnabled(value);
-    mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
-
-    mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-    mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+    if (mGrenadeExplotionPreviewAreaGO)
+    {
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
+    }
 }
 
 void PlayerController::UpdateGrenadeVisuals()
 {
-    mGrenadeAimAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
-
-    float3 diff;
-    if (GameManager::GetInstance()->UsingController())
+    if (mGrenadeExplotionPreviewAreaGO)
     {
-        mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition- mGameObject->GetWorldPosition()) * mGrenadeRange;
-    }
-    else
-    {
-        diff = mAimPosition - mGameObject->GetWorldPosition();
-        float distanceSquared = diff.LengthSq();
-        float radiusSquared = mGrenadeRange * mGrenadeRange;
+        float3 diff;
+        if (GameManager::GetInstance()->UsingController())
+        {
+            mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition - mGameObject->GetWorldPosition()) * mGrenadeRange;
+        }
+        else
+        {
+            diff = mAimPosition - mGameObject->GetWorldPosition();
+            float distanceSquared = diff.LengthSq();
+            float radiusSquared = mGrenadeRange * mGrenadeRange;
 
-        if (distanceSquared <= radiusSquared)
-        {
-            mGrenadePosition = mAimPosition;
+            if (distanceSquared <= radiusSquared)
+            {
+                mGrenadePosition = mAimPosition;
+            }
+            else
+            {
+                diff.Normalize();
+                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+            }
         }
-        else 
-        {
-            diff.Normalize();
-            mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
-        }
+
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.1f, mGrenadePosition.z));
     }
-    
-    mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
 }
 
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
-    mGrenade->SetDestination(mGrenadePosition);
+    if (mGrenade)
+    {
+        mGrenade->SetDestination(mGrenadePosition);
+    }  
 }
 
 bool PlayerController::CanReload() const
@@ -508,39 +509,15 @@ void PlayerController::CheckDebugOptions()
         mGodMode = !mGodMode;
     }
 
-    if (mGodMode) 
+    if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
-        if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to PISTOL");
-            mWeapon = mPistol;
-        }
-        else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to MACHINEGUN");
-            mWeapon = mMachinegun;
-        }
-        else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to SHOTGUN");
-            mWeapon = mShootgun;
-        }
-        else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to KATANA");
-            mWeapon = mKatana;
-        }
-        else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to HUMMER");
-            mWeapon = mHammer;
-        }
-        else if (input->GetKey(Keys::Keys_6) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to BAT");
-            mWeapon = mBat;
-        }
+        RechargeBattery(EnergyType::BLUE);
     }
+    else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
+    {
+        RechargeBattery(EnergyType::RED);
+    }
+    
 }
 
 void PlayerController::RechargeShield(float shield)
@@ -616,9 +593,15 @@ void PlayerController::TakeDamage(float damage)
     if (mShield <= 0.0f)
     {
         GameManager::GetInstance()->GameOver();
+
+        //CONTROLLER VIBRATION
+        App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(40000, 30000, 100);
 
     float healthRatio = mShield / mMaxShield;
     //GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    

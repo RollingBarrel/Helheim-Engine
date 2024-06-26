@@ -59,6 +59,7 @@ update_status ModuleScene::PreUpdate(float dt)
 
 update_status ModuleScene::Update(float dt)
 {
+	mSceneGO;
 	mRoot->Update();
 	App->GetOpenGL()->Draw();
 
@@ -78,11 +79,11 @@ update_status ModuleScene::PostUpdate(float dt)
 	if (mClosePrefab)
 	{
 		SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
-		delete mRoot;
+		AddGameObjectToDelete(mRoot->GetChildren()[0]);
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
-		LoadPrefab(mPrefabPath, nullptr, true);
+		//LoadPrefab(mPrefabPath, nullptr, true);
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}

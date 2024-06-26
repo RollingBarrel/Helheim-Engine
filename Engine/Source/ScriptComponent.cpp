@@ -198,7 +198,8 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 										if (UID != -1)
 										{		
 											const std::unordered_map<unsigned int, unsigned int>& uids = App->GetScene()->GetPrefabUIDMap();
-											if (!uids.empty())
+											std::unordered_map<unsigned int, unsigned int>::const_iterator has = uids.find(UID);
+											if (has != uids.end())
 											{
 												std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(UID));
 												if (got != uidPointerMap.end())
