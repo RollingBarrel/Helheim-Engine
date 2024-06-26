@@ -43,9 +43,9 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 
 	GameObject* gameObject = new GameObject(name, parent);
 
-	gameObject->SetWorldPosition(node.mTranslation);
-	gameObject->SetWorldRotation(node.mRotation);
-	gameObject->SetWorldScale(node.mScale);
+	gameObject->SetLocalPosition(node.mTranslation);
+	gameObject->SetLocalRotation(node.mRotation);
+	gameObject->SetLocalScale(node.mScale);
 
 	if (isRoot && nodeNumber == 0)
 	{

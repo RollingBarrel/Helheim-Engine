@@ -78,6 +78,7 @@ public:
 	void SetWorldRotation(const float3& rotation);
 	void SetLocalRotation(const float3& rotation);
 	void SetWorldRotation(const Quat& rotation);
+	//Using EulerYXZ to create the quaternion
 	void SetLocalRotation(const Quat& rotation);
 
 	//Scale
@@ -160,7 +161,7 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool mIsDynamic = false;
-	mutable bool mIsTransformModified = false;
-	mutable bool mUpdatedTransform = false;
+	mutable bool mIsTransformModified = true;
+	mutable bool mUpdatedTransform = true;
 	const bool mIsRoot = false;
 };
