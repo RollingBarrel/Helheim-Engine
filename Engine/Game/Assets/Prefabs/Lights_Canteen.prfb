@@ -1,0 +1,2752 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 995572455,
+                "ParentUID": 1,
+                "Name": "Lights_Canteen",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1035674151,
+                "ParentUID": 995572455,
+                "Name": "Spot_General1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    9.331294059753418,
+                    29.70892333984375,
+                    -11.235539436340332
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            9.331294059753418,
+                            29.70892333984375,
+                            -11.235539436340332,
+                            200.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -1.0,
+                            -1.1920930376163597e-7,
+                            1.0
+                        ],
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0,
+                            0.6427876353263855
+                        ],
+                        "Range": 100.0,
+                        "CastShadow": true,
+                        "Bias": 0.000910000002477318
+                    }
+                ]
+            },
+            {
+                "UID": 1046117301,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3.4073798656463625,
+                    2.482916831970215,
+                    6.064274311065674
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            3.4073798656463625,
+                            2.482916831970215,
+                            6.064274311065674
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1055933862,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    8.251946449279786,
+                    2.482916831970215,
+                    6.064274311065674
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            8.251946449279786,
+                            2.482916831970215,
+                            6.064274311065674
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1065611181,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door_Name_1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    6.034531116485596,
+                    3.21860408782959,
+                    5.572990417480469
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            6.034531116485596,
+                            3.21860408782959,
+                            5.572990417480469
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1075288500,
+                "ParentUID": 995572455,
+                "Name": "Point_Pilar1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    22.640403747558595,
+                    2.482916831970215,
+                    6.064274311065674
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            22.640403747558595,
+                            2.482916831970215,
+                            6.064274311065674
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1085035440,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.784915924072269,
+                    2.482916831970215,
+                    -7.899779319763184
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.784915924072269,
+                            2.482916831970215,
+                            -7.899779319763184
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1094434275,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.784915924072269,
+                    2.482916831970215,
+                    -12.626052856445313
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.784915924072269,
+                            2.482916831970215,
+                            -12.626052856445313
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1104320457,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door_Name_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    36.85377883911133,
+                    3.21860408782959,
+                    -10.683159828186036
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            36.85377883911133,
+                            3.21860408782959,
+                            -10.683159828186036
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1114763607,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.788185119628909,
+                    2.9497950077056886,
+                    -21.8148250579834
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.788185119628909,
+                            2.9497950077056886,
+                            -21.8148250579834
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1124371305,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.788185119628909,
+                    2.9497950077056886,
+                    -26.537240982055665
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.788185119628909,
+                            2.9497950077056886,
+                            -26.537240982055665
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1134466350,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.788185119628909,
+                    2.9497950077056886,
+                    -30.989763259887697
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.788185119628909,
+                            2.9497950077056886,
+                            -30.989763259887697
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1143795564,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.788185119628909,
+                    2.9497950077056886,
+                    -35.5261344909668
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.788185119628909,
+                            2.9497950077056886,
+                            -35.5261344909668
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1153124778,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    16.754112243652345,
+                    2.9497950077056886,
+                    -26.829769134521486
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            16.754112243652345,
+                            2.9497950077056886,
+                            -26.829769134521486
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1162523613,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.569552421569824,
+                    2.9497950077056886,
+                    -26.829769134521486
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -4.569552421569824,
+                            2.9497950077056886,
+                            -26.829769134521486
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1172340174,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles7",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -14.39264965057373,
+                    2.950000047683716,
+                    -18.72173309326172
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -14.39264965057373,
+                            2.950000047683716,
+                            -18.72173309326172
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1181808630,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Circles8",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -14.39264965057373,
+                    2.950000047683716,
+                    -1.6344600915908814
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -14.39264965057373,
+                            2.950000047683716,
+                            -1.6344600915908814
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1191137844,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Pilar2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -14.431841850280762,
+                    1.8083869218826295,
+                    2.2386136054992677
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -14.431841850280762,
+                            1.8083869218826295,
+                            2.2386136054992677
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1200675921,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Pilar3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -14.431841850280762,
+                    1.8083869218826295,
+                    -17.263517379760743
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -14.431841850280762,
+                            1.8083869218826295,
+                            -17.263517379760743
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1210074756,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Pilar4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.703521490097046,
+                    1.8083869218826295,
+                    -27.229999542236329
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            2.703521490097046,
+                            1.8083869218826295,
+                            -27.229999542236329
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1219612833,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Pilar5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    14.997633934020996,
+                    1.8083869218826295,
+                    -27.23286247253418
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            14.997633934020996,
+                            1.8083869218826295,
+                            -27.23286247253418
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1229568636,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Pilar6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.2299216389656067,
+                    1.8083869218826295,
+                    -27.23286247253418
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.2299216389656067,
+                            1.8083869218826295,
+                            -27.23286247253418
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1238967471,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Sofa1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    34.96714782714844,
+                    0.6076875925064087,
+                    -23.863224029541017
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            34.96714782714844,
+                            0.6076875925064087,
+                            -23.863224029541017
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1248435927,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Sofa2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    34.96714782714844,
+                    0.6076875925064087,
+                    -27.018842697143556
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            34.96714782714844,
+                            0.6076875925064087,
+                            -27.018842697143556
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1257765141,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Sofa3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    34.96714782714844,
+                    0.6076875925064087,
+                    -28.494686126708986
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            34.96714782714844,
+                            0.6076875925064087,
+                            -28.494686126708986
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1267233597,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Sofa4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    34.96714782714844,
+                    0.6076875925064087,
+                    -31.717477798461915
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            34.96714782714844,
+                            0.6076875925064087,
+                            -31.717477798461915
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1312556868,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Sofa5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    34.96714782714844,
+                    0.6076875925064087,
+                    -33.146942138671878
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            34.96714782714844,
+                            0.6076875925064087,
+                            -33.146942138671878
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1327525383,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Sofa6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    34.96714782714844,
+                    0.6076875925064087,
+                    -36.400814056396487
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            34.96714782714844,
+                            0.6076875925064087,
+                            -36.400814056396487
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1337272323,
+                "ParentUID": 995572455,
+                "Name": "Packed_Energy",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    29.980375289916993,
+                    3.0576987266540529,
+                    12.64521312713623
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            29.980375289916993,
+                            3.0576987266540529,
+                            12.64521312713623
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.06169600784778595,
+                            0.9423447847366333,
+                            0.9639999866485596
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1346740779,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Window1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.8022695779800415,
+                    -0.07135254144668579,
+                    6.202080249786377
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.8022695779800415,
+                            -0.07135254144668579,
+                            6.202080249786377
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.5
+                    }
+                ]
+            },
+            {
+                "UID": 1356557340,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Window2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -3.7425777912139894,
+                    -0.07135254144668579,
+                    6.202080249786377
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -3.7425777912139894,
+                            -0.07135254144668579,
+                            6.202080249786377
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.5
+                    }
+                ]
+            },
+            {
+                "UID": 1367209353,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Window3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -8.041951179504395,
+                    -0.07135254144668579,
+                    6.202080249786377
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -8.041951179504395,
+                            -0.07135254144668579,
+                            6.202080249786377
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.5
+                    }
+                ]
+            },
+            {
+                "UID": 1376747430,
+                "ParentUID": 995572455,
+                "Name": "Beer_Time",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    15.54206657409668,
+                    2.332615613937378,
+                    6.4329833984375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            15.54206657409668,
+                            2.332615613937378,
+                            6.4329833984375
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.41539889574050906,
+                            0.06169600784778595,
+                            0.9639999866485596
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1386146265,
+                "ParentUID": 995572455,
+                "Name": "Bar1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    22.312063217163087,
+                    0.72069251537323,
+                    4.556014060974121
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            22.312063217163087,
+                            0.72069251537323,
+                            4.556014060974121
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1395545100,
+                "ParentUID": 995572455,
+                "Name": "Bar2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    18.331066131591798,
+                    0.48477867245674136,
+                    2.5758981704711916
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            18.331066131591798,
+                            0.48477867245674136,
+                            2.5758981704711916
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1404804693,
+                "ParentUID": 995572455,
+                "Name": "Bar3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    15.57156753540039,
+                    0.5367690324783325,
+                    3.0656490325927736
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            15.57156753540039,
+                            0.5367690324783325,
+                            3.0656490325927736
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1414203528,
+                "ParentUID": 995572455,
+                "Name": "Bar4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    12.820634841918946,
+                    0.5823675990104675,
+                    2.2763781547546388
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            12.820634841918946,
+                            0.5823675990104675,
+                            2.2763781547546388
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1423880847,
+                "ParentUID": 995572455,
+                "Name": "Bar5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    10.18245792388916,
+                    0.5880646705627441,
+                    2.848877429962158
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            10.18245792388916,
+                            0.5880646705627441,
+                            2.848877429962158
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 3.0
+                    }
+                ]
+            },
+            {
+                "UID": 1433279682,
+                "ParentUID": 995572455,
+                "Name": "Mashine1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    37.29207992553711,
+                    1.3528026342391968,
+                    -17.49167251586914
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            37.29207992553711,
+                            1.3528026342391968,
+                            -17.49167251586914
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.012000024318695069,
+                            0.027808308601379396,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1442608896,
+                "ParentUID": 995572455,
+                "Name": "Mashine2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    22.264684677124025,
+                    1.5393874645233155,
+                    -26.466751098632814
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            22.264684677124025,
+                            1.5393874645233155,
+                            -26.466751098632814
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.012000024318695069,
+                            0.027808308601379396,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1452007731,
+                "ParentUID": 995572455,
+                "Name": "Mashine3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    20.79816436767578,
+                    1.5393874645233155,
+                    -26.466751098632814
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            20.79816436767578,
+                            1.5393874645233155,
+                            -26.466751098632814
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.012000024318695069,
+                            0.027808308601379396,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1461267324,
+                "ParentUID": 995572455,
+                "Name": "Mashine4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.1727459728717804,
+                    1.5393874645233155,
+                    -26.466751098632814
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.1727459728717804,
+                            1.5393874645233155,
+                            -26.466751098632814
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.012000024318695069,
+                            0.027808308601379396,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1470666159,
+                "ParentUID": 995572455,
+                "Name": "Bridge",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.864439010620118,
+                    3.3465867042541506,
+                    -10.510375022888184
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            11.864439010620118,
+                            3.3465867042541506,
+                            -10.510375022888184
+                        ],
+                        "Radius": 20.0,
+                        "Color": [
+                            0.10367999970912934,
+                            0.8639999628067017,
+                            0.809256911277771
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1479995373,
+                "ParentUID": 995572455,
+                "Name": "Bridge_Level2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    13.248445510864258,
+                    -6.520423889160156,
+                    -2.5695831775665285
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            13.248445510864258,
+                            -6.520423889160156,
+                            -2.5695831775665285
+                        ],
+                        "Radius": 15.0,
+                        "Color": [
+                            0.10367999970912934,
+                            0.8639999628067017,
+                            0.809256911277771
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1490020797,
+                "ParentUID": 995572455,
+                "Name": "Point_Level2_Terrace",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.864439010620118,
+                    -5.864128589630127,
+                    -27.21625328063965
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            11.864439010620118,
+                            -5.864128589630127,
+                            -27.21625328063965
+                        ],
+                        "Radius": 50.0,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 75.0
+                    }
+                ]
+            },
+            {
+                "UID": 1499489253,
+                "ParentUID": 995572455,
+                "Name": "Point_Level2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.864439010620118,
+                    -5.864128589630127,
+                    -10.555936813354493
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            11.864439010620118,
+                            -5.864128589630127,
+                            -10.555936813354493
+                        ],
+                        "Radius": 20.0,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 60.0
+                    }
+                ]
+            },
+            {
+                "UID": 1508888088,
+                "ParentUID": 995572455,
+                "Name": "Point_Level3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.531228065490723,
+                    -16.13917350769043,
+                    -10.476799011230469
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            11.531228065490723,
+                            -16.13917350769043,
+                            -10.476799011230469
+                        ],
+                        "Radius": 20.0,
+                        "Color": [
+                            1.0,
+                            0.6959999799728394,
+                            0.0
+                        ],
+                        "Intensity": 20.0
+                    }
+                ]
+            },
+            {
+                "UID": 1518286923,
+                "ParentUID": 995572455,
+                "Name": "Point_Terrace_Circles1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    15.295144081115723,
+                    2.92095685005188,
+                    10.237622261047364
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            15.295144081115723,
+                            2.92095685005188,
+                            10.237622261047364
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 15.0
+                    }
+                ]
+            },
+            {
+                "UID": 1527685758,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3.4073798656463625,
+                    2.482916831970215,
+                    10.031819343566895
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            3.4073798656463625,
+                            2.482916831970215,
+                            10.031819343566895
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1537223835,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    8.23974609375,
+                    2.482916831970215,
+                    10.031819343566895
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            8.23974609375,
+                            2.482916831970215,
+                            10.031819343566895
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1546622670,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Pilar7",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    21.387418746948243,
+                    2.482916831970215,
+                    10.031819343566895
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            21.387418746948243,
+                            2.482916831970215,
+                            10.031819343566895
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1556091126,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door_Name_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    6.034531116485596,
+                    3.21860408782959,
+                    10.864809036254883
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            6.034531116485596,
+                            3.21860408782959,
+                            10.864809036254883
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1565489961,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Window4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.8022695779800415,
+                    -0.07135254144668579,
+                    9.581028938293457
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.8022695779800415,
+                            -0.07135254144668579,
+                            9.581028938293457
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.5
+                    }
+                ]
+            },
+            {
+                "UID": 1574888796,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Window5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -3.6375749111175539,
+                    -0.07135254144668579,
+                    9.581028938293457
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -3.6375749111175539,
+                            -0.07135254144668579,
+                            9.581028938293457
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.5
+                    }
+                ]
+            },
+            {
+                "UID": 1584287631,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Window6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -8.007553100585938,
+                    -0.07135254144668579,
+                    9.581028938293457
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -8.007553100585938,
+                            -0.07135254144668579,
+                            9.581028938293457
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.5
+                    }
+                ]
+            },
+            {
+                "UID": 1593616845,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -12.431768417358399,
+                    2.482916831970215,
+                    8.908453941345215
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -12.431768417358399,
+                            2.482916831970215,
+                            8.908453941345215
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1603015680,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door7",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -12.431768417358399,
+                    2.482916831970215,
+                    14.02917194366455
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -12.431768417358399,
+                            2.482916831970215,
+                            14.02917194366455
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 1613041104,
+                "ParentUID": 995572455,
+                "Name": "Point_Canteen_Door_Name_3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -11.38387393951416,
+                    3.21860408782959,
+                    11.406139373779297
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -11.38387393951416,
+                            3.21860408782959,
+                            11.406139373779297
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1622579181,
+                "ParentUID": 995572455,
+                "Name": "Mashine5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    13.357610702514649,
+                    1.3528026342391968,
+                    10.93628215789795
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            13.357610702514649,
+                            1.3528026342391968,
+                            10.93628215789795
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.012000024318695069,
+                            0.027808308601379396,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1631908395,
+                "ParentUID": 995572455,
+                "Name": "Mashine6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.960155487060547,
+                    1.3528026342391968,
+                    10.93628215789795
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            11.960155487060547,
+                            1.3528026342391968,
+                            10.93628215789795
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.012000024318695069,
+                            0.027808308601379396,
+                            1.0
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 1641237609,
+                "ParentUID": 995572455,
+                "Name": "Spot_Terrace",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    6.431145668029785,
+                    17.254793167114259,
+                    36.07571029663086
+                ],
+                "Rotation": [
+                    0.8374638557434082,
+                    0.0,
+                    0.0,
+                    0.5464927554130554
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            6.431145668029785,
+                            17.254793167114259,
+                            36.07571029663086,
+                            200.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -0.9153358340263367,
+                            -0.4026913642883301,
+                            1.0
+                        ],
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0,
+                            0.6427876353263855
+                        ],
+                        "Range": 50.0,
+                        "CastShadow": true,
+                        "Bias": 0.000910000002477318
+                    }
+                ]
+            }
+        ]
+    }
+}

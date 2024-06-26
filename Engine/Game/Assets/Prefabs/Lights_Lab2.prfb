@@ -1,0 +1,1870 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 244725157,
+                "ParentUID": 1,
+                "Name": "Lights_Lab2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 281624287,
+                "ParentUID": 244725157,
+                "Name": "Point_Lab2_Door1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -65.1729736328125,
+                    2.482916831970215,
+                    6.96088981628418
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -65.1729736328125,
+                            2.482916831970215,
+                            6.96088981628418
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 291788953,
+                "ParentUID": 244725157,
+                "Name": "Point_Lab2_Door2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -65.1729736328125,
+                    2.482916831970215,
+                    2.298604726791382
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -65.1729736328125,
+                            2.482916831970215,
+                            2.298604726791382
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 301535893,
+                "ParentUID": 244725157,
+                "Name": "Point_Lab2_1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -65.1729736328125,
+                    2.482916831970215,
+                    -9.523658752441407
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -65.1729736328125,
+                            2.482916831970215,
+                            -9.523658752441407
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 310934728,
+                "ParentUID": 244725157,
+                "Name": "Point_Lab2_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -65.1729736328125,
+                    2.482916831970215,
+                    -20.55343246459961
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -65.1729736328125,
+                            2.482916831970215,
+                            -20.55343246459961
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 320403184,
+                "ParentUID": 244725157,
+                "Name": "Point_Generators_Left",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -64.73001861572266,
+                    4.058287143707275,
+                    11.882314682006836
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -64.73001861572266,
+                            4.058287143707275,
+                            11.882314682006836
+                        ],
+                        "Radius": 7.0,
+                        "Color": [
+                            0.032112013548612598,
+                            0.8094510436058044,
+                            0.8920000195503235
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 330080503,
+                "ParentUID": 244725157,
+                "Name": "Point_Generators_Right",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -64.73001861572266,
+                    4.059999942779541,
+                    -25.09537124633789
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -64.73001861572266,
+                            4.059999942779541,
+                            -25.09537124633789
+                        ],
+                        "Radius": 7.0,
+                        "Color": [
+                            0.032112013548612598,
+                            0.8094510436058044,
+                            0.8920000195503235
+                        ],
+                        "Intensity": 5.0
+                    }
+                ]
+            },
+            {
+                "UID": 339548959,
+                "ParentUID": 244725157,
+                "Name": "Point_ElevatorWall1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -125.88999938964844,
+                    4.614500999450684,
+                    7.443816661834717
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -125.88999938964844,
+                            4.614500999450684,
+                            7.443816661834717
+                        ],
+                        "Radius": 16.5,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 349226278,
+                "ParentUID": 244725157,
+                "Name": "Point_ElevatorWall2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -125.88999938964844,
+                    4.610000133514404,
+                    -7.941753387451172
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -125.88999938964844,
+                            4.610000133514404,
+                            -7.941753387451172
+                        ],
+                        "Radius": 16.5,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 362036542,
+                "ParentUID": 244725157,
+                "Name": "Point_ElevatorDoor",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -127.97099304199219,
+                    4.610000133514404,
+                    0.30350905656814577
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -127.97099304199219,
+                            4.610000133514404,
+                            0.30350905656814577
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 371644240,
+                "ParentUID": 244725157,
+                "Name": "Point_Left_Hole",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -113.8307113647461,
+                    4.902472019195557,
+                    -25.615489959716798
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -113.8307113647461,
+                            4.902472019195557,
+                            -25.615489959716798
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 12.0
+                    }
+                ]
+            },
+            {
+                "UID": 381530422,
+                "ParentUID": 244725157,
+                "Name": "Spot_Alarm1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -74.2851791381836,
+                    -1.5499999523162842,
+                    -28.062992095947267
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -74.2851791381836,
+                            -1.5499999523162842,
+                            -28.062992095947267,
+                            1000.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            0.0,
+                            1.0,
+                            0.9961947202682495
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.9848077297210693
+                        ],
+                        "Range": 55.0,
+                        "CastShadow": false,
+                        "Bias": 0.000009999999747378752
+                    }
+                ]
+            },
+            {
+                "UID": 390859636,
+                "ParentUID": 244725157,
+                "Name": "Point_Alarm1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -69.53446197509766,
+                    -3.3371763229370119,
+                    -13.02286148071289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -69.53446197509766,
+                            -3.3371763229370119,
+                            -13.02286148071289
+                        ],
+                        "Radius": 10.0,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 400258471,
+                "ParentUID": 244725157,
+                "Name": "Spot_Alarm2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -89.4303970336914,
+                    -1.5451356172561646,
+                    15.067960739135743
+                ],
+                "Rotation": [
+                    0.9894728660583496,
+                    0.0,
+                    0.0,
+                    0.14471863210201264
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -89.4303970336914,
+                            -1.5451356172561646,
+                            15.067960739135743,
+                            1000.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -0.2863903045654297,
+                            -0.9581130743026733,
+                            0.9396926164627075
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.9205048680305481
+                        ],
+                        "Range": 65.0,
+                        "CastShadow": false,
+                        "Bias": 0.000009999999747378752
+                    }
+                ]
+            },
+            {
+                "UID": 410423137,
+                "ParentUID": 244725157,
+                "Name": "Point_Alarm2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -86.20563507080078,
+                    -3.3371763229370119,
+                    0.05330789089202881
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -86.20563507080078,
+                            -3.3371763229370119,
+                            0.05330789089202881
+                        ],
+                        "Radius": 10.0,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 419891593,
+                "ParentUID": 244725157,
+                "Name": "Spot_Alarm3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -105.68695831298828,
+                    -1.5499999523162842,
+                    -28.062992095947267
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -105.68695831298828,
+                            -1.5499999523162842,
+                            -28.062992095947267,
+                            1000.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            0.0,
+                            1.0,
+                            0.9961947202682495
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.9848077297210693
+                        ],
+                        "Range": 55.0,
+                        "CastShadow": false,
+                        "Bias": 0.000009999999747378752
+                    }
+                ]
+            },
+            {
+                "UID": 429151186,
+                "ParentUID": 244725157,
+                "Name": "Point_Alarm3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -102.93758392333985,
+                    -3.3371763229370119,
+                    -13.02286148071289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -102.93758392333985,
+                            -3.3371763229370119,
+                            -13.02286148071289
+                        ],
+                        "Radius": 10.0,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 438550021,
+                "ParentUID": 244725157,
+                "Name": "Point_Alarm_Hole",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -125.3348617553711,
+                    -3.442291736602783,
+                    -8.803374290466309
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -125.3348617553711,
+                            -3.442291736602783,
+                            -8.803374290466309
+                        ],
+                        "Radius": 50.0,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Intensity": 50.0
+                    }
+                ]
+            },
+            {
+                "UID": 448088098,
+                "ParentUID": 244725157,
+                "Name": "Point_Tank",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -119.72167205810547,
+                    -5.331449508666992,
+                    -23.494155883789064
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -119.72167205810547,
+                            -5.331449508666992,
+                            -23.494155883789064
+                        ],
+                        "Radius": 10.0,
+                        "Color": [
+                            0.0,
+                            0.7839999198913574,
+                            1.0
+                        ],
+                        "Intensity": 100.0
+                    }
+                ]
+            },
+            {
+                "UID": 457347691,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -71.99449920654297,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -71.99449920654297,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 1.5
+                    }
+                ]
+            },
+            {
+                "UID": 466746526,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -76.53536987304688,
+                    2.559999942779541,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -76.53536987304688,
+                            2.559999942779541,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 1.5
+                    }
+                ]
+            },
+            {
+                "UID": 476632708,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -81.08802032470703,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -81.08802032470703,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 486031543,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -85.53778839111328,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -85.53778839111328,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 495360757,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -90.05892181396485,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -90.05892181396485,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 504759592,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -94.55767822265625,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -94.55767822265625,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 514019185,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left7",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.07212829589844,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -99.07212829589844,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 523278778,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left8",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -103.5953369140625,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -103.5953369140625,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 1.5
+                    }
+                ]
+            },
+            {
+                "UID": 532607992,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Left9",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -107.93026733398438,
+                    2.56247615814209,
+                    12.199105262756348
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -107.93026733398438,
+                            2.56247615814209,
+                            12.199105262756348
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 1.5
+                    }
+                ]
+            },
+            {
+                "UID": 542076448,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -72.38382720947266,
+                    2.56247615814209,
+                    -25.450000762939454
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -72.38382720947266,
+                            2.56247615814209,
+                            -25.450000762939454
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 551475283,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -76.91798400878906,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -76.91798400878906,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 561222223,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -81.52745819091797,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -81.52745819091797,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 570690679,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -85.9560317993164,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -85.9560317993164,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 1.5
+                    }
+                ]
+            },
+            {
+                "UID": 580228756,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right5",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -90.50020599365235,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -90.50020599365235,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 1.5
+                    }
+                ]
+            },
+            {
+                "UID": 589488349,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -94.94656372070313,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -94.94656372070313,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 598956805,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right7",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -99.58890533447266,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -99.58890533447266,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 608355640,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right8",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -104.12669372558594,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -104.12669372558594,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 617684854,
+                "ParentUID": 244725157,
+                "Name": "Cryo_Light_Right9",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -108.50019073486328,
+                    2.56247615814209,
+                    -25.45499038696289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -108.50019073486328,
+                            2.56247615814209,
+                            -25.45499038696289
+                        ],
+                        "Radius": 5.0,
+                        "Color": [
+                            0.05107199773192406,
+                            0.44760483503341677,
+                            0.6080000400543213
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            },
+            {
+                "UID": 627014068,
+                "ParentUID": 244725157,
+                "Name": "Spot_General1_Red",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -92.59398651123047,
+                    23.63829803466797,
+                    -7.273244380950928
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -92.59398651123047,
+                            23.63829803466797,
+                            -7.273244380950928,
+                            87.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -1.0,
+                            -1.1920930376163597e-7,
+                            1.0
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.0,
+                            0.6427876353263855
+                        ],
+                        "Range": 74.5,
+                        "CastShadow": true,
+                        "Bias": 0.000910000002477318
+                    }
+                ]
+            },
+            {
+                "UID": 636412903,
+                "ParentUID": 244725157,
+                "Name": "Point_ElevatorWall3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -140.6893768310547,
+                    4.610000133514404,
+                    -7.941753387451172
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -140.6893768310547,
+                            4.610000133514404,
+                            -7.941753387451172
+                        ],
+                        "Radius": 16.5,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 645742117,
+                "ParentUID": 244725157,
+                "Name": "Point_ElevatorWall4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -140.6893768310547,
+                    4.610000133514404,
+                    7.476390361785889
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -140.6893768310547,
+                            4.610000133514404,
+                            7.476390361785889
+                        ],
+                        "Radius": 16.5,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 25.0
+                    }
+                ]
+            },
+            {
+                "UID": 655071331,
+                "ParentUID": 244725157,
+                "Name": "Point_ElevatorDoor2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -136.61007690429688,
+                    4.610000133514404,
+                    0.30350905656814577
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -136.61007690429688,
+                            4.610000133514404,
+                            0.30350905656814577
+                        ],
+                        "Radius": 8.0,
+                        "Color": [
+                            0.6705882549285889,
+                            0.7176470756530762,
+                            1.0
+                        ],
+                        "Intensity": 10.0
+                    }
+                ]
+            }
+        ]
+    }
+}
