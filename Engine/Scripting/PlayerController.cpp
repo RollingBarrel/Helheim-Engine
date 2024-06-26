@@ -191,7 +191,11 @@ void PlayerController::Start()
         mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
     }
 
-
+    // Add Audio Listener
+    if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
+    {
+        mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
+    }
 }
 
 void PlayerController::Update()

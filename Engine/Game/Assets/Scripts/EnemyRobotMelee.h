@@ -37,6 +37,9 @@ private:
 	void Reset() override;
 	void OnCollisionEnter(CollisionData* collisionData);
 
+	void PlayStepAudio();
+	void PlayMeleeAudio();
+
 	EnemyState mCurrentState = EnemyState::IDLE;
 
 	TimerScript mDeathTimer;
@@ -52,5 +55,9 @@ private:
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
+
+	// MoveSimulation
+	float mStepTimer = 0.0f;
+	float mStepCooldown = 0.5f;
 };
 
