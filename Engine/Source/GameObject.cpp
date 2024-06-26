@@ -95,7 +95,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 GameObject::~GameObject()
 {
 	App->GetScene()->RemoveGameObjectFromScene(this);
-
+	App->GetScene()->DeleteFromTagMap(mTag, this);
 	App->GetScriptManager()->RemoveGameObject(this);
 
 	for (Component* component : mComponents)
