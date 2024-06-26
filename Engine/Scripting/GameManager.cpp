@@ -162,7 +162,7 @@ void GameManager::HandleAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
     {
         HandleLevel1Audio();
     }
@@ -181,7 +181,7 @@ void GameManager::EndAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
     {
         mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
     }

@@ -13,6 +13,7 @@
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "AnimationStateMachine.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
@@ -182,7 +183,6 @@ void PlayerController::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
     }
-
     //Hit Effect
     mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
     mMaterialIds.reserve(mMeshComponents.size());
@@ -190,8 +190,14 @@ void PlayerController::Start()
     {
         mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
     }
+    // Add Audio Listener
+    if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
+    {
+        mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
+    }
 
-
+    mUpperState->Enter();
+    mLowerState->Enter();
 }
 
 void PlayerController::Update()
