@@ -123,6 +123,7 @@ void PlayerController::Start()
     mUpperState = mAimState;
     mLowerState = mIdleState;
 
+
     // Weapons
     BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
@@ -320,9 +321,7 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    if (mLowerState->GetType() == StateType::DASH ||
-        mUpperState->GetType() == StateType::ATTACK ||
-        mUpperState->GetType() == StateType::SPECIAL)
+    if (mLowerState->GetType() == StateType::DASH)
         return;
 
     GameManager* gameManager = GameManager::GetInstance();
@@ -510,39 +509,15 @@ void PlayerController::CheckDebugOptions()
         mGodMode = !mGodMode;
     }
 
-    if (mGodMode) 
+    if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
-        if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to PISTOL");
-            mWeapon = mPistol;
-        }
-        else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to MACHINEGUN");
-            mWeapon = mMachinegun;
-        }
-        else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to SHOTGUN");
-            mWeapon = mShootgun;
-        }
-        else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to KATANA");
-            mWeapon = mKatana;
-        }
-        else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to HUMMER");
-            mWeapon = mHammer;
-        }
-        else if (input->GetKey(Keys::Keys_6) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to BAT");
-            mWeapon = mBat;
-        }
+        RechargeBattery(EnergyType::BLUE);
     }
+    else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
+    {
+        RechargeBattery(EnergyType::RED);
+    }
+    
 }
 
 void PlayerController::RechargeShield(float shield)
@@ -626,7 +601,7 @@ void PlayerController::TakeDamage(float damage)
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
 
     //CONTROLLER VIBRATION
-    App->GetInput()->SetGameControllerRumble(40000, 30000, 10);
+    App->GetInput()->SetGameControllerRumble(40000, 30000, 100);
 
     float healthRatio = mShield / mMaxShield;
     //GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    

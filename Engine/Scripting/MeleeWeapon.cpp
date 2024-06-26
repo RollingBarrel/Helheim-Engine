@@ -76,7 +76,7 @@ void MeleeWeapon::Enter()
     // animation hit 1
 
     //CONTROLLER VIBRATION
-    App->GetInput()->SetGameControllerRumble(0, 45000, mCombo1st);
+    App->GetInput()->SetGameControllerRumble(0, 45000, 100);
 }
 
 void MeleeWeapon::Attack(float time)
@@ -132,7 +132,7 @@ void MeleeWeapon::Attack(float time)
         mHasHitted = false;
 
         //CONTROLLER VIBRATION
-        App->GetInput()->SetGameControllerRumble(0, 45000, mCombo2nd);
+        App->GetInput()->SetGameControllerRumble(0, 45000, 100);
 
         // animation hit 2
         //GameManager::GetInstance()->GetPlayerController()->SetAnimation(trigger, transitionTime);
@@ -147,7 +147,7 @@ void MeleeWeapon::Attack(float time)
         // animation hit 3
 
         //CONTROLLER VIBRATION
-        App->GetInput()->SetGameControllerRumble(0, 45000, mComboEnd);
+        App->GetInput()->SetGameControllerRumble(0, 45000, 100);
     }
 
     if (mMovingForward && mComboStep == 3)

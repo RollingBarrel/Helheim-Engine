@@ -41,7 +41,8 @@ Shootgun::~Shootgun()
 
 void Shootgun::Enter()
 {
-   
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(50000, 0, 150);
 }
 
 void Shootgun::Attack(float time)
@@ -122,8 +123,6 @@ void Shootgun::Attack(float time)
         mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
     }
 
-    //CONTROLLER VIBRATION
-    App->GetInput()->SetGameControllerRumble(45000, 0, 15);
 
     LOG("Missed bullets = %i", count);
 }
