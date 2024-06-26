@@ -215,6 +215,6 @@ void MoveState::PlayAudio()
     if (mStepTimer >= mStepCooldown) 
     {
         mStepTimer = 0;
-        //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mPlayerController->GetPlayerPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mPlayerController->GetPlayerPosition());
     }
 }
