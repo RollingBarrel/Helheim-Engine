@@ -221,7 +221,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 
 			float3x3 rotationX = float3x3::RotateAxisAngle(mEditorCameraGameObject->GetRight(), DegToRad(mY));
 			float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(-mX));
-			float3x3 rotation = rotationX.Mul(rotationY);
+			float3x3 rotation = rotationY.Mul(rotationX);
 
 			Quat quatOriginal = mEditorCameraGameObject->GetWorldRotation();
 			Quat newQuat = Quat(rotation);
