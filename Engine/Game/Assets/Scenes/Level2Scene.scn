@@ -139,7 +139,7 @@
                         "ComponentType": 6,
                         "IsEnabled": true,
                         "AspectRatio": 1.8978978395462037,
-                        "FieldOfView": 75.19759368896485,
+                        "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
@@ -162,12 +162,12 @@
                             {
                                 "VariableName": "mPitchAngle",
                                 "MemberType": 1,
-                                "VariableData": -53.0
+                                "VariableData": -45.0
                             },
                             {
                                 "VariableName": "mDistanceToPlayer",
                                 "MemberType": 1,
-                                "VariableData": 18.0
+                                "VariableData": 11.0
                             }
                         ]
                     }
@@ -7158,8 +7158,8 @@
                             1433628379
                         ],
                         "NumAnimationUIDs": 1,
-                        "LowerSMUID": 0,
-                        "UpperSMUID": 0
+                        "LowerSMUID": 40082257,
+                        "UpperSMUID": 675360247
                     },
                     {
                         "ComponentType": 3,
@@ -7288,10 +7288,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    0.5,
-                    -0.5,
-                    0.5,
-                    0.5
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
                 ],
                 "Scale": [
                     1.0,

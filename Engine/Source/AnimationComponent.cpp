@@ -240,9 +240,9 @@ std::string AnimationComponent::GetCurrentSpineStateName()
 	assert(mHasSpine);
 	std::string currentStateName;
 
-	if (mStateMachine != nullptr && mCurrentSpineState < mStateMachine->GetNumStates())
+	if (mSpineStateMachine != nullptr && mCurrentSpineState < mSpineStateMachine->GetNumStates())
 	{
-		currentStateName = mStateMachine->GetStateName(mCurrentSpineState);
+		currentStateName = mSpineStateMachine->GetStateName(mCurrentSpineState);
 	}
 
 	return currentStateName;
@@ -266,7 +266,7 @@ void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionT
 
 void AnimationComponent::ChangeSpineState(std::string stateName, float transitionTime)
 {
-	assert(!mHasSpine);
+	assert(mHasSpine);
 
 	int stateIndex = mSpineStateMachine->GetStateIndex(stateName);
 
