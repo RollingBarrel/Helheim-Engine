@@ -26,6 +26,12 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 
 	SetAnimationsUids(other.mAnimationsUIDs);
 
+	mController = other.mController;
+	mSpineController = other.mSpineController;
+
+	mStateMachine = other.mStateMachine;
+	mSpineStateMachine = other.mSpineStateMachine;
+
 }
 
 AnimationComponent::~AnimationComponent()
