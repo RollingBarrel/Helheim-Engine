@@ -319,7 +319,7 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 {
 	mLocalRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 
-	mWorldEulerAngles = rotationInRadians;
+	mLocalEulerAngles = rotationInRadians;
 	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
 	SetTransformsDirtyFlag();
 }
@@ -327,7 +327,7 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
 	mLocalRotation = rotation;
-	mWorldEulerAngles = rotation.ToEulerXYZ();
+	mLocalEulerAngles = rotation.ToEulerXYZ();
 	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
 	SetTransformsDirtyFlag();
 }
@@ -336,8 +336,8 @@ void GameObject::SetWorldScale(const float3& scale)
 {
 	if (mParent)
 	{
-		assert(mParent && mParent->GetWorldTransform().IsInvertible());
-		SetLocalScale(scale.Div(mParent->mWorldTransformMatrix.GetScale()));
+		assert(mParent->GetWorldTransform().IsInvertible());
+		SetLocalScale(scale.Div(mParent->GetWorldTransform().GetScale()));
 	}
 	else
 	{
@@ -347,7 +347,12 @@ void GameObject::SetWorldScale(const float3& scale)
 
 void GameObject::SetLocalScale(const float3& scale)
 {
-	mLocalScale = scale;
+	float3 cleanScale = scale;
+	if (scale.x == 0.0f) cleanScale.x = 0.0001f;
+	if (scale.y == 0.0f) cleanScale.y = 0.0001f;
+	if (scale.z == 0.0f) cleanScale.z = 0.0001f;
+
+	mLocalScale = cleanScale;
 	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mLocalScale);
 	SetTransformsDirtyFlag();
 }
@@ -618,7 +623,7 @@ void GameObject::Save(JsonObject& obj) const
 	obj.AddBool("Active", mIsActive);
 	obj.AddFloats("Translation", GetLocalPosition().ptr(), 3);
 	obj.AddFloats("Rotation", mLocalRotation.ptr(), 4);
-	obj.AddFloats("Scale", mWorldScale.ptr(), 3);
+	obj.AddFloats("Scale", mLocalScale.ptr(), 3);
 	obj.AddString("Tag", mTag.c_str());
 	obj.AddInt("PrefabUid", mPrefabId);
 	obj.AddBool("OverridePrefab", mIsPrefabOverride);
