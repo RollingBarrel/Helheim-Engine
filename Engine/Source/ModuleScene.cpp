@@ -177,6 +177,10 @@ void ModuleScene::Save(const char* sceneName) const
 	JsonArray objArray = scene.AddNewJsonArray("GameObjects");
 	for (const GameObject* go : mSceneGO) 
 	{
+		if (go->GetName() == "Teleport1" || go->GetName() == "Teleport2")
+		{
+			LOG("Juan");
+		}
 		JsonObject gameObjectData = objArray.PushBackNewObject();
 		go->Save(gameObjectData);
 	}
@@ -233,6 +237,7 @@ void ModuleScene::Load(const char* sceneName)
 		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
 		std::unordered_map<unsigned int, GameObject*> loadMap;
 		//Load GameObjects		//TODO: REDOO Look if prefab has been overrided
+
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
@@ -559,15 +564,34 @@ void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* seco
 		}
 	}
 
-	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	if (!first->IsRoot())
 	{
-		if ((*it)->GetID() == first->GetID())
+		for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
 		{
-			mSceneGO.insert(it, second);
-			break;
+			if ((*it)->GetID() == first->GetID())
+			{
+				if (it+1 != mSceneGO.cend())
+				{
+					mSceneGO.insert(it+1, second);
+				}
+				else
+				{
+					mSceneGO.push_back(second);
+				}
+
+				break;
+			}
 		}
 	}
+	else 
+	{
+		mSceneGO.push_back(second);
+	}
 
+	for (unsigned int i = 0; i < second->GetChildren().size(); ++i)
+	{
+		SwitchGameObjectsFromScene(second, second->GetChildren()[i]);
+	}
 	
 }
 
