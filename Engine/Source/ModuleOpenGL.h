@@ -7,7 +7,7 @@
 #include "BatchManager.h"
 #include <vector>
 
-#define NUM_SHADOW_MAPS 6
+#define NUM_SHADOW_MAPS 16
 #define SHADOW_MAPS_SIZE 1024
 
 
