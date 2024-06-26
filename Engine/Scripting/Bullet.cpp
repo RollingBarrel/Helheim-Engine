@@ -41,7 +41,7 @@ void Bullet::Update()
 		if (mTotalMovement <= mRange)
 		{
 			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
-			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed);
+			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed* App->GetDt());
 		}
 		else
 		{
@@ -100,7 +100,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (mHitParticles)
 			{
-				mHitParticles->SetEnabled(true);
+				mHitParticles->Enable();
 			}
 			mHasCollided = true;
 			return;
@@ -112,7 +112,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (mHitParticles)
 			{
-				mHitParticles->SetEnabled(true);
+				mHitParticles->Enable();
 			}
 			mHasCollided = true;
 			return;
@@ -123,9 +123,10 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
 			PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
 			player->TakeDamage(mDamage);
+			mDamage = 0.0f;
 			if (mHitParticles)
 			{
-				mHitParticles->SetEnabled(true);
+				mHitParticles->Enable();
 			}
 			mHasCollided = true;
 			mGameObject->SetEnabled(false);

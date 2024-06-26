@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 754552836,
+                "UID": 178006469,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -59,8 +59,8 @@
                 ]
             },
             {
-                "UID": 1684689396,
-                "ParentUID": 754552836,
+                "UID": 1221625259,
+                "ParentUID": 178006469,
                 "Name": "VFX",
                 "Enabled": true,
                 "Active": true,
