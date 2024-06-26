@@ -136,16 +136,16 @@ void AnimationController::GetTransform(GameObject* model)
 		{
 			CalculateIndexAndLambda(channel, "Translation", mCurrentTime, keyIndex, lambda);
 
-			model->SetWorldPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
+			model->SetLocalPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
 		}
 		if (channel->hasRotation)
 		{
 			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-			model->SetWorldRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+			model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
-
-		else { return; }
+		//if (channel->hasTranslation || channel->hasRotation)
+		//	model->SetLocalScale(model->GetLocalScale());
 	}
 
 }
@@ -188,7 +188,7 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetWorldPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
+				model->SetLocalPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
 			}
 			if (channel->hasRotation)
 			{
@@ -206,10 +206,10 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetWorldRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
+				model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
-
-			else { return; }
+			//if(channel->hasTranslation || channel->hasRotation)
+			//	model->SetLocalScale(model->GetLocalScale());
 		}
 
 	}
