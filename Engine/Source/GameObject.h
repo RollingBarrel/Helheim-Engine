@@ -160,7 +160,7 @@ private:
 	bool mIsEnabled = true;
 	bool mIsActive = true;
 	bool mIsDynamic = false;
-	mutable bool mIsTransformModified = false;
-	mutable bool mUpdatedTransform = false;
+	mutable bool mIsTransformModified = true;
+	mutable bool mUpdatedTransform = true;
 	const bool mIsRoot = false;
 };

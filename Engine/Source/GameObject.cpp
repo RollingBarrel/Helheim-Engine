@@ -54,7 +54,6 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 
 		App->GetScene()->AddGameObjectToScene(this);
 
-		mWorldTransformMatrix = mParent->GetWorldTransform();
 		mIsActive = parent->mIsActive;
 		parent->AddChild(this);
 	}
@@ -64,9 +63,9 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.GetWorldTransform()), mLocalTransformMatrix(original.mLocalTransformMatrix),
-	mWorldEulerAngles(original.mWorldEulerAngles), mLocalRotation(original.mLocalRotation), mWorldRotation(original.mWorldRotation), mLocalEulerAngles(original.mLocalEulerAngles),
-	mWorldScale(original.mWorldScale), mLocalScale(original.mLocalScale), 
-	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight),
+	mWorldEulerAngles(original.GetWorldEulerAngles()), mLocalRotation(original.mLocalRotation), mWorldRotation(original.GetWorldRotation()), mLocalEulerAngles(original.mLocalEulerAngles),
+	mWorldScale(original.GetWorldScale()), mLocalScale(original.mLocalScale), 
+	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight), mIsTransformModified(false), mUpdatedTransform(false),
 	mPrefabId(original.mPrefabId), mIsPrefabOverride(original.mIsPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
 	SetTag(original.mTag);
@@ -618,7 +617,7 @@ void GameObject::Save(JsonObject& obj) const
 	obj.AddBool("Active", mIsActive);
 	obj.AddFloats("Translation", GetLocalPosition().ptr(), 3);
 	obj.AddFloats("Rotation", mLocalRotation.ptr(), 4);
-	obj.AddFloats("Scale", mWorldScale.ptr(), 3);
+	obj.AddFloats("Scale", mLocalScale.ptr(), 3);
 	obj.AddString("Tag", mTag.c_str());
 	obj.AddInt("PrefabUid", mPrefabId);
 	obj.AddBool("OverridePrefab", mIsPrefabOverride);
