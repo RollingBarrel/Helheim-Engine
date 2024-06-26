@@ -78,6 +78,7 @@ public:
 	void SetWorldRotation(const float3& rotation);
 	void SetLocalRotation(const float3& rotation);
 	void SetWorldRotation(const Quat& rotation);
+	//Using EulerYXZ to create the quaternion
 	void SetLocalRotation(const Quat& rotation);
 
 	//Scale
