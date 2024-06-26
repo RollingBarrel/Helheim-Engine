@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 987256224,
+                "UID": 754552836,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -43,9 +43,9 @@
                             0.0
                         ],
                         "Size": [
-                            0.5,
-                            0.5,
-                            0.5
+                            0.10000000149011612,
+                            0.10000000149011612,
+                            0.10000000149011612
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 176774261,
-                "ParentUID": 987256224,
+                "UID": 1684689396,
+                "ParentUID": 754552836,
                 "Name": "VFX",
                 "Enabled": true,
                 "Active": true,
@@ -121,14 +121,14 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 1760568024,
+                        "Image": 1711944677,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 20,
                         "Looping": false,
                         "StretchedBillboard": true,
-                        "StretchedRatio": 1.0,
+                        "StretchedRatio": 2.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.4000000059604645,
@@ -149,11 +149,36 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 4.0,
+                                "MinValue": 1.0,
                                 "MaxValue": 1.0
                             },
-                            "IsCurve": false,
-                            "CurvePoints": []
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.550000011920929,
+                                        0.8050000071525574
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7950000166893005,
+                                        0.5199999809265137
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
                         },
                         "SpeedCurve": {
                             "Value": {
@@ -161,14 +186,57 @@
                                 "MinValue": 5.0,
                                 "MaxValue": 1.0
                             },
-                            "IsCurve": false,
-                            "CurvePoints": []
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3675000071525574,
+                                        0.7799999713897705
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6474999785423279,
+                                        0.16500002145767213
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.05764075368642807,
                                 "Color": [
+                                    1.0,
+                                    0.12000000476837158,
                                     0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5067036151885986,
+                                "Color": [
+                                    1.0,
+                                    0.9359999895095825,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.95174241065979,
+                                "Color": [
+                                    1.0,
                                     1.0,
                                     1.0,
                                     1.0
