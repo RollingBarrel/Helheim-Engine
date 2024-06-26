@@ -76,8 +76,8 @@ struct GameController
 	ButtonState* mTriggers;
 	AxisState* mAxis = 0;
 
-	float mMaxAxisInputThreshold = 1.f;
-	float mMinAxisInputThreshold = 1.f;
+	float mMaxAxisInputThreshold = 1.0f;
+	float mMinAxisInputThreshold = 0.1f;
 
 	int	mMaxPositiveThreshold = (int)(mMaxAxisInputThreshold * MAX_AXIS);
 	int	mMaxNegativeThreshold = -(int)(mMaxAxisInputThreshold * MAX_AXIS);
