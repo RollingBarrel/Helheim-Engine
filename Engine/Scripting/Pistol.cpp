@@ -102,7 +102,7 @@ void Pistol::Attack(float time)
         Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         ColorGradient gradient;
         gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
-        
+        bullet->SetEnabled(false);
         bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
     }
 }

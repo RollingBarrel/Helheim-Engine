@@ -71,7 +71,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	mDirection = direction;
 	mSpeed = speed;
 
-	
+	mGameObject->SetEnabled(true);
 
 	mHitParticles = *(mGameObject->GetChildren().begin());
 	if (mHitParticles)
