@@ -100,7 +100,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (mHitParticles)
 			{
-				mHitParticles->Enable();
+				mHitParticles->SetEnable(true);
 			}
 			mHasCollided = true;
 			return;
@@ -112,7 +112,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (mHitParticles)
 			{
-				mHitParticles->Enable();
+				mHitParticles->SetEnable(true);
 			}
 			mHasCollided = true;
 			return;
@@ -126,7 +126,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			mDamage = 0.0f;
 			if (mHitParticles)
 			{
-				mHitParticles->Enable();
+				mHitParticles->SetEnable(true);
 			}
 			mHasCollided = true;
 			mGameObject->SetEnabled(false);
