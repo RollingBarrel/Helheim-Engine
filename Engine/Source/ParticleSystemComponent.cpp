@@ -25,7 +25,7 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mLifetime(original.mLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
-mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize)
+mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode)
 {
     SetImage(original.mResourceId);
     Init();
