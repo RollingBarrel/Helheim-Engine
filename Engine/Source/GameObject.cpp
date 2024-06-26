@@ -319,7 +319,7 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 {
 	mLocalRotation = Quat::FromEulerXYZ(rotationInRadians.x, rotationInRadians.y, rotationInRadians.z);
 
-	mWorldEulerAngles = rotationInRadians;
+	mLocalEulerAngles = rotationInRadians;
 	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
 	SetTransformsDirtyFlag();
 }
@@ -327,7 +327,7 @@ void GameObject::SetLocalRotation(const float3& rotationInRadians)
 void GameObject::SetLocalRotation(const Quat& rotation)
 {
 	mLocalRotation = rotation;
-	mWorldEulerAngles = rotation.ToEulerXYZ();
+	mLocalEulerAngles = rotation.ToEulerXYZ();
 	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
 	SetTransformsDirtyFlag();
 }
@@ -336,8 +336,8 @@ void GameObject::SetWorldScale(const float3& scale)
 {
 	if (mParent)
 	{
-		assert(mParent && mParent->GetWorldTransform().IsInvertible());
-		SetLocalScale(scale.Div(mParent->mWorldTransformMatrix.GetScale()));
+		assert(mParent->GetWorldTransform().IsInvertible());
+		SetLocalScale(scale.Div(mParent->GetWorldTransform().GetScale()));
 	}
 	else
 	{
