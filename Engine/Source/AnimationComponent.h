@@ -31,6 +31,7 @@ public:
 	void StartUp();
 	void OnStop();
 	void OnRestart();
+	void OnReset();
 
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }

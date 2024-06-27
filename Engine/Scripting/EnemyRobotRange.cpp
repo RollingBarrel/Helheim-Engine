@@ -200,5 +200,6 @@ void EnemyRobotRange::Death()
 void EnemyRobotRange::Reset()
 {
     Enemy::Reset();
-    mAnimationComponent->SendTrigger("tIdle", 0.3f);
- }
+    mAnimationComponent->OnReset();
+    mAnimationComponent->SendTrigger("tIdle", 0.0f);
+}

@@ -86,7 +86,7 @@ void EnemyExplosive::Update()
 void EnemyExplosive::Idle()
 {
     mAnimationComponent->SendTrigger("tIdle",0.2f);
-   mCurrentState = EnemyState::CHASE;
+    mCurrentState = EnemyState::CHASE;
 
 }
 

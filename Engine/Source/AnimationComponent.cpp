@@ -155,6 +155,21 @@ void AnimationComponent::OnRestart()
 	}
 }
 
+void AnimationComponent::OnReset()
+{
+	if (mDefaultObjects.size() == 0)
+	{
+		LoadGameObjects(mOwner);
+	}
+	ChangeState("Default", 0.0f);
+	if (mHasSpine)
+	{
+		ChangeSpineState("Default", 0.0f);
+	}
+}
+
+
+
 
 void AnimationComponent::SetAnimSpeed(float speed)
 {
@@ -207,11 +222,7 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 
 		if (resourceAnimation !=0)
 		{
-			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
-			if (!tmpAnimation)
-			{
-				LOG("ERROR loading animation on new state.");
-			}
+			
 			if (mController)
 			{
 				float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
@@ -225,7 +236,8 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 			}
 			else
 			{
-				
+				ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+				assert(tmpAnimation, "Error loading resource animation");
 				mController = new AnimationController(tmpAnimation, true);
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
@@ -445,6 +457,14 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 					mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
 
 				}
+			}
+			else
+			{
+				mSpineController = new AnimationController(tmpAnimation, true);
+				mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
+				mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
+				mSpineStateMachine = new AnimationStateMachine(mAnimationsUIDs);
+
 			}
 		}
 	}
