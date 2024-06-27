@@ -43,12 +43,12 @@ public:
 	void SetAnimSpeed(float speed);
 
 	std::string GetCurrentStateName();
-	void SendTrigger(std::string trigger, float transitionTime);
-	void ChangeState(std::string stateName, float transitionTime);
+	void SendTrigger(const std::string& trigger, float transitionTime);
+	void ChangeState(const std::string& stateName, float transitionTime);
 	
 	std::string GetCurrentSpineStateName();
-	void SendSpineTrigger(std::string trigger, float transitionTime);
-	void ChangeSpineState(std::string stateName, float transitionTime);
+	void SendSpineTrigger(const std::string& trigger, float transitionTime);
+	void ChangeSpineState(const std::string& stateName, float transitionTime);
 
 	//Animations UUIDs
 	void SetAnimationsUids(const std::vector<unsigned int>& uids) { mAnimationsUIDs = uids; }

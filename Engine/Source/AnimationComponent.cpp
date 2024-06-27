@@ -179,7 +179,7 @@ std::string AnimationComponent::GetCurrentStateName()
 	return currentStateName;
 }
 
-void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
+void AnimationComponent::SendTrigger(const std::string& trigger, float transitionTime)
 {
 
 	std::string currentStateName = GetCurrentStateName();
@@ -193,7 +193,7 @@ void AnimationComponent::SendTrigger(std::string trigger, float transitionTime)
 
 }
 
-void AnimationComponent::ChangeState(std::string stateName, float transitionTime)
+void AnimationComponent::ChangeState(const std::string& stateName, float transitionTime)
 {
 	int stateIndex = mStateMachine->GetStateIndex(stateName);
 
@@ -251,7 +251,7 @@ std::string AnimationComponent::GetCurrentSpineStateName()
 	return currentStateName;
 }
 
-void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionTime)
+void AnimationComponent::SendSpineTrigger(const std::string& trigger, float transitionTime)
 {
 	//Changed from !mHasSpine to mHasSpine
 	assert(mHasSpine);
@@ -267,7 +267,7 @@ void AnimationComponent::SendSpineTrigger(std::string trigger, float transitionT
 	}
 }
 
-void AnimationComponent::ChangeSpineState(std::string stateName, float transitionTime)
+void AnimationComponent::ChangeSpineState(const std::string& stateName, float transitionTime)
 {
 	assert(mHasSpine);
 
@@ -368,7 +368,7 @@ void AnimationComponent::Save(JsonObject& obj) const
 {
 	Component::Save(obj);
 
-	obj.AddInts("AnimationsUIDs", static_cast<const int*>(static_cast<const void*>(mAnimationsUIDs.data())), mAnimationsUIDs.size());
+	obj.AddInts("AnimationsUIDs", reinterpret_cast<const int*>(reinterpret_cast<const void*>(mAnimationsUIDs.data())), mAnimationsUIDs.size());
 	obj.AddInt("NumAnimationUIDs", mAnimationsUIDs.size());
 
 	obj.AddInt("LowerSMUID", mStateMachine->GetUID());
