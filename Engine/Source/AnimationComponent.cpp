@@ -196,7 +196,10 @@ std::string AnimationComponent::GetCurrentStateName()
 
 void AnimationComponent::SendTrigger(const std::string& trigger, float transitionTime)
 {
-
+	if (mDefaultObjects.size() == 0)
+	{
+		LoadGameObjects(mOwner);
+	}
 	std::string currentStateName = GetCurrentStateName();
 	for (size_t i = 0; i < mStateMachine->GetNumTransitions(); i++)
 	{
@@ -265,6 +268,10 @@ std::string AnimationComponent::GetCurrentSpineStateName()
 
 void AnimationComponent::SendSpineTrigger(const std::string& trigger, float transitionTime)
 {
+	if (mDefaultObjects.size() == 0)
+	{
+		LoadGameObjects(mOwner);
+	}
 	//Changed from !mHasSpine to mHasSpine
 	assert(mHasSpine);
 
