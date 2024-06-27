@@ -47,19 +47,19 @@ void Enemy::Update()
     }
 
     //Hit Effect
-    if (mHit)
-    {
-        if (Delay(0.1f))
-        {
-            mHit = false;
-
-            for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-            {
-                reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-                App->GetResource()->ReleaseResource(mMaterialIds[i]);
-            }
-        }
-    }
+    //if (mHit)
+    //{
+    //    if (Delay(0.1f))
+    //    {
+    //        mHit = false;
+    //
+    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //        {
+    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
+    //        }
+    //    }
+    //}
 
 }
 
