@@ -115,7 +115,7 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
         if (mOption > 0)
         {
             mOption--;
@@ -130,7 +130,7 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
         if (mOption < 3)
         {
             mOption++;
