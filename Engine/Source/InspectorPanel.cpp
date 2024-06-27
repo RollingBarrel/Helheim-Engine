@@ -1258,11 +1258,31 @@ void InspectorPanel::DrawMaskComponent(MaskComponent* component)
 	{
 		ImGui::Text("Has Image attached");
 
-		// Add the Show Mask Graphic button
 		bool drawMask = component->GetDrawMask();
 		if (ImGui::Checkbox("Show Mask Graphic", &drawMask))
 		{
 			component->SetDrawMask(drawMask);
+		}
+
+		const char* maskingModes[] = { "Normal", "Inverse" };
+		int currentMode = static_cast<int>(component->GetMaskingMode());
+
+		if (ImGui::BeginCombo("Masking Mode", maskingModes[currentMode]))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(maskingModes); i++)
+			{
+				bool isSelected = (currentMode == i);
+				if (ImGui::Selectable(maskingModes[i], isSelected))
+				{
+					component->SetMaskingMode(static_cast<MaskComponent::MaskingMode>(i));
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
 		}
 	}
 }

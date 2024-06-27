@@ -34,12 +34,11 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 	
 	GameObject* parent = GetOwner()->GetParent();
-	MaskComponent* maskComponent = nullptr;
 	if (parent != nullptr) {
-		maskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
 	}
-	if (maskComponent != nullptr) {
-		mMask = maskComponent->GetMask();
+	if (mMaskComponent != nullptr) {
+		mMask = mMaskComponent->GetMask();
 	}
 
 	//If the object has a mask component, set this image as the mask
@@ -65,12 +64,11 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 	
 	GameObject* parent = GetOwner()->GetParent();
-	MaskComponent* maskComponent = nullptr;
 	if (parent != nullptr) {
-		maskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
 	}
-	if (maskComponent != nullptr) {
-		mMask = maskComponent->GetMask();
+	if (mMaskComponent != nullptr) {
+		mMask = mMaskComponent->GetMask();
 	}
 
 	//If the object has a mask component, set this image as the mask
@@ -96,6 +94,7 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 
 	mImage = original.mImage;
 	mMask = original.mMask;
+	mMaskComponent = original.mMaskComponent;
 	mResourceId = original.mResourceId;
 
 	mFileName = original.mFileName;
@@ -166,10 +165,17 @@ void ImageComponent::Draw()
 
 		mMask->RenderMask();
 
-		glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass stencil test if stencil buffer value is 1
+		switch (mMaskComponent->GetMaskingMode()) {
+		case MaskComponent::MaskingMode::Normal:
+			glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass if stencil value is 1
+			break;
+		case MaskComponent::MaskingMode::Inverse:
+			glStencilFunc(GL_NOTEQUAL, 1, 0xFF); // Pass if stencil value is not 1
+			break;
+		}
+
 		glStencilMask(0x00); // Disable writing to the stencil buffer
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Re-enable color buffer
-
 	}
 
 	if (mIsSpritesheet)

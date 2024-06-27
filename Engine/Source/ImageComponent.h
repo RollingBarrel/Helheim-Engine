@@ -6,6 +6,7 @@
 class ResourceTexture;
 class ModuleResource;
 class CanvasComponent;
+class MaskComponent;
 class Transform2DComponent;
 
 class ENGINE_API ImageComponent : public Component
@@ -69,6 +70,7 @@ private:
 
     ResourceTexture* mImage = nullptr;
     ImageComponent* mMask = nullptr;
+    MaskComponent* mMaskComponent = nullptr;
     unsigned int mResourceId = 148626881; // Default white texture
 
     //TODO: Handle filename when setting the image
