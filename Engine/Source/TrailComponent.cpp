@@ -84,15 +84,15 @@ void TrailComponent::Draw() const
         glDisable(GL_CULL_FACE);
         glEnable(GL_BLEND);									// Enable Blending
         glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
-        auto cam = (const CameraComponent*)App->GetCamera()->GetCurrentCamera();
+        const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
         float4x4 projection = cam->GetViewProjectionMatrix();
-        float3 up = cam->GetFrustum().up;
+        //float3 up = cam->GetFrustum().up;
         float3 norm = cam->GetFrustum().front;
-        float3 right = up.Cross(norm).Normalized();
+        //float3 right = up.Cross(norm).Normalized();
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
         glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-        byte* ptr = static_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+        byte* ptr = reinterpret_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
         int testSize = 0;
         float3 nextPoint = mPoints[0].position;
         float3 position;
@@ -102,9 +102,10 @@ void TrailComponent::Draw() const
         {
             if (i < 1)
             {
-                float3 scale;
-                Quat rotationQ;
-                mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
+                float3 scale = mOwner->GetWorldScale();
+                Quat rotationQ = mOwner->GetWorldRotation();
+                position = mOwner->GetWorldPosition();
+                //mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
             }
             else
             {
