@@ -188,6 +188,7 @@ void SettingsPanel::LoadUserSettings()
 		float rotation[4];
 		camera.GetFloats("Rotation", rotation);
 		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldRotation(Quat(rotation));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetFront(); // Force RecaulculateMatrices
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");

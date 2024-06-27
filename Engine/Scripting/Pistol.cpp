@@ -20,6 +20,8 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 
+#include "ModuleInput.h"
+
 #include <map>
 
 Pistol::Pistol() : RangeWeapon()
@@ -29,6 +31,13 @@ Pistol::Pistol() : RangeWeapon()
     mDamage = 2.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.2f;
+
+    mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
+    
 }
 
 Pistol::~Pistol()
@@ -37,12 +46,19 @@ Pistol::~Pistol()
 
 void Pistol::Enter()
 {
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(45000, 0, 100);
 }
 
 void Pistol::Attack(float time)
 {
     LOG("Pistol Attack");
-    PlayHitSound();
+    
+    //Audio
+    if (GameManager::GetInstance()->GetAudio())
+    {
+        PlayHitSound();
+    }
 
     GameObject* bullet = nullptr;
     if (mCurrentAmmo > 0) 
@@ -81,13 +97,20 @@ void Pistol::Attack(float time)
     }
 
     //PARTICLES
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+        mFire->SetEnabled(true);
+        mFire->SetWorldPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
+    }
+    
     if (GameManager::GetInstance()->GetPoolManager())
     {
         GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
         Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         ColorGradient gradient;
         gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
-        
+        bullet->SetEnabled(false);
         bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
     }
 }
@@ -105,5 +128,4 @@ void Pistol::PlayHitSound()
 
 void Pistol::Exit()
 {
-
 }

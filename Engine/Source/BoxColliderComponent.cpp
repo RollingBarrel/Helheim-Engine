@@ -13,6 +13,7 @@ BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner,
 BoxColliderComponent::BoxColliderComponent(const BoxColliderComponent& original, GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER),
 	mCenter(original.mCenter), mSize(original.mSize)
 {
+	mCollider = new Collider(this, ComponentType::BOXCOLLIDER);
 	Init();
 }
 
@@ -45,7 +46,6 @@ void BoxColliderComponent::Update()
 	if (mOwner->HasUpdatedTransform())
 	{
 		ComputeBoundingBox();
-		//App->GetPhysics()->UpdateBoxRigidbody(this);
 	}
 }
 
@@ -73,12 +73,11 @@ void BoxColliderComponent::ComputeBoundingBox()
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
 	// TODO: Reacer esto despues del refactor de transforms
-	float3 position, scale;
-	Quat rotation;
-	mOwner->GetWorldTransform().Decompose(position, rotation, scale);
+	float3 position = mOwner->GetWorldPosition();
+	Quat rotation = mOwner->GetWorldRotation();
 	//---------------
 	mWorldOBB.Transform(float4x4(rotation, position));
-
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)

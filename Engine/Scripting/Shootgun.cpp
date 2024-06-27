@@ -8,12 +8,17 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "TrailComponent.h"
-#include "Physics.h"
-
-#include "Geometry/Ray.h"
-#include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
 #include <Bullet.h>
+
+#include "Application.h"
+#include "ModuleScene.h"
+
+#include "Physics.h"
+#include "Geometry/Ray.h"
+#include "Algorithm/Random/LCG.h"
+
+#include "ModuleInput.h"
 
 Shootgun::Shootgun()
 {
@@ -21,6 +26,13 @@ Shootgun::Shootgun()
     mAttackRange = 100.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.5f;
+
+    mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
+
 }
 
 Shootgun::~Shootgun()
@@ -29,7 +41,8 @@ Shootgun::~Shootgun()
 
 void Shootgun::Enter()
 {
-   
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(50000, 0, 150);
 }
 
 void Shootgun::Attack(float time)
@@ -40,6 +53,7 @@ void Shootgun::Attack(float time)
     //TODO: Rethink this
     reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
    
+
     //Audio
     if (GameManager::GetInstance()->GetAudio())
     {
@@ -92,8 +106,8 @@ void Shootgun::Attack(float time)
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
             gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
-            
-            
+
+            bullet->SetEnabled(false);
             bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
 
@@ -101,6 +115,15 @@ void Shootgun::Attack(float time)
 
     }
     
+    //PARTICLES
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+        mFire->SetEnabled(true);
+        mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
+    }
+
+
     LOG("Missed bullets = %i", count);
 }
 

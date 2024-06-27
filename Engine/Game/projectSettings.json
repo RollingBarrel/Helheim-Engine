@@ -1,5 +1,7 @@
 {
     "Tags": [
-        "WinArea"
+        "WinArea",
+        "Enemy",
+        "Wall"
     ]
 }

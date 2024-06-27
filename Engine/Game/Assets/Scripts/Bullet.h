@@ -5,6 +5,7 @@
 
 class BoxColliderComponent;
 class ParticleSystemComponent;
+class TrailComponent;
 struct CollisionData;
 class ColorGradient;
 
@@ -19,20 +20,23 @@ public:
 	void Start() override;
 	void Update() override; 
 
-	void Init(const float3& position, const float3& direction, float speed = 1.0f, float size = 1.0f, ColorGradient* gradient = nullptr);
+	void Init(const float3& position, const float3& direction, float speed = 1.0f, float size = 1.0f, ColorGradient* gradient = nullptr, float damage=0.0f);
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private: 
 	bool Delay(float delay);
 
-	float mRange = 150.0f;
+	float mRange = 1500000.0f;
 	float mSpeed = 0.1f;
+	float mDamage = 1.0f;
+	bool mShooterIsPlayer = false;
 	float3 mDirection = float3::zero;
 	float mTimePassed = 0.0f;
 	float mTotalMovement = 0.0f;
 	BoxColliderComponent* mCollider = nullptr;
 	bool mHasCollided = false;
-	GameObject* mHitParticles = nullptr;
+	ParticleSystemComponent* mHitParticles = nullptr;
+	TrailComponent* mBulletTrail = nullptr;
 
 
 };

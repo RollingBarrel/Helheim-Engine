@@ -1314,13 +1314,13 @@ void ModuleOpenGL::Draw()
 
 	//Particles
 	glActiveTexture(GL_TEXTURE0);
-	for (const ParticleSystemComponent* partSys : mParticleSystems)
+	for (size_t i = 0; i < mParticleSystems.size(); ++i)
 	{
-		partSys->Draw();
+		mParticleSystems[i]->Draw();
 	}
-	for (const TrailComponent* trail : mTrails)
+	for (size_t i = 0; i < mTrails.size(); ++i)
 	{
-		trail->Draw();
+		mTrails[i]->Draw();
 	}
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);

@@ -1,6 +1,7 @@
 #pragma once
 #include "Enemy.h"
 #include "Geometry/Ray.h"
+#include "TimerScript.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -33,10 +34,15 @@ private:
 
 	void MeleeAttack();
 	void  Death() override;
+	void Reset() override;
 	void OnCollisionEnter(CollisionData* collisionData);
+
+	void PlayStepAudio();
+	void PlayMeleeAudio();
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 
+	TimerScript mDeathTimer;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
@@ -49,5 +55,9 @@ private:
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
+
+	// MoveSimulation
+	float mStepTimer = 0.0f;
+	float mStepCooldown = 0.5f;
 };
 

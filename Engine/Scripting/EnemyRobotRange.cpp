@@ -10,7 +10,8 @@
 #include "ScriptComponent.h"
 #include "GameManager.h"
 #include "PoolManager.h"
-#include "BulletEnemy.h"
+#include "Bullet.h"
+#include "TrailComponent.h"
 CREATE(EnemyRobotRange) {
     CLASS(owner);
     SEPARATOR("STATS");
@@ -20,6 +21,7 @@ CREATE(EnemyRobotRange) {
     MEMBER(MemberType::FLOAT, mChaseDelay);
     MEMBER(MemberType::FLOAT, mRangeDistance);
     MEMBER(MemberType::FLOAT, mRangeDamage);
+    MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mTimerAttack);
     MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
 
@@ -40,7 +42,7 @@ void EnemyRobotRange::Start()
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
-      /*  mAnimationComponent->SetIsPlaying(true);*/
+        mAnimationComponent->SetIsPlaying(true);
 
     }
     mAttackCD = mTimerAttack;
@@ -57,16 +59,16 @@ void EnemyRobotRange::Update()
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-            //mAnimationComponent->SendTrigger("tIdle", 0.2f);
+            mAnimationComponent->SendTrigger("tIdle", 0.2f);
             Idle();
 
             break;
         case EnemyState::CHASE:
-            //mAnimationComponent->SendTrigger("tChase", 0.2f);
+            
             Chase();
             break;
         case EnemyState::ATTACK:
-            //mAnimationComponent->SendTrigger("tAttack", 0.2f);
+            
             Attack();
             break;
         }
@@ -92,6 +94,10 @@ void EnemyRobotRange::Chase()
     {
         if (mAiAgentComponent)
         {
+            if (IsPlayerInRange(mRangeDistance))
+            {
+                mCurrentState = EnemyState::ATTACK;       
+            }
             if (Delay(mChaseDelay))
             {
                 mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
@@ -107,22 +113,17 @@ void EnemyRobotRange::Chase()
                 }
 
             }
-
+            mAnimationComponent->SendTrigger("tChase", 0.2f);
             mAiAgentComponent->MoveAgent(mSpeed);
             mBulletOrigin->SetWorldPosition(mGameObject->GetWorldPosition());
 
         }
 
-        }
-
-        if (IsPlayerInRange(mRangeDistance))
-        {
-            mCurrentState = EnemyState::ATTACK;       
-        }
-        else
-        {
-        mCurrentState = EnemyState::IDLE;
-        }
+    }
+    else
+    {
+          mCurrentState = EnemyState::IDLE;
+    }
 }
 
 void EnemyRobotRange::Attack()
@@ -130,7 +131,7 @@ void EnemyRobotRange::Attack()
     float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
     direction.y = 0;
     direction.Normalize();
-    float angle = std::atan2(direction.x, direction.z);;
+    float angle = std::atan2(direction.x, direction.z);
 
     if (mGameObject->GetWorldRotation().y != angle)
     {
@@ -139,7 +140,7 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCD >= mTimerAttack) 
     {
-
+        mAnimationComponent->SendTrigger("tAttack", 0.2f);
         RangeAttack();
         mAttackCD = 0.0f;
     }
@@ -178,18 +179,27 @@ void EnemyRobotRange::RangeAttack()
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
-    BulletEnemy* bulletScript=reinterpret_cast<BulletEnemy*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    bulletScript->Init();
+    Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    ColorGradient gradient;
+    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
+    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
 
 
 }
 
 void EnemyRobotRange::Death()
 {
-    //mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    if (Delay(0.5f))
+    mAnimationComponent->SendTrigger("tDeath", 0.3f);
+    if (mDeathTimer.Delay(1.4f))
     {
         Enemy::Death();
     }
 
+}
+
+void EnemyRobotRange::Reset()
+{
+    Enemy::Reset();
+    mAnimationComponent->OnReset();
+    mAnimationComponent->SendTrigger("tIdle", 0.0f);
 }

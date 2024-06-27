@@ -9,6 +9,7 @@ public:
 	Katana(BoxColliderComponent* collider, TrailComponent* trail);
 	~Katana();
 
-private:
+protected:
 	void PlayHitSound();
+	void HitEffect(GameObject* enemy) override;
 };

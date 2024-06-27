@@ -12,19 +12,30 @@
 #include "TrailComponent.h"
 #include "Physics.h"
 
+#include "Application.h"
+#include "ModuleScene.h"
+
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 #include <PlayerController.h>
 
+#include "ModuleInput.h"
+
 Machinegun::Machinegun()
 {
 	mAttackRange = 100.0f;
-	mDamage = 0.4f;
+	mDamage = 2.0f;
 	mAttackDuration = 0.7f;
     mAttackCooldown = 0.3f;
     mNumBullets = 3;
 
     mShootDuration = mAttackDuration / static_cast<float>(mNumBullets);
+
+    mFire = App->GetScene()->InstantiatePrefab("MachingunFire.prfb");
+    if (mFire)
+    {
+        mFire->SetEnabled(false);
+    }
 }
 
 Machinegun::~Machinegun()
@@ -33,6 +44,8 @@ Machinegun::~Machinegun()
 
 void Machinegun::Enter()
 {
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(40000, 0, 100);
 }
 
 void Machinegun::Attack(float time)
@@ -48,6 +61,7 @@ void Machinegun::Attack(float time)
    
     if (Delay(delay))
     {
+        reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(mNumBullets);
         //Audio
         if (GameManager::GetInstance()->GetAudio())
         {
@@ -80,6 +94,14 @@ void Machinegun::Attack(float time)
         }
 
         //PARTICLES
+
+        if (mFire)
+        {
+            mFire->SetEnabled(false);
+            mFire->SetEnabled(true);
+            mFire->SetLocalPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
+        }
+
         if (GameManager::GetInstance()->GetPoolManager())
         {
             GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
@@ -88,10 +110,10 @@ void Machinegun::Attack(float time)
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(0.686f, 0.0f, 1.0f, 1.0f));
             gradient.AddColorGradientMark(0.6f, float4(0.0f, 0.0f, 1.0f, 1.0f));
-
-
+            bullet->SetEnabled(false);
             bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
         }
+
     }
 }
 
@@ -100,7 +122,7 @@ void Machinegun::Exit()
     mFirstShoot = true;
 }
 
-void Machinegun::Reload() 
+void Machinegun::Reload()
 {
     mCurrentAmmo = mMaxAmmo;
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);

@@ -38,6 +38,7 @@ GameManager::GameManager(GameObject* owner) : Script(owner) {}
 
 GameManager::~GameManager()
 {
+    Clean();
     mInstance = nullptr;
 }
 
@@ -72,13 +73,29 @@ void GameManager::Start()
 
 void GameManager::Update()
 {
+    if (mLoadLevel)
+    {
+        mLoadLevel = false;
+        App->GetScene()->Load(mLevelName);
+        return;
+    }
+
     HandleAudio();
-    //App->GetInput()->SetGameControllerRumble(65535, 0, 10);
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
         SetPaused(!mPaused);
     }
+}
+
+void GameManager::Clean()
+{
+    mPlayerController = nullptr;
+    mActiveBattleArea = nullptr;
+    mEnemyPool = nullptr;
+    mHudController = nullptr;
+    mAudioManager = nullptr;
+    mPoolManager = nullptr;
 }
 
 PoolManager* GameManager::GetPoolManager() const 
@@ -94,8 +111,11 @@ void GameManager::SetPaused(bool value)
 
 void GameManager::LoadLevel(const char* LevelName)
 {
-    mHudController->mHealthGradualSlider = nullptr; // TODO: needed?
-    App->GetScene()->Load(LevelName);
+    if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
+    EndAudio();
+    mLoadLevel = true;
+    mLevelName = LevelName;
+    Clean();
 }
 
 void GameManager::SetActiveBattleArea(BattleArea* activeArea)
@@ -123,11 +143,28 @@ void GameManager::GameOver()
     // Loading activated from HUD controller on Btn Click.
 }
 
-void GameManager::StartAudio()
+void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
+    {
+        mAudioManager->AddAudioToASComponent(BGM::LEVEL1);
+
+        mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
+        mAudioManager->AddAudioToASComponent(SFX::GUNFIRE);
+        mAudioManager->AddAudioToASComponent(SFX::MEELEE);
+        mAudioManager->AddAudioToASComponent(SFX::MACHINE_GUN);
+        mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    }
+}
+
+void GameManager::StartAudio()
+{
+    PrepareAudio();
+    std::string sceneName = App->GetScene()->GetName();
+
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL1);
     }
@@ -146,7 +183,7 @@ void GameManager::HandleAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene")
     {
         HandleLevel1Audio();
     }
@@ -165,7 +202,7 @@ void GameManager::EndAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
     {
         mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
     }
@@ -177,12 +214,12 @@ void GameManager::EndAudio()
 
 void GameManager::HandleLevel1Audio()
 {
-    if (mActiveBattleArea != nullptr && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 80)
+    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 80)
     {
         mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "Area", 80);
         mLastAudioID = 80;
     }
-    else if (mActiveBattleArea != nullptr && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 40)
+    else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 40)
     {
         mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "Area", 40);
         mLastAudioID = 40;

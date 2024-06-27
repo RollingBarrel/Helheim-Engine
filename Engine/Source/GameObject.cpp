@@ -95,7 +95,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 GameObject::~GameObject()
 {
 	App->GetScene()->RemoveGameObjectFromScene(this);
-
+	App->GetScene()->DeleteFromTagMap(mTag, this);
 	App->GetScriptManager()->RemoveGameObject(this);
 
 	for (Component* component : mComponents)
@@ -346,7 +346,12 @@ void GameObject::SetWorldScale(const float3& scale)
 
 void GameObject::SetLocalScale(const float3& scale)
 {
-	mLocalScale = scale;
+	float3 cleanScale = scale;
+	if (scale.x == 0.0f) cleanScale.x = 0.0001f;
+	if (scale.y == 0.0f) cleanScale.y = 0.0001f;
+	if (scale.z == 0.0f) cleanScale.z = 0.0001f;
+
+	mLocalScale = cleanScale;
 	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mLocalScale);
 	SetTransformsDirtyFlag();
 }

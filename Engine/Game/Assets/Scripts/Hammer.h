@@ -8,6 +8,8 @@ class Hammer : public MeleeWeapon
 public:
 	Hammer(BoxColliderComponent* collider, TrailComponent* trail);
 	~Hammer();
-private:
+
+protected:
 	void PlayHitSound();
+	void HitEffect(GameObject* enemy) override;
 };

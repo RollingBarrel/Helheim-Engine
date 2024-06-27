@@ -19,4 +19,5 @@ public:
 
 private:
 	float mReloadTimer = 0.0f;
+	bool mDoRecharge = false;
 };

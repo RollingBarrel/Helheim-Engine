@@ -112,6 +112,11 @@ void AnimationController::EndBlending()
 
 }
 
+unsigned int AnimationController::GetAnimationUID() const
+{
+	return mCurrentAnimation->GetUID();
+}
+
 void AnimationController::GetTransform(GameObject* model)
 {
 	//Checks and gets the channel we want

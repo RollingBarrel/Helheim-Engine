@@ -148,7 +148,7 @@
                             {
                                 "VariableName": "mHealth",
                                 "MemberType": 0,
-                                "VariableData": 1097859072
+                                "VariableData": 1086324736
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -503,7 +503,7 @@
                 "Active": true,
                 "Translation": [
                     2.5706655979156496,
-                    211.83045959472657,
+                    210.6447296142578,
                     -1.1916604042053223
                 ],
                 "Rotation": [
@@ -531,7 +531,7 @@
                 "Active": true,
                 "Translation": [
                     2.5706655979156496,
-                    94.52153015136719,
+                    93.33580017089844,
                     -1.1916604042053223
                 ],
                 "Rotation": [
@@ -555,8 +555,8 @@
                 "UID": 1990991555,
                 "ParentUID": 53160704,
                 "Name": "WarningArea",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.10000000149011612,
@@ -584,7 +584,7 @@
                 "ParentUID": 1990991555,
                 "Name": "Sphere",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -612,7 +612,7 @@
                 "ParentUID": 2009093015,
                 "Name": "Sphere",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -636,7 +636,7 @@
                 "Components": [
                     {
                         "ComponentType": 0,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "MeshID": 81892183,
                         "MaterialID": 999999999,
                         "HasSkinning": false,
@@ -696,6 +696,16 @@
                                 "VariableName": "mAudioManagerGO",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyPool",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mPoolManager",
+                                "MemberType": 3,
+                                "VariableData": 1549285316
                             }
                         ]
                     }
@@ -771,7 +781,22 @@
                                 "MemberType": 5
                             },
                             {
-                                "VariableName": "mBat",
+                                "VariableName": "mMeleeCollider",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBatTrail",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mKatanaTrail",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mHammerTrail",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
@@ -812,20 +837,6 @@
                                 "VariableName": "mGodMode",
                                 "MemberType": 2,
                                 "VariableData": false
-                            },
-                            {
-                                "VariableName": "AUDIO",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mFootStepAudioHolder",
-                                "MemberType": 3,
-                                "VariableData": -1
-                            },
-                            {
-                                "VariableName": "mGunfireAudioHolder",
-                                "MemberType": 3,
-                                "VariableData": -1
                             }
                         ]
                     },
@@ -931,7 +942,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 2.117734670639038,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 76.05052185058594,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -963,6 +974,41 @@
                                 "VariableData": 18.0
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 1549285316,
+                "ParentUID": 1,
+                "Name": "PoolManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PoolManager",
+                        "ScriptVariables": []
                     }
                 ]
             }

@@ -62,6 +62,7 @@ public:
    
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
+    void SetAnimationSpeed(float speed);
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
@@ -78,6 +79,8 @@ public:
     float GetReloadDuration() const { return mReloadDuration; }
     int GetShieldPercetage() const { return static_cast<int>(mShield / mMaxShield) * 100.0f;}
 
+    void EquipMeleeWeapon(bool equip);
+    void EquipRangedWeapons(bool equip);
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
     int GetCurrentEnergy() const { return mCurrentEnergy; }
@@ -181,6 +184,14 @@ private:
     MeleeWeapon* mBat = nullptr;
     MeleeWeapon* mKatana = nullptr;
     MeleeWeapon* mHammer = nullptr;
+
+    GameObject* mEquippedMeleeGO = nullptr;
+    GameObject* mUnEquippedMeleeGO = nullptr;
+    GameObject* mEquippedGunGO = nullptr;
+    GameObject* mUnEquippedGunGO = nullptr;
+    GameObject* mEquippedSpecialGO = nullptr;
+    GameObject* mUnEquippedSpecialGO = nullptr;
+
     GameObject* mMeleeCollider = nullptr;
     GameObject* mBatTrail = nullptr;
     GameObject* mKatanaTrail = nullptr;
@@ -197,7 +208,6 @@ private:
     float3 mGrenadePosition;
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
-    GameObject* mGrenadeAimAreaGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
     
     // Collider

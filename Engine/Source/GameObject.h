@@ -65,7 +65,7 @@ public:
 	const float4x4& GetLocalTransform() const { return mLocalTransformMatrix; }
 
 	//Position
-	float3 GetWorldPosition() const { return GetWorldTransform().TranslatePart(); }
+	float3 GetWorldPosition() const { RecalculateMatrices(); return GetWorldTransform().TranslatePart(); }
 	float3 GetLocalPosition() const { return GetLocalTransform().TranslatePart(); }
 	void SetWorldPosition(const float3& position);
 	void SetLocalPosition(const float3& position);

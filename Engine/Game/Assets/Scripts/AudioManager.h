@@ -69,6 +69,8 @@ public:
 
 	void SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position);
 
+	void AddAudioToASComponent(BGM bgm);
+	void AddAudioToASComponent(SFX sfx);
 
 private:
 	std::string GetBGMName(BGM bgm);

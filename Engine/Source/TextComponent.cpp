@@ -149,17 +149,22 @@ void TextComponent::RenderText(const std::string& text)
     int y = 0;
     const int lineHeight = mFontSize + mLineSpacing;
 
-    // Split text into words and calculate their widths once
+    // Split text into words and calculate their widths, preserving newlines
     std::istringstream iss(text);
     std::vector<std::pair<std::string, int>> words;
-    std::string word;
-    while (iss >> word) {
-        int wordWidth = 0;
-        for (char c : word) {
-            if (c == '\n') break;
-            wordWidth += (mCharacters[c].Advance >> 6);
+    std::string line;
+    while (std::getline(iss, line)) {
+        std::istringstream lineStream(line);
+        std::string word;
+        while (lineStream >> word) {
+            int wordWidth = 0;
+            for (char c : word) {
+                wordWidth += (mCharacters[c].Advance >> 6);
+            }
+            words.emplace_back(word, wordWidth);
         }
-        words.emplace_back(word, wordWidth);
+        // Add a special newline marker with zero width
+        words.emplace_back("\n", 0);
     }
 
     // Handle lines separately for alignment
@@ -168,13 +173,15 @@ void TextComponent::RenderText(const std::string& text)
     int currentLineWidth = 0;
 
     for (const auto& wordPair : words) {
-        if (currentLineWidth + wordPair.second > mLineWidth && mLineWidth != 0) {
+        if (wordPair.first == "\n" || (currentLineWidth + wordPair.second > mLineWidth && mLineWidth != 0)) {
             lines.emplace_back(currentLine, currentLineWidth);
             currentLine.clear();
             currentLineWidth = 0;
         }
-        currentLine.push_back(wordPair.first);
-        currentLineWidth += wordPair.second + (mCharacters[' '].Advance >> 6);
+        if (wordPair.first != "\n") {
+            currentLine.push_back(wordPair.first);
+            currentLineWidth += wordPair.second + (mCharacters[' '].Advance >> 6);
+        }
     }
 
     if (!currentLine.empty()) {
@@ -236,6 +243,7 @@ void TextComponent::RenderText(const std::string& text)
     glBindTexture(GL_TEXTURE_2D, 0);
     glUseProgram(0);
 }
+
 
 
 

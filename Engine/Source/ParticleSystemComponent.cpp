@@ -25,7 +25,7 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mLifetime(original.mLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
-mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize)
+mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode)
 {
     SetImage(original.mResourceId);
     Init();
@@ -163,54 +163,57 @@ void ParticleSystemComponent::Draw() const
 
 void ParticleSystemComponent::Update()
 {
-    mEmitterTime += App->GetDt();
-    mEmitterDeltaTime += App->GetDt();
-    if (mEmitterTime < mDelay) return;
+    if (IsEnabled())
+    {
+        mEmitterTime += App->GetDt();
+        mEmitterDeltaTime += App->GetDt();
+        if (mEmitterTime < mDelay) return;
 
-	for (int i = 0; i < mParticles.size(); i++)
-	{
-		float dt = mParticles[i]->Update(App->GetDt());
-        if (dt >= 1)
+        for (int i = 0; i < mParticles.size(); i++)
         {
-			mParticles.erase(mParticles.begin() + i);
-			i--;
-		}
-        else
-        {
-            mParticles[i]->SetSpeed(mSpeedCurve.CalculateValue(dt, mParticles[i]->GetInitialSpeed()));
-            mParticles[i]->SetSize(mSizeCurve.CalculateValue(dt, mParticles[i]->GetInitialSize()));
-            mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
+            float dt = mParticles[i]->Update(App->GetDt());
+            if (dt >= 1)
+            {
+                mParticles.erase(mParticles.begin() + i);
+                i--;
+            }
+            else
+            {
+                mParticles[i]->SetSpeed(mSpeedCurve.CalculateValue(dt, mParticles[i]->GetInitialSpeed()));
+                mParticles[i]->SetSize(mSizeCurve.CalculateValue(dt, mParticles[i]->GetInitialSize()));
+                mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
+            }
         }
-	}
-    if (!mLooping and mEmitterTime - mDelay > mDuration) return;
+        if (!mLooping and mEmitterTime - mDelay > mDuration) return;
 
-	while (mEmitterDeltaTime > 1 / mEmissionRate)
-	{
-		mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
-		if (mParticles.size() < mMaxParticles)
-		{
-            // Initializes a particle with a random position, direction and rotation
-            // relative to the shape of emission
+        while (mEmitterDeltaTime > 1 / mEmissionRate)
+        {
+            mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
+            if (mParticles.size() < mMaxParticles)
+            {
+                // Initializes a particle with a random position, direction and rotation
+                // relative to the shape of emission
 
-			float3 emitionPosition = ShapeInitPosition();
-            float3 emitionDirection = ShapeInitDirection(emitionPosition);
-            float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
-            emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
-            float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
-            emitionDirection = auxDirection.Normalized();
+                float3 emitionPosition = ShapeInitPosition();
+                float3 emitionDirection = ShapeInitDirection(emitionPosition);
+                float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
+                emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+                float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
+                emitionDirection = auxDirection.Normalized();
 
-            float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-            float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
+                float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+                float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
 
-            // Create the particle and sets its speed and size 
-            // considering if they are linear or curve
-            Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom());
-            particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
-            particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
-            
-			mParticles.push_back(particle);
-		}
-	}
+                // Create the particle and sets its speed and size 
+                // considering if they are linear or curve
+                Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom());
+                particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
+                particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
+
+                mParticles.push_back(particle);
+            }
+        }
+    }
 }
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)

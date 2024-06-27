@@ -349,6 +349,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						}
 						else 
 						{ 
+							App->GetScene()->SwitchGameObjectsFromScene(target, movedObject);
 							movedObject->SetParent(target);
 						}
 					}

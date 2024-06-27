@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 CREATE(EnemyRobotMelee) {
     CLASS(owner);
@@ -93,7 +94,7 @@ void EnemyRobotMelee::Idle()
 
 void EnemyRobotMelee::Chase()
 {
-
+    PlayStepAudio();
     if (IsPlayerInRange(mActivationRange))
     {
         if (mAiAgentComponent)
@@ -129,7 +130,7 @@ void EnemyRobotMelee::Chase()
 
 void EnemyRobotMelee::Attack()
 {
-        MeleeAttack();
+    MeleeAttack();
 
     bool playerInRange = IsPlayerInRange(mMeleeDistance);
 
@@ -156,7 +157,7 @@ void EnemyRobotMelee::MeleeAttack()
 {
     if (mTimerAttack > mMeleeAttackCoolDown)
     {
-
+        PlayMeleeAudio();
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
@@ -183,11 +184,38 @@ void EnemyRobotMelee::MeleeAttack()
 void EnemyRobotMelee::Death() 
 {
     mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    if(Delay(0.5f))
+    if(mDeathTimer.Delay(1.4f))
     {
         Enemy::Death();
     }
 }
+void EnemyRobotMelee::Reset()
+{
+    Enemy::Reset();
+    mAnimationComponent->OnReset();
+    mAnimationComponent->SendTrigger("tIdle",0.0f);
+}
 void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)
 {
+}
+
+void EnemyRobotMelee::PlayStepAudio()
+{
+    // TODO: play sound according the animation
+    mStepTimer += App->GetDt();
+    if (mStepTimer >= mStepCooldown)
+    {
+        mStepTimer = 0;
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
+    }
+}
+
+void EnemyRobotMelee::PlayMeleeAudio()
+{
+    const char* parameterName = "Speed";
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(
+        SFX::MEELEE,
+        mGameObject->GetWorldPosition(),
+        { { parameterName, 0.0f } }
+    );
 }

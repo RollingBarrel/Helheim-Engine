@@ -41,20 +41,25 @@ void Enemy::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
-    //Hit Effect
-    if (mHit)
+    if (mDeath)
     {
-        if (Delay(0.1f))
-        {
-            mHit = false;
-
-            for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-            {
-                reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-                App->GetResource()->ReleaseResource(mMaterialIds[i]);
-            }
-        }
+        Death();
     }
+
+    //Hit Effect
+    //if (mHit)
+    //{
+    //    if (Delay(0.1f))
+    //    {
+    //        mHit = false;
+    //
+    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //        {
+    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
+    //        }
+    //    }
+    //}
 
 }
 
@@ -84,25 +89,27 @@ bool Enemy::IsPlayerInRange(float range)
 
 void Enemy::TakeDamage(float damage) 
 {   
-    if (mHealth > 0)
+    if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
         mHealth -= damage;
 
         if (mHealth <= 0)
         {
-            Death();
+            mDeath = true;
         }
     }
+        
+    
 
-    //LOG("Enemy Health: %f", mHealth);
+    LOG("Enemy Health: %f", mHealth);
 
-    //Hit Effect
-    mHit = true;
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    }
+    ////Hit Effect
+    //mHit = true;
+    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //{
+    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    //}
 }
 
 void Enemy::Death()
@@ -148,6 +155,7 @@ bool Enemy::IsMoving()
 
 void Enemy::Reset()
 {
+    mDeath = false;
     mHealth = mMaxHealth;
 }
 

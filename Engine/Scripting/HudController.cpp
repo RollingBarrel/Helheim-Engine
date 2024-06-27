@@ -180,16 +180,16 @@ bool HudController::Delay(float delay)
 
 void HudController::Loading()
 {
-    if (mLoading)
+    /*if (mLoading)
     {
         mLoadingScreen->SetEnabled(true);
 
         if (Delay(0.1f))
         {
             mLoading = false;
-            GameManager::GetInstance()->LoadLevel("MainMenu.json");
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
         }
-    }
+    }*/
 }
 
 void HudController::SetSanity()
@@ -201,7 +201,7 @@ void HudController::SetSanity()
 
 void HudController::SetAmmo(int ammo)
 {
-   // if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
+   if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
 }
 
 void HudController::SetEnergy(int energy, EnergyType type)
@@ -324,12 +324,12 @@ void HudController::SetScreen(SCREEN name, bool active)
 
 void HudController::OnWinButtonClick()
 {
-    mLoading = true;
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void HudController::OnLoseButtonClick()
 {
-    mLoading = true;
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
 }
 
 #pragma endregion
@@ -372,7 +372,7 @@ void HudController::OnOptionsBtnHoverOff()
 
 void HudController::OnMainMenuBtnClick()
 {
-    GameManager::GetInstance()->LoadLevel("MainMenu");
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void HudController::OnMainMenuBtnHoverOn()

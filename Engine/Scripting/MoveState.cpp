@@ -6,9 +6,11 @@
 #include "CameraComponent.h"
 #include "GameObject.h"
 #include "Keys.h"
+#include "Weapon.h"
 #include "PlayerController.h"
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "DashState.h"
 
 MoveState::MoveState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -22,14 +24,12 @@ MoveState::~MoveState()
 
 StateType MoveState::HandleInput()
 {
-    mDashTimer += App->GetDt();
-    
     if (GameManager::GetInstance()->UsingController())
     {
-        if (mDashTimer > mPlayerController->GetDashCoolDown() 
-            && App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+        if (mPlayerController->GetDashState()->IsReady() && 
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
         {
-            mDashTimer = 0.0f;
+            mPlayerController->GetDashState()->ResetCooldown();
             return StateType::DASH;
         }
 
@@ -43,10 +43,10 @@ StateType MoveState::HandleInput()
     }
     else
     {
-        if (mDashTimer > mPlayerController->GetDashCoolDown() 
-            && App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+        if (mPlayerController->GetDashState()->IsReady() &&
+            App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
         {
-            mDashTimer = 0.0f;
+            mPlayerController->GetDashState()->ResetCooldown();
             return StateType::DASH;
         }
 
@@ -65,7 +65,7 @@ StateType MoveState::HandleInput()
 void MoveState::Update()
 {
     mMoveDirection = float3::zero;
-
+    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized(); //TODO: Let this only in start when transforms fixed
     if (GameManager::GetInstance()->UsingController())
     {
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
@@ -159,6 +159,12 @@ void MoveState::DoAnimation()
         }
         //LOG("x:%f ", animation);
         mPlayerController->SetAnimation(animation, 0.3f);
+        if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+        {
+            mPlayerController->SetSpineAnimation(animation, 0.3f);
+        }
+        
+        
     }
 }
 
@@ -214,6 +220,6 @@ void MoveState::PlayAudio()
     if (mStepTimer >= mStepCooldown) 
     {
         mStepTimer = 0;
-        //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mPlayerController->GetPlayerPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mPlayerController->GetPlayerPosition());
     }
 }

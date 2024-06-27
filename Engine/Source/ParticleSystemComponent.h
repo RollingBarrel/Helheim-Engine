@@ -73,7 +73,7 @@ private:
 	//EmitterShape::Type mShapeType = EmitterShape::Type::CONE;
 
 	EmitterType mShapeType = EmitterType::NONE;
-	float mShapeRadius = 0.0f;
+	float mShapeRadius = 0.01f;
 	float mShapeAngle = math::pi / 4.0f;
 	float3 mShapeSize = float3(1.0f, 1.0f, 1.0f);
 	bool mIsShapeAngleRand = false;

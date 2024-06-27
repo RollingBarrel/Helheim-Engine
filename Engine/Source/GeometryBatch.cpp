@@ -263,7 +263,6 @@ void GeometryBatch::ComputeCommands(unsigned int bufferIdx, const math::Frustum&
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * sizeof(float) * 16, mMeshComponents.size() * sizeof(float) * 16);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 14, mSsboObbs);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 23, mParameterBuffer);
-	const unsigned int sizeFrustums = mFrustumsSsboCapacity * sizeof(float) * 24;
 	glDispatchCompute((mMeshComponents.size() + 63) / 64, 1, 1);
 	
 	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
@@ -423,7 +422,7 @@ void GeometryBatch::AddMeshComponent(const MeshRendererComponent& cMesh)
 	if (rMesh.HasAttribute(Attribute::JOINT) && rMesh.HasAttribute(Attribute::WEIGHT))
 	{
 		AddUniqueMesh(cMesh, meshIdx);
-		mUniqueMeshes.back().skinOffset = mSkinBufferSize;
+		mUniqueMeshes.back().skinOffset = 1;
 		mSkinBufferSize += rMesh.GetVertexSize(Attribute::Usage::ANIMATION) * rMesh.GetNumberVertices();
 		mSkinningFlag = true;
 		++mNumSkins;
@@ -483,9 +482,11 @@ bool GeometryBatch::RemoveMeshComponent(const MeshRendererComponent& component)
 		for (auto it = mMeshComponents.begin(); it != mMeshComponents.end(); ++it)
 		{
 			if (it->bMeshIdx > bMeshIdx)
+			{
 				--(it->bMeshIdx);
+			}
 		}
-		mVboDataSize -= rMesh.GetNumberVertices() * rMesh.GetVertexSize(Attribute::Usage::RENDER);
+		mVboDataSize -= rMesh.GetNumberVertices() * mVertexSize;
 		mEboDataSize -= rMesh.GetNumberIndices() * sizeof(unsigned int);
 		mVBOFlag = true;
 	}
@@ -557,15 +558,26 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 {
 	if (mVBOFlag)
+	{
 		RecreateVboAndEbo();
+	}
 	if (mMaterialFlag)
+	{
 		RecreateMaterials();
+	}
 	if (mPersistentsFlag)
+	{
 		RecreatePersistentSsbos();
+	}
 	if (mSkinningFlag)
+	{
 		RecreateSkinningSsbos();
+	}
 	if (frustums.size() > mFrustumsSsboCapacity)
+	{
 		RecreatePersistentFrustums();
+	}
+
 
 	const unsigned int idx = mDrawCount % NUM_BUFFERS;
 	for (int i = 0; i < frustums.size(); ++i)
@@ -607,7 +619,7 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 	glUniform1ui(1, frustums.size());
 	const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, mNumSkins * sizeof(unsigned int) * 3 * idx, mNumSkins * sizeof(unsigned int) * 3);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
 	glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
@@ -653,7 +665,7 @@ void GeometryBatch::ComputeSkinning(const BatchMeshRendererComponent& bMesh)
 	}
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, bRes.baseVertex * mVertexSize, mVertexSize * rMesh->GetNumberVertices());
 	glUniform1i(25, rMesh->GetNumberVertices());
-	glDispatchComputeIndirect(sizeof(unsigned int)*3*mCurrSkinIdx++);
+	glDispatchComputeIndirect(((mDrawCount % NUM_BUFFERS) * mNumSkins * sizeof(unsigned int) * 3) + sizeof(unsigned int)*3*mCurrSkinIdx++);
 	//glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
 	mSkinningApplied = true;
 }

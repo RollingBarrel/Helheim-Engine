@@ -58,6 +58,7 @@ class Enemy : public Script
 		
 		//Hit Effect
 		bool mHit = false;
+		bool mDeath = false;
 		float mTimePassed = 0.0f;
 		std::vector<Component*> mMeshComponents;
 		std::vector<unsigned int> mMaterialIds;

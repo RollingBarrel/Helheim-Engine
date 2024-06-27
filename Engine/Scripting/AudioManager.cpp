@@ -175,6 +175,16 @@ void AudioManager::SetPosition(const FMOD::Studio::EventDescription* description
     App->GetAudio()->SetEventPosition(description, id, position);
 }
 
+void AudioManager::AddAudioToASComponent(BGM bgm)
+{
+    mAudioSources->AddNewAudioByName(GetBGMName(bgm).c_str());
+}
+
+void AudioManager::AddAudioToASComponent(SFX sfx)
+{
+    mAudioSources->AddNewAudioByName(GetSFXName(sfx).c_str());
+}
+
 std::string AudioManager::GetBGMName(BGM bgm)
 {
     auto it = mBGMToString.find(bgm);
@@ -202,7 +212,7 @@ const AudioUnit* AudioManager::GetAudioUnit(BGM bgm)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+        //LOG("Audio not found");
         return nullptr;
     }
     else 
@@ -218,7 +228,7 @@ const AudioUnit* AudioManager::GetAudioUnit(SFX sfx)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+         //LOG("Audio not found");
         return nullptr;
     }
     else
@@ -234,7 +244,7 @@ const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(BGM bgm)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+        //LOG("Audio not found");
         return nullptr;
     }
     else 
@@ -250,7 +260,7 @@ const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(SFX sfx)
     if (audio == nullptr)
     {
         // Cannot get audio
-        LOG("Audio not found");
+        //LOG("Audio not found");
         return nullptr;
     }
     else 

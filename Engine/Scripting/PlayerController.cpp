@@ -13,6 +13,7 @@
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "AnimationStateMachine.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
@@ -60,6 +61,12 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE");
+    MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
+    MEMBER(MemberType::GAMEOBJECT, mUnEquippedMeleeGO);
+    MEMBER(MemberType::GAMEOBJECT, mEquippedGunGO);
+    MEMBER(MemberType::GAMEOBJECT, mUnEquippedGunGO);
+    MEMBER(MemberType::GAMEOBJECT, mEquippedSpecialGO);
+    MEMBER(MemberType::GAMEOBJECT, mUnEquippedSpecialGO);
     MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
     MEMBER(MemberType::GAMEOBJECT, mBatTrail);
     MEMBER(MemberType::GAMEOBJECT, mKatanaTrail);
@@ -67,7 +74,6 @@ CREATE(PlayerController)
 
     SEPARATOR("Grenade");
     MEMBER(MemberType::GAMEOBJECT, mGrenadeGO);
-    MEMBER(MemberType::GAMEOBJECT, mGrenadeAimAreaGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
@@ -124,6 +130,7 @@ void PlayerController::Start()
     mUpperState = mAimState;
     mLowerState = mIdleState;
 
+
     // Weapons
     BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
@@ -147,6 +154,7 @@ void PlayerController::Start()
     }
 
     mBat = new Bat(weaponCollider, batTrail);
+    mBat->Exit();
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();
@@ -156,6 +164,19 @@ void PlayerController::Start()
     mWeapon = mPistol;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     mSpecialWeapon = nullptr;
+
+    if (mEquippedMeleeGO && mUnEquippedMeleeGO)
+        mEquippedMeleeGO->SetEnabled(false);
+    
+    if (mEquippedGunGO && mUnEquippedGunGO)
+        mUnEquippedGunGO->SetEnabled(false);
+
+    if (mEquippedSpecialGO && mUnEquippedSpecialGO) 
+    {
+        mEquippedSpecialGO->SetEnabled(false);
+        mUnEquippedSpecialGO->SetEnabled(false);
+    }
+        
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -173,7 +194,6 @@ void PlayerController::Start()
         ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
         mGrenadeGO->SetEnabled(false);
-        if (mGrenadeAimAreaGO) mGrenadeAimAreaGO->SetEnabled(false);
         if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
@@ -183,7 +203,6 @@ void PlayerController::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
     }
-
     //Hit Effect
     mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
     mMaterialIds.reserve(mMeshComponents.size());
@@ -191,8 +210,14 @@ void PlayerController::Start()
     {
         mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
     }
+    // Add Audio Listener
+    if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
+    {
+        mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
+    }
 
-
+    mUpperState->Enter();
+    mLowerState->Enter();
 }
 
 void PlayerController::Update()
@@ -211,19 +236,19 @@ void PlayerController::Update()
     CheckDebugOptions();
 
     //Hit Effect
-    if (mHit)
-    {
-        if (Delay(0.1f)) 
-        {
-            mHit = false;
-
-            for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-            {
-                reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-                App->GetResource()->ReleaseResource(mMaterialIds[i]);
-            }
-        }
-    }
+    //if (mHit)
+    //{
+    //    if (Delay(0.1f)) 
+    //    {
+    //        mHit = false;
+    //
+    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //        {
+    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
+    //        }
+    //    }
+    //}
 }
 
 bool PlayerController::Delay(float delay)
@@ -264,6 +289,13 @@ void PlayerController::CheckInput()
                 mLowerState = mMoveState;
                 break;
             case StateType::IDLE:
+                if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
+                {
+                    if (GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+                        SetSpineAnimation("tIdleRanged", 0.3f);
+                    else
+                        SetSpineAnimation("tIdleMelee", 0.3f);
+                }
                 mLowerState = mIdleState;
                 break;
             case StateType::NONE:
@@ -316,9 +348,7 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    if (mLowerState->GetType() == StateType::DASH ||
-        mUpperState->GetType() == StateType::ATTACK ||
-        mUpperState->GetType() == StateType::SPECIAL)
+    if (mLowerState->GetType() == StateType::DASH)
         return;
 
     GameManager* gameManager = GameManager::GetInstance();
@@ -366,7 +396,14 @@ void PlayerController::SetSpineAnimation(std::string trigger, float transitionTi
     {
         mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
     }
-    
+}
+
+void PlayerController::SetAnimationSpeed(float speed)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetAnimSpeed(speed);
+    }
 }
 
 void PlayerController::MoveInDirection(float3 direction)
@@ -386,7 +423,7 @@ void PlayerController::SwitchWeapon()
     if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
         mWeapon = mPistol;
-
+        
         switch (mEnergyType) 
         {
         case EnergyType::BLUE:
@@ -426,6 +463,57 @@ float3 PlayerController::GetPlayerPosition()
     return  mGameObject->GetWorldPosition(); 
 }
 
+void PlayerController::EquipMeleeWeapon(bool equip)
+{
+    if (mUnEquippedMeleeGO && mEquippedMeleeGO)
+    {
+        //true if you want to equip, false if unequip
+        if (equip)
+        {
+            mUnEquippedMeleeGO->SetEnabled(false);
+            mEquippedMeleeGO->SetEnabled(true);
+        }
+        else 
+        {
+            mEquippedMeleeGO->SetEnabled(false);
+            mUnEquippedMeleeGO->SetEnabled(true);
+        }
+    }
+}
+
+void PlayerController::EquipRangedWeapons(bool equip)
+{
+    if (mUnEquippedGunGO && mEquippedGunGO)
+    {
+        //true if you want to equip, false if unequip
+        if (equip)
+        {
+            mUnEquippedGunGO->SetEnabled(false);
+            mEquippedGunGO->SetEnabled(true);
+        }
+        else
+        {
+            mUnEquippedGunGO->SetEnabled(true);
+            mEquippedGunGO->SetEnabled(false);
+        }
+    }
+
+    if (mSpecialWeapon!= nullptr && mUnEquippedSpecialGO && mEquippedSpecialGO)
+    {
+        //true if you want to equip, false if unequip
+        if (equip)
+        {
+            mUnEquippedSpecialGO->SetEnabled(false);
+            mEquippedSpecialGO->SetEnabled(true);
+        }
+        else
+        {
+            mUnEquippedSpecialGO->SetEnabled(true);
+            mEquippedSpecialGO->SetEnabled(false);
+        }
+    }
+}
+
 void PlayerController::SetWeaponDamage(float percentage)
 {
     mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
@@ -439,46 +527,50 @@ void PlayerController::SetMaxShield(float percentage)
 
 void PlayerController::SetGrenadeVisuals(bool value)
 {
-    mGrenadeAimAreaGO->SetEnabled(value);
-    mGrenadeAimAreaGO->SetWorldScale(float3(mGrenadeRange, 0.5, mGrenadeRange));
-
-    mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-    mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 0.5f, mGrenade->GetGrenadeRadius()));
+    if (mGrenadeExplotionPreviewAreaGO)
+    {
+        mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
+    }
 }
 
 void PlayerController::UpdateGrenadeVisuals()
 {
-    mGrenadeAimAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
-
-    float3 diff;
-    if (GameManager::GetInstance()->UsingController())
+    if (mGrenadeExplotionPreviewAreaGO)
     {
-        mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition- mGameObject->GetWorldPosition()) * mGrenadeRange;
-    }
-    else
-    {
-        diff = mAimPosition - mGameObject->GetWorldPosition();
-        float distanceSquared = diff.LengthSq();
-        float radiusSquared = mGrenadeRange * mGrenadeRange;
+        float3 diff;
+        if (GameManager::GetInstance()->UsingController())
+        {
+            mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition - mGameObject->GetWorldPosition()) * mGrenadeRange;
+        }
+        else
+        {
+            diff = mAimPosition - mGameObject->GetWorldPosition();
+            float distanceSquared = diff.LengthSq();
+            float radiusSquared = mGrenadeRange * mGrenadeRange;
 
-        if (distanceSquared <= radiusSquared)
-        {
-            mGrenadePosition = mAimPosition;
+            if (distanceSquared <= radiusSquared)
+            {
+                mGrenadePosition = mAimPosition;
+            }
+            else
+            {
+                diff.Normalize();
+                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+            }
         }
-        else 
-        {
-            diff.Normalize();
-            mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
-        }
+
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.1f, mGrenadePosition.z));
     }
-    
-    mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.3f, mGrenadePosition.z));
 }
 
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
-    mGrenade->SetDestination(mGrenadePosition);
+    if (mGrenade)
+    {
+        mGrenade->SetDestination(mGrenadePosition);
+    }  
 }
 
 bool PlayerController::CanReload() const
@@ -502,39 +594,27 @@ void PlayerController::CheckDebugOptions()
         mGodMode = !mGodMode;
     }
 
-    if (mGodMode) 
+    if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
-        if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to PISTOL");
-            mWeapon = mPistol;
-        }
-        else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to MACHINEGUN");
-            mWeapon = mMachinegun;
-        }
-        else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to SHOTGUN");
-            mWeapon = mShootgun;
-        }
-        else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to KATANA");
-            mWeapon = mKatana;
-        }
-        else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to HUMMER");
-            mWeapon = mHammer;
-        }
-        else if (input->GetKey(Keys::Keys_6) == KeyState::KEY_DOWN) 
-        {
-            LOG("Force switch weapon to BAT");
-            mWeapon = mBat;
-        }
+        RechargeBattery(EnergyType::BLUE);
     }
+    else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
+    {
+        RechargeBattery(EnergyType::RED);
+    }
+    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    }
+    else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+    }
+    else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }
+    
 }
 
 void PlayerController::RechargeShield(float shield)
@@ -563,6 +643,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
                 mSpecialWeapon = mMachinegun;
+                mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -573,6 +654,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
                 mSpecialWeapon = mShootgun;
+                mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -595,6 +677,7 @@ void PlayerController::UseEnergy(int energy)
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
+        mEquippedSpecialGO->SetEnabled(false);
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
@@ -610,27 +693,33 @@ void PlayerController::TakeDamage(float damage)
     if (mShield <= 0.0f)
     {
         GameManager::GetInstance()->GameOver();
+
+        //CONTROLLER VIBRATION
+        App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    //CONTROLLER VIBRATION
+    App->GetInput()->SetGameControllerRumble(40000, 30000, 100);
 
     float healthRatio = mShield / mMaxShield;
     GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 
 
-    //Hit Effect
-    mHit = true;
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    }
+    ////Hit Effect
+    //mHit = true;
+    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //{
+    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    //}
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "WinArea")
     {
-        GameManager::GetInstance()->Victory();
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
     }
 }

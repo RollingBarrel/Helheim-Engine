@@ -81,7 +81,7 @@ void MainMenu::Update()
 {
     if (mLoadlevel == true && Delay(0.1f)) 
     {
-        App->GetScene()->Load("Level1Scene");
+        App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
     
     /*int mouseWheelDelta = GetMouseWheelDelta();
@@ -115,7 +115,7 @@ void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
         if (mOption > 0)
         {
             mOption--;
@@ -130,7 +130,7 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
     {
-        mMainMenuManager->PlaySelectSFX();
+        //mMainMenuManager->PlaySelectSFX();
         if (mOption < 3)
         {
             mOption++;
@@ -163,7 +163,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     mSplashScreen->SetEnabled(false);
     mLoadingScreen->SetEnabled(false);
 
-    mMainMenu->SetEnabled(false);
+    //mMainMenu->SetEnabled(false);
     mOptionsMenu->SetEnabled(false);
     mCreditsMenu->SetEnabled(false);
 
