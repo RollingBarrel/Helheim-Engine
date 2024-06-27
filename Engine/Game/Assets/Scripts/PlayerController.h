@@ -78,6 +78,7 @@ public:
     float GetReloadDuration() const { return mReloadDuration; }
     int GetShieldPercetage() const { return static_cast<int>(mShield / mMaxShield) * 100.0f;}
 
+    void EquipMeleeWeapon(bool equip);
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
     int GetCurrentEnergy() const { return mCurrentEnergy; }
@@ -181,6 +182,8 @@ private:
     MeleeWeapon* mBat = nullptr;
     MeleeWeapon* mKatana = nullptr;
     MeleeWeapon* mHammer = nullptr;
+    GameObject* mEquippedMeleeGO = nullptr;
+    GameObject* mUnEquippedMeleeGO = nullptr;
     GameObject* mMeleeCollider = nullptr;
     GameObject* mBatTrail = nullptr;
     GameObject* mKatanaTrail = nullptr;

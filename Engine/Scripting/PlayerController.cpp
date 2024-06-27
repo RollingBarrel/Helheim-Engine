@@ -61,6 +61,8 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashDuration);
 
     SEPARATOR("MELEE");
+    MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
+    MEMBER(MemberType::GAMEOBJECT, mUnEquippedMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
     MEMBER(MemberType::GAMEOBJECT, mBatTrail);
     MEMBER(MemberType::GAMEOBJECT, mKatanaTrail);
@@ -157,6 +159,8 @@ void PlayerController::Start()
     mWeapon = mPistol;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     mSpecialWeapon = nullptr;
+    if (mEquippedMeleeGO)
+        mEquippedMeleeGO->SetEnabled(false);
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -433,6 +437,24 @@ void PlayerController::SwitchWeapon()
 float3 PlayerController::GetPlayerPosition()
 {
     return  mGameObject->GetWorldPosition(); 
+}
+
+void PlayerController::EquipMeleeWeapon(bool equip)
+{
+    if (mUnEquippedMeleeGO && mEquippedMeleeGO)
+    {
+        //true if you want to equip, false if unequip
+        if (equip)
+        {
+            mUnEquippedMeleeGO->SetEnabled(false);
+            mEquippedMeleeGO->SetEnabled(true);
+        }
+        else 
+        {
+            mEquippedMeleeGO->SetEnabled(false);
+            mUnEquippedMeleeGO->SetEnabled(true);
+        }
+    }
 }
 
 void PlayerController::SetWeaponDamage(float percentage)
