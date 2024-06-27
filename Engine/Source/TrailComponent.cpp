@@ -279,7 +279,6 @@ void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 
 void TrailComponent::Enable()
 {
-    App->GetOpenGL()->AddTrail(this);
     Init();
 }
 
