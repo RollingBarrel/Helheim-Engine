@@ -17,7 +17,7 @@ bool ModuleGame::Init()
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere
-	App->GetScene()->Load("AnimationOp");
+	App->GetScene()->Load("Assets/Scenes/MainMenu");
 	//App->GetScene()->Load("Level1");
 	//TODO:: This is bad for decoupling
 	//App->GetScriptManager()->AwakeScripts();
