@@ -60,7 +60,10 @@ update_status ModuleScene::PreUpdate(float dt)
 update_status ModuleScene::Update(float dt)
 {
 	mRoot->Update();
-	App->GetOpenGL()->Draw();
+	if (App->GetCamera()->GetCurrentCamera())
+	{
+		App->GetOpenGL()->Draw();
+	}
 
 	return UPDATE_CONTINUE;
 }
