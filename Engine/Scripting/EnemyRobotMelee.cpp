@@ -191,6 +191,7 @@ void EnemyRobotMelee::Death()
 }
 void EnemyRobotMelee::Reset()
 {
+    Enemy::Reset();
     mAnimationComponent->SendTrigger("tIdle", 0.3f);
 }
 void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)

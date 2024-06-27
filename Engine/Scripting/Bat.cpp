@@ -7,7 +7,7 @@
 Bat::Bat(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
     mDamage = 4.0f;
-    mCombo1st = 0.4f;
+    mCombo1st = 1.0f;
     mCombo2nd = 0.4f;
     mComboEnd = 0.4f;
 }
