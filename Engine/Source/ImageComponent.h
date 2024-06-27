@@ -28,6 +28,7 @@ public:
     void FillSpriteSheetVBO();
     void CreateVAO();
     void ResizeByRatio();
+    void RenderMask();
 
     unsigned int GetResourceId() const { return mResourceId; }
     ResourceTexture* GetImage() const { return mImage; }

@@ -164,13 +164,12 @@ void ImageComponent::Draw()
 		glStencilMask(0xFF); // Enable writing to the stencil buffer
 		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // Disable writing to the color buffer
 
-		mMask->Draw();
+		mMask->RenderMask();
 
 		glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass stencil test if stencil buffer value is 1
 		glStencilMask(0x00); // Disable writing to the stencil buffer
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Re-enable color buffer
 
-		//glDisable(GL_STENCIL_TEST); // Optionally disable stencil test if no more masking is needed
 	}
 
 	if (mIsSpritesheet)
@@ -178,6 +177,7 @@ void ImageComponent::Draw()
 		FillSpriteSheetVBO();
 		CreateVAO();
 	}
+
 	if (mImage && mCanvas && mShouldDraw)
 	{
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
@@ -397,6 +397,39 @@ void ImageComponent::ResizeByRatio()
 		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
 		GetOwner()->SetScale(newScale);
 	}
+}
+
+void ImageComponent::RenderMask()
+{
+	unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
+	if (UIImageProgram == 0) return;
+
+	glUseProgram(UIImageProgram);
+
+	// Orthographic mode is used for stencil mask rendering
+	Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+	if (component != nullptr)
+	{
+		float4x4 proj = float4x4::identity;
+		float4x4 model = component->GetGlobalMatrix();
+		float4x4 view = float4x4::identity;
+
+		float2 canvasSize = mCanvas->GetSize();
+		model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+
+		glBindVertexArray(mQuadVAO);
+		glActiveTexture(GL_TEXTURE0);
+
+		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glBindVertexArray(0);
+	}
+
+	glUseProgram(0);
 }
 
 void ImageComponent::Update()
