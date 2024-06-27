@@ -61,6 +61,7 @@ void Machinegun::Attack(float time)
    
     if (Delay(delay))
     {
+        reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(mNumBullets);
         //Audio
         if (GameManager::GetInstance()->GetAudio())
         {
