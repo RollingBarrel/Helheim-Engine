@@ -62,7 +62,7 @@ bool ModuleCamera::RemoveEnabledCamera(CameraComponent* camera)
 					AddMainCamera(cComponent);
 				}
 			}
-			if (camera->GetID() == mCurrentCamera->GetID())
+			if (mCurrentCamera && camera->GetID() == mCurrentCamera->GetID())
 			{
 				mCurrentCamera = nullptr;
 			}
@@ -74,8 +74,11 @@ bool ModuleCamera::RemoveEnabledCamera(CameraComponent* camera)
 					mCurrentCamera = mActiveCameras.front();
 				}
 			}
-			//if (mCurrentCamera == nullptr)
-			App->GetOpenGL()->SetOpenGlCameraUniforms();
+			if (mCurrentCamera)
+			{
+				App->GetOpenGL()->SetOpenGlCameraUniforms();
+			}
+			
 			return true;
 		}
 	}
