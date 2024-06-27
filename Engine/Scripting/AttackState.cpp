@@ -25,11 +25,11 @@ StateType AttackState::HandleInput()
     if (mAttackTimer < mWeapon->GetAttackDuration())
     {
         // MOVE TO WEAPON
-        if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
+        /* if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
             App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
         {
             reinterpret_cast<MeleeWeapon*>(mWeapon)->IncreaseComboStep();
-        } 
+        } */
         return StateType::ATTACK;
     }
        
@@ -46,14 +46,29 @@ void AttackState::Enter()
     mAttackTimer = 0.0f;
     mWeapon = mPlayerController->GetWeapon();
     if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
-        mPlayerController->SetSpineAnimation("tAttackRanged", 0.3f);
+    {
+        mPlayerController->SetSpineAnimation("tAttack_Ranged", 0.01f);
+    }
     else
-        mPlayerController->SetSpineAnimation("tAttackMelee", 0.3f);
+    {
+        mPlayerController->SetSpineAnimation("tFirstHit", 0.2f);
+        mPlayerController->SetAnimationSpeed(5.0f);
+    }
+
     mWeapon->Enter();
 }
 
 void AttackState::Exit()
 {
+    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+    {
+        mPlayerController->SetSpineAnimation("tIdle_Ranged", 0.01f);
+    }
+    else
+    {
+        mPlayerController->SetSpineAnimation("tIdle_Melee", 0.01f);
+        mPlayerController->SetAnimationSpeed(1.0f);
+    }
 
     mWeapon->Exit();
     mWeapon = nullptr;
