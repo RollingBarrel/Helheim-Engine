@@ -163,7 +163,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     mSplashScreen->SetEnabled(false);
     mLoadingScreen->SetEnabled(false);
 
-    mMainMenu->SetEnabled(false);
+    //mMainMenu->SetEnabled(false);
     mOptionsMenu->SetEnabled(false);
     mCreditsMenu->SetEnabled(false);
 
