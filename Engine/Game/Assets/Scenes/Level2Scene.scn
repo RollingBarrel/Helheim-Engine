@@ -130,7 +130,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "MainCamera",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7202,6 +7202,16 @@
                             {
                                 "VariableName": "MELEE",
                                 "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mEquippedMeleeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedMeleeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "mMeleeCollider",
