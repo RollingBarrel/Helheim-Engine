@@ -23,6 +23,7 @@ public:
     void Awake();
     void Start();
     void Update();
+    void Clean();
 
     GameObject* GetPlayer() const { return mPlayer; }
     PlayerController* GetPlayerController() const { return mPlayerController; }
@@ -69,4 +70,7 @@ private:
 
     int mBackgroundAudioID = -1;
     int mLastAudioID = -1;
+
+    bool mLoadLevel = false;
+    const char* mLevelName = nullptr;
 };
