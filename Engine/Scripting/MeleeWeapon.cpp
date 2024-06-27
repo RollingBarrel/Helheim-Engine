@@ -24,8 +24,8 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) 
         );
     }
     mTrail = trail;
-
     mPlayerGO = GameManager::GetInstance()->GetPlayer();
+    mPlayerController = GameManager::GetInstance()->GetPlayerController();
     mLastComboStartTime = 0.0f;
     mMovingForward = false;
 
@@ -74,7 +74,8 @@ void MeleeWeapon::Enter()
     mNextComboStep = 1;
     mHasHitted = false;
     // animation hit 1
-
+    mPlayerController->SetSpineAnimation("tAttackMelee", 0.9f);
+    mPlayerController->SetAnimationSpeed(4.f);
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(0, 45000, 100);
 }
@@ -135,7 +136,8 @@ void MeleeWeapon::Attack(float time)
         App->GetInput()->SetGameControllerRumble(0, 45000, 100);
 
         // animation hit 2
-        //GameManager::GetInstance()->GetPlayerController()->SetAnimation(trigger, transitionTime);
+        mPlayerController->SetAnimationSpeed(0.07f);
+        mPlayerController->SetSpineAnimation("tAttackMelee", 0.07f);
     }
     else if (time > mCombo1st + mCombo2nd && mNextComboStep == 3 && mComboStep == 2 && mHasHitted)
     {
@@ -145,7 +147,8 @@ void MeleeWeapon::Attack(float time)
         mLastComboStartTime = time;
         mMovingForward = true;
         // animation hit 3
-
+        mPlayerController->SetAnimationSpeed(0.1f);
+        mPlayerController->SetSpineAnimation("tAttackMelee", 0.1f);
         //CONTROLLER VIBRATION
         App->GetInput()->SetGameControllerRumble(0, 45000, 100);
     }
@@ -178,6 +181,8 @@ void MeleeWeapon::Exit()
     if (mTrail) mTrail->SetEnable(false);
     mColliderAtivated = false;
     mMovingForward = false; 
+    mPlayerController->SetAnimationSpeed(1.f);
+
 }
 
 void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)

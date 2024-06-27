@@ -379,7 +379,14 @@ void PlayerController::SetSpineAnimation(std::string trigger, float transitionTi
     {
         mAnimationComponent->SendSpineTrigger(trigger, transitionTime);
     }
-    
+}
+
+void PlayerController::SetAnimationSpeed(float speed)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetAnimSpeed(speed);
+    }
 }
 
 void PlayerController::MoveInDirection(float3 direction)

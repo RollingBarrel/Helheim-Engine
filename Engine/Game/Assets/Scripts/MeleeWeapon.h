@@ -4,6 +4,7 @@
 class TrailComponent;
 class BoxColliderComponent;
 class GameObject;
+class PlayerController;
 struct CollisionData;
 
 class MeleeWeapon : public Weapon
@@ -47,6 +48,7 @@ protected:
 	float totalMoveDistance = 5.0f;
 
 	GameObject* mPlayerGO = nullptr;
+	PlayerController* mPlayerController = nullptr;
 
 	//Specific 
 	float mRange = 1.0f;
