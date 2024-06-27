@@ -137,11 +137,11 @@ std::string Sanity::GetBuffDescription(const Buff& buff)
     switch (buff.getStatType())
     {
         case Buff::StatType::MOVEMENT:
-            return "Increases movement speed by " + std::to_string(buff.getValue()) + "%";
+            return "Increases movement speed by " + std::to_string(((int)((buff.getValue()-1)*100))) + "%";
         case Buff::StatType::DAMAGE:
-            return "Increases damage by " + std::to_string(buff.getValue()) + "%";
+            return "Increases damage by " + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
         case Buff::StatType::HEALTH:
-            return "Increases health by " + std::to_string(buff.getValue()) + "%";
+            return "Increases health by " + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
         default:
             return "";
     }
