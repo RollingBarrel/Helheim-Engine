@@ -62,6 +62,7 @@ public:
    
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
+    void SetAnimationSpeed(float speed);
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
