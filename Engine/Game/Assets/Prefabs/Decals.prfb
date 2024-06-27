@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 148868660,
+                "UID": 1225859554,
                 "ParentUID": 1,
                 "Name": "Decals",
                 "Enabled": true,
@@ -30,14 +30,14 @@
                 "Components": []
             },
             {
-                "UID": 181660151,
-                "ParentUID": 148868660,
+                "UID": 1257676351,
+                "ParentUID": 1225859554,
                 "Name": "Decal_CargoBay",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -121.16000366210938,
-                    0.30000001192092898,
+                    -0.4000000059604645,
                     -1.4700000286102296
                 ],
                 "Rotation": [
@@ -82,8 +82,8 @@
                 ]
             },
             {
-                "UID": 1418211333,
-                "ParentUID": 148868660,
+                "UID": 1268119501,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Level01",
                 "Enabled": true,
                 "Active": true,
@@ -134,14 +134,14 @@
                 ]
             },
             {
-                "UID": 1025352192,
-                "ParentUID": 148868660,
+                "UID": 1278005683,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Stripes1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -130.80145263671876,
-                    0.31710952520370486,
+                    -0.4000000059604645,
                     3.848299980163574
                 ],
                 "Rotation": [
@@ -186,14 +186,14 @@
                 ]
             },
             {
-                "UID": 1218904144,
-                "ParentUID": 148868660,
+                "UID": 1288239970,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Stripes2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -130.8000030517578,
-                    0.31710952520370486,
+                    -0.4000000059604645,
                     1.350705862045288
                 ],
                 "Rotation": [
@@ -238,14 +238,14 @@
                 ]
             },
             {
-                "UID": 12376666,
-                "ParentUID": 148868660,
+                "UID": 1298126152,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Stripes3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -130.8000030517578,
-                    0.31710952520370486,
+                    -0.4000000059604645,
                     -1.1473522186279297
                 ],
                 "Rotation": [
@@ -290,14 +290,14 @@
                 ]
             },
             {
-                "UID": 198905400,
-                "ParentUID": 148868660,
+                "UID": 1308221197,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Section3_Number",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -97.56614685058594,
-                    0.3492822051048279,
+                    -0.4000000059604645,
                     -5.603629112243652
                 ],
                 "Rotation": [
@@ -342,14 +342,14 @@
                 ]
             },
             {
-                "UID": 1340879478,
-                "ParentUID": 148868660,
+                "UID": 1318107379,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Section2_Number",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -81.67758178710938,
-                    0.3492822051048279,
+                    -0.4000000059604645,
                     -5.720585823059082
                 ],
                 "Rotation": [
@@ -394,14 +394,14 @@
                 ]
             },
             {
-                "UID": 1984619799,
-                "ParentUID": 148868660,
+                "UID": 1327993561,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Section2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -81.89041900634766,
-                    0.3492822051048279,
+                    -0.4000000059604645,
                     -12.600000381469727
                 ],
                 "Rotation": [
@@ -446,14 +446,14 @@
                 ]
             },
             {
-                "UID": 1119845806,
-                "ParentUID": 148868660,
+                "UID": 1339202542,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Section1_Number",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -65.81444549560547,
-                    0.3492822051048279,
+                    -0.4000000059604645,
                     -5.63289213180542
                 ],
                 "Rotation": [
@@ -498,14 +498,14 @@
                 ]
             },
             {
-                "UID": 268885755,
-                "ParentUID": 148868660,
+                "UID": 1348810240,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Section1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -66.11627197265625,
-                    0.3492822051048279,
+                    -0.4000000059604645,
                     -12.603117942810059
                 ],
                 "Rotation": [
@@ -550,14 +550,14 @@
                 ]
             },
             {
-                "UID": 1376461348,
-                "ParentUID": 148868660,
+                "UID": 1358766043,
+                "ParentUID": 1225859554,
                 "Name": "Decal_Section3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -97.7537841796875,
-                    0.3492822051048279,
+                    -0.4000000059604645,
                     -12.600000381469727
                 ],
                 "Rotation": [
