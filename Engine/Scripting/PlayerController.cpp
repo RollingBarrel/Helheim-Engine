@@ -150,6 +150,7 @@ void PlayerController::Start()
     }
 
     mBat = new Bat(weaponCollider, batTrail);
+    mBat->Exit();
     mPistol = new Pistol();
     mMachinegun = new Machinegun();
     mShootgun = new Shootgun();

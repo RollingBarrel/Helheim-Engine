@@ -39,11 +39,11 @@ void SwitchState::Enter()
     mSwitchTimer = 0.0f;
 
     if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE) {
-        mPlayerController->SetSpineAnimation("tSwitchToMelee", 0.3f);
+        mPlayerController->SetSpineAnimation("tSwitch_To_Melee", 0.3f);
         mPlayerController->EquipMeleeWeapon(true);
     }else 
     {
-        mPlayerController->SetSpineAnimation("tSwitchToRanged", 0.3f);
+        mPlayerController->SetSpineAnimation("tSwitch_To_Ranged", 0.3f);
         mPlayerController->EquipMeleeWeapon(false);
     }
         

@@ -180,7 +180,7 @@ bool HudController::Delay(float delay)
 
 void HudController::Loading()
 {
-    if (mLoading)
+    /*if (mLoading)
     {
         mLoadingScreen->SetEnabled(true);
 
@@ -189,7 +189,7 @@ void HudController::Loading()
             mLoading = false;
             GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
         }
-    }
+    }*/
 }
 
 void HudController::SetSanity()
@@ -324,12 +324,12 @@ void HudController::SetScreen(SCREEN name, bool active)
 
 void HudController::OnWinButtonClick()
 {
-    mLoading = true;
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void HudController::OnLoseButtonClick()
 {
-    mLoading = true;
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
 }
 
 #pragma endregion

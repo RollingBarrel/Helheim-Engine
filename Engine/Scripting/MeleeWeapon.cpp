@@ -29,7 +29,7 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) 
     mLastComboStartTime = 0.0f;
     mMovingForward = false;
 
-
+    mAttackDuration = 0.5f;
 }
 
 MeleeWeapon::~MeleeWeapon()
@@ -38,13 +38,13 @@ MeleeWeapon::~MeleeWeapon()
 
 float MeleeWeapon::GetAttackDuration()
 {
-    switch (std::max(mComboStep, mNextComboStep))
+    /*switch (std::max(mComboStep, mNextComboStep))
     {
     case 1: mAttackDuration = mCombo1st; break;
     case 2: mAttackDuration = mCombo1st + mCombo2nd; break;
     case 3: mAttackDuration = mCombo1st + mCombo2nd + mComboEnd; break;
     default: LOG("Should not happen?") break;
-    }
+    }*/
     return mAttackDuration;
 }
 
@@ -63,19 +63,22 @@ void MeleeWeapon::Enter()
     if (mCollider)
     {
         mCollider->SetEnable(true);
+        mCollider->GetOwner()->SetEnabled(true);
     }
     if (mTrail) 
     {
         mTrail->SetEnable(true);
     }
-    LOG("MELEE ENTER");
-    mColliderAtivated = false;
-    mComboStep = 1;
-    mNextComboStep = 1;
-    mHasHitted = false;
-    // animation hit 1
-    mPlayerController->SetSpineAnimation("tAttackMelee", 0.9f);
-    mPlayerController->SetAnimationSpeed(4.f);
+    //LOG("MELEE ENTER");
+
+
+    //mColliderAtivated = false;
+    //mComboStep = 1;
+    //mNextComboStep = 1;
+    //mHasHitted = false;
+
+    //mPlayerController->SetSpineAnimation("tAttackMelee", 0.9f);
+    // 
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(0, 45000, 100);
 }
@@ -83,7 +86,7 @@ void MeleeWeapon::Enter()
 void MeleeWeapon::Attack(float time)
 {
     // Deactivates the collider 1 frame after the collider gets activated
-    if (time > mCombo1st * mHitTime &&
+    /*if (time > mCombo1st * mHitTime &&
         mComboStep == 1 && mColliderAtivated)
     {
         LOG("MELEE: Finish 1    Time: %f", time);
@@ -169,7 +172,7 @@ void MeleeWeapon::Attack(float time)
         }
 
         mPlayerGO->SetWorldPosition(mPlayerGO->GetWorldPosition() + forward * moveAmount);
-    }
+    }*/
 }
 
 void MeleeWeapon::Exit()
@@ -177,11 +180,12 @@ void MeleeWeapon::Exit()
     if (mCollider)
     {
         mCollider->SetEnable(false);
+        mCollider->GetOwner()->SetEnabled(false);
     }
     if (mTrail) mTrail->SetEnable(false);
-    mColliderAtivated = false;
-    mMovingForward = false; 
-    mPlayerController->SetAnimationSpeed(1.f);
+    
+    //mColliderAtivated = false;
+    //mMovingForward = false; 
 
 }
 
@@ -189,7 +193,7 @@ void MeleeWeapon::OnCollisionEnter(CollisionData* collisionData)
 {
     // pop particles on collision
 
-    if (mColliderAtivated) 
+    if (mCollider->IsEnabled()) 
     {
          if (collisionData->collidedWith->GetTag() == "Enemy")
         {

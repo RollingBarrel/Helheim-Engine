@@ -98,7 +98,7 @@ private:
 
     float mTargetHealth = 1;
 
-    bool mLoading = false;
+    //bool mLoading = false;
     bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;
