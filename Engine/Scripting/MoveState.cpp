@@ -6,6 +6,7 @@
 #include "CameraComponent.h"
 #include "GameObject.h"
 #include "Keys.h"
+#include "Weapon.h"
 #include "PlayerController.h"
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -158,7 +159,12 @@ void MoveState::DoAnimation()
         }
         //LOG("x:%f ", animation);
         mPlayerController->SetAnimation(animation, 0.3f);
-        mPlayerController->SetSpineAnimation(animation, 0.3f);
+        if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+        {
+            mPlayerController->SetSpineAnimation(animation, 0.3f);
+        }
+        
+        
     }
 }
 

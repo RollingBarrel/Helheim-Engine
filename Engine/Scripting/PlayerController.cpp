@@ -63,6 +63,10 @@ CREATE(PlayerController)
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mUnEquippedMeleeGO);
+    MEMBER(MemberType::GAMEOBJECT, mEquippedGunGO);
+    MEMBER(MemberType::GAMEOBJECT, mUnEquippedGunGO);
+    MEMBER(MemberType::GAMEOBJECT, mEquippedSpecialGO);
+    MEMBER(MemberType::GAMEOBJECT, mUnEquippedSpecialGO);
     MEMBER(MemberType::GAMEOBJECT, mMeleeCollider);
     MEMBER(MemberType::GAMEOBJECT, mBatTrail);
     MEMBER(MemberType::GAMEOBJECT, mKatanaTrail);
@@ -160,8 +164,19 @@ void PlayerController::Start()
     mWeapon = mPistol;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
     mSpecialWeapon = nullptr;
-    if (mEquippedMeleeGO)
+
+    if (mEquippedMeleeGO && mUnEquippedMeleeGO)
         mEquippedMeleeGO->SetEnabled(false);
+    
+    if (mEquippedGunGO && mUnEquippedGunGO)
+        mUnEquippedGunGO->SetEnabled(false);
+
+    if (mEquippedSpecialGO && mUnEquippedSpecialGO) 
+    {
+        mEquippedSpecialGO->SetEnabled(false);
+        mUnEquippedSpecialGO->SetEnabled(false);
+    }
+        
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -274,12 +289,13 @@ void PlayerController::CheckInput()
                 mLowerState = mMoveState;
                 break;
             case StateType::IDLE:
-
-                if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
-                    SetSpineAnimation("tIdleRanged", 0.3f);
-                else
-                   SetSpineAnimation("tIdleMelee", 0.3f);
-
+                if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
+                {
+                    if (GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+                        SetSpineAnimation("tIdleRanged", 0.3f);
+                    else
+                        SetSpineAnimation("tIdleMelee", 0.3f);
+                }
                 mLowerState = mIdleState;
                 break;
             case StateType::NONE:
@@ -407,7 +423,7 @@ void PlayerController::SwitchWeapon()
     if (mWeapon->GetType() == Weapon::WeaponType::MELEE) 
     {
         mWeapon = mPistol;
-
+        
         switch (mEnergyType) 
         {
         case EnergyType::BLUE:
@@ -461,6 +477,39 @@ void PlayerController::EquipMeleeWeapon(bool equip)
         {
             mEquippedMeleeGO->SetEnabled(false);
             mUnEquippedMeleeGO->SetEnabled(true);
+        }
+    }
+}
+
+void PlayerController::EquipRangedWeapons(bool equip)
+{
+    if (mUnEquippedGunGO && mEquippedGunGO)
+    {
+        //true if you want to equip, false if unequip
+        if (equip)
+        {
+            mUnEquippedGunGO->SetEnabled(false);
+            mEquippedGunGO->SetEnabled(true);
+        }
+        else
+        {
+            mUnEquippedGunGO->SetEnabled(true);
+            mEquippedGunGO->SetEnabled(false);
+        }
+    }
+
+    if (mSpecialWeapon!= nullptr && mUnEquippedSpecialGO && mEquippedSpecialGO)
+    {
+        //true if you want to equip, false if unequip
+        if (equip)
+        {
+            mUnEquippedSpecialGO->SetEnabled(false);
+            mEquippedSpecialGO->SetEnabled(true);
+        }
+        else
+        {
+            mUnEquippedSpecialGO->SetEnabled(true);
+            mEquippedSpecialGO->SetEnabled(false);
         }
     }
 }
@@ -594,6 +643,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
                 mSpecialWeapon = mMachinegun;
+                mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -604,6 +654,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
                 mSpecialWeapon = mShootgun;
+                mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -626,6 +677,7 @@ void PlayerController::UseEnergy(int energy)
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
+        mEquippedSpecialGO->SetEnabled(false);
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);

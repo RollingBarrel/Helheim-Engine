@@ -47,11 +47,11 @@ void AttackState::Enter()
     mWeapon = mPlayerController->GetWeapon();
     if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
     {
-        mPlayerController->SetSpineAnimation("tAttack_Ranged", 0.01f);
+        mPlayerController->SetSpineAnimation("tAttackRanged", 0.01f);
     }
     else
     {
-        mPlayerController->SetSpineAnimation("tFirstHit", 0.2f);
+        mPlayerController->SetSpineAnimation("tAttackMelee", 0.2f);
         mPlayerController->SetAnimationSpeed(5.0f);
     }
 
@@ -62,11 +62,11 @@ void AttackState::Exit()
 {
     if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
     {
-        mPlayerController->SetSpineAnimation("tIdle_Ranged", 0.01f);
+        mPlayerController->SetSpineAnimation("tIdleRanged", 0.01f);
     }
     else
     {
-        mPlayerController->SetSpineAnimation("tIdle_Melee", 0.01f);
+        mPlayerController->SetSpineAnimation("tIdleMelee", 0.01f);
         mPlayerController->SetAnimationSpeed(1.0f);
     }
 

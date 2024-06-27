@@ -80,6 +80,7 @@ public:
     int GetShieldPercetage() const { return static_cast<int>(mShield / mMaxShield) * 100.0f;}
 
     void EquipMeleeWeapon(bool equip);
+    void EquipRangedWeapons(bool equip);
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
     int GetCurrentEnergy() const { return mCurrentEnergy; }
@@ -183,8 +184,14 @@ private:
     MeleeWeapon* mBat = nullptr;
     MeleeWeapon* mKatana = nullptr;
     MeleeWeapon* mHammer = nullptr;
+
     GameObject* mEquippedMeleeGO = nullptr;
     GameObject* mUnEquippedMeleeGO = nullptr;
+    GameObject* mEquippedGunGO = nullptr;
+    GameObject* mUnEquippedGunGO = nullptr;
+    GameObject* mEquippedSpecialGO = nullptr;
+    GameObject* mUnEquippedSpecialGO = nullptr;
+
     GameObject* mMeleeCollider = nullptr;
     GameObject* mBatTrail = nullptr;
     GameObject* mKatanaTrail = nullptr;

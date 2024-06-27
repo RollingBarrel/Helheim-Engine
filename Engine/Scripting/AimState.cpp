@@ -74,10 +74,14 @@ void AimState::Enter()
 {
     //It can't be done when entering because in that case the others animations would be one frame
     //Maybe with buffers
-    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
-        mPlayerController->SetSpineAnimation("tIdle_Melee", 0.3f);
-    else
-        mPlayerController->SetSpineAnimation("tIdle_Ranged", 0.3f);
+    if(mPlayerController->GetPlayerUpperState()->GetType() != StateType::ATTACK)
+    {
+        if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+            mPlayerController->SetSpineAnimation("tIdleRanged", 0.3f);
+        else
+            mPlayerController->SetSpineAnimation("tIdleMelee", 0.3f);
+    }
+    
 }
 
 void AimState::Exit()
