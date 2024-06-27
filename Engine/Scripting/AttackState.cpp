@@ -67,6 +67,8 @@ StateType AttackState::GetType()
 bool AttackState::IsReady()
 {
     mStateTimer += App->GetDt();
-    if (mStateTimer >= mStateCooldown && mPlayerController->GetWeapon()->GetCurrentAmmo() != 0) return true;
+    if (mStateTimer >= mStateCooldown && 
+       (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE && mPlayerController->GetWeapon()->GetCurrentAmmo() != 0)) 
+        return true;
     return false;
 }
