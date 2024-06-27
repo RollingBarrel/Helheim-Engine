@@ -94,6 +94,7 @@ void GameManager::SetPaused(bool value)
 void GameManager::LoadLevel(const char* LevelName)
 {
     mHudController->mHealthGradualSlider = nullptr; // TODO: needed?
+    EndAudio();
     App->GetScene()->Load(LevelName);
 }
 
