@@ -77,6 +77,7 @@ void GameManager::Update()
     {
         mLoadLevel = false;
         App->GetScene()->Load(mLevelName);
+        return;
     }
 
     HandleAudio();
