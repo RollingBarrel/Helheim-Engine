@@ -56,6 +56,7 @@ public:
 
 
 	float GetAnimationCurrentTime() const { return mCurrentTime; }
+	unsigned int GetAnimationUID() const;
 private:
 
 	//Time in milliseconds

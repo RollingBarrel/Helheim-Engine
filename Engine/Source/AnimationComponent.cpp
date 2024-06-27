@@ -26,11 +26,14 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 
 	SetAnimationsUids(other.mAnimationsUIDs);
 
-	mController = other.mController;
-	mSpineController = other.mSpineController;
+	ResourceAnimation* res = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.GetAnimationUids()[0], Resource::Type::Animation));
+	res->AddReferenceCount();
 
-	mStateMachine = other.mStateMachine;
-	mSpineStateMachine = other.mSpineStateMachine;
+	mController = new AnimationController(res, true);
+	mSpineController = new AnimationController(res, true);
+
+	mStateMachine = new AnimationStateMachine(other.mAnimationsUIDs);
+	mSpineStateMachine = new AnimationStateMachine(other.mAnimationsUIDs);
 
 }
 
