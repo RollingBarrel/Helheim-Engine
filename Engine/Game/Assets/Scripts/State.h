@@ -38,7 +38,7 @@ protected:
 	PlayerController* mPlayerController = nullptr;
 
 	float mStateCooldown = 0.0f;
-	float mStateTimer = 0.0f;
+	float mStateTimer = 10.0f;
 
 private:
 };

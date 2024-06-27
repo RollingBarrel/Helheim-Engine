@@ -9,6 +9,7 @@
 #include "PlayerController.h"
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "DashState.h"
 
 MoveState::MoveState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -22,14 +23,12 @@ MoveState::~MoveState()
 
 StateType MoveState::HandleInput()
 {
-    mDashTimer += App->GetDt();
-    
     if (GameManager::GetInstance()->UsingController())
     {
-        if (mDashTimer > mPlayerController->GetDashCoolDown() 
-            && App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+        if (mPlayerController->GetDashState()->IsReady() && 
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
         {
-            mDashTimer = 0.0f;
+            mPlayerController->GetDashState()->ResetCooldown();
             return StateType::DASH;
         }
 
@@ -43,10 +42,10 @@ StateType MoveState::HandleInput()
     }
     else
     {
-        if (mDashTimer > mPlayerController->GetDashCoolDown() 
-            && App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+        if (mPlayerController->GetDashState()->IsReady() &&
+            App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
         {
-            mDashTimer = 0.0f;
+            mPlayerController->GetDashState()->ResetCooldown();
             return StateType::DASH;
         }
 
