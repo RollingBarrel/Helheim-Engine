@@ -610,7 +610,7 @@ void PlayerController::TakeDamage(float damage)
     App->GetInput()->SetGameControllerRumble(40000, 30000, 100);
 
     float healthRatio = mShield / mMaxShield;
-    //GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
+    GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);    
 
 
     ////Hit Effect
