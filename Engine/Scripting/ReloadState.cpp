@@ -54,28 +54,33 @@ StateType ReloadState::HandleInput()
     }
 
 	mReloadTimer += App->GetDt();
-	if (mReloadTimer > mPlayerController->GetReloadDuration())
+	if (mReloadTimer < mPlayerController->GetReloadDuration())
 	{
 		return StateType::RELOAD;
 	}
+    else
+    {
+        mDoRecharge = true;
+    }
 		
 	return StateType::AIM;
 }
 
 void ReloadState::Update()
 {
-	mPlayerController->Reload();
 }
 
 void ReloadState::Enter()
 {
 	mReloadTimer = 0.0f;
+    mDoRecharge = false;
 
 	mPlayerController->SetSpineAnimation("tReload", 0.1f);
 }
 
 void ReloadState::Exit()
 {
+    if(mDoRecharge)	mPlayerController->Reload();
 }
 
 StateType ReloadState::GetType()

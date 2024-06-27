@@ -18,6 +18,7 @@ public:
 
 	StateType GetType() override;
 
+    bool IsReady() override;
 
 private:
 	Weapon* mWeapon = nullptr;

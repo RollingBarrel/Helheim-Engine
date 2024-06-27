@@ -63,3 +63,10 @@ StateType AttackState::GetType()
 {
     return StateType::ATTACK;
 }
+
+bool AttackState::IsReady()
+{
+    mStateTimer += App->GetDt();
+    if (mStateTimer >= mStateCooldown && mPlayerController->GetWeapon()->GetCurrentAmmo() != 0) return true;
+    return false;
+}

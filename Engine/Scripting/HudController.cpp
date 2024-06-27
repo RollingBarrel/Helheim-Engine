@@ -201,7 +201,7 @@ void HudController::SetSanity()
 
 void HudController::SetAmmo(int ammo)
 {
-   // if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
+   if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
 }
 
 void HudController::SetEnergy(int energy, EnergyType type)
