@@ -110,8 +110,8 @@ void GameManager::SetPaused(bool value)
 
 void GameManager::LoadLevel(const char* LevelName)
 {
+    if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
     EndAudio();
-    mHudController->SetScreen(SCREEN::LOAD, true);
     mLoadLevel = true;
     mLevelName = LevelName;
     Clean();
