@@ -545,6 +545,18 @@ void PlayerController::CheckDebugOptions()
     {
         RechargeBattery(EnergyType::RED);
     }
+    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    }
+    else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+    }
+    else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }
     
 }
 
