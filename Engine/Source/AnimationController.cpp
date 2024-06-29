@@ -12,20 +12,14 @@
 
 #include "Globals.h"
 
-AnimationController::AnimationController(ResourceAnimation* animation,  bool loop) {
+AnimationController::AnimationController(ResourceAnimation* animation) {
 	mCurrentAnimation = animation;
 	mAnimationUID = animation->GetUID();
-	mLoop = loop;
+	mLoop = false;
 
-	mCurrentTime = 0;
+	mCurrentTime = 0.0f;
 	mStartTime = 0.0f;
 	mEndTime = animation->GetDuration();
-}
-
-AnimationController::AnimationController(ResourceAnimation* animation,  bool loop, float startTime, float endTime) : AnimationController(animation, loop)
-{
-	mStartTime = startTime;
-	mEndTime = endTime;
 }
 
 AnimationController::~AnimationController()

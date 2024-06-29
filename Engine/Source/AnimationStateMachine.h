@@ -7,7 +7,6 @@ struct AnimationState
 {
 public:
 	AnimationState(const std::string& stateName) {
-		mClip = "Default";
 		mName = stateName;
 		mStartTime = 0.0f;
 		mEndTime = 10.0f;
@@ -15,7 +14,6 @@ public:
 	};
 
 	std::string mName;
-	std::string mClip;
 	float mStartTime, mEndTime;
 	bool mLoop;
 
@@ -46,11 +44,9 @@ public:
 	void RemoveState(int index);
 
 	int GetStateIndex(const std::string& stateName) const;
-	const std::string& GetStateClip(int index) const;
 	const std::string& GetStateName(int index) const;
 	float GetStateStartTime(int index) const;
 	float GetStateEndTime(int index) const;
-	void SetStateClip(int index, const std::string& clipName);
 	void SetStateName(int index, const std::string& name);
 	void SetStateStartTime(int index, float time);
 	void SetStateEndTime(int index, float time);

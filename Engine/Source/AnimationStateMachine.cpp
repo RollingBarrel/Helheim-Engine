@@ -48,12 +48,6 @@ int AnimationStateMachine::GetStateIndex(const std::string& stateName) const
 	return index;
 }
 
-const std::string& AnimationStateMachine::GetStateClip(int index) const
-{
-	assert(!(index >= mStates.size()));
-	return mStates[index].mClip;
-}
-
 const std::string& AnimationStateMachine::GetStateName(int index) const
 {
 	assert(!(index >= mStates.size()));
@@ -72,11 +66,6 @@ float AnimationStateMachine::GetStateEndTime(int index) const
 	return mStates[index].mEndTime;
 }
 
-void AnimationStateMachine::SetStateClip(int index, const std::string& clipName)
-{
-	assert(!(index >= mStates.size()));
-	mStates[index].mClip = clipName;
-}
 
 void AnimationStateMachine::SetStateName(int index, const std::string& stateName)
 {

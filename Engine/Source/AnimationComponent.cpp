@@ -16,6 +16,7 @@ AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, Com
 {
 	mStateMachine = nullptr;
 	mSpeed = 1.0;
+	mAnimationUID = 0;
 }
 
 AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObject* owner) : Component(owner, ComponentType::ANIMATION), mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
@@ -23,12 +24,13 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 
 	mSpeed = 1.0;
 	mStateMachine = nullptr;
+	mAnimationUID = other.mAnimationUID;
 
 	ResourceAnimation* res = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimationUID, Resource::Type::Animation));
 	res->AddReferenceCount();
 
-	mController = new AnimationController(res, true);
-	mSpineController = new AnimationController(res, true);
+	mController = new AnimationController(res);
+	mSpineController = new AnimationController(res);
 
 	mStateMachine = new AnimationStateMachine(other.mAnimationUID);
 	mSpineStateMachine = new AnimationStateMachine(other.mAnimationUID);
@@ -67,12 +69,12 @@ void AnimationComponent::StartUp()
 	mSpineStateMachine = new AnimationStateMachine(mAnimationUID);
 	
 	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
-	mController = new AnimationController(tmpAnimation, true);
+	mController = new AnimationController(tmpAnimation);
 	mController->SetStartTime(mStateMachine->GetStateStartTime(0));
 	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
 	mStateMachine = new AnimationStateMachine(mAnimationUID);
 
-	mSpineController = new AnimationController(tmpAnimation, true);
+	mSpineController = new AnimationController(tmpAnimation);
 	mSpineController->SetStartTime(mStateMachine->GetStateStartTime(0));
 	mSpineController->SetEndTime(mStateMachine->GetStateEndTime(0));
 	mSpineStateMachine = new AnimationStateMachine(mAnimationUID);
@@ -228,6 +230,8 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 			{
 				float new_clip_start = mStateMachine->GetStateStartTime(stateIndex);
 				float new_clip_end = mStateMachine->GetStateEndTime(stateIndex);
+				bool is_looped = mStateMachine->GetStateLoop(stateIndex);
+				mController->SetLoop(is_looped);
 				mController->SetClipStartTime(new_clip_start);
 				mController->SetStartTime(new_clip_start);
 				mController->SetEndTime(new_clip_end);
@@ -238,8 +242,8 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 			else
 			{
 				ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
-				assert(tmpAnimation, "Error loading resource animation");
-				mController = new AnimationController(tmpAnimation, true);
+				mController = new AnimationController(tmpAnimation);
+				mController->SetLoop(mStateMachine->GetStateLoop(stateIndex));
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
 				mController->SetEndTime(mStateMachine->GetStateEndTime(stateIndex));
 
@@ -299,13 +303,12 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 
 		if (resourceAnimation != 0)
 		{
-			// TODO: Before doing the request check if it is the same Resource (uid) as the current to avoid loading time :)
-			ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
-			assert(tmpAnimation);
 			if (mSpineController)
 			{
 				float new_clip_start = mSpineStateMachine->GetStateStartTime(stateIndex);
 				float new_clip_end = mSpineStateMachine->GetStateEndTime(stateIndex);
+				bool is_looped = mStateMachine->GetStateLoop(stateIndex);
+				mController->SetLoop(is_looped);
 				mSpineController->SetClipStartTime(new_clip_start);
 				mSpineController->SetStartTime(new_clip_start);
 				mSpineController->SetEndTime(new_clip_end);
@@ -315,7 +318,9 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 			}
 			else
 			{
-				mSpineController = new AnimationController(tmpAnimation, true);
+				ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+				mSpineController = new AnimationController(tmpAnimation);
+				mController->SetLoop(mStateMachine->GetStateLoop(stateIndex));
 				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(stateIndex));
 				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(stateIndex));
 
@@ -403,8 +408,8 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 
 
 		ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
-		mController = new AnimationController(tmpAnimation, true);
-		mSpineController = new AnimationController(tmpAnimation, true);
+		mController = new AnimationController(tmpAnimation);
+		mSpineController = new AnimationController(tmpAnimation);
 
 
 		if (data.HasMember("LowerSMUID"))
@@ -444,7 +449,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 				ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
 				mSpineStateMachine = resSM->GetStateMachine();
 				mSpineStateMachine->SetUID(resSM->GetUID());
-				mSpineController = new AnimationController(tmpAnimation, true);
+				mSpineController = new AnimationController(tmpAnimation);
 				mController->SetStartTime(mSpineStateMachine->GetStateStartTime(0));
 				mController->SetEndTime(mSpineStateMachine->GetStateEndTime(0));
 				App->GetResource()->ReleaseResource(upperStateMachine);
@@ -469,8 +474,8 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 			mAnimationUID = animationUids[0];
 		}
 		ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
-		mController = new AnimationController(tmpAnimation, true);
-		mSpineController = new AnimationController(tmpAnimation, true);
+		mController = new AnimationController(tmpAnimation);
+		mSpineController = new AnimationController(tmpAnimation);
 
 		mStateMachine = new AnimationStateMachine(mAnimationUID);
 		
