@@ -76,4 +76,5 @@ private:
 	bool mLoop = true;
 
 	ResourceAnimation* mCurrentAnimation = nullptr;
+	unsigned int mAnimationUID = 0;
 };

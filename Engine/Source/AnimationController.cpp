@@ -14,6 +14,7 @@
 
 AnimationController::AnimationController(ResourceAnimation* animation,  bool loop) {
 	mCurrentAnimation = animation;
+	mAnimationUID = animation->GetUID();
 	mLoop = loop;
 
 	mCurrentTime = 0;
@@ -29,9 +30,9 @@ AnimationController::AnimationController(ResourceAnimation* animation,  bool loo
 
 AnimationController::~AnimationController()
 {
-	if (mCurrentAnimation)
+	if (mAnimationUID != 0)
 	{
-		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
+		App->GetResource()->ReleaseResource(mAnimationUID);
 	}
 }
 
@@ -114,7 +115,7 @@ void AnimationController::EndBlending()
 
 unsigned int AnimationController::GetAnimationUID() const
 {
-	return mCurrentAnimation->GetUID();
+	return mAnimationUID;
 }
 
 void AnimationController::GetTransform(GameObject* model)

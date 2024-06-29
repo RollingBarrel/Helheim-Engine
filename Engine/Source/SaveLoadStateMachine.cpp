@@ -14,7 +14,7 @@ void Importer::StateMachine::Save(const ResourceStateMachine* ourStateMachine)
 
 ResourceStateMachine* Importer::StateMachine::Load(const char* fileName, unsigned int uid)
 {
-	AnimationStateMachine* newSm = new AnimationStateMachine();
+	AnimationStateMachine* newSm = new AnimationStateMachine(uid);
 
 	newSm->LoadResource(fileName); //Check the full path in debug
 	return new ResourceStateMachine(uid, newSm);

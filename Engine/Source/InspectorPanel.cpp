@@ -941,7 +941,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	//bool play = false;
 
 
-	if (component->GetAnimationUids().size() > 0)
+	if (component->GetAnimationUid() != 0)
 	{
 
 		if (ImGui::Button("Play/Pause"))
