@@ -1080,10 +1080,12 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 
 void ModuleOpenGL::Draw()
 {
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
 	//Light lists
 	glUseProgram(mTileLightCullingProgramId);
 	glDispatchCompute((mSceneWidth + 15) / 16, (mSceneHeight + 15) / 16, 1);
 	glUseProgram(0);
+	glPopDebugGroup();
 
 	//Select spot Shadow casters
 	std::map<float, const SpotLightComponent*> orderedLights;
