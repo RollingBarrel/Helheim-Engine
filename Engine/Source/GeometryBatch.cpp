@@ -293,7 +293,7 @@ void GeometryBatch::RecreateSkinningSsbos()
 	glDeleteBuffers(1, &mSkinDispatchIndirectBuffer);
 	glGenBuffers(1, &mSkinDispatchIndirectBuffer);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinDispatchIndirectBuffer);
-	unsigned int size = mNumSkins * sizeof(unsigned int) * 3;
+	unsigned int size = ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment);
 	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
 	mSkinDispatchIndirectBufferData[0] = reinterpret_cast<unsigned int*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
 	for (int i = 1; i < NUM_BUFFERS; ++i)
@@ -578,7 +578,6 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 		RecreatePersistentFrustums();
 	}
 
-
 	const unsigned int idx = mDrawCount % NUM_BUFFERS;
 	for (int i = 0; i < frustums.size(); ++i)
 	{
@@ -619,7 +618,8 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 	glUniform1ui(1, frustums.size());
 	const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, mNumSkins * sizeof(unsigned int) * 3 * idx, mNumSkins * sizeof(unsigned int) * 3);
+	unsigned int sizeIndirectBuffers = ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, sizeIndirectBuffers * idx, sizeIndirectBuffers);
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
 	glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
 	glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);

@@ -2065,5 +2065,8 @@
     <None Include="..\Game\Assets\Shaders\SelectSkins.comp">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\TileLightCulling.comp">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

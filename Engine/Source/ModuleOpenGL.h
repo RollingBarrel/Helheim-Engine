@@ -92,6 +92,7 @@ public:
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
+	unsigned int GetTileLightCUllingProgramId() const { return mTileLightCullingProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
@@ -171,6 +172,7 @@ private:
 	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
 	unsigned int mSelectSkinsProgramId = 0;
+	unsigned int mTileLightCullingProgramId = 0;
 	unsigned int mSelectCommandsProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
@@ -206,6 +208,9 @@ private:
 
 
 	//Lighting uniforms
+	unsigned int pLightListImgTex;
+	unsigned int pLightListImgBuffer;
+	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;
 	std::vector<const PointLightComponent*>mPointLights;

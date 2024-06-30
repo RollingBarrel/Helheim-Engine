@@ -1,4 +1,5 @@
 #define _CRT_SECURE_NO_WARNINGS
+#define MAX_CULL_LIST_LIGHTS 256U
 
 #include "Globals.h"
 #include "Application.h"
@@ -68,7 +69,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	//LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -251,6 +252,8 @@ bool ModuleOpenGL::Init()
 	mSelectCommandsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "SelectSkins.comp";
 	mSelectSkinsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "TileLightCulling.comp";
+	mTileLightCullingProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
@@ -311,11 +314,14 @@ bool ModuleOpenGL::Init()
 
 	mShadowsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 4, sizeof(Shadow) * NUM_SHADOW_MAPS, nullptr);
 
-	//glGenFramebuffers(1, &mShadowsFrameBufferId);
-	//glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
-	//glDrawBuffers(0, nullptr);
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
+	//ListOfLights for the culling
+	glGenTextures(1, &pLightListImgTex);
+	glGenBuffers(1, &pLightListImgBuffer);
+	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	glBindImageTexture(0, pLightListImgTex, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32I);
+	glUseProgram(mTileLightCullingProgramId);
+	glUniform1ui(0, MAX_CULL_LIST_LIGHTS);
+	glUseProgram(0);
 
 	return true;
 }
@@ -488,6 +494,19 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glBindTexture(GL_TEXTURE_2D, depthStencil);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	ResizeGBuffer(width, height);
+	LightCullingLists(width, height);
+}
+
+void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int screeHeight)
+{
+	const unsigned int numTiles = screenWidth * screeHeight / 256;
+	glBindTexture(GL_TEXTURE_BUFFER, pLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, pLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * MAX_CULL_LIST_LIGHTS * sizeof(int), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, pLightListImgBuffer);
+	glUseProgram(mTileLightCullingProgramId);
+	glUniform2ui(1, screenWidth, screeHeight);
+	glUseProgram(0);
 }
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
@@ -1061,6 +1080,11 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 
 void ModuleOpenGL::Draw()
 {
+	//Light lists
+	glUseProgram(mTileLightCullingProgramId);
+	glDispatchCompute((mSceneWidth + 15) / 16, (mSceneHeight + 15) / 16, 1);
+	glUseProgram(0);
+
 	//Select spot Shadow casters
 	std::map<float, const SpotLightComponent*> orderedLights;
 	std::vector<const SpotLightComponent*> chosenLights;
