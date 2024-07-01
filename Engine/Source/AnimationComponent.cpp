@@ -348,17 +348,37 @@ void AnimationComponent::SetSMUID(unsigned int uid)
 	mStateMachine->SetUID(uid);
 }
 
+void AnimationComponent::ReloadGameObjects()
+{
+	mHasSpine = false;
+	mDefaultObjects.clear();
+	mSpineObjects.clear();
+	LoadGameObjects(mOwner);
+}
+
 
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
 	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine"))
 	{
-		mHasSpine = true;
-		mSpineObjects.push_back(current);
-		for (GameObject* child : current->GetChildren())
+		if (mOwner->GetTag() == "Player")
 		{
-			LoadSpineChildren(child);
+			mHasSpine = true;
+			mSpineObjects.push_back(current);
+			for (GameObject* child : current->GetChildren())
+			{
+				LoadSpineChildren(child);
+			}
+		}
+		else
+		{
+			mDefaultObjects.push_back(current);
+			for (GameObject* child : current->GetChildren())
+			{
+				LoadGameObjects(child);
+			}
+
 		}
 	}
 	else 

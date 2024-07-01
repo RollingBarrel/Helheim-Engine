@@ -62,6 +62,8 @@ public:
 	void SetSpineSMUID(unsigned int uid);
 	void SetSMUID(unsigned int uid);
 
+	void ReloadGameObjects();
+
 private:
 
 	void LoadGameObjects(GameObject* current);

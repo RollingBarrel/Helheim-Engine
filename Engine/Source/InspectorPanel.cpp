@@ -140,6 +140,12 @@ void InspectorPanel::Draw(int windowFlags)
 				if (ImGui::Selectable(settingsPanel->GetTags()[i].c_str(), false, 0, ImVec2(100.0f, 20.0f)))
 				{
 					focusedObject->SetTag(settingsPanel->GetTags()[i]);
+
+					AnimationComponent* animComp = reinterpret_cast<AnimationComponent*>(focusedObject->GetComponent(ComponentType::ANIMATION));
+					if (animComp)
+					{
+						animComp->ReloadGameObjects();
+					}
 				}
 				
 				
