@@ -156,7 +156,6 @@ void main()
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
-	//for(uint i = 0; i< 1; ++i)
 	{
 		PointLight pLight = pLights[idx];
 		vec3 mVector = pos - pLight.pos.xyz;

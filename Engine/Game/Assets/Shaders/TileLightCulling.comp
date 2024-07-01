@@ -1,5 +1,4 @@
 #version 460 core
-layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 
 layout(std140, binding = 0) uniform CameraMatrices
 {
@@ -21,10 +20,6 @@ layout(location = 0)uniform uint maxPointLights;
 //layout(location = 1)uniform uvec2 numPixels;
 shared uint pointsInTile;
 
-//const uvec2 numTiles = (numPixels + gl_NumWorkGroups.xy -1) / gl_NumWorkGroups.xy;
-const uint threadCount = gl_WorkGroupSize.x * gl_WorkGroupSize.y * gl_WorkGroupSize.z;
-const uint tileIndex = uint(gl_WorkGroupID.y*gl_NumWorkGroups.x + gl_WorkGroupID.x);
-
 
 float GetLinearZ(float inputDepth)
 {
@@ -42,9 +37,13 @@ vec4 GetFrustumPlane(in vec3 p, in vec3 p1)
 	return vec4(normalize(cross(p,p1)), 0);
 }
 
-
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
 void main()
 {
+	//const uvec2 numTiles = (numPixels + gl_NumWorkGroups.xy -1) / gl_NumWorkGroups.xy;
+	const uint threadCount = gl_WorkGroupSize.x * gl_WorkGroupSize.y * gl_WorkGroupSize.z;
+	const uint tileIndex = uint(gl_WorkGroupID.y*gl_NumWorkGroups.x + gl_WorkGroupID.x);
+
 	if(gl_LocalInvocationIndex == 0)
 	{
 		pointsInTile = 0;
@@ -66,18 +65,18 @@ void main()
 	for(uint i=gl_LocalInvocationIndex;i<maxPointLights; i+=threadCount)
 	{
 		PointLight light = pLights[i];
-		vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;
-		if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.pos.w &&
-			dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
-			dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
-			dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w)
-		{
+		//vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;
+		//if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.pos.w &&
+		//	dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
+		//	dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
+		//	dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w)
+		//{
 			uint index = atomicAdd(pointsInTile, 1);
 			if(index < maxPointLights)
 	        {
 				imageStore(outLightsList, int(tileIndex*maxPointLights+index), ivec4(i));
 	        }
-		}
+		//}
 	}
 	
 	barrier();
