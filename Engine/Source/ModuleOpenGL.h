@@ -208,8 +208,8 @@ private:
 
 
 	//Lighting uniforms
-	unsigned int pLightListImgTex;
-	unsigned int pLightListImgBuffer;
+	unsigned int mPLightListImgTex;
+	unsigned int mPLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;

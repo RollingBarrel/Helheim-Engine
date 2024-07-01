@@ -18,12 +18,12 @@ readonly layout(std430, binding = 0) buffer PointLights
 };
 layout(binding = 0, r32i) uniform iimageBuffer outLightsList;
 layout(location = 0)uniform uint maxPointLights;
-layout(location = 1)uniform uvec2 numPixels;
+//layout(location = 1)uniform uvec2 numPixels;
 shared uint pointsInTile;
 
-const uvec2 numTiles = (numPixels + gl_NumWorkGroups.xy -1) / gl_NumWorkGroups.xy;
+//const uvec2 numTiles = (numPixels + gl_NumWorkGroups.xy -1) / gl_NumWorkGroups.xy;
 const uint threadCount = gl_WorkGroupSize.x * gl_WorkGroupSize.y * gl_WorkGroupSize.z;
-const uint tileIndex = uint(gl_WorkGroupID.y*numTiles.x + gl_WorkGroupID.x);
+const uint tileIndex = uint(gl_WorkGroupID.y*gl_NumWorkGroups.x + gl_WorkGroupID.x);
 
 
 float GetLinearZ(float inputDepth)
@@ -52,10 +52,10 @@ void main()
 	barrier();
 	
 	vec3 farPlanePoints[4];
-	farPlanePoints[0] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(numTiles.x),   float(gl_WorkGroupID.y)/float(numTiles.y)));
-	farPlanePoints[1] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x+1)/float(numTiles.x), float(gl_WorkGroupID.y)/float(numTiles.y)));
-	farPlanePoints[2] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x+1)/float(numTiles.x), float(gl_WorkGroupID.y+1)/float(numTiles.y)));
-	farPlanePoints[3] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(numTiles.x),   float(gl_WorkGroupID.y+1)/float(numTiles.y)));
+	farPlanePoints[0] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(gl_NumWorkGroups.x),   float(gl_WorkGroupID.y)/float(gl_NumWorkGroups.y)));
+	farPlanePoints[1] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x+1)/float(gl_NumWorkGroups.x), float(gl_WorkGroupID.y)/float(gl_NumWorkGroups.y)));
+	farPlanePoints[2] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x+1)/float(gl_NumWorkGroups.x), float(gl_WorkGroupID.y+1)/float(gl_NumWorkGroups.y)));
+	farPlanePoints[3] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(gl_NumWorkGroups.x),   float(gl_WorkGroupID.y+1)/float(gl_NumWorkGroups.y)));
 	
 	vec4 tileFrustumPlanes[4];
 	for (int i = 0; i<4; ++i)
@@ -63,7 +63,7 @@ void main()
 		tileFrustumPlanes[i] = GetFrustumPlane(farPlanePoints[i], farPlanePoints[i&3]);
 	}
 	
-	for(uint i=gl_LocalInvocationIndex;i<numPLights; i+=threadCount)
+	for(uint i=gl_LocalInvocationIndex;i<maxPointLights; i+=threadCount)
 	{
 		PointLight light = pLights[i];
 		vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;

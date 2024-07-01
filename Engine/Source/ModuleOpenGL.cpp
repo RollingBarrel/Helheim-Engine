@@ -1,5 +1,7 @@
 #define _CRT_SECURE_NO_WARNINGS
-#define MAX_CULL_LIST_LIGHTS 256U
+#define CULL_LIST_LIGHTS_SIZE 256U
+#define CULL_LIGHT_TILE_SIZEX 16
+#define CULL_LIGHT_TILE_SIZEY 16
 
 #include "Globals.h"
 #include "Application.h"
@@ -315,12 +317,14 @@ bool ModuleOpenGL::Init()
 	mShadowsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 4, sizeof(Shadow) * NUM_SHADOW_MAPS, nullptr);
 
 	//ListOfLights for the culling
-	glGenTextures(1, &pLightListImgTex);
-	glGenBuffers(1, &pLightListImgBuffer);
+	glGenTextures(1, &mPLightListImgTex);
+	glGenBuffers(1, &mPLightListImgBuffer);
 	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
-	glBindImageTexture(0, pLightListImgTex, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32I);
+	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32I);
 	glUseProgram(mTileLightCullingProgramId);
-	glUniform1ui(0, MAX_CULL_LIST_LIGHTS);
+	glUniform1ui(0, CULL_LIST_LIGHTS_SIZE);
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1ui(2, CULL_LIST_LIGHTS_SIZE);
 	glUseProgram(0);
 
 	return true;
@@ -497,15 +501,17 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	LightCullingLists(width, height);
 }
 
-void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int screeHeight)
+void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int screenHeight)
 {
-	const unsigned int numTiles = screenWidth * screeHeight / 256;
-	glBindTexture(GL_TEXTURE_BUFFER, pLightListImgTex);
-	glBindBuffer(GL_TEXTURE_BUFFER, pLightListImgBuffer);
-	glBufferData(GL_TEXTURE_BUFFER, numTiles * MAX_CULL_LIST_LIGHTS * sizeof(int), nullptr, GL_STATIC_DRAW);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, pLightListImgBuffer);
-	glUseProgram(mTileLightCullingProgramId);
-	glUniform2ui(1, screenWidth, screeHeight);
+	const unsigned int numTiles = ((screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX) * ((screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
+	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mPLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mPLightListImgBuffer);
+	//glUseProgram(mTileLightCullingProgramId);
+	//glUniform2ui(1, screenWidth, screenHeight);
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform2ui(3, (screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 }
 
@@ -1083,7 +1089,8 @@ void ModuleOpenGL::Draw()
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
 	//Light lists
 	glUseProgram(mTileLightCullingProgramId);
-	glDispatchCompute((mSceneWidth + 15) / 16, (mSceneHeight + 15) / 16, 1);
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX-1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY-1) / CULL_LIGHT_TILE_SIZEY, 1);
 	glUseProgram(0);
 	glPopDebugGroup();
 
@@ -1328,6 +1335,9 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
+	glActiveTexture(GL_TEXTURE8);
+	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mPbrLightingPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
