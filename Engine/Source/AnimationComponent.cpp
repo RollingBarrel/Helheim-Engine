@@ -83,10 +83,7 @@ void AnimationComponent::StartUp()
 
 void AnimationComponent::Update()
 {
-	if (mDefaultObjects.size() == 0)
-	{
-		LoadGameObjects(mOwner);
-	}
+
 	if (mIsPlaying)
 	{
 		if (mController)
@@ -421,6 +418,8 @@ void AnimationComponent::Save(JsonObject& obj) const
 void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	Component::Load(data,uidPointerMap);
+
+	ReloadGameObjects();
 
 	if (data.HasMember("AnimationUID"))
 	{

@@ -268,6 +268,15 @@ void ScenePanel::DrawScene()
 						//	}
 						//}
 					}
+
+					//Load animation data
+
+					AnimationComponent* rootAnim = reinterpret_cast<AnimationComponent*>(gameObjectRoot->GetComponent(ComponentType::ANIMATION));
+					if (rootAnim)
+					{
+						rootAnim->ReloadGameObjects();
+					}
+					
 					//Load Skinning data
 					std::vector<std::pair<GameObject*, float4x4>> invBindVec;
 					for (int j = 0; j<skinGos.size(); ++j)
