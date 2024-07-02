@@ -100,7 +100,6 @@ void AnimationSMPanel::DrawNodes()
         ImGui::PopStyleVar();
 
         ImGui::Dummy(ImVec2(96.0, 8.0));
-        ImGui::BulletText("Clip: %s", mStateMachine->GetStateClip(i).c_str());
         if (i == 0)
         {
             ImGui::BulletText("Default");
@@ -179,8 +178,9 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
         }
 
         ImGui::SameLine();
-        if (ImGui::Button("Create new state")) {
-            mStateMachine->AddState(mNewNodeName, "Default");
+        if (ImGui::Button("Create new state")) 
+        {
+            mStateMachine->AddState(mNewNodeName);
             mNewNodeName = "";
         }
 

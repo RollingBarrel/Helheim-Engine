@@ -55,7 +55,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
 				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
-				cAnimation->SetAnimationsUids(rModel.mAnimationUids);
+				cAnimation->SetAnimationUid(rModel.mAnimationUids[0]);
 				cAnimation->StartUp();
 
 			}
@@ -268,6 +268,15 @@ void ScenePanel::DrawScene()
 						//	}
 						//}
 					}
+
+					//Load animation data
+
+					AnimationComponent* rootAnim = reinterpret_cast<AnimationComponent*>(gameObjectRoot->GetComponent(ComponentType::ANIMATION));
+					if (rootAnim)
+					{
+						rootAnim->ReloadGameObjects();
+					}
+					
 					//Load Skinning data
 					std::vector<std::pair<GameObject*, float4x4>> invBindVec;
 					for (int j = 0; j<skinGos.size(); ++j)
