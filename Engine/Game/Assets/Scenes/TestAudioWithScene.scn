@@ -74,9 +74,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.3429248332977297,
+                    -7.654719352722168,
                     0.0804731547832489,
-                    -5.424061298370361
+                    -7.451303958892822
                 ],
                 "Rotation": [
                     0.0,
@@ -265,7 +265,52 @@
                                 "MemberType": 5
                             },
                             {
+                                "VariableName": "mEquippedMeleeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedMeleeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEquippedGunGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedGunGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEquippedSpecialGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedSpecialGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "mMeleeCollider",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBatTrail",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mKatanaTrail",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mHammerTrail",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
@@ -277,11 +322,6 @@
                                 "VariableName": "mGrenadeGO",
                                 "MemberType": 3,
                                 "VariableData": 1261577094
-                            },
-                            {
-                                "VariableName": "mGrenadeAimAreaGO",
-                                "MemberType": 3,
-                                "VariableData": 283441444
                             },
                             {
                                 "VariableName": "mGrenadeExplotionPreviewAreaGO",
@@ -4070,7 +4110,8 @@
                         "Size": [
                             1920.0,
                             1080.0
-                        ]
+                        ],
+                        "ScreenSpace": true
                     },
                     {
                         "ComponentType": 3,
@@ -12379,6 +12420,171 @@
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1121316309,
+                "ParentUID": 1,
+                "Name": "BattleAreas",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1226165535,
+                "ParentUID": 1121316309,
+                "Name": "BattleArea1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.4203829765319826,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            2.9000000953674318,
+                            4.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "Spawner",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mSpawnerGO1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mMaxSimulNumEnemies",
+                                "MemberType": 0,
+                                "VariableData": 2
+                            },
+                            {
+                                "VariableName": "mTotalNumEnemies",
+                                "MemberType": 0,
+                                "VariableData": 4
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1101973766,
+                "ParentUID": 1,
+                "Name": "Trap",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            3.0,
+                            3.0,
+                            3.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ElectricTrapController",
+                        "ScriptVariables": []
                     }
                 ]
             }

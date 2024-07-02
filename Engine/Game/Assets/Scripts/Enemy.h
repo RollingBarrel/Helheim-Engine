@@ -14,6 +14,7 @@ enum class EnemyType : int
 	COUNT
 };
 
+
 class Enemy : public Script
 {
 	public:
@@ -28,10 +29,14 @@ class Enemy : public Script
 		virtual bool IsMoving();
 		virtual void Reset();
 
+		void AddFootStepAudio(GameObject* audio);
+
+		// DEBUFF
+		virtual void GetParalyzed(float percentage);
+		virtual void GetParalysisCured(float percentage);
+
 		virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
-		void AddFootStepAudio(GameObject* audio);
-		
 	protected:
 		bool Delay(float delay);
 		bool IsPlayerInRange(float range);		
@@ -46,10 +51,18 @@ class Enemy : public Script
 		float mRotationSpeed = 1.0f;
 		float mActivationRange = 250.0f;
 		float mChaseDelay = 1.25f;
-		bool mBeAttracted = false;
+
 		GameObject* mPlayer = nullptr;
 		AnimationComponent* mAnimationComponent = nullptr;
 		AIAgentComponent* mAiAgentComponent = nullptr;
+
+		// DEBUFF
+		bool mBeAttracted = false;
+
+		bool mIsParalyzed = false;
+		const float mParalyzedTimer = 5.0f;
+		float mCurrentParalyzedTimer = mParalyzedTimer;
+		float mParalysisSeverityLevel = 1.0f;
 
 	private:
 		void ActivateEnemy();

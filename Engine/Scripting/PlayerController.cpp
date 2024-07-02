@@ -233,6 +233,9 @@ void PlayerController::Update()
     // Rotate the player to mouse
     HandleRotation();
 
+    // Buff, Debuff timers...
+    CheckOtherTimers();
+
     CheckDebugOptions();
 
     //Hit Effect
@@ -270,7 +273,26 @@ void PlayerController::StateMachine()
     mUpperState->Update();
 }
 
-void PlayerController::CheckInput() 
+void PlayerController::GetParalyzed(float percentage)
+{
+    if (!mIsParalyzed)
+    {
+        mIsParalyzed = true;
+        mPlayerSpeed *= percentage;
+        mCurrentParalyzedTimer = mParalyzedTimer;
+        mParalysisSeverityLevel = percentage;
+    }
+}
+
+void PlayerController::GetParalysisCured(float percentage)
+{
+    mIsParalyzed = false;
+    mPlayerSpeed /= percentage;
+
+    mParalysisSeverityLevel = 1.0f;
+}
+
+void PlayerController::CheckInput()
 {
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
@@ -571,6 +593,23 @@ void PlayerController::ThrowGrenade()
     {
         mGrenade->SetDestination(mGrenadePosition);
     }  
+}
+
+void PlayerController::CheckOtherTimers()
+{
+
+    // Paralizys
+    if (mIsParalyzed)
+    {
+        if (mCurrentParalyzedTimer >= 0)
+        {
+            mCurrentParalyzedTimer -= App->GetDt();
+        }
+        else {
+            GetParalysisCured(mParalysisSeverityLevel);
+            mCurrentParalyzedTimer = mParalyzedTimer;
+        }
+    }
 }
 
 bool PlayerController::CanReload() const

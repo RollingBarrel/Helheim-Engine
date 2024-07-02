@@ -41,6 +41,17 @@ void Enemy::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
+    if (mIsParalyzed)
+    {
+        if (mCurrentParalyzedTimer >= 0)
+        {
+            mCurrentParalyzedTimer -= App->GetDt();
+        }
+        else {
+            GetParalysisCured(mParalysisSeverityLevel);
+            mCurrentParalyzedTimer = mParalyzedTimer;
+        }
+    }
     if (mDeath)
     {
         Death();
@@ -139,8 +150,6 @@ void Enemy::AddFootStepAudio(GameObject* audio)
     }
 }
 
-
-
 void Enemy::PushBack() 
 {
     float3 direction = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
@@ -157,6 +166,23 @@ void Enemy::Reset()
 {
     mDeath = false;
     mHealth = mMaxHealth;
+}
+
+void Enemy::GetParalyzed(float percentage)
+{
+    mIsParalyzed = true;
+    mSpeed *= percentage;
+    mCurrentParalyzedTimer = mParalyzedTimer;
+    mParalysisSeverityLevel = percentage;
+}
+
+void Enemy::GetParalysisCured(float percentage)
+{    
+    mIsParalyzed = false;
+    mSpeed /= percentage;
+    mCurrentParalyzedTimer = 0;
+
+    mParalysisSeverityLevel = 1.0f;
 }
 
 void Enemy::DropItem()

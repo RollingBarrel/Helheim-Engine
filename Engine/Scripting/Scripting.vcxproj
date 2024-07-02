@@ -176,6 +176,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h" />
@@ -212,7 +213,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="ElectricTrapController.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>

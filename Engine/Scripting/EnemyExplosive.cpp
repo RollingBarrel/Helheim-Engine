@@ -16,7 +16,7 @@ CREATE(EnemyExplosive)
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
 
-    MEMBER(MemberType::FLOAT, mSpeed);;
+    MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mChargingDistance);
     MEMBER(MemberType::FLOAT, mExplosionDistance);
     MEMBER(MemberType::FLOAT, mExplosionDamage);
@@ -92,24 +92,24 @@ void EnemyExplosive::Idle()
 
 void EnemyExplosive::Chase()
 {
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-        mAnimationComponent->SendTrigger("tMovement", 0.2f);
-        if (mAiAgentComponent)
-        {
+    mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+    mAnimationComponent->SendTrigger("tMovement", 0.2f);
+    if (mAiAgentComponent)
+    {
            
-            float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
-            direction.y = 0;
-            direction.Normalize();
-            float angle = std::atan2(direction.x, direction.z);
-            mGameObject->SetWorldRotation(float3(0, angle, 0));
-            mAiAgentComponent->MoveAgent(mSpeed);
-        }
+        float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
+        direction.y = 0;
+        direction.Normalize();
+        float angle = std::atan2(direction.x, direction.z);
+        mGameObject->SetWorldRotation(float3(0, angle, 0));
+        mAiAgentComponent->MoveAgent(mSpeed);
+    }
         
-        if (IsPlayerInRange(mChargingDistance))
-        {
-            mCurrentState = EnemyState::CHARGING;
-            mExplosionWarningGO->SetEnabled(true);
-        }
+    if (IsPlayerInRange(mChargingDistance))
+    {
+        mCurrentState = EnemyState::CHARGING;
+        mExplosionWarningGO->SetEnabled(true);
+    }
 }
 
 void EnemyExplosive::TakeDamage(float damage)
