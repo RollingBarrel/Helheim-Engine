@@ -179,7 +179,7 @@ void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 
 	for (AnimationState state : GetStates())
 	{
-		size += sizeof(float) * 2 + sizeof(unsigned int) + sizeof(bool); // float (mStartTime, mEndTime) : int(name len, clip index) : bool(mLoop)
+		size += sizeof(float) * 2 + sizeof(unsigned int) + sizeof(bool); // float (mStartTime, mEndTime) : int(name len) : bool(mLoop)
 		size += sizeof(char) * (state.mName.length() + 1); // char (mName)
 	}
 
