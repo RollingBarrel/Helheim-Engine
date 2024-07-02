@@ -304,8 +304,8 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 			{
 				float new_clip_start = mSpineStateMachine->GetStateStartTime(stateIndex);
 				float new_clip_end = mSpineStateMachine->GetStateEndTime(stateIndex);
-				bool is_looped = mStateMachine->GetStateLoop(stateIndex);
-				mController->SetLoop(is_looped);
+				bool is_looped = mSpineStateMachine->GetStateLoop(stateIndex);
+				mSpineController->SetLoop(is_looped);
 				mSpineController->SetClipStartTime(new_clip_start);
 				mSpineController->SetStartTime(new_clip_start);
 				mSpineController->SetEndTime(new_clip_end);
@@ -317,7 +317,7 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 			{
 				ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
 				mSpineController = new AnimationController(tmpAnimation);
-				mController->SetLoop(mStateMachine->GetStateLoop(stateIndex));
+				mSpineController->SetLoop(mSpineStateMachine->GetStateLoop(stateIndex));
 				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(stateIndex));
 				mSpineController->SetEndTime(mSpineStateMachine->GetStateEndTime(stateIndex));
 
