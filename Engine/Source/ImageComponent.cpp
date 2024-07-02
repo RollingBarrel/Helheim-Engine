@@ -29,7 +29,7 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 	FillVBO();
 	CreateVAO();
 
-	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+	mCanvas = (CanvasComponent*)(FindCanvasOnParents(GetOwner())->GetComponent(ComponentType::CANVAS));
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
@@ -38,7 +38,7 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	CreateVAO();
 
     SetImage(mResourceId);
-	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
+	GameObject* canvas = FindCanvasOnParents(GetOwner());
 	if (canvas!= nullptr)
 	mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
 
@@ -58,6 +58,7 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 
 	mImage = original.mImage;
 	mResourceId = original.mResourceId;
+	SetImage(mResourceId);
 	mFileName = original.mFileName;
 
 	mColor = original.mColor;
@@ -67,10 +68,14 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	mHasDiffuse = original.mHasDiffuse;
 	mMantainRatio = original.mMantainRatio;
 
-	mQuadVBO = original.mQuadVBO;
-	mQuadVAO = original.mQuadVAO;
+	//mQuadVBO = original.mQuadVBO;
+	//mQuadVAO = original.mQuadVAO;
 
-	mCanvas = original.mCanvas;
+	GameObject* canvas = FindCanvasOnParents(GetOwner());
+	if (canvas != nullptr)
+		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	else
+		canvas = nullptr;
 }
 
 ImageComponent:: ~ImageComponent() 
