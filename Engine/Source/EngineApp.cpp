@@ -108,7 +108,10 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	editor->SaveSettings();
+	if (!IsPlayMode())
+	{
+		editor->SaveSettings();
+	}
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)

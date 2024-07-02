@@ -183,8 +183,6 @@ void EnemyRobotRange::RangeAttack()
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
-
-
 }
 
 void EnemyRobotRange::Death()
