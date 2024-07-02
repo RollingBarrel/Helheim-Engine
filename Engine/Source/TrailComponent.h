@@ -15,9 +15,11 @@ class ENGINE_API TrailComponent : public Component
 public:
 	struct TrailPoint
 	{
+		TrailPoint(float3 position, float3 direction, float time, float distanceUV);
 		float3 position;
 		float3 direction;
-		float creationTime = 0.0f;
+		float creationTime;
+		float distanceUV;
 	};
 	explicit TrailComponent(GameObject* ownerGameObject);
 	TrailComponent(const TrailComponent& original, GameObject* owner);
@@ -30,6 +32,9 @@ public:
 	void Draw() const;
 	void Enable() override;
 	void Disable() override;
+
+	void AddFirstTrailPoint();
+	void RemoveLastTrailPoint();
 
 
 	Component* Clone(GameObject* owner) const override;

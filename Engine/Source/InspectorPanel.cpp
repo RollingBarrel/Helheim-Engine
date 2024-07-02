@@ -1940,6 +1940,11 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 
 		}
 		ImGui::Columns(1);
+
+		ImGui::Text("UV Scroll");
+		ImGui::SameLine();
+		ImGui::DragFloat("##UVScroll", &(component->mUVScroll), 1.0f, 0.0f);
+
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
 		bool updated = ImGui::GradientEditor(component->mGradient, draggingMark, selectedMark);
