@@ -21,8 +21,10 @@ BoxColliderComponent::~BoxColliderComponent()
 {
 	if (mRigidBody)
 	{
-		App->GetPhysics()->RemoveBoxRigidbody(this);
+			App->GetPhysics()->RemoveBoxRigidbody(this);
+			mRigidBody = nullptr;
 	}
+	delete mCollider;
 }
 
 void BoxColliderComponent::Init()
@@ -31,7 +33,6 @@ void BoxColliderComponent::Init()
 	{
 		App->GetPhysics()->CreateBoxRigidbody(this);
 	}
-
 	ComputeBoundingBox();
 }
 
@@ -72,10 +73,8 @@ void BoxColliderComponent::ComputeBoundingBox()
 	float3 sizeIncrement = mSize * 0.5f;
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
-	// TODO: Reacer esto despues del refactor de transforms
 	float3 position = mOwner->GetWorldPosition();
 	Quat rotation = mOwner->GetWorldRotation();
-	//---------------
 	mWorldOBB.Transform(float4x4(rotation, position));
 	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
@@ -135,7 +134,6 @@ void BoxColliderComponent::Load(const JsonObject& data, const std::unordered_map
 	mSize = float3(size);
 
 	mColliderType = (ColliderType)data.GetInt("ColliderType");
-
 	mFreezeRotation = data.GetBool("FreezeRotation");
 
 	ComputeBoundingBox();
@@ -150,4 +148,5 @@ void BoxColliderComponent::Enable()
 void BoxColliderComponent::Disable()
 {
 	App->GetPhysics()->RemoveBoxRigidbody(this);
+	mRigidBody = nullptr;
 }
