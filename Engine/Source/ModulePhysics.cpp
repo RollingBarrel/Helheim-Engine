@@ -30,9 +30,17 @@ bool ModulePhysics::Init()
 
 bool ModulePhysics::CleanUp()
 {
+	for (unsigned int i = 0; i < mWorld->getNumCollisionObjects(); ++i)
+	{
+		btRigidBody* rigidBody = reinterpret_cast<btRigidBody*>(mWorld->getCollisionObjectArray()[i]);
+		delete rigidBody->getMotionState();
+		delete rigidBody->getCollisionShape();
+		mWorld->removeCollisionObject(rigidBody);
+		delete rigidBody;
+	}
+	
 	delete mWorld;
 	delete mBroadPhase;
-	
 	delete mConstraintSolver;
 	delete mDispatcher;
 	delete mCollisionConfiguration;
@@ -42,18 +50,21 @@ bool ModulePhysics::CleanUp()
 
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	if (App->IsPlayMode())
+	for (btRigidBody* rigidBody : mRigidBodiesToRemove)
 	{
-		for (btRigidBody* rigidBody : mRigidBodiesToRemove)
-		{
-			mWorld->removeCollisionObject(rigidBody);
-			btCollisionShape* shape = rigidBody->getCollisionShape();
-			delete shape;
-			delete rigidBody;
-		}
-		mRigidBodiesToRemove.clear();
+		mWorld->removeCollisionObject(rigidBody);
+		btCollisionShape* shape = rigidBody->getCollisionShape();
+		delete shape;
+		delete rigidBody;
+	}
+	mRigidBodiesToRemove.clear();
+
+	LOG("NUM COLLISION OBJECTS IN M_WORLD: %i", mWorld->getNumCollisionObjects());
+	LOG("NUM COLLISION OBJECTS BALANCE (ENABLED COLLIDERS): %i", collidersBalance);
 
 
+	if (App->IsPlayMode())
+	{	
 		mWorld->stepSimulation(dt, 15);
 
 		int numManifolds = mWorld->getDispatcher()->getNumManifolds();
@@ -83,7 +94,6 @@ update_status ModulePhysics::PreUpdate(float dt)
 			}
 		}
 	}
-	
 	return UPDATE_CONTINUE;
 }
 
@@ -154,9 +164,7 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
 				}
 			}
 		}
-
 		hit = closestHit;
-
 	}
 	else
 	{
@@ -168,6 +176,8 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
+	collidersBalance++;
+
 	// Set up the motion state for the box collider
 	boxCollider->SetMotionState(new MotionState(boxCollider, boxCollider->GetCenter(), boxCollider->GetFreezeRotation()));
 
@@ -201,6 +211,8 @@ void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 
 void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
 {
+	collidersBalance--;
+
 	if (boxCollider->GetRigidBody())
 	{
 		mRigidBodiesToRemove.push_back(boxCollider->GetRigidBody());
@@ -210,8 +222,17 @@ void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
 
 void ModulePhysics::UpdateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	RemoveBoxRigidbody(boxCollider);
-	CreateBoxRigidbody(boxCollider);
+	btTransform transform;
+	transform.setIdentity();
+
+	btVector3 position(boxCollider->GetOwner()->GetWorldPosition().x, boxCollider->GetOwner()->GetWorldPosition().y, boxCollider->GetOwner()->GetWorldPosition().z);
+	transform.setOrigin(position);
+
+	btQuaternion rotation(boxCollider->GetOwner()->GetWorldRotation().x, boxCollider->GetOwner()->GetWorldRotation().y, boxCollider->GetOwner()->GetWorldRotation().z, boxCollider->GetOwner()->GetWorldRotation().w);
+	transform.setRotation(rotation);
+
+	boxCollider->GetRigidBody()->setWorldTransform(transform);
+	boxCollider->GetMotionState()->setWorldTransform(transform);
 }
 
 btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, float mass)
