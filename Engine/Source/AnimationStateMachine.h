@@ -9,7 +9,7 @@ public:
 	AnimationState(const std::string& stateName) {
 		mName = stateName;
 		mStartTime = 0.0f;
-		mEndTime = 10.0f;
+		mEndTime = 100.0f; 
 		mLoop = true;
 	};
 

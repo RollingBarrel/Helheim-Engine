@@ -13,6 +13,7 @@ AnimationStateMachine::AnimationStateMachine(unsigned int animationUid = 0)
 {
 	mAnimationUID = animationUid;
 	mStates.push_back(AnimationState(std::string("Default")));
+	mStates[0].mLoop = true;
 }
 
 
