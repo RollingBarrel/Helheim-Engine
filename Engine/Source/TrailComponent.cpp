@@ -219,9 +219,8 @@ void TrailComponent::Update()
 {
     if (IsEnabled())
     {
-        float3 position, scale;
-        Quat rotationQ;
-        mOwner->GetWorldTransform().Decompose(position, rotationQ, scale);
+        float3 position = mOwner->GetWorldPosition();
+        Quat rotationQ = mOwner->GetWorldRotation();
         const float3 lastPosition = mPoints.begin()->position;
 
         const float dposition = position.DistanceSq(lastPosition);
