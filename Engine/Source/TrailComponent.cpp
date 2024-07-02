@@ -34,6 +34,7 @@ mFixedDirection(original.mFixedDirection), mTrailTime(original.mTrailTime), mDir
 TrailComponent::~TrailComponent()
 {
     App->GetOpenGL()->RemoveTrail(this);
+    App->GetResource()->ReleaseResource(mResourceId);
 }
 
 Component* TrailComponent::Clone(GameObject* owner) const
@@ -253,6 +254,7 @@ float3 TrailComponent::RotationToVector(Quat rotation) const
 
 void TrailComponent::SetImage(unsigned int resourceId)
 {
+    App->GetResource()->ReleaseResource(mResourceId);
     mResourceId = resourceId;
     auto image = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
     mImage = image;

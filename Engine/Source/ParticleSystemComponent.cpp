@@ -35,6 +35,7 @@ mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSi
 ParticleSystemComponent::~ParticleSystemComponent() 
 {
     App->GetOpenGL()->RemoveParticleSystem(this);
+    App->GetResource()->ReleaseResource(mResourceId);
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
     for (auto particle : mParticles)
@@ -219,6 +220,7 @@ void ParticleSystemComponent::Update()
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)
 {
+    App->GetResource()->ReleaseResource(mResourceId);
     mResourceId = resourceId;
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
