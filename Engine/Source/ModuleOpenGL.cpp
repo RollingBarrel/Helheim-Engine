@@ -325,6 +325,7 @@ bool ModuleOpenGL::Init()
 	glUniform1ui(0, CULL_LIST_LIGHTS_SIZE);
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(2, CULL_LIST_LIGHTS_SIZE);
+	glUniform2ui(4, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 
 	return true;
@@ -528,7 +529,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 
 			glUseProgram(mPbrLightingPassProgramId);
 			//world transform is the invViewMatrix
-			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
+			//glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
 			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
 			glUseProgram(0);
 		}
@@ -538,7 +539,7 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
 
 			glUseProgram(mPbrLightingPassProgramId);
-			glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
+			//glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
 			glUniform3fv(1, 1, float3::zero.ptr());
 			glUseProgram(0);
 		}
@@ -1046,9 +1047,9 @@ void ModuleOpenGL::UpdatePointLightInfo(const PointLightComponent& cPointLight)
 {
 	for (int i = 0; i < mPointLights.size(); ++i)
 	{
-		if (mPointLights[i] == &cPointLight)
+		if (mPointLights[i]->GetID() == cPointLight.GetID())
 		{
-			mPointsBuffer->UpdateData(&mPointLights[i]->GetData(), sizeof(mPointLights[i]->GetData()), 16 + sizeof(mPointLights[i]->GetData()) * i);
+			mPointsBuffer->UpdateData(&cPointLight.GetData(), sizeof(cPointLight.GetData()), 16 + sizeof(cPointLight.GetData()) * i);
 			return;
 		}
 	}

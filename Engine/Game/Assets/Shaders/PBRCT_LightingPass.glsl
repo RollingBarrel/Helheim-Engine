@@ -2,12 +2,12 @@
 #define PI 3.1415926535897932384626433832795
 #extension GL_ARB_bindless_texture : require
 
-layout(location = 0)uniform mat4 invView;
-layout(std140, binding = 0) uniform CameraMatrices
-{
-	mat4 view;
-	mat4 proj;
-};
+//layout(location = 0)uniform mat4 invView;
+//layout(std140, binding = 0) uniform CameraMatrices
+//{
+//	mat4 view;
+//	mat4 proj;
+//};
 //float GetLinearZ(float inputDepth)
 //{
 //	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
@@ -84,6 +84,7 @@ uniform uint numLevels;
 layout(binding = 8) uniform isamplerBuffer pointLightList;
 layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
+layout(location = 4) uniform uvec2 tileSize;
 
 vec3 cDif;
 vec3 cSpec;
@@ -152,7 +153,7 @@ void main()
 	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
 	//Point lights
-	const uvec2 currTile = uvec2(gl_FragCoord.xy) / numTiles;
+	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)

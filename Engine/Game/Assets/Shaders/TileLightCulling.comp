@@ -57,26 +57,26 @@ void main()
 	farPlanePoints[3] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(gl_NumWorkGroups.x),   float(gl_WorkGroupID.y+1)/float(gl_NumWorkGroups.y)));
 	
 	vec4 tileFrustumPlanes[4];
-	for (int i = 0; i<4; ++i)
+	for (uint i = 0; i<4; ++i)
 	{
-		tileFrustumPlanes[i] = GetFrustumPlane(farPlanePoints[i], farPlanePoints[i&3]);
+		tileFrustumPlanes[i] = GetFrustumPlane(farPlanePoints[i], farPlanePoints[(i+1)&3]);
 	}
 	
-	for(uint i=gl_LocalInvocationIndex;i<maxPointLights; i+=threadCount)
+	for(uint i=gl_LocalInvocationIndex;i<numPLights; i+=threadCount)
 	{
 		PointLight light = pLights[i];
-		//vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;
-		//if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.pos.w &&
-		//	dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
-		//	dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
-		//	dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w)
-		//{
+		vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;
+		if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.pos.w &&
+			dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
+			dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
+			dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w)
+		{
 			uint index = atomicAdd(pointsInTile, 1);
 			if(index < maxPointLights)
 	        {
 				imageStore(outLightsList, int(tileIndex*maxPointLights+index), ivec4(i));
 	        }
-		//}
+		}
 	}
 	
 	barrier();
