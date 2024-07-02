@@ -286,9 +286,6 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 		AnimationTransition transition = AnimationTransition(std::string(""), std::string(""), std::string(""));
 		for (unsigned int i = 0; i < numStates; ++i)
 		{
-			unsigned int clipPos = 0;
-			memcpy(&clipPos, cursor, sizeof(unsigned int));
-			cursor += sizeof(unsigned int);
 
 			unsigned int namelen = 0;
 			memcpy(&namelen, cursor, sizeof(unsigned int));
