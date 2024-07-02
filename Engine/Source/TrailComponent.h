@@ -60,6 +60,8 @@ private:
 	float3 mDirection = float3::unitY; // Fixed direction for the normal of the trailPoints
 	float mTrailTime = 0.0f;
 	bool mFixedDirection = false;
+
+	bool mIsUVScrolling = true;
 	float mUVScroll = 1.0f;
 
 	ResourceTexture* mImage = nullptr;

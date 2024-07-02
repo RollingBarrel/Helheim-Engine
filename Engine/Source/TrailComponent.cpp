@@ -161,23 +161,29 @@ void TrailComponent::Draw() const
             }
             float3 topPointPos = position + direction * std::max(0.0f, mWidth.CalculateValue(deltaPos, mWidth.GetValue().GetInitialValue()) * 0.5f);
             float3 botPointPos = position - direction * std::max(0.0f, mWidth.CalculateValue(deltaPos, mWidth.GetValue().GetInitialValue()) * 0.5f);
-            //float2 topPointTexCoord = float2(deltaPos, 1);
-            //float2 botPointTexCoord = float2(deltaPos, 0);
+
             float2 topPointTexCoord;
             float2 botPointTexCoord;
-            if (i == 0)
+            if (mIsUVScrolling) 
             {
-                float dist = mPoints[0].distanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].position);
-                topPointTexCoord = float2(dist, 1);
-                botPointTexCoord = float2(dist, 0);
-
+                if (i == 0)
+                {
+                    float dist = mPoints[0].distanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].position) * mUVScroll;
+                    topPointTexCoord = float2(dist, 1);
+                    botPointTexCoord = float2(dist, 0);
+                }
+                else
+                {
+                    topPointTexCoord = float2(mPoints[i - 1].distanceUV, 1);
+                    botPointTexCoord = float2(mPoints[i - 1].distanceUV, 0);
+                }
             }
             else
             {
-                topPointTexCoord = float2(mPoints[i - 1].distanceUV, 1);
-                botPointTexCoord = float2(mPoints[i - 1].distanceUV, 0);
-
+                topPointTexCoord = float2(deltaPos, 1);
+                botPointTexCoord = float2(deltaPos, 0);
             }
+
 
             float4 color = mGradient.CalculateColor(deltaPos);
 
@@ -299,6 +305,7 @@ void TrailComponent::Save(JsonObject& obj) const
     obj.AddFloat("MaxLifeTime", mMaxLifeTime);
     obj.AddFloat("UVScroll", mUVScroll);
     obj.AddBool("IsFixedDirection", mFixedDirection);
+    obj.AddBool("IsUVScrolling", mIsUVScrolling);
     obj.AddFloats("Direction", mDirection.ptr(), 3);
 
     JsonObject width = obj.AddNewJsonObject("Width");
@@ -319,8 +326,9 @@ void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsig
     if (data.HasMember("MaxPoints")) mMaxPoints = data.GetInt("MaxPoints");
     if (data.HasMember("MinDistance")) mMinDistance = data.GetFloat("MinDistance");    
     if (data.HasMember("MaxLifeTime")) mMaxLifeTime = data.GetFloat("MaxLifeTime");
-    if (data.HasMember("IsFixedDirection")) mFixedDirection = data.GetBool("IsFixedDirection");
     if (data.HasMember("UVScroll")) mUVScroll = data.GetFloat("UVScroll");
+    if (data.HasMember("IsFixedDirection")) mFixedDirection = data.GetBool("IsFixedDirection");
+    if (data.HasMember("IsUVScrolling")) mIsUVScrolling = data.GetBool("IsUVScrolling");
     if (data.HasMember("Direction")) 
     {
         float dir[3];
