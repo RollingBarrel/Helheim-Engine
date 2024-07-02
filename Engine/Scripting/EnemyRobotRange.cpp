@@ -12,6 +12,7 @@
 #include "PoolManager.h"
 #include "Bullet.h"
 #include "TrailComponent.h"
+
 CREATE(EnemyRobotRange) {
     CLASS(owner);
     SEPARATOR("STATS");
@@ -31,7 +32,6 @@ CREATE(EnemyRobotRange) {
 EnemyRobotRange::EnemyRobotRange(GameObject* owner) : Enemy(owner)
 {
 }
-
 
 void EnemyRobotRange::Start()
 {
@@ -169,12 +169,8 @@ bool EnemyRobotRange::IsMoving()
     return (mCurrentState == EnemyState::CHASE);
 }
 
-
-
-
 void EnemyRobotRange::RangeAttack()
 {
-    LOG("I NEED MORE BOOLETS")
     float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
@@ -192,7 +188,6 @@ void EnemyRobotRange::Death()
     {
         Enemy::Death();
     }
-
 }
 
 void EnemyRobotRange::Reset()

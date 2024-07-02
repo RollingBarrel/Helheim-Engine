@@ -14,6 +14,11 @@ ModulePhysics::ModulePhysics()
 
 ModulePhysics::~ModulePhysics()
 {
+	delete mWorld;
+	delete mBroadPhase;
+	delete mConstraintSolver;
+	delete mDispatcher;
+	delete mCollisionConfiguration;
 }
 
 bool ModulePhysics::Init()
@@ -30,39 +35,11 @@ bool ModulePhysics::Init()
 
 bool ModulePhysics::CleanUp()
 {
-	for (unsigned int i = 0; i < mWorld->getNumCollisionObjects(); ++i)
-	{
-		btRigidBody* rigidBody = reinterpret_cast<btRigidBody*>(mWorld->getCollisionObjectArray()[i]);
-		delete rigidBody->getMotionState();
-		delete rigidBody->getCollisionShape();
-		mWorld->removeCollisionObject(rigidBody);
-		delete rigidBody;
-	}
-	
-	delete mWorld;
-	delete mBroadPhase;
-	delete mConstraintSolver;
-	delete mDispatcher;
-	delete mCollisionConfiguration;
-	
 	return true;
 }
 
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	for (btRigidBody* rigidBody : mRigidBodiesToRemove)
-	{
-		mWorld->removeCollisionObject(rigidBody);
-		btCollisionShape* shape = rigidBody->getCollisionShape();
-		delete shape;
-		delete rigidBody;
-	}
-	mRigidBodiesToRemove.clear();
-
-	LOG("NUM COLLISION OBJECTS IN M_WORLD: %i", mWorld->getNumCollisionObjects());
-	LOG("NUM COLLISION OBJECTS BALANCE (ENABLED COLLIDERS): %i", collidersBalance);
-
-
 	if (App->IsPlayMode())
 	{	
 		mWorld->stepSimulation(dt, 15);
@@ -176,8 +153,6 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	collidersBalance++;
-
 	// Set up the motion state for the box collider
 	boxCollider->SetMotionState(new MotionState(boxCollider, boxCollider->GetCenter(), boxCollider->GetFreezeRotation()));
 
@@ -211,13 +186,11 @@ void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 
 void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	collidersBalance--;
-
-	if (boxCollider->GetRigidBody())
-	{
-		mRigidBodiesToRemove.push_back(boxCollider->GetRigidBody());
-		boxCollider->SetRigidBody(nullptr);
-	}
+	btRigidBody* rigidBody = boxCollider->GetRigidBody();
+	delete rigidBody->getMotionState();
+	delete rigidBody->getCollisionShape();
+	mWorld->removeCollisionObject(rigidBody);
+	delete rigidBody;
 }
 
 void ModulePhysics::UpdateBoxRigidbody(BoxColliderComponent* boxCollider)

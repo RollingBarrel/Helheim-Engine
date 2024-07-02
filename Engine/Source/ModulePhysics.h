@@ -58,8 +58,5 @@ private:
 	std::vector<btRigidBody*> mRigidBodiesToRemove;
 
 	float mGravity = -9.81f;
-
-	int collidersBalance = 0;
-
 };
 
