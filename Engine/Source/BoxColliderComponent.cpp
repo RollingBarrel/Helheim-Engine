@@ -21,18 +21,15 @@ BoxColliderComponent::~BoxColliderComponent()
 {
 	if (mRigidBody)
 	{
-			App->GetPhysics()->RemoveBoxRigidbody(this);
-			mRigidBody = nullptr;
+		App->GetPhysics()->RemoveBoxRigidbody(this);
+		mRigidBody = nullptr;
 	}
 	delete mCollider;
 }
 
 void BoxColliderComponent::Init()
 {
-	if (!mRigidBody && IsEnabled() && mOwner->IsActive())
-	{
-		App->GetPhysics()->CreateBoxRigidbody(this);
-	}
+	App->GetPhysics()->CreateBoxRigidbody(this);
 	ComputeBoundingBox();
 }
 
@@ -141,12 +138,11 @@ void BoxColliderComponent::Load(const JsonObject& data, const std::unordered_map
 
 void BoxColliderComponent::Enable()
 {
-	App->GetPhysics()->CreateBoxRigidbody(this);
+	App->GetPhysics()->EnableRigidbody(this);
 	ComputeBoundingBox();
 }
 
 void BoxColliderComponent::Disable()
 {
-	App->GetPhysics()->RemoveBoxRigidbody(this);
-	mRigidBody = nullptr;
+	App->GetPhysics()->DisableRigidbody(this);
 }
