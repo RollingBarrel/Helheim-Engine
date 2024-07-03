@@ -122,14 +122,22 @@ ResourceMaterial* Importer::Material::MatImport(const char* filePath, unsigned i
 {
     char* fileBuffer = nullptr;
     ResourceMaterial* rMaterial = nullptr;
-    //if (App->GetFileSystem()->Load(filePath, &fileBuffer) > 0 && fileBuffer)
-    //{
-    //    Archive doc(fileBuffer);
-    //    delete[] fileBuffer;
-    //    JsonObject root = doc.GetRootObject();
-    //    rMaterial = new ResourceMaterial(uid, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
-    //    Importer::Material::Save(rMaterial);
-    //}
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer) > 0 && fileBuffer)
+    {
+        Archive doc(fileBuffer);
+        delete[] fileBuffer;
+        JsonObject root = doc.GetRootObject();
+        float baseColorFactor[4];
+        root.GetFloats("BaseColorFactor", baseColorFactor);
+        float metalicFactor = root.GetFloat("MetallicFactor");
+        float roughnessFactor = root.GetFloat("RoughnessFactor");
+        float emissiveFactor[3];
+        root.GetFloats("EmissiveFactor", emissiveFactor);
+        JsonArray colorFactor = root.GetJsonArray("GameObjects");
+
+        rMaterial = new ResourceMaterial(uid, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
+        Importer::Material::Save(rMaterial);
+    }
     return rMaterial;
 }
 
