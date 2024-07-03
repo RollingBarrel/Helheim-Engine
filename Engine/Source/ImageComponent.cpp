@@ -28,6 +28,7 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 {
 	FillVBO();
 	CreateVAO();
+	SetImage(mResourceId);
 
 	mCanvas = (CanvasComponent*)(FindCanvasOnParents(GetOwner())->GetComponent(ComponentType::CANVAS));
 }
@@ -71,6 +72,7 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	//mQuadVBO = original.mQuadVBO;
 	//mQuadVAO = original.mQuadVAO;
 
+	//mCanvas = original.mCanvas;
 	GameObject* canvas = FindCanvasOnParents(GetOwner());
 	if (canvas != nullptr)
 		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
@@ -352,5 +354,6 @@ bool ImageComponent::CleanUp()
 {
 	glDeleteBuffers(1, &mQuadVBO);
 	glDeleteVertexArrays(1, &mQuadVAO);
+	App->GetResource()->ReleaseResource(mResourceId);
 	return true;
 }
