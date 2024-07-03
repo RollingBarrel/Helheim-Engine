@@ -57,7 +57,7 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	FillVBO();
 	CreateVAO();
 
-	mImage = original.mImage;
+	SetImage(original.mResourceId);
 	mResourceId = original.mResourceId;
 	SetImage(mResourceId);
 	mFileName = original.mFileName;
@@ -84,6 +84,13 @@ ImageComponent:: ~ImageComponent()
 {
 	CleanUp();
 	mCanvas = nullptr;
+
+	if (mImage)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	}
+
+	App->GetResource()->ReleaseResource(mResourceId);
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
@@ -241,6 +248,11 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 
 void ImageComponent::SetImage(unsigned int resourceId) 
 {
+	if (mImage)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	}
+
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 

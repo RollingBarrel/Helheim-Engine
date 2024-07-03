@@ -38,6 +38,7 @@ ModuleOpenGL::ModuleOpenGL()
 ModuleOpenGL::~ModuleOpenGL()
 {
 	delete mCameraUniBuffer;
+	delete mShadowsBuffer;
 	//delete mDLightUniBuffer;
 	//delete mPointsBuffer;
 	//delete mSpotsBuffer;
