@@ -286,6 +286,7 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
+		mTags.push_back("Enemy");
 
 		for (unsigned int i = 0; i < tags.Size(); ++i)
 		{
@@ -299,6 +300,7 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
+		mTags.push_back("Enemy");
 	}
 
 	delete fileBuffer;
