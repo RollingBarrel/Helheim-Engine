@@ -42,6 +42,11 @@ AIAgentComponent::~AIAgentComponent()
 
 void AIAgentComponent::Update()
 {
+	if (mMoving)
+	{
+		float3 owner_pos = mOwner->GetWorldPosition();
+		App->GetNavigation()->MoveAgent(mCrowdId, &owner_pos);
+	}
 }
 
 Component* AIAgentComponent::Clone(GameObject* owner) const
@@ -55,7 +60,7 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 
 void AIAgentComponent::MoveAgent(float speed ) const
 {
-
+	/*
 	if (mNavPositions.size() > 1 )
 	{
 		//LOG("START")
@@ -68,6 +73,7 @@ void AIAgentComponent::MoveAgent(float speed ) const
 			direction = direction / 50 * speed;
 			GetOwner()->SetWorldPosition(GetOwner()->GetWorldPosition() + direction);
 	}
+	*/
 	
 }
 

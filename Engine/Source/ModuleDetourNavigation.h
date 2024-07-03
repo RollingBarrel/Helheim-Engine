@@ -7,6 +7,7 @@ struct dtNavMeshCreateParams;
 //class AIAgentComponent;
 class dtNavMesh;
 class dtNavMeshQuery;
+class dtCrowd;
 class ENGINE_API ModuleDetourNavigation :public Module
 {
 public:
@@ -33,7 +34,11 @@ public:
 	void SetQueryCenter(float3 center) { mQueryCenter = center; }
 	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
 	void SetDetourNavMesh(dtNavMesh* detourNavMesh) { mDetourNavMesh = detourNavMesh; }
-
+	
+	//Crowd manager
+	unsigned int AddAgent(float3 startPos);
+	void SetAgentDestination(unsigned int agentId, float3 destination);
+	void MoveAgent(unsigned int agentId, float3& position);
 
 
 
@@ -44,12 +49,13 @@ private:
 	dtNavMeshCreateParams* mNavMeshParams = nullptr;
 	dtNavMesh* mDetourNavMesh=nullptr;
 	dtNavMeshQuery* mNavQuery = nullptr;
-
+	dtCrowd* mCrowd = nullptr;
 
 	float3 mQueryCenter = float3(10.0f,0.0f,-3.0f);
 	float3 mQueryHalfSize = float3(5.0f);
 	float3 mQueryResult = float3(0.0f);
-
+	const unsigned int mMaxAgents = 100;
+	float mAgentRadius = 0.6f; // has to be moved to AIAgentComponent.
 
 
 };

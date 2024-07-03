@@ -50,5 +50,7 @@ private:
 	//float mAcceleration = 0.0f; 
 	//float mStoppingDistance = 0.0f; //The GO will stop when this close to the goal location.
 	std::vector<float3> mNavPositions;
+	bool mMoving = false;
+	unsigned int mCrowdId = 0;
 };
 
