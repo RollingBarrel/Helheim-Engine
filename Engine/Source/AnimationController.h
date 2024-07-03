@@ -13,8 +13,7 @@ class AnimationController
 {
 public:
 
-	AnimationController(ResourceAnimation* animation, bool loop);
-	AnimationController(ResourceAnimation* animation, bool loop, float startTime, float endTime);
+	AnimationController(ResourceAnimation* animation);
 	~AnimationController();
 
 	void Update();
@@ -26,13 +25,11 @@ public:
 	//void GetTransform_BlendingAnimations(GameObject* model);
 	void CalculateIndexAndLambda(ResourceAnimation::AnimationChannel* channel, const char* channelType, float timeToFind, int& keyIndex, float& lambda);
 
-	float3 Interpolate(const float3& first, const float3& second, float lambda);
-	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
 
 	bool GetLoop() const { return mLoop; }
 	void SetLoop(bool loop) { mLoop = loop; }
 
-	//Clips
+	//Current time clip
 	const float GetStartTime() const { return mStartTime; }
 	void SetStartTime(float time);
 
@@ -58,6 +55,8 @@ public:
 	float GetAnimationCurrentTime() const { return mCurrentTime; }
 	unsigned int GetAnimationUID() const;
 private:
+	float3 Interpolate(const float3& first, const float3& second, float lambda);
+	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
 
 	//Time in milliseconds
 	float mCurrentTime = 0.0f;
@@ -73,7 +72,8 @@ private:
 
 	float mSpeed = 1.0;
 
-	bool mLoop = true;
+	bool mLoop = false;
 
 	ResourceAnimation* mCurrentAnimation = nullptr;
+	unsigned int mAnimationUID = 0;
 };
