@@ -231,7 +231,7 @@ void ModuleScene::Load(const char* sceneName)
 		mGameObjectsByTags.clear();
 		mRoot = new GameObject("EmptyScene", nullptr);
 		Archive doc(fileBuffer);
-		delete fileBuffer;
+		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
 
 		JsonObject scene = root.GetJsonObject("Scene");

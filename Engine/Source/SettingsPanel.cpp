@@ -200,7 +200,7 @@ void SettingsPanel::LoadUserSettings()
 			App->GetScene()->Load(str.c_str());	//TODO: Request Resource id and load 
 		}
 	}	
-	delete fileBuffer;
+	delete[] fileBuffer;
 }
 
 void SettingsPanel::AddTag(const char* newTag)
@@ -303,7 +303,7 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Enemy");
 	}
 
-	delete fileBuffer;
+	delete[] fileBuffer;
 }
 
 void SettingsPanel::SaveEditorLayout() const

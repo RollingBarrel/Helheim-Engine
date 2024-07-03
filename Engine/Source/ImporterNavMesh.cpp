@@ -49,6 +49,7 @@ void Importer::NavMesh::CheckLibraryFileExists(unsigned int uid, const char* ass
 		int size = App->GetFileSystem()->Load(assetsFile, &fileBuffer);
 		std::string path = App->GetFileSystem()->GetLibraryFile(uid, true);
 		App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+		delete[] fileBuffer;
 	}
 
 }

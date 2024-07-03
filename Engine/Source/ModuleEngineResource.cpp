@@ -22,6 +22,7 @@
 #include "Algorithm/Random/LCG.h"
 
 #include "ImporterTexture.h"
+#include "ImporterMaterial.h"
 #include "ImporterModel.h"
 #include "ImporterScene.h"
 #include "ImporterPrefab.h"
@@ -94,7 +95,8 @@ bool ModuleEngineResource::Init()
 		}
 		delete[] libraryFile;
 
-		if (fileBuffer) {
+		if (fileBuffer) 
+		{
 			delete[] fileBuffer;
 		}
 	}
@@ -164,6 +166,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Mesh:
 		break;
 	case Resource::Type::Material:
+		ret = Importer::Material::MatImport(importedFile, uid);
 		break;
 	case Resource::Type::Animation:
 		break;

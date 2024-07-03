@@ -22,7 +22,7 @@ ResourceStateMachine* Importer::StateMachine::Import(const char* assetsPath, uns
 	int size = App->GetFileSystem()->Load(assetsPath, &fileBuffer);
 	std::string path = App->GetFileSystem()->GetLibraryFile(uid, true);
 	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
-	
+	delete[] fileBuffer;
 
     EngineApp->GetEngineResource()->CreateAssetsMeta(*newResource, assetsPath);
 
