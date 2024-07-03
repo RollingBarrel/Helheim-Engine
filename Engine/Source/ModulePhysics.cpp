@@ -173,9 +173,6 @@ void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, boxCollider->GetMotionState(), collisionShape, localInertia);
 	btRigidBody* body = new btRigidBody(rbInfo);
 
-	body->setCcdMotionThreshold(1e-7);
-	body->setCcdSweptSphereRadius(0.50);
-
 	// Set the user pointer to the collider for later collision processing
 	body->setUserPointer((void*)(boxCollider->GetCollider()));
 
