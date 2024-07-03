@@ -10,6 +10,14 @@
 CREATE(ElectricTrapController)
 {
     CLASS(owner);
+    SEPARATOR("ACTIVATION PARAMETER");
+    MEMBER(MemberType::FLOAT, mActivationInterval);
+    MEMBER(MemberType::FLOAT, mActivationDuration);
+    MEMBER(MemberType::BOOL, mIsActive);
+
+    SEPARATOR("SIDE EFFECT");
+    MEMBER(MemberType::FLOAT, mDamageAmount);
+    MEMBER(MemberType::FLOAT, mSpeedReduction);
     END_CREATE;
 }
 
