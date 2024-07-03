@@ -66,6 +66,7 @@ bool ModuleEngineResource::Init()
 
 		unsigned int uid = 0;
 		Resource::Type type = Resource::Type::Unknown;
+
 		assert(document.HasMember("uid") && "Meta has no uid");
 		uid = document["uid"].GetInt();
 		int64_t metaAssetModTime;
@@ -242,6 +243,11 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 	case Resource::Type::Script:
 	{
 		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::StateMachine:
+	{
+		assetsFilePath = ASSETS_STATEMACHINE_PATH + assetName + extensionName;
 		break;
 	}
 	default:
