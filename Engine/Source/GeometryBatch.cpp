@@ -276,7 +276,7 @@ void GeometryBatch::ComputeCommands(unsigned int bufferIdx, const math::Frustum&
 	sizeMatIdxs += ALIGNED_STRUCT_SIZE(sizeMatIdxs, mSsboAligment) - sizeMatIdxs;
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 13, mSsboIndicesCommands, sizeMatIdxs, mMeshComponents.size()* sizeof(Command));
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 10, mSsboModelMatrices, idx * mMeshComponents.size() * sizeof(float) * 16, mMeshComponents.size() * sizeof(float) * 16);
-	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 14, mSsboObbs);
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 14, mSsboObbs, idx * mMeshComponents.size() * sizeof(float) * 32, mMeshComponents.size() * sizeof(float) * 32);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 23, mParameterBuffer);
 	glDispatchCompute((mMeshComponents.size() + 63) / 64, 1, 1);
 	
@@ -626,7 +626,7 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 			obb.GetCornerPoints(points);
 			for (int k = 0; k < 8; ++k)
 			{
-				memcpy(&mSsboObbsData[0][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+				memcpy(&mSsboObbsData[idx][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
 			}
 			//obb.GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[idx][i * 32]));
 			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][i * 32], sizeof(float3) * 8);
