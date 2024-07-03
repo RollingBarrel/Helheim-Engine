@@ -47,7 +47,8 @@ void Enemy::Update()
         {
             mCurrentParalyzedTimer -= App->GetDt();
         }
-        else {
+        else 
+        {
             GetParalysisCured(mParalysisSeverityLevel);
             mCurrentParalyzedTimer = mParalyzedTimer;
         }
