@@ -92,6 +92,11 @@ void EnemyRobot::Start()
         std::string attackTrigger = "tAttack";
 
     }
+
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 
 

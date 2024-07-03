@@ -15,6 +15,8 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	void SetNavigationPath(const float3& destination);
+	void StartCrowdNavigation();
+	void PauseCrowdNavigation();
 
 	//const float GetRadius() const { return mRadius; };
 	//const float GetHeight() const { return mHeight; };
@@ -51,6 +53,6 @@ private:
 	//float mStoppingDistance = 0.0f; //The GO will stop when this close to the goal location.
 	std::vector<float3> mNavPositions;
 	bool mMoving = false;
-	unsigned int mCrowdId = 0;
+	unsigned int mCrowdId = 101;
 };
 

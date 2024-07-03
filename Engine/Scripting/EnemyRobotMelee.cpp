@@ -78,6 +78,11 @@ void EnemyRobotMelee::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
     }
+
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 
 

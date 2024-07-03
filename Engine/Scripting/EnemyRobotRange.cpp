@@ -46,6 +46,11 @@ void EnemyRobotRange::Start()
 
     }
     mAttackCD = mTimerAttack;
+
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 
 void EnemyRobotRange::Update()

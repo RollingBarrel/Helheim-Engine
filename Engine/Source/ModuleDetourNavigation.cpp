@@ -46,7 +46,11 @@ update_status ModuleDetourNavigation::Update(float dt)
 {	
 	if (mCrowd)
 	{
-		mCrowd->update(App->GetDt(), nullptr);
+		if (mCrowd->getAgentCount() > 0)
+		{
+			mCrowd->update(App->GetDt(), nullptr);
+
+		}
 	}
 	return UPDATE_CONTINUE;
 }
@@ -165,7 +169,7 @@ unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
 	agentParams.radius = 0.6f; // Adjust based on your requirements
 	agentParams.height = 2.0f; // Adjust based on your requirements
 	agentParams.maxAcceleration = 8.0f;
-	agentParams.maxSpeed = 3.5f;
+	agentParams.maxSpeed = 2.5f;
 	agentParams.collisionQueryRange = agentParams.radius * 12.0f;
 	agentParams.pathOptimizationRange = agentParams.radius * 30.0f;
 	agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE;
@@ -204,6 +208,24 @@ void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
 				
 			}
 		}
+	}
+}
+
+void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
+{
+	dtCrowdAgent* agent = mCrowd->getEditableAgent(agentId);
+	if (agent)
+	{
+		agent->active = false;
+	}
+}
+
+void ModuleDetourNavigation::ReactivateAgent(unsigned int agentId)
+{
+	dtCrowdAgent* agent = mCrowd->getEditableAgent(agentId);
+	if (agent)
+	{
+		agent->active = true;
 	}
 }
 
