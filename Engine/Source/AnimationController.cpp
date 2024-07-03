@@ -12,26 +12,21 @@
 
 #include "Globals.h"
 
-AnimationController::AnimationController(ResourceAnimation* animation,  bool loop) {
+AnimationController::AnimationController(ResourceAnimation* animation) {
 	mCurrentAnimation = animation;
-	mLoop = loop;
+	mAnimationUID = animation->GetUID();
+	mLoop = false;
 
-	mCurrentTime = 0;
+	mCurrentTime = 0.0f;
 	mStartTime = 0.0f;
 	mEndTime = animation->GetDuration();
 }
 
-AnimationController::AnimationController(ResourceAnimation* animation,  bool loop, float startTime, float endTime) : AnimationController(animation, loop)
-{
-	mStartTime = startTime;
-	mEndTime = endTime;
-}
-
 AnimationController::~AnimationController()
 {
-	if (mCurrentAnimation)
+	if (mAnimationUID != 0)
 	{
-		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
+		App->GetResource()->ReleaseResource(mAnimationUID);
 	}
 }
 
@@ -114,7 +109,7 @@ void AnimationController::EndBlending()
 
 unsigned int AnimationController::GetAnimationUID() const
 {
-	return mCurrentAnimation->GetUID();
+	return mAnimationUID;
 }
 
 void AnimationController::GetTransform(GameObject* model)

@@ -2,33 +2,18 @@
 #include <vector>
 #include <string>
 
-struct AnimationClip
-{
-public:
-	AnimationClip(unsigned int animationUID) 
-	{
-		mAnimationUID = animationUID;
-		mName = std::string("Default");
-	};
-
-	std::string mName;
-	unsigned int mAnimationUID;
-
-};
 
 struct AnimationState
 {
 public:
 	AnimationState(const std::string& stateName) {
-		mClip = "Default";
 		mName = stateName;
 		mStartTime = 0.0f;
-		mEndTime = 10.0f;
+		mEndTime = 100.0f; 
 		mLoop = true;
 	};
 
 	std::string mName;
-	std::string mClip;
 	float mStartTime, mEndTime;
 	bool mLoop;
 
@@ -51,30 +36,17 @@ class ENGINE_API AnimationStateMachine
 {
 
 public:
-	AnimationStateMachine(const std::vector<unsigned int>& animationUids);
-	AnimationStateMachine();
+	AnimationStateMachine(unsigned int animUID);
 	~AnimationStateMachine();
-	
-	//Clips
-	void AddClip(unsigned int animationUID);
-	void RemoveClip(int index);
-	
-	void SetClipName(int index, const std::string& name);
-	int  GetClipIndex(const std::string& clipName) const;
-	const std::string& GetClipName(int index) const;
-	unsigned int GetClipResource(int index) const;
-	unsigned int GetNumClips() const { return mClips.size(); }
 
 	//States
-	void AddState(const std::string& stateName, const std::string& clipName);
+	void AddState(const std::string& stateName);
 	void RemoveState(int index);
 
 	int GetStateIndex(const std::string& stateName) const;
-	const std::string& GetStateClip(int index) const;
 	const std::string& GetStateName(int index) const;
 	float GetStateStartTime(int index) const;
 	float GetStateEndTime(int index) const;
-	void SetStateClip(int index, const std::string& clipName);
 	void SetStateName(int index, const std::string& name);
 	void SetStateStartTime(int index, float time);
 	void SetStateEndTime(int index, float time);
@@ -97,11 +69,9 @@ public:
 
 
 	//Save & Load
-	const std::vector<AnimationClip>& GetClips() const { return mClips; }
 	const std::vector<AnimationState>& GetStates() const { return mStates; }
 	const std::vector<AnimationTransition>& GetTransitions() const { return mTransitions; }
 
-	void PushBackClip(const AnimationClip& clip) { mClips.push_back(clip); };
 	void PushBackState(const AnimationState& state) { mStates.push_back(state); };
 	void PushBackTransition(const AnimationTransition& transition) { mTransitions.push_back(transition); };
 
@@ -115,11 +85,11 @@ public:
 	void SetUID(unsigned int uid) { mResourceUID = uid; }
 private:
 	
-	std::vector<AnimationClip> mClips;
 	std::vector<AnimationState> mStates;
 	std::vector<AnimationTransition> mTransitions;
 	std::string mName = "Simple";
 	unsigned int mResourceUID = 0;
+	unsigned int mAnimationUID = 0;
 	
 	
 
