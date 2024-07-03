@@ -21,11 +21,8 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 {
 	delete mNavMeshParams;
 	delete mNavQuery;
+	App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
 }
-
-
-
-
 
 bool ModuleDetourNavigation::Init()
 {
@@ -44,7 +41,6 @@ update_status ModuleDetourNavigation::Update(float dt)
 }
 
 
-
 update_status ModuleDetourNavigation::PostUpdate(float dt)
 {
 	return UPDATE_CONTINUE;
@@ -57,17 +53,22 @@ bool ModuleDetourNavigation::CleanUp()
 
 void ModuleDetourNavigation::LoadResourceData()
 {
-	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
-	ResourceNavMesh* resource = (ResourceNavMesh*)App->GetResource()->RequestResource((pathStr + App->GetScene()->GetName() + ".navmesshi").c_str());
-	if (resource)
+	if (mResourceNavMesh)
 	{
-		mDetourNavMesh = resource->GetDtNavMesh();
+		App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
+	}
+
+	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
+	mResourceNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource((pathStr + App->GetScene()->GetName() + ".navmesshi").c_str()));
+	if (mResourceNavMesh)
+	{
+		mDetourNavMesh = mResourceNavMesh->GetDtNavMesh();
 		CreateQuery();
-		App->GetResource()->ReleaseResource(resource->GetUID());
 	}
 }
 
-void ModuleDetourNavigation::CreateQuery() {
+void ModuleDetourNavigation::CreateQuery() 
+{
 
 	mNavQuery = new dtNavMeshQuery();
 	dtStatus status;
@@ -81,7 +82,8 @@ void ModuleDetourNavigation::CreateQuery() {
 
 std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 endPos)
 {
-	if (!mNavQuery) {
+	if (!mNavQuery) 
+	{
 
 		LOG("BUILD NAVMESH");
 		std::vector<float3> breakVector(0);
@@ -125,8 +127,8 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 
 }
 
-
-void ModuleDetourNavigation:: FindDebugPoint() {
+void ModuleDetourNavigation:: FindDebugPoint() 
+{
 	if (mNavQuery)
 	{
 		dtPolyRef result;
@@ -138,7 +140,8 @@ void ModuleDetourNavigation:: FindDebugPoint() {
 float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) 
 {
 	float3 queryResult = float3(0.0f);
-	if (!mNavQuery) {
+	if (!mNavQuery) 
+	{
 		LOG("BUILD NAVMESH");
 		return queryResult;
 	}

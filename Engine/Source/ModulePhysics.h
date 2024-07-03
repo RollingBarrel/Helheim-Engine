@@ -43,11 +43,11 @@ public:
 	void CreateBoxRigidbody(BoxColliderComponent* boxCollider);
 	void RemoveBoxRigidbody(BoxColliderComponent* boxCollider);
 	void UpdateBoxRigidbody(BoxColliderComponent* boxCollider);
+	void DisableRigidbody(BoxColliderComponent* boxCollider);
+	void EnableRigidbody(BoxColliderComponent* boxCollider);
 
 private:
 	void AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType);
-	btRigidBody* AddBoxBody(btMotionState* motionState, float3 size, float mass);
-
 	void ProcessCollision(Collider* bodyA, Collider* bodyB, const float3& collisionNormal, const float3& diff);
 
 	btDefaultCollisionConfiguration* mCollisionConfiguration = nullptr;

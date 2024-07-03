@@ -4,9 +4,10 @@
 #include "Math/float3.h"
 
 struct dtNavMeshCreateParams;
-//class AIAgentComponent;
 class dtNavMesh;
 class dtNavMeshQuery;
+class ResourceNavMesh;
+
 class ENGINE_API ModuleDetourNavigation :public Module
 {
 public:
@@ -22,7 +23,6 @@ public:
 	void LoadResourceData();
 	void FindDebugPoint();
 	float3 FindNearestPoint(float3 center, float3 halfSize);
-	//std::vector<AIAgentComponent*>& GetAiAgentComponent() { return mAIAgentComponents; };
 
 
 	float3 GetQueryCenter() const { return mQueryCenter; }
@@ -34,23 +34,15 @@ public:
 	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
 	void SetDetourNavMesh(dtNavMesh* detourNavMesh) { mDetourNavMesh = detourNavMesh; }
 
-
-
-
-
-
 private:
-	//std::vector<AIAgentComponent*>mAIAgentComponents;
 	dtNavMeshCreateParams* mNavMeshParams = nullptr;
 	dtNavMesh* mDetourNavMesh=nullptr;
 	dtNavMeshQuery* mNavQuery = nullptr;
-
 
 	float3 mQueryCenter = float3(10.0f,0.0f,-3.0f);
 	float3 mQueryHalfSize = float3(5.0f);
 	float3 mQueryResult = float3(0.0f);
 
-
-
+	ResourceNavMesh* mResourceNavMesh = nullptr;
 };
 

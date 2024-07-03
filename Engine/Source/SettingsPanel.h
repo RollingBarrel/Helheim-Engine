@@ -8,7 +8,7 @@
 #include "imgui.h"
 
 #define SETTINGSPANEL "Settings##"
-#define NUM_ENGINE_TAGS 3
+#define NUM_ENGINE_TAGS 4
 
 class SettingsPanel : public Panel
 {
