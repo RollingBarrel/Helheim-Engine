@@ -97,6 +97,16 @@ vec3 emissiveCol;
 
 out vec4 outColor;
 
+vec3 ACESFilm(in vec3 x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
+	return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+}
+
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
 	vec3 L =  -normalize(lDir); 	//Light direction
@@ -214,7 +224,9 @@ void main()
 	vec3 hdrCol = pbrCol;
 	
 	//LDR color with reinhard tone Mapping
-	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
+	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
+	//LDR color with ACES filmic tone Mapping
+	vec3 ldrCol = ACESFilm(hdrCol);
 
 	//Gamma correction
 	ldrCol = pow(ldrCol, vec3(1/2.2));
