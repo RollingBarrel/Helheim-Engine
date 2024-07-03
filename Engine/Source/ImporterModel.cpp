@@ -149,8 +149,11 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             {
                 //Import default del material !!!
                 ResourceMaterial* rMaterial = Importer::Material::ImportDefault();
-                materialId = rMaterial->GetUID();
-                delete rMaterial;
+                if (rMaterial)
+                {
+                    materialId = rMaterial->GetUID();
+                    delete rMaterial;
+                }
             }
             node.mUids.emplace_back(meshId, materialId);
             ++i;
