@@ -695,7 +695,7 @@ void GeometryBatch::ComputeSkinning(const BatchMeshRendererComponent& bMesh)
 	}
 	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 21, mVbo, bRes.baseVertex * mVertexSize, mVertexSize * rMesh->GetNumberVertices());
 	glUniform1i(25, rMesh->GetNumberVertices());
-	glDispatchComputeIndirect(((mDrawCount % NUM_BUFFERS) * mNumSkins * sizeof(unsigned int) * 3) + sizeof(unsigned int)*3*mCurrSkinIdx++);
+	glDispatchComputeIndirect(((mDrawCount % NUM_BUFFERS) * ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment)) + sizeof(unsigned int)*3*mCurrSkinIdx++);
 	//glDispatchCompute((rMesh->GetNumberVertices() + 63) / 64, 1, 1);
 	mSkinningApplied = true;
 }

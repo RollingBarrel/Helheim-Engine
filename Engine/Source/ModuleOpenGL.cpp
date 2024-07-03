@@ -1087,14 +1087,6 @@ void ModuleOpenGL::BatchEditMaterial(const MeshRendererComponent& mesh)
 
 void ModuleOpenGL::Draw()
 {
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
-	//Light lists
-	glUseProgram(mTileLightCullingProgramId);
-	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX-1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY-1) / CULL_LIGHT_TILE_SIZEY, 1);
-	glUseProgram(0);
-	glPopDebugGroup();
-
 	//Select spot Shadow casters
 	std::map<float, const SpotLightComponent*> orderedLights;
 	std::vector<const SpotLightComponent*> chosenLights;
@@ -1314,6 +1306,14 @@ void ModuleOpenGL::Draw()
 	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
 	glDrawBuffers(1, att2);
 
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
+	//Light lists
+	glUseProgram(mTileLightCullingProgramId);
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY, 1);
+	glUseProgram(0);
+	glPopDebugGroup();
+
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
@@ -1338,6 +1338,7 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mPbrLightingPassProgramId);
