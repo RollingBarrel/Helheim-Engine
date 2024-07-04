@@ -1,27 +1,26 @@
-#include "EnemySpawner.h"
-#include "EnemyPool.h"
+#include "Spawner.h"
 #include "Application.h"
 #include "GameObject.h"
-#include "GameManager.h"
 #include "ScriptComponent.h"
 
-CREATE(EnemySpawner)
+#include "GameManager.h"
+
+CREATE(Spawner)
 {
 	CLASS(owner);
-	SEPARATOR("Enemy Spawner");
-	MEMBER(MemberType::INT, mEnemyType);
+	MEMBER(MemberType::INT, mPoolType);
 	MEMBER(MemberType::FLOAT, mSpawnRate);
 	END_CREATE;
 }
 
-EnemySpawner::EnemySpawner(GameObject* owner) : Script(owner) {}
+Spawner::Spawner(GameObject* owner) : Script(owner) {}
 
-void EnemySpawner::Start()
+void Spawner::Start()
 {
-	mEnemyPool = reinterpret_cast<EnemyPool*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetEnemyPool()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+	mPoolManager = GameManager::GetInstance()->GetPoolManager();
 }
 
-void EnemySpawner::Update()
+void Spawner::Update()
 {
 	if (mIsActive)
 	{
@@ -29,18 +28,18 @@ void EnemySpawner::Update()
 	}
 }
 
-bool EnemySpawner::Spawn()
+bool Spawner::Spawn()
 {
 	if (mIsActive)
 	{
 		if (mLastSpawnTime >= mSpawnRate)
 		{
-			GameObject* enemy = mEnemyPool->GetEnemy(mEnemyType);
+			GameObject* enemy = mPoolManager->Spawn(mPoolType);
 			if (enemy)
 			{
 				ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
 				Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
- 				enemyScript->Reset();
+ 				enemyScript->Init();
 				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
 				enemy->SetEnabled(true);
 

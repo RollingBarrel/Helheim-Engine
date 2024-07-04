@@ -32,7 +32,7 @@ private:
 	void Attack();
 	bool IsMoving();
 	void  Death() override;
-	void Reset() override;
+	void Init() override;
 	void RangeAttack();
 
 	EnemyState mCurrentState = EnemyState::IDLE;

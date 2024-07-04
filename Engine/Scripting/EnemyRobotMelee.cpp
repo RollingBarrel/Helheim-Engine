@@ -189,9 +189,9 @@ void EnemyRobotMelee::Death()
         Enemy::Death();
     }
 }
-void EnemyRobotMelee::Reset()
+void EnemyRobotMelee::Init()
 {
-    Enemy::Reset();
+    Enemy::Init();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle",0.0f);
 }

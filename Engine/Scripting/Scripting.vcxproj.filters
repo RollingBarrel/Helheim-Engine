@@ -124,9 +124,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -149,11 +146,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h">
+    <ClInclude Include="..\Game\Assets\Scripts\Spawner.h">
       <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
@@ -269,14 +263,8 @@
       <Filter>Weapons\Range</Filter>
     </ClCompile>
     <ClCompile Include="BattleArea.cpp" />
-    <ClCompile Include="EnemyPool.cpp">
+    <ClCompile Include="Spawner.cpp">
       <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemySpawner.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="ActiveBattleAreaController.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Sanity.cpp" />
     <ClCompile Include="Machinegun.cpp">

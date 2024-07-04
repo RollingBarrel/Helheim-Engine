@@ -33,8 +33,8 @@ private:
 	bool IsMoving();
 
 	void MeleeAttack();
-	void  Death() override;
-	void Reset() override;
+	void Death() override;
+	void Init() override;
 	void OnCollisionEnter(CollisionData* collisionData);
 
 	void PlayStepAudio();

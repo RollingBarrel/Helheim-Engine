@@ -190,9 +190,9 @@ void EnemyRobotRange::Death()
     }
 }
 
-void EnemyRobotRange::Reset()
+void EnemyRobotRange::Init()
 {
-    Enemy::Reset();
+    Enemy::Init();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
 }

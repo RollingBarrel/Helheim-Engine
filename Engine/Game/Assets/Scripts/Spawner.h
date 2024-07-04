@@ -2,15 +2,14 @@
 #include <Script.h>
 #include "Enemy.h"
 #include "Macros.h"
+#include "PoolManager.h"
 
-class EnemyPool;
-
-GENERATE_BODY(EnemySpawner);
-class EnemySpawner : public Script
+GENERATE_BODY(Spawner);
+class Spawner : public Script
 {
-	FRIEND(EnemySpawner)
+	FRIEND(Spawner)
 public:
-	EnemySpawner(GameObject* owner);
+	Spawner(GameObject* owner);
 
 	void Start() override;
 	void Update() override;
@@ -18,17 +17,16 @@ public:
 
 	bool IsActive() const { return mIsActive; }
 	float GetSpawnRate() const { return mSpawnRate; }
-	EnemyType GetEnemyType() const { return mEnemyType; }
+	PoolType GetEnemyType() const { return mPoolType; }
 	void Active(bool active) { mIsActive = active; }
 	void SetSpawnRate(float seconds) { mSpawnRate = seconds; }
-	void SetEnemyType(EnemyType enemyType) { mEnemyType = enemyType; }
 
 private:
 	bool mIsActive = false;
 	float mSpawnRate = 0.0f;
 	float mLastSpawnTime = 0.0f;
-	EnemyType mEnemyType = EnemyType::ROBOT_MELEE;
+	PoolType mPoolType = PoolType::FIRST;
 
-	EnemyPool* mEnemyPool = nullptr;
+	PoolManager* mPoolManager = nullptr;
 
 };

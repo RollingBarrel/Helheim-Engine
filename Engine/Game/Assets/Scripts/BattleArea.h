@@ -3,7 +3,7 @@
 #include "Macros.h"
 
 struct CollisionData;
-class EnemySpawner;
+class Spawner;
 class BoxColliderComponent;
 
 GENERATE_BODY(BattleArea);
@@ -29,10 +29,10 @@ private:
 	GameObject* mSpawnerGO3 = nullptr;
 	GameObject* mSpawnerGO4 = nullptr;
 
-	EnemySpawner* mEnemySpawner1 = nullptr;
-	EnemySpawner* mEnemySpawner2 = nullptr;
-	EnemySpawner* mEnemySpawner3 = nullptr;
-	EnemySpawner* mEnemySpawner4 = nullptr;
+	Spawner* mEnemySpawner1 = nullptr;
+	Spawner* mEnemySpawner2 = nullptr;
+	Spawner* mEnemySpawner3 = nullptr;
+	Spawner* mEnemySpawner4 = nullptr;
 
 	BoxColliderComponent* mCollider = nullptr;
 };
