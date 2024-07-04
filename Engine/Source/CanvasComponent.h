@@ -6,8 +6,8 @@ class ImageComponent;
 
 enum class RenderSpace
 {
-    Screen,
     World,
+    Screen,
     Billboard,
     WorldAxisBillboard
 };
