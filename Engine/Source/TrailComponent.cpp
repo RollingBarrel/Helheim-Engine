@@ -26,7 +26,8 @@ TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner
 mResourceId(original.mResourceId), mFileName(original.mFileName),
 mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance),
 mPoints(original.mPoints), mGradient(ColorGradient(original.mGradient)), mWidth(original.mWidth),
-mFixedDirection(original.mFixedDirection), mTrailTime(original.mTrailTime), mDirection(original.mDirection), mMaxLifeTime(original.mMaxLifeTime)
+mFixedDirection(original.mFixedDirection), mTrailTime(original.mTrailTime), mDirection(original.mDirection), 
+mMaxLifeTime(original.mMaxLifeTime), mIsUVScrolling(original.mIsUVScrolling), mUVScroll(original.mUVScroll)
 {
     Init();
 }
@@ -73,153 +74,158 @@ void TrailComponent::Init()
 
 void TrailComponent::Draw() const
 {
-    if (IsEnabled()) 
+    if (!IsEnabled() || mPoints.size() <= 1) return;
+
+    unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
+    const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
+    float4x4 projection = cam->GetViewProjectionMatrix();
+    float3 norm = cam->GetFrustum().front;
+
+    std::vector<float> distances = CalculateDistances();
+
+    SetupOpenGLState();
+
+    glUseProgram(programId);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+
+    std::byte* ptr = reinterpret_cast<std::byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
+
+    float3 direction;
+    mWidth.GetValue().CalculateInitialValue();
+
+    for (int i = 0; i < mPoints.size() + 1; ++i)
     {
-        if (mPoints.size() <= 1) return;
-        unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
-        glDepthMask(GL_FALSE);
-        glDisable(GL_CULL_FACE);
-        glEnable(GL_BLEND);									// Enable Blending
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE);					// Type Of Blending To Perform
-        const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
-        float4x4 projection = cam->GetViewProjectionMatrix();
-        //float3 up = cam->GetFrustum().up;
-        float3 norm = cam->GetFrustum().front;
-        //float3 right = up.Cross(norm).Normalized();
-        std::vector<float> distances;
-        for (int i = 0; i < mPoints.size()+1; ++i)
-        {
-            if (i == 0)
-            {
-                distances.push_back(0.0f);
-            }
-            else if (i == 1)
-            {
-                distances.push_back(mPoints[0].position.Distance(mOwner->GetWorldPosition()));
-            }
-            else
-            {
-                distances.push_back(mPoints[i-1].position.Distance(mPoints[i-2].position) + distances[i-1]);
-            }
-        }
+        float deltaPos = CalculateDeltaPos(i, distances);
+        float3 position = CalculatePosition(i);
+        direction = CalculateDirection(i, position, norm);
 
+        float3 topPointPos = position + direction * std::max(0.0f, mWidth.CalculateValue(deltaPos, mWidth.GetValue().GetInitialValue()) * 0.5f);
+        float3 botPointPos = position - direction * std::max(0.0f, mWidth.CalculateValue(deltaPos, mWidth.GetValue().GetInitialValue()) * 0.5f);
 
-        glUseProgram(programId);
-        glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-        glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
-        byte* ptr = reinterpret_cast<byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
-        int testSize = 0;
-        float3 nextPoint = mPoints[0].position;
-        float3 position;
-        float3 direction;
-        mWidth.GetValue().CalculateInitialValue();
-        for (int i = 0; i < mPoints.size()+1; ++i)
-        {
-            float deltaPos = 0.0f;
-            if (i == 0)
-            {
-                Quat rotationQ = mOwner->GetWorldRotation();
-                position = mOwner->GetWorldPosition();
-            }
-            else
-            {
-                position = mPoints[i-1].position;
-                deltaPos = distances[i - 1] / distances[distances.size() - 1];
-            }
-            // The last point uses the direction of the previous
-            // because there is no next point to calculate the direction
-            if (!mFixedDirection and i < mPoints.size())
-            {
-                nextPoint = mPoints[i].position;
+        float2 topPointTexCoord, botPointTexCoord;
+        CalculateTexCoords(i, deltaPos, topPointTexCoord, botPointTexCoord);
 
-                if (i > 1 or (nextPoint - position).Length() > 0.000001f) 
-                {
-                    direction = (nextPoint - position).Normalized();
-                    direction = direction.Cross(norm).Normalized();
-                }
-                else if (mPoints.size() > 2)
-                {
-                    nextPoint = mPoints[i+1].position;
-                    direction = (nextPoint - position).Normalized();
-                    direction = direction.Cross(norm).Normalized();
-                }
-                else
-                {
-                    direction = RotationToVector(mOwner->GetWorldRotation());
-                }
-                
-            }
-            else if (mFixedDirection and i < mPoints.size() + 1)
-            {
-                if (i == 0)
-                {
-                    direction = mPoints[i].direction.Normalized();
-                }
-                else
-                {
-                    direction = mPoints[i - 1].direction.Normalized();
-                }
-            }
-            float3 topPointPos = position + direction * std::max(0.0f, mWidth.CalculateValue(deltaPos, mWidth.GetValue().GetInitialValue()) * 0.5f);
-            float3 botPointPos = position - direction * std::max(0.0f, mWidth.CalculateValue(deltaPos, mWidth.GetValue().GetInitialValue()) * 0.5f);
+        float4 color = mGradient.CalculateColor(deltaPos);
 
-            float2 topPointTexCoord;
-            float2 botPointTexCoord;
-            if (mIsUVScrolling) 
-            {
-                if (i == 0)
-                {
-                    float dist = mPoints[0].distanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].position) * mUVScroll;
-                    topPointTexCoord = float2(dist, 1);
-                    botPointTexCoord = float2(dist, 0);
-                }
-                else
-                {
-                    topPointTexCoord = float2(mPoints[i - 1].distanceUV, 1);
-                    botPointTexCoord = float2(mPoints[i - 1].distanceUV, 0);
-                }
-            }
-            else
-            {
-                topPointTexCoord = float2(deltaPos, 1);
-                botPointTexCoord = float2(deltaPos, 0);
-            }
-
-
-            float4 color = mGradient.CalculateColor(deltaPos);
-
-            // Copiar botPoint
-            memcpy(ptr, botPointPos.ptr(), sizeof(float3));
-            ptr += sizeof(float3);
-            memcpy(ptr, botPointTexCoord.ptr(), sizeof(float2));
-            ptr += sizeof(float2);
-            memcpy(ptr, color.ptr(), sizeof(float4));
-            ptr += sizeof(float4);
-            // Copiar topPoint
-            memcpy(ptr, topPointPos.ptr(), sizeof(float3));
-            ptr += sizeof(float3);
-            memcpy(ptr, topPointTexCoord.ptr(), sizeof(float2));
-            ptr += sizeof(float2);
-            memcpy(ptr, color.ptr(), sizeof(float4));
-            ptr += sizeof(float4);
-        }
-
-        glUnmapBuffer(GL_ARRAY_BUFFER);
-        glBindVertexArray(mVAO);
-
-        glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
-        glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
-
-        glBindTexture(GL_TEXTURE_2D, 0);
-        glBindVertexArray(0);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        glUseProgram(0);
-        glDisable(GL_BLEND);
-        glDepthMask(GL_TRUE);
-        glEnable(GL_CULL_FACE);
+        CopyVertexData(ptr, botPointPos, botPointTexCoord, color);
+        CopyVertexData(ptr, topPointPos, topPointTexCoord, color);
     }
+
+    glUnmapBuffer(GL_ARRAY_BUFFER);
+    glBindVertexArray(mVAO);
+    glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
+    glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUseProgram(0);
+
+    ResetOpenGLState();
+}
+
+std::vector<float> TrailComponent::CalculateDistances() const
+{
+    std::vector<float> distances;
+    for (int i = 0; i < mPoints.size() + 1; ++i)
+    {
+        if (i == 0)
+        {
+            distances.push_back(0.0f);
+        }
+        else if (i == 1)
+        {
+            distances.push_back(mPoints[0].mPosition.Distance(mOwner->GetWorldPosition()));
+        }
+        else
+        {
+            distances.push_back(mPoints[i - 1].mPosition.Distance(mPoints[i - 2].mPosition) + distances[i - 1]);
+        }
+    }
+    return distances;
+}
+
+void TrailComponent::SetupOpenGLState() const
+{
+    glDepthMask(GL_FALSE);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+}
+
+void TrailComponent::ResetOpenGLState() const
+{
+    glDisable(GL_BLEND);
+    glDepthMask(GL_TRUE);
+    glEnable(GL_CULL_FACE);
+}
+
+float TrailComponent::CalculateDeltaPos(int i, const std::vector<float>& distances) const
+{
+    if (i == 0) return 0.0f;
+    return distances[i - 1] / distances.back();
+}
+
+float3 TrailComponent::CalculatePosition(int i) const
+{
+    if (i == 0)
+    {
+        return mOwner->GetWorldPosition();
+    }
+    return mPoints[i - 1].mPosition;
+}
+
+float3 TrailComponent::CalculateDirection(int i, const float3& position, const float3& norm) const
+{
+    if (!mFixedDirection && i < mPoints.size())
+    {
+        float3 nextPoint = mPoints[i].mPosition;
+        if (i > 1 || (nextPoint - position).Length() > 0.000001f)
+        {
+            return (nextPoint - position).Normalized().Cross(norm).Normalized();
+        }
+        else if (mPoints.size() > 2)
+        {
+            nextPoint = mPoints[i + 1].mPosition;
+            return (nextPoint - position).Normalized().Cross(norm).Normalized();
+        }
+        return RotationToVector(mOwner->GetWorldRotation());
+    }
+    return i == 0 ? mPoints[i].mDirection.Normalized() : mPoints[i - 1].mDirection.Normalized();
+}
+
+void TrailComponent::CalculateTexCoords(int i, float deltaPos, float2& topPointTexCoord, float2& botPointTexCoord) const
+{
+    if (mIsUVScrolling)
+    {
+        if (i == 0)
+        {
+            float dist = mPoints[0].mDistanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].mPosition) * mUVScroll;
+            topPointTexCoord = float2(dist, 1);
+            botPointTexCoord = float2(dist, 0);
+        }
+        else
+        {
+            topPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 1);
+            botPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 0);
+        }
+    }
+    else
+    {
+        topPointTexCoord = float2(deltaPos, 1);
+        botPointTexCoord = float2(deltaPos, 0);
+    }
+}
+
+void TrailComponent::CopyVertexData(std::byte*& ptr, const float3& position, const float2& texCoord, const float4& color) const
+{
+    memcpy(ptr, position.ptr(), sizeof(float3));
+    ptr += sizeof(float3);
+    memcpy(ptr, texCoord.ptr(), sizeof(float2));
+    ptr += sizeof(float2);
+    memcpy(ptr, color.ptr(), sizeof(float4));
+    ptr += sizeof(float4);
 }
 
 void TrailComponent::Update()
@@ -228,16 +234,16 @@ void TrailComponent::Update()
     {
         float3 position = mOwner->GetWorldPosition();
         Quat rotationQ = mOwner->GetWorldRotation();
-        const float3 lastPosition = mPoints.begin()->position;
+        const float3 lastPosition = mPoints.begin()->mPosition;
 
         const float dposition = position.DistanceSq(lastPosition);
         if (mPoints.size() <= 1 || dposition >= mMinDistance && mPoints.size() < mMaxPoints)
         {
             AddFirstTrailPoint();
         }
-        //*(mPoints.begin()) = TrailPoint{ mOwner->GetPosition(), lastRotation, mTrailTime };
+
         mTrailTime += App->GetDt();
-        if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().creationTime) >= mMaxLifeTime)
+        if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().mCreationTime) >= mMaxLifeTime)
         {
             RemoveLastTrailPoint();
         }
@@ -284,7 +290,7 @@ void TrailComponent::AddFirstTrailPoint()
     float distUV;
     if (mPoints.size() > 0) 
     {
-        distUV = mPoints.front().distanceUV + (position.Distance(mPoints.front().position) * mUVScroll);
+        distUV = mPoints.front().mDistanceUV + (position.Distance(mPoints.front().mPosition) * mUVScroll);
     }
     else 
     {
@@ -350,6 +356,6 @@ void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 }
 
 TrailComponent::TrailPoint::TrailPoint(float3 pos, float3 dir, float time, float distUV) : 
-    position(pos), direction(dir), creationTime(time), distanceUV(distUV)
+    mPosition(pos), mDirection(dir), mCreationTime(time), mDistanceUV(distUV)
 {
 }

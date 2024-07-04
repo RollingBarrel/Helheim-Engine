@@ -15,11 +15,11 @@ class ENGINE_API TrailComponent : public Component
 public:
 	struct TrailPoint
 	{
-		TrailPoint(float3 position, float3 direction, float time, float distanceUV);
-		float3 position;
-		float3 direction;
-		float creationTime;
-		float distanceUV;
+		TrailPoint(float3 position, float3 direction, float time, float mDistanceUV);
+		float3 mPosition;
+		float3 mDirection;
+		float mCreationTime;
+		float mDistanceUV;
 	};
 	explicit TrailComponent(GameObject* ownerGameObject);
 	TrailComponent(const TrailComponent& original, GameObject* owner);
@@ -36,7 +36,6 @@ public:
 	void AddFirstTrailPoint();
 	void RemoveLastTrailPoint();
 
-
 	Component* Clone(GameObject* owner) const override;
 	void Save(JsonObject& archive) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
@@ -44,6 +43,15 @@ public:
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
 
 private:
+    std::vector<float> CalculateDistances() const;
+    void SetupOpenGLState() const;
+    void ResetOpenGLState() const;
+    float CalculateDeltaPos(int i, const std::vector<float>& distances) const;
+    float3 CalculatePosition(int i) const;
+    float3 CalculateDirection(int i, const float3& position, const float3& norm) const;
+    void CalculateTexCoords(int i, float deltaPos, float2& topPointTexCoord, float2& botPointTexCoord) const;
+    void CopyVertexData(std::byte*& ptr, const float3& position, const float2& texCoord, const float4& color) const;
+
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
 	float3 RotationToVector(Quat rotation) const;
