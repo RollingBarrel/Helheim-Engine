@@ -589,11 +589,10 @@ void PlayerController::Reload() const
 void PlayerController::CheckDebugOptions()
 {
     const ModuleInput* input = App->GetInput();
-    if (input->GetKey(Keys::Keys_G) == KeyState::KEY_REPEAT)
+    if (input->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN)
     {
         mGodMode = !mGodMode;
     }
-
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);
