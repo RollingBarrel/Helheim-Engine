@@ -156,7 +156,7 @@ void ImageComponent::Draw()
 
 				proj = camera->GetProjectionMatrix();
 				view = camera->GetViewMatrix();
-				float3 pos = GetOwner()->GetPosition();
+				float4 pos = GetOwner()->GetWorldTransform().Col(3);
 				float3 scale = GetOwner()->GetScale();
 				float3x3 scaleMatrix = float3x3::identity;
 				scaleMatrix[0][0] = scale.x;
@@ -166,7 +166,7 @@ void ImageComponent::Draw()
 				float3 norm = camera->GetFrustum().front;
 				float3 up = camera->GetFrustum().up;
 				float3 right = up.Cross(norm).Normalized();
-				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+				model = { float4(right, 0), float4(up, 0),float4(norm, 0),pos };
 				model = model * scaleMatrix;
 				//model.Transpose();
 
