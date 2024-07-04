@@ -172,7 +172,7 @@ void ImageComponent::Draw()
 
 				float3 norm = camera->GetFrustum().front;
 				float3 up = camera->GetFrustum().up;
-				float3 right = up.Cross(norm).Normalized();
+				float3 right = -up.Cross(norm).Normalized();
 				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
 				model = model * scaleMatrix;
 				//model.Transpose();
@@ -195,7 +195,7 @@ void ImageComponent::Draw()
 
 				float3 norm = (pos - camera->GetFrustum().pos).Normalized();
 				float3 up = float3::unitY;
-				float3 right = up.Cross(norm).Normalized();
+				float3 right = -up.Cross(norm).Normalized();
 				norm = up.Cross(right).Normalized();
 				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
 				model = model * scaleMatrix;
