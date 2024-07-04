@@ -1,5 +1,7 @@
-class ResourceMesh;
+#pragma once
+
 #include "Globals.h"
+class ResourceMesh;
 
 namespace Importer
 {

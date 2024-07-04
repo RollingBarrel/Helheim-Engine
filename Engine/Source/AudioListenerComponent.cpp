@@ -20,7 +20,7 @@ AudioListenerComponent::~AudioListenerComponent()
 
 void AudioListenerComponent::Update()
 {
-	float3 gameobjectPosition = GetOwner()->GetPosition();
+	float3 gameobjectPosition = GetOwner()->GetWorldPosition();
 
 	FMOD::Studio::System* system = App->GetAudio()->GetFMODSystem();
 	FMOD_3D_ATTRIBUTES attributes = { { 0 } };

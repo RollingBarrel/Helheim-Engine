@@ -31,6 +31,7 @@ public:
 	void StartUp();
 	void OnStop();
 	void OnRestart();
+	void OnReset();
 
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }
@@ -43,20 +44,25 @@ public:
 	void SetAnimSpeed(float speed);
 
 	std::string GetCurrentStateName();
-	void SendTrigger(std::string trigger, float transitionTime);
-	void ChangeState(std::string stateName, float transitionTime);
+	void SendTrigger(const std::string& trigger, float transitionTime);
+	void ChangeState(const std::string& stateName, float transitionTime);
 	
 	std::string GetCurrentSpineStateName();
-	void SendSpineTrigger(std::string trigger, float transitionTime);
-	void ChangeSpineState(std::string stateName, float transitionTime);
+	void SendSpineTrigger(const std::string& trigger, float transitionTime);
+	void ChangeSpineState(const std::string& stateName, float transitionTime);
 
 	//Animations UUIDs
-	void SetAnimationsUids(const std::vector<unsigned int>& uids) { mAnimationsUIDs = uids; }
-	const  std::vector<unsigned int>& GetAnimationUids() const { return mAnimationsUIDs; }
+	void SetAnimationUid(const unsigned int uid) { mAnimationUID = uid; }
+	const unsigned int GetAnimationUid() const { return mAnimationUID; }
 
 	bool HasSpine() const { return mHasSpine; }
 
 	void StartTransition(float transitionDuration);
+
+	void SetSpineSMUID(unsigned int uid);
+	void SetSMUID(unsigned int uid);
+
+	void ReloadGameObjects();
 
 private:
 
@@ -81,7 +87,7 @@ private:
 
 	std::vector<GameObject*> mSpineObjects;
 	std::vector<GameObject*> mDefaultObjects;
-	std::vector<unsigned int> mAnimationsUIDs;
+	unsigned int mAnimationUID;
 
 };
 

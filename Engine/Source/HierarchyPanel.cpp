@@ -165,17 +165,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				std::unordered_set<GameObject*> selectAfter;
 				for (GameObject* object : FilterMarked()) 
 				{
-					std::unordered_map<const GameObject*, GameObject*> originalToNew;
-					std::vector<MeshRendererComponent*>mRenderers;
-					GameObject* gameObject = new GameObject(*object, object->GetParent(), &originalToNew, &mRenderers);
-					for (MeshRendererComponent* mRend : mRenderers)
-					{
-						if (mRend->HasSkinning())
-						{
-							mRend->UpdateSkeletonObjects(originalToNew);
-						}
-					}
-					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
+					GameObject* gameObject = App->GetScene()->DuplicateGameObject(object);
 					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();
 					InternalSetFocus(gameObject);
@@ -198,11 +188,9 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 			{
 				for (auto object : FilterMarked()) 
 				{
-					std::string file = "Assets/Prefabs/";
-					file.append('/' + object->GetName() + ".prfb");
-					unsigned int resourceId = EngineApp->GetScene()->SavePrefab(*object, file.c_str());
-					object->SetPrefabId(resourceId);
-					EngineApp->GetEngineResource()->ImportFile(file.c_str(), resourceId);
+					std::string file = ASSETS_PREFABS_PATH;
+					file.append(object->GetName() + ".prfb");
+					EngineApp->GetEngineResource()->ImportFile(file.c_str());
 				}
 			}
 		}
@@ -361,6 +349,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						}
 						else 
 						{ 
+							App->GetScene()->SwitchGameObjectsFromScene(target, movedObject);
 							movedObject->SetParent(target);
 						}
 					}

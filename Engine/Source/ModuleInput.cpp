@@ -296,7 +296,7 @@ void ModuleInput::HandleGameControllerInput()
 	{
 		int trigger_value = SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(TRIGGER_INDEX + i));
 	
-		if (trigger_value > mGameController.mMaxAxisInputThreshold * MAX_AXIS)
+		if (trigger_value > mGameController.mMinAxisInputThreshold * MAX_AXIS)
 		{
 			switch (mGameController.mTriggers[i])
 			{
@@ -399,4 +399,9 @@ void ModuleInput::HandleGameControllerInput()
 			}
 		}
 	}
+}
+
+void ModuleInput::SetGameControllerRumble(unsigned int low_freq, unsigned int high_freq, unsigned int time) 
+{
+	SDL_GameControllerRumble(mGameController.mId, low_freq, high_freq, time); 
 }

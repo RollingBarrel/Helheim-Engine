@@ -21,6 +21,8 @@ private:
 	const void DrawFolders(const PathNode& current);
 	const void DrawAssets(const PathNode& current);
 
+	std::string mSearchAsset = "";
+
 	PathNode* mSelectedNode = nullptr;
 	AssetDisplay* mSelectedAsset = nullptr;
 };

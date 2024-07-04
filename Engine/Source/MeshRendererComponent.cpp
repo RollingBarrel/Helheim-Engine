@@ -2,7 +2,6 @@
 #include "Application.h"
 #include "ModuleOpenGL.h"
 #include "ModuleResource.h"
-#include "Quadtree.h"
 #include "ModuleScene.h"
 
 #include "float4.h"
@@ -42,10 +41,6 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 
 MeshRendererComponent::~MeshRendererComponent()
 {
-	if (mMesh && mMaterial)
-	{
-		App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
-	}
 	App->GetOpenGL()->BatchRemoveMesh(*this);
 	if (mMesh)
 	{
@@ -72,7 +67,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 			if (mMaterial)
 			{
 				App->GetOpenGL()->BatchRemoveMesh(*this);
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMesh->GetUID());
 			mMesh = nullptr;
@@ -86,7 +80,6 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		if (mMaterial)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);
-			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 
 	}
@@ -103,7 +96,6 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 			if (mMesh)
 			{
 				App->GetOpenGL()->BatchRemoveMesh(*this);
-				App->GetScene()->GetQuadtreeRoot()->RemoveObject(*this->GetOwner());
 			}
 			App->GetResource()->ReleaseResource(mMaterial->GetUID());
 			mMaterial = nullptr;
@@ -113,7 +105,6 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 		if (mMesh)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);
-			App->GetScene()->GetQuadtreeRoot()->AddObject(*this);
 		}
 	}
 	//TODO: Material Default
@@ -238,16 +229,38 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			JsonObject obj = arr.GetJsonObject(i);
 			if (obj.HasMember("GoId"))
 			{
-				GameObject* ptr = uidPointerMap.at(obj.GetInt("GoId"));
-				float matrix[16];
-				if (obj.HasMember("Matrix"))
+				int UID = obj.GetInt("GoId");
+				if (UID != -1)
 				{
-					obj.GetFloats("Matrix", matrix);
-					mGameobjectsInverseMatrices.emplace_back(ptr,
-						float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
-							matrix[4], matrix[5], matrix[6], matrix[7],
-							matrix[8], matrix[9], matrix[10], matrix[11],
-							matrix[12], matrix[13], matrix[14], matrix[15]));
+					const std::unordered_map<unsigned int, unsigned int>& uids = App->GetScene()->GetPrefabUIDMap();
+					GameObject* ptr;
+
+					if (!uids.empty())
+					{
+						std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(UID));
+						if (got != uidPointerMap.end())
+						{
+							ptr = uidPointerMap.at(uids.at(UID));
+						}
+					}
+					else
+					{
+						std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(UID);
+						if (got != uidPointerMap.end())
+						{
+							ptr = uidPointerMap.at(UID);
+						}
+					}
+					float matrix[16];
+					if (obj.HasMember("Matrix"))
+					{
+						obj.GetFloats("Matrix", matrix);
+						mGameobjectsInverseMatrices.emplace_back(ptr,
+							float4x4(matrix[0], matrix[1], matrix[2], matrix[3],
+								matrix[4], matrix[5], matrix[6], matrix[7],
+								matrix[8], matrix[9], matrix[10], matrix[11],
+								matrix[12], matrix[13], matrix[14], matrix[15]));
+					}
 				}
 			}
 		}

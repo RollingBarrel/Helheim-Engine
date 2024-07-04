@@ -43,10 +43,9 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 
 	GameObject* gameObject = new GameObject(name, parent);
 
-	gameObject->SetPosition(node.mTranslation);
-	gameObject->SetRotation(node.mRotation);
-	gameObject->SetScale(node.mScale);
-	gameObject->RecalculateMatrices();
+	gameObject->SetLocalPosition(node.mTranslation);
+	gameObject->SetLocalRotation(node.mRotation);
+	gameObject->SetLocalScale(node.mScale);
 
 	if (isRoot && nodeNumber == 0)
 	{
@@ -56,7 +55,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
 				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
-				cAnimation->SetAnimationsUids(rModel.mAnimationUids);
+				cAnimation->SetAnimationUid(rModel.mAnimationUids[0]);
 				cAnimation->StartUp();
 
 			}
@@ -150,31 +149,38 @@ void ScenePanel::MenuGBuffer()
 	{
 		if (ImGui::BeginCombo("##Screen Output", currentSceneName.c_str(), ImGuiComboFlags_PopupAlignLeft))
 		{
-			if (ImGui::Selectable("SCENE")) {
+			if (ImGui::Selectable("SCENE")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
 				currentSceneName = "SCENE";
 			}
-			//if (ImGui::Selectable("DEPTH")) {
-			//	currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
-			//	currentSceneName = "DEPTH";
-			//}
-			if (ImGui::Selectable("DIFFUSE")) {
+			if (ImGui::Selectable("BASE_COLOR")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDiffuse();
-				currentSceneName = "DIFFUSE";
+				currentSceneName = "BASE_COLOR";
 			}
-			if (ImGui::Selectable("SPECULAR")) {
+			if (ImGui::Selectable("METAL_ROUGH")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferSpecularRough();
-				currentSceneName = "SPECULAR";
+				currentSceneName = "METAL_ROUGH";
 			}
-			if (ImGui::Selectable("EMISSIVE")) {
+			if (ImGui::Selectable("EMISSIVE")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferEmissive();
 				currentSceneName = "EMISSIVE";
 			}
-			if (ImGui::Selectable("NORMALS")) {
+			if (ImGui::Selectable("POS")) 
+			{
+				currentScene = EngineApp->GetOpenGL()->GetGBufferPos();
+				currentSceneName = "POS";
+			}
+			if (ImGui::Selectable("NORMALS")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
 				currentSceneName = "NORMALS";
 			}
-			if (ImGui::Selectable("DEPTH")) {
+			if (ImGui::Selectable("DEPTH")) 
+			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
 				currentSceneName = "DEPTH";
 			}
@@ -262,6 +268,15 @@ void ScenePanel::DrawScene()
 						//	}
 						//}
 					}
+
+					//Load animation data
+
+					AnimationComponent* rootAnim = reinterpret_cast<AnimationComponent*>(gameObjectRoot->GetComponent(ComponentType::ANIMATION));
+					if (rootAnim)
+					{
+						rootAnim->ReloadGameObjects();
+					}
+					
 					//Load Skinning data
 					std::vector<std::pair<GameObject*, float4x4>> invBindVec;
 					for (int j = 0; j<skinGos.size(); ++j)
@@ -292,7 +307,6 @@ void ScenePanel::DrawScene()
 				}
 				case Resource::Type::Texture:
 				case Resource::Type::Mesh:
-				case Resource::Type::Bone:
 				case Resource::Type::Animation:
 				case Resource::Type::Material:
 				case Resource::Type::Scene:
@@ -326,7 +340,6 @@ void ScenePanel::DrawScene()
 		//If there's a selected object in the hierarchy and it's not the root
 		if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
 		{
-			const float4x4* transform = &selectedGameObject->GetWorldTransform();
 			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
 			//Draws the Guizmo axis
@@ -334,6 +347,7 @@ void ScenePanel::DrawScene()
 
 			if (ImGuizmo::IsUsing())
 			{
+				modelMatrix.Transpose();
 				mIsGuizmoUsing = true;
 				GameObject* parent = selectedGameObject->GetParent();
 				float4x4 inverseParentMatrix = float4x4::identity;
@@ -347,19 +361,19 @@ void ScenePanel::DrawScene()
 					inverseParentMatrix = parent->GetWorldTransform().Inverted();
 				}
 
-				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix;
 				localMatrix.Decompose(translation, rotation, scale);
 
 				switch (currentGuizmoOperation)
 				{
 				case ImGuizmo::TRANSLATE:
-					selectedGameObject->SetPosition(translation);
+					selectedGameObject->SetWorldPosition(modelMatrix.TranslatePart());
 					break;
 				case ImGuizmo::ROTATE:
-					selectedGameObject->SetRotation(rotation);
+					selectedGameObject->SetWorldRotation(rotation);
 					break;
 				case ImGuizmo::SCALE:
-					selectedGameObject->SetScale(scale);
+					selectedGameObject->SetWorldScale(scale);
 					break;
 				}
 			}

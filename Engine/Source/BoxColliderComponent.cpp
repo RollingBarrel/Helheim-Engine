@@ -13,6 +13,7 @@ BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner,
 BoxColliderComponent::BoxColliderComponent(const BoxColliderComponent& original, GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER),
 	mCenter(original.mCenter), mSize(original.mSize)
 {
+	mCollider = new Collider(this, ComponentType::BOXCOLLIDER);
 	Init();
 }
 
@@ -21,16 +22,14 @@ BoxColliderComponent::~BoxColliderComponent()
 	if (mRigidBody)
 	{
 		App->GetPhysics()->RemoveBoxRigidbody(this);
+		mRigidBody = nullptr;
 	}
+	delete mCollider;
 }
 
 void BoxColliderComponent::Init()
 {
-	if (!mRigidBody && IsEnabled() && mOwner->IsActive())
-	{
-		App->GetPhysics()->CreateBoxRigidbody(this);
-	}
-
+	App->GetPhysics()->CreateBoxRigidbody(this);
 	ComputeBoundingBox();
 }
 
@@ -45,7 +44,6 @@ void BoxColliderComponent::Update()
 	if (mOwner->HasUpdatedTransform())
 	{
 		ComputeBoundingBox();
-		//App->GetPhysics()->UpdateBoxRigidbody(this);
 	}
 }
 
@@ -72,7 +70,10 @@ void BoxColliderComponent::ComputeBoundingBox()
 	float3 sizeIncrement = mSize * 0.5f;
 	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
 	mWorldOBB = OBB(mLocalAABB);
-	mWorldOBB.Transform(float4x4(mOwner->GetRotation(), mOwner->GetPosition()));
+	float3 position = mOwner->GetWorldPosition();
+	Quat rotation = mOwner->GetWorldRotation();
+	mWorldOBB.Transform(float4x4(rotation, position));
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)
@@ -130,7 +131,6 @@ void BoxColliderComponent::Load(const JsonObject& data, const std::unordered_map
 	mSize = float3(size);
 
 	mColliderType = (ColliderType)data.GetInt("ColliderType");
-
 	mFreezeRotation = data.GetBool("FreezeRotation");
 
 	ComputeBoundingBox();
@@ -138,11 +138,11 @@ void BoxColliderComponent::Load(const JsonObject& data, const std::unordered_map
 
 void BoxColliderComponent::Enable()
 {
-	App->GetPhysics()->CreateBoxRigidbody(this);
+	App->GetPhysics()->EnableRigidbody(this);
 	ComputeBoundingBox();
 }
 
 void BoxColliderComponent::Disable()
 {
-	App->GetPhysics()->RemoveBoxRigidbody(this);
+	App->GetPhysics()->DisableRigidbody(this);
 }

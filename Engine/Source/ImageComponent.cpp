@@ -56,7 +56,7 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	FillVBO();
 	CreateVAO();
 
-	mImage = original.mImage;
+	SetImage(original.mResourceId);
 	mResourceId = original.mResourceId;
 	mFileName = original.mFileName;
 
@@ -77,6 +77,13 @@ ImageComponent:: ~ImageComponent()
 {
 	CleanUp();
 	mCanvas = nullptr;
+
+	if (mImage)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	}
+
+	App->GetResource()->ReleaseResource(mResourceId);
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
@@ -277,7 +284,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 
 	float col[3];
 	data.GetFloats("Color", col);
-	mColor = float3(col);
+	mColor = float3(col[0], col[1], col[2]);
 	mAlpha = data.GetFloat("Alpha");
 	mIsSpritesheet = data.GetBool("IsSpritesheet");
 	mColumns = data.GetInt("Columns");
@@ -288,6 +295,11 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 
 void ImageComponent::SetImage(unsigned int resourceId) 
 {
+	if (mImage)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	}
+
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
@@ -375,10 +387,10 @@ void ImageComponent::ResizeByRatio()
 	}
 	else 
 	{
-		float currentRatio = GetOwner()->GetScale().x / GetOwner()->GetScale().y;
+		float currentRatio = GetOwner()->GetWorldScale().x / GetOwner()->GetWorldScale().y;
 		float ratio = currentRatio / originalRatio;
-		float3 newScale = float3(GetOwner()->GetScale().x, GetOwner()->GetScale().y * ratio, GetOwner()->GetScale().z);
-		GetOwner()->SetScale(newScale);
+		float3 newScale = float3(GetOwner()->GetWorldScale().x, GetOwner()->GetWorldScale().y * ratio, GetOwner()->GetWorldScale().z);
+		GetOwner()->SetWorldScale(newScale);
 	}
 }
 

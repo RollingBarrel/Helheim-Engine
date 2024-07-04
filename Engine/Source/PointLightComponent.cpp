@@ -5,7 +5,7 @@
 
 PointLightComponent::PointLightComponent(GameObject* owner) : Component(owner, ComponentType::POINTLIGHT) 
 {
-	const float3& pos = owner->GetPosition();
+	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -18,12 +18,18 @@ PointLightComponent::PointLightComponent(GameObject* owner) : Component(owner, C
 
 	mData.intensity = 50.0f;
 	
-	App->GetOpenGL()->AddPointLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddPointLight(*this);
+	}
 }
 
 PointLightComponent::PointLightComponent(const PointLightComponent* original, GameObject* owner) : Component(owner, ComponentType::POINTLIGHT), mData(original->mData)
 {
-	App->GetOpenGL()->AddPointLight(*this);
+	if (IsEnabled())
+	{
+		App->GetOpenGL()->AddPointLight(*this);
+	}
 }
 
 PointLightComponent::~PointLightComponent() 
@@ -33,7 +39,7 @@ PointLightComponent::~PointLightComponent()
 
 const float* PointLightComponent::GetPosition() const 
 { 
-	return mOwner->GetPosition().ptr(); 
+	return mOwner->GetWorldPosition().ptr(); 
 }
 
 void PointLightComponent::SetPosition(const float pos[3])
@@ -67,7 +73,7 @@ void PointLightComponent::SetRadius(float radius)
 void PointLightComponent::Update()
 {
 	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetPosition().ptr();
+	const float* pos = mOwner->GetWorldPosition().ptr();
 	for (int i = 0; i < 3; ++i)
 	{
 		if (pos[i] != mData.pos[i])
@@ -125,12 +131,17 @@ void PointLightComponent::Load(const JsonObject& data, const std::unordered_map<
 		}
 	}
 
-	if (data.HasMember("Intensity")) mData.intensity = data.GetFloat("Intensity");
+	if (data.HasMember("Intensity"))
+	{
+		mData.intensity = data.GetFloat("Intensity");
+	}
+
+	App->GetOpenGL()->UpdatePointLightInfo(*this);
 }
 
 void PointLightComponent::Reset()
 {
-	const float3& pos = mOwner->GetPosition();
+	const float3& pos = mOwner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;

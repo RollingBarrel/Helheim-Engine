@@ -51,7 +51,19 @@ void CanvasComponent::Load(const JsonObject& data, const std::unordered_map<unsi
 	Component::Load(data, uidPointerMap);
 	
 	float size[2];
-	data.GetFloats("Size", size);
+	if (data.HasMember("Size")) data.GetFloats("Size", size);
+
+	// This is here for backwards compatibility after swaping ScreenSpace for the Render variable
+	// It can be deleted in future updates
+	if (data.HasMember("ScreenSpace"))
+	{
+		if (data.GetBool("ScreenSpace"))
+		{
+			mRenderSpace = RenderSpace::Screen;
+		}
+		else mRenderSpace = RenderSpace::World;
+	}
+
 	mSize = float2(size);
 	if (data.HasMember("Render"))
 	{

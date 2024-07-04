@@ -4,7 +4,7 @@
 class AimState : public State
 {
 public:
-	explicit AimState(PlayerController* player);
+	explicit AimState(PlayerController* player, float cooldown);
 	~AimState();
 
 	StateType HandleInput() override;
@@ -14,7 +14,6 @@ public:
 	void Exit() override;
 
 	StateType GetType() override;
-
 
 private:
 	float mAttackTimer = 0.0f;

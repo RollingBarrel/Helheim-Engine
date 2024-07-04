@@ -6,7 +6,7 @@ BezierCurve::BezierCurve()
 
 float BezierCurve::CalculateValue(float dt, const float initialValue) const
 {
-    return mIsCurve ? initialValue + (CurveValue(dt) * mFactor) : initialValue;
+    return mIsCurve ? initialValue * CurveValue(dt) : initialValue;
 }
 
 void BezierCurve::spline(const float* key, int num, int dim, float t, float* v) const
@@ -80,7 +80,6 @@ void BezierCurve::Save(JsonObject& obj) const
     JsonObject value = obj.AddNewJsonObject("Value");
     mValue.Save(value);
     obj.AddBool("IsCurve", mIsCurve);
-    obj.AddFloat("Factor", mFactor);
 
     JsonArray curvePoint = obj.AddNewJsonArray("CurvePoints");
 
@@ -93,16 +92,15 @@ void BezierCurve::Save(JsonObject& obj) const
 
 void BezierCurve::Load(const JsonObject& data)
 {
-    if (data.HasMember("Factor")) mFactor = data.GetFloat("Factor");
     if (data.HasMember("IsCurve")) mIsCurve = data.GetBool("IsCurve");
 
     if (data.HasMember("CurvePoints")) {
         JsonArray curvePoint = data.GetJsonArray("CurvePoints");
 
-        for (int i = 0; i < curvePoint.Size(); ++i)
+        for (unsigned int i = 0; i < curvePoint.Size(); ++i)
         {
             JsonObject pointObj = curvePoint.GetJsonObject(i);
-            if (data.HasMember("Point"))
+            if (pointObj.HasMember("Point"))
             {
                 float point[2];
                 pointObj.GetFloats("Point", point);

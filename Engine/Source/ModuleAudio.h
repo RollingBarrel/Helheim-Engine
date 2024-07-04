@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include "float3.h"
 
 #define EVENT_BANK_UPPERLIMIT 64
 #define CheckError(result) ModuleAudio::CheckFmodError(result)
@@ -13,6 +15,7 @@ namespace FMOD {
 		class System; 
 		class Bank;
 		class EventInstance;
+		class EventDescription;
 	}
 	class System;
 }
@@ -40,16 +43,31 @@ public:
 	void AudioResume();
 
 	void EngineStop();
+	// Start
+	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
+	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
+	// Kill instance
+	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
+	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
 
-	void AddToAudiosList(AudioSourceComponent* audioSource);
+	
+	// Update
+	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
+	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
+	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
 
 	int GetMemoryUsage() const;
+	void GetInstances(std::map<std::string, int>& instances) const;
+
 	float GetVolume(std::string busname) const;
 	void SetVolume(std::string busname, float value) const;
 
 	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);
 
 private:
+	FMOD::Studio::EventInstance* FindEventInstance(const FMOD::Studio::EventDescription* eventDescription, const int id);
+	void AddIntoEventList(const FMOD::Studio::EventDescription* eventDescription);
+
 	FMOD::Studio::System* mSystem = nullptr;
 	FMOD::System* mCoreSystem = nullptr;
 
@@ -62,6 +80,6 @@ private:
 	bool mPaused = false;
 	bool mStopped = false;
 
-	std::vector<AudioSourceComponent*> mAudiosSourceList;
-};
+	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 
+};

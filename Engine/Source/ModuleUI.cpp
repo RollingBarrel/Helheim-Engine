@@ -18,7 +18,6 @@
 #include "ButtonComponent.h"
 #include "ResourceTexture.h"
 #include "ScenePanel.h"
-#include "Quadtree.h"
 #include <MathGeoLib.h>
 
 ModuleUI::ModuleUI() 
@@ -76,10 +75,6 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 	if (gameObject->IsEnabled())
 	{
-		for (GameObject* child : gameObject->GetChildren())
-		{
-			DrawWidget(child);
-		}
 		//TODO: Check this...
 		ImageComponent* image = reinterpret_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
 		if (image && image->IsEnabled())
@@ -92,7 +87,11 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 		{
 			text->Draw();
 		}
-		
+
+		for (GameObject* child : gameObject->GetChildren())
+		{
+			DrawWidget(child);
+		}
 	}
 }
 

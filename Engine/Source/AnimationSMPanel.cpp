@@ -7,6 +7,7 @@
 #include "ModuleEngineResource.h"
 #include "ResourceStateMachine.h"
 #include "AnimationComponent.h"
+#include "ImporterStateMachine.h"
 
 namespace ed = ax::NodeEditor;
 
@@ -62,7 +63,6 @@ void AnimationSMPanel::Close()
 
     ed::DestroyEditor(mEditorContext);
     mStateMachine = nullptr; //Do a state machine save here when sm is a resource
-    mComponent = nullptr;
     mOpen = false;
     
 }
@@ -75,8 +75,7 @@ void AnimationSMPanel::LoadConfig()
 
     }
     ed::Config config;
-    std::string jsonFile = (/*mStateMachine->GetName()*/ + "Simple.json");
-    config.SettingsFile = jsonFile.c_str();
+    config.SettingsFile = "Simple.json";
     mEditorContext = ed::CreateEditor(&config);
 
 }
@@ -101,7 +100,6 @@ void AnimationSMPanel::DrawNodes()
         ImGui::PopStyleVar();
 
         ImGui::Dummy(ImVec2(96.0, 8.0));
-        ImGui::BulletText("Clip: %s", mStateMachine->GetStateClip(i).c_str());
         if (i == 0)
         {
             ImGui::BulletText("Default");
@@ -180,8 +178,9 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
         }
 
         ImGui::SameLine();
-        if (ImGui::Button("Create new state")) {
-            mStateMachine->AddState(mNewNodeName, "Default");
+        if (ImGui::Button("Create new state")) 
+        {
+            mStateMachine->AddState(mNewNodeName);
             mNewNodeName = "";
         }
 
@@ -349,11 +348,11 @@ void AnimationSMPanel::ManageCreate()
                     {
                         if (startIsInput)
                         {
-                            mStateMachine->AddTransition(mStateMachine->GetStateName(endNode), mStateMachine->GetStateName(startNode), std::string("DefaultTransition"));
+                            mStateMachine->AddTransition(mStateMachine->GetStateName(endNode), mStateMachine->GetStateName(startNode), std::string("t"+ mStateMachine->GetStateName(startNode)));
                         }
                         else
                         {
-                            mStateMachine->AddTransition(mStateMachine->GetStateName(startNode), mStateMachine->GetStateName(endNode), std::string("DefaultTransition"));
+                            mStateMachine->AddTransition(mStateMachine->GetStateName(startNode), mStateMachine->GetStateName(endNode), std::string("t"+ mStateMachine->GetStateName(endNode)));
                         }
 
                         //animation->Save();
@@ -401,15 +400,6 @@ void AnimationSMPanel::GetResourcesList()
                 ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
                 mStateMachine = newSM->GetStateMachine();
                 mStateMachine->SetUID(newSM->GetUID());
-
-                if (mIsSpine)
-                {
-                    mComponent->SetSpineStateMachine(mStateMachine);
-                }
-                else
-                {
-                    mComponent->SetStateMachine(mStateMachine);
-                }
                 //mStateMachine->LoadResource(path.c_str());
                 
             }
@@ -435,6 +425,7 @@ void AnimationSMPanel::DrawMenuBar()
         // Update mNewNodeName with the new value from the buffer
         name = std::string(buffer);
         mStateMachine->SetName(buffer);
+        mStateMachine->SetUID(0);
     }
     ImGui::SameLine();
     if (!mUpToDate)
@@ -449,11 +440,26 @@ void AnimationSMPanel::DrawMenuBar()
     ImGui::SameLine();
     if (ImGui::Button("Save StateMachine"))
     {
-        mStateMachine->SaveResource("Assets/StateMachines/");
+        //Check if asset existed to use its uid
+        unsigned int uid = mStateMachine->GetUID();
+        mStateMachine->SaveResource("Assets/StateMachines/", false);
         std::string filePath = "Assets/StateMachines/" + mStateMachine->GetName() + ".smbin";
-        unsigned int uid = EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine)->GetUID();
-        mStateMachine->SetUID(uid);
-        mUpToDate = true;
+
+        if (uid != 0)
+        {
+            ResourceStateMachine* existingRes = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(uid, Resource::Type::StateMachine));
+            existingRes->SetStateMachine(mStateMachine);
+            //Importer::StateMachine::Save(existingRes);
+            Importer::StateMachine::Import(filePath.c_str(), uid);
+            App->GetResource()->ReleaseResource(uid);
+        }
+        else
+        {
+            uid = EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine)->GetUID();
+            mStateMachine->SetUID(uid);
+            mUpToDate = true;
+
+        }
     }
 
 

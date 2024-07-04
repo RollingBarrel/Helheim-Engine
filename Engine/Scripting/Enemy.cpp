@@ -1,13 +1,21 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "GameManager.h"
 #include "AudioSourceComponent.h"
-#include "Math/MathFunc.h"
+#include "ScriptComponent.h"
 #include "GameObject.h"
 
+#include "GameManager.h"
+#include "PoolManager.h"
+#include "ItemDrop.h"
+#include "BattleArea.h"
 
+#include "Math/MathFunc.h"
 
+//Hit Effect
+#include "ModuleResource.h"
+#include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
@@ -17,11 +25,41 @@ void Enemy::Start()
     ModuleScene* scene = App->GetScene();
     mPlayer = GameManager::GetInstance()->GetPlayer();
     mHealth = mMaxHealth;  
+
+
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+    mMaterialIds.reserve(mMeshComponents.size());
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
+    }
+
 }
 
 void Enemy::Update()
 {
-    mBeAttracted = false;
+    if (GameManager::GetInstance()->IsPaused()) return;
+
+    if (mDeath)
+    {
+        Death();
+    }
+
+    //Hit Effect
+    //if (mHit)
+    //{
+    //    if (Delay(0.1f))
+    //    {
+    //        mHit = false;
+    //
+    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //        {
+    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
+    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
+    //        }
+    //    }
+    //}
 
 }
 
@@ -29,33 +67,62 @@ void Enemy::ActivateEnemy()
 {
 }
 
-bool Enemy::IsPlayerInRange(float range) 
+bool Enemy::Delay(float delay)
+{
+    mTimePassed += App->GetDt();
+
+    if (mTimePassed >= delay)
+    {
+        mTimePassed = 0;
+        return true;
+    }
+    else return false;
+}
+
+bool Enemy::IsPlayerInRange(float range)
 {
     float distance = 0.0f;
-    distance = (mPlayer) ? mGameObject->GetPosition().Distance(mPlayer->GetPosition()) : inf;
+    distance = (mPlayer) ? mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition()) : inf;
 
     return (distance <= range);
 }
 
 void Enemy::TakeDamage(float damage) 
 {   
-    if (mHealth > 0)
+    if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
         mHealth -= damage;
 
         if (mHealth <= 0)
         {
-            Death();
+            mDeath = true;
         }
     }
+        
+    
 
-    //LOG("Enemy Health: %f", mHealth);
+    LOG("Enemy Health: %f", mHealth);
+
+    ////Hit Effect
+    //mHit = true;
+    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    //{
+    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+    //}
 }
 
 void Enemy::Death()
 {
     mGameObject->SetEnabled(false);
-    DropShield();
+
+    BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+    if (activeBattleArea)
+    {
+        activeBattleArea->EnemyDestroyed();
+    }
+
+    DropItem();
 }
 
 void Enemy::AddFootStepAudio(GameObject* audio)
@@ -67,29 +134,18 @@ void Enemy::AddFootStepAudio(GameObject* audio)
         if (mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE) != nullptr)
         {
             AudioSourceComponent* audio = reinterpret_cast<AudioSourceComponent*>(mFootstepAudioHolder->GetComponent(ComponentType::AUDIOSOURCE));
-            audio->Play();
+            //audio->Play();
         }
     }
 }
 
-bool Enemy::Delay(float delay) //Lapse of time for doing some action
-{
-   static float timePassed = 0.0f;
-   timePassed += App->GetDt();
 
-    if (timePassed >= delay)
-    {
-        timePassed = 0;
-        return true;
-    }
-    else return false;
-}
 
 void Enemy::PushBack() 
 {
-    float3 direction = mGameObject->GetPosition() - mPlayer->GetPosition();
+    float3 direction = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
     direction.Normalize();
-    mGameObject->SetPosition(mGameObject->GetPosition() + direction * 2.0f);
+    mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + direction * 2.0f);
 }
 
 bool Enemy::IsMoving()
@@ -97,20 +153,42 @@ bool Enemy::IsMoving()
     return false;
 }
 
-void Enemy::DropShield()
+void Enemy::Reset()
+{
+    mDeath = false;
+    mHealth = mMaxHealth;
+}
+
+void Enemy::DropItem()
 {
     srand(static_cast<unsigned int>(std::time(nullptr)));
     int randomValue = rand() % 100;
 
+    PoolType poolType = PoolType::LAST;
+
     if (randomValue < mShieldDropRate)
     {
-        float3 enemyPosition = mGameObject->GetPosition();
-        float3 shieldPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
-
-        GameObject* shield = App->GetScene()->InstantiatePrefab("Item_Shield.prfb");
-        shield->SetPosition(shieldPosition);
-
-        float3 scale = float3(0.25f, 0.25f, 0.25f);
-        shield->SetScale(scale);
+        poolType = PoolType::SHIELD;
     }
+    else if (randomValue < mRedEnergyDropRate)
+    {
+        poolType = PoolType::RED_ENERGY;
+    }
+    else if (randomValue < mBlueEnergyDropRate)
+    {
+        poolType = PoolType::BLUE_ENERGY;
+    }
+
+    if (poolType != PoolType::LAST)
+    {
+       float3 enemyPosition = mGameObject->GetWorldPosition();
+       float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+
+       GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
+       itemGameObject->SetWorldPosition(dropPosition);
+       ItemDrop* item = reinterpret_cast<ItemDrop*>(reinterpret_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+       item->Init();
+    }
+
+
 }

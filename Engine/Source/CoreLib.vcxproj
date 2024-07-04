@@ -168,6 +168,7 @@
     <ClCompile Include="Archive.cpp" />
     <ClCompile Include="AudioListenerComponent.cpp" />
     <ClCompile Include="AudioSourceComponent.cpp" />
+    <ClCompile Include="AudioUnit.cpp" />
     <ClCompile Include="BatchManager.cpp" />
     <ClCompile Include="BlendMode.cpp" />
     <ClCompile Include="BoxColliderComponent.cpp" />
@@ -178,6 +179,7 @@
     <ClCompile Include="ColorGradient.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DecalComponent.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourCrowd.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourLocalBoundary.cpp" />
     <ClCompile Include="Dependencies\DetourCrowd\Include\DetourObstacleAvoidance.cpp" />
@@ -251,7 +253,6 @@
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
-    <ClCompile Include="Quadtree.cpp" />
     <ClCompile Include="RandomFloat.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
@@ -259,7 +260,8 @@
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
     <ClCompile Include="ResourceNavmesh.cpp" />
-    <ClCompile Include="ResourceObject.cpp" />
+    <ClCompile Include="ResourcePrefab.cpp" />
+    <ClCompile Include="ResourceScene.cpp" />
     <ClCompile Include="ResourceScript.cpp" />
     <ClCompile Include="ResourceStateMachine.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
@@ -268,6 +270,8 @@
     <ClCompile Include="SaveLoadMesh.cpp" />
     <ClCompile Include="SaveLoadModel.cpp" />
     <ClCompile Include="SaveLoadNavMesh.cpp" />
+    <ClCompile Include="SaveLoadPrefab.cpp" />
+    <ClCompile Include="SaveLoadScene.cpp" />
     <ClCompile Include="SaveLoadScript.cpp" />
     <ClCompile Include="SaveLoadStateMachine.cpp" />
     <ClCompile Include="SaveLoadTexture.cpp" />
@@ -289,6 +293,7 @@
     <ClInclude Include="Archive.h" />
     <ClInclude Include="AudioListenerComponent.h" />
     <ClInclude Include="AudioSourceComponent.h" />
+    <ClInclude Include="AudioUnit.h" />
     <ClInclude Include="BatchManager.h" />
     <ClInclude Include="BlendMode.h" />
     <ClInclude Include="BoxColliderComponent.h" />
@@ -300,6 +305,7 @@
     <ClInclude Include="ColorGradient.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DecalComponent.h" />
     <ClInclude Include="Dependencies\Bullet\include\btBulletCollisionCommon.h" />
     <ClInclude Include="Dependencies\Bullet\include\btBulletDynamicsCommon.h" />
     <ClInclude Include="Dependencies\Bullet\include\BulletCollision\BroadphaseCollision\btAxisSweep3.h" />
@@ -747,7 +753,6 @@
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
-    <ClInclude Include="Quadtree.h" />
     <ClInclude Include="RandomFloat.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceAnimation.h" />
@@ -755,6 +760,8 @@
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceModel.h" />
     <ClInclude Include="ResourceNavMesh.h" />
+    <ClInclude Include="ResourcePrefab.h" />
+    <ClInclude Include="ResourceScene.h" />
     <ClInclude Include="ResourceScript.h" />
     <ClInclude Include="ResourceStateMachine.h" />
     <ClInclude Include="ResourceTexture.h" />
@@ -763,6 +770,8 @@
     <ClInclude Include="SaveLoadMesh.h" />
     <ClInclude Include="SaveLoadModel.h" />
     <ClInclude Include="SaveLoadNavMesh.h" />
+    <ClInclude Include="SaveLoadPrefab.h" />
+    <ClInclude Include="SaveLoadScene.h" />
     <ClInclude Include="SaveLoadScript.h" />
     <ClInclude Include="SaveLoadStateMachine.h" />
     <ClInclude Include="SaveLoadTexture.h" />
@@ -777,6 +786,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\Environment_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl" />
@@ -789,7 +800,8 @@
     <None Include="..\Game\Assets\Shaders\PBRCT_GeometryPass.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl" />
     <None Include="..\Game\Assets\Shaders\PBRCT_VertexShader.glsl" />
-    <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\SelectComands.comp" />
+    <None Include="..\Game\Assets\Shaders\SelectSkins.comp" />
     <None Include="..\Game\Assets\Shaders\skinning.comp" />
     <None Include="..\Game\Assets\Shaders\skybox.fs" />
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
