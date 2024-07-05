@@ -212,14 +212,14 @@ void GameObject::SetActive(bool active)
 
 	mIsActive = active;
 
-	for (Component* component : mComponents)
+	for (unsigned int i = 0; i < mComponents.size(); ++i)
 	{
-		component->SetEnable(active);
+		mComponents[i]->SetEnable(active);
 	}
 
-	for (GameObject* child : mChildren)
+	for (unsigned int i = 0; i < mChildren.size(); ++i)
 	{
-		child->SetActive(active);
+		mChildren[i]->SetActive(active);
 	}
 }
 
