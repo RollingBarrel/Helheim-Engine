@@ -31,7 +31,8 @@ struct PathNode;
 struct AssetDisplay
 {
 	AssetDisplay(const char* name, const char* mPath, PathNode* parent);
-	~AssetDisplay() {
+	~AssetDisplay() 
+	{
 		delete[] mName;
 		mName = nullptr;
 		delete[] mPath;
@@ -47,7 +48,8 @@ struct AssetDisplay
 struct PathNode
 {
 	PathNode(const char* name, PathNode* parent = nullptr);
-	~PathNode() {
+	~PathNode() 
+	{
 		delete[] mName;
 		mParent = nullptr;
 		for (unsigned int i = 0; i < mChildren.size(); ++i)
