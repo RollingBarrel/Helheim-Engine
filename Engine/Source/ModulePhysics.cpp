@@ -201,30 +201,16 @@ void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
 
 void ModulePhysics::UpdateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	//TODO: ROTATION TRANSFORMATIONS ARE NOT CORRECT
-	btTransform transform;
-	transform.setIdentity();
-
-	const float3 worldPosition = boxCollider->GetOwner()->GetWorldPosition();
-	btVector3 position(worldPosition.x, worldPosition.y, worldPosition.z);
-	transform.setOrigin(position);
-
-	const Quat worldRotation = boxCollider->GetOwner()->GetWorldRotation();
-	btQuaternion rotation(worldRotation.x, worldRotation.y, worldRotation.z, worldRotation.w);
-	transform.setRotation(rotation);
-
+	float3 boxSize = boxCollider->GetSize();
+	
 	btRigidBody* rigidBody = boxCollider->GetRigidBody();
 	MotionState* motionState = boxCollider->GetMotionState();
-
-	float3 boxSize = boxCollider->GetSize();
-
 	motionState->SetCenterOffset(boxCollider->GetCenter());
-	motionState->setWorldTransform(transform);
-	rigidBody->getCollisionShape()->setLocalScaling(btVector3(boxSize.x, boxSize.y, boxSize.z));
 	
 	btTransform motionStateTransform;
 	motionState->getWorldTransform(motionStateTransform);
-	rigidBody->setWorldTransform(motionStateTransform);
+    rigidBody->setWorldTransform(motionStateTransform);
+	rigidBody->getCollisionShape()->setLocalScaling(btVector3(boxSize.x, boxSize.y, boxSize.z));
 }
 
 void ModulePhysics::DisableRigidbody(BoxColliderComponent* boxCollider)

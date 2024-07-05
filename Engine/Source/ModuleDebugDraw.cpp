@@ -725,6 +725,17 @@ void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
     dd::flush();
 }
 
+void ModuleDebugDraw::DrawCube(const std::vector<float3>& points, const float3& color)
+{
+    ddVec3 orderedPoints[8] =
+    {
+        points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
+    };
+
+    dd::box(orderedPoints, color);
+    dd::flush();
+}
+
 void ModuleDebugDraw::DrawSphere(const float center[3], const float color[3], const float radius)
 {
     ////math::float3 dCenter = math::float3(center);
@@ -839,7 +850,6 @@ void ModuleDebugDraw::DrawColliders(GameObject* root)
         BoxColliderComponent* boxCollider = (BoxColliderComponent*)root->GetComponent(ComponentType::BOXCOLLIDER);
         if (boxCollider != nullptr && boxCollider->IsEnabled())
         {
-            //AABB aabb;
             OBB obb;
             boxCollider->GetColliderOBB(obb);
             EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.5f, 1.0f, 0.5f));

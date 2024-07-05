@@ -71,21 +71,17 @@ void BoxColliderComponent::OnCollision(CollisionData* collisionData)
 
 void BoxColliderComponent::GetColliderOBB(OBB& obb) const
 {
-
 	btVector3 aabbMinBullet;
 	btVector3 aabbMaxBullet;
 	mRigidBody->getAabb(aabbMinBullet, aabbMaxBullet);
-
 	float3 aabbMin(aabbMinBullet.x(), aabbMinBullet.y(), aabbMinBullet.z());
 	float3 aabbMax(aabbMaxBullet.x(), aabbMaxBullet.y(), aabbMaxBullet.z());
-	AABB aabb = AABB(aabbMin, aabbMax);
 
-	btQuaternion quaternionBullet = mRigidBody->getOrientation();
-	Quat quaternion = Quat(quaternionBullet.x(), quaternionBullet.y(), quaternionBullet.z(), quaternionBullet.w());
-
-	obb = OBB(aabb);
-	obb.Transform(quaternion);
-	obb.pos = aabb.CenterPoint();
+	obb.pos = (aabbMin + aabbMax) / 2.0f;
+	obb.axis[0] = mOwner->GetRight();
+	obb.axis[1] = mOwner->GetUp();
+	obb.axis[2] = mOwner->GetFront();
+	obb.r = mSize;
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)
