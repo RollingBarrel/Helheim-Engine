@@ -13,10 +13,8 @@ class ENGINE_API ModuleDetourNavigation :public Module
 public:
 	ModuleDetourNavigation();
 	~ModuleDetourNavigation();
-	bool Init() override;
 	std::vector<float3> FindNavPath(float3 startPos, float3 endPos);
 	void CreateQuery(unsigned int resourceId);
-	void LoadSceneNavmesh();
 	void FindDebugPoint();
 	float3 FindNearestPoint(float3 center, float3 halfSize);
 
@@ -27,6 +25,7 @@ public:
 
 	void SetQueryCenter(float3 center) { mQueryCenter = center; }
 	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
+	unsigned int GetResourceId() const;
 
 private:
 	dtNavMeshQuery* mNavQuery = nullptr;

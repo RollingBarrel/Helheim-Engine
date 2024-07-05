@@ -437,7 +437,6 @@ void NavMeshController::CreateDetourData()
 		LOG("Could not init Detour navmesh");
 		return;
 	}
-	dtFree(navData);
 
 	std::string navMeshName = ASSETS_NAVMESH_PATH;
 	navMeshName += App->GetScene()->GetRoot()->GetName();
@@ -446,6 +445,7 @@ void NavMeshController::CreateDetourData()
 	//delete mDetourNavMesh;
 	unsigned int newResId = EngineApp->GetEngineResource()->ImportFile(navMeshName.c_str());
 	App->GetNavigation()->CreateQuery(newResId);
+	dtFree(navData);
 }
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {

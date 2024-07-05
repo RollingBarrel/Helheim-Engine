@@ -25,18 +25,9 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 }
 
-bool ModuleDetourNavigation::Init()
-{
-	LoadSceneNavmesh();
-	return true;
-}
-
-void ModuleDetourNavigation::LoadSceneNavmesh()
-{
-	//if (sceneNavMeshUid)
-	//{
-	//	CreateQuery(sceneNavMeshUid);
-	//}
+unsigned int ModuleDetourNavigation::GetResourceId() const
+{ 
+	return (mRNavMesh) ? mRNavMesh->GetUID() : 0; 
 }
 
 void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
