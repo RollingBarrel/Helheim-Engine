@@ -377,46 +377,47 @@ void NavMeshController::HandleBuild()
 void NavMeshController::CreateDetourData()
 {
 	//const AIAgentComponent* agentComponent = mAIAgentComponents[0];
-	dtNavMeshCreateParams* mNavMeshParams = new dtNavMeshCreateParams();
+	dtNavMeshCreateParams* navMeshParams = new dtNavMeshCreateParams();
 
 	if (!mPolyMesh) return;
 	unsigned char* navData = 0;
 	int navDataSize = 0;
 	/*if (agentComponent) {*/
 
-	mNavMeshParams->verts = mPolyMesh->verts;
-	mNavMeshParams->vertCount = mPolyMesh->nverts;
-	mNavMeshParams->polys = mPolyMesh->polys;
-	mNavMeshParams->polyAreas = mPolyMesh->areas;
-	mNavMeshParams->polyFlags = mPolyMesh->flags;
-	mNavMeshParams->polyCount = mPolyMesh->npolys;
-	mNavMeshParams->nvp = mPolyMesh->nvp;
-	mNavMeshParams->detailMeshes = mPolyMeshDetail->meshes;
-	mNavMeshParams->detailVerts = mPolyMeshDetail->verts;
-	mNavMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
-	mNavMeshParams->detailTris = mPolyMeshDetail->tris;
-	mNavMeshParams->detailTriCount = mPolyMeshDetail->ntris;
-	mNavMeshParams->offMeshConVerts = nullptr;
-	mNavMeshParams->offMeshConRad = nullptr;
-	mNavMeshParams->offMeshConDir = nullptr;
-	mNavMeshParams->offMeshConAreas = nullptr;
-	mNavMeshParams->offMeshConFlags = nullptr;
-	mNavMeshParams->offMeshConUserID = nullptr;
-	mNavMeshParams->offMeshConCount = 0;
-	mNavMeshParams->walkableHeight = 1.0f;
-	mNavMeshParams->walkableRadius = 0.5f;
-	mNavMeshParams->walkableClimb = 0.0f;
-	rcVcopy(mNavMeshParams->bmin, mPolyMesh->bmin);
-	rcVcopy(mNavMeshParams->bmax, mPolyMesh->bmax);
-	mNavMeshParams->cs = mCellSize;
-	mNavMeshParams->ch = mCellHeight;
-	mNavMeshParams->buildBvTree = true;
+	navMeshParams->verts = mPolyMesh->verts;
+	navMeshParams->vertCount = mPolyMesh->nverts;
+	navMeshParams->polys = mPolyMesh->polys;
+	navMeshParams->polyAreas = mPolyMesh->areas;
+	navMeshParams->polyFlags = mPolyMesh->flags;
+	navMeshParams->polyCount = mPolyMesh->npolys;
+	navMeshParams->nvp = mPolyMesh->nvp;
+	navMeshParams->detailMeshes = mPolyMeshDetail->meshes;
+	navMeshParams->detailVerts = mPolyMeshDetail->verts;
+	navMeshParams->detailVertsCount = mPolyMeshDetail->nverts;
+	navMeshParams->detailTris = mPolyMeshDetail->tris;
+	navMeshParams->detailTriCount = mPolyMeshDetail->ntris;
+	navMeshParams->offMeshConVerts = nullptr;
+	navMeshParams->offMeshConRad = nullptr;
+	navMeshParams->offMeshConDir = nullptr;
+	navMeshParams->offMeshConAreas = nullptr;
+	navMeshParams->offMeshConFlags = nullptr;
+	navMeshParams->offMeshConUserID = nullptr;
+	navMeshParams->offMeshConCount = 0;
+	navMeshParams->walkableHeight = 1.0f;
+	navMeshParams->walkableRadius = 0.5f;
+	navMeshParams->walkableClimb = 0.0f;
+	rcVcopy(navMeshParams->bmin, mPolyMesh->bmin);
+	rcVcopy(navMeshParams->bmax, mPolyMesh->bmax);
+	navMeshParams->cs = mCellSize;
+	navMeshParams->ch = mCellHeight;
+	navMeshParams->buildBvTree = true;
 	
-	if (!dtCreateNavMeshData(mNavMeshParams, &navData, &navDataSize))
+	if (!dtCreateNavMeshData(navMeshParams, &navData, &navDataSize))
 	{
 		LOG("Could not build Detour navmesh.");
 		return;
 	}
+	delete navMeshParams;
 	 mDetourNavMesh = dtAllocNavMesh();
 	if (!mDetourNavMesh)
 	{

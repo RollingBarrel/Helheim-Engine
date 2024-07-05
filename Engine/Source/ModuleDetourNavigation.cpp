@@ -19,10 +19,10 @@ ModuleDetourNavigation::ModuleDetourNavigation()
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
-	delete mNavMeshParams;
-	delete mNavQuery;
-	if(mResourceNavMesh)
+	if (mResourceNavMesh)
 		App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
+	delete mNavQuery;
+	mNavQuery = nullptr;
 }
 
 bool ModuleDetourNavigation::Init()
@@ -65,12 +65,14 @@ void ModuleDetourNavigation::LoadResourceData()
 	{
 		mDetourNavMesh = mResourceNavMesh->GetDtNavMesh();
 		CreateQuery();
+		App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
 	}
 }
 
 void ModuleDetourNavigation::CreateQuery() 
 {
-
+	if (mNavQuery)
+		delete mNavQuery;
 	mNavQuery = new dtNavMeshQuery();
 	dtStatus status;
 	status = mNavQuery->init(mDetourNavMesh, 2048);
