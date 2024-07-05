@@ -9,7 +9,7 @@
 ResourceStateMachine* Importer::StateMachine::Import(const char* assetsPath, unsigned int uid)
 {
     // Copy assets path into correct library path
-    AnimationStateMachine* newSM = new AnimationStateMachine();
+    AnimationStateMachine* newSM = new AnimationStateMachine(uid);
     newSM->LoadResource(assetsPath);
     ResourceStateMachine* newResource = new ResourceStateMachine(uid, newSM);
 

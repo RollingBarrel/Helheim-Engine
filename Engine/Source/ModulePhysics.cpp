@@ -14,6 +14,11 @@ ModulePhysics::ModulePhysics()
 
 ModulePhysics::~ModulePhysics()
 {
+	delete mWorld;
+	delete mBroadPhase;
+	delete mConstraintSolver;
+	delete mDispatcher;
+	delete mCollisionConfiguration;
 }
 
 bool ModulePhysics::Init()
@@ -24,40 +29,28 @@ bool ModulePhysics::Init()
 	mConstraintSolver = new btSequentialImpulseConstraintSolver();
 	mWorld = new btDiscreteDynamicsWorld(mDispatcher, mBroadPhase, mConstraintSolver, mCollisionConfiguration);
 	mWorld->setGravity(btVector3(0.f, mGravity, 0.f));
-
 	return true;
 }
 
 bool ModulePhysics::CleanUp()
 {
-	delete mWorld;
-	delete mBroadPhase;
-	
-	delete mConstraintSolver;
-	delete mDispatcher;
-	delete mCollisionConfiguration;
-	
 	return true;
 }
 
 update_status ModulePhysics::PreUpdate(float dt)
 {
-	if (App->IsPlayMode())
+	for (unsigned int i = 0; i < mRigidBodiesToRemove.size(); ++i)
 	{
-		for (btRigidBody* rigidBody : mRigidBodiesToRemove)
-		{
-			mWorld->removeCollisionObject(rigidBody);
-			btCollisionShape* shape = rigidBody->getCollisionShape();
-			delete shape;
-			delete rigidBody;
-		}
-		mRigidBodiesToRemove.clear();
+		mWorld->removeCollisionObject(mRigidBodiesToRemove[i]);
+	}
+	mRigidBodiesToRemove.clear();
 
-
-		mWorld->stepSimulation(dt, 15);
+	if (App->IsPlayMode())
+	{	
+		mWorld->stepSimulation(dt, 1, 0.008f);
 
 		int numManifolds = mWorld->getDispatcher()->getNumManifolds();
-		for (int i = 0; i < numManifolds; i++)
+		for (int i = 0; i < numManifolds; ++i)
 		{
 			btPersistentManifold* contactManifold = mWorld->getDispatcher()->getManifoldByIndexInternal(i);
 			btCollisionObject* obA = (btCollisionObject*)(contactManifold->getBody0());
@@ -83,7 +76,6 @@ update_status ModulePhysics::PreUpdate(float dt)
 			}
 		}
 	}
-	
 	return UPDATE_CONTINUE;
 }
 
@@ -98,7 +90,6 @@ void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits)
 	{
 		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
 		{
-			LOG("RayCast %i", i);
 			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
 			if (collider)
 			{
@@ -113,7 +104,6 @@ void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits)
 					hit.mHitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
 
 					hits.insert(hit);
-					LOG("RayCast %i", i);
 				}
 			}
 		}
@@ -127,7 +117,6 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
 	btCollisionWorld::AllHitsRayResultCallback callback(fromBt, toBt);
 	mWorld->rayTest(fromBt, toBt, callback);
 
-	
 	if (callback.hasHit())
 	{
 		Hit closestHit;
@@ -135,7 +124,6 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
 
 		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
 		{
-			LOG("RayCast %i", i);
 			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
 			if (collider)
 			{
@@ -154,17 +142,13 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit)
 				}
 			}
 		}
-
 		hit = closestHit;
-
 	}
 	else
 	{
 		hit.mDistance = -1.0f;
 	}
 }
-
-
 
 void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
@@ -196,38 +180,63 @@ void ModulePhysics::CreateBoxRigidbody(BoxColliderComponent* boxCollider)
 	boxCollider->SetRigidBody(body);
 
 	// Add the rigid body to the physics world
-	AddBodyToWorld(body, boxCollider->GetColliderType());
+	if (boxCollider->IsEnabled())
+	{
+		AddBodyToWorld(body, boxCollider->GetColliderType());
+	}
+	
 }
 
 void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	if (boxCollider->GetRigidBody())
-	{
-		mRigidBodiesToRemove.push_back(boxCollider->GetRigidBody());
-		boxCollider->SetRigidBody(nullptr);
-	}
+	btRigidBody* rigidBody = boxCollider->GetRigidBody();
+	delete rigidBody->getMotionState();
+	delete rigidBody->getCollisionShape();
+	mWorld->removeCollisionObject(rigidBody);
+	delete rigidBody;
 }
 
 void ModulePhysics::UpdateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	RemoveBoxRigidbody(boxCollider);
-	CreateBoxRigidbody(boxCollider);
+	btTransform transform;
+	transform.setIdentity();
+
+	btVector3 position(boxCollider->GetOwner()->GetWorldPosition().x, boxCollider->GetOwner()->GetWorldPosition().y, boxCollider->GetOwner()->GetWorldPosition().z);
+	transform.setOrigin(position);
+
+	btQuaternion rotation(boxCollider->GetOwner()->GetWorldRotation().x, boxCollider->GetOwner()->GetWorldRotation().y, boxCollider->GetOwner()->GetWorldRotation().z, boxCollider->GetOwner()->GetWorldRotation().w);
+	transform.setRotation(rotation);
+
+	float3 boxSize = boxCollider->GetSize();
+	boxCollider->GetRigidBody()->getCollisionShape()->setLocalScaling(btVector3(boxSize.x, boxSize.y, boxSize.z));
+	boxCollider->GetRigidBody()->setWorldTransform(transform);
+	boxCollider->GetMotionState()->setWorldTransform(transform);
 }
 
-btRigidBody* ModulePhysics::AddBoxBody(btMotionState* motionState, float3 size, float mass)
+void ModulePhysics::DisableRigidbody(BoxColliderComponent* boxCollider)
 {
-	btCollisionShape* collisionShape = new btBoxShape(btVector3(size.x, size.y, size.z));
+	mRigidBodiesToRemove.push_back(boxCollider->GetRigidBody());
+}
 
-	btVector3 localInertia(0, 0, 0);
-	if (mass != 0.f) 
+void ModulePhysics::EnableRigidbody(BoxColliderComponent* boxCollider)
+{
+	if (mWorld->getCollisionObjectArray().findLinearSearch2(boxCollider->GetRigidBody()) == -1)
 	{
-		collisionShape->calculateLocalInertia(mass, localInertia);
+		short group = 1;
+		short mask = 1;
+		mWorld->addRigidBody(boxCollider->GetRigidBody(), group, mask);
 	}
-
-	btRigidBody::btRigidBodyConstructionInfo rbInfo(mass, motionState, collisionShape, localInertia);
-	btRigidBody* body = new btRigidBody(rbInfo);
-
-	return body;
+	else
+	{
+		for (std::vector<btRigidBody*>::const_iterator it = mRigidBodiesToRemove.cbegin(); it != mRigidBodiesToRemove.cend(); ++it)
+		{
+			if ((*it) == boxCollider->GetRigidBody())
+			{
+				mRigidBodiesToRemove.erase(it);
+				break;
+			}
+		}
+	}
 }
 
 void ModulePhysics::AddBodyToWorld(btRigidBody* rigidbody, ColliderType colliderType)

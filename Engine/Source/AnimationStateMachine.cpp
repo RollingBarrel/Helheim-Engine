@@ -9,70 +9,20 @@
 
 #define ASSETS_PATH_STATEMACHINE "Assets/StateMachines/"
 
-AnimationStateMachine::AnimationStateMachine(const std::vector<unsigned int>& animationUids)
+AnimationStateMachine::AnimationStateMachine(unsigned int animationUid = 0)
 {
-	for (const auto& resourceAnimation : animationUids)
-	{
-		mClips.push_back(AnimationClip(resourceAnimation));
-	}
+	mAnimationUID = animationUid;
 	mStates.push_back(AnimationState(std::string("Default")));
+	mStates[0].mLoop = true;
 }
 
-AnimationStateMachine::AnimationStateMachine()
-{
-}
 
 AnimationStateMachine::~AnimationStateMachine()
 {
 }
 
-void AnimationStateMachine::AddClip(unsigned int animationUID)
+void AnimationStateMachine::AddState(const std::string& stateName)
 {
-	mClips.push_back(AnimationClip(animationUID));
-}
-
-void AnimationStateMachine::RemoveClip(int index)
-{
-	assert(!(index >= mClips.size()));
-	mClips.erase(mClips.begin()+index);
-}
-
-void AnimationStateMachine::SetClipName(int index, const std::string& name)
-{
-	assert(!(index >= mClips.size()));
-	mClips[index].mName = name;
-}
-
-int AnimationStateMachine::GetClipIndex(const std::string& clipName) const
-{
-	int index = -1;
-	for (size_t i = 0; i < mClips.size(); i++)
-	{
-		if (clipName == mClips[i].mName)
-		{
-			index = i;
-			break;
-		}
-	}
-	return index;
-}
-
-const std::string& AnimationStateMachine::GetClipName(int index) const
-{
-	// // O: insert return statement here
-	assert(!(index >= mClips.size()));
-	return mClips[index].mName;
-}
-
-unsigned int AnimationStateMachine::GetClipResource(int index) const
-{
-	assert(!(index >= mClips.size()));
-	return mClips[index].mAnimationUID;
-}
-
-void AnimationStateMachine::AddState(const std::string& stateName, const std::string& clipName)
-{
-	int resource_idx = GetClipResource(GetClipIndex(clipName));
 	AnimationState newState = AnimationState(stateName);
 	mStates.push_back(newState);
 }
@@ -99,12 +49,6 @@ int AnimationStateMachine::GetStateIndex(const std::string& stateName) const
 	return index;
 }
 
-const std::string& AnimationStateMachine::GetStateClip(int index) const
-{
-	assert(!(index >= mStates.size()));
-	return mStates[index].mClip;
-}
-
 const std::string& AnimationStateMachine::GetStateName(int index) const
 {
 	assert(!(index >= mStates.size()));
@@ -123,11 +67,6 @@ float AnimationStateMachine::GetStateEndTime(int index) const
 	return mStates[index].mEndTime;
 }
 
-void AnimationStateMachine::SetStateClip(int index, const std::string& clipName)
-{
-	assert(!(index >= mStates.size()));
-	mStates[index].mClip = clipName;
-}
 
 void AnimationStateMachine::SetStateName(int index, const std::string& stateName)
 {
@@ -234,21 +173,17 @@ void AnimationStateMachine::DeleteTransition(int index)
 
 void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 {
-	unsigned int header[3] = { GetNumClips(), GetNumStates(), GetNumTransitions() };
+	unsigned int header[3] = { mAnimationUID, GetNumStates(), GetNumTransitions() };
 	unsigned int size = sizeof(header);
 
 	size += sizeof(unsigned int) + sizeof(char) * (mName.length() + 1);
 
 	for (AnimationState state : GetStates())
 	{
-		size += sizeof(float) * 2 + sizeof(unsigned int) * 2 + sizeof(bool); // float (mStartTime, mEndTime) : int(name len, clip index) : bool(mLoop)
+		size += sizeof(float) * 2 + sizeof(unsigned int) + sizeof(bool); // float (mStartTime, mEndTime) : int(name len) : bool(mLoop)
 		size += sizeof(char) * (state.mName.length() + 1); // char (mName)
 	}
 
-	for (AnimationClip clip : GetClips())
-	{
-		size += sizeof(unsigned int) * 2 + sizeof(char) * (clip.mName.length() + 1); // int (mUid, name len) : char  (mName)
-	}
 
 	for (AnimationTransition transition : GetTransitions())
 	{
@@ -268,24 +203,9 @@ void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 	memcpy(cursor, mName.c_str(), sizeof(char) * smname);
 	cursor += sizeof(char) * smname;
 
-	for (AnimationClip clip : GetClips())
-	{
-		memcpy(cursor, &clip.mAnimationUID, sizeof(unsigned int));
-		cursor += sizeof(unsigned int);
-
-		unsigned int namelen = clip.mName.length() + 1;
-		memcpy(cursor, &namelen, sizeof(unsigned int));
-		cursor += sizeof(unsigned int);
-
-		memcpy(cursor, clip.mName.c_str(), sizeof(char) * namelen);
-		cursor += sizeof(char) * namelen;
-	}
 
 	for (AnimationState state : GetStates())
 	{
-		unsigned int clipPos = GetClipIndex(state.mClip);
-		memcpy(cursor, &clipPos, sizeof(unsigned int));
-		cursor += sizeof(unsigned int);
 
 		unsigned int statename = state.mName.length() + 1;
 		memcpy(cursor, &statename, sizeof(unsigned int));
@@ -339,7 +259,6 @@ void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 
 void AnimationStateMachine::LoadResource(const char* fileName)
 {
-	mClips.clear();
 	mStates.clear();
 	mTransitions.clear();
 
@@ -351,7 +270,7 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 		unsigned int bytes = sizeof(header);
 		memcpy(header, cursor, bytes);
 		cursor += bytes;
-		unsigned int numClips = header[0];
+		unsigned int animationUID = header[0];
 		unsigned int numStates = header[1];
 		unsigned int numTransitions = header[2];
 
@@ -364,35 +283,10 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 		cursor += sizeof(char) * namelen;
 		mName = std::string(smname);
 		
-
-		AnimationClip clip = AnimationClip(0);
 		AnimationState state = AnimationState(std::string(""));
 		AnimationTransition transition = AnimationTransition(std::string(""), std::string(""), std::string(""));
-		for (unsigned int i = 0; i < numClips; ++i)
-		{
-			unsigned int c_uid = 0;
-			memcpy(&c_uid, cursor, sizeof(unsigned int));
-			cursor += sizeof(unsigned int);
-
-			unsigned int namelen = 0;
-			memcpy(&namelen, cursor, sizeof(unsigned int));
-			cursor += sizeof(unsigned int);
-
-			char* name = new char[namelen];
-			memcpy(name, cursor, sizeof(char) * namelen);
-			cursor += sizeof(char) * namelen;
-
-			clip.mName = std::string(name);
-			clip.mAnimationUID = c_uid;
-			PushBackClip(clip);
-			delete[] name;
-		}
-
 		for (unsigned int i = 0; i < numStates; ++i)
 		{
-			unsigned int clipPos = 0;
-			memcpy(&clipPos, cursor, sizeof(unsigned int));
-			cursor += sizeof(unsigned int);
 
 			unsigned int namelen = 0;
 			memcpy(&namelen, cursor, sizeof(unsigned int));
@@ -414,7 +308,6 @@ void AnimationStateMachine::LoadResource(const char* fileName)
 			memcpy(&loop, cursor, sizeof(bool));
 			cursor += sizeof(bool);
 
-			state.mClip = GetClipName(clipPos);
 			state.mName = std::string(name);
 			state.mStartTime = start;
 			state.mEndTime = end;

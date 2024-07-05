@@ -1,4 +1,6 @@
 #pragma once
+#include <string>
+
 class Panel
 {
 public:
@@ -16,6 +18,8 @@ public:
 
 protected:
 	bool mOpen = true;
+
+	bool CaseInsensitiveSubstringSearch(const std::string& str, const std::string& sub);
 
 private:
 	const char* mName = nullptr;

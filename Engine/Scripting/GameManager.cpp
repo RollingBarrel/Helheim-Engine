@@ -27,7 +27,8 @@ GameManager* GameManager::mInstance = nullptr;
 
 GameManager* GameManager::GetInstance()
 {
-    if (mInstance == nullptr) {
+    if (mInstance == nullptr) 
+    {
         LOG("GameManager instance has not been initialized.");
         throw std::runtime_error("GameManager instance has not been initialized.");
     }

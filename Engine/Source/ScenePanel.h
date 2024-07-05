@@ -5,6 +5,8 @@
 
 #include "Math/float2.h"
 
+class AnimationComponent;
+
 class ScenePanel : public Panel
 {
 public:

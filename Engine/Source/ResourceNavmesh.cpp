@@ -9,5 +9,6 @@ ResourceNavMesh::ResourceNavMesh(unsigned int uid, dtNavMesh* navmesh)
 
 ResourceNavMesh::~ResourceNavMesh()
 {
+	delete mDtNavMesh;
 }
 

@@ -7,7 +7,7 @@
 #include "ModuleEngineResource.h"
 #include "ResourceStateMachine.h"
 #include "AnimationComponent.h"
-#include "SaveLoadStateMachine.h"
+#include "ImporterStateMachine.h"
 
 namespace ed = ax::NodeEditor;
 
@@ -100,7 +100,6 @@ void AnimationSMPanel::DrawNodes()
         ImGui::PopStyleVar();
 
         ImGui::Dummy(ImVec2(96.0, 8.0));
-        ImGui::BulletText("Clip: %s", mStateMachine->GetStateClip(i).c_str());
         if (i == 0)
         {
             ImGui::BulletText("Default");
@@ -179,8 +178,9 @@ void AnimationSMPanel::ShowCreateNewNodeMenu()
         }
 
         ImGui::SameLine();
-        if (ImGui::Button("Create new state")) {
-            mStateMachine->AddState(mNewNodeName, "Default");
+        if (ImGui::Button("Create new state")) 
+        {
+            mStateMachine->AddState(mNewNodeName);
             mNewNodeName = "";
         }
 
@@ -443,16 +443,18 @@ void AnimationSMPanel::DrawMenuBar()
         //Check if asset existed to use its uid
         unsigned int uid = mStateMachine->GetUID();
         mStateMachine->SaveResource("Assets/StateMachines/", false);
+        std::string filePath = "Assets/StateMachines/" + mStateMachine->GetName() + ".smbin";
+
         if (uid != 0)
         {
             ResourceStateMachine* existingRes = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(uid, Resource::Type::StateMachine));
             existingRes->SetStateMachine(mStateMachine);
-            Importer::StateMachine::Save(existingRes);
+            //Importer::StateMachine::Save(existingRes);
+            Importer::StateMachine::Import(filePath.c_str(), uid);
             App->GetResource()->ReleaseResource(uid);
         }
         else
         {
-            std::string filePath = "Assets/StateMachines/" + mStateMachine->GetName() + ".smbin";
             uid = EngineApp->GetEngineResource()->CreateNewResource(filePath.c_str(), "", Resource::Type::StateMachine)->GetUID();
             mStateMachine->SetUID(uid);
             mUpToDate = true;
