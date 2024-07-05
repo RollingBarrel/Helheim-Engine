@@ -49,9 +49,23 @@ void DashState::Update()
 {
     float dashSpeed = mPlayerController->GetDashRange() / mPlayerController->GetDashDuration();
     float3 currentPos = mPlayerController->GetPlayerPosition();
-    float3 futurePos = currentPos + mPlayerController->GetPlayerDirection() * dashSpeed * App->GetDt();
+    float3 direction;
+
+    float collisionDotProduct = mPlayerController->GetPlayerDirection().Dot(mPlayerController->GetCollisionDirection());
+    if (collisionDotProduct < 0.0f)
+    {
+        direction = mPlayerController->GetPlayerDirection() - mPlayerController->GetCollisionDirection().Mul(collisionDotProduct);
+    }
+    else
+    {
+        direction = mPlayerController->GetPlayerDirection();
+    }
+
+    float3 futurePos = currentPos + (direction) * dashSpeed * App->GetDt();
 
     mPlayerController->MoveToPosition(futurePos);
+
+
 }
 
 void DashState::Enter()

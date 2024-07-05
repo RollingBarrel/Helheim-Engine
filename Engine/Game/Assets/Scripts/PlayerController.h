@@ -57,6 +57,7 @@ public:
     void Update() override;
 
     float3 GetPlayerDirection() { return mPlayerDirection; }
+    float3 GetCollisionDirection() { return mCollisionDirection; }
     float3 GetPlayerAimPosition() { return mAimPosition; }
     float3 GetPlayerPosition();
    
@@ -212,6 +213,7 @@ private:
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
+    float3 mCollisionDirection = float3::zero;
 
     // Camera
     GameObject* mCamera = nullptr;

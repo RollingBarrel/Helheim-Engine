@@ -249,6 +249,7 @@ void PlayerController::Update()
     //        }
     //    }
     //}
+    mCollisionDirection = float3::zero;
 }
 
 bool PlayerController::Delay(float delay)
@@ -387,7 +388,6 @@ void PlayerController::SetAnimation(std::string trigger, float transitionTime)
     {
         mAnimationComponent->SendTrigger(trigger, transitionTime);
     }
-    
 }
 
 void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
@@ -408,8 +408,17 @@ void PlayerController::SetAnimationSpeed(float speed)
 
 void PlayerController::MoveInDirection(float3 direction)
 {
-    float3 newPos = (mGameObject->GetWorldPosition() + direction * App->GetDt() * mPlayerSpeed);
-    mPlayerDirection = direction;
+    float collisionDotProduct = direction.Dot(mCollisionDirection);
+    if (collisionDotProduct < 0.0f)
+    {
+        mPlayerDirection = direction - mCollisionDirection.Mul(collisionDotProduct);
+    }
+    else
+    {
+        mPlayerDirection = direction;
+    }
+
+    float3 newPos = (mGameObject->GetLocalPosition() + mPlayerDirection * App->GetDt() * mPlayerSpeed);
     mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
 }
 
@@ -720,5 +729,11 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag() == "WinArea")
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }
+
+    if (collisionData->collidedWith->GetTag() == "Door")
+    {
+        mCollisionDirection = collisionData->collisionNormal;
+        LOG("HOLA")
     }
 }
