@@ -83,6 +83,7 @@ public:
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferDepth() const { return mGDepth; }
 	unsigned int GetGBufferPos() const { return mGPosition; }
+	unsigned int GetGBufferSSAO() const { return mGSSAO; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -146,7 +147,7 @@ private:
 	unsigned int mGEmissive;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
-
+	unsigned int mGSSAO;
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	//void Draw();
 
@@ -178,6 +179,7 @@ private:
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
+	unsigned int mSSAOPassProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;

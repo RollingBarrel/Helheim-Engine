@@ -178,6 +178,11 @@ void ScenePanel::MenuGBuffer()
 			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
 				currentSceneName = "NORMALS";
+			}			
+			if (ImGui::Selectable("SSAO")) 
+			{
+				currentScene = EngineApp->GetOpenGL()->GetGBufferSSAO();
+				currentSceneName = "SSAO";
 			}
 			if (ImGui::Selectable("DEPTH")) 
 			{

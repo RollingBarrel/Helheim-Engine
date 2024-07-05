@@ -807,6 +807,7 @@
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
     <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\ssao_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\trail_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\trail_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\ui.fs" />
