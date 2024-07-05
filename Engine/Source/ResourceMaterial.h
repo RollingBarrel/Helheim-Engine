@@ -20,6 +20,22 @@ public:
         unsigned int normalTexUid,
         unsigned int emissiveTexUid);
 
+    ResourceMaterial(
+        unsigned int uid,
+        const char* name,
+        float* baseColorFactor,
+        float metallicFactor,
+        float roughnessFactor,
+        float* emissiveFactor,
+        unsigned int baseColorTexUid,
+        unsigned int metallicRoughTexUid,
+        unsigned int normalTexUid,
+        unsigned int emissiveTexUid,
+        bool enableBaseColorTexture,
+        bool enableMetallicRoughnessTexture,
+        bool enableNormalMap,
+        bool enableEmissiveTexture);
+
     ~ResourceMaterial();
 
     // Getter functions
@@ -36,8 +52,12 @@ public:
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
     bool IsEmissiveEnabled() const { return mEnableEmissiveTexture; }
 
+    const char* GetName() const { return mName; }
+    void SetName(const char* newName);
 
 private:
+    char* mName;
+
     float4 mBaseColorFactor;
     float mMetallicFactor;
     float mRoughnessFactor;

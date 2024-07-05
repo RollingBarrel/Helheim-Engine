@@ -38,6 +38,7 @@ bool ModuleFileSystem::Init()
     CreateDirectory(ASSETS_PATH);
     CreateDirectory(ASSETS_MODEL_PATH);
     CreateDirectory(ASSETS_TEXTURE_PATH);
+    CreateDirectory(ASSETS_MATERIAL_PATH);
     CreateDirectory(ASSETS_SCENES_PATH);
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);

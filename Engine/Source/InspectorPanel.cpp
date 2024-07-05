@@ -3,6 +3,7 @@
 #include "ImBezier.h"
 #include "imgui.h"
 #include "ImColorGradient.h"
+#include "ImGuiFileDialog.h"
 
 #include "EngineApp.h"
 #include "ModuleScene.h"
@@ -21,6 +22,7 @@
 #include "GameObject.h"
 
 #include "MeshRendererComponent.h"
+#include "ModuleEngineResource.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ScriptComponent.h"
@@ -59,6 +61,7 @@
 
 #include "AnimationStateMachine.h"
 #include "AnimationSMPanel.h"
+#include "SaveLoadMaterial.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -596,17 +599,75 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 }
 
-void InspectorPanel::DrawMeshRendererComponent(const MeshRendererComponent& component) 
+void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component) 
 {
+	static bool createMaterialPopUp = false;
+
+	const ResourceMaterial& rMat = *component.GetResourceMaterial();
 	ImGui::SeparatorText("Material");
 
+	//Si el material te name, treurel per imgui !!!
 	MaterialVariables(component);
 
-	//TODO: SEPARATE GAME ENGINE
-	//bool shouldDraw = component->ShouldDraw();
-	//if (ImGui::Checkbox("Draw bounding box:", &shouldDraw)) {
-	//	component->SetShouldDraw(shouldDraw);
+	ImGui::Separator();
+	if (rMat.GetName() != nullptr)
+	{
+		ImGui::Text(rMat.GetName());
+		if (ImGui::Button("Save Material"))
+		{
+			//Just save the resource material
+			Importer::Material::SaveMatFile(rMat);
+			Importer::Material::Save(&rMat);
+		}
+	}
+
+	//if (ImGui::Button("Set Material"))
+	//{
+	// chose a material from the assets material foler and set it
 	//}
+
+	if (ImGui::Button("Create New Material"))
+	{
+		createMaterialPopUp = true;
+	}
+	if (createMaterialPopUp)
+	{
+		ImGui::OpenPopup("CreateMaterial");
+		if (ImGui::BeginPopup("CreateMaterial"))
+		{
+			ImGui::Text("Give the new material a name");
+			static char userInputName[200] = "";
+			ImGui::InputText("New Material Name", userInputName, IM_ARRAYSIZE(userInputName), ImGuiInputTextFlags_AlwaysOverwrite);
+			if (ImGui::IsKeyPressed(ImGuiKey_Enter) || ImGui::Button("Create"))
+			{
+				if (strcmp(userInputName, "") != 0)
+				{
+					std::string assetName = ASSETS_MATERIAL_PATH;
+					assetName += userInputName;
+					assetName += ".mat";
+					if (!App->GetFileSystem()->Exists(assetName.c_str()))
+					{
+						Importer::Material::SaveMatFile(rMat, userInputName);
+						unsigned int newUid = EngineApp->GetEngineResource()->ImportFile(assetName.c_str());
+						component.SetMaterial(newUid);
+					}
+					else
+					{
+						LOG("ERROR: This material name already exists");
+					}
+					createMaterialPopUp = false;
+				}
+				memset(userInputName, 0, 200);
+			}
+			ImGui::SameLine();
+			if (ImGui::Button("Cancel"))
+			{
+				memset(userInputName, 0, 200);
+				createMaterialPopUp = false;
+			}
+			ImGui::EndPopup();
+		}
+	}
 }
 
 void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)

@@ -21,7 +21,8 @@ ModuleDetourNavigation::~ModuleDetourNavigation()
 {
 	delete mNavMeshParams;
 	delete mNavQuery;
-	App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
+	if(mResourceNavMesh)
+		App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
 }
 
 bool ModuleDetourNavigation::Init()

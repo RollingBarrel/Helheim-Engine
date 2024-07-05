@@ -127,6 +127,7 @@ ResourceMaterial* Importer::Material::MatImport(const char* filePath, unsigned i
         Archive doc(fileBuffer);
         delete[] fileBuffer;
         JsonObject root = doc.GetRootObject();
+        std::string name = root.GetString("Name");
         float baseColorFactor[4];
         root.GetFloats("BaseColorFactor", baseColorFactor);
         float metalicFactor = root.GetFloat("MetallicFactor");
@@ -137,8 +138,12 @@ ResourceMaterial* Importer::Material::MatImport(const char* filePath, unsigned i
         unsigned int metallicRoughTex = root.GetInt("MetallicRoughTex");
         unsigned int normalTex = root.GetInt("NormalTex");
         unsigned int emissiveTex = root.GetInt("EmissiveTex");
+        bool enableBaseColorTex = root.GetBool("BaseColorEnabled");
+        bool enableMetallicRoughnessTex = root.GetBool("MetallicRoughnessEnabled");
+        bool enableNormalTex = root.GetBool("NormalMapEnabled");
+        bool enableEmissiveTex = root.GetBool("EmissiveEnabled");
 
-        rMaterial = new ResourceMaterial(uid, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
+        rMaterial = new ResourceMaterial(uid, name.c_str(), baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex, enableBaseColorTex, enableMetallicRoughnessTex, enableNormalTex, enableEmissiveTex);
         Importer::Material::Save(rMaterial);
     }
     return rMaterial;
