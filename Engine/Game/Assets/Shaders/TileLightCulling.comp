@@ -1,0 +1,90 @@
+#version 460 core
+
+layout(std140, binding = 0) uniform CameraMatrices
+{
+	mat4 view;
+	mat4 proj;
+};
+struct PointLight
+{
+	vec4 pos; //w is the radius
+	vec4 col;//a is intensity
+};
+readonly layout(std430, binding = 0) buffer PointLights
+{
+	uint numPLights;
+	PointLight pLights[];
+};
+layout(binding = 0, r32i) uniform iimageBuffer outLightsList;
+layout(location = 0)uniform uint maxPointLights;
+//layout(location = 1)uniform uvec2 numPixels;
+shared uint pointsInTile;
+
+
+float GetLinearZ(float inputDepth)
+{
+	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
+}
+vec3 GetViewPos(float inDepth, vec2 texCoords)
+{
+	float viewZ = GetLinearZ(inDepth);
+	float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
+	float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
+	return vec3(viewX, viewY, viewZ);
+}
+vec4 GetFrustumPlane(in vec3 p, in vec3 p1)
+{
+	return vec4(normalize(cross(p,p1)), 0);
+}
+
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+void main()
+{
+	//const uvec2 numTiles = (numPixels + gl_NumWorkGroups.xy -1) / gl_NumWorkGroups.xy;
+	const uint threadCount = gl_WorkGroupSize.x * gl_WorkGroupSize.y * gl_WorkGroupSize.z;
+	const uint tileIndex = uint(gl_WorkGroupID.y*gl_NumWorkGroups.x + gl_WorkGroupID.x);
+
+	if(gl_LocalInvocationIndex == 0)
+	{
+		pointsInTile = 0;
+	}
+	barrier();
+	
+	vec3 farPlanePoints[4];
+	farPlanePoints[0] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(gl_NumWorkGroups.x),   float(gl_WorkGroupID.y)/float(gl_NumWorkGroups.y)));
+	farPlanePoints[1] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x+1)/float(gl_NumWorkGroups.x), float(gl_WorkGroupID.y)/float(gl_NumWorkGroups.y)));
+	farPlanePoints[2] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x+1)/float(gl_NumWorkGroups.x), float(gl_WorkGroupID.y+1)/float(gl_NumWorkGroups.y)));
+	farPlanePoints[3] = GetViewPos(1.0, vec2(float(gl_WorkGroupID.x)/float(gl_NumWorkGroups.x),   float(gl_WorkGroupID.y+1)/float(gl_NumWorkGroups.y)));
+	
+	vec4 tileFrustumPlanes[4];
+	for (uint i = 0; i<4; ++i)
+	{
+		tileFrustumPlanes[i] = GetFrustumPlane(farPlanePoints[i], farPlanePoints[(i+1)&3]);
+	}
+	
+	for(uint i=gl_LocalInvocationIndex;i<numPLights; i+=threadCount)
+	{
+		PointLight light = pLights[i];
+		vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;
+		if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.pos.w &&
+			dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
+			dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
+			dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w)
+		{
+			uint index = atomicAdd(pointsInTile, 1);
+			if(index < maxPointLights)
+	        {
+				imageStore(outLightsList, int(tileIndex*maxPointLights+index), ivec4(i));
+	        }
+		}
+	}
+	
+	barrier();
+	if(gl_LocalInvocationIndex == 0)
+	{
+		if(pointsInTile < maxPointLights)
+		{
+			imageStore(outLightsList, int(tileIndex*maxPointLights+pointsInTile), ivec4(-1));
+		}
+	}
+}

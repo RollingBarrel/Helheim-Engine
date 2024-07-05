@@ -38,6 +38,7 @@ bool ModuleFileSystem::Init()
     CreateDirectory(ASSETS_PATH);
     CreateDirectory(ASSETS_MODEL_PATH);
     CreateDirectory(ASSETS_TEXTURE_PATH);
+    CreateDirectory(ASSETS_MATERIAL_PATH);
     CreateDirectory(ASSETS_SCENES_PATH);
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);
@@ -56,7 +57,7 @@ bool ModuleFileSystem::Init()
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
-    CleanNode(mRoot);
+    delete mRoot;
     return true;
 }
 
@@ -414,23 +415,23 @@ void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std:
     PHYSFS_freeList(dirFiles);
 }
 
-void ModuleFileSystem::CleanNode(PathNode* node)
-{
-
-    for (int i = 0; i < node->assets.size(); ++i) 
-    {
-        delete node->assets[i];
-    }
-
-    for (int i = 0; i < node->mChildren.size(); ++i) 
-    {
-        CleanNode(node->mChildren[i]);
-    }
-
-    delete node->mName;
-    delete node;
-    node = nullptr;
-}
+//void ModuleFileSystem::CleanNode(PathNode* node)
+//{
+//
+//    for (int i = 0; i < node->assets.size(); ++i) 
+//    {
+//        delete node->assets[i];
+//    }
+//
+//    for (int i = 0; i < node->mChildren.size(); ++i) 
+//    {
+//        CleanNode(node->mChildren[i]);
+//    }
+//
+//    delete node->mName;
+//    delete node;
+//    node = nullptr;
+//}
 
 PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
 {
@@ -449,10 +450,4 @@ AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent)
     unsigned int sizePath = strlen(path) + 1;
     mPath = new char[sizePath];
     strcpy_s(const_cast<char*>(mPath), sizePath, path);
-}
-
-AssetDisplay::~AssetDisplay()
-{
-    delete mName;
-    delete mPath;
 }

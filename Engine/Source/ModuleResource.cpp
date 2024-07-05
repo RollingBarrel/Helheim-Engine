@@ -164,7 +164,7 @@ void ModuleResource::ReleaseResource(unsigned int uid)
 	if (mResources.find(uid) != mResources.end())
 	{
 		mResources[uid]->RemoveReferenceCount();
-		if (mResources[uid]->GetReferenceCount() <= 0)
+		if (mResources[uid]->GetReferenceCount() == 0)
 		{
 			delete mResources[uid];
 			mResources.erase(uid);

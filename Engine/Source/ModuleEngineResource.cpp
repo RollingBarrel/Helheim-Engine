@@ -22,6 +22,7 @@
 #include "Algorithm/Random/LCG.h"
 
 #include "ImporterTexture.h"
+#include "ImporterMaterial.h"
 #include "ImporterModel.h"
 #include "ImporterScene.h"
 #include "ImporterPrefab.h"
@@ -94,7 +95,8 @@ bool ModuleEngineResource::Init()
 		}
 		delete[] libraryFile;
 
-		if (fileBuffer) {
+		if (fileBuffer) 
+		{
 			delete[] fileBuffer;
 		}
 	}
@@ -164,6 +166,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Mesh:
 		break;
 	case Resource::Type::Material:
+		ret = Importer::Material::MatImport(assetsFile, uid);
 		break;
 	case Resource::Type::Animation:
 		break;
@@ -243,6 +246,16 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 	case Resource::Type::Script:
 	{
 		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::Material:
+	{
+		assetsFilePath = ASSETS_MATERIAL_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::NavMesh:
+	{
+		assetsFilePath = ASSETS_NAVMESH_PATH + assetName + extensionName;
 		break;
 	}
 	case Resource::Type::StateMachine:
