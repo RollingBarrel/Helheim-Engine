@@ -12,6 +12,9 @@
 #include "DetourNavMeshBuilder.h"
 #include "DetourNavMesh.h"
 #include "Recast.h"
+#include "ResourceNavMesh.h"
+#include "ModuleFileSystem.h"
+#include "ImporterNavMesh.h"
 
 
 
@@ -418,7 +421,7 @@ void NavMeshController::CreateDetourData()
 		return;
 	}
 	delete navMeshParams;
-	 mDetourNavMesh = dtAllocNavMesh();
+	mDetourNavMesh = dtAllocNavMesh();
 	if (!mDetourNavMesh)
 	{
 		dtFree(navData);
@@ -434,13 +437,15 @@ void NavMeshController::CreateDetourData()
 		LOG("Could not init Detour navmesh");
 		return;
 	}
+	dtFree(navData);
 
-	App->GetNavigation()->SetDetourNavMesh(mDetourNavMesh);
-	
-	Resource* resource = EngineApp->GetEngineResource()->CreateNewResource(nullptr, nullptr, Resource::Type::NavMesh);
-	delete resource;
-	
-	App->GetNavigation()->CreateQuery();
+	std::string navMeshName = ASSETS_NAVMESH_PATH;
+	navMeshName += App->GetScene()->GetRoot()->GetName();
+	navMeshName += ".navmesshi";
+	Importer::NavMesh::SaveAsset(navMeshName.c_str(), *mDetourNavMesh);
+	//delete mDetourNavMesh;
+	unsigned int newResId = EngineApp->GetEngineResource()->ImportFile(navMeshName.c_str());
+	App->GetNavigation()->CreateQuery(newResId);
 }
 
 void NavMeshController::GetGOMeshes(const GameObject* gameObj) {

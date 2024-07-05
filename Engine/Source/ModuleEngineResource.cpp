@@ -253,6 +253,11 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 		assetsFilePath = ASSETS_MATERIAL_PATH + assetName + extensionName;
 		break;
 	}
+	case Resource::Type::NavMesh:
+	{
+		assetsFilePath = ASSETS_NAVMESH_PATH + assetName + extensionName;
+		break;
+	}
 	case Resource::Type::StateMachine:
 	{
 		assetsFilePath = ASSETS_STATEMACHINE_PATH + assetName + extensionName;

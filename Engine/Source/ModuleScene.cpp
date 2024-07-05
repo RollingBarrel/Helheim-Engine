@@ -255,7 +255,7 @@ void ModuleScene::Load(const char* sceneName)
 			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		App->GetNavigation()->LoadResourceData();
+		App->GetNavigation()->LoadSceneNavmesh();
 
 		App->GetScriptManager()->AwakeScripts();
 		
