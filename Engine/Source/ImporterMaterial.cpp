@@ -6,6 +6,7 @@
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "Archive.h"
 
 
 #define TINYGLTF_NO_STB_IMAGE_WRITE
@@ -32,7 +33,7 @@ static unsigned int ImportTexture(const char* filePath, const std::string& texPa
     return EngineApp->GetEngineResource()->ImportFile(pngName.c_str(), uid++, modifyAssets);
 }
 
-ResourceMaterial* Importer::Material::Import(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::unordered_map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
+ResourceMaterial* Importer::Material::GltfImport(const char* filePath, const tinygltf::Model& tinyModel, const tinygltf::Material& tinyMaterial, unsigned int& uid, std::unordered_map<unsigned int, unsigned int>& importedTextures, bool modifyAssets)
 {
     const tinygltf::PbrMetallicRoughness& material = tinyMaterial.pbrMetallicRoughness;
     float baseColorFactor[4] = { static_cast<float>(material.baseColorFactor[0]), static_cast<float>(material.baseColorFactor[1]), static_cast<float>(material.baseColorFactor[2]), static_cast<float>(material.baseColorFactor[3]) };
@@ -117,19 +118,53 @@ ResourceMaterial* Importer::Material::Import(const char* filePath, const tinyglt
     return rMaterial;
 }
 
+ResourceMaterial* Importer::Material::MatImport(const char* filePath, unsigned int uid)
+{
+    char* fileBuffer = nullptr;
+    ResourceMaterial* rMaterial = nullptr;
+    if (App->GetFileSystem()->Load(filePath, &fileBuffer) > 0 && fileBuffer)
+    {
+        Archive doc(fileBuffer);
+        delete[] fileBuffer;
+        JsonObject root = doc.GetRootObject();
+        std::string name = root.GetString("Name");
+        float baseColorFactor[4];
+        root.GetFloats("BaseColorFactor", baseColorFactor);
+        float metalicFactor = root.GetFloat("MetallicFactor");
+        float roughnessFactor = root.GetFloat("RoughnessFactor");
+        float emissiveFactor[3];
+        root.GetFloats("EmissiveFactor", emissiveFactor);
+        unsigned int baseColorTex = root.GetInt("BaseColorTex");
+        unsigned int metallicRoughTex = root.GetInt("MetallicRoughTex");
+        unsigned int normalTex = root.GetInt("NormalTex");
+        unsigned int emissiveTex = root.GetInt("EmissiveTex");
+        bool enableBaseColorTex = root.GetBool("BaseColorEnabled");
+        bool enableMetallicRoughnessTex = root.GetBool("MetallicRoughnessEnabled");
+        bool enableNormalTex = root.GetBool("NormalMapEnabled");
+        bool enableEmissiveTex = root.GetBool("EmissiveEnabled");
+
+        rMaterial = new ResourceMaterial(uid, name.c_str(), baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex, enableBaseColorTex, enableMetallicRoughnessTex, enableNormalTex, enableEmissiveTex);
+        Importer::Material::Save(rMaterial);
+    }
+    return rMaterial;
+}
+
 ResourceMaterial* Importer::Material::ImportDefault()
 {
-    float baseColorFactor[4] = { 1.f };
-    float metalicFactor = 0.5f;
-    float roughnessFactor = 0.5f;
-    unsigned int baseColorTex = 0;
-    unsigned int metallicRoughTex = 0;
-    unsigned int normalTex = 0;
-    unsigned int emissiveTex = 0;
-    float emissiveFactor[4] = { 0.f };
+    ResourceMaterial* rMaterial = nullptr;
+    if (!App->GetFileSystem()->Exists("Library/99/999999999"))
+    {
+        float baseColorFactor[4] = { 1.f };
+        float metalicFactor = 0.5f;
+        float roughnessFactor = 0.5f;
+        unsigned int baseColorTex = 0;
+        unsigned int metallicRoughTex = 0;
+        unsigned int normalTex = 0;
+        unsigned int emissiveTex = 0;
+        float emissiveFactor[4] = { 0.f };
 
-    ResourceMaterial* rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
-    if(!App->GetFileSystem()->Exists("Library/99/999999999"))
+        rMaterial = new ResourceMaterial(999999999, baseColorFactor, metalicFactor, roughnessFactor, emissiveFactor, baseColorTex, metallicRoughTex, normalTex, emissiveTex);
         Importer::Material::Save(rMaterial);
+    }
     return rMaterial;
 }

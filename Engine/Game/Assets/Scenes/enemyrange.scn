@@ -32,13 +32,8 @@
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            1068485048,
-                            1068485049,
-                            1068485050
-                        ],
-                        "NumAnimationUIDs": 3,
-                        "LowerSMUID": 2046718873
+                        "AnimationUID": 1068485048,
+                        "LowerSMUID": 0
                     },
                     {
                         "ComponentType": 3,
@@ -78,6 +73,11 @@
                                 "VariableName": "mRangeDamage",
                                 "MemberType": 1,
                                 "VariableData": 15.0
+                            },
+                            {
+                                "VariableName": "mBulletSpeed",
+                                "MemberType": 1,
+                                "VariableData": 0.6499999761581421
                             },
                             {
                                 "VariableName": "mTimerAttack",
@@ -1757,14 +1757,8 @@
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            1880861329,
-                            1880861330,
-                            1880861331,
-                            1880861332
-                        ],
-                        "NumAnimationUIDs": 4,
-                        "LowerSMUID": 1610276454
+                        "AnimationUID": 1880861329,
+                        "LowerSMUID": 0
                     },
                     {
                         "ComponentType": 3,
@@ -3453,6 +3447,7 @@
                 "Dynamic": false,
                 "Components": []
             }
-        ]
+        ],
+        "NavMeshResource": 0
     }
 }

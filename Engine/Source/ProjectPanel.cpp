@@ -25,11 +25,11 @@ void ProjectPanel::Draw(int windowFlags)
 
 	PathNode* root = EngineApp->GetFileSystem()->GetRootNode();
 
-	if (EngineApp->GetFileSystem()->IsClean())
-	{
-		mSelectedNode = nullptr;
-		EngineApp->GetFileSystem()->SetIsClean(false);
-	}
+	//if (EngineApp->GetFileSystem()->IsClean())
+	//{
+	//	mSelectedNode = nullptr;
+	//	EngineApp->GetFileSystem()->SetIsClean(false);
+	//}
 
 	windowFlags |= ImGuiWindowFlags_MenuBar;
 

@@ -97,12 +97,8 @@
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            627836249
-                        ],
-                        "NumAnimationUIDs": 1,
-                        "LowerSMUID": 0,
-                        "UpperSMUID": 0
+                        "AnimationUID": 627836249,
+                        "LowerSMUID": 0
                     },
                     {
                         "ComponentType": 3,
@@ -265,7 +261,52 @@
                                 "MemberType": 5
                             },
                             {
+                                "VariableName": "mEquippedMeleeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedMeleeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEquippedGunGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedGunGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEquippedSpecialGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUnEquippedSpecialGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "mMeleeCollider",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBatTrail",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mKatanaTrail",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mHammerTrail",
                                 "MemberType": 3,
                                 "VariableData": -1
                             },
@@ -277,11 +318,6 @@
                                 "VariableName": "mGrenadeGO",
                                 "MemberType": 3,
                                 "VariableData": 1261577094
-                            },
-                            {
-                                "VariableName": "mGrenadeAimAreaGO",
-                                "MemberType": 3,
-                                "VariableData": 283441444
                             },
                             {
                                 "VariableName": "mGrenadeExplotionPreviewAreaGO",
@@ -4070,7 +4106,8 @@
                         "Size": [
                             1920.0,
                             1080.0
-                        ]
+                        ],
+                        "ScreenSpace": true
                     },
                     {
                         "ComponentType": 3,
@@ -10851,12 +10888,8 @@
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            2010670550
-                        ],
-                        "NumAnimationUIDs": 1,
-                        "LowerSMUID": 0,
-                        "UpperSMUID": 0
+                        "AnimationUID": 2010670550,
+                        "LowerSMUID": 0
                     }
                 ]
             },
@@ -12382,6 +12415,7 @@
                     }
                 ]
             }
-        ]
+        ],
+        "NavMeshResource": 315485471
     }
 }

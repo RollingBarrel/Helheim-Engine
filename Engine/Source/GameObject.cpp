@@ -65,7 +65,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 	mWorldTransformMatrix(original.GetWorldTransform()), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mWorldEulerAngles(original.GetWorldEulerAngles()), mLocalRotation(original.mLocalRotation), mWorldRotation(original.GetWorldRotation()), mLocalEulerAngles(original.mLocalEulerAngles),
 	mWorldScale(original.GetWorldScale()), mLocalScale(original.mLocalScale), 
-	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight), mIsTransformModified(false), mUpdatedTransform(false),
+	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight), mIsTransformModified(true), mUpdatedTransform(true),
 	mPrefabId(original.mPrefabId), mIsPrefabOverride(original.mIsPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
 	SetTag(original.mTag);
@@ -212,14 +212,14 @@ void GameObject::SetActive(bool active)
 
 	mIsActive = active;
 
-	for (Component* component : mComponents)
+	for (unsigned int i = 0; i < mComponents.size(); ++i)
 	{
-		component->SetEnable(active);
+		mComponents[i]->SetEnable(active);
 	}
 
-	for (GameObject* child : mChildren)
+	for (unsigned int i = 0; i < mChildren.size(); ++i)
 	{
-		child->SetActive(active);
+		mChildren[i]->SetActive(active);
 	}
 }
 
