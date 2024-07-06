@@ -33,7 +33,8 @@ private:
 		{".prfb", Resource::Type::Prefab},
 		{".h", Resource::Type::Script},
 		{".smbin", Resource::Type::StateMachine},
-		{".navmesshi", Resource::Type::NavMesh}
+		{".navmesshi", Resource::Type::NavMesh},
+		{".mat", Resource::Type::Material}
 
 		// Add more mappings for other resource types as needed
 	};
