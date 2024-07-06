@@ -20,6 +20,9 @@ public:
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private:
+
+	void CloseDoors(bool close);
+
 	int mMaxSimulNumEnemies = 0;
 	int mCurrentEnemies = 0;
 	int mTotalNumEnemies = 0;
@@ -33,6 +36,9 @@ private:
 	Spawner* mEnemySpawner2 = nullptr;
 	Spawner* mEnemySpawner3 = nullptr;
 	Spawner* mEnemySpawner4 = nullptr;
+
+	GameObject* mDoor1 = nullptr;
+	GameObject* mDoor2 = nullptr;
 
 	BoxColliderComponent* mCollider = nullptr;
 };

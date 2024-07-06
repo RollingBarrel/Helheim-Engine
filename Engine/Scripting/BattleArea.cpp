@@ -1,6 +1,7 @@
 #include "BattleArea.h"
 #include "ScriptComponent.h"
 #include "BoxColliderComponent.h"
+#include "AnimationComponent.h"
 #include "GameObject.h"
 
 #include "GameManager.h"
@@ -17,6 +18,9 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
 	MEMBER(MemberType::INT, mMaxSimulNumEnemies);
 	MEMBER(MemberType::INT, mTotalNumEnemies);
+	SEPARATOR("DOORS");
+	MEMBER(MemberType::GAMEOBJECT, mDoor1);
+	MEMBER(MemberType::GAMEOBJECT, mDoor2);
 	END_CREATE;
 }
 
@@ -104,6 +108,9 @@ void BattleArea::EnemyDestroyed()
 
 inline void BattleArea::ActivateArea(bool activate)
 {
+
+	CloseDoors(activate);
+
 	mIsActive = activate;
 	if (mEnemySpawner1)
 	{
@@ -139,4 +146,48 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
 	}
+}
+
+void BattleArea::CloseDoors(bool close)
+{
+	std::string trigger = (close) ? "Close" : "Open";
+
+	if (mDoor1)
+	{
+		AnimationComponent* doorAnimation1 = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+		if (doorAnimation1)
+		{
+			doorAnimation1->SendTrigger(trigger, 0.0f);
+		}
+
+		if (close)
+		{
+			mDoor1->SetWorldPosition(float3(mDoor1->GetWorldPosition().x, 1.49f, mDoor1->GetWorldPosition().z));
+		}
+		else
+		{
+			mDoor1->SetWorldPosition(float3(mDoor1->GetWorldPosition().x, 5.0f, mDoor1->GetWorldPosition().z));
+		}
+		
+
+	}
+	if (mDoor2)
+	{
+		AnimationComponent* doorAnimation2 = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+		if (doorAnimation2)
+		{
+			doorAnimation2->SendTrigger(trigger, 0.0f);
+		}
+
+		if (close)
+		{
+			mDoor2->SetWorldPosition(float3(mDoor2->GetWorldPosition().x, 1.49f, mDoor2->GetWorldPosition().z));
+		}
+		else
+		{
+			mDoor2->SetWorldPosition(float3(mDoor2->GetWorldPosition().x, 5.0f, mDoor2->GetWorldPosition().z));
+		}
+
+	}
+
 }
