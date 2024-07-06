@@ -19,64 +19,43 @@ ModuleDetourNavigation::ModuleDetourNavigation()
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
-	delete mNavMeshParams;
 	delete mNavQuery;
-	App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
+	mNavQuery = nullptr;
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 }
 
-bool ModuleDetourNavigation::Init()
+unsigned int ModuleDetourNavigation::GetResourceId() const
+{ 
+	return (mRNavMesh) ? mRNavMesh->GetUID() : 0; 
+}
+
+void ModuleDetourNavigation::ReleaseResource()
 {
-	LoadResourceData();
-	return true;
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+	mRNavMesh = nullptr;
 }
 
-update_status ModuleDetourNavigation::PreUpdate(float dt)
+void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 {
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleDetourNavigation::Update(float dt)
-{	
-	return UPDATE_CONTINUE;
-}
-
-
-update_status ModuleDetourNavigation::PostUpdate(float dt)
-{
-	return UPDATE_CONTINUE;
-}
-
-bool ModuleDetourNavigation::CleanUp()
-{
-	return true;
-}
-
-void ModuleDetourNavigation::LoadResourceData()
-{
-	if (mResourceNavMesh)
+	ResourceNavMesh* newNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
+	assert(newNavMesh, "The saved scene navmesh resource id is incorrect");
+	if (newNavMesh)
 	{
-		App->GetResource()->ReleaseResource(mResourceNavMesh->GetUID());
-	}
-
-	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
-	mResourceNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource((pathStr + App->GetScene()->GetName() + ".navmesshi").c_str()));
-	if (mResourceNavMesh)
-	{
-		mDetourNavMesh = mResourceNavMesh->GetDtNavMesh();
-		CreateQuery();
-	}
-}
-
-void ModuleDetourNavigation::CreateQuery() 
-{
-
-	mNavQuery = new dtNavMeshQuery();
-	dtStatus status;
-	status = mNavQuery->init(mDetourNavMesh, 2048);
-	if (dtStatusFailed(status))
-	{
-		LOG("Could not init Detour navmesh query");
-		return;
+		if (mNavQuery)
+			delete mNavQuery;
+		mNavQuery = new dtNavMeshQuery();
+		dtStatus status;
+		if (mRNavMesh)
+			App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+		mRNavMesh = newNavMesh;
+		status = mNavQuery->init(mRNavMesh->GetDtNavMesh(), 2048);
+		if (dtStatusFailed(status))
+		{
+			LOG("Could not init Detour navmesh query");
+			return;
+		}
 	}
 }
 

@@ -32,14 +32,8 @@
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            1880861329,
-                            1880861330,
-                            1880861331,
-                            1880861332
-                        ],
-                        "NumAnimationUIDs": 4,
-                        "LowerSMUID": 1929585511
+                        "AnimationUID": 1880861329,
+                        "LowerSMUID": 0
                     },
                     {
                         "ComponentType": 3,
@@ -1728,6 +1722,7 @@
                 "Dynamic": false,
                 "Components": []
             }
-        ]
+        ],
+        "NavMeshResource": 0
     }
 }

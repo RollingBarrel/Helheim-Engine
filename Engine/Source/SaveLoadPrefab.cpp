@@ -11,6 +11,8 @@ void Importer::Prefab::Save(const ResourcePrefab* ourPrefab, const char* assetsF
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourPrefab->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
+    delete[] fileBuffer;
+    delete[] libraryPath;
 }
 
 ResourcePrefab* Importer::Prefab::Load(const char* fileName, unsigned int uid)

@@ -60,7 +60,7 @@ private:
 	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
-	void DrawMeshRendererComponent(const MeshRendererComponent& component);
+	void DrawMeshRendererComponent(MeshRendererComponent& component);
 	void DrawAIAgentComponent(AIAgentComponent* component);
 	void DrawImageComponent(ImageComponent* component);
 	void DrawCanvasComponent(CanvasComponent* component);

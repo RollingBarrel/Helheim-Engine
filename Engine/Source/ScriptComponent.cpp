@@ -287,7 +287,7 @@ void ScriptComponent::Enable()
 {
 	App->GetScriptManager()->AddScript(this);
 	
-	if (!mHasStarted)
+	if (!mHasStarted && App->IsPlayMode())
 	{
 		mHasStarted = true;
 		mScript->Start();
