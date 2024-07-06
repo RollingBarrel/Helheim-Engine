@@ -16,6 +16,8 @@
 #include "ModuleFileSystem.h"
 #include "ImporterNavMesh.h"
 
+#include "Algorithm/Random/LCG.h"
+
 
 
 
@@ -441,6 +443,13 @@ void NavMeshController::CreateDetourData()
 	std::string navMeshName = ASSETS_NAVMESH_PATH;
 	navMeshName += App->GetScene()->GetRoot()->GetName();
 	navMeshName += ".navmesshi";
+	while (App->GetFileSystem()->Exists(navMeshName.c_str()))
+	{
+		navMeshName = ASSETS_NAVMESH_PATH;
+		navMeshName += App->GetScene()->GetRoot()->GetName();
+		navMeshName += std::to_string(LCG().Int());
+		navMeshName += ".navmesshi";
+	}
 	Importer::NavMesh::SaveAsset(navMeshName.c_str(), *mDetourNavMesh);
 	//delete mDetourNavMesh;
 	unsigned int newResId = EngineApp->GetEngineResource()->ImportFile(navMeshName.c_str());

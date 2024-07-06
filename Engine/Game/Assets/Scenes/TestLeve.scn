@@ -3983,7 +3983,7 @@
                         "ComponentType": 6,
                         "IsEnabled": true,
                         "AspectRatio": 1.5882352590560914,
-                        "FieldOfView": 72.73433685302735,
+                        "FieldOfView": 72.73432922363281,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
                         "IsOrtographic": false
@@ -4018,6 +4018,6 @@
                 ]
             }
         ],
-        "NavMeshResource": 687238183
+        "NavMeshResource": 315485471
     }
 }
