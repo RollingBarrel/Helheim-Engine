@@ -1325,16 +1325,28 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 
 void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
 {
-	const char* renderModes[] = { "World Space", "Screen Space" };
-	int selectedRenderMode = canvasComponent->GetScreenSpace();
+	const char* renderModes[] = { "World Space", "Screen Space", "Billboard mode", "World axis billboard"};
+	static int selectedRenderMode = static_cast<int>(canvasComponent->GetRenderSpace());
 
 	ImGui::Text("Render Mode");
 	ImGui::SameLine();
 
 	if (ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes))) 
 	{
-		canvasComponent->SetScreenSpace(selectedRenderMode);
+		switch (selectedRenderMode)
+		{
+		case -1: break;
+		case 0: canvasComponent->SetRenderSpace(RenderSpace::World);
+			break;
+		case 1: canvasComponent->SetRenderSpace(RenderSpace::Screen);
+			break;
+		case 2: canvasComponent->SetRenderSpace(RenderSpace::Billboard);
+			break;
+		case 3: canvasComponent->SetRenderSpace(RenderSpace::WorldAxisBillboard);
+			break;
+		}
 	}
+	
 
 	if (ImGui::BeginTable("transformTable", 4)) 
 	{
