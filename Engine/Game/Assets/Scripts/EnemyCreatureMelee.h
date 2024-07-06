@@ -1,35 +1,29 @@
 #pragma once
 #include "Enemy.h"
-#include "Geometry/Ray.h"
+#include "TimerScript.h"
 
-class AnimationStateMachine;
 struct CollisionData;
 class BoxColliderComponent;
 
-enum class EnemyState 
+enum class EnemyState
 {
 	IDLE,
 	CHASE,
 	ATTACK,
 };
 
-enum class RobotType
+GENERATE_BODY(EnemyCreatureMelee);
+class EnemyCreatureMelee : public Enemy
 {
-	RANGE,
-	MELEE
-};
-
-GENERATE_BODY(EnemyRobot);
-class EnemyRobot : public Enemy
-{
-	FRIEND(EnemyRobot)
+	FRIEND(EnemyCreatureMelee)
 
 public:
-	EnemyRobot(GameObject* owner);
-	~EnemyRobot() {}
-	void Update() override;
-	void Start() override;
+	EnemyCreatureMelee(GameObject* owner);
+	~EnemyCreatureMelee() {}
 	
+	void Start() override;
+	void Update() override;
+
 private:
 	void Idle();
 	void Chase();
@@ -37,15 +31,16 @@ private:
 	bool IsMoving();
 
 	void MeleeAttack();
-	void RangeAttack();
+	void Death() override;
+	void Init() override;
+	void OnCollisionEnter(CollisionData* collisionData);
 
 	void PlayStepAudio();
 	void PlayMeleeAudio();
 
 	EnemyState mCurrentState = EnemyState::IDLE;
-	RobotType mType = RobotType::MELEE;
 
-	AnimationStateMachine* mStateMachine = nullptr;
+	TimerScript mDeathTimer;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
@@ -62,5 +57,6 @@ private:
 	// MoveSimulation
 	float mStepTimer = 0.0f;
 	float mStepCooldown = 0.5f;
+
 };
 

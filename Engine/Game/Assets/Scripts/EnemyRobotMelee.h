@@ -23,8 +23,9 @@ class EnemyRobotMelee : public Enemy
 public:
 	EnemyRobotMelee(GameObject* owner);
 	~EnemyRobotMelee() {}
-	void Update() override;
+
 	void Start() override;
+	void Update() override;
 
 private:
 	void Idle();

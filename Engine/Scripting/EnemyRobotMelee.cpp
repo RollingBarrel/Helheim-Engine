@@ -11,7 +11,8 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 
-CREATE(EnemyRobotMelee) {
+CREATE(EnemyRobotMelee) 
+{
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);

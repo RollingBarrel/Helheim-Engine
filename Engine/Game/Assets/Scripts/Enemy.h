@@ -7,12 +7,6 @@ class AnimationComponent;
 class AIAgentComponent;
 class Component;
 
-enum class EnemyType : int
-{
-	ROBOT_MELEE = 0,
-	ROBOT_RANGE,
-	COUNT
-};
 
 class Enemy : public Script
 {

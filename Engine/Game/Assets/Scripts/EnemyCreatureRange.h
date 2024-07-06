@@ -1,6 +1,5 @@
 #pragma once
 #include "Enemy.h"
-#include "Geometry/Ray.h"
 #include "TimerScript.h"
 
 class AnimationStateMachine;
@@ -15,14 +14,14 @@ enum class EnemyState
 	ATTACK,
 };
 
-GENERATE_BODY(EnemyRobotRange);
-class EnemyRobotRange : public Enemy
+GENERATE_BODY(EnemyCreatureRange);
+class EnemyCreatureRange : public Enemy
 {
-	FRIEND(EnemyRobotRange)
+	FRIEND(EnemyCreatureRange)
 
 public:
-	EnemyRobotRange(GameObject* owner);
-	~EnemyRobotRange() {}
+	EnemyCreatureRange(GameObject* owner);
+	~EnemyCreatureRange() {}
 
 	void Start() override;
 	void Update() override;

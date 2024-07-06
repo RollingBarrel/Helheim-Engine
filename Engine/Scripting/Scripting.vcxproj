@@ -175,8 +175,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Spawner.h" />
@@ -221,8 +222,9 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyCreatureMelee.cpp" />
+    <ClCompile Include="EnemyCreatureRange.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
-    <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="EnemyRobotMelee.cpp" />
     <ClCompile Include="EnemyRobotRange.cpp" />
     <ClCompile Include="Spawner.cpp" />
