@@ -172,7 +172,7 @@ bool EnemyRobotRange::IsMoving()
 void EnemyRobotRange::RangeAttack()
 {
     float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
-    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
+    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());

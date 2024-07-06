@@ -168,9 +168,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h">
       <Filter>Pools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
@@ -300,9 +297,6 @@
     </ClCompile>
     <ClCompile Include="PoolManager.cpp">
       <Filter>Pools</Filter>
-    </ClCompile>
-    <ClCompile Include="BulletEnemy.cpp">
-      <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="TimerScript.cpp">
