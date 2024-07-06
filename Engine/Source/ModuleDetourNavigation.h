@@ -26,6 +26,7 @@ public:
 	void SetQueryCenter(float3 center) { mQueryCenter = center; }
 	void SetQueryHalfSize(float3 halfsize) { mQueryHalfSize = halfsize; }
 	unsigned int GetResourceId() const;
+	void ReleaseResource();
 
 private:
 	dtNavMeshQuery* mNavQuery = nullptr;

@@ -258,6 +258,8 @@ void ModuleScene::Load(const char* sceneName)
 		unsigned int resourceNavMesh = scene.GetInt("NavMeshResource");
 		if(resourceNavMesh != 0)
 			App->GetNavigation()->CreateQuery(resourceNavMesh);
+		else
+			App->GetNavigation()->ReleaseResource();
 
 		App->GetScriptManager()->AwakeScripts();
 		
@@ -630,6 +632,8 @@ void ModuleScene::NewScene()
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();
+
+	App->GetNavigation()->ReleaseResource();
 
 	delete mRoot;
 	mRoot = new GameObject("EmptyScene", nullptr);
