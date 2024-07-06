@@ -39,12 +39,15 @@ void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 	if(mRNavMesh)
 		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 	mRNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
-	assert(mRNavMesh);
-	status = mNavQuery->init(mRNavMesh->GetDtNavMesh(), 2048);
-	if (dtStatusFailed(status))
+	if (mRNavMesh)
 	{
-		LOG("Could not init Detour navmesh query");
-		return;
+
+		status = mNavQuery->init(mRNavMesh->GetDtNavMesh(), 2048);
+		if (dtStatusFailed(status))
+		{
+			LOG("Could not init Detour navmesh query");
+			return;
+		}
 	}
 }
 
