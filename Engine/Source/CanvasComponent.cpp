@@ -18,7 +18,6 @@ CanvasComponent::CanvasComponent(const CanvasComponent& original, GameObject* ow
 {
 	App->GetUI()->AddCanvas(this->GetOwner());
 	mSize = original.mSize;
-	mScreenSpace = original.mScreenSpace;
 }
 
 CanvasComponent:: ~CanvasComponent() 
