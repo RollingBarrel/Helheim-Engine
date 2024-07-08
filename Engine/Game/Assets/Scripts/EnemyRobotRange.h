@@ -41,7 +41,7 @@ private:
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
-	float mBulletSpeed = 0.65f;
+	float mBulletSpeed = 1.0f;
 	float mTimerAttack = 2.0f;
 	float mAttackCD = 0.0f;
 	float mTimerDisengage = 0.0f;
