@@ -35,6 +35,7 @@
 #include "SwitchState.h"
 #include "SpecialState.h"
 #include "ReloadState.h"
+#include "UltimateState.h"
 
 #include "Weapon.h"
 #include "MeleeWeapon.h"
@@ -124,6 +125,7 @@ void PlayerController::Start()
     mAttackState = new AttackState(this, 0.0f); // Is later changed when having a weapon
     mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
     mReloadState = new ReloadState(this, 0.0f);
+    mUltimateState = new UltimateState(this, 0.0f);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;
@@ -335,6 +337,10 @@ void PlayerController::CheckInput()
                 break;
             case StateType::RELOAD:
                 mUpperState = mReloadState;
+                break;
+            case StateType::ULTIMATE:
+                if (mUltimateResource==100)
+                mUpperState = mUltimateState;
                 break;
             case StateType::NONE:
                 break;
@@ -681,6 +687,14 @@ void PlayerController::UseEnergy(int energy)
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+}
+
+void PlayerController::AddUltimateResource()
+{
+    if (mUltimateResource != 100) 
+        mUltimateResource += 10;
+    else
+        return;
 }
 
 void PlayerController::TakeDamage(float damage)

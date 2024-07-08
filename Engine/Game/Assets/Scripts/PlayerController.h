@@ -20,6 +20,7 @@ class GrenadeState;
 class SwitchState;
 class SpecialState;
 class ReloadState;
+class UltimateState;
 enum StateType;
 
 class Weapon;
@@ -114,6 +115,8 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+    void AddUltimateResource();
+
     // States
     DashState* GetDashState() { return mDashState; }
     IdleState* GetIdleState() { return mIdleState; }
@@ -124,6 +127,7 @@ public:
     SwitchState* GetSwitchState() { return mSwitchState; }
     SpecialState* GetSpecialState() { return mSpecialState; }
     ReloadState* GetReloadState() { return mReloadState; }
+    UltimateState* GetUltimateState() { return mUltimateState; }
 
 private:
     void CheckInput();
@@ -149,6 +153,8 @@ private:
     SwitchState* mSwitchState = nullptr;
     SpecialState* mSpecialState = nullptr;
     ReloadState* mReloadState = nullptr;
+    UltimateState* mUltimateState = nullptr;
+
 
     // MOUSE
     float3 mPlayerDirection;
