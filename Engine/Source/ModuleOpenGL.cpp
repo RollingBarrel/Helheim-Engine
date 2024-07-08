@@ -20,8 +20,8 @@
 #include "ParticleSystemComponent.h"
 #include "DecalComponent.h"
 #include "TrailComponent.h"
-#include "GeometryBatch.h"
 
+#include "GeometryBatch.h"
 #include "BatchManager.h"
 
 
@@ -551,35 +551,35 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 //TODO: This should not be here, we need like a resource or importer
 #include "DirectXTex.h"
 #include <MathConstants.h>
-static unsigned int LoadCubeMap()
-{
-	unsigned int ret = 0;
-	DirectX::ScratchImage image;
-
-	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
-	
-	if (res == S_OK)
-	{
-		const DirectX::TexMetadata& metadata = image.GetMetadata();
-
-		glGenTextures(1, &ret);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, ret);
-
-		for (uint32_t i = 0; i < metadata.arraySize; ++i)
-		{
-			const DirectX::Image* face = image.GetImage(0, i, 0);
-
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA8, face->width, face->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, face->pixels);
-		}
-
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	}
-	return ret;
-}
+//static unsigned int LoadCubeMap()
+//{
+//	unsigned int ret = 0;
+//	DirectX::ScratchImage image;
+//
+//	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
+//	
+//	if (res == S_OK)
+//	{
+//		const DirectX::TexMetadata& metadata = image.GetMetadata();
+//
+//		glGenTextures(1, &ret);
+//		glBindTexture(GL_TEXTURE_CUBE_MAP, ret);
+//
+//		for (uint32_t i = 0; i < metadata.arraySize; ++i)
+//		{
+//			const DirectX::Image* face = image.GetImage(0, i, 0);
+//
+//			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA8, face->width, face->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, face->pixels);
+//		}
+//
+//		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+//		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+//		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+//		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+//		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+//	}
+//	return ret;
+//}
 
 void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 {
@@ -828,7 +828,7 @@ void ModuleOpenGL::BakeEnvironmentBRDF(unsigned int width, unsigned int height)
 		glDeleteTextures(1, &mEnvBRDFTexId);
 	glGenTextures(1, &mEnvBRDFTexId);
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, width, height, 0, GL_RG, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, width, height, 0, GL_RG, GL_HALF_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
@@ -885,7 +885,7 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		for (unsigned int i = 0; i < 6; ++i)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
-				GL_RGB, GL_FLOAT, nullptr);
+				GL_RGB, GL_HALF_FLOAT, nullptr);
 		}
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -943,7 +943,7 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 		for (unsigned int i = 0; i < 6; ++i)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
-				GL_RGB, GL_FLOAT, nullptr);
+				GL_RGB, GL_HALF_FLOAT, nullptr);
 		}
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
@@ -973,7 +973,7 @@ void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, 
 
 		for (int i = 0; i < 6; ++i)
 		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_FLOAT, nullptr);
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_HALF_FLOAT, nullptr);
 		}
 		int numMipMaps = int(log(float(specWidth)) / log(2.0f));
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);

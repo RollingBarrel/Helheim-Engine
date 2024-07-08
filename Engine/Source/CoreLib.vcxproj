@@ -256,6 +256,7 @@
     <ClCompile Include="RandomFloat.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="ResourceAnimation.cpp" />
+    <ClCompile Include="ResourceIBL.cpp" />
     <ClCompile Include="ResourceMaterial.cpp" />
     <ClCompile Include="ResourceMesh.cpp" />
     <ClCompile Include="ResourceModel.cpp" />
@@ -266,6 +267,7 @@
     <ClCompile Include="ResourceStateMachine.cpp" />
     <ClCompile Include="ResourceTexture.cpp" />
     <ClCompile Include="SaveLoadAnimation.cpp" />
+    <ClCompile Include="SaveLoadIBL.cpp" />
     <ClCompile Include="SaveLoadMaterial.cpp" />
     <ClCompile Include="SaveLoadMesh.cpp" />
     <ClCompile Include="SaveLoadModel.cpp" />
@@ -756,6 +758,7 @@
     <ClInclude Include="RandomFloat.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="ResourceAnimation.h" />
+    <ClInclude Include="ResourceIBL.h" />
     <ClInclude Include="ResourceMaterial.h" />
     <ClInclude Include="ResourceMesh.h" />
     <ClInclude Include="ResourceModel.h" />
@@ -766,6 +769,7 @@
     <ClInclude Include="ResourceStateMachine.h" />
     <ClInclude Include="ResourceTexture.h" />
     <ClInclude Include="SaveLoadAnimation.h" />
+    <ClInclude Include="SaveLoadIBL.h" />
     <ClInclude Include="SaveLoadMaterial.h" />
     <ClInclude Include="SaveLoadMesh.h" />
     <ClInclude Include="SaveLoadModel.h" />

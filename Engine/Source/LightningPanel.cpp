@@ -1,9 +1,11 @@
 #include "LightningPanel.h"
 #include "EngineApp.h"
+#include "ModuleEngineResource.h"
 #include "ModuleOpenGL.h"
 #include "imgui.h"
 #include "glew.h"
 #include <ImGuiFileDialog.h>
+#include "ImporterIBL.h"
 
 
 LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
