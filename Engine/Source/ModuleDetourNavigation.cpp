@@ -30,18 +30,26 @@ unsigned int ModuleDetourNavigation::GetResourceId() const
 	return (mRNavMesh) ? mRNavMesh->GetUID() : 0; 
 }
 
+void ModuleDetourNavigation::ReleaseResource()
+{
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+	mRNavMesh = nullptr;
+}
+
 void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 {
-	if (mNavQuery)
-		delete mNavQuery;
-	mNavQuery = new dtNavMeshQuery();
-	dtStatus status;
-	if(mRNavMesh)
-		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
-	mRNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
-	if (mRNavMesh)
+	ResourceNavMesh* newNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
+	assert(newNavMesh, "The saved scene navmesh resource id is incorrect");
+	if (newNavMesh)
 	{
-
+		if (mNavQuery)
+			delete mNavQuery;
+		mNavQuery = new dtNavMeshQuery();
+		dtStatus status;
+		if (mRNavMesh)
+			App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+		mRNavMesh = newNavMesh;
 		status = mNavQuery->init(mRNavMesh->GetDtNavMesh(), 2048);
 		if (dtStatusFailed(status))
 		{
