@@ -174,6 +174,7 @@ private:
     Weapon* mSpecialWeapon = nullptr;
     int mCurrentEnergy = 0;
     EnergyType mEnergyType = EnergyType::NONE;
+    int mUltimateResource = 0;
 
     // RANGED
     RangeWeapon* mPistol = nullptr;
