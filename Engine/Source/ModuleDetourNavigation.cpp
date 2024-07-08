@@ -44,7 +44,7 @@ update_status ModuleDetourNavigation::PreUpdate(float dt)
 
 update_status ModuleDetourNavigation::Update(float dt)
 {	
-	if (mCrowd)
+	if (mCrowd && App->IsPlayMode())
 	{
 		if (mCrowd->getAgentCount() > 0)
 		{
@@ -163,7 +163,6 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 
 unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
 {
-	unsigned int my_id = mCrowd->getAgentCount();
 	dtCrowdAgentParams agentParams;
 	memset(&agentParams, 0, sizeof(agentParams));
 	agentParams.radius = 0.6f; // Adjust based on your requirements
@@ -178,7 +177,7 @@ unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
 
 	int agentId = mCrowd->addAgent(&startPos[0], &agentParams);
 
-	return my_id;
+	return agentId > 0 ? agentId : 101;
 
 }
 
@@ -187,7 +186,7 @@ void ModuleDetourNavigation::SetAgentDestination(unsigned int agentId, float3 de
 	dtPolyRef result;
 	dtQueryFilter temp;
 	float3 queryResult;
-	float3 halfSize{ 3,3,3 };
+	float3 halfSize{ 3.0f };
 
 	mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
 
@@ -213,20 +212,8 @@ void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
 
 void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
 {
-	dtCrowdAgent* agent = mCrowd->getEditableAgent(agentId);
-	if (agent)
-	{
-		agent->active = false;
-	}
+	mCrowd->removeAgent(agentId);
 }
 
-void ModuleDetourNavigation::ReactivateAgent(unsigned int agentId)
-{
-	dtCrowdAgent* agent = mCrowd->getEditableAgent(agentId);
-	if (agent)
-	{
-		agent->active = true;
-	}
-}
 
 

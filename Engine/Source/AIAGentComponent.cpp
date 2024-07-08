@@ -43,7 +43,7 @@ void AIAgentComponent::Update()
 {
 	if (mNavPositions.size() > 0)
 	{
-		if (mOwner->GetWorldPosition().Equals(mNavPositions.back(), 0.1f))
+		if (mOwner->GetWorldPosition().Equals(mNavPositions[0], 0.1f))
 		{
 			mMoving = false;
 		}
@@ -71,12 +71,9 @@ void AIAgentComponent::StartCrowdNavigation()
 {
 	if (mCrowdId == 101)
 	{
+		//Do this after setting the world position
 		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition());
 
-	}
-	else
-	{
-		App->GetNavigation()->ReactivateAgent(mCrowdId);
 	}
 }
 
@@ -85,6 +82,7 @@ void AIAgentComponent::PauseCrowdNavigation()
 	if (mCrowdId != 101)
 	{
 		App->GetNavigation()->DisableAgent(mCrowdId);
+		mCrowdId = 101;
 	}
 }
 

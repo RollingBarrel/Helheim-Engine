@@ -40,7 +40,6 @@ public:
 	void SetAgentDestination(unsigned int agentId, float3 destination);
 	void MoveAgent(unsigned int agentId, float3& position);
 	void DisableAgent(unsigned int agentId);
-	void ReactivateAgent(unsigned int agentId);
 
 
 
