@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
+#include "ResourceIBL.h"
 #include <vector>
 
 #define NUM_SHADOW_MAPS 16
@@ -116,9 +117,6 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
-	void AddHighLight(const GameObject& gameObject);
-	void RemoveHighLight(const GameObject& gameObject);
-
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
 
@@ -130,7 +128,9 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	//void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	void SetSkybox(unsigned int uid);
+	unsigned int GetSkyboxID() const { return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0; };
 	unsigned int GetSkyboxVAO() const { return mSkyVao; }
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
@@ -191,11 +191,7 @@ private:
 
 
 	//IBL
-	unsigned int mHDRTextureId = 0;
-	unsigned int mEnvironmentTextureId = 0;
-	unsigned int mIrradianceTextureId = 0;
-	unsigned int mSpecPrefilteredTexId = 0;
-	unsigned int mEnvBRDFTexId = 0;
+	ResourceIBL* mCurrSkyBox = nullptr;
 
 	unsigned int mEmptyVAO = 0;
 	
@@ -227,8 +223,8 @@ private:
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
 	std::vector<const TrailComponent*> mTrails;
 
-	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
-	std::vector<const GameObject*> mHighlightedObjects;
+	//void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
+	//std::vector<const GameObject*> mHighlightedObjects;
 
 	unsigned int mSceneWidth = 1;
 	unsigned int mSceneHeight = 1;

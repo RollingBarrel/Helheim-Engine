@@ -11,9 +11,8 @@ public:
 
 private:
 	std::string mSkyboxFileName;
-	std::string mSkyboxFilePath = "Assets/Textures/rural_asphalt_road_4k.hdr";
-	int mIrradianceSize = 256;
-	int mSpecPrefilteredSize = 256;
-	int mSpecEnvBRDFSize = 512;
+	//int mIrradianceSize = 256;
+	//int mSpecPrefilteredSize = 256;
+	//int mSpecEnvBRDFSize = 512;
 };
 
