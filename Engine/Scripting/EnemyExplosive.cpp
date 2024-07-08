@@ -48,10 +48,7 @@ void EnemyExplosive::Start()
         mExplosionWarningGO->SetEnabled(false);
     }
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->SetIsPlaying(true);
-    }
+
 }
 
 void EnemyExplosive::Update()
@@ -163,6 +160,10 @@ void EnemyExplosive::Die()
     if (Delay(0.5f))
     {
         Death();
+    }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
     }
  
 }

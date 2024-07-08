@@ -79,10 +79,7 @@ void EnemyRobotMelee::Start()
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
     }
 
-    if (mAiAgentComponent)
-    {
-        mAiAgentComponent->StartCrowdNavigation();
-    }
+   
 }
 
 
@@ -193,12 +190,20 @@ void EnemyRobotMelee::Death()
     {
         Enemy::Death();
     }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->PauseCrowdNavigation();
+    }
 }
 void EnemyRobotMelee::Reset()
 {
     Enemy::Reset();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle",0.0f);
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)
 {

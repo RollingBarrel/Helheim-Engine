@@ -30,10 +30,6 @@ bool ModuleDetourNavigation::Init()
 {
 	LoadResourceData();
 	mCrowd = dtAllocCrowd();
-	if (mDetourNavMesh)
-	{
-		mCrowd->init(mMaxAgents, mAgentRadius, mDetourNavMesh);
-	}
 	return true;
 }
 
@@ -49,6 +45,9 @@ update_status ModuleDetourNavigation::Update(float dt)
 		if (mCrowd->getAgentCount() > 0)
 		{
 			mCrowd->update(App->GetDt(), nullptr);
+			//const dtCrowdAgent* ag = mCrowd->getAgent(0);
+			///LOG("Agent 0 pos: %f, %f, %f", ag->npos[0], ag->npos[1], ag->npos[2]);
+
 
 		}
 	}
@@ -74,6 +73,9 @@ void ModuleDetourNavigation::LoadResourceData()
 		mDetourNavMesh = resource->GetDtNavMesh();
 		CreateQuery();
 		App->GetResource()->ReleaseResource(resource->GetUID());
+		mCrowd->init(mMaxAgents, mAgentRadius, mDetourNavMesh);
+
+
 	}
 }
 
@@ -167,17 +169,17 @@ unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
 	memset(&agentParams, 0, sizeof(agentParams));
 	agentParams.radius = 0.6f; // Adjust based on your requirements
 	agentParams.height = 2.0f; // Adjust based on your requirements
-	agentParams.maxAcceleration = 8.0f;
-	agentParams.maxSpeed = 2.5f;
+	agentParams.maxAcceleration = 16.0f;
+	agentParams.maxSpeed = 5.0f;
 	agentParams.collisionQueryRange = agentParams.radius * 12.0f;
 	agentParams.pathOptimizationRange = agentParams.radius * 30.0f;
-	agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE;
-	agentParams.obstacleAvoidanceType = 3.0f;
+	agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE | DT_CROWD_OPTIMIZE_VIS | DT_CROWD_OPTIMIZE_TOPO | DT_CROWD_SEPARATION;
+	agentParams.obstacleAvoidanceType = (unsigned char)3.0f;
 	agentParams.separationWeight = 2.0f;
 
 	int agentId = mCrowd->addAgent(&startPos[0], &agentParams);
 
-	return agentId > 0 ? agentId : 101;
+	return agentId >= 0 ? agentId : 101;
 
 }
 
@@ -186,7 +188,7 @@ void ModuleDetourNavigation::SetAgentDestination(unsigned int agentId, float3 de
 	dtPolyRef result;
 	dtQueryFilter temp;
 	float3 queryResult;
-	float3 halfSize{ 3.0f };
+	float3 halfSize{ 10.0f };
 
 	mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
 

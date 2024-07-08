@@ -47,10 +47,6 @@ void EnemyRobotRange::Start()
     }
     mAttackCD = mTimerAttack;
 
-    if (mAiAgentComponent)
-    {
-        mAiAgentComponent->StartCrowdNavigation();
-    }
 }
 
 void EnemyRobotRange::Update()
@@ -199,6 +195,10 @@ void EnemyRobotRange::Death()
     {
         Enemy::Death();
     }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->PauseCrowdNavigation();
+    }
 
 }
 
@@ -207,4 +207,8 @@ void EnemyRobotRange::Reset()
     Enemy::Reset();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
