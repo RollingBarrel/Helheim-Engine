@@ -407,10 +407,10 @@ void ImageComponent::ResizeByRatio()
 
 void ImageComponent::RenderMask()
 {
-	unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
-	if (UIImageProgram == 0) return;
+	unsigned int UIMaskProgram = App->GetOpenGL()->GetUIMaskProgramId();
+	if (UIMaskProgram == 0) return;
 
-	glUseProgram(UIImageProgram);
+	glUseProgram(UIMaskProgram);
 
 	// Orthographic mode is used for stencil mask rendering
 	Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
@@ -424,7 +424,14 @@ void ImageComponent::RenderMask()
 		model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
 
 		glBindVertexArray(mQuadVAO);
+		glUniform4fv(glGetUniformLocation(UIMaskProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
+
 		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+		glUniform1i(glGetUniformLocation(UIMaskProgram, "Texture"), 0);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);

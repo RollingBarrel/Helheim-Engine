@@ -63,7 +63,7 @@ class ENGINE_API ModuleOpenGL : public Module
 public:
 	ModuleOpenGL();
 	~ModuleOpenGL();
-
+	
 	bool Init() override;
 	update_status PreUpdate(float dt) override;
 	update_status PostUpdate(float dt) override;
@@ -92,6 +92,7 @@ public:
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetUIMaskProgramId() const { return mUIMaskProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
@@ -166,6 +167,7 @@ private:
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
 	unsigned int mDepthPassProgramId = 0;
+	unsigned int mUIMaskProgramId = 0;
 	
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;

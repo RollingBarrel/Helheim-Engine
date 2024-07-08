@@ -252,7 +252,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PassThroughPixel.glsl";
 	mDepthPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "uiMask.fs";
+	mUIMaskProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -352,6 +354,7 @@ bool ModuleOpenGL::CleanUp()
 
 	glDeleteProgram(mSkyBoxProgramId);
 	glDeleteProgram(mUIImageProgramId);
+	glDeleteProgram(mUIMaskProgramId);
 	glDeleteProgram(mDepthPassProgramId);
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteVertexArrays(1, &mEmptyVAO);

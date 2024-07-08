@@ -184,7 +184,7 @@
                         "ID": 1389643144,
                         "ComponentType": 8,
                         "IsEnabled": true,
-                        "ImageID": 148626881,
+                        "ImageID": 999928379,
                         "Color": [
                             1.0,
                             1.0,
@@ -196,6 +196,12 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    },
+                    {
+                        "ID": 293862844,
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "DrawMask": true
                     }
                 ]
             },
@@ -266,6 +272,83 @@
                             1.0,
                             1.0,
                             0.14705884456634522
+                        ],
+                        "Alpha": 1.0,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 2114057296,
+                "ParentUID": 1374256903,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 273396782,
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "Position": [
+                            350.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            300.0,
+                            300.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ID": 2071101232,
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
                         ],
                         "Alpha": 1.0,
                         "IsSpritesheet": false,

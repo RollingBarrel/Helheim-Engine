@@ -2033,5 +2033,8 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\Shadows_Fragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\uiMask.fs">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
