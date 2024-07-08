@@ -41,20 +41,6 @@ AIAgentComponent::~AIAgentComponent()
 
 void AIAgentComponent::Update()
 {
-	if (mNavPositions.size() > 0)
-	{
-		if (mOwner->GetWorldPosition().Equals(mNavPositions.back(), 0.1f))
-		{
-			mMoving = false;
-		}
-		if (mMoving && mCrowdId != 101)
-		{
-			float3 owner_pos = mOwner->GetWorldPosition();
-			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
-			mOwner->SetWorldPosition(owner_pos);
-		}
-
-	}
 }
 
 Component* AIAgentComponent::Clone(GameObject* owner) const
@@ -64,31 +50,34 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 void AIAgentComponent::SetNavigationPath(const float3& destination) 
 {
 	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
-	mMoving = true;
+	if (mNavPositions.size() > 0)
+	{
+		mMoving = true;
+		App->GetNavigation()->SetAgentDestination(this, mNavPositions[0]);
+	}
 }
 
 void AIAgentComponent::StartCrowdNavigation()
 {
-	if (mCrowdId == 101)
-	{
-		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition());
 
-	}
-	else
-	{
-		App->GetNavigation()->ReactivateAgent(mCrowdId);
-	}
+	mCrowdId = App->GetNavigation()->AddAgent(this);
+
 }
 
 void AIAgentComponent::PauseCrowdNavigation()
 {
 	if (mCrowdId != 101)
 	{
-		App->GetNavigation()->DisableAgent(mCrowdId);
+		App->GetNavigation()->DisableAgent(this);
 	}
 }
 
-void AIAgentComponent::MoveAgent(float speed ) const
+float3 AIAgentComponent::GetStartingPos() const
+{
+	return mOwner->GetWorldPosition();
+}
+
+void AIAgentComponent::MoveAgent(float3 newPos ) const
 {
 	/*
 	if (mNavPositions.size() > 1 )
@@ -104,6 +93,8 @@ void AIAgentComponent::MoveAgent(float speed ) const
 			GetOwner()->SetWorldPosition(GetOwner()->GetWorldPosition() + direction);
 	}
 	*/
+
+	mOwner->SetWorldPosition(newPos);
 	
 }
 

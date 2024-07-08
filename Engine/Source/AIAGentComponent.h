@@ -35,8 +35,8 @@ public:
 	//void SetAcceleration(float acceleration) { mAcceleration = acceleration; };
 	//void SetStoppingDistance(float stoppingDistance) { mStoppingDistance = stoppingDistance; };
 
-
-	void MoveAgent(float speed) const;
+	float3 GetStartingPos() const;
+	void MoveAgent(float3 newPos) const;
 	void Save(JsonObject& obj) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 private:

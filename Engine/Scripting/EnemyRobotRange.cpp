@@ -119,7 +119,7 @@ void EnemyRobotRange::Chase()
 
             }
             mAnimationComponent->SendTrigger("tChase", 0.2f);
-            mAiAgentComponent->MoveAgent(mSpeed);
+            //mAiAgentComponent->MoveAgent(mSpeed);
             mBulletOrigin->SetWorldPosition(mGameObject->GetWorldPosition());
 
         }

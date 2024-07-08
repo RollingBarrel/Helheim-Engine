@@ -12,6 +12,7 @@
 #include "ModuleFileSystem.h"
 #include "ResourceNavmesh.h"
 #include "DetourCrowd.h"
+#include "AIAGentComponent.h"
 #define MAX_AMOUNT 999
 
 
@@ -44,11 +45,22 @@ update_status ModuleDetourNavigation::PreUpdate(float dt)
 
 update_status ModuleDetourNavigation::Update(float dt)
 {	
-	if (mCrowd)
+	if (mCrowd && App->IsPlayMode())
 	{
 		if (mCrowd->getAgentCount() > 0)
 		{
 			mCrowd->update(App->GetDt(), nullptr);
+			for (unsigned int i = 0; i<mAIAgents.size(); ++i)
+			{
+				AIAgentComponent* agent = mAIAgents[i];
+				const dtCrowdAgent* ag = mCrowd->getAgent(i);
+				if (ag->active) {
+					// Update your game object's position with the agent's position
+					float3 newPosition(ag->npos[0], ag->npos[1], ag->npos[2]);
+					agent->MoveAgent(newPosition);
+
+				}
+			}
 
 		}
 	}
@@ -161,8 +173,10 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 	return queryResult;
 }
 
-unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
+unsigned int ModuleDetourNavigation::AddAgent(AIAgentComponent* agent)
 {
+	float3 startPos = agent->GetStartingPos();
+	mAIAgents.push_back(agent);
 	unsigned int my_id = mCrowd->getAgentCount();
 	dtCrowdAgentParams agentParams;
 	memset(&agentParams, 0, sizeof(agentParams));
@@ -182,51 +196,52 @@ unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
 
 }
 
-void ModuleDetourNavigation::SetAgentDestination(unsigned int agentId, float3 destination)
+void ModuleDetourNavigation::SetAgentDestination(AIAgentComponent* agent, float3 destination)
 {
-	dtPolyRef result;
-	dtQueryFilter temp;
-	float3 queryResult;
-	float3 halfSize{ 3,3,3 };
+	bool found = false;
+	for (int i = 0; i < mAIAgents.size(); ++i)
+	{
+		if (mAIAgents[i] == agent)
+		{
+			dtPolyRef result;
+			dtQueryFilter temp;
+			float3 queryResult;
+			float3 halfSize{ 3,3,3 };
 
-	mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
+			mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
 
-	mCrowd->requestMoveTarget(agentId,result, &destination[0]);
+			mCrowd->requestMoveTarget(i, result, &destination[0]);
+			found = true;
+			break;
+		}
+	}
+
+	if (!found)
+	{
+		int index = mAIAgents.size();
+		AddAgent(agent);
+		dtPolyRef result;
+		dtQueryFilter temp;
+		float3 queryResult;
+		float3 halfSize{ 3,3,3 };
+
+		mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
+
+		mCrowd->requestMoveTarget(index, result, &destination[0]);
+
+	}
 }
 
-void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
+
+void ModuleDetourNavigation::DisableAgent(AIAgentComponent* agent)
 {
-	if (mCrowd)
+	for (int i = 0; i< mAIAgents.size(); ++i)
 	{
-		if (agentId < mCrowd->getAgentCount())
+		if (mAIAgents[i] == agent)
 		{
-			const dtCrowdAgent* ag = mCrowd->getAgent(agentId);
-			if (ag->active) {
-				// Update your game object's position with the agent's position
-				float3 newPosition(ag->npos[0], ag->npos[1], ag->npos[2]);
-				position = newPosition;
-				
-			}
+			mCrowd->removeAgent(i);
+			mAIAgents.erase(mAIAgents.begin() + i);
+			break;
 		}
 	}
 }
-
-void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
-{
-	dtCrowdAgent* agent = mCrowd->getEditableAgent(agentId);
-	if (agent)
-	{
-		agent->active = false;
-	}
-}
-
-void ModuleDetourNavigation::ReactivateAgent(unsigned int agentId)
-{
-	dtCrowdAgent* agent = mCrowd->getEditableAgent(agentId);
-	if (agent)
-	{
-		agent->active = true;
-	}
-}
-
-

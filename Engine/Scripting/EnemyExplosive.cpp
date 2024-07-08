@@ -102,7 +102,7 @@ void EnemyExplosive::Chase()
             direction.Normalize();
             float angle = std::atan2(direction.x, direction.z);
             mGameObject->SetWorldRotation(float3(0, angle, 0));
-            mAiAgentComponent->MoveAgent(mSpeed);
+            //mAiAgentComponent->MoveAgent(mSpeed);
         }
         
         if (IsPlayerInRange(mChargingDistance))

@@ -8,6 +8,8 @@ struct dtNavMeshCreateParams;
 class dtNavMesh;
 class dtNavMeshQuery;
 class dtCrowd;
+class AIAgentComponent;
+
 class ENGINE_API ModuleDetourNavigation :public Module
 {
 public:
@@ -36,11 +38,9 @@ public:
 	void SetDetourNavMesh(dtNavMesh* detourNavMesh) { mDetourNavMesh = detourNavMesh; }
 	
 	//Crowd manager
-	unsigned int AddAgent(float3 startPos);
-	void SetAgentDestination(unsigned int agentId, float3 destination);
-	void MoveAgent(unsigned int agentId, float3& position);
-	void DisableAgent(unsigned int agentId);
-	void ReactivateAgent(unsigned int agentId);
+	void SetAgentDestination(AIAgentComponent* agent, float3 destination);
+	unsigned int AddAgent(AIAgentComponent* agent);
+	void DisableAgent(AIAgentComponent* agent);
 
 
 
@@ -56,8 +56,8 @@ private:
 	float3 mQueryHalfSize = float3(5.0f);
 	float3 mQueryResult = float3(0.0f);
 	const unsigned int mMaxAgents = 100;
-	float mAgentRadius = 0.6f; // has to be moved to AIAgentComponent.
-
+	float mAgentRadius = 1.6f; // has to be moved to AIAgentComponent.
+	std::vector<AIAgentComponent*> mAIAgents;
 
 };
 

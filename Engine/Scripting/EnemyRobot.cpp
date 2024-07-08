@@ -139,7 +139,7 @@ void EnemyRobot::Chase()
 
 
 
-            mAiAgentComponent->MoveAgent(mSpeed);
+            //mAiAgentComponent->MoveAgent(mSpeed);
 
         }
         switch (mType)
