@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleDetourNavigation.h"
 #include "GameObject.h"
+#include "DetourCrowd.h"
 
 AIAgentComponent::AIAgentComponent(GameObject* ownerGameObject)
  : Component(ownerGameObject, ComponentType::AIAGENT)
@@ -74,8 +75,23 @@ void AIAgentComponent::StartCrowdNavigation()
 {
 	if (mCrowdId == 101)
 	{
-		//Do this after setting the world position
-		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition());
+		dtCrowdAgentParams agentParams;
+		memset(&agentParams, 0, sizeof(agentParams));
+
+		//AI Agent Class params
+		agentParams.radius = 0.6f;
+		agentParams.height = 2.0f;
+		agentParams.maxAcceleration = 16.0f;
+		agentParams.maxSpeed = 5.0f;
+
+		//Crowd fixed params
+		agentParams.collisionQueryRange = agentParams.radius * 12.0f;
+		agentParams.pathOptimizationRange = agentParams.radius * 30.0f;
+		agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE | DT_CROWD_OPTIMIZE_VIS | DT_CROWD_OPTIMIZE_TOPO | DT_CROWD_SEPARATION;
+		agentParams.obstacleAvoidanceType = (unsigned char)3.0f;
+		agentParams.separationWeight = 2.0f;
+
+		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition(), agentParams);
 
 	}
 }

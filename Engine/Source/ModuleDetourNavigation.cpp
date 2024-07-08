@@ -163,21 +163,10 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 	return queryResult;
 }
 
-unsigned int ModuleDetourNavigation::AddAgent(float3 startPos)
+unsigned int ModuleDetourNavigation::AddAgent(float3 startPos, dtCrowdAgentParams& params)
 {
-	dtCrowdAgentParams agentParams;
-	memset(&agentParams, 0, sizeof(agentParams));
-	agentParams.radius = 0.6f; // Adjust based on your requirements
-	agentParams.height = 2.0f; // Adjust based on your requirements
-	agentParams.maxAcceleration = 16.0f;
-	agentParams.maxSpeed = 5.0f;
-	agentParams.collisionQueryRange = agentParams.radius * 12.0f;
-	agentParams.pathOptimizationRange = agentParams.radius * 30.0f;
-	agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE | DT_CROWD_OPTIMIZE_VIS | DT_CROWD_OPTIMIZE_TOPO | DT_CROWD_SEPARATION;
-	agentParams.obstacleAvoidanceType = (unsigned char)3.0f;
-	agentParams.separationWeight = 2.0f;
 
-	int agentId = mCrowd->addAgent(&startPos[0], &agentParams);
+	int agentId = mCrowd->addAgent(&startPos[0], &params);
 
 	return agentId >= 0 ? agentId : 101;
 

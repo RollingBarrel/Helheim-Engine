@@ -8,6 +8,7 @@ struct dtNavMeshCreateParams;
 class dtNavMesh;
 class dtNavMeshQuery;
 class dtCrowd;
+class dtCrowdAgentParams;
 class ENGINE_API ModuleDetourNavigation :public Module
 {
 public:
@@ -36,7 +37,7 @@ public:
 	void SetDetourNavMesh(dtNavMesh* detourNavMesh) { mDetourNavMesh = detourNavMesh; }
 	
 	//Crowd manager
-	unsigned int AddAgent(float3 startPos);
+	unsigned int AddAgent(float3 startPos, dtCrowdAgentParams& params);
 	void SetAgentDestination(unsigned int agentId, float3 destination);
 	void MoveAgent(unsigned int agentId, float3& position);
 	void DisableAgent(unsigned int agentId);
