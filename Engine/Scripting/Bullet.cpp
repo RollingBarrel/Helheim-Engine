@@ -126,7 +126,6 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 					mHitParticles->SetEnable(true);
 				}
 				mHasCollided = true;
-				mGameObject->SetEnabled(false);
 			}
 		}
 

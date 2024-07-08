@@ -177,7 +177,7 @@ void EnemyRobotRange::RangeAttack()
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
+    gradient.AddColorGradientMark(0.1f, float4(0.0f, 0.0f, 1.0f, 1.0f));
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
 }
 
