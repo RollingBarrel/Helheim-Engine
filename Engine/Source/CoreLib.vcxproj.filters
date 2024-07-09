@@ -462,6 +462,9 @@
     <ClCompile Include="SaveLoadIBL.cpp">
       <Filter>Importers</Filter>
     </ClCompile>
+    <ClCompile Include="MaskComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1964,6 +1967,9 @@
     <ClInclude Include="SaveLoadIBL.h">
       <Filter>Importers</Filter>
     </ClInclude>
+    <ClInclude Include="MaskComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -2078,6 +2084,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\TileLightCulling.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\uiMask.fs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
