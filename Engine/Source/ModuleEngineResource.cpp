@@ -16,6 +16,7 @@
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
+#include "ResourceIBL.h"
 
 #include <algorithm>
 
@@ -29,6 +30,7 @@
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
 #include "ImporterStateMachine.h"
+#include "ImporterIBL.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -188,6 +190,9 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::StateMachine:
 		ret = Importer::StateMachine::Import(assetsFile, uid);
 		break;
+	case Resource::Type::IBL:
+		ret = Importer::IBL::Import(assetsFile, uid);
+		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
 		break;
@@ -261,6 +266,11 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 	case Resource::Type::StateMachine:
 	{
 		assetsFilePath = ASSETS_STATEMACHINE_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::IBL:
+	{
+		assetsFilePath = ASSETS_IBL_PATH + assetName + extensionName;
 		break;
 	}
 	default:

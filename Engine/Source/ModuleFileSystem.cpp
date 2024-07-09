@@ -43,6 +43,7 @@ bool ModuleFileSystem::Init()
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);
     CreateDirectory(ASSETS_NAVMESH_PATH);
+    CreateDirectory(ASSETS_IBL_PATH);
     CreateDirectory(LIBRARY_PATH);
 
     CreateDirectory(INTERNAL_ASSETS_PATH);
@@ -393,6 +394,7 @@ const char* ModuleFileSystem::GetFileExtensionFromPath(const char* path) const
 void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::string* extension) const
 {
     std::string tempPath = path;
+    NormalizePath(tempPath.data());
 
     unsigned int lastSlashPos = tempPath.find_last_of('/');
     unsigned int dotPos = tempPath.find_last_of('.');
