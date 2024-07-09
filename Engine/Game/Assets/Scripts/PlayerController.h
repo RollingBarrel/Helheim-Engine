@@ -116,6 +116,9 @@ public:
     void UseEnergy(int energy);
 
     void AddUltimateResource();
+    int GetUltimateResource() { return mUltimateResource; };
+    void SetUltimateResource(int resource) { mUltimateResource = resource; }
+    void EnableUltimate(bool enable);
 
     // States
     DashState* GetDashState() { return mDashState; }
@@ -180,7 +183,7 @@ private:
     Weapon* mSpecialWeapon = nullptr;
     int mCurrentEnergy = 0;
     EnergyType mEnergyType = EnergyType::NONE;
-    int mUltimateResource = 0;
+    int mUltimateResource = 100;
 
     // RANGED
     RangeWeapon* mPistol = nullptr;
@@ -216,6 +219,9 @@ private:
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+
+    //Ultimate
+    GameObject* mUltimateGO = nullptr;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;

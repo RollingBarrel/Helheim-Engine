@@ -79,6 +79,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
 
+    SEPARATOR("Ultimate");
+    MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
+
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
 
@@ -178,7 +181,9 @@ void PlayerController::Start()
         mEquippedSpecialGO->SetEnabled(false);
         mUnEquippedSpecialGO->SetEnabled(false);
     }
-        
+    
+    if (mUltimateGO)
+        mUltimateGO->SetEnabled(false);
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -339,7 +344,6 @@ void PlayerController::CheckInput()
                 mUpperState = mReloadState;
                 break;
             case StateType::ULTIMATE:
-                if (mUltimateResource==100)
                 mUpperState = mUltimateState;
                 break;
             case StateType::NONE:
@@ -693,8 +697,15 @@ void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100) 
         mUltimateResource += 10;
-    else
-        return;
+    else return;
+}
+
+void PlayerController::EnableUltimate(bool enable)
+{
+    if (mUltimateGO)
+    {
+        mUltimateGO->SetEnabled(enable);
+    }
 }
 
 void PlayerController::TakeDamage(float damage)

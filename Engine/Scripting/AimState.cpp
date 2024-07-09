@@ -63,6 +63,13 @@ StateType AimState::HandleInput()
         return StateType::RELOAD;
     }
 
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetGrenadeState()->IsReady() &&
+        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN))
+    {
+        mPlayerController->GetGrenadeState()->ResetCooldown();
+        return StateType::ULTIMATE;
+    }
+
 	return StateType::AIM;
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 #include "State.h"
+#include "TimerScript.h"
 
 class UltimateState : public State
 {
@@ -15,5 +16,6 @@ public:
 
 	StateType GetType() override;
 
+	TimerScript mTimer;
 };
 

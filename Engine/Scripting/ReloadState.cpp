@@ -53,6 +53,13 @@ StateType ReloadState::HandleInput()
         return StateType::SWITCH;
     }
 
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetGrenadeState()->IsReady() &&
+        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN))
+    {
+        mPlayerController->GetGrenadeState()->ResetCooldown();
+        return StateType::ULTIMATE;
+    }
+
 	mReloadTimer += App->GetDt();
 	if (mReloadTimer < mPlayerController->GetReloadDuration())
 	{
