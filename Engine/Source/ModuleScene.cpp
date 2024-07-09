@@ -640,6 +640,7 @@ void ModuleScene::NewScene()
 	mSceneGO.clear();
 
 	App->GetNavigation()->ReleaseResource();
+	App->GetOpenGL()->SetSkybox(0);
 
 	delete mRoot;
 	mRoot = new GameObject("EmptyScene", nullptr);
