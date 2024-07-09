@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "BatchManager.h"
-#include "ResourceIBL.h"
 #include <vector>
 
 #define NUM_SHADOW_MAPS 16
@@ -38,6 +37,7 @@ struct SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class ResourceIBL;
 typedef unsigned int GLenum;
 
 class ENGINE_API OpenGLBuffer {
