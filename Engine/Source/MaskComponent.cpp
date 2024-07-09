@@ -7,7 +7,8 @@
 MaskComponent::MaskComponent(GameObject* owner) : Component(owner, ComponentType::MASK)
 {
     Component* mask = owner->GetComponent(ComponentType::IMAGE);
-    if (mask != nullptr) {
+    if (mask != nullptr) 
+    {
         mMask = static_cast<ImageComponent*>(mask);
         mDrawMask = mMask->GetShouldDraw();
     }
@@ -62,9 +63,11 @@ void MaskComponent::Load(const JsonObject& data, const std::unordered_map<unsign
 
 void MaskComponent::UpdateMaskToChilds()
 {
-    for (auto child : mOwner->GetChildren()) {
+    for (auto child : mOwner->GetChildren()) 
+    {
 		Component* image = child->GetComponent(ComponentType::IMAGE);
-        if (image != nullptr) {
+        if (image != nullptr) 
+        {
 			static_cast<ImageComponent*>(image)->SetMask(mMask);
 		}
 	}

@@ -35,10 +35,12 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 	
 	GameObject* parent = GetOwner()->GetParent();
-	if (parent != nullptr) {
+	if (parent != nullptr) 
+	{
 		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
 	}
-	if (mMaskComponent != nullptr) {
+	if (mMaskComponent != nullptr) 
+	{
 		mMask = mMaskComponent->GetMask();
 	}
 
@@ -65,10 +67,12 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 	
 	GameObject* parent = GetOwner()->GetParent();
-	if (parent != nullptr) {
+	if (parent != nullptr) 
+	{
 		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
 	}
-	if (mMaskComponent != nullptr) {
+	if (mMaskComponent != nullptr) 
+	{
 		mMask = mMaskComponent->GetMask();
 	}
 
@@ -125,9 +129,13 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	//mCanvas = original.mCanvas;
 	GameObject* canvas = FindCanvasOnParents(GetOwner());
 	if (canvas != nullptr)
+	{
 		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	}
 	else
+	{
 		canvas = nullptr;
+	}
 }
 
 ImageComponent:: ~ImageComponent() 
@@ -171,24 +179,27 @@ void ImageComponent::Draw()
 	{
 		glEnable(GL_STENCIL_TEST);
 
-		glStencilFunc(GL_ALWAYS, 1, 0xFF); // Pass the stencil test always
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // Replace stencil buffer value with 1 where rendered
-		glStencilMask(0xFF); // Enable writing to the stencil buffer
-		glColorMask(GL_FALSE , GL_FALSE, GL_FALSE, GL_FALSE); // Disable writing to the color buffer
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0xFF);
+		glColorMask(GL_FALSE , GL_FALSE, GL_FALSE, GL_FALSE);
 
 		mMask->RenderMask();
 
-		switch (mMaskComponent->GetMaskingMode()) {
+		switch (mMaskComponent->GetMaskingMode()) 
+		{
 		case MaskComponent::MaskingMode::Normal:
-			glStencilFunc(GL_EQUAL, 1, 0xFF); // Pass if stencil value is 1
+			{
+			glStencilFunc(GL_EQUAL, 1, 0xFF);
 			break;
+			}
 		case MaskComponent::MaskingMode::Inverse:
-			glStencilFunc(GL_NOTEQUAL, 1, 0xFF); // Pass if stencil value is not 1
+			{
+			glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
 			break;
+			}
 		}
-
-		glStencilMask(0x00); // Disable writing to the stencil buffer
-		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE); // Re-enable color buffer
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	}
 
 	if (mIsSpritesheet)
