@@ -20,21 +20,16 @@ AIAgentComponent::AIAgentComponent(const AIAgentComponent& original, GameObject*
 	// mAngularSpeed = original.mAngularSpeed;
 	// mAcceleration = original.mAcceleration;
 	// mStoppingDistance = original.mStoppingDistance;
+	mRadius = original.mRadius;
+	mHeight = original.mHeight;
+	mMaxAcceleration = original.mMaxAcceleration;
+	mMaxSpeed = original.mMaxSpeed;
 }
 
 void AIAgentComponent::Reset()
 {
-	////Agent Parameters:
-	// mRadius = 0.0f;
-	// mHeight = 0.0f;
-	// mStepHeight = 0.0f;
-	// mMaxSlope = 0;
-	////Steering Parameters:
-	 //mSpeed = 0.0f;
-	// mAngularSpeed = 0.0f; 
-	// mAcceleration = 0.0f;
-	// mStoppingDistance = 0.0f; 
 }
+
 
 AIAgentComponent::~AIAgentComponent()
 {
@@ -79,10 +74,10 @@ void AIAgentComponent::StartCrowdNavigation()
 		memset(&agentParams, 0, sizeof(agentParams));
 
 		//AI Agent Class params
-		agentParams.radius = 0.6f;
-		agentParams.height = 2.0f;
-		agentParams.maxAcceleration = 16.0f;
-		agentParams.maxSpeed = 5.0f;
+		agentParams.radius = mRadius;
+		agentParams.height = mHeight;
+		agentParams.maxAcceleration = mMaxAcceleration;
+		agentParams.maxSpeed = mMaxSpeed;
 
 		//Crowd fixed params
 		agentParams.collisionQueryRange = agentParams.radius * 12.0f;
@@ -128,50 +123,32 @@ void AIAgentComponent::MoveAgent(float speed ) const
 void AIAgentComponent::Save(JsonObject& obj) const
 {
 	Component::Save(obj);
-	//obj.AddFloat("Radius", mRadius);
-	//obj.AddFloat("Height", mHeight);
-	//obj.AddFloat("StepHeight", mStepHeight);
-	//obj.AddInt("MaxSlope", mMaxSlope);
-	//obj.AddFloat("Speed", mSpeed);
-	//obj.AddFloat("AngularSpeed", mAngularSpeed);
-	//obj.AddFloat("Acceleration", mAcceleration);
-	//obj.AddFloat("StoppingDistance", mStoppingDistance);
+	obj.AddFloat("Height", mHeight);
+	obj.AddFloat("Radius", mRadius);
+	obj.AddFloat("MaxSpeed", mMaxSpeed);
+	obj.AddFloat("MaxAcceleration", mMaxAcceleration);
+
 }
 
 void AIAgentComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	Component::Load(data, uidPointerMap);
-	//if (data.HasMember("Radius")) 
-	//{
-	//	mRadius = data["Radius"].GetFloat();
-	//}
-	//if (data.HasMember("Height")) 
-	//{
-	//	mHeight = data["Height"].GetFloat();
-	//}
-	//if (data.HasMember("StepHeight")) 
-	//{
-	//	mStepHeight = data["StepHeight"].GetFloat();
-	//}
-	//if (data.HasMember("MaxSlope")) 
-	//{
-	//	mMaxSlope = data["MaxSlope"].GetInt();
-	//}
-	//if (data.HasMember("Speed")) 
-	//{
-	//	mSpeed = data["Speed"].GetFloat();
-	//}
-	//if (data.HasMember("AngularSpeed")) 
-	//{
-	//	mRadius = data["AngularSpeed"].GetFloat();
-	//}
-	//if (data.HasMember("Acceleration")) 
-	//{
-	//	mRadius = data["Acceleration"].GetFloat();
-	//}
-	//if (data.HasMember("StoppingDistance")) 
-	//{
-	//	mRadius = data["StoppingDistance"].GetFloat();
-	//}
+
+	if (data.HasMember("Height"))
+	{
+		mHeight = data.GetFloat("Height");
+	}
+	if (data.HasMember("Radius"))
+	{
+		mRadius = data.GetFloat("Radius");
+	}
+	if (data.HasMember("MaxSpeed"))
+	{
+		mMaxSpeed = data.GetFloat("MaxSpeed");
+	}
+	if (data.HasMember("MaxAcceleration"))
+	{
+		mMaxAcceleration = data.GetFloat("MaxAcceleration");
+	}
 }
 
