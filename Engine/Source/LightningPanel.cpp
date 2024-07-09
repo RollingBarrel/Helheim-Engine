@@ -23,8 +23,7 @@ void LightningPanel::Draw(int windowFlags)
 	//	openGl->BakeIBL(mSkyboxFileName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
 	//}
 
-	ImGui::Text(mSkyboxFileName.c_str());
-	ImGui::SameLine();
+	//ImGui::Text(mSkyboxFileName.c_str());
 	if (ImGui::Button("Select Skybox"))
 	{
 		IGFD::FileDialogConfig config;
@@ -43,12 +42,19 @@ void LightningPanel::Draw(int windowFlags)
 			if (res)
 			{
 				App->GetOpenGL()->SetSkybox(res->GetUID());
-				mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				//mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
 				App->GetResource()->ReleaseResource(res->GetUID());
 			}
 		}
 	
 		ImGuiFileDialog::Instance()->Close();
+	}
+
+	ImGui::SameLine();
+	if (ImGui::Button("RemoveSkybox"))
+	{
+		App->GetOpenGL()->SetSkybox(0);
+		//mSkyboxFileName = "";
 	}
 	//ImGui::InputInt("IrradianceSize", &mIrradianceSize);
 	//ImGui::InputInt("SpecularPrefilteredSize", &mSpecPrefilteredSize);

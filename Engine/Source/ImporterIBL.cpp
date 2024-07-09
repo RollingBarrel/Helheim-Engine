@@ -146,7 +146,8 @@ ResourceIBL* Importer::IBL::Import(const char* hdrTexPath, unsigned int uid)
 		{
 			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_HALF_FLOAT, nullptr);
 		}
-		int numMipMaps = int(log(float(specWidth)) / log(2.0f));
+		//int numMipMaps = int(log(float(specWidth)) / log(2.0f));
+		int numMipMaps = log2(std::max(specWidth, specHeight)) + 1;
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
