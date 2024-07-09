@@ -33,10 +33,6 @@ MaskComponent::~MaskComponent()
     mMask = nullptr;
 }
 
-void MaskComponent::Update()
-{
-}
-
 bool MaskComponent::CleanUp()
 {
     return true;
@@ -65,12 +61,12 @@ void MaskComponent::UpdateMaskToChilds()
 {
     for (auto child : mOwner->GetChildren()) 
     {
-		Component* image = child->GetComponent(ComponentType::IMAGE);
+        Component* image = child->GetComponent(ComponentType::IMAGE);
         if (image != nullptr) 
         {
-			static_cast<ImageComponent*>(image)->SetMask(mMask);
-		}
-	}
+            static_cast<ImageComponent*>(image)->SetMask(mMask);
+        }
+    }
 }
 
 void MaskComponent::SetDrawMask(bool state)

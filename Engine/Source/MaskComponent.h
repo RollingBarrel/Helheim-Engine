@@ -6,7 +6,8 @@ class ImageComponent;
 class ENGINE_API MaskComponent : public Component
 {
 public:
-    enum class MaskingMode {
+    enum class MaskingMode 
+    {
         Normal,    // Draw the image where the mask is
         Inverse    // Do not draw the image where the mask is
     };
