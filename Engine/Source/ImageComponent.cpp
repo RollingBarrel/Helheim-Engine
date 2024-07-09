@@ -161,7 +161,7 @@ void ImageComponent::Draw()
 		glStencilFunc(GL_ALWAYS, 1, 0xFF); // Pass the stencil test always
 		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE); // Replace stencil buffer value with 1 where rendered
 		glStencilMask(0xFF); // Enable writing to the stencil buffer
-		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE); // Disable writing to the color buffer
+		glColorMask(GL_FALSE , GL_FALSE, GL_FALSE, GL_FALSE); // Disable writing to the color buffer
 
 		mMask->RenderMask();
 
@@ -429,9 +429,6 @@ void ImageComponent::RenderMask()
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 		glUniform1i(glGetUniformLocation(UIMaskProgram, "Texture"), 0);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
