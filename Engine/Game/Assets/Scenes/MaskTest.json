@@ -108,6 +108,7 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -191,6 +192,7 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -274,6 +276,7 @@
                             0.14705884456634522
                         ],
                         "Alpha": 1.0,
+                        "IsMaskable": true,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -313,7 +316,7 @@
                         "ComponentType": 10,
                         "IsEnabled": true,
                         "Position": [
-                            350.0,
+                            165.14999389648438,
                             0.0,
                             0.0
                         ],
@@ -351,6 +354,7 @@
                             0.0
                         ],
                         "Alpha": 1.0,
+                        "IsMaskable": true,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,

@@ -285,6 +285,7 @@ void ImageComponent::Save(JsonObject& obj) const
 	obj.AddInt("ImageID", mImage->GetUID());
 	obj.AddFloats("Color", mColor.ptr(), 3);;
 	obj.AddFloat("Alpha", mAlpha);
+	obj.AddBool("IsMaskable", mIsMaskable);
 	obj.AddBool("IsSpritesheet", mIsSpritesheet);
 	obj.AddInt("Columns", mColumns);
 	obj.AddInt("Rows", mRows);
@@ -302,6 +303,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	data.GetFloats("Color", col);
 	mColor = float3(col[0], col[1], col[2]);
 	mAlpha = data.GetFloat("Alpha");
+	mIsMaskable = data.GetBool("IsMaskable");
 	mIsSpritesheet = data.GetBool("IsSpritesheet");
 	mColumns = data.GetInt("Columns");
 	mRows = data.GetInt("Rows");
