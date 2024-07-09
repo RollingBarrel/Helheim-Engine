@@ -2,6 +2,7 @@
 #include "Component.h"
 #include <vector>
 #include "float3.h"
+#define CROWD_OFF_INDEX 101
 
 class ENGINE_API AIAgentComponent :public Component
 {
@@ -42,6 +43,6 @@ private:
 
 	std::vector<float3> mNavPositions;
 	bool mMoving = false;
-	unsigned int mCrowdId = 101;
+	unsigned int mCrowdId = CROWD_OFF_INDEX;
 };
 

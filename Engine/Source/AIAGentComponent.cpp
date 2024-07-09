@@ -45,7 +45,7 @@ void AIAgentComponent::Update()
 			mMoving = false;
 		}
 		*/
-		if (mMoving && mCrowdId != 101)
+		if (mMoving && mCrowdId != CROWD_OFF_INDEX)
 		{
 			float3 owner_pos = mOwner->GetWorldPosition();
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
@@ -68,7 +68,7 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 
 void AIAgentComponent::StartCrowdNavigation()
 {
-	if (mCrowdId == 101)
+	if (mCrowdId == CROWD_OFF_INDEX)
 	{
 		dtCrowdAgentParams agentParams;
 		memset(&agentParams, 0, sizeof(agentParams));
@@ -93,10 +93,10 @@ void AIAgentComponent::StartCrowdNavigation()
 
 void AIAgentComponent::PauseCrowdNavigation()
 {
-	if (mCrowdId != 101)
+	if (mCrowdId != CROWD_OFF_INDEX)
 	{
 		App->GetNavigation()->DisableAgent(mCrowdId);
-		mCrowdId = 101;
+		mCrowdId = CROWD_OFF_INDEX;
 	}
 }
 

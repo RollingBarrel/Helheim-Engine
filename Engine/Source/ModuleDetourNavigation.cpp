@@ -160,7 +160,7 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 	dtQueryFilter temp;
 
 	mNavQuery->findNearestPoly(&center[0], &halfSize[0], &temp, &result, &queryResult[0]);
-	return queryResult;
+	return queryResult.Sub(float3(0.0f, 0.2f, 0.0f)); //Subtract the value offset that makes the player float otherwises
 }
 
 unsigned int ModuleDetourNavigation::AddAgent(float3 startPos, dtCrowdAgentParams& params)
