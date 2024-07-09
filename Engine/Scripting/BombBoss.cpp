@@ -27,10 +27,10 @@ BombBoss::~BombBoss()
 
 void BombBoss::Start()
 {
-	mExplosionParticles = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
-	if (mExplosionParticles)
+	mGameObject->GetComponentsInChildren(ComponentType::PARTICLESYSTEM, mExplosionParticles);
+	for (Component* particlecomponent : mExplosionParticles)
 	{
-		mExplosionParticles->Disable();
+		particlecomponent->GetOwner()->SetEnabled(false);
 	}
 
 }
@@ -42,23 +42,24 @@ void BombBoss::Update()
 	/*LOG("BUUULEEETT");*/
 	if (mHasExploded)
 	{
-		if (mExplosionParticles)
+		bool finishedExploding = true;
+		for (Component* particlecomponent : mExplosionParticles)
 		{
-			if (mExplosionParticles->HasEnded())
-			{
-				mGameObject->SetEnabled(false);
-			}
+			finishedExploding *= reinterpret_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
 		}
-		else mGameObject->SetEnabled(false);
+		if (finishedExploding)
+		{
+			mGameObject->SetEnabled(false);
+		}
 	}
 	else if (mTimePassed >= mTimeDelay)
 	{
 		GameObject* player = GameManager::GetInstance()->GetPlayer();
 		float3 playerPosition = player->GetWorldPosition();
 		float distanceToCenter = (playerPosition - mGameObject->GetWorldPosition()).Length();
-		if (mExplosionParticles)
+		for (Component* particlecomponent : mExplosionParticles)
 		{
-			mExplosionParticles->Enable();
+			particlecomponent->GetOwner()->SetEnabled(true);
 		}
 		if (distanceToCenter <= mArea)
 		{
@@ -71,4 +72,11 @@ void BombBoss::Update()
 
 void BombBoss::Init()
 {
+	mHasExploded = false;
+	mTimePassed = 0.0f;
+	for (Component* particlecomponent : mExplosionParticles)
+	{
+		particlecomponent->GetOwner()->SetEnabled(false);
+	}
+
 }

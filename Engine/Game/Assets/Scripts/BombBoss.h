@@ -4,7 +4,7 @@
 #include "float3.h"
 
 class BoxColliderComponent;
-class Component;
+class ParticleSystemComponent;
 struct CollisionData;
 
 GENERATE_BODY(BombBoss);
@@ -27,7 +27,7 @@ private:
 	float mTimeDelay = 3.0f;
 	float mTimePassed = 0.0f;
 	bool mHasExploded = false;
-	std::vector<Component*> mExplosionParticles;
+	std::vector<ParticleSystemComponent*> mExplosionParticles = nullptr;
 
 
 };
