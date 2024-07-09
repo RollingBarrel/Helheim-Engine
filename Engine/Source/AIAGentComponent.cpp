@@ -48,15 +48,25 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 {
 	return new AIAgentComponent(*this, owner);
 }
-
-void AIAgentComponent::MoveAgent(float3 destination, float speed )
+void AIAgentComponent::SetNavigationPath(const float3& destination) 
 {
-	std::vector<float3> positions= App->GetNavigation()->FindNavPath(this->GetOwner()->GetPosition(), destination);
-	if (positions.size() > 1 ) 
+	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
+}
+
+void AIAgentComponent::MoveAgent(float speed ) const
+{
+
+	if (mNavPositions.size() > 1 )
 	{
-			float3 direction = (positions[1] - positions[0]).Normalized();
+		//LOG("START")
+		for(float3 nav : mNavPositions)
+		{
+			//LOG("%f, %f, %f", nav.x, nav.y, nav.z);
+		}
+		//LOG("END")
+			float3 direction = (mNavPositions[1] - mNavPositions[0]).Normalized();
 			direction = direction / 50 * speed;
-			this->GetOwner()->SetPosition(this->GetOwner()->GetPosition() + direction);
+			GetOwner()->SetWorldPosition(GetOwner()->GetWorldPosition() + direction);
 	}
 	
 }

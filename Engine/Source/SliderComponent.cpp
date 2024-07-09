@@ -65,15 +65,15 @@ void SliderComponent::SetValue(float fillPercent)
 	float fillWidth = backgroundWidth * fillPercent;
 	float fillPositionX = (backgroundWidth - fillWidth) / 2 * -1; // Center the fill
 
-	if (mCanvas->GetScreenSpace())
+	if (mCanvas->GetRenderSpace() == RenderSpace::Screen)
 	{
 		mFillTransform2D->SetPosition(float3(fillPositionX, 0, 0));
 		mFillTransform2D->SetSize(float2(fillWidth, mFillTransform2D->GetSize().y));
 	}
 	else
 	{
-		mFill->SetPosition(float3(fillPositionX, 0, 0));
-		mFill->SetScale(float3(fillPercent, 1.0f, 1.0f));
+		mFill->SetWorldPosition(float3(fillPositionX, 0, 0));
+		mFill->SetWorldScale(float3(fillPercent, 1.0f, 1.0f));
 	}
 }
 

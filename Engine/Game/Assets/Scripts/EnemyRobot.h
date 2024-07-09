@@ -38,7 +38,9 @@ private:
 
 	void MeleeAttack();
 	void RangeAttack();
-	void OnCollisionEnter(CollisionData* collisionData);
+
+	void PlayStepAudio();
+	void PlayMeleeAudio();
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	RobotType mType = RobotType::MELEE;
@@ -56,5 +58,9 @@ private:
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
+
+	// MoveSimulation
+	float mStepTimer = 0.0f;
+	float mStepCooldown = 0.5f;
 };
 

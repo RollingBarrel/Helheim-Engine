@@ -3,11 +3,13 @@
 #include "Application.h"
 #include "PlayerController.h"
 #include "AIAGentComponent.h"
+#include "AnimationComponent.h"
 #include "Physics.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 CREATE(EnemyRobot){
     CLASS(owner);
@@ -15,8 +17,8 @@ CREATE(EnemyRobot){
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mActivationRange);
     MEMBER(MemberType::INT, mShieldDropRate);
+    MEMBER(MemberType::FLOAT, mChaseDelay);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::FLOAT, mRangeDistance);
@@ -34,18 +36,6 @@ EnemyRobot::EnemyRobot(GameObject* owner) : Enemy(owner)
 {
 }
 
-void EnemyRobot::Start()
-{
-    Enemy::Start();
-
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobot::OnCollisionEnter, this, std::placeholders::_1)));
-    }
-
-    
-}
 
 void EnemyRobot::Update()
 {
@@ -75,6 +65,36 @@ void EnemyRobot::Update()
     mBeAttracted = false;
 }
 
+void EnemyRobot::Start()
+{
+    Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mStateMachine = mAnimationComponent->GetStateMachine();
+
+    }
+    if (mStateMachine)
+    {
+        std::string clip = "Character";
+
+        std::string defaultState = "default";
+        std::string sIdle = "Idle";
+        std::string sWalkForward = "Walk Forward";
+        std::string sAttack = "Attack";
+
+
+        std::string idleTrigger = "tIdle";
+        std::string forwardTrigger = "tWalkForward";
+        std::string attackTrigger = "tAttack";
+
+    }
+}
+
+
 void EnemyRobot::Idle()
 {
     
@@ -82,25 +102,40 @@ void EnemyRobot::Idle()
     if (IsPlayerInRange(mActivationRange))
     {
         mCurrentState = EnemyState::CHASE;
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+        mAnimationComponent->SendTrigger("tWalkForward", 0.2f);
     }
 }
 
 void EnemyRobot::Chase()
 {
-    
-
+    PlayStepAudio();
     float range = 0.0f;
     if (IsPlayerInRange(mActivationRange))
     {
-        AIAgentComponent* agentComponent = (AIAgentComponent*)mGameObject->GetComponent(ComponentType::AIAGENT);
-        if (agentComponent)
+        if (mAiAgentComponent)
         {
-            agentComponent->MoveAgent(mPlayer->GetPosition(), mSpeed);
-            float3 direction = mPlayer->GetPosition() - agentComponent->GetOwner()->GetPosition();
-            direction.y = 0;
-            direction.Normalize();
-            float angle = std::atan2(direction.x, direction.z);
-            mGameObject->SetRotation(float3(0, angle, 0));
+            if(Delay(mChaseDelay)) 
+            {
+                mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+                float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+                direction.y = 0;
+                direction.Normalize();
+                float angle = std::atan2(direction.x, direction.z);;
+
+                if (mGameObject->GetWorldRotation().y != angle)
+                {
+                    mGameObject->SetWorldRotation(float3(0, angle, 0));
+
+                }
+
+            }
+             
+
+
+
+            mAiAgentComponent->MoveAgent(mSpeed);
+
         }
         switch (mType)
         {
@@ -145,6 +180,8 @@ void EnemyRobot::Attack()
     {
 
         mCurrentState = EnemyState::CHASE;
+        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+        mAnimationComponent->SendTrigger("tWalkForward", 0.3f);
         mTimerDisengage = 0.0f;
     }
     else if (!playerInRange) 
@@ -163,12 +200,12 @@ void EnemyRobot::MeleeAttack()
 {
     if ( mTimerAttack > mMeleeAttackCoolDown )
     {
-       
+        PlayMeleeAudio();
         MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
-        float3 playerPosition = mPlayer->GetPosition();
-        float distanceToEnemy = (playerPosition - mGameObject->GetPosition()).Length();
+        float3 playerPosition = mPlayer->GetWorldPosition();
+        float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
         float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
-        float3 playerToEnemy = (mGameObject->GetPosition() - playerPosition).Normalized();
+        float3 playerToEnemy = (mGameObject->GetWorldPosition() - playerPosition).Normalized();
         float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
 
         if (distanceToEnemy < 2.0f && dotProduct < 0)
@@ -190,23 +227,23 @@ void EnemyRobot::MeleeAttack()
 
 void EnemyRobot::RangeAttack() 
 {
-    std::map<float , Hit> hits;
+    std::multiset<Hit> hits;
     Ray ray;
-    ray.pos = mGameObject->GetPosition();
+    ray.pos = mGameObject->GetWorldPosition();
     ray.pos.y++;
     ray.dir = mGameObject->GetFront();
     
     float distance = 100.0f;
-    Physics::Raycast(ray, hits);
+    //Physics::Raycast(hits, ray);  THIS IS THE OLD RAYCAST
     
     //Debug::DrawLine(ray.pos, ray.dir * distance, float3(255.0f, 255.0f, 255.0f));
     
         //recorrer todos los hits y hacer da�o a los objetos que tengan tag = target
-        for (const std::pair<float, Hit>& hit : hits) 
+        for (const Hit& hit : hits) 
         {
-            if (hit.second.mGameObject->GetTag() == "Player") 
+            if (hit.mGameObject->GetTag() == "Player") 
             {
-                PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.second.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+                PlayerController* playerScript = (PlayerController*)((ScriptComponent*)hit.mGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
                 if (playerScript != nullptr)
                 {
                     playerScript->TakeDamage(mRangeDamage);
@@ -215,10 +252,23 @@ void EnemyRobot::RangeAttack()
         }
 }
 
-void EnemyRobot::OnCollisionEnter(CollisionData* collisionData)
+void EnemyRobot::PlayStepAudio()
 {
-    if (collisionData->collidedWith->GetName().find("Bullet") != std::string::npos)
+    // TODO: play sound according the animation
+    mStepTimer += App->GetDt();
+    if (mStepTimer >= mStepCooldown)
     {
-        TakeDamage(1.0f);
+       mStepTimer = 0;
+       GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
     }
+}
+
+void EnemyRobot::PlayMeleeAudio()
+{
+    const char* parameterName = "Speed";
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(
+        SFX::MEELEE,
+        mGameObject->GetWorldPosition(),
+        { { parameterName, 0.0f } }
+    );
 }

@@ -25,6 +25,8 @@ EngineApplication::EngineApplication()
 {
 	EngineApp = this;
 
+	mIsPlayMode = false;
+
 	mEngineTimer = new Timer();
 	mGameTimer = new Timer();
 	
@@ -56,6 +58,7 @@ EngineApplication::~EngineApplication()
 	for (int i = NUM_MODULES - 1; i >= 0; --i) 
 	{
 		delete modules[i];
+		modules[i] = nullptr;
 	}
 	delete mEngineTimer;
 	delete mGameTimer;
@@ -106,7 +109,10 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	editor->SaveSettings();
+	if (!IsPlayMode())
+	{
+		editor->SaveSettings();
+	}
 	bool ret = true;
 
 	for (int i = 0; i < NUM_MODULES; ++i)
@@ -120,9 +126,9 @@ void EngineApplication::Start()
 	mIsPlayMode = true;
 
 	SetCurrentClock(EngineApp->GetGameClock());
-	scene->Save("TemporalScene");
+	scene->Save(std::string("InternalAssets/Scenes/" + std::string("TemporalScene")).c_str());	//TODO: Change to Importfile
 	engineScriptManager->StartScripts();
-	mGameTimer->Start();
+	mGameTimer->Start();			
 }
 
 void EngineApplication::Stop()
@@ -134,7 +140,7 @@ void EngineApplication::Stop()
 	SetCurrentClock(EngineApp->GetEngineClock());
 	mEngineTimer->Resume();
 	EngineApp->GetAudio()->EngineStop();
-	scene->Load("TemporalScene");
+	scene->Load(std::string("InternalAssets/Scenes/" + std::string("TemporalScene")).c_str());	//TODO: Change to Request Resource
 
 }
 

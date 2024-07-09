@@ -39,16 +39,16 @@ void TestScript::Start()
 void TestScript::Update()
 {
 	if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, 1) * App->GetDt() * mPlayerSpeed);
+		mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + float3(0, 0, 1) * App->GetDt() * mPlayerSpeed);
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(0, 0, -1) * App->GetDt() * mPlayerSpeed);
+		mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + float3(0, 0, -1) * App->GetDt() * mPlayerSpeed);
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(-1, 0, 0) * App->GetDt() * mPlayerSpeed);
+		mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + float3(-1, 0, 0) * App->GetDt() * mPlayerSpeed);
 	}
 	if (App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT) {
-		mGameObject->SetPosition(mGameObject->GetPosition() + float3(1, 0, 0) * App->GetDt() * mPlayerSpeed);
+		mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + float3(1, 0, 0) * App->GetDt() * mPlayerSpeed);
 	}
 	
     if (mRobot != nullptr) {
@@ -74,16 +74,16 @@ void TestScript::Update()
             mMovement += mSpeed * App->GetDt();
             if (mUp)
             {
-                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y + mSpeed * App->GetDt(), mRobot->GetPosition().z));
+                mRobot->SetWorldPosition(float3(mRobot->GetWorldPosition().x, mRobot->GetWorldPosition().y + mSpeed * App->GetDt(), mRobot->GetWorldPosition().z));
             }
             else
             {
-                mRobot->SetPosition(float3(mRobot->GetPosition().x, mRobot->GetPosition().y - mSpeed * App->GetDt(), mRobot->GetPosition().z));
+                mRobot->SetWorldPosition(float3(mRobot->GetWorldPosition().x, mRobot->GetWorldPosition().y - mSpeed * App->GetDt(), mRobot->GetWorldPosition().z));
             }
         }
     }
 
-    if (mGameObject->GetPosition().x > 10.0f) {
+    if (mGameObject->GetWorldPosition().x > 10.0f) {
 
         LOG("YOU WIN");
     }

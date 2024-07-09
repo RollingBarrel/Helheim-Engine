@@ -26,7 +26,9 @@ void ColorGradient::RemoveColorGradientMark(float position)
 
 float* ColorGradient::GetColor(float pos)
 {
-    assert(mColorMarks.find(pos) != mColorMarks.end() && "Position not found in ColorGradient");
+    //assert(mColorMarks.find(pos) != mColorMarks.end() && "Position not found in ColorGradient");
+    if (mColorMarks.find(pos) == mColorMarks.end()) 
+        return mColorMarks.begin()->second.ptr();
     return mColorMarks[pos].ptr();
 }
 
@@ -80,16 +82,16 @@ void ColorGradient::Load(const JsonObject& data)
     // Clear existing marks before loading new ones
     mColorMarks.clear();
 
-    if (data.HasMember("Value"))
+    if (data.HasMember("Color Gradient"))
     {
         JsonArray colorArray = data.GetJsonArray("Color Gradient");
         for (unsigned int i = 0; i < colorArray.Size(); ++i)
         {
             JsonObject color = colorArray.GetJsonObject(i);
             float time = 0.0f;
-            if (data.HasMember("Value")) time = color.GetFloat("Time");
+            if (color.HasMember("Time")) time = color.GetFloat("Time");
             float col[4];
-            if (data.HasMember("Value")) color.GetFloats("Color", col);
+            if (color.HasMember("Color")) color.GetFloats("Color", col);
             mColorMarks[time] = float4(col);
         }
     }

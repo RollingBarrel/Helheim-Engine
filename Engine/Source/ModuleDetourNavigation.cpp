@@ -19,68 +19,50 @@ ModuleDetourNavigation::ModuleDetourNavigation()
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
-	delete mNavMeshParams;
 	delete mNavQuery;
+	mNavQuery = nullptr;
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 }
 
+unsigned int ModuleDetourNavigation::GetResourceId() const
+{ 
+	return (mRNavMesh) ? mRNavMesh->GetUID() : 0; 
+}
 
-
-
-
-bool ModuleDetourNavigation::Init()
+void ModuleDetourNavigation::ReleaseResource()
 {
-	return true;
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+	mRNavMesh = nullptr;
 }
 
-update_status ModuleDetourNavigation::PreUpdate(float dt)
+void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 {
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleDetourNavigation::Update(float dt)
-{	
-	return UPDATE_CONTINUE;
-}
-
-
-
-update_status ModuleDetourNavigation::PostUpdate(float dt)
-{
-	return UPDATE_CONTINUE;
-}
-
-bool ModuleDetourNavigation::CleanUp()
-{
-	return true;
-}
-
-void ModuleDetourNavigation::LoadResourceData()
-{
-	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
-	ResourceNavMesh* resource = (ResourceNavMesh*)App->GetResource()->RequestResource((pathStr + App->GetScene()->GetName() + ".navmesshi").c_str());
-	if (resource)
+	ResourceNavMesh* newNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
+	assert(newNavMesh, "The saved scene navmesh resource id is incorrect");
+	if (newNavMesh)
 	{
-		mDetourNavMesh = resource->GetDtNavMesh();
-		CreateQuery();
-		App->GetResource()->ReleaseResource(resource->GetUID());
-	}
-}
-
-void ModuleDetourNavigation::CreateQuery() {
-
-	mNavQuery = new dtNavMeshQuery();
-	dtStatus status;
-	status = mNavQuery->init(mDetourNavMesh, 2048);
-	if (dtStatusFailed(status))
-	{
-		LOG("Could not init Detour navmesh query");
-		return;
+		if (mNavQuery)
+			delete mNavQuery;
+		mNavQuery = new dtNavMeshQuery();
+		dtStatus status;
+		if (mRNavMesh)
+			App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+		mRNavMesh = newNavMesh;
+		status = mNavQuery->init(mRNavMesh->GetDtNavMesh(), 2048);
+		if (dtStatusFailed(status))
+		{
+			LOG("Could not init Detour navmesh query");
+			return;
+		}
 	}
 }
 
 std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 endPos)
 {
-	if (!mNavQuery) {
+	if (!mNavQuery) 
+	{
 
 		LOG("BUILD NAVMESH");
 		std::vector<float3> breakVector(0);
@@ -124,8 +106,8 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 
 }
 
-
-void ModuleDetourNavigation:: FindDebugPoint() {
+void ModuleDetourNavigation:: FindDebugPoint() 
+{
 	if (mNavQuery)
 	{
 		dtPolyRef result;
@@ -137,7 +119,8 @@ void ModuleDetourNavigation:: FindDebugPoint() {
 float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize) 
 {
 	float3 queryResult = float3(0.0f);
-	if (!mNavQuery) {
+	if (!mNavQuery) 
+	{
 		LOG("BUILD NAVMESH");
 		return queryResult;
 	}

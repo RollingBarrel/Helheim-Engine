@@ -56,7 +56,20 @@ bool ModuleScriptManager::CleanUp()
 	return true;
 }
 
-void ModuleScriptManager::AddScript(ScriptComponent* script) 
+void ModuleScriptManager::RemoveGameObject(GameObject* gameObject)
+{
+	std::vector<GameObject**> gameObjectsPointers = mGameObjectsPointersMap[gameObject->GetID()];
+	for (unsigned int i = 0; i < gameObjectsPointers.size(); ++i)
+	{
+		if (gameObjectsPointers[i])
+		{
+			(*gameObjectsPointers[i]) = nullptr;
+		}
+	}
+	mGameObjectsPointersMap.erase(gameObject->GetID());
+}
+
+void ModuleScriptManager::AddScript(ScriptComponent* script)
 { 
 	mScripts.push_back(script);
 }
@@ -89,6 +102,36 @@ void ModuleScriptManager::AwakeScripts()
 	}
 }
 
+void ModuleScriptManager::AwakeGameObjectScripts(GameObject* gameobject)
+{
+	std::vector<Component*> components;
+	gameobject->GetComponentsInChildren(ComponentType::SCRIPT, components);
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		ScriptComponent* scriptComponent = reinterpret_cast<ScriptComponent*>(components[i]);
+		if (scriptComponent->mScript)
+		{
+			scriptComponent->mScript->Awake();
+		}
+	}
+}
+
+void ModuleScriptManager::StartGameObjectScripts(GameObject* gameobject)
+{
+	std::vector<Component*> components;
+	gameobject->GetComponentsInChildren(ComponentType::SCRIPT, components);
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		ScriptComponent* scriptComponent = reinterpret_cast<ScriptComponent*>(components[i]);
+		if (scriptComponent->mScript)
+		{
+			scriptComponent->mScript->Start();
+		}
+	}
+}
+
 void ModuleScriptManager::StartScripts()
 {
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
@@ -97,6 +140,39 @@ void ModuleScriptManager::StartScripts()
 		{
 			mScripts[i]->mHasStarted = true;
 			mScripts[i]->mScript->Start();
+		}
+	}
+}
+
+void ModuleScriptManager::AddGameObjectToMap(GameObject** gameObject)
+{
+	if (gameObject && *gameObject)
+	{
+		unsigned int ID = (*gameObject)->GetID();
+
+		if (mGameObjectsPointersMap.find(ID) == mGameObjectsPointersMap.end())
+		{
+			mGameObjectsPointersMap[ID] = std::vector<GameObject**>();
+		}
+		mGameObjectsPointersMap[ID].push_back(gameObject);
+	}
+}
+
+void ModuleScriptManager::RemoveGameObjectFromMap(GameObject** gameObject)
+{
+	if (gameObject && *gameObject)
+	{
+		unsigned int ID = (*gameObject)->GetID();
+		if (mGameObjectsPointersMap.find(ID) != mGameObjectsPointersMap.end())
+		{
+			for (std::vector<GameObject**>::const_iterator it = mGameObjectsPointersMap[ID].cbegin(); it != mGameObjectsPointersMap[ID].cend(); ++it)
+			{
+				if (**it == *gameObject)
+				{
+					mGameObjectsPointersMap[ID].erase(it);
+					break;
+				}	
+			}
 		}
 	}
 }

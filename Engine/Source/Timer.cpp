@@ -79,7 +79,10 @@ void Timer::Update()
 		mUpdateFpsLog = true;
 	}
 
-	if(App->GetCurrentClock() == this ) SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
+	//if (App->GetCurrentClock() == this)
+	//{
+	//	SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
+	//}
 }
 
 long Timer::Read()
@@ -188,4 +191,8 @@ void Timer::SetLowestFps()
 void Timer::SetVsyncStatus(bool vsyncStatus) 
 {
 	mEnabledVsync = vsyncStatus;
+	if (App->GetCurrentClock() == this)
+	{
+		SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
+	}
 }

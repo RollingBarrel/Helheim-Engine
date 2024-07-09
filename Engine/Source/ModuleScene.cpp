@@ -1,6 +1,5 @@
 #include "ModuleScene.h"
 #include "GameObject.h"
-#include "Quadtree.h"
 #include "Application.h"
 #include "ModuleCamera.h"
 #include "glew.h"
@@ -18,12 +17,16 @@
 #include "ModuleResource.h"
 #include "Globals.h"
 
+#include "ResourceScene.h"
+
 #include <algorithm>
 #include <iterator>
 #include "Algorithm/Random/LCG.h"
 
 #include "GeometryBatch.h"
 #include "ImporterMesh.h"
+
+const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
 
 ModuleScene::ModuleScene() 
 {
@@ -39,18 +42,13 @@ ModuleScene::~ModuleScene()
 	{
 		delete mBackgroundScene;
 	}
-	if (mQuadtreeRoot)
-	{
-		delete mQuadtreeRoot;
-	}
 }
 
 #pragma region Basic Functions
 
 bool ModuleScene::Init()
 {
-	mRoot = new GameObject("SampleScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
+	mRoot = new GameObject("EmptyScene", nullptr);
 	return true;
 }
 
@@ -61,18 +59,11 @@ update_status ModuleScene::PreUpdate(float dt)
 
 update_status ModuleScene::Update(float dt)
 {
-	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-
-	//TODO: temporally removed the quadtree
-	//if (mShouldUpdateQuadtree)
-	//{
-	//	mQuadtreeRoot->UpdateTree();
-	//}
-	//mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
-	mRoot->GetMeshesInChildren(mCurrRenderComponents);
-	App->GetOpenGL()->Draw(mCurrRenderComponents);
-	mCurrRenderComponents.clear();
+	if (App->GetCamera()->GetCurrentCamera())
+	{
+		App->GetOpenGL()->Draw();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -89,12 +80,12 @@ update_status ModuleScene::PostUpdate(float dt)
 	}
 	if (mClosePrefab)
 	{
-		int resourceId = SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
-		delete mRoot;
+		SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
+		AddGameObjectToDelete(mRoot->GetChildren()[0]);
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
-		LoadPrefab(mPrefabPath, true);
+		//LoadPrefab(mPrefabPath, nullptr, true);
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
@@ -129,13 +120,10 @@ const std::vector<GameObject*>& ModuleScene::FindGameObjectsWithTag(const std::s
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (!mGameObjectsByTags[tag].empty())
-		{
-			return mGameObjectsByTags[tag];
-		}
+		return mGameObjectsByTags[tag];
 	}
 
-	return std::vector<GameObject*>();
+	return ModuleScene::mEmptyVector;
 }
 
 void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)
@@ -177,10 +165,10 @@ void ModuleScene::Save(const char* sceneName) const
 		return;
 	}
 
-	std::string saveFilePath = ASSETS_SCENES_PATH + std::string(sceneName);
-	if (saveFilePath.find(".json") == std::string::npos)
+	std::string saveFilePath = sceneName;
+	if (saveFilePath.find(".scn") == std::string::npos)
 	{
-		saveFilePath += ".json";
+		saveFilePath += ".scn";
 	}
 
 	Archive doc;
@@ -192,10 +180,14 @@ void ModuleScene::Save(const char* sceneName) const
 	JsonArray objArray = scene.AddNewJsonArray("GameObjects");
 	for (const GameObject* go : mSceneGO) 
 	{
+		if (go->GetName() == "Teleport1" || go->GetName() == "Teleport2")
+		{
+			LOG("Juan");
+		}
 		JsonObject gameObjectData = objArray.PushBackNewObject();
 		go->Save(gameObjectData);
 	}
-
+	scene.AddInt("NavMeshResource", App->GetNavigation()->GetResourceId());
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -203,33 +195,41 @@ void ModuleScene::Save(const char* sceneName) const
 void ModuleScene::Load(const char* sceneName)
 {
 	//Close Prefab editor before loading a new scene
+
 	if (mBackgroundScene != nullptr)
 	{
-		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
 	}
-	std::string filePath = ASSETS_SCENES_PATH + std::string(sceneName);
 
-	if (filePath.find(".json") == std::string::npos)
+	//TODO: Request resource only works in engine 
+	//App->GetResource()->RequestResource(sceneName);
+
+	std::string loadFilePath = sceneName;
+	if (loadFilePath.find(".scn") == std::string::npos)
 	{
-		filePath += ".json";
+		loadFilePath += ".scn";
 	}
+
 
 	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(filePath.c_str(), &fileBuffer) > 0)
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0)
 	{
-		mQuadtreeRoot->CleanUp();
+		//App->GetScene()->Load(fileBuffer);
+	}
+
+	if(fileBuffer != nullptr)
+	{
+		mPrefabOldNewUid.clear();
 		App->GetUI()->CleanUp();
-		mGameObjectsByTags.clear();
 		mSceneGO.clear();
 		delete mRoot;
-		mRoot = new GameObject("SampleScene", nullptr);
-
+		mGameObjectsByTags.clear();
+		mRoot = new GameObject("EmptyScene", nullptr);
 		Archive doc(fileBuffer);
 		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
@@ -239,13 +239,15 @@ void ModuleScene::Load(const char* sceneName)
 
 		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
 		std::unordered_map<unsigned int, GameObject*> loadMap;
-		//Load GameObjects
+		//Load GameObjects		//TODO: REDOO Look if prefab has been overrided
+
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
 			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));
 			gO->LoadGameObject(gameObjectData, loadMap);
 		}
+		
 		//Load Components
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
@@ -253,11 +255,19 @@ void ModuleScene::Load(const char* sceneName)
 			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		mRoot->RecalculateMatrices();
-		mQuadtreeRoot->UpdateTree();
+		unsigned int resourceNavMesh = scene.GetInt("NavMeshResource");
+		if(resourceNavMesh != 0)
+			App->GetNavigation()->CreateQuery(resourceNavMesh);
+		else
+			App->GetNavigation()->ReleaseResource();
 
 		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartScripts();
+		}
+		
 	}
 }
 #pragma endregion
@@ -275,75 +285,166 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 	return gameObject;
 }
 
-int ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
+void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath)
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
-	gameObject->SetRotation(float3::zero);
-	gameObject->SetPosition(float3::zero);
-	gameObject->RecalculateMatrices();
-	unsigned int resourceId = LCG().Int();
-	Resource* resource = App->GetResource()->RequestResource(mPrefabPath);
-	if (resource != nullptr) { resourceId = resource->GetUID(); }
-	Archive* prefabArchive = new Archive();
-	Archive* archive = new Archive();
-	std::vector<Archive> gameObjectsArchiveVector;
-	//SaveGameObjectRecursive(gameObject, gameObjectsArchiveVector);
-	//archive->AddObjectArray("GameObjects", gameObjectsArchiveVector);
-	//prefabArchive->AddObject("Prefab", *archive);
+	gameObject->SetWorldRotation(float3::zero);
+	gameObject->SetWorldPosition(float3::zero);
+	
+	Archive doc;
+	JsonObject root = doc.GetRootObject();
+	JsonObject prefab = root.AddNewJsonObject("Prefab");
+	JsonArray gameObjects = prefab.AddNewJsonArray("GameObjects");
+	SavePrefabRecursive(objectToSave, gameObjects);
 
-	std::string out = prefabArchive->Serialize();
+	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath, out.c_str(), static_cast<unsigned int>(out.length()));
-	PathNode* root = App->GetFileSystem()->GetRootNode();
-	root->mChildren.clear();
-	App->GetFileSystem()->DiscoverFiles("Assets", root);
-	delete prefabArchive;
-	delete archive;
-	//gameObject->GetParent()->DeleteChild(gameObject);		//TODO: Why delete yourself?
-	return resourceId;
+	PathNode* rootNode = App->GetFileSystem()->GetRootNode();
+	rootNode->mChildren.clear();
+	App->GetFileSystem()->DiscoverFiles("Assets", rootNode);
+
+	gameObject->GetParent()->RemoveChild(gameObject->GetID());		//TODO: Why delete yourself?
+	AddGameObjectToDelete(gameObject);
 }
 
-GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, bool update, GameObject* parent)
+void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const
 {
-	GameObject* ret = nullptr;
-	if (parent == nullptr) parent = mRoot;
-	char* loadedBuffer = nullptr;
-	App->GetFileSystem()->Load(saveFilePath, &loadedBuffer);
-	Resource* resource = App->GetResource()->RequestResource(saveFilePath);
-	rapidjson::Document d;
-	rapidjson::ParseResult ok = d.Parse(loadedBuffer);
-	if (!ok)
+	JsonObject obj = gameObjects.PushBackNewObject();
+	objectToSave.Save(obj);
+	for (std::vector<GameObject*>::const_iterator it = objectToSave.GetChildren().cbegin(); it < objectToSave.GetChildren().cend(); ++it)
 	{
-		LOG("Object was not loaded.");
-		return nullptr;
+		SavePrefabRecursive(*(*it), gameObjects);
 	}
-	std::unordered_map<int, int> uuids;
+}
 
-	if (d.HasMember("Prefab") && d["Prefab"].IsObject())
+GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent, bool update)
+{
+	mPrefabOldNewUid.clear();
+	
+	GameObject* ret = nullptr;
+	if (parent == nullptr) 
 	{
-		const rapidjson::Value& sceneValue = d["Prefab"];
+		parent = mRoot;
+	}
 
-		if (update)
+	char* fileBuffer = nullptr;
+
+	if (App->GetFileSystem()->Load(saveFilePath, &fileBuffer) > 0)
+	{
+		Archive doc(fileBuffer);
+		delete[] fileBuffer;
+
+		JsonObject root = doc.GetRootObject();
+
+		JsonObject prefab = root.GetJsonObject("Prefab");
+		
+		std::unordered_map<unsigned int, GameObject*> loadMap;
+
+		JsonArray gameObjects = prefab.GetJsonArray("GameObjects");	
+
+		unsigned int currSize = mSceneGO.empty() ? 0 : mSceneGO.size();
+
+		//Load GameObjects
+		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
-			mRoot->LoadChangesPrefab(sceneValue, resource->GetUID());
-		}
-		else
-		{
-			int offset = mSceneGO.size();
-			//LoadGameObject(sceneValue, parent, &uuids);
-			if (mSceneGO.size() > offset)
+			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
+			GameObject* gO;
+			if (i == 0)
 			{
-				mSceneGO[offset]->SetPrefabId(resource->GetUID());
-				ret = mSceneGO[offset];
+				gO = new GameObject(gameObjectData.GetString("Name").c_str(), parent);
 			}
+			else
+			{
+				gO = new GameObject(gameObjectData.GetString("Name").c_str(), Find(mPrefabOldNewUid[gameObjectData.GetInt("ParentUID")]));
+			}
+			mPrefabOldNewUid[gameObjectData.GetInt("UID")] = gO->GetID();
+			gO->LoadGameObject(gameObjectData, loadMap);
 		}
 
-		//LoadGameObjectsIntoScripts(); DOES NOT EXIST NOW
-		App->GetScriptManager()->StartScripts();
+		//Load Components
+		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
+		{
+			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
+			mSceneGO[currSize + i]->LoadComponents(gameObjectData, loadMap);
+		}
+	
+		ret = mSceneGO[currSize];
+
+		App->GetScriptManager()->AwakeGameObjectScripts(ret);
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartGameObjectScripts(ret);
+		}
 		
 	}
-	delete[] loadedBuffer;
 	
 	return ret;
+}
+
+void ModuleScene::OverridePrefab(const JsonObject& gameObject, unsigned int id)
+{
+	//if (mPrefabOverride && mPrefabId == id)
+	//{
+	//	std::vector<GameObject*> loadedObjects;
+	//	for (GameObject* child : mChildren)
+	//	{
+	//		delete child;
+	//	}
+	//	mChildren.clear();
+	//	std::unordered_map<int, int> uuids;
+	//
+	//	if (obj.HasMember("Prefab") && obj["GameObjects"].IsArray())
+	//	{
+	//		const rapidjson::Value& gameObjects = gameObject["GameObjects"];
+	//		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+	//		{
+	//			if (gameObjects[i].IsObject())
+	//			{
+	//				unsigned int parentUID{ 0 };
+	//				unsigned int uuid{ 0 };
+	//
+	//				if (gameObjects[i].HasMember("ParentUID") && gameObjects[i]["ParentUID"].IsInt())
+	//				{
+	//					parentUID = gameObjects[i]["ParentUID"].GetInt();
+	//				}
+	//				if (gameObjects[i].HasMember("UID") && gameObjects[i]["UID"].IsInt())
+	//				{
+	//					uuid = gameObjects[i]["UID"].GetInt();
+	//				}
+	//				if (parentUID == 1) {
+	//					if (gameObjects[i].HasMember("Components") && gameObjects[i]["Components"].IsArray())
+	//					{
+	//						loadedObjects.push_back(this);
+	//						uuids[uuid] = mUid;
+	//						//LoadComponentsFromJSON(gameObjects[i]["Components"]);
+	//					}
+	//				}
+	//				else
+	//				{
+	//					//GameObject* go = LoadGameObjectFromJSON(gameObjects[i], this, &uuids);
+	//					//loadedObjects.push_back(go);
+	//					//go->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+	//				}
+	//			}
+	//		}
+	//		mParent->RecalculateMatrices();
+	//		for (rapidjson::SizeType i = 0; i < gameObjects.Size(); i++)
+	//		{
+	//			if (gameObjects[i].IsObject())
+	//			{
+	//				//loadedObjects[i]->LoadComponentsFromJSON(gameObjects[i]["Components"]);
+	//			}
+	//		}
+	//	}
+	//}
+	//else
+	//{
+	//	for (GameObject* child : mChildren)
+	//	{
+	//		child->LoadChangesPrefab(obj, id);
+	//	}
+	//}
 }
 
 void ModuleScene::OpenPrefabScreen(const char* saveFilePath)
@@ -442,6 +543,23 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 	}
 }
 
+GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
+{
+	std::unordered_map<const GameObject*, GameObject*> originalToNew;
+	std::vector<MeshRendererComponent*>mRenderers;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	for (MeshRendererComponent* mRend : mRenderers)
+	{
+		if (mRend->HasSkinning())
+		{
+			mRend->UpdateSkeletonObjects(originalToNew);
+		}
+	}
+	AddGameObjectToDuplicate(duplicatedGameObject);
+
+	return duplicatedGameObject;
+}
+
 void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)
 {
 	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
@@ -453,15 +571,34 @@ void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* seco
 		}
 	}
 
-	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	if (!first->IsRoot())
 	{
-		if ((*it)->GetID() == first->GetID())
+		for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
 		{
-			mSceneGO.insert(it, second);
-			break;
+			if ((*it)->GetID() == first->GetID())
+			{
+				if (it+1 != mSceneGO.cend())
+				{
+					mSceneGO.insert(it+1, second);
+				}
+				else
+				{
+					mSceneGO.push_back(second);
+				}
+
+				break;
+			}
 		}
 	}
+	else 
+	{
+		mSceneGO.push_back(second);
+	}
 
+	for (unsigned int i = 0; i < second->GetChildren().size(); ++i)
+	{
+		SwitchGameObjectsFromScene(second, second->GetChildren()[i]);
+	}
 	
 }
 
@@ -470,7 +607,6 @@ void ModuleScene::DeleteGameObjects()
 	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->RemoveChild(gameObject->GetID());
-		RemoveGameObjectFromScene(gameObject->GetName());
 		delete gameObject;
 	}
 
@@ -491,20 +627,18 @@ void ModuleScene::DuplicateGameObjects()
 
 #pragma region Others
 
-void ModuleScene::AddMeshToRender(const MeshRendererComponent& meshRendererComponent)
-{
-	mCurrRenderComponents.push_back(&meshRendererComponent);
-}
-
 void ModuleScene::NewScene()
 {
-	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();
 
+	App->GetNavigation()->ReleaseResource();
+
 	delete mRoot;
-	mRoot = new GameObject("Untlitled", nullptr);
+	mRoot = new GameObject("EmptyScene", nullptr);
+
+	//TODO: If last selected window is game. And new scene is clicked, editor camera is not found
 }
 
 const std::string& ModuleScene::GetName() const

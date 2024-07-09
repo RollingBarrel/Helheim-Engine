@@ -27,11 +27,14 @@ private:
 		{".jpg", Resource::Type::Texture},
 		{".bmp", Resource::Type::Texture},
 		{".dds", Resource::Type::Texture},
+		{".tga", Resource::Type::Texture},
 		{".gltf", Resource::Type::Model},
-		{".h", Resource::Type::Script},
+		{".scn", Resource::Type::Scene},
 		{".prfb", Resource::Type::Prefab},
+		{".h", Resource::Type::Script},
+		{".smbin", Resource::Type::StateMachine},
 		{".navmesshi", Resource::Type::NavMesh},
-		{".smbin", Resource::Type::StateMachine}
+		{".mat", Resource::Type::Material}
 
 		// Add more mappings for other resource types as needed
 	};

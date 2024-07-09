@@ -37,13 +37,18 @@
     <Filter Include="States\Attack">
       <UniqueIdentifier>{30388697-f73b-4a9c-9e6d-8d5797552617}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Sound\Test">
+      <UniqueIdentifier>{a76f27bd-e8d6-4a04-80b8-3f021cb5f28f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Pools">
+      <UniqueIdentifier>{475c614c-9d94-4dab-9927-3f6f3e127db0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h">
       <Filter>Weapons</Filter>
     </ClInclude>
@@ -56,10 +61,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
-      <Filter>Managers</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\ItemShield.h">
+    <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h">
       <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\PlayerCamera.h">
@@ -82,9 +84,6 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
       <Filter>Weapons\Range</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Level1AManager.h">
-      <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h">
       <Filter>Sound</Filter>
@@ -125,8 +124,62 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Hammer.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Katana.h">
+      <Filter>Weapons\Melee</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Shootgun.h">
+      <Filter>Weapons\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h">
+      <Filter>Weapons\Range</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
+      <Filter>Sound\Test</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
+      <Filter>Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h">
+      <Filter>Pools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h">
+      <Filter>Pools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -134,7 +187,6 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="TestScript.cpp" />
-    <ClCompile Include="ObjectPool.cpp" />
     <ClCompile Include="Weapon.cpp">
       <Filter>Weapons</Filter>
     </ClCompile>
@@ -150,7 +202,7 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="ItemShield.cpp">
+    <ClCompile Include="ItemDrop.cpp">
       <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="PlayerCamera.cpp">
@@ -162,9 +214,6 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
-    <ClCompile Include="Level1AManager.cpp">
-      <Filter>Sound</Filter>
-    </ClCompile>
     <ClCompile Include="MainMenuManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
@@ -173,6 +222,9 @@
     </ClCompile>
     <ClCompile Include="RangeWeapon.cpp">
       <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="HudController.cpp">
+      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="State.cpp">
       <Filter>States</Filter>
@@ -216,8 +268,57 @@
     <ClCompile Include="Pistol.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
+    <ClCompile Include="BattleArea.cpp" />
+    <ClCompile Include="EnemyPool.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemySpawner.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="ActiveBattleAreaController.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Sanity.cpp" />
+    <ClCompile Include="Machinegun.cpp">
+      <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="Shootgun.cpp">
+      <Filter>Weapons\Range</Filter>
+    </ClCompile>
+    <ClCompile Include="Katana.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="Hammer.cpp">
+      <Filter>Weapons\Melee</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioTester.cpp">
+      <Filter>Sound\Test</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjectPool.cpp">
+      <Filter>Pools</Filter>
+    </ClCompile>
     <ClCompile Include="HudController.cpp">
-      <Filter>UI</Filter>
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioTester.cpp" />
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobotRange.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyRobotMelee.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="PoolManager.cpp">
+      <Filter>Pools</Filter>
+    </ClCompile>
+    <ClCompile Include="BulletEnemy.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="Teleporter.cpp" />
+    <ClCompile Include="TimerScript.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

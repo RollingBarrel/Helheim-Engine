@@ -13,6 +13,16 @@
 
 ModuleFileSystem::ModuleFileSystem() 
 {
+}
+
+// Destructor
+ModuleFileSystem::~ModuleFileSystem()
+{
+    PHYSFS_deinit();
+}
+
+bool ModuleFileSystem::Init()
+{
     PHYSFS_init(nullptr);
 
     if (PHYSFS_setWriteDir(".") == 0)
@@ -24,30 +34,30 @@ ModuleFileSystem::ModuleFileSystem()
     AddToSearchPath(".");
     //AddToSearchPath(LIBRARY_PATH);
     //AddToSearchPath(ASSETS_PATH);
-    
+
     CreateDirectory(ASSETS_PATH);
     CreateDirectory(ASSETS_MODEL_PATH);
     CreateDirectory(ASSETS_TEXTURE_PATH);
+    CreateDirectory(ASSETS_MATERIAL_PATH);
     CreateDirectory(ASSETS_SCENES_PATH);
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);
     CreateDirectory(ASSETS_NAVMESH_PATH);
     CreateDirectory(LIBRARY_PATH);
 
+    CreateDirectory(INTERNAL_ASSETS_PATH);
+    CreateDirectory(INTERNAL_ASSETS_SCENES_PATH);
+    CreateDirectory(INTERNAL_ASSETS_FONTS_PATH);
+
     mRoot = new PathNode("Assets");
     DiscoverFiles("Assets", mRoot);
-}
-
-// Destructor
-ModuleFileSystem::~ModuleFileSystem()
-{
-    PHYSFS_deinit();
+    return true;
 }
 
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
-    CleanNode(mRoot);
+    delete mRoot;
     return true;
 }
 
@@ -110,7 +120,7 @@ unsigned int ModuleFileSystem::Save(const char* filePath, const void* buffer, un
             }
             else
             {
-                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);
+                LOG("Added %u data to [%s%s]", size, PHYSFS_getWriteDir(), filePath);       //When loading a scene ModuleFilesystem should not save anything
             }
         }
 
@@ -405,23 +415,23 @@ void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std:
     PHYSFS_freeList(dirFiles);
 }
 
-void ModuleFileSystem::CleanNode(PathNode* node)
-{
-
-    for (int i = 0; i < node->assets.size(); ++i) 
-    {
-        delete node->assets[i];
-    }
-
-    for (int i = 0; i < node->mChildren.size(); ++i) 
-    {
-        CleanNode(node->mChildren[i]);
-    }
-
-    delete node->mName;
-    delete node;
-    node = nullptr;
-}
+//void ModuleFileSystem::CleanNode(PathNode* node)
+//{
+//
+//    for (int i = 0; i < node->assets.size(); ++i) 
+//    {
+//        delete node->assets[i];
+//    }
+//
+//    for (int i = 0; i < node->mChildren.size(); ++i) 
+//    {
+//        CleanNode(node->mChildren[i]);
+//    }
+//
+//    delete node->mName;
+//    delete node;
+//    node = nullptr;
+//}
 
 PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
 {
@@ -440,10 +450,4 @@ AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent)
     unsigned int sizePath = strlen(path) + 1;
     mPath = new char[sizePath];
     strcpy_s(const_cast<char*>(mPath), sizePath, path);
-}
-
-AssetDisplay::~AssetDisplay()
-{
-    delete mName;
-    delete mPath;
 }

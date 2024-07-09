@@ -6,11 +6,15 @@
 #include "GameManager.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "PlayerController.h"
 
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
+#include "Transform2DComponent.h"
 #include "SliderComponent.h"
+#include "ScriptComponent.h"
+#include "Sanity.h"
 
 
 CREATE(HudController)
@@ -25,6 +29,9 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
+    MEMBER(MemberType::GAMEOBJECT, mFeedbackGO);
     SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mContinueBtnGO);
@@ -35,10 +42,12 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    SEPARATOR("Sanity");
+    MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     END_CREATE;
 }
 
-HudController::HudController(GameObject* owner) : Script(owner) 
+HudController::HudController(GameObject* owner) : Script(owner)
 {
 }
 
@@ -111,7 +120,11 @@ void HudController::Start()
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
+    if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
+    if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
+    if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
 
+    if (mSanityGO) mSanity = reinterpret_cast<Sanity*>(reinterpret_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 void HudController::Update()
@@ -121,7 +134,7 @@ void HudController::Update()
     if (GameManager::GetInstance()->IsPaused()) return;
 
     // Gradually decrease the gradual health slider
-    if (mHealthGradualSlider != nullptr)
+    if (mHealthGradualSlider)
     {
         if (mHealthGradualSlider->GetValue() > mTargetHealth)
         {
@@ -131,6 +144,11 @@ void HudController::Update()
         {
             mHealthGradualSlider->SetValue(mTargetHealth);
         }
+    }
+
+    // Decrease the damage feedback
+    if (mFeedbackImage && *(mFeedbackImage->GetAlpha()) >= 0.0f) {
+        mFeedbackImage->SetAlpha(*(mFeedbackImage->GetAlpha()) - 0.4f * App->GetDt());
     }
 
     // Grenade cooldown update
@@ -162,27 +180,98 @@ bool HudController::Delay(float delay)
 
 void HudController::Loading()
 {
-    if (mLoading)
+    /*if (mLoading)
     {
         mLoadingScreen->SetEnabled(true);
 
         if (Delay(0.1f))
         {
             mLoading = false;
-            GameManager::GetInstance()->LoadLevel("MainMenu.json");
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
         }
-    }
+    }*/
+}
+
+void HudController::SetSanity()
+{
+    mArenaCounter++;
+    mSanityGO->SetEnabled(true);
+    mSanity->CreateSelection(mArenaCounter);
 }
 
 void HudController::SetAmmo(int ammo)
 {
-    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
+   if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
+}
+
+void HudController::SetEnergy(int energy, EnergyType type)
+{
+    if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
+
+    float3 color;
+    switch (type)
+    {
+    case EnergyType::NONE:
+        color = float3(100.0f,100.0f,100.0f);
+        break;
+    case EnergyType::BLUE:
+        color = float3(0.0f, 0.0f, 200.0f);
+        break;
+    case EnergyType::RED:
+        color = float3(200.0f, 0.0f, 0.0f);
+        break;
+    default:
+        color = float3(100.0f, 100.0f, 100.0f);
+        break;
+    }
+
+    if (mEnergyImage) mEnergyImage->SetColor(color);
+    if (mEnergyText) mEnergyText->SetTextColor(color);
+
 }
 
 void HudController::SetHealth(float health)
 {
-    if (mHealthSlider) mHealthSlider->SetValue(health);
+    if (health == 0) 
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(-1.0f);
+        if (mHealthSlider) mHealthSlider->SetValue(health);
+    }
+    else if (health < mHealthSlider->GetValue())
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
+        if (mHealthSlider) mHealthSlider->SetValue(health);
+    }
+
     mTargetHealth = health;
+}
+
+void HudController::SetMaxHealth(float health)
+{
+    float newWidth = health * 3;
+
+    if (mHealthSlider)
+    {
+        Transform2DComponent* transform = static_cast<Transform2DComponent*>(mHealthSlider->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        float2 currentSize = transform->GetSize();
+        float3 currentPosition = transform->GetPosition();
+
+        transform->SetSize(float2(newWidth, currentSize.y));
+
+        float newPositionX = currentPosition.x + (newWidth - currentSize.x) / 2;
+        transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
+    }
+    if (mHealthGradualSlider)
+    {
+        Transform2DComponent* transform = static_cast<Transform2DComponent*>(mHealthGradualSlider->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        float2 currentSize = transform->GetSize();
+        float3 currentPosition = transform->GetPosition();
+
+        transform->SetSize(float2(newWidth, currentSize.y));
+
+        float newPositionX = currentPosition.x + (newWidth - currentSize.x) / 2;
+        transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
+    }
 }
 
 void HudController::SwitchWeapon()
@@ -235,12 +324,12 @@ void HudController::SetScreen(SCREEN name, bool active)
 
 void HudController::OnWinButtonClick()
 {
-    mLoading = true;
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void HudController::OnLoseButtonClick()
 {
-    mLoading = true;
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
 }
 
 #pragma endregion
@@ -283,7 +372,7 @@ void HudController::OnOptionsBtnHoverOff()
 
 void HudController::OnMainMenuBtnClick()
 {
-    GameManager::GetInstance()->LoadLevel("MainMenu");
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void HudController::OnMainMenuBtnHoverOn()

@@ -20,7 +20,8 @@ struct NavMeshTileHeader
 	dtTileRef tileRef;
 	int dataSize;
 };
-void Importer::NavMesh::Save(ResourceNavMesh* navMesh, std::string name)
+
+void Importer::NavMesh::Save(ResourceNavMesh* navMesh)
 {
 	//Preguntarle a carlos por mas del const 
 	const dtNavMesh* mesh = navMesh->GetDtNavMesh();
@@ -86,14 +87,10 @@ void Importer::NavMesh::Save(ResourceNavMesh* navMesh, std::string name)
 		}
 
 	}
-	std::string path = ASSETS_NAVMESH_PATH;
-	path += name;
-	path += ".navmesshi";
-	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
-	path = App->GetFileSystem()->GetLibraryFile(navMesh->GetUID(), true);
-	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
+	const char* libPath = App->GetFileSystem()->GetLibraryFile(navMesh->GetUID(), true);
+	App->GetFileSystem()->Save(libPath, fileBuffer, size);
 	delete[] fileBuffer;
-	fileBuffer = nullptr;
+	delete[] libPath;
 
 }
 

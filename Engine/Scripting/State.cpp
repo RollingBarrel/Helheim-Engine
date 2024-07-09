@@ -1,10 +1,12 @@
 #include "State.h"
 
 #include "PlayerController.h"
+#include "Application.h"
 
-State::State(PlayerController* player)
+State::State(PlayerController* player, float cooldown)
 {
 	mPlayerController = player;
+	mStateCooldown = cooldown;
 }
 
 State::~State()
@@ -31,4 +33,11 @@ void State::Exit()
 StateType State::GetType()
 {
 	return StateType::NONE;
+}
+
+bool State::IsReady()
+{
+	mStateTimer += App->GetDt();
+	if (mStateTimer >= mStateCooldown) return true;
+	return false;
 }

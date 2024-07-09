@@ -8,7 +8,7 @@
 #include "imgui.h"
 
 #define SETTINGSPANEL "Settings##"
-#define NUM_ENGINE_TAGS 3
+#define NUM_ENGINE_TAGS 4
 
 class SettingsPanel : public Panel
 {
@@ -38,8 +38,6 @@ private:
 
 	void SaveProjectSettings() const;		//Project Settings -> Tags & Layers (Yes)
 
-
-	bool mCulling = false;
 	bool mEngineVsyncEnabled = false;
 	bool mGameVsyncEnabled = false;
 	bool mEngineFpsLimitEnabled = false;

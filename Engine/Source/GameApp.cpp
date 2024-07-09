@@ -21,6 +21,9 @@ GameApplication* GameApp = NULL;
 GameApplication::GameApplication()
 {
 	GameApp = this;
+
+	mIsPlayMode = true;
+	
 	mCurrentTimer = new Timer();
 	
 	modules[0] = input = new ModuleInput();
@@ -44,6 +47,7 @@ GameApplication::~GameApplication()
 	for (int i = NUM_MODULES - 1; i >= 0; --i) 
 	{
 		delete modules[i];
+		modules[i] = nullptr;
 	}
 	delete mCurrentTimer;
 }

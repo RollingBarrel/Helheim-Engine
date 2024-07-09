@@ -213,6 +213,12 @@ namespace ImGui
         float& draggingMark,
         float& selectedMark)
     {
+        if (gradient.GetColorMarks().empty()) 
+        {
+            draggingMark = -1;
+            selectedMark = -1;
+        }
+        
         bool modified = false;
 
         ImVec2 bar_pos = ImGui::GetCursorScreenPos();

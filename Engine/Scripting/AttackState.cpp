@@ -5,8 +5,11 @@
 #include "Keys.h"
 #include "PlayerController.h"
 #include "Weapon.h"
+#include "ModuleDetourNavigation.h"
+#include "MeleeWeapon.h"
 
-AttackState::AttackState(PlayerController* player) : State(player)
+
+AttackState::AttackState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
 }
 
@@ -16,23 +19,59 @@ AttackState::~AttackState()
 
 StateType AttackState::HandleInput()
 {
-	return StateType::AIM;
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+
+    mAttackTimer += App->GetDt();
+    if (mAttackTimer < mWeapon->GetAttackDuration())
+    {
+        // MOVE TO WEAPON
+        /* if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
+            App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+        {
+            reinterpret_cast<MeleeWeapon*>(mWeapon)->IncreaseComboStep();
+        } */
+        return StateType::ATTACK;
+    }
+       
+    return StateType::AIM;
 }
 
 void AttackState::Update()
 {
-    Weapon* weapon = mPlayerController->GetWeapon();
-    weapon->BasicAttack();
-
-    DoAudio();
+    mWeapon->Attack(mAttackTimer);
 }
 
 void AttackState::Enter()
 {
+    mAttackTimer = 0.0f;
+    mWeapon = mPlayerController->GetWeapon();
+    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+    {
+        mPlayerController->SetSpineAnimation("tAttackRanged", 0.01f);
+    }
+    else
+    {
+        mPlayerController->SetSpineAnimation("tAttackMelee", 0.2f);
+        mPlayerController->SetAnimationSpeed(5.0f);
+    }
+
+    mWeapon->Enter();
 }
 
 void AttackState::Exit()
 {
+    if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+    {
+        mPlayerController->SetSpineAnimation("tIdleRanged", 0.01f);
+    }
+    else
+    {
+        mPlayerController->SetSpineAnimation("tIdleMelee", 0.01f);
+        mPlayerController->SetAnimationSpeed(1.0f);
+    }
+
+    mWeapon->Exit();
+    mWeapon = nullptr;
 }
 
 StateType AttackState::GetType()
@@ -40,6 +79,18 @@ StateType AttackState::GetType()
     return StateType::ATTACK;
 }
 
-void AttackState::DoAudio()
+bool AttackState::IsReady()
 {
+    mStateTimer += App->GetDt();
+    if (mStateTimer >= mStateCooldown) {
+        if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE && mPlayerController->GetWeapon()->GetCurrentAmmo() != 0)
+        {
+            return true;
+        }
+        if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::MELEE)
+        {
+            return true;
+        }
+    }
+    return false;
 }

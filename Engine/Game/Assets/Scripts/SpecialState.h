@@ -1,10 +1,12 @@
 #pragma once
 #include "State.h"
 
+class Weapon;
+
 class SpecialState : public State
 {
 public:
-	explicit SpecialState(PlayerController* player);
+	explicit SpecialState(PlayerController* player, float cooldown);
 	~SpecialState();
 
 	StateType HandleInput() override;
@@ -15,7 +17,9 @@ public:
 
 	StateType GetType() override;
 
+	bool IsReady() override;
 
 private:
-
+	Weapon* mSpecialWeapon = nullptr;
+	float mSpecialAttackTimer = 0.0f;
 };

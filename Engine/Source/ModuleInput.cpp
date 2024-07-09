@@ -296,7 +296,7 @@ void ModuleInput::HandleGameControllerInput()
 	{
 		int trigger_value = SDL_GameControllerGetAxis(mGameController.mId, SDL_GameControllerAxis(TRIGGER_INDEX + i));
 	
-		if (trigger_value > mGameController.mMaxAxisInputThreshold * MAX_AXIS)
+		if (trigger_value > mGameController.mMinAxisInputThreshold * MAX_AXIS)
 		{
 			switch (mGameController.mTriggers[i])
 			{

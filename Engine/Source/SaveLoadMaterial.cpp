@@ -3,6 +3,7 @@
 #include "ModuleFileSystem.h"
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
+#include "Archive.h"
 
 #include "Math/float4.h"
 #include "Math/float3.h"
@@ -27,6 +28,16 @@ void Importer::Material::Save(const ResourceMaterial* rMaterial)
         sizeof(float) +
         sizeof(float) +
         sizeof(float) * 3;
+    unsigned int nameSize = 0;
+    if (rMaterial->GetName() != nullptr)
+    {
+        nameSize = sizeof(char) * (strlen(rMaterial->GetName()) + 1);
+        size += nameSize;
+    }
+    else
+    {
+        size += 1;
+    }
 
     char* fileBuffer = new char[size];
     char* cursor = fileBuffer;
@@ -59,6 +70,17 @@ void Importer::Material::Save(const ResourceMaterial* rMaterial)
     memcpy(cursor, emissiveFactor.ptr(), bytes);
     cursor += bytes;
 
+    if (nameSize)
+    {
+        bytes = nameSize;
+        memcpy(cursor, rMaterial->GetName(), bytes);
+        cursor += bytes;
+    }
+    else
+    {
+        *cursor++ = '\0';
+    }
+
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(rMaterial->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
 
@@ -85,11 +107,6 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
         memcpy(enables, cursor, bytes);
         cursor += bytes;
 
-        bool enablebaseColorTexture = enables[0];
-        bool enableMetallicRoughnessTexture = enables[1];
-        bool enableNormalTexture = enables[2];
-        bool enableEmissiveTexture = enables[3];
-
         float4 baseColorFactor;
         bytes = sizeof(float) * 4;
         memcpy(baseColorFactor.ptr(), cursor, bytes);
@@ -110,11 +127,54 @@ ResourceMaterial* Importer::Material::Load(const char* fileName, const unsigned 
         memcpy(emissiveFactor.ptr(), cursor, bytes);
         cursor += bytes;
 
-        ret = new ResourceMaterial(uid, baseColorFactor.ptr(), metallicFactor, roughnessFator, emissiveFactor.ptr(), texturesUID[0], texturesUID[1], texturesUID[2], texturesUID[3]);
+        const char* name = nullptr;
+        if (*cursor != '\0')
+        {
+            name = cursor;
+            while (*cursor++ != '\0');
+        }
+        else
+        {
+            ++cursor;
+        }
+
+        ret = new ResourceMaterial(uid, name, baseColorFactor.ptr(), metallicFactor, roughnessFator, emissiveFactor.ptr(), texturesUID[0], texturesUID[1], texturesUID[2], texturesUID[3], enables[0], enables[2], enables[2], enables[3]);
         Importer::Material::Save(ret);
 
         delete[] fileBuffer;
     }
 
     return ret;
+}
+
+void Importer::Material::SaveMatFile(const ResourceMaterial& rMat, const char* name)
+{
+    Archive doc;
+    JsonObject root = doc.GetRootObject();
+    if(name == nullptr)
+        root.AddString("Name", rMat.GetName());
+    else
+        root.AddString("Name", name);
+    root.AddFloats("BaseColorFactor", rMat.GetBaseColorFactor().ptr(), 4);
+    root.AddFloat("MetallicFactor", rMat.GetMetallicFactor());
+    root.AddFloat("RoughnessFactor", rMat.GetRoughnessFactor());
+    root.AddFloats("EmissiveFactor", rMat.GetEmissiveFactor().ptr(), 3);
+    root.AddInt("BaseColorTex", (rMat.GetBaseColorTexture()) ? rMat.GetBaseColorTexture()->GetUID() : 0);
+    root.AddInt("MetallicRoughTex", (rMat.GetMetallicRoughnessTexture()) ? rMat.GetMetallicRoughnessTexture()->GetUID() : 0);
+    root.AddInt("NormalTex", (rMat.GetNormalTexture()) ? rMat.GetNormalTexture()->GetUID() : 0);
+    root.AddInt("EmissiveTex", (rMat.GetEmissiveTexture()) ? rMat.GetEmissiveTexture()->GetUID() : 0);
+    root.AddBool("BaseColorEnabled", rMat.IsBaseColorEnabled());
+    root.AddBool("MetallicRoughnessEnabled", rMat.IsMetallicRoughnessEnabled());
+    root.AddBool("NormalMapEnabled", rMat.IsNormalMapEnabled());
+    root.AddBool("EmissiveEnabled", rMat.IsEmissiveEnabled());
+
+    std::string buffer = doc.Serialize();
+    std::string assetName = ASSETS_MATERIAL_PATH;
+    assert(name != nullptr || rMat.GetName() != nullptr);
+    if (name == nullptr)
+        assetName += rMat.GetName();
+    else
+        assetName += name;
+    assetName += ".mat";
+    App->GetFileSystem()->Save(assetName.c_str(), buffer.c_str(), buffer.size());
 }
