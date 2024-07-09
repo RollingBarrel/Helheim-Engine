@@ -11,6 +11,8 @@
 #include "ModuleScene.h"
 #include "ModuleFileSystem.h"
 #include "ModuleUI.h"
+#include "ModuleResource.h"
+#include "ResourceIBL.h"
 
 #include "GameObject.h"
 #include "MeshRendererComponent.h"
@@ -20,8 +22,8 @@
 #include "ParticleSystemComponent.h"
 #include "DecalComponent.h"
 #include "TrailComponent.h"
-#include "GeometryBatch.h"
 
+#include "GeometryBatch.h"
 #include "BatchManager.h"
 
 
@@ -72,7 +74,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	//LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -290,10 +292,6 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
-	BakeIBL("Assets/Textures/HDR_subdued_blue_nebulae.hdr");
-	//BakeIBL("Assets/Textures/skybox.hdr");
-	//BakeIBL("Assets/Textures/rural_asphalt_road_4k.hdr");
-
 	//SHADOWS
 	for (unsigned int i = 0; i < NUM_SHADOW_MAPS; ++i)
 	{
@@ -329,6 +327,10 @@ bool ModuleOpenGL::Init()
 	glUniform2ui(4, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
+	glUseProgram(0);
+
 	return true;
 }
 
@@ -345,11 +347,11 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	
 	//Draw the skybox
-	if (mEnvironmentTextureId != 0)
+	if (mCurrSkyBox != nullptr)
 	{
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
 		glDepthMask(GL_FALSE);
@@ -362,7 +364,6 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	//BakeIBL(L"Assets/Textures/skybox.hdr");
 
 	return UPDATE_CONTINUE;
 }
@@ -423,45 +424,45 @@ void ModuleOpenGL::SetWireframe(bool wireframe)
 
 
 
-void ModuleOpenGL::AddHighLight(const GameObject& gameObject)
-{
-	if (!gameObject.IsRoot())
-	{
-		std::vector<Component*> meshComponents;
-		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
-		if (!meshComponents.empty())
-		{
-			for (const Component* comp : meshComponents)
-			{
-				mHighlightedObjects.push_back(comp->GetOwner());
-			}
-		}
-	}
-}
-
-void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
-{
-	if (!gameObject.IsRoot())
-	{
-		std::vector<Component*> meshComponents;
-		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
-		if (!meshComponents.empty())
-		{
-			for (Component* comp : meshComponents)
-			{
-				for (std::vector<const GameObject*>::iterator it = mHighlightedObjects.begin(); it != mHighlightedObjects.end(); ++it)
-				{
-					if (comp->GetOwner()->GetID() == (*it)->GetID())
-					{
-						mHighlightedObjects.erase(it);
-						break;
-					}
-				}
-			}
-			meshComponents;
-		}
-	}
-}
+//void ModuleOpenGL::AddHighLight(const GameObject& gameObject)
+//{
+//	if (!gameObject.IsRoot())
+//	{
+//		std::vector<Component*> meshComponents;
+//		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
+//		if (!meshComponents.empty())
+//		{
+//			for (const Component* comp : meshComponents)
+//			{
+//				mHighlightedObjects.push_back(comp->GetOwner());
+//			}
+//		}
+//	}
+//}
+//
+//void ModuleOpenGL::RemoveHighLight(const GameObject& gameObject)
+//{
+//	if (!gameObject.IsRoot())
+//	{
+//		std::vector<Component*> meshComponents;
+//		gameObject.GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
+//		if (!meshComponents.empty())
+//		{
+//			for (Component* comp : meshComponents)
+//			{
+//				for (std::vector<const GameObject*>::iterator it = mHighlightedObjects.begin(); it != mHighlightedObjects.end(); ++it)
+//				{
+//					if (comp->GetOwner()->GetID() == (*it)->GetID())
+//					{
+//						mHighlightedObjects.erase(it);
+//						break;
+//					}
+//				}
+//			}
+//			meshComponents;
+//		}
+//	}
+//}
 
 void ModuleOpenGL::AddDecal(const DecalComponent& decal)
 {
@@ -546,39 +547,6 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		}
 		
 	}
-}
-
-//TODO: This should not be here, we need like a resource or importer
-#include "DirectXTex.h"
-#include <MathConstants.h>
-static unsigned int LoadCubeMap()
-{
-	unsigned int ret = 0;
-	DirectX::ScratchImage image;
-
-	HRESULT res = DirectX::LoadFromDDSFile(L"Assets/Textures/cubemap.dds", DirectX::DDS_FLAGS_NONE, nullptr, image);
-	
-	if (res == S_OK)
-	{
-		const DirectX::TexMetadata& metadata = image.GetMetadata();
-
-		glGenTextures(1, &ret);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, ret);
-
-		for (uint32_t i = 0; i < metadata.arraySize; ++i)
-		{
-			const DirectX::Image* face = image.GetImage(0, i, 0);
-
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA8, face->width, face->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, face->pixels);
-		}
-
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	}
-	return ret;
 }
 
 void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
@@ -750,6 +718,29 @@ unsigned int ModuleOpenGL::CreateShaderProgramFromPaths(const char** shaderNames
 	return ret;
 }
 
+void ModuleOpenGL::SetSkybox(unsigned int uid)
+{
+	if (mCurrSkyBox != nullptr)
+	{
+		App->GetResource()->ReleaseResource(mCurrSkyBox->GetUID());
+		mCurrSkyBox = nullptr;
+	}
+	if (uid != 0)
+	{
+		mCurrSkyBox = reinterpret_cast<ResourceIBL*>(App->GetResource()->RequestResource(uid, Resource::Type::IBL));
+		assert(mCurrSkyBox);
+		glUseProgram(mPbrLightingPassProgramId);
+		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), log2(std::max(mCurrSkyBox->GetSpecPrefilteredTexSize(), mCurrSkyBox->GetSpecPrefilteredTexSize())));
+		glUseProgram(0);
+	}
+
+}
+
+unsigned int ModuleOpenGL::GetSkyboxID() const
+{
+	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
+}
+
 void ModuleOpenGL::InitDecals()
 {
 	float decalsVertices[] = {
@@ -821,219 +812,6 @@ void ModuleOpenGL::InitDecals()
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glBindVertexArray(0);
 }
-
-void ModuleOpenGL::BakeEnvironmentBRDF(unsigned int width, unsigned int height)
-{
-	if (mEnvBRDFTexId != 0)
-		glDeleteTextures(1, &mEnvBRDFTexId);
-	glGenTextures(1, &mEnvBRDFTexId);
-	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG16F, width, height, 0, GL_RG, GL_FLOAT, NULL);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glUseProgram(mSpecEnvBRDFProgramId);
-	glViewport(0, 0, width, height);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mEnvBRDFTexId, 0);
-	glDrawArrays(GL_TRIANGLES, 0, 36);
-}
-
-void ModuleOpenGL::BakeIBL(const char* hdrTexPath, unsigned int irradianceSize, unsigned int specEnvBRDFSize, unsigned int specPrefilteredSize)
-{
-	DirectX::ScratchImage image;
-
-	size_t size = strlen(hdrTexPath) + 1;
-	wchar_t* pathTex = new wchar_t[size];
-	size_t outSize;
-	mbstowcs_s(&outSize, pathTex, size, hdrTexPath, size - 1);
-
-	HRESULT res = DirectX::LoadFromHDRFile(pathTex, nullptr, image);
-	delete[] pathTex;
-
-	if (res == S_OK)
-	{
-		if (mIrradianceTextureId != 0)
-		{
-			//TODO: Not all must be deleted if separated from here
-			glDeleteTextures(1, &mIrradianceTextureId);
-			glDeleteTextures(1, &mEnvironmentTextureId);
-			glDeleteTextures(1, &mSpecPrefilteredTexId);
-			mIrradianceTextureId = 0;
-		}
-
-		const float3 front[6] = { float3::unitX, -float3::unitX, float3::unitY,
-							 -float3::unitY, float3::unitZ, -float3::unitZ };
-
-		const float3 up[6] = { -float3::unitY, -float3::unitY, float3::unitZ,
-						 -float3::unitZ, -float3::unitY, -float3::unitY };
-
-		Frustum frustum;
-		frustum.type = FrustumType::PerspectiveFrustum;
-		frustum.pos = float3::zero;
-		frustum.nearPlaneDistance = 0.1f;
-		frustum.farPlaneDistance = 100.0f;
-		frustum.verticalFov = pi / 2.0f;
-		frustum.horizontalFov = pi / 2.0f;
-
-		const unsigned int irradianceWidth = irradianceSize;
-		const unsigned int irradianceHeight = irradianceSize;
-		glGenTextures(1, &mEnvironmentTextureId);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
-
-		for (unsigned int i = 0; i < 6; ++i)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
-				GL_RGB, GL_FLOAT, nullptr);
-		}
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-
-		const DirectX::TexMetadata& metadata = image.GetMetadata();
-
-		glGenTextures(1, &mHDRTextureId);
-		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, metadata.width, metadata.height, 0, GL_RGBA, GL_FLOAT, image.GetPixels());
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-
-		glUseProgram(mEnvironmentProgramId);
-		//glUniform1i(glGetUniformLocation(mEnvironmentProgramId, "HDRImage"), 0);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mHDRTextureId);
-
-		//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-		unsigned int frameBuffer;
-		glGenFramebuffers(1, &frameBuffer);
-		glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
-
-		//int viewPortSize[4];
-		//glGetIntegerv(GL_VIEWPORT, viewPortSize);
-		glViewport(0, 0, irradianceWidth, irradianceHeight);
-		glDepthMask(GL_FALSE);
-		glBindVertexArray(mSkyVao);
-		for (unsigned int i = 0; i < 6; ++i)
-		{
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mEnvironmentTextureId, 0);
-
-			frustum.front = front[i];
-			frustum.up = up[i];
-
-			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
-			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
-		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-
-		glUseProgram(mIrradianceProgramId);
-		glUniform1ui(5, irradianceSize);
-		glGenTextures(1, &mIrradianceTextureId);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
-		for (unsigned int i = 0; i < 6; ++i)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, irradianceWidth, irradianceHeight, 0,
-				GL_RGB, GL_FLOAT, nullptr);
-		}
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
-		for (unsigned int i = 0; i < 6; ++i)
-		{
-			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
-				GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mIrradianceTextureId, 0);
-
-			frustum.front = front[i];
-			frustum.up = up[i];
-
-			glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
-			glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
-			glDrawArrays(GL_TRIANGLES, 0, 36);
-		}
-
-		//Specular IBL
-		const unsigned int specWidth = specPrefilteredSize;
-		const unsigned int specHeight = specPrefilteredSize;
-		glGenTextures(1, &mSpecPrefilteredTexId);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
-
-		for (int i = 0; i < 6; ++i)
-		{
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB16F, specWidth, specHeight, 0, GL_RGB, GL_FLOAT, nullptr);
-		}
-		int numMipMaps = int(log(float(specWidth)) / log(2.0f));
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BASE_LEVEL, 0);
-		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMipMaps);
-		glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
-		glUseProgram(mSpecPrefilteredProgramId);
-		glUniform1ui(5, specWidth);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mEnvironmentTextureId);
-		for (int currMipMap = 0; currMipMap <= numMipMaps; ++currMipMap)
-		{
-			float roughness = (static_cast<float>(currMipMap) / static_cast<float>(numMipMaps - 1));
-			glUniform1f(3, roughness);
-			float coolMath = specWidth * pow(0.5f, currMipMap);
-			glViewport(0, 0, coolMath, coolMath);
-			// Render each cube plane
-			for (unsigned int i = 0; i < 6; ++i)
-			{
-				// TODO: Draw UnitCube using prefiltered environment map shader and roughness
-				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, mSpecPrefilteredTexId, currMipMap);
-
-				frustum.front = front[i];
-				frustum.up = up[i];
-
-				glUniformMatrix4fv(0, 1, GL_TRUE, frustum.ViewMatrix().ptr());
-				glUniformMatrix4fv(1, 1, GL_TRUE, frustum.ProjectionMatrix().ptr());
-				glDrawArrays(GL_TRIANGLES, 0, 36);
-			}
-		}
-		
-		static unsigned int sizeX = 0;
-		static unsigned int sizeY = 0;
-		if (mEnvBRDFTexId == 0 || sizeX != specEnvBRDFSize || sizeY != specEnvBRDFSize)
-		{
-			sizeX = specEnvBRDFSize;
-			sizeY = specEnvBRDFSize;
-			BakeEnvironmentBRDF(specEnvBRDFSize, specEnvBRDFSize);
-		}
-
-		glUseProgram(0);
-		glBindVertexArray(0);
-		glDepthMask(GL_TRUE);
-
-		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, colorAttachment, 0);
-		//glViewport(viewPortSize[0], viewPortSize[1], viewPortSize[2], viewPortSize[3]);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		glDeleteFramebuffers(1, &frameBuffer);
-		glDeleteTextures(1, &mHDRTextureId);
-
-		//TODO: put in the init of openGL
-		glUseProgram(mPbrLightingPassProgramId);
-		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), numMipMaps);
-		glUseProgram(0);
-		glViewport(0, 0, mSceneWidth, mSceneHeight);
-		//SceneFramebufferResized(mSceneWidth, mSceneHeight);
-	}
-
-}
-
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
 void ModuleOpenGL::AddPointLight(const PointLightComponent& component)
@@ -1216,7 +994,7 @@ void ModuleOpenGL::Draw()
 
 		glActiveTexture(GL_TEXTURE6);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetSpecularId());
-
+		
 		glActiveTexture(GL_TEXTURE7);
 		glBindTexture(GL_TEXTURE_2D, mDecalComponents[i]->GetNormalId());
 
@@ -1332,11 +1110,11 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glActiveTexture(GL_TEXTURE5);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mSpecPrefilteredTexId);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, (mCurrSkyBox) ? mCurrSkyBox->GetSpecPrefilteredTexId() : 0);
 	glActiveTexture(GL_TEXTURE6);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, mIrradianceTextureId);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, (mCurrSkyBox) ? mCurrSkyBox->GetIrradianceTextureId() : 0);
 	glActiveTexture(GL_TEXTURE7);
-	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
+	glBindTexture(GL_TEXTURE_2D, (mCurrSkyBox) ? mCurrSkyBox->GetEnvBRDFTexId() : 0);
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);

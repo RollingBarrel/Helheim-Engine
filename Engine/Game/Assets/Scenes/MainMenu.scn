@@ -74,7 +74,7 @@
                             1920.0,
                             1080.0
                         ],
-                        "ScreenSpace": true
+                        "Render": 1
                     },
                     {
                         "ComponentType": 3,
@@ -3665,6 +3665,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 315485471
+        "NavMeshResource": 60202883,
+        "SkyBoxResource": 0
     }
 }

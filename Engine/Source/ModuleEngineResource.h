@@ -34,7 +34,8 @@ private:
 		{".h", Resource::Type::Script},
 		{".smbin", Resource::Type::StateMachine},
 		{".navmesshi", Resource::Type::NavMesh},
-		{".mat", Resource::Type::Material}
+		{".mat", Resource::Type::Material},
+		{".hdr", Resource::Type::IBL}
 
 		// Add more mappings for other resource types as needed
 	};
