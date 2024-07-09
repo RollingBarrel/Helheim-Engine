@@ -27,7 +27,7 @@
 
 #include "SDL.h"
 #include "glew.h"
-
+#include <random>
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -340,6 +340,51 @@ bool ModuleOpenGL::Init()
 	glUniform2ui(4, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 
+
+	//SSAO
+	const unsigned int randomTangentRows = 10;
+	const unsigned int randomTangentCols = 10;
+	float3 randomTangents[randomTangentRows][randomTangentCols];
+
+	//Generating random tangents
+	std::uniform_real_distribution<float> randoms(0.0f, 1.0f);
+	std::default_random_engine generator;
+	for (unsigned int i = 0; i < randomTangentRows; ++i)
+	{
+		for (unsigned int j = 0; j < randomTangentCols; ++j)
+		{
+			float3 dir;
+			dir.x = randoms(generator) * 2.0f - 1.0f;
+			dir.y = randoms(generator) * 2.0f - 1.0f;
+			dir.z = 0.0f;
+			dir.Normalize();
+			randomTangents[i][j] = dir;
+		}
+	}
+	const unsigned int kernelSize = 24;
+	float3 kernel[kernelSize];
+	//Generating kernels
+	for (unsigned int i = 0; i < kernelSize; ++i)
+	{
+
+		float3 dir;
+		dir.x = randoms(generator) * 2.0f - 1.0f;
+		dir.y = randoms(generator) * 2.0f - 1.0f;
+		dir.z = randoms(generator);
+		dir.Normalize();
+		dir *= randoms(generator); // random size
+		float scale = float(i) / float(kernelSize);
+		scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
+		dir *= scale;
+		kernel[i] = dir;
+	}
+
+	glUseProgram(mSSAOPassProgramId);
+	
+	glUniform3fv(0, randomTangentRows*randomTangentCols, randomTangents[0][0].ptr());
+	glUniform3fv(1, kernelSize, kernel[0].ptr());
+	glUseProgram(0);
+
 	return true;
 }
 
@@ -512,6 +557,9 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
+	glUseProgram(mSSAOPassProgramId);
+	glUniform2ui(5, width, height);
+	glUseProgram(0);
 }
 
 void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int screenHeight)
@@ -1329,6 +1377,10 @@ void ModuleOpenGL::Draw()
 	glDrawBuffers(1, &ssaoColBuff);
 	glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mSSAOPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
