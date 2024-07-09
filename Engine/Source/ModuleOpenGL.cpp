@@ -382,7 +382,7 @@ bool ModuleOpenGL::Init()
 	glUseProgram(mSSAOPassProgramId);
 	
 	glUniform3fv(0, randomTangentRows*randomTangentCols, randomTangents[0][0].ptr());
-	glUniform3fv(1, kernelSize, kernel[0].ptr());
+	glUniform3fv(glGetUniformLocation(mSSAOPassProgramId,"kernelSamples"), kernelSize, kernel[0].ptr());
 	glUseProgram(0);
 
 	return true;
@@ -558,7 +558,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
 	glUseProgram(mSSAOPassProgramId);
-	glUniform2ui(5, width, height);
+	glUniform2ui(glGetUniformLocation(mSSAOPassProgramId, "screenSize"), width, height);
 	glUseProgram(0);
 }
 

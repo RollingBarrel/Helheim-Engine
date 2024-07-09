@@ -17,10 +17,10 @@ layout(binding = 0) uniform sampler2D positions;
 layout(binding = 1) uniform sampler2D normals;
 
 
+layout(location=0) uniform vec3 randomTangents [10][10];
+uniform vec3 kernelSamples[KERNEL_SIZE];
+uniform uvec2 screenSize;
 
-layout(location=1) uniform vec3 kernel_samples[KERNEL_SIZE];
-layout(location=5) uniform uvec2 screenSize;
-layout(location=0) uniform vec3 randomTangents [TANGENT_ROWS][TANGENT_COLS];
 
 
 mat3 createTangentSpace(const vec3 normal, const vec3 up)
@@ -37,9 +37,20 @@ vec3 getRandomTangent()
 	return randomTangents[index.x][index.y];
 }
 
+float getSceneDepthAtSamplePos(in vec3 samplePos)
+{
+vec4 clippingSpace = proj*vec4(samplePos, 1.0);
+vec2 sampleUV = (clippingSpace.xy/clippingSpace.w)*0.5+0.5;
+return (view*texture(positions, sampleUV)).z;
+}
+
 void main()
 {
 	vec3 position = (view* vec4(texture(positions, uv).xyz,1.0)).xyz;
 	vec3 normal = mat3(view)*normalize(texture(normals, uv).xyz);
 	mat3 tangent_space = createTangentSpace(normal, getRandomTangent());
+	for(int i=0; i< KERNEL_SIZE; ++i)
+	{
+		vec3 sample = position+tangent_space*kernel_samples[i];
+	}
 }
