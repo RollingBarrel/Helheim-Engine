@@ -1,6 +1,6 @@
 #version 460 core
 
-out vec4 color;
+out float color;
 in vec2 uv;
 //uniform sampler2D positions;
 //uniform sampler2D normals;
@@ -8,5 +8,6 @@ in vec2 uv;
 
 void main()
 {
-color = vec4(0.0f, 1.0f, 0.0f, 1.0f);
+	
+	color = 0.0f + gl_FragCoord.x / 500 ;
 }

@@ -1185,24 +1185,6 @@ void ModuleOpenGL::Draw()
 	glPopDebugGroup();
 
 
-
-
-	//SSAO Pass
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SSAO Pass");
-	GLenum ssaoColBuff =  GL_COLOR_ATTACHMENT5;
-	glDrawBuffers(1, &ssaoColBuff);
-	glDisable(GL_STENCIL_TEST);
-	glDepthMask(0x00);
-	glBindVertexArray(mEmptyVAO);
-	glUseProgram(mSSAOPassProgramId);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glPopDebugGroup();
-
-
-
-
-
-
 	//Decal Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "DecalPass");
 
@@ -1338,6 +1320,20 @@ void ModuleOpenGL::Draw()
 
 	glBindVertexArray(0);
 	glUseProgram(0);
+	glPopDebugGroup();
+
+
+	//SSAO Pass
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SSAO Pass");
+	GLenum ssaoColBuff = GL_COLOR_ATTACHMENT5;
+	glDrawBuffers(1, &ssaoColBuff);
+	glDisable(GL_STENCIL_TEST);
+	glDepthMask(0x00);
+	glBindVertexArray(mEmptyVAO);
+	glUseProgram(mSSAOPassProgramId);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDepthMask(0xFF);
+	glEnable(GL_STENCIL_TEST);
 	glPopDebugGroup();
 
 	const GLenum att2[] = { GL_COLOR_ATTACHMENT6 };
