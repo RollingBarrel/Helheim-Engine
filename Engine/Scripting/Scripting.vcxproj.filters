@@ -181,6 +181,12 @@
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="EnemyBoss.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="BombBoss.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -319,6 +325,12 @@
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="TimerScript.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BombBoss.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyBoss.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

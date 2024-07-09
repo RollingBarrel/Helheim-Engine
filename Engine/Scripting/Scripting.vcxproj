@@ -212,6 +212,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
+    <ClInclude Include="BombBoss.h" />
+    <ClInclude Include="EnemyBoss.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
@@ -222,10 +224,12 @@
     <ClCompile Include="AimState.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="BombBoss.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="BulletEnemy.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyBoss.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyPool.cpp" />
     <ClCompile Include="EnemyRobot.cpp" />
