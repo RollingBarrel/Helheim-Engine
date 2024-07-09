@@ -50,12 +50,14 @@ void MaskComponent::Save(JsonObject& obj) const
 {
     Component::Save(obj);
     obj.AddBool("DrawMask", mDrawMask);
+    obj.AddInt("MaskingMode", (int)mMaskingMode);
 }
 
 void MaskComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
     Component::Load(data, uidPointerMap);
     mDrawMask = data.GetBool("DrawMask");
+    mMaskingMode = (MaskingMode)data.GetInt("MaskingMode");
 }
 
 void MaskComponent::UpdateMaskToChilds()
