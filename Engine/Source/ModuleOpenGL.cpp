@@ -736,6 +736,11 @@ void ModuleOpenGL::SetSkybox(unsigned int uid)
 
 }
 
+unsigned int ModuleOpenGL::GetSkyboxID() const
+{
+	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
+}
+
 void ModuleOpenGL::InitDecals()
 {
 	float decalsVertices[] = {

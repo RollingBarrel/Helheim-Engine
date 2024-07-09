@@ -130,7 +130,7 @@ public:
 
 	//void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
 	void SetSkybox(unsigned int uid);
-	unsigned int GetSkyboxID() const { return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0; };
+	inline unsigned int GetSkyboxID() const;
 	unsigned int GetSkyboxVAO() const { return mSkyVao; }
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
