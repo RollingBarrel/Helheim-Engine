@@ -7,10 +7,21 @@ out vec2 TexCoords;
 out vec4 VertexColor;
 
 uniform mat4 viewProj;
+uniform float minDist;
+uniform float maxDist;
+uniform int isUVScrolling;
 
 void main()
 {
-    TexCoords = texCoord;
+    if (isUVScrolling > 1) 
+    {
+        TexCoords = texCoord;
+    }
+    else 
+    {
+        TexCoords = vec2((texCoord.x-minDist)/(maxDist-minDist),texCoord.y);
+    }
+    // TexCoords = texCoord;
     VertexColor = color;
     gl_Position = viewProj * vec4(vertex, 1.0);
 }

@@ -46,7 +46,6 @@ Component* TrailComponent::Clone(GameObject* owner) const
 void TrailComponent::Init()
 {
     mPoints.clear();
-    AddFirstTrailPoint();
 
     SetImage(mResourceId);
 
@@ -58,13 +57,13 @@ void TrailComponent::Init()
 
     // Enable the attribute for vertex positions
     glEnableVertexAttribArray(POSITION_LOCATION);
-    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)0);
+    glVertexAttribPointer(POSITION_LOCATION, 3, GL_FLOAT, GL_FALSE, VBO_FLOAT_SIZE * sizeof(float), (void*)0);
     // Enable the attribute for texture coordinates
     glEnableVertexAttribArray(TEXCOORD_LOCATION);
-    glVertexAttribPointer(TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(TEXCOORD_LOCATION, 2, GL_FLOAT, GL_FALSE, VBO_FLOAT_SIZE * sizeof(float), (void*)(3 * sizeof(float)));
     // Enable the attribute for vertex color
     glEnableVertexAttribArray(COLOR_LOCATION);
-    glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, 9 * sizeof(float), (void*)(5 * sizeof(float)));
+    glVertexAttribPointer(COLOR_LOCATION, 4, GL_FLOAT, GL_FALSE, VBO_FLOAT_SIZE * sizeof(float), (void*)(5 * sizeof(float)));
 
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -79,9 +78,6 @@ void TrailComponent::Draw() const
     unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
     const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
     float4x4 projection = cam->GetViewProjectionMatrix();
-    float3 norm = cam->GetFrustum().front;
-
-    std::vector<float> distances = CalculateDistances();
 
     SetupOpenGLState();
 
@@ -89,6 +85,35 @@ void TrailComponent::Draw() const
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
     glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
 
+    glBindVertexArray(mVAO);
+    glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
+    glUniform1f(glGetUniformLocation(programId, "minDist"), mMinDist);
+    glUniform1f(glGetUniformLocation(programId, "maxDist"), mMaxDist);
+    glUniform1i(glGetUniformLocation(programId, "isUVScrolling"), mIsUVScrolling);
+
+    glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
+    glBindTexture(GL_TEXTURE_2D, 0);
+    glBindVertexArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glUseProgram(0);
+
+    ResetOpenGLState();
+}
+
+void TrailComponent::UpdateTrailBuffer()
+{
+    unsigned int programId = App->GetOpenGL()->GetTrailProgramId();
+    const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
+    float3 norm = cam->GetFrustum().front;
+
+    std::vector<float> distances = CalculateDistances();
+
+    mMinDist = distances[0];
+    mMaxDist = distances[distances.size() - 1];
+    glUseProgram(programId);
+    glBindBuffer(GL_ARRAY_BUFFER, mVBO);
+    glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     std::byte* ptr = reinterpret_cast<std::byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
     float3 direction;
@@ -113,16 +138,7 @@ void TrailComponent::Draw() const
     }
 
     glUnmapBuffer(GL_ARRAY_BUFFER);
-    glBindVertexArray(mVAO);
-    glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
-    glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
-    glBindTexture(GL_TEXTURE_2D, 0);
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glUseProgram(0);
 
-    ResetOpenGLState();
 }
 
 std::vector<float> TrailComponent::CalculateDistances() const
@@ -197,24 +213,16 @@ float3 TrailComponent::CalculateDirection(int i, const float3& position, const f
 
 void TrailComponent::CalculateTexCoords(int i, float deltaPos, float2& topPointTexCoord, float2& botPointTexCoord) const
 {
-    if (mIsUVScrolling)
+    if (i == 0)
     {
-        if (i == 0)
-        {
-            float dist = mPoints[0].mDistanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].mPosition) * mUVScroll;
-            topPointTexCoord = float2(dist, 1);
-            botPointTexCoord = float2(dist, 0);
-        }
-        else
-        {
-            topPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 1);
-            botPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 0);
-        }
+        float dist = mPoints[0].mDistanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].mPosition) * mUVScroll;
+        topPointTexCoord = float2(dist, 1);
+        botPointTexCoord = float2(dist, 0);
     }
     else
     {
-        topPointTexCoord = float2(deltaPos, 1);
-        botPointTexCoord = float2(deltaPos, 0);
+        topPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 1);
+        botPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 0);
     }
 }
 
@@ -232,20 +240,27 @@ void TrailComponent::Update()
 {
     if (IsEnabled())
     {
-        float3 position = mOwner->GetWorldPosition();
-        Quat rotationQ = mOwner->GetWorldRotation();
-        const float3 lastPosition = mPoints.begin()->mPosition;
-
-        const float dposition = position.DistanceSq(lastPosition);
-        if (mPoints.size() <= 1 || dposition >= mMinDistance && mPoints.size() < mMaxPoints)
+        if (mPoints.size() == 0)
         {
             AddFirstTrailPoint();
         }
-
-        mTrailTime += App->GetDt();
-        if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().mCreationTime) >= mMaxLifeTime)
+        else
         {
-            RemoveLastTrailPoint();
+            float3 position = mOwner->GetWorldPosition();
+            Quat rotationQ = mOwner->GetWorldRotation();
+            const float3 lastPosition = mPoints.begin()->mPosition;
+
+            const float dposition = position.DistanceSq(lastPosition);
+            if (dposition >= mMinDistance && mPoints.size() < mMaxPoints)
+            {
+                AddFirstTrailPoint();
+            }
+
+            mTrailTime += App->GetDt();
+            if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().mCreationTime) >= mMaxLifeTime)
+            {
+                RemoveLastTrailPoint();
+            }
         }
     }
 }
@@ -297,6 +312,7 @@ void TrailComponent::AddFirstTrailPoint()
         distUV = 0.0f;
     }
     mPoints.push_front(TrailPoint({ position, rotation, mTrailTime, distUV }));
+    UpdateTrailBuffer();
 }
 
 void TrailComponent::RemoveLastTrailPoint()

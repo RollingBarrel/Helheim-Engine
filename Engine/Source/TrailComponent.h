@@ -44,6 +44,7 @@ public:
 
 private:
     std::vector<float> CalculateDistances() const;
+	void UpdateTrailBuffer();
     void SetupOpenGLState() const;
     void ResetOpenGLState() const;
     float CalculateDeltaPos(int i, const std::vector<float>& distances) const;
@@ -68,6 +69,9 @@ private:
 	float3 mDirection = float3::unitY; // Fixed direction for the normal of the trailPoints
 	float mTrailTime = 0.0f;
 	bool mFixedDirection = false;
+
+	float mMinDist = 0.0f;
+	float mMaxDist = 0.0f;
 
 	bool mIsUVScrolling = true;
 	float mUVScroll = 1.0f;
