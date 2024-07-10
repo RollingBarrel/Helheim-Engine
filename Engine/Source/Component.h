@@ -20,7 +20,7 @@ public:
 	Component(GameObject* owner, ComponentType type);
 	virtual ~Component() {}
 
-	virtual	void Update() = 0;
+	virtual	void Update() {}
 	
 	virtual Component* Clone(GameObject* owner) const = 0;
 
@@ -39,7 +39,7 @@ public:
 	void SetEnable(bool enable);
 
 protected:
-	virtual	void Reset() = 0;
+	virtual	void Reset() {}
 	GameObject* mOwner = nullptr;
 private:
 	bool mIsEnabled = true;

@@ -31,6 +31,25 @@ EnemyRobotMelee::EnemyRobotMelee(GameObject* owner) : Enemy(owner)
 {
 }
 
+void EnemyRobotMelee::Start()
+{
+    Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(true);
+
+    }
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+}
 
 void EnemyRobotMelee::Update()
 {
@@ -60,27 +79,6 @@ void EnemyRobotMelee::Update()
 
     mBeAttracted = false;
 }
-
-void EnemyRobotMelee::Start()
-{
-    Enemy::Start();
-
-    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
-
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->SetIsPlaying(true);
-
-    }
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
-    }
-}
-
 
 void EnemyRobotMelee::Idle()
 {
