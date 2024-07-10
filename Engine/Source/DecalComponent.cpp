@@ -19,10 +19,18 @@ DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentTy
 }
 
 DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL), 
-mDiffuseName(other.mDiffuseName), mDiffuseTexture(other.mDiffuseTexture), mSpecularName(other.mSpecularName), mSpecularTexture(other.mSpecularTexture),
-mNormalName(other.mNormalName), mNormalTexture(other.mNormalTexture), mEmisiveName(other.mEmisiveName), mEmisiveTexture(other.mEmisiveTexture),
+mDiffuseName(other.mDiffuseName), mSpecularName(other.mSpecularName),
+mNormalName(other.mNormalName), mEmisiveName(other.mEmisiveName),
 mDiffuseColor(other.mDiffuseColor), mEmisiveColor(other.mEmisiveColor)
 {
+	if(other.mDiffuseTexture)
+		App->GetResource()->RequestResource(other.mDiffuseTexture->GetUID(), Resource::Type::Texture);
+	if (other.mSpecularTexture)
+		App->GetResource()->RequestResource(other.mSpecularTexture->GetUID(), Resource::Type::Texture);
+	if (other.mNormalTexture)
+		App->GetResource()->RequestResource(other.mNormalTexture->GetUID(), Resource::Type::Texture);
+	if (other.mEmisiveTexture)
+		App->GetResource()->RequestResource(other.mEmisiveTexture->GetUID(), Resource::Type::Texture);
 	if (IsEnabled())
 	{
 		App->GetOpenGL()->AddDecal(*this);

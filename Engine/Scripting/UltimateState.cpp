@@ -31,7 +31,7 @@ void UltimateState::Enter()
 {
 	//mPlayerController->SetUltimateResource(0);
 	mPlayerController->EnableUltimate(true);
-	//mPlayerController->SetMovementSpeed(0.0f);
+	mPlayerController->SetMovementSpeed(0.0f);
 }
 
 void UltimateState::Exit()
