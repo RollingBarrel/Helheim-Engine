@@ -394,7 +394,7 @@ const char* ModuleFileSystem::GetFileExtensionFromPath(const char* path) const
 void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::string* extension) const
 {
     std::string tempPath = path;
-    NormalizePath(tempPath.data());
+    //NormalizePath(tempPath.data());
 
     unsigned int lastSlashPos = tempPath.find_last_of('/');
     unsigned int dotPos = tempPath.find_last_of('.');

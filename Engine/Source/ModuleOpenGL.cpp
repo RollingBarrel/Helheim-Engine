@@ -74,7 +74,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	//LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -153,14 +153,19 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGNormals);
 	glGenTextures(1, &mGColDepth);
 	glGenTextures(1, &mGEmissive);
+	glGenTextures(1, &mGBufferDepth);
 	glGenTextures(1, &mGDepth);
 	glGenTextures(1, &mGPosition);
 
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glBindTexture(GL_TEXTURE_2D, mGBufferDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGBufferDepth, 0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RED, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -188,9 +193,10 @@ bool ModuleOpenGL::Init()
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPosition, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, mGDepth, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT6, GL_TEXTURE_2D, sceneTexture, 0);
 	
-	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
+	const GLenum att2[] = { GL_COLOR_ATTACHMENT6 };
 	glDrawBuffers(1, att2);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -337,10 +343,10 @@ bool ModuleOpenGL::Init()
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
-	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(6, colBuff);
+	GLenum colBuff[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6 };
+	glDrawBuffers(7, colBuff);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	GLenum colBuff2[] = { GL_COLOR_ATTACHMENT5 };
+	GLenum colBuff2[] = { GL_COLOR_ATTACHMENT6 };
 	glDrawBuffers(1, colBuff2);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
@@ -561,8 +567,10 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glBindTexture(GL_TEXTURE_2D, mGBufferDepth);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -935,14 +943,24 @@ void ModuleOpenGL::Draw()
 	//GaometryPass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GeometryPass");
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
-	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(5, colBuff);
+	GLenum colBuff[7] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5, GL_COLOR_ATTACHMENT6 };
+	glDrawBuffers(6, colBuff);
 	glDisable(GL_BLEND);
 	glEnable(GL_STENCIL_TEST);
 	glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	glStencilMask(0xFF);
 	mBatchManager.Draw(mPbrGeoPassProgramId, App->GetCamera()->GetCurrentCamera()->GetFrustum());
+	glPopDebugGroup();
+
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
+	//Light lists
+	glUseProgram(mTileLightCullingProgramId);
+	glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, mGBufferDepth);
+	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY, 1);
+	glUseProgram(0);
 	glPopDebugGroup();
 
 	//Decal Pass
@@ -1082,16 +1100,8 @@ void ModuleOpenGL::Draw()
 	glUseProgram(0);
 	glPopDebugGroup();
 
-	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
+	const GLenum att2[] = { GL_COLOR_ATTACHMENT6 };
 	glDrawBuffers(1, att2);
-
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
-	//Light lists
-	glUseProgram(mTileLightCullingProgramId);
-	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY, 1);
-	glUseProgram(0);
-	glPopDebugGroup();
 
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
