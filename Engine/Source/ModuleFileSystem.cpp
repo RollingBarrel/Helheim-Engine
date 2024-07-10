@@ -394,16 +394,15 @@ const char* ModuleFileSystem::GetFileExtensionFromPath(const char* path) const
 void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::string* extension) const
 {
     std::string tempPath = path;
-    //NormalizePath(tempPath.data());
 
     unsigned int lastSlashPos = tempPath.find_last_of('/');
-    unsigned int dotPos = tempPath.find_last_of('.');
+    unsigned int dotPos = (lastSlashPos != std::string::npos) ? tempPath.find_last_of('.', lastSlashPos) : std::string::npos;
 
     if(file != nullptr)
-        *file = (lastSlashPos < tempPath.length()) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
+        *file = (lastSlashPos != std::string::npos) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
 
-    if(extension != nullptr)
-        *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
+    if(extension != nullptr && dotPos != std::string::npos)
+        *extension = tempPath.substr(dotPos);
 }
 
 void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const
