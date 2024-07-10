@@ -26,7 +26,7 @@ private:
 	int mMaxSimulNumEnemies = 0;
 	int mCurrentEnemies = 0;
 	int mTotalNumEnemies = 0;
-	bool mIsActive = false;
+	bool mHasBeenActivated = false;
 	GameObject* mSpawnerGO1 = nullptr;
 	GameObject* mSpawnerGO2 = nullptr;
 	GameObject* mSpawnerGO3 = nullptr;

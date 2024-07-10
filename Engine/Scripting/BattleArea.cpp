@@ -62,7 +62,7 @@ void BattleArea::Start()
 
 void BattleArea::Update()
 {
-	if (mIsActive && mTotalNumEnemies > 0)
+	if (mHasBeenActivated && mTotalNumEnemies > 0)
 	{
 		if (mEnemySpawner1 && mCurrentEnemies < mMaxSimulNumEnemies)
 		{
@@ -102,6 +102,7 @@ void BattleArea::EnemyDestroyed()
 	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0)
 	{
 		ActivateArea(false);
+		mGameObject->SetEnabled(false);
 		return;
 	}
 	//LOG("REMAINING ENEMIES: %i", mTotalNumEnemies);
@@ -112,7 +113,6 @@ inline void BattleArea::ActivateArea(bool activate)
 
 	CloseDoors(activate);
 
-	mIsActive = activate;
 	if (mEnemySpawner1)
 	{
 		mEnemySpawner1->Active(activate);
@@ -141,8 +141,9 @@ inline void BattleArea::ActivateArea(bool activate)
 
 void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
-	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mIsActive)
+	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mHasBeenActivated)
 	{
+		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
@@ -162,7 +163,6 @@ void BattleArea::CloseDoors(bool close)
 			doorAnimation1->SendTrigger(trigger, 0.6f);
 			
 		}
-
 
 		BoxColliderComponent* door1Collider = reinterpret_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
 		if (door1Collider)
