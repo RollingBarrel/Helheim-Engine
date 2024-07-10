@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
@@ -167,6 +168,15 @@ void GameObject::SetTag(const std::string& tag)
 	App->GetScene()->DeleteFromTagMap(mTag, this);
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
+}
+
+void GameObject::SetDynamic(bool dynamic)
+{
+	mIsDynamic = dynamic;
+	for (GameObject* child : mChildren)
+	{
+		child->SetDynamic(dynamic);
+	}
 }
 
 void GameObject::SetParent(GameObject* newParent)
