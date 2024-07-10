@@ -16169,6 +16169,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 1659583099
+        "NavMeshResource": 1659583099,
+        "SkyBoxResource": 458087203
     }
 }
