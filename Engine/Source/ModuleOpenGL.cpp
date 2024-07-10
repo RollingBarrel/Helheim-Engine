@@ -342,8 +342,8 @@ bool ModuleOpenGL::Init()
 
 
 	//SSAO
-	const unsigned int randomTangentRows = 10;
-	const unsigned int randomTangentCols = 10;
+	const unsigned int randomTangentRows = 2;
+	const unsigned int randomTangentCols = 2;
 	float3 randomTangents[randomTangentRows][randomTangentCols];
 
 	//Generating random tangents
@@ -364,6 +364,7 @@ bool ModuleOpenGL::Init()
 	const unsigned int kernelSize = 24;
 	float3 kernel[kernelSize];
 	//Generating kernels
+
 	for (unsigned int i = 0; i < kernelSize; ++i)
 	{
 
@@ -657,7 +658,9 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGSSAO);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	//VOLVER A PONER EL RED
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	
 	
