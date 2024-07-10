@@ -97,6 +97,7 @@ public:
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetUIMaskProgramId() const { return mUIMaskProgramId; }
 	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
 	unsigned int GetEnvironmentProgramId() const { return mEnvironmentProgramId; }
 	unsigned int GetIrradianceProgramId() const { return mIrradianceProgramId; }
@@ -185,6 +186,7 @@ private:
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
+	unsigned int mUIMaskProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;

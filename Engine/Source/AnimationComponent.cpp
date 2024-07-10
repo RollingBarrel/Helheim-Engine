@@ -251,6 +251,18 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 
 }
 
+
+bool AnimationComponent::HasCurrentStateFinished(float deltaTime = 0.01f)
+{
+	if (mController->GetLoop())
+	{
+		return false;
+	}
+	float timeDiff = mController->GetAnimationCurrentTime() - mController->GetEndTime();
+	timeDiff = timeDiff > 0 ? timeDiff : -timeDiff;
+	return timeDiff<deltaTime;
+}
+
 std::string AnimationComponent::GetCurrentSpineStateName()
 {
 	//Changed from !mHasSpine to mHasSpine
@@ -325,6 +337,22 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 
 		}
 	}
+}
+
+
+bool AnimationComponent::HasCurrentSpineStateFinished(float deltaTime = 0.01f)
+{
+	if (!mHasSpine)
+	{
+		return false;
+	}
+	if (mSpineController->GetLoop())
+	{
+		return false;
+	}
+	float timeDiff = mSpineController->GetAnimationCurrentTime() - mSpineController->GetEndTime();
+	timeDiff = timeDiff > 0 ? timeDiff : -timeDiff;
+	return timeDiff < deltaTime;
 }
 
 

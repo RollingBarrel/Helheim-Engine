@@ -29,6 +29,7 @@
 #include "CameraComponent.h"
 #include "AIAGentComponent.h"
 #include "ImageComponent.h"
+#include "MaskComponent.h"
 #include "CanvasComponent.h"
 #include "ButtonComponent.h"
 #include "AudioSourceComponent.h"
@@ -486,6 +487,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					break;
 				case ComponentType::IMAGE:
 					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					break;
+				case ComponentType::MASK:
+					DrawMaskComponent(reinterpret_cast<MaskComponent*>(component));
 					break;
 				case ComponentType::CANVAS:
 					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
@@ -1246,11 +1250,11 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 		int rows = imageComponent->GetRows();
 		ImGui::InputInt("Columns", &columns);
 		ImGui::InputInt("Rows", &rows);
-		if (columns <= 0) 
+		if (columns <= 0)
 		{
 			columns = 1;
 		}
-		if (rows <= 0) 
+		if (rows <= 0)
 		{
 			rows = 1;
 		}
@@ -1294,7 +1298,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 				float sliceWidth = 1.0f / columns;
 				float sliceHeight = 1.0f / rows;
 				ImVec2 sliceSize(50, 50);
-				
+
 				for (int row = 0; row < rows; ++row)
 				{
 					for (int col = 0; col < columns; ++col)
@@ -1318,6 +1322,50 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 					}
 				}
 			}
+		}
+	}
+
+	// Maskable checkbox
+	bool maskable = imageComponent->GetIsMaskable();
+	if (ImGui::Checkbox("Maskable", &maskable))
+	{
+		imageComponent->SetMaskable(maskable);
+	}
+}
+
+void InspectorPanel::DrawMaskComponent(MaskComponent* component)
+{
+	if (component->GetMask() == nullptr)
+		ImGui::Text("No image component attached");
+	else
+	{
+		ImGui::Text("Has Image attached");
+
+		bool drawMask = component->GetDrawMask();
+		if (ImGui::Checkbox("Show Mask Graphic", &drawMask))
+		{
+			component->SetDrawMask(drawMask);
+		}
+
+		const char* maskingModes[] = { "Normal", "Inverse" };
+		int currentMode = static_cast<int>(component->GetMaskingMode());
+
+		if (ImGui::BeginCombo("Masking Mode", maskingModes[currentMode]))
+		{
+			for (int i = 0; i < IM_ARRAYSIZE(maskingModes); i++)
+			{
+				bool isSelected = (currentMode == i);
+				if (ImGui::Selectable(maskingModes[i], isSelected))
+				{
+					component->SetMaskingMode(static_cast<MaskComponent::MaskingMode>(i));
+				}
+
+				if (isSelected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
 		}
 	}
 }
