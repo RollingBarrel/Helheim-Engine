@@ -21,6 +21,7 @@
 #include "Transform2DComponent.h"
 #include "CameraComponent.h"
 #include "ButtonComponent.h"
+#include "MaskComponent.h"
 
 #include "Math/TransformOps.h"
 
@@ -30,7 +31,25 @@ ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner
 	CreateVAO();
 	SetImage(mResourceId);
 
-	mCanvas = (CanvasComponent*)(FindCanvasOnParents(GetOwner())->GetComponent(ComponentType::CANVAS));
+	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+
+	GameObject* parent = GetOwner()->GetParent();
+	if (parent != nullptr)
+	{
+		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+	}
+	if (mMaskComponent != nullptr)
+	{
+		mMask = mMaskComponent->GetMask();
+	}
+
+	//If the object has a mask component, set this image as the mask
+	Component* mask = owner->GetComponent(ComponentType::MASK);
+	if (mask != nullptr)
+	{
+		static_cast<MaskComponent*>(mask)->SetMask(this);
+	}
 }
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
@@ -38,13 +57,34 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 	FillVBO();
 	CreateVAO();
 
-    SetImage(mResourceId);
-	GameObject* canvas = FindCanvasOnParents(GetOwner());
-	if (canvas!= nullptr)
-	mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	SetImage(mResourceId);
+	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
+	if (canvas != nullptr)
+	{
+		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	}
+
+	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+
+	GameObject* parent = GetOwner()->GetParent();
+	if (parent != nullptr)
+	{
+		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+	}
+	if (mMaskComponent != nullptr)
+	{
+		mMask = mMaskComponent->GetMask();
+	}
+
+	//If the object has a mask component, set this image as the mask
+	Component* mask = owner->GetComponent(ComponentType::MASK);
+	if (mask != nullptr)
+	{
+		static_cast<MaskComponent*>(mask)->SetMask(this);
+	}
 
 	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
-	if (component != nullptr) 
+	if (component != nullptr)
 	{
 		component->AddEventHandler(EventType::PRESS, std::bind(&ImageComponent::OnPress, this));
 		component->AddEventHandler(EventType::HOVER, std::bind(&ImageComponent::OnHover, this));
@@ -58,6 +98,8 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	CreateVAO();
 
 	SetImage(original.mResourceId);
+	mMask = original.mMask;
+	mMaskComponent = original.mMaskComponent;
 	mResourceId = original.mResourceId;
 	SetImage(mResourceId);
 	mFileName = original.mFileName;
@@ -69,15 +111,31 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	mHasDiffuse = original.mHasDiffuse;
 	mMantainRatio = original.mMantainRatio;
 
+	mShouldDraw = original.mShouldDraw;
+	mIsMaskable = original.mIsMaskable;
+
 	//mQuadVBO = original.mQuadVBO;
 	//mQuadVAO = original.mQuadVAO;
 
+	mIsSpritesheet = original.mIsSpritesheet;
+	mColumns = original.mColumns;
+	mRows = original.mRows;
+	mCurrentFrame = original.mCurrentFrame;
+	mElapsedTime = original.mElapsedTime;
+	mFPS = original.mFPS;
+	mIsPlaying = original.mIsPlaying;
+
+	mTransform = original.mTransform;
 	//mCanvas = original.mCanvas;
 	GameObject* canvas = FindCanvasOnParents(GetOwner());
 	if (canvas != nullptr)
+	{
 		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	}
 	else
+	{
 		canvas = nullptr;
+	}
 }
 
 ImageComponent:: ~ImageComponent() 
@@ -89,6 +147,7 @@ ImageComponent:: ~ImageComponent()
 	{
 		App->GetResource()->ReleaseResource(mImage->GetUID());
 	}
+	mTransform = nullptr;
 
 	App->GetResource()->ReleaseResource(mResourceId);
 }
@@ -116,12 +175,40 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 { 
+	if (mIsMaskable)
+	{
+		glEnable(GL_STENCIL_TEST);
+
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		glStencilMask(0xFF);
+		glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+		mMask->RenderMask();
+
+		switch (mMaskComponent->GetMaskingMode())
+		{
+		case MaskComponent::MaskingMode::Normal:
+		{
+			glStencilFunc(GL_EQUAL, 1, 0xFF);
+			break;
+		}
+		case MaskComponent::MaskingMode::Inverse:
+		{
+			glStencilFunc(GL_NOTEQUAL, 1, 0xFF);
+			break;
+		}
+		}
+		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+	}
+
 	if (mIsSpritesheet)
 	{
 		FillSpriteSheetVBO();
 		CreateVAO();
 	}
-	if (mImage && mCanvas)
+
+	if (mImage && mCanvas && mShouldDraw)
 	{
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
 		if (UIImageProgram == 0) return;
@@ -139,83 +226,82 @@ void ImageComponent::Draw()
 		switch (mCanvas->GetRenderSpace())
 		{
 		case RenderSpace::Screen: //Ortographic Mode
+		{
+			Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+			if (component != nullptr)
 			{
-				Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-				if (component != nullptr)
-				{
-					model = component->GetGlobalMatrix();
+				model = component->GetGlobalMatrix();
 
-					//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
-					float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+				//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
-					model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
 
-				}
-				glEnable(GL_CULL_FACE);
-				break;
 			}
+			glEnable(GL_CULL_FACE);
+			break;
+		}
 		case RenderSpace::World: //World Mode
-			{
-				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		{
+			const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-				proj = camera->GetProjectionMatrix();
-				model = GetOwner()->GetWorldTransform();
-				view = camera->GetViewMatrix();
-				glDisable(GL_CULL_FACE);
-				break;
-			}
+			proj = camera->GetProjectionMatrix();
+			model = GetOwner()->GetWorldTransform();
+			view = camera->GetViewMatrix();
+			glDisable(GL_CULL_FACE);
+			break;
+		}
 		case RenderSpace::Billboard: //World Mode aligned to the camera
-			{
-				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		{
+			const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-				proj = camera->GetProjectionMatrix();
-				view = camera->GetViewMatrix();
-				float3 pos = GetOwner()->GetWorldPosition();
-				float3 scale = GetOwner()->GetWorldScale();
-				float3x3 scaleMatrix = float3x3::identity;
-				scaleMatrix[0][0] = scale.x;
-				scaleMatrix[1][1] = scale.y;
-				scaleMatrix[2][2] = scale.z;
+			proj = camera->GetProjectionMatrix();
+			view = camera->GetViewMatrix();
+			float3 pos = GetOwner()->GetWorldPosition();
+			float3 scale = GetOwner()->GetWorldScale();
+			float3x3 scaleMatrix = float3x3::identity;
+			scaleMatrix[0][0] = scale.x;
+			scaleMatrix[1][1] = scale.y;
+			scaleMatrix[2][2] = scale.z;
 
-				float3 norm = camera->GetFrustum().front;
-				float3 up = camera->GetFrustum().up;
-				float3 right = -up.Cross(norm).Normalized();
-				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
-				model = model * scaleMatrix;
-				//model.Transpose();
+			float3 norm = camera->GetFrustum().front;
+			float3 up = camera->GetFrustum().up;
+			float3 right = -up.Cross(norm).Normalized();
+			model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+			model = model * scaleMatrix;
+			//model.Transpose();
 
-				glDisable(GL_CULL_FACE);
-				break;
-			}
+			glDisable(GL_CULL_FACE);
+			break;
+		}
 		case RenderSpace::WorldAxisBillboard: //World Mode aligned to the camera
-			{
-				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
+		{
+			const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 
-				proj = camera->GetProjectionMatrix();
-				view = camera->GetViewMatrix();
-				float3 pos = GetOwner()->GetWorldPosition();
-				float3 scale = GetOwner()->GetWorldScale();
-				float3x3 scaleMatrix = float3x3::identity;
-				scaleMatrix[0][0] = scale.x;
-				scaleMatrix[1][1] = scale.y;
-				scaleMatrix[2][2] = scale.z;
+			proj = camera->GetProjectionMatrix();
+			view = camera->GetViewMatrix();
+			float3 pos = GetOwner()->GetWorldPosition();
+			float3 scale = GetOwner()->GetWorldScale();
+			float3x3 scaleMatrix = float3x3::identity;
+			scaleMatrix[0][0] = scale.x;
+			scaleMatrix[1][1] = scale.y;
+			scaleMatrix[2][2] = scale.z;
 
-				float3 norm = (pos - camera->GetFrustum().pos).Normalized();
-				float3 up = float3::unitY;
-				float3 right = -up.Cross(norm).Normalized();
-				norm = up.Cross(right).Normalized();
-				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
-				model = model * scaleMatrix;
-				//model.Transpose();
+			float3 norm = (pos - camera->GetFrustum().pos).Normalized();
+			float3 up = float3::unitY;
+			float3 right = -up.Cross(norm).Normalized();
+			norm = up.Cross(right).Normalized();
+			model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+			model = model * scaleMatrix;
+			//model.Transpose();
 
-				glDisable(GL_CULL_FACE);
-				break;
-			}
+			glDisable(GL_CULL_FACE);
+			break;
+		}
 		}
 
 
 		glBindVertexArray(mQuadVAO);
-
 
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
@@ -223,6 +309,7 @@ void ImageComponent::Draw()
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+		glUniform1i(glGetUniformLocation(UIImageProgram, "Texture"), 0);
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
@@ -239,6 +326,7 @@ void ImageComponent::Draw()
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
 	}
+	if (mIsMaskable) glDisable(GL_STENCIL_TEST);
 }
 
 Component* ImageComponent::Clone(GameObject* owner) const
@@ -276,6 +364,8 @@ void ImageComponent::Save(JsonObject& obj) const
 	obj.AddInt("ImageID", mImage->GetUID());
 	obj.AddFloats("Color", mColor.ptr(), 3);;
 	obj.AddFloat("Alpha", mAlpha);
+	obj.AddBool("ShouldDraw", mShouldDraw);
+	obj.AddBool("IsMaskable", mIsMaskable);
 	obj.AddBool("IsSpritesheet", mIsSpritesheet);
 	obj.AddInt("Columns", mColumns);
 	obj.AddInt("Rows", mRows);
@@ -293,6 +383,8 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	data.GetFloats("Color", col);
 	mColor = float3(col[0], col[1], col[2]);
 	mAlpha = data.GetFloat("Alpha");
+	mShouldDraw = data.GetBool("ShouldDraw");
+	mIsMaskable = data.GetBool("IsMaskable");
 	mIsSpritesheet = data.GetBool("IsSpritesheet");
 	mColumns = data.GetInt("Columns");
 	mRows = data.GetInt("Rows");
@@ -401,6 +493,43 @@ void ImageComponent::ResizeByRatio()
 	}
 }
 
+void ImageComponent::RenderMask()
+{
+	unsigned int UIMaskProgram = App->GetOpenGL()->GetUIMaskProgramId();
+	if (UIMaskProgram == 0) return;
+
+	glUseProgram(UIMaskProgram);
+
+	// Orthographic mode is used for stencil mask rendering
+	Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+	if (component != nullptr)
+	{
+		float4x4 proj = float4x4::identity;
+		float4x4 model = component->GetGlobalMatrix();
+		float4x4 view = float4x4::identity;
+
+		float2 canvasSize = mCanvas->GetSize();
+		model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+
+		glBindVertexArray(mQuadVAO);
+		glUniform4fv(glGetUniformLocation(UIMaskProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
+
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
+		glUniform1i(glGetUniformLocation(UIMaskProgram, "Texture"), 0);
+
+		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
+		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
+		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
+
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+
+		glBindVertexArray(0);
+	}
+
+	glUseProgram(0);
+}
+
 void ImageComponent::Update()
 {
 	if (mIsSpritesheet && mIsPlaying)
@@ -416,10 +545,34 @@ void ImageComponent::Update()
 	}
 }
 
+std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture)
+{
+	int numPixels = texture->GetWidth() * texture->GetHeight();
+
+	std::vector<unsigned char> pixels(texture->GetPixelsSize() * 4); // Assuming RGBA format
+
+	glBindTexture(GL_TEXTURE_2D, texture->GetOpenGLId());
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels.data());
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	return pixels;
+}
+
 bool ImageComponent::CleanUp()
 {
-	glDeleteBuffers(1, &mQuadVBO);
-	glDeleteVertexArrays(1, &mQuadVAO);
-	App->GetResource()->ReleaseResource(mResourceId);
+	if (mQuadVBO != 0)
+	{
+		glDeleteBuffers(1, &mQuadVBO);
+	}
+
+	if (mQuadVAO != 0)
+	{
+		glDeleteVertexArrays(1, &mQuadVAO);
+	}
+	if (mImage != nullptr)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+	}
 	return true;
 }
