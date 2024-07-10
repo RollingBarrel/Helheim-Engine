@@ -57,6 +57,7 @@ void BattleArea::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
+	CloseDoors(false);
 }
 
 void BattleArea::Update()
@@ -150,44 +151,39 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 
 void BattleArea::CloseDoors(bool close)
 {
-	std::string trigger = (close) ? "Close" : "Open";
+	std::string trigger = (close) ? "tClose" : "tOpen";
 
 	if (mDoor1)
 	{
-		AnimationComponent* doorAnimation1 = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+		AnimationComponent* doorAnimation1 = reinterpret_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation1)
 		{
-			doorAnimation1->SendTrigger(trigger, 0.0f);
+			doorAnimation1->SetIsPlaying(true);
+			doorAnimation1->SendTrigger(trigger, 0.6f);
+			
 		}
 
-		if (close)
-		{
-			mDoor1->SetWorldPosition(float3(mDoor1->GetWorldPosition().x, 1.49f, mDoor1->GetWorldPosition().z));
-		}
-		else
-		{
-			mDoor1->SetWorldPosition(float3(mDoor1->GetWorldPosition().x, 5.0f, mDoor1->GetWorldPosition().z));
-		}
-		
 
+		BoxColliderComponent* door1Collider = reinterpret_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
+		if (door1Collider)
+		{
+			door1Collider->SetEnable(close);
+		}
 	}
 	if (mDoor2)
 	{
-		AnimationComponent* doorAnimation2 = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+		AnimationComponent* doorAnimation2 = reinterpret_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation2)
 		{
-			doorAnimation2->SendTrigger(trigger, 0.0f);
+			doorAnimation2->SetIsPlaying(true);
+			doorAnimation2->SendTrigger(trigger, 0.6f);
 		}
 
-		if (close)
+		BoxColliderComponent* door2Collider = reinterpret_cast<BoxColliderComponent*>(mDoor2->GetComponent(ComponentType::BOXCOLLIDER));
+		if (door2Collider)
 		{
-			mDoor2->SetWorldPosition(float3(mDoor2->GetWorldPosition().x, 1.49f, mDoor2->GetWorldPosition().z));
+			door2Collider->SetEnable(close);
 		}
-		else
-		{
-			mDoor2->SetWorldPosition(float3(mDoor2->GetWorldPosition().x, 5.0f, mDoor2->GetWorldPosition().z));
-		}
-
 	}
 
 }
