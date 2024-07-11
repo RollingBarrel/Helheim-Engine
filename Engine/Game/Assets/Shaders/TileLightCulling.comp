@@ -57,7 +57,7 @@ void main()
 	barrier();
 
 	//uint pixelDepth = floatBitsToUint(imageLoad(depthImage, ivec2(gl_GlobalInvocationID.xy)).r);
-	uint pixelDepth = floatBitsToUint(texture2D(gDepth, ivec2(vec2(gl_GlobalInvocationID.xy) / vec2(numPixels))).r);
+	uint pixelDepth = floatBitsToUint(texture2D(gDepth, vec2(gl_GlobalInvocationID.xy) / vec2(numPixels)).r);
 	atomicMin(minZ, pixelDepth);
 	atomicMax(maxZ, pixelDepth);
 	

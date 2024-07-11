@@ -157,7 +157,7 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGPosition);
 
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
@@ -345,28 +345,12 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
 	glDrawBuffers(6, colBuff);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GLenum colBuff2[] = { GL_COLOR_ATTACHMENT5 };
 	glDrawBuffers(1, colBuff2);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	
-	//Draw the skybox
-	if (mCurrSkyBox != nullptr)
-	{
-		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
-		glUseProgram(mSkyBoxProgramId);
-		glBindVertexArray(mSkyVao);
-		glDepthMask(GL_FALSE);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthMask(GL_TRUE);
-		glBindVertexArray(0);
-		glUseProgram(0);
-		glPopDebugGroup();
-	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -944,10 +928,10 @@ void ModuleOpenGL::Draw()
 	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
 	glDrawBuffers(5, colBuff);
 	glDisable(GL_BLEND);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilMask(0xFF);
+	//glEnable(GL_STENCIL_TEST);
+	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	//glStencilMask(0xFF);
 	mBatchManager.Draw(mPbrGeoPassProgramId, App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	glPopDebugGroup();
 
@@ -970,7 +954,7 @@ void ModuleOpenGL::Draw()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	glDisable(GL_STENCIL_TEST);
+	//glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
@@ -1091,7 +1075,7 @@ void ModuleOpenGL::Draw()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	glDepthMask(0xFF);
-	glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_STENCIL_TEST);
 	glDisable(GL_BLEND);
 
 	glBindVertexArray(0);
@@ -1103,8 +1087,8 @@ void ModuleOpenGL::Draw()
 
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
-	glStencilFunc(GL_EQUAL, 1, 0xFF);
-	glStencilMask(0x00);
+	//glStencilFunc(GL_EQUAL, 1, 0xFF);
+	//glStencilMask(0x00);
 	glDisable(GL_DEPTH_TEST);
 	glDepthMask(0x00);
 	glActiveTexture(GL_TEXTURE0);
@@ -1131,11 +1115,29 @@ void ModuleOpenGL::Draw()
 	glUseProgram(mPbrLightingPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-	glStencilMask(0xFF);
-	glDisable(GL_STENCIL_TEST);
+	//glStencilMask(0xFF);
+	//glDisable(GL_STENCIL_TEST);
 	glEnable(GL_DEPTH_TEST);
 	glDepthMask(0xFF);
 	glPopDebugGroup();
+
+	//Draw the skybox
+	if (mCurrSkyBox != nullptr)
+	{
+		glDepthFunc(GL_LEQUAL);
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
+		glUseProgram(mSkyBoxProgramId);
+		glBindVertexArray(mSkyVao);
+		glDepthMask(GL_FALSE);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthMask(GL_TRUE);
+		glBindVertexArray(0);
+		glUseProgram(0);
+		glDepthFunc(GL_LESS);
+		glPopDebugGroup();
+	}
 
 	//Particles
 	glActiveTexture(GL_TEXTURE0);
