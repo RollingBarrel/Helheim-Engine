@@ -82,7 +82,6 @@ private:
 	std::vector<ObstacleTriangle> mObstaclesTriangles;
 	void TranslateIndices();
 	int FindVertexIndex(float3 vert);
-	void DrawDebugPolyMesh();
 
 	rcPolyMesh* mPolyMesh = nullptr;
 	rcPolyMeshDetail* mPolyMeshDetail = nullptr;
