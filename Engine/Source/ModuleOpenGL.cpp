@@ -342,13 +342,14 @@ bool ModuleOpenGL::Init()
 
 
 	//SSAO
-	const unsigned int randomTangentRows = 2;
-	const unsigned int randomTangentCols = 2;
+	const unsigned int randomTangentRows = 20;
+	const unsigned int randomTangentCols = 20;
 	float3 randomTangents[randomTangentRows][randomTangentCols];
 
 	//Generating random tangents
 	std::uniform_real_distribution<float> randoms(0.0f, 1.0f);
 	std::default_random_engine generator;
+
 	for (unsigned int i = 0; i < randomTangentRows; ++i)
 	{
 		for (unsigned int j = 0; j < randomTangentCols; ++j)
@@ -381,9 +382,10 @@ bool ModuleOpenGL::Init()
 	}
 
 	glUseProgram(mSSAOPassProgramId);
-	
-	glUniform3fv(0, randomTangentRows*randomTangentCols, randomTangents[0][0].ptr());
-	glUniform3fv(glGetUniformLocation(mSSAOPassProgramId,"kernelSamples"), kernelSize, kernel[0].ptr());
+	GLint randomTangentsLocation = glGetUniformLocation(mSSAOPassProgramId, "randomTangents");
+	GLint kernelSamplesLocation = glGetUniformLocation(mSSAOPassProgramId, "kernelSamples");
+	glUniform3fv(randomTangentsLocation, randomTangentRows*randomTangentCols, randomTangents[0][0].ptr());
+	glUniform3fv(kernelSamplesLocation, kernelSize, kernel[0].ptr());
 	glUseProgram(0);
 
 	return true;
@@ -1426,6 +1428,8 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, mEnvBRDFTexId);
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, mGSSAO);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);

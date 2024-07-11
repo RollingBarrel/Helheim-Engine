@@ -86,6 +86,8 @@ layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
 
+layout(binding =9) uniform sampler2D ambientOcclusion;
+
 vec3 cDif;
 vec3 cSpec;
 float rough;
@@ -220,8 +222,9 @@ void main()
 	pbrCol += GetAmbientLight();
 	pbrCol += emissiveCol;
 
-	//HDR color  
-	vec3 hdrCol = pbrCol;
+	//HDR color
+	vec3 occlusionFactor = vec3(texture(ambientOcclusion, uv).r);
+	vec3 hdrCol = pbrCol * occlusionFactor ;
 	
 	//LDR color with reinhard tone Mapping
 	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
@@ -232,5 +235,6 @@ void main()
 	ldrCol = pow(ldrCol, vec3(1/2.2));
 	
 	//Output
-	outColor = vec4(ldrCol, 1.0f);
+	
+	outColor = vec4(ldrCol, 1.0f );	
 }
