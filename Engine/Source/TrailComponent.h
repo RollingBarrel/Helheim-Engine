@@ -7,6 +7,7 @@
 #include "Archive.h"
 #include "float3.h"
 
+
 class ResourceTexture;
 
 class ENGINE_API TrailComponent : public Component
@@ -43,7 +44,7 @@ public:
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
 
 private:
-    std::vector<float> CalculateDistances() const;
+    std::vector<float> CalculateDistances();
 	void UpdateTrailBuffer();
     void SetupOpenGLState() const;
     void ResetOpenGLState() const;

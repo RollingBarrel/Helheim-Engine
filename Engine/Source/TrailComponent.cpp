@@ -17,6 +17,7 @@
 
 #define VBO_FLOAT_SIZE 9 // number of floats for every vertex 3 (position) + 2 (texcoord) + 4 (color)
 
+
 TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::TRAIL)
 {
     Init();
@@ -83,12 +84,13 @@ void TrailComponent::Draw() const
 
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, (mPoints.size()) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
 
     glBindVertexArray(mVAO);
     glUniformMatrix4fv(glGetUniformLocation(programId, "viewProj"), 1, GL_TRUE, &projection[0][0]);
     glUniform1f(glGetUniformLocation(programId, "minDist"), mMinDist);
     glUniform1f(glGetUniformLocation(programId, "maxDist"), mMaxDist);
+    glUniform1f(glGetUniformLocation(programId, "scrollUV"), mUVScroll);
     glUniform1i(glGetUniformLocation(programId, "isUVScrolling"), mIsUVScrolling);
 
     glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
@@ -109,17 +111,15 @@ void TrailComponent::UpdateTrailBuffer()
 
     std::vector<float> distances = CalculateDistances();
 
-    mMinDist = distances[0];
-    mMaxDist = distances[distances.size() - 1];
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
-    glBufferData(GL_ARRAY_BUFFER, (mPoints.size() + 1) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, (mPoints.size()) * 2 * VBO_FLOAT_SIZE * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
     std::byte* ptr = reinterpret_cast<std::byte*>(glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY));
 
     float3 direction;
     mWidth.GetValue().CalculateInitialValue();
 
-    for (int i = 0; i < mPoints.size() + 1; ++i)
+    for (int i = 0; i < mPoints.size(); ++i)
     {
         float deltaPos = CalculateDeltaPos(i, distances);
         float3 position = CalculatePosition(i);
@@ -141,7 +141,7 @@ void TrailComponent::UpdateTrailBuffer()
 
 }
 
-std::vector<float> TrailComponent::CalculateDistances() const
+std::vector<float> TrailComponent::CalculateDistances()
 {
     std::vector<float> distances;
     for (int i = 0; i < mPoints.size() + 1; ++i)
@@ -159,6 +159,8 @@ std::vector<float> TrailComponent::CalculateDistances() const
             distances.push_back(mPoints[i - 1].mPosition.Distance(mPoints[i - 2].mPosition) + distances[i - 1]);
         }
     }
+    mMinDist = distances[0];
+    mMaxDist = distances[distances.size() - 1];
     return distances;
 }
 
@@ -179,51 +181,33 @@ void TrailComponent::ResetOpenGLState() const
 
 float TrailComponent::CalculateDeltaPos(int i, const std::vector<float>& distances) const
 {
-    if (i == 0) return 0.0f;
-    return distances[i - 1] / distances.back();
+    return distances[i] / distances.back();
 }
 
 float3 TrailComponent::CalculatePosition(int i) const
 {
-    if (i == 0)
-    {
-        return mOwner->GetWorldPosition();
-    }
-    return mPoints[i - 1].mPosition;
+    return mPoints[i].mPosition;
 }
 
 float3 TrailComponent::CalculateDirection(int i, const float3& position, const float3& norm) const
 {
-    if (!mFixedDirection && i < mPoints.size())
+    if (!mFixedDirection && i < mPoints.size() - 1)
     {
-        float3 nextPoint = mPoints[i].mPosition;
-        if (i > 1 || (nextPoint - position).Length() > 0.000001f)
-        {
-            return (nextPoint - position).Normalized().Cross(norm).Normalized();
-        }
-        else if (mPoints.size() > 2)
-        {
-            nextPoint = mPoints[i + 1].mPosition;
-            return (nextPoint - position).Normalized().Cross(norm).Normalized();
-        }
-        return RotationToVector(mOwner->GetWorldRotation());
+        float3 nextPoint = mPoints[i + 1].mPosition;
+        return (nextPoint - position).Normalized().Cross(norm).Normalized();
+    }
+    else if (!mFixedDirection && mPoints.size() > 1 && i >= mPoints.size() - 1)
+    {
+        float3 lastPosition = mPoints[i-1].mPosition;
+        return (position - lastPosition).Normalized().Cross(norm).Normalized();
     }
     return i == 0 ? mPoints[i].mDirection.Normalized() : mPoints[i - 1].mDirection.Normalized();
 }
 
 void TrailComponent::CalculateTexCoords(int i, float deltaPos, float2& topPointTexCoord, float2& botPointTexCoord) const
 {
-    if (i == 0)
-    {
-        float dist = mPoints[0].mDistanceUV + mOwner->GetWorldPosition().Distance(mPoints[0].mPosition) * mUVScroll;
-        topPointTexCoord = float2(dist, 1);
-        botPointTexCoord = float2(dist, 0);
-    }
-    else
-    {
-        topPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 1);
-        botPointTexCoord = float2(mPoints[i - 1].mDistanceUV, 0);
-    }
+    topPointTexCoord = float2(mPoints[i].mDistanceUV, 1);
+    botPointTexCoord = float2(mPoints[i].mDistanceUV, 0);
 }
 
 void TrailComponent::CopyVertexData(std::byte*& ptr, const float3& position, const float2& texCoord, const float4& color) const
@@ -305,7 +289,7 @@ void TrailComponent::AddFirstTrailPoint()
     float distUV;
     if (mPoints.size() > 0) 
     {
-        distUV = mPoints.front().mDistanceUV + (position.Distance(mPoints.front().mPosition) * mUVScroll);
+        distUV = mPoints.front().mDistanceUV + (position.Distance(mPoints.front().mPosition));
     }
     else 
     {
@@ -318,6 +302,7 @@ void TrailComponent::AddFirstTrailPoint()
 void TrailComponent::RemoveLastTrailPoint()
 {
     mPoints.pop_back();
+    UpdateTrailBuffer();
 }
 
 void TrailComponent::Save(JsonObject& obj) const

@@ -9,13 +9,14 @@ out vec4 VertexColor;
 uniform mat4 viewProj;
 uniform float minDist;
 uniform float maxDist;
+uniform float scrollUV;
 uniform int isUVScrolling;
 
 void main()
 {
     if (isUVScrolling > 1) 
     {
-        TexCoords = texCoord;
+        TexCoords = vec2(texCoord.x * scrollUV,texCoord.y);
     }
     else 
     {
