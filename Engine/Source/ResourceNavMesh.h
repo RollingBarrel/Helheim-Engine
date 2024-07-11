@@ -7,7 +7,7 @@ class ENGINE_API ResourceNavMesh : public Resource
 public:
     ResourceNavMesh(unsigned int uid, dtNavMesh* navMesh);
     ~ResourceNavMesh();
-    dtNavMesh* GetDtNavMesh() const { return mDtNavMesh; }
+    const dtNavMesh* GetDtNavMesh() const { return mDtNavMesh; }
 
 private:
 
