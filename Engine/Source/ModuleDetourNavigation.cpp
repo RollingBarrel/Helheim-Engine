@@ -77,6 +77,7 @@ void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 			LOG("Could not init Detour navmesh query");
 			return;
 		}
+		mCrowd->init(mMaxAgents, mAgentRadius, mRNavMesh->GetDtNavMesh());
 	}
 }
 
