@@ -47,10 +47,10 @@ void DebugPanel::Draw(int windowFlags) {
                     break;
                 }
             }
-            if (ImGui::Checkbox("Draw Colliders", &mDrawBoundingBoxes))
+            if (ImGui::Checkbox("Draw Colliders", &mDrawColliders))
             {
                 GameObject* root = EngineApp->GetScene()->GetRoot();
-                SetShouldDrawForAll(root, mDrawBoundingBoxes);
+                SetShouldDrawForAll(root, mDrawColliders);
             }
             ImGui::Text("Total number of triangles on scene: %i", GetTotalTriangleCount(EngineApp->GetScene()->GetRoot()));
             ImGui::TreePop();

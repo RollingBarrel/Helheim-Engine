@@ -23,20 +23,20 @@ class EnemyRobotRange : public Enemy
 public:
 	EnemyRobotRange(GameObject* owner);
 	~EnemyRobotRange() {}
-	void Update() override;
+
 	void Start() override;
+	void Update() override;
 
 private:
 	void Idle();
 	void Chase();
 	void Attack();
 	bool IsMoving();
-	void  Death() override;
-	void Reset() override;
+	void Death() override;
+	void Init() override;
 	void RangeAttack();
 
 	EnemyState mCurrentState = EnemyState::IDLE;
-
 	TimerScript mDeathTimer;
 
 	float mRangeDistance = 9.0f;
@@ -45,8 +45,8 @@ private:
 	float mTimerAttack = 2.0f;
 	float mAttackCD = 0.0f;
 	float mTimerDisengage = 0.0f;
+
 	GameObject* mBulletOrigin = nullptr;
-	//Collider
 	BoxColliderComponent* mCollider = nullptr;
 };
 

@@ -109,7 +109,7 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	if (!IsPlayMode())
+	if (!IsPlayMode() && !App->GetScene()->IsPrefabScene())
 	{
 		editor->SaveSettings();
 	}

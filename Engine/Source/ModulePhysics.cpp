@@ -198,19 +198,16 @@ void ModulePhysics::RemoveBoxRigidbody(BoxColliderComponent* boxCollider)
 
 void ModulePhysics::UpdateBoxRigidbody(BoxColliderComponent* boxCollider)
 {
-	btTransform transform;
-	transform.setIdentity();
-
-	btVector3 position(boxCollider->GetOwner()->GetWorldPosition().x, boxCollider->GetOwner()->GetWorldPosition().y, boxCollider->GetOwner()->GetWorldPosition().z);
-	transform.setOrigin(position);
-
-	btQuaternion rotation(boxCollider->GetOwner()->GetWorldRotation().x, boxCollider->GetOwner()->GetWorldRotation().y, boxCollider->GetOwner()->GetWorldRotation().z, boxCollider->GetOwner()->GetWorldRotation().w);
-	transform.setRotation(rotation);
-
 	float3 boxSize = boxCollider->GetSize();
-	boxCollider->GetRigidBody()->getCollisionShape()->setLocalScaling(btVector3(boxSize.x, boxSize.y, boxSize.z));
-	boxCollider->GetRigidBody()->setWorldTransform(transform);
-	boxCollider->GetMotionState()->setWorldTransform(transform);
+	
+	btRigidBody* rigidBody = boxCollider->GetRigidBody();
+	MotionState* motionState = boxCollider->GetMotionState();
+	motionState->SetCenterOffset(boxCollider->GetCenter());
+	
+	btTransform motionStateTransform;
+	motionState->getWorldTransform(motionStateTransform);
+    rigidBody->setWorldTransform(motionStateTransform);
+	rigidBody->getCollisionShape()->setLocalScaling(btVector3(boxSize.x, boxSize.y, boxSize.z));
 }
 
 void ModulePhysics::DisableRigidbody(BoxColliderComponent* boxCollider)
