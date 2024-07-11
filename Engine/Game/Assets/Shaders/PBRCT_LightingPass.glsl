@@ -2,12 +2,12 @@
 #define PI 3.1415926535897932384626433832795
 #extension GL_ARB_bindless_texture : require
 
-layout(location = 0)uniform mat4 invView;
-layout(std140, binding = 0) uniform CameraMatrices
-{
-	mat4 view;
-	mat4 proj;
-};
+//layout(location = 0)uniform mat4 invView;
+//layout(std140, binding = 0) uniform CameraMatrices
+//{
+//	mat4 view;
+//	mat4 proj;
+//};
 //float GetLinearZ(float inputDepth)
 //{
 //	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
@@ -81,6 +81,11 @@ layout(binding = 6)uniform samplerCube diffuseIBL;
 layout(binding = 7)uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
+layout(binding = 8) uniform isamplerBuffer pointLightList;
+layout(location = 2) uniform uint lightListSize;
+layout(location = 3) uniform uvec2 numTiles;
+layout(location = 4) uniform uvec2 tileSize;
+
 vec3 cDif;
 vec3 cSpec;
 float rough;
@@ -91,6 +96,16 @@ vec3 V;
 vec3 emissiveCol;
 
 out vec4 outColor;
+
+vec3 ACESFilm(in vec3 x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
+	return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+}
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
@@ -148,13 +163,18 @@ void main()
 	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
 	//Point lights
-	for(int i = 0; i<numPLights; ++i)
+	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
+	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
+	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
+	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	{
-		vec3 mVector = pos - pLights[i].pos.xyz;
+		PointLight pLight = pLights[idx];
+		vec3 mVector = pos - pLight.pos.xyz;
 		float dist = length(mVector);
 		vec3 pDir = normalize(mVector);
-		float att = pow(max(1 - pow(dist/pLights[i].pos.w,4), 0.0),2) / (dist*dist + 1);
-		pbrCol += GetPBRLightColor(pDir, pLights[i].col.rgb,  pLights[i].col.w, att);
+		float att = pow(max(1 - pow(dist/ pLight.pos.w,4), 0.0),2) / (dist*dist + 1);
+		pbrCol += GetPBRLightColor(pDir, pLight.col.rgb, pLight.col.w, att);
+		++i;
 	}
 	
 	//Spot lights
@@ -204,7 +224,9 @@ void main()
 	vec3 hdrCol = pbrCol;
 	
 	//LDR color with reinhard tone Mapping
-	vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
+	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
+	//LDR color with ACES filmic tone Mapping
+	vec3 ldrCol = ACESFilm(hdrCol);
 
 	//Gamma correction
 	ldrCol = pow(ldrCol, vec3(1/2.2));

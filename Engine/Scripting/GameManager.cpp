@@ -9,7 +9,6 @@
 #include "ScriptComponent.h"
 #include "HudController.h"
 #include "PlayerController.h"
-#include "EnemyPool.h"
 
 CREATE(GameManager)
 {
@@ -18,7 +17,6 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnemyPool);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     END_CREATE;
 }
@@ -27,7 +25,8 @@ GameManager* GameManager::mInstance = nullptr;
 
 GameManager* GameManager::GetInstance()
 {
-    if (mInstance == nullptr) {
+    if (mInstance == nullptr) 
+    {
         LOG("GameManager instance has not been initialized.");
         throw std::runtime_error("GameManager instance has not been initialized.");
     }
@@ -92,7 +91,6 @@ void GameManager::Clean()
 {
     mPlayerController = nullptr;
     mActiveBattleArea = nullptr;
-    mEnemyPool = nullptr;
     mHudController = nullptr;
     mAudioManager = nullptr;
     mPoolManager = nullptr;

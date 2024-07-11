@@ -4,6 +4,13 @@
 
 class ImageComponent;
 
+enum class RenderSpace
+{
+    World,
+    Screen,
+    Billboard,
+    WorldAxisBillboard
+};
 class CanvasComponent : public Component
 {
 public:
@@ -18,16 +25,15 @@ public:
     void Reset() override;
 
     inline float2 GetSize() { return mSize; }
-    inline bool GetScreenSpace() { return mScreenSpace; }
+    inline RenderSpace GetRenderSpace() { return mRenderSpace; }
 
     inline void SetSize(float2 size) { mSize = size; }
-    void SetScreenSpace(bool screen) { mScreenSpace = screen; }
+    void SetRenderSpace(RenderSpace space) { mRenderSpace = space; }
 
     void Save(JsonObject& obj) const override;
     void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 private:
     float2 mSize;
-
-    bool mScreenSpace = true;
+    RenderSpace mRenderSpace = RenderSpace::Screen;
 };

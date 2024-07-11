@@ -9,7 +9,6 @@ class ObjectPool
 public:
 	ObjectPool() = delete;
 	ObjectPool(const char* PrefabFileName, unsigned int size, GameObject* parent = nullptr);
-	~ObjectPool();
 	GameObject* GetObject();
 
 private:

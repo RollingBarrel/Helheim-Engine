@@ -154,7 +154,7 @@ void SettingsPanel::SaveUserSettings() const
 
 void SettingsPanel::LoadUserSettings()
 {
-	char* fileBuffer;
+	char* fileBuffer = nullptr;
 	
 	if (App->GetFileSystem()->Load("userSettings.json", &fileBuffer))
 	{
@@ -195,9 +195,12 @@ void SettingsPanel::LoadUserSettings()
 		std::string str = ASSETS_SCENES_PATH;
 		name += ".scn";
 		str += name;
-		if(App->GetFileSystem()->Exists(str.c_str()))
+		if (App->GetFileSystem()->Exists(str.c_str()))
+		{
 			App->GetScene()->Load(str.c_str());	//TODO: Request Resource id and load 
+		}
 	}	
+	delete[] fileBuffer;
 }
 
 void SettingsPanel::AddTag(const char* newTag)
@@ -269,7 +272,7 @@ const void SettingsPanel::ShowDeleteTagsPopup()
 
 void SettingsPanel::LoadProjectSettings()
 {
-	char* fileBuffer;
+	char* fileBuffer = nullptr;
 
 	if (App->GetFileSystem()->Load("projectSettings.json", &fileBuffer))
 	{
@@ -283,6 +286,7 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
+		mTags.push_back("Enemy");
 
 		for (unsigned int i = 0; i < tags.Size(); ++i)
 		{
@@ -296,8 +300,10 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
+		mTags.push_back("Enemy");
 	}
 
+	delete[] fileBuffer;
 }
 
 void SettingsPanel::SaveEditorLayout() const

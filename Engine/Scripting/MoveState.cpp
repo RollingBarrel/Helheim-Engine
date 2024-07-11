@@ -100,6 +100,7 @@ void MoveState::Update()
             mMoveDirection -= float3::unitY.Cross(mCameraFront);
         }
     }
+    mMoveDirection.Normalize();
     mPlayerController->MoveInDirection(mMoveDirection);
 
     DoAnimation();

@@ -37,6 +37,7 @@ struct SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class ResourceIBL;
 typedef unsigned int GLenum;
 
 class ENGINE_API OpenGLBuffer {
@@ -92,10 +93,16 @@ public:
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
+	unsigned int GetTileLightCUllingProgramId() const { return mTileLightCullingProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetUIMaskProgramId() const { return mUIMaskProgramId; }
 	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
+	unsigned int GetEnvironmentProgramId() const { return mEnvironmentProgramId; }
+	unsigned int GetIrradianceProgramId() const { return mIrradianceProgramId; }
+	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
+	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
@@ -111,9 +118,6 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
-	void AddHighLight(const GameObject& gameObject);
-	void RemoveHighLight(const GameObject& gameObject);
-
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
 
@@ -125,7 +129,10 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	//void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	void SetSkybox(unsigned int uid);
+	inline unsigned int GetSkyboxID() const;
+	unsigned int GetSkyboxVAO() const { return mSkyVao; }
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
 private:
@@ -171,6 +178,7 @@ private:
 	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
 	unsigned int mSelectSkinsProgramId = 0;
+	unsigned int mTileLightCullingProgramId = 0;
 	unsigned int mSelectCommandsProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
@@ -178,17 +186,14 @@ private:
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
+	unsigned int mUIMaskProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
 
 
 	//IBL
-	unsigned int mHDRTextureId = 0;
-	unsigned int mEnvironmentTextureId = 0;
-	unsigned int mIrradianceTextureId = 0;
-	unsigned int mSpecPrefilteredTexId = 0;
-	unsigned int mEnvBRDFTexId = 0;
+	ResourceIBL* mCurrSkyBox = nullptr;
 
 	unsigned int mEmptyVAO = 0;
 	
@@ -206,6 +211,9 @@ private:
 
 
 	//Lighting uniforms
+	unsigned int mPLightListImgTex;
+	unsigned int mPLightListImgBuffer;
+	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;
 	std::vector<const PointLightComponent*>mPointLights;
@@ -217,8 +225,8 @@ private:
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
 	std::vector<const TrailComponent*> mTrails;
 
-	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
-	std::vector<const GameObject*> mHighlightedObjects;
+	//void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
+	//std::vector<const GameObject*> mHighlightedObjects;
 
 	unsigned int mSceneWidth = 1;
 	unsigned int mSceneHeight = 1;

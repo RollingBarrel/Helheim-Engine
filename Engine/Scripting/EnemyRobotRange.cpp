@@ -12,6 +12,7 @@
 #include "PoolManager.h"
 #include "Bullet.h"
 #include "TrailComponent.h"
+
 CREATE(EnemyRobotRange) {
     CLASS(owner);
     SEPARATOR("STATS");
@@ -31,7 +32,6 @@ CREATE(EnemyRobotRange) {
 EnemyRobotRange::EnemyRobotRange(GameObject* owner) : Enemy(owner)
 {
 }
-
 
 void EnemyRobotRange::Start()
 {
@@ -170,22 +170,16 @@ bool EnemyRobotRange::IsMoving()
     return (mCurrentState == EnemyState::CHASE);
 }
 
-
-
-
 void EnemyRobotRange::RangeAttack()
 {
-    LOG("I NEED MORE BOOLETS")
     float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
-    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
+    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
-
-
 }
 
 void EnemyRobotRange::Death()
@@ -202,9 +196,9 @@ void EnemyRobotRange::Death()
 
 }
 
-void EnemyRobotRange::Reset()
+void EnemyRobotRange::Init()
 {
-    Enemy::Reset();
+    Enemy::Init();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
     if (mAiAgentComponent)

@@ -25,15 +25,28 @@ void ProjectPanel::Draw(int windowFlags)
 
 	PathNode* root = EngineApp->GetFileSystem()->GetRootNode();
 
-	if (EngineApp->GetFileSystem()->IsClean())
-	{
-		mSelectedNode = nullptr;
-		EngineApp->GetFileSystem()->SetIsClean(false);
-	}
+	//if (EngineApp->GetFileSystem()->IsClean())
+	//{
+	//	mSelectedNode = nullptr;
+	//	EngineApp->GetFileSystem()->SetIsClean(false);
+	//}
 
+	windowFlags |= ImGuiWindowFlags_MenuBar;
 
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
+		if (ImGui::BeginMenuBar())
+		{
+			static char tmp[128] = "";
+			if (ImGui::InputText("##", tmp, IM_ARRAYSIZE(tmp)))
+			{
+				mSearchAsset = tmp;
+			}
+			ImGui::Text(ICON_FA_MAGNIFYING_GLASS);
+			ImGui::EndMenuBar();
+		}
+
+
 		ImGui::Columns(2);
 		ImGui::BeginChild("Folders");
 		if(root != nullptr)
@@ -62,7 +75,6 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;
 		}
 		
-
 		std::string nameWithoutPath = current.mChildren[i]->mName;
 		nameWithoutPath = nameWithoutPath.substr(nameWithoutPath.find_last_of('/')+1);
 		std::string nameWithIconClose = ICON_FA_FOLDER;
@@ -106,7 +118,6 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 
 const void ProjectPanel::DrawAssets(const PathNode& current)
 {
-
 	for (unsigned int i = 0; i < current.assets.size(); ++i)
 	{
 		int flags = ImGuiTreeNodeFlags_DefaultOpen | ImGuiTreeNodeFlags_Leaf | ImGuiTreeNodeFlags_FramePadding;
@@ -127,38 +138,42 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 			ImGui::PushStyleColor(ImGuiCol_HeaderHovered, pressedColor);
 			ImGui::PushStyleColor(ImGuiCol_HeaderActive, pressedColor);
 		}
-		if (ImGui::TreeNodeEx(nameWithIcon.c_str(), flags))
-		{
-			if (selected)
-			{
-				ImGui::PopStyleColor(3);
-			}
-			if (ImGui::IsItemClicked())
-			{
-				mSelectedAsset = current.assets[i];
-			}
-			if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
-			{
-				//App->GetScene()->Load(current.assets[i]->mName);
-			}
-			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
-			{
-				AssetDisplay* asset = current.assets[i];
-				std::string path = asset->mPath;
-				std::string token = path.substr(path.find_last_of('.'), path.size());
-				if (token == ".prfb")
-				{
-					EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
-				}
-			}
-			if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
-			{
-				ImGui::SetDragDropPayload("_SCENE", current.assets[i], sizeof(*current.assets[i]));
 
-				ImGui::Text(current.assets[i]->mName);
-				ImGui::EndDragDropSource();
+		if (CaseInsensitiveSubstringSearch(current.assets[i]->mName, mSearchAsset))
+		{
+			if (ImGui::TreeNodeEx(nameWithIcon.c_str(), flags))
+			{
+				if (selected)
+				{
+					ImGui::PopStyleColor(3);
+				}
+				if (ImGui::IsItemClicked())
+				{
+					mSelectedAsset = current.assets[i];
+				}
+				if (ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+				{
+					//App->GetScene()->Load(current.assets[i]->mName);
+				}
+				if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+				{
+					AssetDisplay* asset = current.assets[i];
+					std::string path = asset->mPath;
+					std::string token = path.substr(path.find_last_of('.'), path.size());
+					if (token == ".prfb")
+					{
+						EngineApp->GetScene()->OpenPrefabScreen(asset->mPath);
+					}
+				}
+				if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None))
+				{
+					ImGui::SetDragDropPayload("_SCENE", current.assets[i], sizeof(*current.assets[i]));
+
+					ImGui::Text(current.assets[i]->mName);
+					ImGui::EndDragDropSource();
+				}
+				ImGui::TreePop();
 			}
-			ImGui::TreePop();
 		}
 	}
 }

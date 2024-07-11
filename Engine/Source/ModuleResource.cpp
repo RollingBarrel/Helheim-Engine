@@ -13,6 +13,7 @@
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
+#include "ResourceIBL.h"
 
 #include "SaveLoadTexture.h"
 #include "SaveLoadMesh.h"
@@ -24,10 +25,9 @@
 #include "SaveLoadScript.h"
 #include "SaveLoadNavMesh.h"
 #include "SaveLoadStateMachine.h"
+#include "SaveLoadIBL.h"
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
+#include "Archive.h"
 
 
 unsigned int ModuleResource::Find(const char* assetsFile) const
@@ -50,6 +50,7 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 {
 	std::string path = assetsPath;
 	path += ".emeta";
+	//App->GetFileSystem()->NormalizePath(path.data());
 
 	char* fileBuffer = nullptr;
 	if (!App->GetFileSystem()->Load(path.c_str(), &fileBuffer))
@@ -58,28 +59,15 @@ Resource* ModuleResource::RequestResource(const char* assetsPath)
 		return nullptr;
 	}
 
-	rapidjson::Document document;
-	rapidjson::ParseResult result = document.Parse(fileBuffer);
-	if (!result) 
-	{
-		// Handle parsing error
-		LOG("Not able to load .emeta file");
-		RELEASE_ARRAY(fileBuffer);
-		return nullptr;
-	}
-
 	unsigned int uid = 0;
 	Resource::Type type = Resource::Type::Unknown;
-	if (document.HasMember("uid"))
-	{
-		uid = document["uid"].GetInt();
-	}
-	if (document.HasMember("type"))
-	{
-		type = static_cast<Resource::Type>(document["type"].GetInt());
-	}
 
-	RELEASE_ARRAY(fileBuffer);
+	Archive doc(fileBuffer);
+	delete[] fileBuffer;
+	JsonObject root = doc.GetRootObject();
+	uid = root.GetInt("uid");
+	type = static_cast<Resource::Type>(root.GetInt("type"));
+
 	return RequestResource(uid, type);
 }
 
@@ -147,6 +135,11 @@ Resource* ModuleResource::RequestResource(unsigned int uid, Resource::Type type)
 		ret = Importer::StateMachine::Load(lPath, uid);
 		break;
 	}
+	case Resource::Type::IBL:
+	{
+		ret = Importer::IBL::Load(lPath, uid);
+		break;
+	}
 	default:
 		break;
 	}
@@ -164,7 +157,7 @@ void ModuleResource::ReleaseResource(unsigned int uid)
 	if (mResources.find(uid) != mResources.end())
 	{
 		mResources[uid]->RemoveReferenceCount();
-		if (mResources[uid]->GetReferenceCount() <= 0)
+		if (mResources[uid]->GetReferenceCount() == 0)
 		{
 			delete mResources[uid];
 			mResources.erase(uid);

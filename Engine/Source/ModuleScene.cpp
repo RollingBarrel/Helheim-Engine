@@ -187,7 +187,8 @@ void ModuleScene::Save(const char* sceneName) const
 		JsonObject gameObjectData = objArray.PushBackNewObject();
 		go->Save(gameObjectData);
 	}
-
+	scene.AddInt("NavMeshResource", App->GetNavigation()->GetResourceId());
+	scene.AddInt("SkyBoxResource", App->GetOpenGL()->GetSkyboxID());
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -231,7 +232,7 @@ void ModuleScene::Load(const char* sceneName)
 		mGameObjectsByTags.clear();
 		mRoot = new GameObject("EmptyScene", nullptr);
 		Archive doc(fileBuffer);
-		delete fileBuffer;
+		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
 
 		JsonObject scene = root.GetJsonObject("Scene");
@@ -255,7 +256,16 @@ void ModuleScene::Load(const char* sceneName)
 			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		App->GetNavigation()->LoadResourceData();
+		unsigned int resourceNavMesh = scene.GetInt("NavMeshResource");
+		if(resourceNavMesh != 0)
+			App->GetNavigation()->CreateQuery(resourceNavMesh);
+		else
+			App->GetNavigation()->ReleaseResource();
+
+		if(scene.HasMember("SkyBoxResource"))
+			App->GetOpenGL()->SetSkybox(scene.GetInt("SkyBoxResource"));
+		else
+			App->GetOpenGL()->SetSkybox(0);
 
 		App->GetScriptManager()->AwakeScripts();
 		
@@ -628,6 +638,9 @@ void ModuleScene::NewScene()
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();
+
+	App->GetNavigation()->ReleaseResource();
+	App->GetOpenGL()->SetSkybox(0);
 
 	delete mRoot;
 	mRoot = new GameObject("EmptyScene", nullptr);

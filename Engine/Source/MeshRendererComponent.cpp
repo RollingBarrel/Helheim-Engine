@@ -215,10 +215,25 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 	{
 		unsigned int id = data.GetInt("PaletteOwner");
 
-		if (id) //What is this??
+		const std::unordered_map<unsigned int, unsigned int>& uids = App->GetScene()->GetPrefabUIDMap();
+		std::unordered_map<unsigned int, unsigned int>::const_iterator has = uids.find(id);
+		if (has != uids.end())
 		{
-			mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+			std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(id));
+			if (got != uidPointerMap.end())
+			{
+				mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(uids.at(id))->GetComponent(ComponentType::MESHRENDERER));
+			}
 		}
+		else
+		{
+			std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(id);
+			if (got != uidPointerMap.end())
+			{
+				mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+			}
+		}
+
 	}
 
 	if (data.HasMember("InverseBindMatrices"))

@@ -135,7 +135,7 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             {
                 if (importedMaterials.find(primitive.material) == importedMaterials.end())
                 {
-                    ResourceMaterial* rMaterial = Importer::Material::Import(filePath, model, model.materials[primitive.material], uid, importedTextures, modifyAssets);
+                    ResourceMaterial* rMaterial = Importer::Material::GltfImport(filePath, model, model.materials[primitive.material], uid, importedTextures, modifyAssets);
                     materialId = rMaterial->GetUID();
                     delete rMaterial;
                     importedMaterials[primitive.material] = materialId;
@@ -149,8 +149,11 @@ static void ImportNode(std::vector<ModelNode>& modelNodes, const char* filePath,
             {
                 //Import default del material !!!
                 ResourceMaterial* rMaterial = Importer::Material::ImportDefault();
-                materialId = rMaterial->GetUID();
-                delete rMaterial;
+                if (rMaterial)
+                {
+                    delete rMaterial;
+                }
+                materialId = 999999999;
             }
             node.mUids.emplace_back(meshId, materialId);
             ++i;

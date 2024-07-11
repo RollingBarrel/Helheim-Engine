@@ -11,10 +11,7 @@
 #include "ModuleResource.h"
 #include "ModuleFileSystem.h"
 #include "ResourceNavmesh.h"
-#include "DetourCrowd.h"
 #define MAX_AMOUNT 999
-
-
 ModuleDetourNavigation::ModuleDetourNavigation()
 {
 
@@ -22,72 +19,43 @@ ModuleDetourNavigation::ModuleDetourNavigation()
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
-	delete mNavMeshParams;
 	delete mNavQuery;
+	mNavQuery = nullptr;
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 }
 
-bool ModuleDetourNavigation::Init()
+unsigned int ModuleDetourNavigation::GetResourceId() const
+{ 
+	return (mRNavMesh) ? mRNavMesh->GetUID() : 0; 
+}
+
+void ModuleDetourNavigation::ReleaseResource()
 {
-	LoadResourceData();
-	mCrowd = dtAllocCrowd();
-	return true;
+	if (mRNavMesh)
+		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+	mRNavMesh = nullptr;
 }
 
-update_status ModuleDetourNavigation::PreUpdate(float dt)
+void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 {
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleDetourNavigation::Update(float dt)
-{	
-	if (mCrowd && App->IsPlayMode())
+	ResourceNavMesh* newNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
+	assert(newNavMesh, "The saved scene navmesh resource id is incorrect");
+	if (newNavMesh)
 	{
-		if (mCrowd->getAgentCount() > 0)
+		if (mNavQuery)
+			delete mNavQuery;
+		mNavQuery = new dtNavMeshQuery();
+		dtStatus status;
+		if (mRNavMesh)
+			App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
+		mRNavMesh = newNavMesh;
+		status = mNavQuery->init(mRNavMesh->GetDtNavMesh(), 2048);
+		if (dtStatusFailed(status))
 		{
-			mCrowd->update(App->GetDt(), nullptr);
-			//const dtCrowdAgent* ag = mCrowd->getAgent(0);
-			///LOG("Agent 0 pos: %f, %f, %f", ag->npos[0], ag->npos[1], ag->npos[2]);
-
-
+			LOG("Could not init Detour navmesh query");
+			return;
 		}
-	}
-	return UPDATE_CONTINUE;
-}
-
-update_status ModuleDetourNavigation::PostUpdate(float dt)
-{
-	return UPDATE_CONTINUE;
-}
-
-bool ModuleDetourNavigation::CleanUp()
-{
-	return true;
-}
-
-void ModuleDetourNavigation::LoadResourceData()
-{
-	std::string pathStr = std::string(ASSETS_NAVMESH_PATH);
-	ResourceNavMesh* resource = (ResourceNavMesh*)App->GetResource()->RequestResource((pathStr + App->GetScene()->GetName() + ".navmesshi").c_str());
-	if (resource)
-	{
-		mDetourNavMesh = resource->GetDtNavMesh();
-		CreateQuery();
-		App->GetResource()->ReleaseResource(resource->GetUID());
-		mCrowd->init(mMaxAgents, mAgentRadius, mDetourNavMesh);
-
-
-	}
-}
-
-void ModuleDetourNavigation::CreateQuery() {
-
-	mNavQuery = new dtNavMeshQuery();
-	dtStatus status;
-	status = mNavQuery->init(mDetourNavMesh, 2048);
-	if (dtStatusFailed(status))
-	{
-		LOG("Could not init Detour navmesh query");
-		return;
 	}
 }
 
@@ -104,7 +72,7 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 
 	dtPolyRef startPolygon;
 	dtQueryFilter startTemp;
-	float3 queryEndPos = float3(0.0f);
+	float3 queryEndPos = float3(0.0f);;
 	mNavQuery->findNearestPoly(&startPos[0], &queryAreafSize[0], &startTemp, &startPolygon, &queryEndPos[0]);
 
 	dtPolyRef endPolygon;
@@ -138,8 +106,8 @@ std::vector<float3> ModuleDetourNavigation::FindNavPath(float3 startPos, float3 
 
 }
 
-
-void ModuleDetourNavigation:: FindDebugPoint() {
+void ModuleDetourNavigation:: FindDebugPoint() 
+{
 	if (mNavQuery)
 	{
 		dtPolyRef result;
@@ -160,51 +128,7 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 	dtQueryFilter temp;
 
 	mNavQuery->findNearestPoly(&center[0], &halfSize[0], &temp, &result, &queryResult[0]);
-	return queryResult.Sub(float3(0.0f, 0.2f, 0.0f)); //Subtract the value offset that makes the player float otherwises
+	return queryResult;
 }
-
-unsigned int ModuleDetourNavigation::AddAgent(float3 startPos, dtCrowdAgentParams& params)
-{
-
-	int agentId = mCrowd->addAgent(&startPos[0], &params);
-
-	return agentId >= 0 ? agentId : 101;
-
-}
-
-void ModuleDetourNavigation::SetAgentDestination(unsigned int agentId, float3 destination)
-{
-	dtPolyRef result;
-	dtQueryFilter temp;
-	float3 queryResult;
-	float3 halfSize{ 10.0f };
-
-	mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
-
-	mCrowd->requestMoveTarget(agentId,result, &destination[0]);
-}
-
-void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
-{
-	if (mCrowd)
-	{
-		if (agentId < mCrowd->getAgentCount())
-		{
-			const dtCrowdAgent* ag = mCrowd->getAgent(agentId);
-			if (ag->active) {
-				// Update your game object's position with the agent's position
-				float3 newPosition(ag->npos[0], ag->npos[1], ag->npos[2]);
-				position = newPosition;
-				
-			}
-		}
-	}
-}
-
-void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
-{
-	mCrowd->removeAgent(agentId);
-}
-
 
 

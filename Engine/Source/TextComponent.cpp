@@ -153,12 +153,15 @@ void TextComponent::RenderText(const std::string& text)
     std::istringstream iss(text);
     std::vector<std::pair<std::string, int>> words;
     std::string line;
-    while (std::getline(iss, line)) {
+    while (std::getline(iss, line)) 
+    {
         std::istringstream lineStream(line);
         std::string word;
-        while (lineStream >> word) {
+        while (lineStream >> word) 
+        {
             int wordWidth = 0;
-            for (char c : word) {
+            for (char c : word) 
+            {
                 wordWidth += (mCharacters[c].Advance >> 6);
             }
             words.emplace_back(word, wordWidth);
@@ -172,36 +175,45 @@ void TextComponent::RenderText(const std::string& text)
     std::vector<std::string> currentLine;
     int currentLineWidth = 0;
 
-    for (const auto& wordPair : words) {
-        if (wordPair.first == "\n" || (currentLineWidth + wordPair.second > mLineWidth && mLineWidth != 0)) {
+    for (const auto& wordPair : words) 
+    {
+        if (wordPair.first == "\n" || (currentLineWidth + wordPair.second > mLineWidth && mLineWidth != 0)) 
+        {
             lines.emplace_back(currentLine, currentLineWidth);
             currentLine.clear();
             currentLineWidth = 0;
         }
-        if (wordPair.first != "\n") {
+        if (wordPair.first != "\n") 
+        {
             currentLine.push_back(wordPair.first);
             currentLineWidth += wordPair.second + (mCharacters[' '].Advance >> 6);
         }
     }
 
-    if (!currentLine.empty()) {
+    if (!currentLine.empty()) 
+    {
         lines.emplace_back(currentLine, currentLineWidth);
     }
 
-    for (const auto& line : lines) {
+    for (const auto& line : lines) 
+    {
         const auto& lineWords = line.first;
         int lineWidth = line.second;
 
         int x = 0;
-        if (mAlignment == TextAlignment::CENTER) {
+        if (mAlignment == TextAlignment::CENTER) 
+        {
             x = (mLineWidth - lineWidth) / 2;
         }
-        else if (mAlignment == TextAlignment::RIGHT) {
+        else if (mAlignment == TextAlignment::RIGHT) 
+        {
             x = mLineWidth - lineWidth;
         }
 
-        for (const std::string& word : lineWords) {
-            for (char c : word) {
+        for (const std::string& word : lineWords) 
+        {
+            for (char c : word) 
+            {
                 Character ch = mCharacters[c];
 
                 float xpos = x + ch.Bearing.x;
@@ -209,8 +221,10 @@ void TextComponent::RenderText(const std::string& text)
                 float w = ch.Size.x;
                 float h = ch.Size.y;
 
-                if (c != ' ') {
-                    float vertices[] = {
+                if (c != ' ') 
+                {
+                    float vertices[] = 
+                    {
                         xpos,     ypos + h,   0.0f, 0.0f,
                         xpos,     ypos,       0.0f, 1.0f,
                         xpos + w, ypos,       1.0f, 1.0f,
@@ -231,7 +245,8 @@ void TextComponent::RenderText(const std::string& text)
             }
 
             // Add a space after the word if it is not the last word
-            if (&word != &lineWords.back()) {
+            if (&word != &lineWords.back()) 
+            {
                 x += (mCharacters[' '].Advance >> 6);
             }
         }
@@ -307,7 +322,7 @@ void TextComponent::Draw()
     float4x4 model = float4x4::identity;
     float4x4 view = float4x4::identity;
 
-    if (mCanvas->GetScreenSpace()) //Ortographic Mode
+    if (mCanvas->GetRenderSpace() == RenderSpace::Screen) //Ortographic Mode
     {
         Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         if (component != nullptr)

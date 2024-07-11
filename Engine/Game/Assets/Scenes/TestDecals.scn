@@ -7,6 +7,7 @@
                 "ParentUID": 1,
                 "Name": "Decal Proyector",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     5.540368556976318,
@@ -44,7 +45,6 @@
                         "NormalID": 1466974184,
                         "NormalName": "normal.tga",
                         "IsSpriteSheet": true,
-                        "PlayAtStart": false,
                         "SpriteSheetSize": [
                             4,
                             4
@@ -63,6 +63,7 @@
                 "ParentUID": 1,
                 "Name": "Cube",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -90,6 +91,7 @@
                 "ParentUID": 798288026,
                 "Name": "Cube",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -117,6 +119,7 @@
                 "ParentUID": 830801033,
                 "Name": "Cube",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -154,6 +157,7 @@
                 "ParentUID": 1,
                 "Name": "Cube",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -181,6 +185,7 @@
                 "ParentUID": 569066853,
                 "Name": "Cube",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -208,6 +213,7 @@
                 "ParentUID": 609864759,
                 "Name": "Cube",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -245,6 +251,7 @@
                 "ParentUID": 1,
                 "Name": "PointLight",
                 "Enabled": true,
+                "Active": true,
                 "Translation": [
                     -1.4989943504333497,
                     8.505494117736817,
@@ -284,6 +291,7 @@
                     }
                 ]
             }
-        ]
+        ],
+        "NavMeshResource": 315485471
     }
 }

@@ -7,12 +7,6 @@ class AnimationComponent;
 class AIAgentComponent;
 class Component;
 
-enum class EnemyType : int
-{
-	ROBOT_MELEE = 0,
-	ROBOT_RANGE,
-	COUNT
-};
 
 class Enemy : public Script
 {
@@ -26,7 +20,7 @@ class Enemy : public Script
 		virtual void Death();
 		virtual void PushBack();
 		virtual bool IsMoving();
-		virtual void Reset();
+		virtual void Init();
 
 		virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 

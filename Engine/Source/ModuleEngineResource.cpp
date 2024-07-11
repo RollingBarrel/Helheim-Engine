@@ -16,18 +16,21 @@
 #include "ResourceScript.h"
 #include "ResourceNavMesh.h"
 #include "ResourceStateMachine.h"
+#include "ResourceIBL.h"
 
 #include <algorithm>
 
 #include "Algorithm/Random/LCG.h"
 
 #include "ImporterTexture.h"
+#include "ImporterMaterial.h"
 #include "ImporterModel.h"
 #include "ImporterScene.h"
 #include "ImporterPrefab.h"
 #include "ImporterScript.h"
 #include "ImporterNavMesh.h"
 #include "ImporterStateMachine.h"
+#include "ImporterIBL.h"
 
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
@@ -66,6 +69,7 @@ bool ModuleEngineResource::Init()
 
 		unsigned int uid = 0;
 		Resource::Type type = Resource::Type::Unknown;
+
 		assert(document.HasMember("uid") && "Meta has no uid");
 		uid = document["uid"].GetInt();
 		int64_t metaAssetModTime;
@@ -93,7 +97,8 @@ bool ModuleEngineResource::Init()
 		}
 		delete[] libraryFile;
 
-		if (fileBuffer) {
+		if (fileBuffer) 
+		{
 			delete[] fileBuffer;
 		}
 	}
@@ -163,6 +168,7 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 	case Resource::Type::Mesh:
 		break;
 	case Resource::Type::Material:
+		ret = Importer::Material::MatImport(assetsFile, uid);
 		break;
 	case Resource::Type::Animation:
 		break;
@@ -183,6 +189,9 @@ Resource* ModuleEngineResource::CreateNewResource(const char* assetsFile, const 
 		break;
 	case Resource::Type::StateMachine:
 		ret = Importer::StateMachine::Import(assetsFile, uid);
+		break;
+	case Resource::Type::IBL:
+		ret = Importer::IBL::Import(assetsFile, uid);
 		break;
 	default:
 		LOG("Unable to Import, this file %s", assetsFile);
@@ -242,6 +251,26 @@ std::string ModuleEngineResource::DuplicateFileInAssetDir(const char* importedFi
 	case Resource::Type::Script:
 	{
 		assetsFilePath = ASSETS_SCRIPT_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::Material:
+	{
+		assetsFilePath = ASSETS_MATERIAL_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::NavMesh:
+	{
+		assetsFilePath = ASSETS_NAVMESH_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::StateMachine:
+	{
+		assetsFilePath = ASSETS_STATEMACHINE_PATH + assetName + extensionName;
+		break;
+	}
+	case Resource::Type::IBL:
+	{
+		assetsFilePath = ASSETS_IBL_PATH + assetName + extensionName;
 		break;
 	}
 	default:

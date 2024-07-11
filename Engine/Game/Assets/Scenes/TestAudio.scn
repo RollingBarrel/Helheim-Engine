@@ -134,6 +134,16 @@
                                 "VariableName": "mAudioManagerGO",
                                 "MemberType": 3,
                                 "VariableData": 83208920
+                            },
+                            {
+                                "VariableName": "mEnemyPool",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mPoolManager",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -231,6 +241,7 @@
                     }
                 ]
             }
-        ]
+        ],
+        "NavMeshResource": 315485471
     }
 }
