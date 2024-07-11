@@ -42,7 +42,7 @@ bool Spawner::Spawn()
  				enemyScript->Init();
 				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
 				enemy->SetEnabled(true);
- 				enemyScript->Reset();
+ 				//enemyScript->Reset();
 
 				mLastSpawnTime = 0.0f;
 				return true;
