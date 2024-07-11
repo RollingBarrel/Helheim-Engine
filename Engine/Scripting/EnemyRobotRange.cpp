@@ -172,7 +172,7 @@ bool EnemyRobotRange::IsMoving()
 void EnemyRobotRange::RangeAttack()
 {
     float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
-    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
+    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -190,9 +190,9 @@ void EnemyRobotRange::Death()
     }
 }
 
-void EnemyRobotRange::Reset()
+void EnemyRobotRange::Init()
 {
-    Enemy::Reset();
+    Enemy::Init();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
 }

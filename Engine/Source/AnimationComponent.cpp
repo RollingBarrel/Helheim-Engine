@@ -252,7 +252,7 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 }
 
 
-bool AnimationComponent::HasCurrentStateFinished(float deltaTime = 0.01f)
+bool AnimationComponent::HasCurrentStateFinished(float deltaTime)
 {
 	if (mController->GetLoop())
 	{
@@ -340,7 +340,7 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 }
 
 
-bool AnimationComponent::HasCurrentSpineStateFinished(float deltaTime = 0.01f)
+bool AnimationComponent::HasCurrentSpineStateFinished(float deltaTime)
 {
 	if (!mHasSpine)
 	{

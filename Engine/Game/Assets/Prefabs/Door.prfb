@@ -1,0 +1,348 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1148983579,
+                "ParentUID": 1,
+                "Name": "Door",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    74.37364196777344,
+                    0.0,
+                    4.729846000671387
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 138310837,
+                        "LowerSMUID": 857954867
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.5,
+                            0.0
+                        ],
+                        "Size": [
+                            1.7000000476837159,
+                            1.0,
+                            0.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2042081767,
+                "ParentUID": 1148983579,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1584926379,
+                "ParentUID": 2042081767,
+                "Name": "OB_door",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 345579056,
+                "ParentUID": 1584926379,
+                "Name": "OB_door",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 138310831,
+                        "MaterialID": 138310836,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1007223680,
+                                "Matrix": [
+                                    1.5965930223464966,
+                                    -0.000007548827852588147,
+                                    -99.98725891113281,
+                                    -0.0,
+                                    -0.0,
+                                    100.00000762939453,
+                                    -0.0000075497905527299739,
+                                    0.0,
+                                    99.98725891113281,
+                                    1.2053941134126945e-7,
+                                    1.5965930223464966,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1855277081,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    129.98342895507813,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -129.99998474121095,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    2.0755889415740969,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 479333356,
+                                "Matrix": [
+                                    1.5965930223464966,
+                                    -0.000007548827852588147,
+                                    -99.98725891113281,
+                                    0.000017962547644856387,
+                                    -0.0,
+                                    100.00000762939453,
+                                    -0.0000075497905527299739,
+                                    -130.0,
+                                    99.98725891113281,
+                                    1.2053941134126945e-7,
+                                    1.5965930223464966,
+                                    -130.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1049529346,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1007223680,
+                "ParentUID": 2042081767,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.5039756298065186,
+                    0.4959924519062042,
+                    -0.4959924519062042,
+                    0.5039756894111633
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1855277081,
+                "ParentUID": 1007223680,
+                "Name": "Joint_doot_left",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.000018319915398024024,
+                    130.0,
+                    -130.00001525878907
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7014393210411072,
+                    -2.492330708066498e-15,
+                    0.7127292156219482
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 479333356,
+                "ParentUID": 1007223680,
+                "Name": "Joint_door_right",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.00001815812720451504,
+                    130.0,
+                    130.00001525878907
+                ],
+                "Rotation": [
+                    0.0,
+                    -9.313224635931761e-10,
+                    -2.117582368135751e-22,
+                    1.0
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1049529346,
+                "ParentUID": 2042081767,
+                "Name": "neutral_bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071067690849304,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            }
+        ]
+    }
+}
