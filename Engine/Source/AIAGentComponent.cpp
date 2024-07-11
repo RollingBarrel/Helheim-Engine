@@ -12,14 +12,7 @@ AIAgentComponent::AIAgentComponent(GameObject* ownerGameObject)
 AIAgentComponent::AIAgentComponent(const AIAgentComponent& original, GameObject* owner)
 	: Component(owner, ComponentType::AIAGENT)
 {
-	//mRadius = original.mRadius;
-	// mHeight = original.mHeight;
-	// mStepHeight = original.mStepHeight;
-	// mMaxSlope = original.mMaxSlope;
-	 //mSpeed = original.mSpeed;
-	// mAngularSpeed = original.mAngularSpeed;
-	// mAcceleration = original.mAcceleration;
-	// mStoppingDistance = original.mStoppingDistance;
+
 	mRadius = original.mRadius;
 	mHeight = original.mHeight;
 	mMaxAcceleration = original.mMaxAcceleration;
@@ -99,25 +92,6 @@ void AIAgentComponent::PauseCrowdNavigation()
 		App->GetNavigation()->DisableAgent(mCrowdId);
 		mCrowdId = CROWD_OFF_INDEX;
 	}
-}
-
-void AIAgentComponent::MoveAgent(float speed ) const
-{
-	/*
-	if (mNavPositions.size() > 1 )
-	{
-		//LOG("START")
-		for(float3 nav : mNavPositions)
-		{
-			//LOG("%f, %f, %f", nav.x, nav.y, nav.z);
-		}
-		//LOG("END")
-			float3 direction = (mNavPositions[1] - mNavPositions[0]).Normalized();
-			direction = direction / 50 * speed;
-			GetOwner()->SetWorldPosition(GetOwner()->GetWorldPosition() + direction);
-	}
-	*/
-	
 }
 
 

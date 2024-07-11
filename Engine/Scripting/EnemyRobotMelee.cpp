@@ -113,7 +113,6 @@ void EnemyRobotMelee::Chase()
                 }
 
             }
-            mAiAgentComponent->MoveAgent(mSpeed);
 
         }
         if (IsPlayerInRange(mMeleeDistance))

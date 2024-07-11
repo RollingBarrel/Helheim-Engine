@@ -101,7 +101,6 @@ void EnemyCreatureMelee::Chase()
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 
 			float3 oldPosition = mGameObject->GetWorldPosition();
-			mAiAgentComponent->MoveAgent(mSpeed);
 
 			float3 direction = (mGameObject->GetWorldPosition() - oldPosition);
 			direction.y = 0;
