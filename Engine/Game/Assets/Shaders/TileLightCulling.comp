@@ -17,11 +17,11 @@ readonly layout(std430, binding = 0) buffer PointLights
 };
 layout(binding = 0, r32i) uniform iimageBuffer outLightsList;
 layout(location = 0)uniform uint maxPointLights;
-//layout(location = 1)uniform uvec2 numPixels;
+layout(location = 1)uniform uvec2 numPixels;
 shared uint pointsInTile;
 
-uniform layout(binding = 1, r32f) readonly image2D depthImage;
-//layout (binding = 0) uniform sampler2D gDepth;
+//uniform layout(binding = 1, r32f) readonly image2D depthImage;
+layout(binding = 0) uniform sampler2D gDepth;
 shared uint minZ;
 shared uint maxZ;
 
@@ -56,8 +56,8 @@ void main()
 	}
 	barrier();
 
-	uint pixelDepth = floatBitsToUint(imageLoad(depthImage, ivec2(gl_GlobalInvocationID.xy)).r);
-	//uint pixelDepth = floatBitsToUint(texture2D(gDepth, ivec2(vec2(gl_GlobalInvocationID.xy) / vec2(numPixels))).r);
+	//uint pixelDepth = floatBitsToUint(imageLoad(depthImage, ivec2(gl_GlobalInvocationID.xy)).r);
+	uint pixelDepth = floatBitsToUint(texture2D(gDepth, ivec2(vec2(gl_GlobalInvocationID.xy) / vec2(numPixels))).r);
 	atomicMin(minZ, pixelDepth);
 	atomicMax(maxZ, pixelDepth);
 	
@@ -82,11 +82,11 @@ void main()
 		PointLight light = pLights[i];
 		vec3 viewPos = (view*vec4(light.pos.xyz,1.0)).xyz;
 		if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.pos.w &&
-			dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
-			dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
-			dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w &&
-			(viewMinZ - viewPos.z) > (-light.pos.w) &&
-            (viewMaxZ - viewPos.z) < light.pos.w)
+		dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
+		dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
+		dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w &&
+		(viewMinZ - viewPos.z) > (-light.pos.w) &&
+        (viewMaxZ - viewPos.z) < light.pos.w)
 		{
 			uint index = atomicAdd(pointsInTile, 1);
 			if(index < maxPointLights)

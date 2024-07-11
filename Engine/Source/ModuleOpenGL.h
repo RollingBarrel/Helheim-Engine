@@ -151,7 +151,6 @@ private:
 	unsigned int mGNormals;
 	unsigned int mGEmissive;
 	unsigned int mGColDepth;
-	unsigned int mGBufferDepth;
 	unsigned int mGDepth;
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);

@@ -45,7 +45,6 @@ layout(location = 1) out vec3 outMetalRough;
 layout(location = 2) out vec3 outNormal;
 layout(location = 3) out vec3 outPosition;
 layout(location = 4) out vec3 outEmissive;
-layout(location = 5) out float outDepth;
 
 
 void main() 
@@ -101,7 +100,6 @@ void main()
 	//outSpecularRough.a = rough;
 	outNormal = (N * 0.5) + 0.5;
 	outPosition = sPos;
-	outDepth = gl_FragCoord.z;
 	
 	//outDepth = gl_FragCoord.z;
 
