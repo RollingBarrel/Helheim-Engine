@@ -395,13 +395,13 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
 {
     std::string tempPath = path;
 
-    unsigned int lastSlashPos = tempPath.find_last_of('/');
-    unsigned int dotPos = (lastSlashPos != std::string::npos) ? tempPath.find_last_of('.', lastSlashPos) : std::string::npos;
+    unsigned long long lastSlashPos = tempPath.find_last_of("/\\");
+    unsigned long long dotPos = tempPath.find_last_of('.');
 
-    if(file != nullptr)
+    if (file != nullptr)
         *file = (lastSlashPos != std::string::npos) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
 
-    if(extension != nullptr && dotPos != std::string::npos)
+    if (extension != nullptr && dotPos != std::string::npos)
         *extension = tempPath.substr(dotPos);
 }
 
