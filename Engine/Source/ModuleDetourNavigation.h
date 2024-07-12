@@ -17,6 +17,7 @@ public:
 	~ModuleDetourNavigation();
 	bool Init() override;
 	update_status Update(float dt) override;
+	bool CleanUp() override;
 
 	std::vector<float3> FindNavPath(float3 startPos, float3 endPos);
 	void CreateQuery(unsigned int resourceId);

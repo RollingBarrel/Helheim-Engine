@@ -46,6 +46,14 @@ update_status ModuleDetourNavigation::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
+bool ModuleDetourNavigation::CleanUp()
+{
+	delete mCrowd;
+	mCrowd = nullptr;
+
+	return true;
+}
+
 unsigned int ModuleDetourNavigation::GetResourceId() const
 { 
 	return (mRNavMesh) ? mRNavMesh->GetUID() : 0; 
@@ -194,7 +202,7 @@ void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
 
 void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
 {
-	if (mCrowd)
+	if (mCrowd != nullptr)
 	{
 		mCrowd->removeAgent(agentId);
 	}

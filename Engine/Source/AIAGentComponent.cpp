@@ -26,7 +26,6 @@ void AIAgentComponent::Reset()
 
 AIAgentComponent::~AIAgentComponent()
 {
-	PauseCrowdNavigation();
 }
 
 void AIAgentComponent::Update()
@@ -89,7 +88,11 @@ void AIAgentComponent::PauseCrowdNavigation()
 {
 	if (mCrowdId != CROWD_OFF_INDEX)
 	{
-		App->GetNavigation()->DisableAgent(mCrowdId);
+		if (App->GetNavigation())
+		{
+			App->GetNavigation()->DisableAgent(mCrowdId);
+
+		}
 		mCrowdId = CROWD_OFF_INDEX;
 	}
 }
