@@ -26,6 +26,7 @@ void AIAgentComponent::Reset()
 
 AIAgentComponent::~AIAgentComponent()
 {
+	PauseCrowdNavigation();
 }
 
 void AIAgentComponent::Update()
