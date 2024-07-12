@@ -76,7 +76,7 @@ public:
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
-	void BindGFramebuffer();
+	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
@@ -142,7 +142,7 @@ private:
 	//scene Framebuffer
 	unsigned int sFbo;
 	unsigned int sceneTexture;
-	unsigned int depthStencil;
+	//unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
