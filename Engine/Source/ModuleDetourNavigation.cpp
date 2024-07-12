@@ -160,11 +160,8 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 
 unsigned int ModuleDetourNavigation::AddAgent(float3 startPos, dtCrowdAgentParams& params)
 {
-
 	int agentId = mCrowd->addAgent(&startPos[0], &params);
-
 	return agentId >= 0 ? agentId : 101;
-
 }
 
 void ModuleDetourNavigation::SetAgentDestination(unsigned int agentId, float3 destination)
