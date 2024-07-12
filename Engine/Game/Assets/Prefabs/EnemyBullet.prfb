@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 428711152,
+                "UID": 496989846,
                 "ParentUID": 1,
                 "Name": "EnemyBullet",
                 "Enabled": true,
@@ -59,8 +59,8 @@
                 ]
             },
             {
-                "UID": 465749524,
-                "ParentUID": 428711152,
+                "UID": 1619071503,
+                "ParentUID": 496989846,
                 "Name": "VFX",
                 "Enabled": true,
                 "Active": true,
@@ -92,7 +92,9 @@
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
                         "MaxLifeTime": 0.25,
+                        "UVScroll": 1.0,
                         "IsFixedDirection": false,
+                        "IsUVScrolling": true,
                         "Direction": [
                             0.0,
                             1.0,
@@ -222,16 +224,25 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.05764075368642807,
+                                "Time": 0.1407506763935089,
                                 "Color": [
-                                    1.0,
-                                    0.12000000476837158,
+                                    0.055999755859375,
                                     0.0,
+                                    1.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.5067036151885986,
+                                "Time": 0.47184988856315615,
+                                "Color": [
+                                    0.027703432366251947,
+                                    0.5651134252548218,
+                                    0.9738479852676392,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7426286339759827,
                                 "Color": [
                                     1.0,
                                     0.9359999895095825,
@@ -249,100 +260,6 @@
                                 ]
                             }
                         ]
-                    }
-                ]
-            },
-            {
-                "UID": 486357340,
-                "ParentUID": 428711152,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    0.25,
-                    0.25,
-                    0.15000000596046449
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 507034777,
-                "ParentUID": 486357340,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 527224867,
-                "ParentUID": 507034777,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 81892183,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
                     }
                 ]
             }

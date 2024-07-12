@@ -153,7 +153,7 @@ bool Enemy::IsMoving()
     return false;
 }
 
-void Enemy::Reset()
+void Enemy::Init()
 {
     mDeath = false;
     mHealth = mMaxHealth;

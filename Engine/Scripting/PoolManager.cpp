@@ -11,27 +11,39 @@ PoolManager::PoolManager(GameObject* owner) : Script(owner)
 {
 }
 
-PoolManager::~PoolManager()
-{
-}
 
 void PoolManager::Start()
 {
+
+	unsigned int numBullets = 50;
+	unsigned int numItems = 10;
+	unsigned int numEnemies = 15;
+
+
+	//Items
 	GameObject* Shield = new GameObject("Shield_Pool", mGameObject);
 	GameObject* BlueEnergy = new GameObject("BlueEnergy_Pool", mGameObject);
 	GameObject* RedEnergy = new GameObject("RedEnergy_Pool", mGameObject);
 	GameObject* Bullet = new GameObject("Bullet_Pool", mGameObject);
 	GameObject* EnemyBullet = new GameObject("EnemyBullet_Pool", mGameObject);
 
-	unsigned int numBullets = 50;
+	//Enemies
+	GameObject* EnemyRobotMelee = new GameObject("EnemyRobotMelee_Pool", mGameObject);
+	GameObject* EnemyRobotRange = new GameObject("EnemyRobotRange_Pool", mGameObject);
+
 
 	mPoolMap =
 	{
-		{PoolType::SHIELD, ObjectPool("Item_Shield.prfb", mNumItems, Shield)},
-		{PoolType::BLUE_ENERGY, ObjectPool("Item_BlueEnergy.prfb", mNumItems, BlueEnergy)},
-		{PoolType::RED_ENERGY, ObjectPool("Item_RedEnergy.prfb", mNumItems, RedEnergy)},
+		//ITEMS
+		{PoolType::SHIELD, ObjectPool("Item_Shield.prfb", numItems, Shield)},
+		{PoolType::BLUE_ENERGY, ObjectPool("Item_Blue_Battery.prfb", numItems, BlueEnergy)},
+		{PoolType::RED_ENERGY, ObjectPool("Item_Red_Battery.prfb", numItems, RedEnergy)},
 		{PoolType::BULLET, ObjectPool("Bullet.prfb", numBullets, Bullet)},
-		{PoolType::ENEMYBULLET, ObjectPool("EnemyBullet.prfb", numBullets, EnemyBullet)}
+		{PoolType::ENEMY_BULLET, ObjectPool("EnemyBullet.prfb", numBullets, EnemyBullet)},
+
+		//ENEMIES
+		{ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) },
+		{ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) }
 	};
 
 }

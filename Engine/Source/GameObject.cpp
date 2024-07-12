@@ -10,6 +10,7 @@
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
 #include "ImageComponent.h"
+#include "MaskComponent.h"
 #include "CanvasComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -439,6 +440,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::IMAGE:
 		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::MASK:
+		newComponent = new MaskComponent(this);
 		break;
 	case ComponentType::CANVAS:
 		newComponent = new CanvasComponent(this);

@@ -58,9 +58,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\ItemDrop.h">
       <Filter>Player</Filter>
     </ClInclude>
@@ -124,9 +121,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h">
       <Filter>Weapons</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
@@ -149,11 +143,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h">
+    <ClInclude Include="..\Game\Assets\Scripts\Spawner.h">
       <Filter>Enemies</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h">
-      <Filter>Managers</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h">
       <Filter>Managers</Filter>
@@ -174,12 +165,15 @@
     <ClInclude Include="..\Game\Assets\Scripts\PoolManager.h">
       <Filter>Pools</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h">
-      <Filter>Enemies</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
+      <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +188,6 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyExplosive.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemyRobot.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
@@ -269,14 +260,8 @@
       <Filter>Weapons\Range</Filter>
     </ClCompile>
     <ClCompile Include="BattleArea.cpp" />
-    <ClCompile Include="EnemyPool.cpp">
+    <ClCompile Include="Spawner.cpp">
       <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="EnemySpawner.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
-    <ClCompile Include="ActiveBattleAreaController.cpp">
-      <Filter>Managers</Filter>
     </ClCompile>
     <ClCompile Include="Sanity.cpp" />
     <ClCompile Include="Machinegun.cpp">
@@ -313,12 +298,15 @@
     <ClCompile Include="PoolManager.cpp">
       <Filter>Pools</Filter>
     </ClCompile>
-    <ClCompile Include="BulletEnemy.cpp">
-      <Filter>Enemies</Filter>
-    </ClCompile>
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="TimerScript.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyCreatureRange.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyCreatureMelee.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

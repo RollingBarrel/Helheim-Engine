@@ -2,8 +2,7 @@
 #include "Component.h"
 #include "ModulePhysics.h"
 #include "Math/float3.h"
-#include "Geometry/AABB.h"
-#include "Geometry/OBB.h"
+
 #include <functional>
 #include <vector>
 
@@ -41,10 +40,7 @@ public:
 
 	void AddCollisionEventHandler(CollisionEventType eventType, std::function<void(CollisionData*)>* handler);
 	void OnCollision(CollisionData* collisionData);
-	void ComputeBoundingBox();
 
-	inline const AABB& GetAABB() const { return mLocalAABB; }
-	inline const OBB& GetOBB() const { return mWorldOBB; }
 	inline const float3& GetCenter() const { return mCenter; }
 	inline const float3& GetSize() const { return mSize; }
 	inline const ColliderType GetColliderType() const { return mColliderType; }
@@ -52,6 +48,7 @@ public:
 	inline btRigidBody* GetRigidBody() const { return mRigidBody; }
 	inline MotionState* GetMotionState() const { return mMotionState; }
 	inline Collider* GetCollider() const { return mCollider; }
+	void GetColliderOBB(OBB& obb) const;
 
 	void SetCenter(const float3& center);
 	void SetSize(const float3& size);
@@ -67,8 +64,6 @@ private:
 	void Enable() override;
 	void Disable() override;
 
-	AABB mLocalAABB = { float3(-0.5f), float3(0.5f) };
-	OBB mWorldOBB = { mLocalAABB };
 	float3 mCenter = float3::zero;
 	float3 mSize = float3::one;
 	ColliderType mColliderType = ColliderType::DYNAMIC;

@@ -32,20 +32,25 @@ void MotionState::setWorldTransform(const btTransform& worldTransform)
 		// TODO: generalize collider common properties on super class
 		bool freezeRotation = static_cast<BoxColliderComponent*>(mCollider)->GetFreezeRotation();
 		
-		btTransform mTransform = worldTransform * (freezeRotation ? btTransform::getIdentity() : mMassCenterOffset);
+		btTransform transform = worldTransform * (freezeRotation ? btTransform::getIdentity() : mMassCenterOffset);
 		float3 parentScale = mCollider->GetOwner()->GetParent()->GetWorldScale();
 		float3 parentPosition = mCollider->GetOwner()->GetParent()->GetWorldPosition();
 		Quat parentRotation = mCollider->GetOwner()->GetParent()->GetWorldRotation().Inverted();
 
 		// Set Local Position
-		float3 position = (float3)(mTransform.getOrigin() + (freezeRotation ? mMassCenterOffset.getOrigin() : btVector3(0, 0, 0)));
+		float3 position = (float3)(transform.getOrigin() + (freezeRotation ? mMassCenterOffset.getOrigin() : btVector3(0, 0, 0)));
 		mCollider->GetOwner()->SetLocalPosition(parentRotation.Transform(((position).Div(parentScale) - parentPosition)));
 
 		// Set Local Rotation
 		if (!freezeRotation) {
 			btQuaternion rotation;
-			mTransform.getBasis().getRotation(rotation);
+			transform.getBasis().getRotation(rotation);
 			mCollider->GetOwner()->SetLocalRotation(parentRotation * (Quat)rotation);
 		}
 	}
+}
+
+void MotionState::SetCenterOffset(float3 centerOffset)
+{
+	mMassCenterOffset = btTransform(btMatrix3x3::getIdentity(), btVector3(centerOffset.x, centerOffset.y, centerOffset.z)).inverse();
 }

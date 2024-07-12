@@ -9,7 +9,6 @@
 #include "ScriptComponent.h"
 #include "HudController.h"
 #include "PlayerController.h"
-#include "EnemyPool.h"
 
 CREATE(GameManager)
 {
@@ -18,7 +17,6 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnemyPool);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     END_CREATE;
 }
@@ -93,7 +91,6 @@ void GameManager::Clean()
 {
     mPlayerController = nullptr;
     mActiveBattleArea = nullptr;
-    mEnemyPool = nullptr;
     mHudController = nullptr;
     mAudioManager = nullptr;
     mPoolManager = nullptr;
