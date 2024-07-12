@@ -108,7 +108,7 @@
                             1.0
                         ],
                         "Alpha": 1.0,
-                        "ShouldDraw": false,
+                        "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,

@@ -376,20 +376,50 @@ void ImageComponent::Save(JsonObject& obj) const
 void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
 	Component::Load(data, uidPointerMap);
-	mResourceId = data.GetInt("ImageID");
-	SetImage(mResourceId);
 
+	if (data.HasMember("ImageID"))
+	{
+		mResourceId = data.GetInt("ImageID");
+		SetImage(mResourceId);
+	}
 	float col[3];
-	data.GetFloats("Color", col);
-	mColor = float3(col[0], col[1], col[2]);
-	mAlpha = data.GetFloat("Alpha");
-	mShouldDraw = data.GetBool("ShouldDraw");
-	mIsMaskable = data.GetBool("IsMaskable");
-	mIsSpritesheet = data.GetBool("IsSpritesheet");
-	mColumns = data.GetInt("Columns");
-	mRows = data.GetInt("Rows");
-	mFPS = data.GetInt("Speed");
-	mIsPlaying = data.GetBool("IsPlaying");
+	if (data.HasMember("Color"))
+	{
+		data.GetFloats("Color", col);
+		mColor = float3(col[0], col[1], col[2]);
+	}
+	if (data.HasMember("Alpha"))
+	{
+		mAlpha = data.GetFloat("Alpha");
+	}
+	if (data.HasMember("ShouldDraw"))
+	{
+		mShouldDraw = data.GetBool("ShouldDraw");
+	}
+	if (data.HasMember("IsMaskable"))
+	{
+		mIsMaskable = data.GetBool("IsMaskable");
+	}
+	if (data.HasMember("IsSpritesheet"))
+	{
+		mIsSpritesheet = data.GetBool("IsSpritesheet");
+	}
+	if (data.HasMember("Colums"))
+	{
+		mColumns = data.GetInt("Columns");
+	}
+	if (data.HasMember("Rows"))
+	{
+		mRows = data.GetInt("Rows");
+	}
+	if (data.HasMember("Speed"))
+	{
+		mFPS = data.GetInt("Speed");
+	}
+	if (data.HasMember("IsPlaying"))
+	{
+		mIsPlaying = data.GetBool("IsPlaying");
+	}
 }
 
 void ImageComponent::SetImage(unsigned int resourceId) 
