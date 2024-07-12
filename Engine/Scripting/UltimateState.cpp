@@ -6,8 +6,9 @@
 #include "PlayerController.h"
 
 
-UltimateState::UltimateState(PlayerController* player, float cooldown) : State(player, cooldown)
+UltimateState::UltimateState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
+	mUltimateDuration = duration;
 }
 
 UltimateState::~UltimateState()

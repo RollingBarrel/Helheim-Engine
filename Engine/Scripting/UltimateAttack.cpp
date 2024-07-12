@@ -9,6 +9,8 @@
 CREATE(UltimateAttack)
 {
     CLASS(owner);
+    MEMBER(MemberType::FLOAT, mInterval);
+    MEMBER(MemberType::FLOAT, mDamageTick);
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)

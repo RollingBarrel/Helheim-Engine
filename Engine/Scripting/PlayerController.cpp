@@ -81,6 +81,8 @@ CREATE(PlayerController)
 
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
+    MEMBER(MemberType::FLOAT, mUltimateCooldown);
+    MEMBER(MemberType::FLOAT, mUltimateDuration);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -128,7 +130,7 @@ void PlayerController::Start()
     mAttackState = new AttackState(this, 0.0f); // Is later changed when having a weapon
     mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
     mReloadState = new ReloadState(this, 0.0f);
-    mUltimateState = new UltimateState(this, 10.0f);
+    mUltimateState = new UltimateState(this, mUltimateCooldown, mUltimateDuration);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;

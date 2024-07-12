@@ -5,7 +5,7 @@
 class UltimateState : public State
 {
 public:
-	explicit UltimateState(PlayerController* player, float cooldown);
+	explicit UltimateState(PlayerController* player, float cooldown, float duration);
 	~UltimateState();
 
 	StateType HandleInput() override;
@@ -19,5 +19,7 @@ public:
 	bool IsReady() override;
 
 	TimerScript mTimer;
+
+	float mUltimateDuration;
 };
 

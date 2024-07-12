@@ -26,7 +26,7 @@ private:
 
 	TimerScript mDamageTimer;
 
-	float mInterval = 0.2f;
-	float mDamageTick = 1.0f;
+	float mInterval;
+	float mDamageTick;
 };
 

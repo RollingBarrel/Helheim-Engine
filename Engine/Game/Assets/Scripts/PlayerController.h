@@ -222,6 +222,8 @@ private:
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;
+    float mUltimateCooldown;
+    float mUltimateDuration;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
