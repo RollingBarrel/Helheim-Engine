@@ -39,9 +39,10 @@ bool Spawner::Spawn()
 			{
 				ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
 				Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
- 				enemyScript->Init();
 				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
 				enemy->SetEnabled(true);
+ 				//enemyScript->Reset();
+ 				enemyScript->Init();
 
 				mLastSpawnTime = 0.0f;
 				return true;

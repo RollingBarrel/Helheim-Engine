@@ -11,6 +11,8 @@
 #include "ModuleResource.h"
 #include "ModuleFileSystem.h"
 #include "ResourceNavmesh.h"
+#include "DetourCrowd.h"
+
 #define MAX_AMOUNT 999
 ModuleDetourNavigation::ModuleDetourNavigation()
 {
@@ -19,11 +21,35 @@ ModuleDetourNavigation::ModuleDetourNavigation()
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
+	delete mCrowd;
+	mCrowd = nullptr;
 	delete mNavQuery;
 	mNavQuery = nullptr;
 	if (mRNavMesh)
 		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 }
+
+
+bool ModuleDetourNavigation::Init()
+{
+	mCrowd = dtAllocCrowd();
+	return true;
+}
+
+
+update_status ModuleDetourNavigation::Update(float dt)
+{
+	if (mCrowd && App->IsPlayMode())
+	{
+		if (mCrowd->getAgentCount() > 0)
+		{
+			mCrowd->update(App->GetDt(), nullptr);
+		}
+	}
+	return UPDATE_CONTINUE;
+}
+
+
 
 unsigned int ModuleDetourNavigation::GetResourceId() const
 { 
@@ -56,6 +82,7 @@ void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 			LOG("Could not init Detour navmesh query");
 			return;
 		}
+		mCrowd->init(mMaxAgents, mAgentRadius, mRNavMesh->GetDtNavMesh());
 	}
 }
 
@@ -131,4 +158,47 @@ float3 ModuleDetourNavigation::FindNearestPoint(float3 center, float3 halfSize)
 	return queryResult;
 }
 
+unsigned int ModuleDetourNavigation::AddAgent(float3 startPos, dtCrowdAgentParams& params)
+{
+	int agentId = mCrowd->addAgent(&startPos[0], &params);
+	return agentId >= 0 ? agentId : 101;
+}
+
+void ModuleDetourNavigation::SetAgentDestination(unsigned int agentId, float3 destination)
+{
+	dtPolyRef result;
+	dtQueryFilter temp;
+	float3 queryResult;
+	float3 halfSize{ 10.0f };
+
+	mNavQuery->findNearestPoly(&destination[0], &halfSize[0], &temp, &result, &queryResult[0]);
+
+	mCrowd->requestMoveTarget(agentId, result, &destination[0]);
+}
+
+void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
+{
+	if (mCrowd)
+	{
+		if (agentId < mCrowd->getAgentCount())
+		{
+			const dtCrowdAgent* ag = mCrowd->getAgent(agentId);
+			if (ag->active) 
+			{
+				// Update your game object's position with the agent's position
+				float3 newPosition(ag->npos[0], ag->npos[1], ag->npos[2]);
+				position = newPosition;
+
+			}
+		}
+	}
+}
+
+void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
+{
+	if (mCrowd != nullptr)
+	{
+		mCrowd->removeAgent(agentId);
+	}
+}
 

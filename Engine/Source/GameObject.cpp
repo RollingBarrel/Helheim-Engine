@@ -170,6 +170,15 @@ void GameObject::SetTag(const std::string& tag)
 	App->GetScene()->AddToTagMap(tag, this);
 }
 
+void GameObject::SetDynamic(bool dynamic)
+{
+	mIsDynamic = dynamic;
+	for (GameObject* child : mChildren)
+	{
+		child->SetDynamic(dynamic);
+	}
+}
+
 void GameObject::SetParent(GameObject* newParent)
 {
 	assert(newParent && "Parent was nullptr");

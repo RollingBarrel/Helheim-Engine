@@ -113,7 +113,6 @@ void EnemyRobotMelee::Chase()
                 }
 
             }
-            mAiAgentComponent->MoveAgent(mSpeed);
 
         }
         if (IsPlayerInRange(mMeleeDistance))
@@ -187,12 +186,23 @@ void EnemyRobotMelee::Death()
     {
         Enemy::Death();
     }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->PauseCrowdNavigation();
+    }
 }
 void EnemyRobotMelee::Init()
 {
     Enemy::Init();
-    mAnimationComponent->OnReset();
-    mAnimationComponent->SendTrigger("tIdle",0.0f);
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->OnReset();
+        mAnimationComponent->SendTrigger("tIdle",0.0f);
+    }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)
 {

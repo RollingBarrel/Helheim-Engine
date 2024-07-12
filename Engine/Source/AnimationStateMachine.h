@@ -66,6 +66,8 @@ public:
 	unsigned int GetNumTransitions() const { return mTransitions.size();};
 	void SetTransitionTrigger(int index, const std::string& trigger);
 	void DeleteTransition(int index);
+	void SetTransitionSource(int index, const std::string& sourceName);
+	void SetTransitionTarget(int index, const std::string& targetName);
 
 
 	//Save & Load

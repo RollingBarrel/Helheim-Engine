@@ -46,6 +46,7 @@ void EnemyRobotRange::Start()
 
     }
     mAttackCD = mTimerAttack;
+
 }
 
 void EnemyRobotRange::Update()
@@ -114,7 +115,6 @@ void EnemyRobotRange::Chase()
 
             }
             mAnimationComponent->SendTrigger("tChase", 0.2f);
-            mAiAgentComponent->MoveAgent(mSpeed);
             mBulletOrigin->SetWorldPosition(mGameObject->GetWorldPosition());
 
         }
@@ -188,6 +188,11 @@ void EnemyRobotRange::Death()
     {
         Enemy::Death();
     }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->PauseCrowdNavigation();
+    }
+
 }
 
 void EnemyRobotRange::Init()
@@ -195,4 +200,8 @@ void EnemyRobotRange::Init()
     Enemy::Init();
     mAnimationComponent->OnReset();
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
