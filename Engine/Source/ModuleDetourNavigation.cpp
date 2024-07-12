@@ -181,7 +181,8 @@ void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
 		if (agentId < mCrowd->getAgentCount())
 		{
 			const dtCrowdAgent* ag = mCrowd->getAgent(agentId);
-			if (ag->active) {
+			if (ag->active) 
+			{
 				// Update your game object's position with the agent's position
 				float3 newPosition(ag->npos[0], ag->npos[1], ag->npos[2]);
 				position = newPosition;
