@@ -128,7 +128,7 @@ void PlayerController::Start()
     mAttackState = new AttackState(this, 0.0f); // Is later changed when having a weapon
     mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
     mReloadState = new ReloadState(this, 0.0f);
-    mUltimateState = new UltimateState(this, 0.0f);
+    mUltimateState = new UltimateState(this, 10.0f);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;

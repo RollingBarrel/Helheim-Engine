@@ -12,6 +12,7 @@
 #include "SpecialState.h"
 #include "SwitchState.h"
 #include "ReloadState.h"
+#include "UltimateState.h"
 
 GrenadeState::GrenadeState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -57,7 +58,7 @@ StateType GrenadeState::HandleInput()
         return StateType::RELOAD;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetGrenadeState()->IsReady() &&
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() &&
         (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN))
     {
         mPlayerController->GetGrenadeState()->ResetCooldown();

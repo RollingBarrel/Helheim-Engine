@@ -16,6 +16,8 @@ public:
 
 	StateType GetType() override;
 
+	bool IsReady() override;
+
 	TimerScript mTimer;
 };
 

@@ -8,6 +8,7 @@
 #include "AttackState.h"
 #include "SpecialState.h"
 #include "SwitchState.h"
+#include "UltimateState.h"
 
 ReloadState::ReloadState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -53,7 +54,7 @@ StateType ReloadState::HandleInput()
         return StateType::SWITCH;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetGrenadeState()->IsReady() &&
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() &&
         (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN))
     {
         mPlayerController->GetGrenadeState()->ResetCooldown();
