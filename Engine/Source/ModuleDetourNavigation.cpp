@@ -193,6 +193,9 @@ void ModuleDetourNavigation::MoveAgent(unsigned int agentId, float3& position)
 
 void ModuleDetourNavigation::DisableAgent(unsigned int agentId)
 {
-	mCrowd->removeAgent(agentId);
+	if (mCrowd)
+	{
+		mCrowd->removeAgent(agentId);
+	}
 }
 
