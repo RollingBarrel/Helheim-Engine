@@ -791,6 +791,7 @@
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\Blur.glsl" />
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl" />

@@ -75,6 +75,7 @@ public:
 	void WindowResized(unsigned width, unsigned height);
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
+	unsigned int bluredImage = 0;
 	void BindSceneFramebuffer();
 	//void BindGFramebuffer();
 	void UnbindFramebuffer();
@@ -135,6 +136,8 @@ public:
 	unsigned int GetSkyboxVAO() const { return mSkyVao; }
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
+
+	unsigned int BlurTexture(unsigned int texId, unsigned int amount = 5) const;
 private:
 	void* context = nullptr;
 
@@ -153,6 +156,9 @@ private:
 	unsigned int mGEmissive;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
+	//bloom bramebuffer
+	unsigned int mBlurFBO[2];
+	unsigned int mBlurTex[2];
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	//void Draw();
@@ -187,6 +193,7 @@ private:
 	unsigned int mHighLightProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
 	unsigned int mUIMaskProgramId = 0;
+	unsigned int mBlurProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;

@@ -210,6 +210,29 @@ bool ModuleOpenGL::Init()
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
+
+	//Blur
+	glGenFramebuffers(2, mBlurFBO);
+	glGenTextures(2, mBlurTex);
+	for (unsigned int i = 0; i < 2; ++i)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			LOG("Error loading the framebuffer !!!");
+			return false;
+		}
+		const GLenum att3 = GL_COLOR_ATTACHMENT0;
+		glDrawBuffers(1, &att3);
+	}
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glGenVertexArrays(1, &mEmptyVAO);
@@ -291,6 +314,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[0] = "ui.vs";
 	sourcesPaths[1] = "uiMask.fs";
 	mUIMaskProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "Blur.glsl";
+	mBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -495,6 +522,10 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glBindTexture(GL_TEXTURE_2D, mBlurTex[0]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, mBlurTex[1]);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
 }
@@ -734,6 +765,34 @@ void ModuleOpenGL::SetSkybox(unsigned int uid)
 unsigned int ModuleOpenGL::GetSkyboxID() const
 {
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
+}
+
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int amount) const
+{
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
+	glClear(GL_COLOR_BUFFER_BIT);
+	bool horizontal = true;
+	unsigned int ret = 0;
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texId);
+	glUseProgram(mBlurProgramId);
+	glBindVertexArray(mEmptyVAO);
+	for (unsigned int i = 0; i < amount * 2; ++i)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[horizontal]);
+		glUniform1ui(0, horizontal);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i % 2]);
+		ret = i % 2;
+		horizontal = !horizontal;
+	}
+	glBindVertexArray(0);
+	glPopDebugGroup();
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	return mBlurTex[ret];
 }
 
 void ModuleOpenGL::InitDecals()
@@ -1184,6 +1243,8 @@ void ModuleOpenGL::Draw()
 	//glStencilMask(0xFF);
 	//glDisable(GL_STENCIL_TEST);
 	//glEnable(GL_DEPTH_TEST);
+
+	bluredImage = BlurTexture(sceneTexture, 5);
 
 	mBatchManager.EndFrameDraw();
 	glUseProgram(0);
