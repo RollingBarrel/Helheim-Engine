@@ -1145,6 +1145,9 @@ void ModuleOpenGL::Draw()
 	glDrawBuffers(5, att2);
 
 
+	//Bloom
+	unsigned int blurredTex = BlurTexture(mGEmissive, 20);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
@@ -1170,6 +1173,8 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, (mCurrSkyBox) ? mCurrSkyBox->GetEnvBRDFTexId() : 0);
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, blurredTex);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
@@ -1208,6 +1213,8 @@ void ModuleOpenGL::Draw()
 	{
 		mTrails[i]->Draw();
 	}
+	
+
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight
@@ -1243,8 +1250,6 @@ void ModuleOpenGL::Draw()
 	//glStencilMask(0xFF);
 	//glDisable(GL_STENCIL_TEST);
 	//glEnable(GL_DEPTH_TEST);
-
-	bluredImage = BlurTexture(sceneTexture, 5);
 
 	mBatchManager.EndFrameDraw();
 	glUseProgram(0);

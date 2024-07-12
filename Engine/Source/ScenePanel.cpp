@@ -151,8 +151,7 @@ void ScenePanel::MenuGBuffer()
 		{
 			if (ImGui::Selectable("SCENE")) 
 			{
-				currentScene = EngineApp->GetOpenGL()->bluredImage;
-				//currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
+				currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
 				currentSceneName = "SCENE";
 			}
 			if (ImGui::Selectable("BASE_COLOR")) 
@@ -203,8 +202,7 @@ void ScenePanel::DrawScene()
 	}
 	if (currentScene == 0)
 	{
-		currentScene = EngineApp->GetOpenGL()->bluredImage;
-		//currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
+		currentScene = EngineApp->GetOpenGL()->GetFramebufferTexture();
 		currentSceneName = "SCENE";
 	}
 	ImGui::Image((void*)(intptr_t)currentScene, size, ImVec2(0, 1), ImVec2(1, 0));
