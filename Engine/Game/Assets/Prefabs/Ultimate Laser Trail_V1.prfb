@@ -1,0 +1,73 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1393819585,
+                "ParentUID": 1,
+                "Name": "Ultimate Laser Trail_V1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    14.31946849822998,
+                    -2.5629913806915285,
+                    26.159046173095704
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.8589998483657838,
+                    1.8589998483657838,
+                    1.8589998483657838
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 1485191790,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.0,
+                        "MaxLifeTime": 0.0,
+                        "UVScroll": -7.0,
+                        "IsFixedDirection": true,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 0.10999999940395355
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.16020672023296357,
+                                    "Color": [
+                                        0.3363914489746094,
+                                        1.0,
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}

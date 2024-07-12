@@ -1,0 +1,73 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 318440667,
+                "ParentUID": 1,
+                "Name": "Creaturerange_laser_V1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    12.302393913269043,
+                    -2.794447898864746,
+                    24.279767990112306
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.4299999475479127,
+                    1.4299999475479127,
+                    1.4299999475479127
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 563896877,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.0,
+                        "MaxLifeTime": 0.0,
+                        "UVScroll": -10.0,
+                        "IsFixedDirection": true,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 0.10999999940395355
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.16020672023296357,
+                                    "Color": [
+                                        1.0,
+                                        0.3363914489746094,
+                                        0.3363914489746094,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
