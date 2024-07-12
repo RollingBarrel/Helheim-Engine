@@ -1,5 +1,4 @@
 #include "GameObject.h"
-#include "GameObject.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
