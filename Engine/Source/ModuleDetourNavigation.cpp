@@ -21,11 +21,14 @@ ModuleDetourNavigation::ModuleDetourNavigation()
 
 ModuleDetourNavigation::~ModuleDetourNavigation()
 {
+	delete mCrowd;
+	mCrowd = nullptr;
 	delete mNavQuery;
 	mNavQuery = nullptr;
 	if (mRNavMesh)
 		App->GetResource()->ReleaseResource(mRNavMesh->GetUID());
 }
+
 
 bool ModuleDetourNavigation::Init()
 {
@@ -46,13 +49,7 @@ update_status ModuleDetourNavigation::Update(float dt)
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleDetourNavigation::CleanUp()
-{
-	delete mCrowd;
-	mCrowd = nullptr;
 
-	return true;
-}
 
 unsigned int ModuleDetourNavigation::GetResourceId() const
 { 

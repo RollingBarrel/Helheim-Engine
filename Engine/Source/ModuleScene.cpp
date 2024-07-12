@@ -34,14 +34,7 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
-	if (mRoot)
-	{
-		delete mRoot;
-	}
-	if (mBackgroundScene)
-	{
-		delete mBackgroundScene;
-	}
+	
 }
 
 #pragma region Basic Functions
@@ -97,6 +90,19 @@ update_status ModuleScene::PostUpdate(float dt)
 		LoadPrefab(mPrefabPath);
 	}
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleScene::CleanUp()
+{
+	if (mRoot)
+	{
+		delete mRoot;
+	}
+	if (mBackgroundScene)
+	{
+		delete mBackgroundScene;
+	}
+	return true;
 }
 
 #pragma endregion
