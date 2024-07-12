@@ -34,8 +34,10 @@ unsigned int ModuleResource::Find(const char* assetsFile) const
 {
 	for (const auto& pair : mResources)
 	{
-		std::string assetName = "";
-		App->GetFileSystem()->SplitPath(assetsFile, &assetName);
+		std::string assetName;
+		std::string extensionName;
+		App->GetFileSystem()->SplitPath(assetsFile, &assetName, &extensionName);
+		assetName += extensionName;
 		if (assetName == assetsFile)
 		{
 			return pair.second->GetUID();

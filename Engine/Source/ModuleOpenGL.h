@@ -76,7 +76,7 @@ public:
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
-	void BindGFramebuffer();
+	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
@@ -143,7 +143,7 @@ private:
 	//scene Framebuffer
 	unsigned int sFbo;
 	unsigned int sceneTexture;
-	unsigned int depthStencil;
+	//unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
@@ -198,7 +198,7 @@ private:
 	unsigned int mEmptyVAO = 0;
 	
 	//Shadows
-	unsigned int mShadowsFrameBuffersId[NUM_SHADOW_MAPS] = {0};
+	unsigned int mShadowsFrameBufferId = 0;
 	unsigned int mShadowMaps[NUM_SHADOW_MAPS] = { 0 };
 	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
 	OpenGLBuffer* mShadowsBuffer = nullptr;
