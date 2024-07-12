@@ -196,7 +196,7 @@ private:
 	unsigned int mEmptyVAO = 0;
 	
 	//Shadows
-	unsigned int mShadowsFrameBuffersId[NUM_SHADOW_MAPS] = {0};
+	unsigned int mShadowsFrameBufferId = 0;
 	unsigned int mShadowMaps[NUM_SHADOW_MAPS] = { 0 };
 	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
 	OpenGLBuffer* mShadowsBuffer = nullptr;

@@ -305,13 +305,11 @@ bool ModuleOpenGL::Init()
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
 	//SHADOWS
+	glGenFramebuffers(1, &mShadowsFrameBufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	glDrawBuffers(0, nullptr);
 	for (unsigned int i = 0; i < NUM_SHADOW_MAPS; ++i)
 	{
-		glGenFramebuffers(1, &mShadowsFrameBuffersId[i]);
-		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
-		glDrawBuffers(0, nullptr);
-
-
 		glGenTextures(1, &mShadowMaps[i]);
 		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
@@ -896,9 +894,9 @@ void ModuleOpenGL::Draw()
 	
 	//Draw Shadowmaps
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
 		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
 	
