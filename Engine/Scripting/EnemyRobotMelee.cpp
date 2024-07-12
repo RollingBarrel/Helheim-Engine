@@ -194,8 +194,11 @@ void EnemyRobotMelee::Death()
 void EnemyRobotMelee::Init()
 {
     Enemy::Init();
-    mAnimationComponent->OnReset();
-    mAnimationComponent->SendTrigger("tIdle",0.0f);
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->OnReset();
+        mAnimationComponent->SendTrigger("tIdle",0.0f);
+    }
     if (mAiAgentComponent)
     {
         mAiAgentComponent->StartCrowdNavigation();
