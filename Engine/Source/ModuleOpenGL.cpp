@@ -803,8 +803,8 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int amount) 
 	//return mBlurTex[ret];
 
 	unsigned int ret = 0;
-	//unsigned int w = mSceneWidth;
-	//unsigned int h = mSceneHeight;
+	unsigned int w = mSceneWidth;
+	unsigned int h = mSceneHeight;
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
 	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -819,18 +819,23 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int amount) 
 	for (; i < amount; ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[ret]);
+		w /= 2;
+		h /= 2;
+		glViewport(0, 0, w, h);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[ret]);
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		ret = i % 2;
-		//w /= 2;
-		//h /= 2;
-		//glViewport(0, 0, w, h);
 	}
 	glUseProgram(mUpsampleProgramId);
 	for (; i < amount * 2; ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[ret]);
+		w *= 2;
+		h *= 2;
+		glViewport(0, 0, w, h);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[ret]);
 		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
