@@ -193,6 +193,8 @@ private:
 	unsigned int DecalPassProgramId = 0;
 	unsigned int mUIMaskProgramId = 0;
 	unsigned int mBlurProgramId = 0;
+	unsigned int mDownsampleProgramId = 0;
+	unsigned int mUpsampleProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;

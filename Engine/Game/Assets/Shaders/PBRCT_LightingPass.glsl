@@ -238,4 +238,6 @@ void main()
 
 	//Output
 	outColor = vec4(ldrCol, 1.0f);
+
+	outColor = vec4(texture(bloomTex, uv).rgb * 1.0, 1.0);
 }

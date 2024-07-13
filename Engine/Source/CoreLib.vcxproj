@@ -799,6 +799,8 @@
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl" />
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl" />

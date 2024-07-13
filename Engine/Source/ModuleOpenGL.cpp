@@ -319,6 +319,14 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "Blur.glsl";
 	mBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
+	mDownsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "KawaseDualFilterUpBlur.glsl";
+	mUpsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 	SetOpenGlCameraUniforms();
@@ -544,6 +552,25 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glUseProgram(0);
 }
 
+void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
+{
+	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGEmissive);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
 {
 	if (mCameraUniBuffer != nullptr)
@@ -573,25 +600,6 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		}
 		
 	}
-}
-
-void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
-{
-	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGEmissive);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGNormals);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ModuleOpenGL::InitSkybox()
@@ -769,30 +777,75 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 
 unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int amount) const
 {
-	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
-	glClear(GL_COLOR_BUFFER_BIT);
-	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
-	glClear(GL_COLOR_BUFFER_BIT);
-	bool horizontal = true;
+	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//bool horizontal = true;
+	//unsigned int ret = 0;
+	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, texId);
+	//glUseProgram(mBlurProgramId);
+	//glBindVertexArray(mEmptyVAO);
+	//for (unsigned int i = 0; i < amount * 2; ++i)
+	//{
+	//	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[horizontal]);
+	//	glUniform1ui(0, horizontal);
+	//	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//	glBindTexture(GL_TEXTURE_2D, mBlurTex[i % 2]);
+	//	ret = i % 2;
+	//	horizontal = !horizontal;
+	//}
+	//glBindVertexArray(0);
+	//glPopDebugGroup();
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//return mBlurTex[ret];
+
 	unsigned int ret = 0;
+	//unsigned int w = mSceneWidth;
+	//unsigned int h = mSceneHeight;
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
+	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	glDisable(GL_BLEND);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texId);
-	glUseProgram(mBlurProgramId);
 	glBindVertexArray(mEmptyVAO);
-	for (unsigned int i = 0; i < amount * 2; ++i)
+	glUseProgram(mDownsampleProgramId);
+	unsigned int i = 0;
+	for (; i < amount; ++i)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[horizontal]);
-		glUniform1ui(0, horizontal);
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[ret]);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i % 2]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[ret]);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		ret = i % 2;
-		horizontal = !horizontal;
+		//w /= 2;
+		//h /= 2;
+		//glViewport(0, 0, w, h);
+	}
+	glUseProgram(mUpsampleProgramId);
+	for (; i < amount * 2; ++i)
+	{
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[ret]);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[ret]);
+		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+		ret = i % 2;
+		//w *= 2;
+		//h *= 2;
+		//glViewport(0, 0, w, h);
 	}
 	glBindVertexArray(0);
-	glPopDebugGroup();
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	return mBlurTex[ret];
+	//glViewport(0 , 0, mSceneWidth, mSceneHeight);
+	//glBindTexture(GL_TEXTURE_2D, mBlurTex[(ret + 1)% 2]);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, mSceneWidth, mSceneHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glPopDebugGroup();
+	return mBlurTex[(ret + 1) % 2];
 }
 
 void ModuleOpenGL::InitDecals()
@@ -1146,7 +1199,7 @@ void ModuleOpenGL::Draw()
 
 
 	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive, 20);
+	unsigned int blurredTex = BlurTexture(mGEmissive, 3);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass

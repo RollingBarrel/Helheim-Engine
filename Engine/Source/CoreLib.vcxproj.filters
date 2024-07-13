@@ -2092,5 +2092,11 @@
     <None Include="..\Game\Assets\Shaders\Blur.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
