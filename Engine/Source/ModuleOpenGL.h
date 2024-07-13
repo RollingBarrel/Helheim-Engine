@@ -98,7 +98,12 @@ public:
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
 	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
+	unsigned int GetSSAOProgramId() const { return mSSAOPassProgramId; }
 
+	float GetAoRange() const { return mAoRange; };
+	float GetAoBias() const { return mAoBias; };
+	void SetAoRange(float range) { mAoRange = range; };
+	void SetAoBias(float bias) { mAoBias = bias; };
 	//TODO: put all this calls into one without separating for light type??
 	void AddPointLight(const PointLightComponent& component);
 	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
@@ -130,6 +135,10 @@ public:
 	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
+
+	bool mAoActive{ true };
+	float mAoRange = 1.0f;
+	float mAoBias = 0.0025f;
 private:
 	void* context = nullptr;
 
@@ -207,6 +216,8 @@ private:
 	unsigned int mDecalsVbo = 0;
 	void InitDecals();
 	std::vector<const DecalComponent*> mDecalComponents;
+
+	//Ambient Occlusion
 
 
 	//Lighting uniforms

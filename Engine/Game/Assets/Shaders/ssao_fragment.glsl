@@ -21,7 +21,8 @@ layout(binding = 1) uniform sampler2D normals;
 uniform vec3 randomTangents [TANGENT_ROWS *TANGENT_COLS];
 uniform vec3 kernelSamples[KERNEL_SIZE];
 uniform uvec2 screenSize;
-
+layout(location = 1) uniform float range;
+layout(location = 2) uniform float bias;
 
 
 mat3 createTangentSpace(const vec3 normal, const vec3 up)
@@ -52,8 +53,7 @@ void main()
 	vec3 normal = mat3(view)*normalize(texture(normals, uv).xyz);
 	mat3 tangentSpace = createTangentSpace(normal, getRandomTangent());
 	float occlusion = 0;
-	float range = 1.0;
-	float bias = 0.025;
+
 	for(int i=0; i< KERNEL_SIZE; ++i)
 	{
 		vec3 samplePos = position+tangentSpace*kernelSamples[i];

@@ -60,5 +60,29 @@ void LightningPanel::Draw(int windowFlags)
 	{ 
 		openGl->mDLightUniBuffer->UpdateData(openGl->mDirLight.mCol, sizeof(DirectionalLight::mCol), offsetof(DirectionalLight, mCol));
 	}
+	ImGui::Text("Ambient Occlusion");
+	if (ImGui::Checkbox("AO", &openGl->mAoActive))
+	{
+		glUseProgram(openGl->GetPbrLightingPassProgramId());
+		glUniform1i(glGetUniformLocation(openGl->GetPbrLightingPassProgramId(), "activeAO"),openGl->mAoActive);
+		glUseProgram(0);
+
+	}
+	float aoRange = openGl->GetAoRange();
+	float aoBias = openGl->GetAoBias();
+	if (ImGui::DragFloat("Range", &aoRange, 0.05f, 0.0f, 100.0f))
+	{
+		openGl->SetAoRange(aoRange);
+		glUseProgram(openGl->GetSSAOProgramId());
+		glUniform1f(1, aoRange);
+		glUseProgram(0);
+	}
+	if (ImGui::DragFloat("Bias", &aoBias, 0.05f, 0.0f, 100.0f))
+	{
+		openGl->SetAoBias(aoBias);
+		glUseProgram(openGl->GetSSAOProgramId());
+		glUniform1f(2, aoBias);
+		glUseProgram(0);
+	}
 	ImGui::End();
 }
