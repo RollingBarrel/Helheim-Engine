@@ -2,6 +2,8 @@
 #include "State.h"
 #include "TimerScript.h"
 
+class UltimateAttack;
+
 class UltimateState : public State
 {
 public:
@@ -21,5 +23,8 @@ public:
 	TimerScript mTimer;
 
 	float mUltimateDuration;
+
+private:
+	UltimateAttack* mUltimateScript = nullptr;
 };
 

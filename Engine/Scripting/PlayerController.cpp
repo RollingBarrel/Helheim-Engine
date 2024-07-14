@@ -83,6 +83,9 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
     MEMBER(MemberType::FLOAT, mUltimateCooldown);
     MEMBER(MemberType::FLOAT, mUltimateDuration);
+    MEMBER(MemberType::FLOAT, mUltimatePlayerSlow);
+    MEMBER(MemberType::FLOAT, mUltimateDamageTick);
+    MEMBER(MemberType::FLOAT, mUltimateDamageInterval);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);

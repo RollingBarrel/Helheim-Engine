@@ -19,6 +19,9 @@ public:
 	void Start() override;
 	void Update() override;
 
+	float mInterval;
+	float mDamageTick;
+
 private:
 
 	void OnCollisionEnter(CollisionData* collisionData);
@@ -26,7 +29,5 @@ private:
 
 	TimerScript mDamageTimer;
 
-	float mInterval;
-	float mDamageTick;
 };
 

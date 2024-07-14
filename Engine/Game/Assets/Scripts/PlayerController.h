@@ -115,8 +115,15 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+    //Ultimate
+    GameObject* GetUltimateGO() const{ return mUltimateGO; };
     void AddUltimateResource();
-    int GetUltimateResource() { return mUltimateResource; };
+    int GetUltimateResource() const { return mUltimateResource; };
+    float GetUltimateCooldown() const { return mUltimateCooldown; };
+    float GetUltimateSlow() const { return mUltimatePlayerSlow; };
+    float GetUltimateDuration() const { return mUltimateDuration; };
+    float GetUltimateDamageInterval() const { return mUltimateDamageInterval; };
+    float GetUltimateDamageTick() const { return mUltimateDamageTick; };
     void SetUltimateResource(int resource) { mUltimateResource = resource; }
     void EnableUltimate(bool enable);
 
@@ -224,6 +231,9 @@ private:
     GameObject* mUltimateGO = nullptr;
     float mUltimateCooldown;
     float mUltimateDuration;
+    float mUltimatePlayerSlow;
+    float mUltimateDamageTick;
+    float mUltimateDamageInterval;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
