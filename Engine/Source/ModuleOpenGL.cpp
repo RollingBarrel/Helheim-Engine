@@ -213,24 +213,26 @@ bool ModuleOpenGL::Init()
 
 	//Blur
 	glGenFramebuffers(2, mBlurFBO);
-	glGenTextures(2, mBlurTex);
 	for (unsigned int i = 0; i < 2; ++i)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i]);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		//{
+		//	LOG("Error loading the framebuffer !!!");
+		//	return false;
+		//}
+		//const GLenum att3 = GL_COLOR_ATTACHMENT0;
+		//glDrawBuffers(1, &att3);
+	}
+	glGenTextures(mBlurPasses + 1, mBlurTex);
+	for (unsigned int i = 0; i < mBlurPasses + 1; ++i)
+	{
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
-		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		{
-			LOG("Error loading the framebuffer !!!");
-			return false;
-		}
-		const GLenum att3 = GL_COLOR_ATTACHMENT0;
-		glDrawBuffers(1, &att3);
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -530,10 +532,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	glBindTexture(GL_TEXTURE_2D, mBlurTex[0]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, mBlurTex[1]);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+	InitBloomTextures(width, height);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
 }
@@ -569,6 +568,19 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glBindTexture(GL_TEXTURE_2D, mGPosition);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
+{
+	unsigned int w = width;
+	unsigned int h = height;
+	for (int i = 0; i <= mBlurPasses; ++i)
+	{
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+		w /= 2;
+		h /= 2;
+	}
 }
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
@@ -775,7 +787,7 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int amount) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 {
 	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
 	//glClear(GL_COLOR_BUFFER_BIT);
@@ -802,55 +814,40 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int amount) 
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//return mBlurTex[ret];
 
-	unsigned int ret = 0;
-	unsigned int w = mSceneWidth;
-	unsigned int h = mSceneHeight;
+	unsigned int w = mSceneWidth / 2;
+	unsigned int h = mSceneHeight / 2;
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
-	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
-	//glClear(GL_COLOR_BUFFER_BIT);
 	glDisable(GL_BLEND);
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texId);
 	glBindVertexArray(mEmptyVAO);
+	glBindTexture(GL_TEXTURE_2D, texId);
 	glUseProgram(mDownsampleProgramId);
-	unsigned int i = 0;
-	for (; i < amount; ++i)
+	for (unsigned int i = 0; i < mBlurPasses; ++i)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[ret]);
 		w /= 2;
 		h /= 2;
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i&1]);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
 		glViewport(0, 0, w, h);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[ret]);
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
-		ret = i % 2;
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i + 1]);
 	}
 	glUseProgram(mUpsampleProgramId);
-	for (; i < amount * 2; ++i)
+	for (int i = mBlurPasses - 1; i >= 0; --i)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[ret]);
 		w *= 2;
 		h *= 2;
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i&1]);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
 		glViewport(0, 0, w, h);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[ret]);
-		//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
-		ret = i % 2;
-		//w *= 2;
-		//h *= 2;
-		//glViewport(0, 0, w, h);
 	}
 	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//glViewport(0 , 0, mSceneWidth, mSceneHeight);
-	//glBindTexture(GL_TEXTURE_2D, mBlurTex[(ret + 1)% 2]);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, mSceneWidth, mSceneHeight, 0, GL_RGBA, GL_FLOAT, NULL);
+	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
-	return mBlurTex[(ret + 1) % 2];
+	return mBlurTex[0];
 }
 
 void ModuleOpenGL::InitDecals()
@@ -1204,7 +1201,7 @@ void ModuleOpenGL::Draw()
 
 
 	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive, 3);
+	unsigned int blurredTex = BlurTexture(mGEmissive);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass

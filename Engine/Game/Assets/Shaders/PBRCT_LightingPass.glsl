@@ -220,13 +220,15 @@ void main()
 	}
 
 	pbrCol += GetAmbientLight();
-	//pbrCol += emissiveCol;
+	pbrCol += emissiveCol;
 
 	//bloom
 	pbrCol += texture(bloomTex, uv).rgb * 1.0;
 
 	//HDR color  
 	vec3 hdrCol = pbrCol;
+
+
 
 	//LDR color with reinhard tone Mapping
 	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));

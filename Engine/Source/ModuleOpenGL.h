@@ -136,7 +136,7 @@ public:
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
 
-	unsigned int BlurTexture(unsigned int texId, unsigned int amount = 5) const;
+	unsigned int BlurTexture(unsigned int texId) const;
 private:
 	void* context = nullptr;
 
@@ -156,10 +156,12 @@ private:
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
 	//bloom bramebuffer
+	static const unsigned int mBlurPasses = 3;
+	unsigned int mBlurTex[mBlurPasses + 1];
 	unsigned int mBlurFBO[2];
-	unsigned int mBlurTex[2];
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
+	void InitBloomTextures(unsigned int width, unsigned int height);
 	//void Draw();
 
 	//Camera
