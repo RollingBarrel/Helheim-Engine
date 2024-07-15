@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1721387524,
+                "UID": 516370447,
                 "ParentUID": 1,
-                "Name": "Bubles_V1",
+                "Name": "Ultimate_laser_Origin_V1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -13,10 +13,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -0.7071068286895752,
                     0.0,
                     0.0,
-                    0.7071068286895752
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
@@ -31,22 +31,22 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 1711944677,
-                        "Delay": 3.799999952316284,
-                        "Duration": 5.0,
-                        "EmissionRate": 2.200000047683716,
-                        "MaxParticles": 8,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 10.0,
+                        "EmissionRate": 22.399999618530275,
+                        "MaxParticles": 1000,
                         "Looping": true,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 0.5,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 1.0,
-                            "MaxValue": 5.0
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
-                        "ShapeAngle": 0.0,
+                        "ShapeRadius": 0.0010000000474974514,
+                        "ShapeAngle": 0.7850000262260437,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -55,12 +55,12 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
-                        "BlendMode": 5,
+                        "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.8999999761581421,
-                                "MaxValue": 5.0
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
@@ -68,7 +68,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.30000001192092898,
+                                "MinValue": 1.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -76,47 +76,56 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.02680959552526474,
+                                "Time": 0.029490232467651368,
                                 "Color": [
-                                    0.2479996681213379,
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.12868615984916688,
+                                "Color": [
+                                    0.8680000305175781,
+                                    1.0,
+                                    0.9841600060462952,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.3257371187210083,
+                                "Color": [
+                                    0.3372548818588257,
+                                    1.0,
+                                    0.9522823095321655,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6621983051300049,
+                                "Color": [
+                                    0.18119999766349793,
+                                    0.6039999723434448,
+                                    0.40105587244033816,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7908848524093628,
+                                "Color": [
+                                    0.11599999666213989,
+                                    1.0,
+                                    0.766623854637146,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.97050940990448,
+                                "Color": [
                                     0.0,
-                                    1.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.184986874461174,
-                                "Color": [
                                     0.0,
-                                    0.6159999370574951,
-                                    1.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.48257380723953249,
-                                "Color": [
-                                    0.7618560194969177,
-                                    1.0,
-                                    0.5119999647140503,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7278813719749451,
-                                "Color": [
                                     0.0,
-                                    1.0,
-                                    0.8559999465942383,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.9597852230072022,
-                                "Color": [
-                                    1.0,
-                                    1.0,
-                                    1.0,
                                     1.0
                                 ]
                             }

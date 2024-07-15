@@ -33,7 +33,7 @@
                         "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 5.0,
+                        "Duration": 2.0,
                         "EmissionRate": 22.399999618530275,
                         "MaxParticles": 1000,
                         "Looping": true,

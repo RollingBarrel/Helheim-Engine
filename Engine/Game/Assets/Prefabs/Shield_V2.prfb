@@ -4,7 +4,7 @@
             {
                 "UID": 641206440,
                 "ParentUID": 1389697526,
-                "Name": "Shield_V1",
+                "Name": "Shield_V2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -31,7 +31,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": true,
-                        "ImageID": 20117050,
+                        "ImageID": 1604353325,
                         "Color": [
                             1.0,
                             1.0,

@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 641206440,
+                "UID": 1214584879,
                 "ParentUID": 1389697526,
-                "Name": "Shield_V1",
+                "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
