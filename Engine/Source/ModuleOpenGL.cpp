@@ -74,7 +74,8 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	if(severity == GL_DEBUG_SEVERITY_HIGH || severity == GL_DEBUG_SEVERITY_MEDIUM)
+		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -572,8 +573,8 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 
 void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
 {
-	unsigned int w = width;
-	unsigned int h = height;
+	float w = width;
+	float h = height;
 	for (int i = 0; i <= mBlurPasses; ++i)
 	{
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
@@ -930,6 +931,12 @@ void ModuleOpenGL::InitDecals()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glBindVertexArray(0);
+}
+
+void ModuleOpenGL::SetDirectionalLight(const DirectionalLight& dirLight)
+{
+	memcpy(&mDirLight, &dirLight, sizeof(DirectionalLight));
+	mDLightUniBuffer->UpdateData(&mDirLight, sizeof(DirectionalLight), 0);
 }
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??

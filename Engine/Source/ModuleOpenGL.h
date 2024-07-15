@@ -106,6 +106,8 @@ public:
 	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
 
 	//TODO: put all this calls into one without separating for light type??
+	const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
+	void SetDirectionalLight(const DirectionalLight& dirLight);
 	void AddPointLight(const PointLightComponent& component);
 	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
