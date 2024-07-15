@@ -74,7 +74,8 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	if(severity == GL_DEBUG_SEVERITY_HIGH || severity == GL_DEBUG_SEVERITY_MEDIUM)
+		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -210,6 +211,29 @@ bool ModuleOpenGL::Init()
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
+
+	//Blur
+	glGenTextures(mBlurPasses + 1, mBlurTex);
+	for (unsigned int i = 0; i <= mBlurPasses; ++i)
+	{
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+	glGenFramebuffers(1, &mBlurFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+	const GLenum att3 = GL_COLOR_ATTACHMENT0;
+	glDrawBuffers(1, &att3);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		LOG("Error loading the framebuffer !!!");
+		return false;
+	}
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glGenVertexArrays(1, &mEmptyVAO);
@@ -292,6 +316,18 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "uiMask.fs";
 	mUIMaskProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "Blur.glsl";
+	mBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
+	mDownsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "KawaseDualFilterUpBlur.glsl";
+	mUpsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
 	SetOpenGlCameraUniforms();
@@ -344,6 +380,8 @@ bool ModuleOpenGL::Init()
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
 	glUseProgram(0);
+
+	SetBloomIntensity(0.5f);
 
 	return true;
 }
@@ -495,6 +533,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	InitBloomTextures(width, height);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
 }
@@ -511,6 +550,38 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform2ui(3, (screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
+}
+
+void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
+{
+	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGEmissive);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
+{
+	float w = width;
+	float h = height;
+	for (int i = 0; i <= mBlurPasses; ++i)
+	{
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+		w /= 2;
+		h /= 2;
+	}
 }
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
@@ -542,25 +613,6 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		}
 		
 	}
-}
-
-void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
-{
-	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGEmissive);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGNormals);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ModuleOpenGL::InitSkybox()
@@ -736,6 +788,79 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
+{
+	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
+	//glClear(GL_COLOR_BUFFER_BIT);
+	//bool horizontal = true;
+	//unsigned int ret = 0;
+	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, texId);
+	//glUseProgram(mBlurProgramId);
+	//glBindVertexArray(mEmptyVAO);
+	//for (unsigned int i = 0; i < amount * 2; ++i)
+	//{
+	//	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[horizontal]);
+	//	glUniform1ui(0, horizontal);
+	//	glDrawArrays(GL_TRIANGLES, 0, 3);
+	//	glBindTexture(GL_TEXTURE_2D, mBlurTex[i % 2]);
+	//	ret = i % 2;
+	//	horizontal = !horizontal;
+	//}
+	//glBindVertexArray(0);
+	//glPopDebugGroup();
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	//return mBlurTex[ret];
+
+	float w = mSceneWidth;
+	float h = mSceneHeight;
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(mEmptyVAO);
+	glBindTexture(GL_TEXTURE_2D, texId);
+	glUseProgram(mDownsampleProgramId);
+	for (unsigned int i = 0; i < mBlurPasses; ++i)
+	{
+		w /= 2;
+		h /= 2;
+		glViewport(0, 0, w, h);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
+	}
+	glUseProgram(mUpsampleProgramId);
+	for (int i = mBlurPasses - 1; i >= 0; --i)
+	{
+		w *= 2;
+		h *= 2;
+		glViewport(0, 0, w, h);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+	}
+	glBindVertexArray(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0 , 0, mSceneWidth, mSceneHeight);
+	glPopDebugGroup();
+	return mBlurTex[0];
+}
+
+void ModuleOpenGL::SetBloomIntensity(float intensity)
+{
+	if (intensity < 0.0001f)
+		intensity = 0.0f;
+	else if (intensity > 1.0f)
+		intensity = 1.0f;
+	mBloomIntensity = intensity;
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1f(glGetUniformLocation(mPbrLightingPassProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(0);
+}
+
 void ModuleOpenGL::InitDecals()
 {
 	float decalsVertices[] = {
@@ -806,6 +931,12 @@ void ModuleOpenGL::InitDecals()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glBindVertexArray(0);
+}
+
+void ModuleOpenGL::SetDirectionalLight(const DirectionalLight& dirLight)
+{
+	memcpy(&mDirLight, &dirLight, sizeof(DirectionalLight));
+	mDLightUniBuffer->UpdateData(&mDirLight, sizeof(DirectionalLight), 0);
 }
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
@@ -1086,6 +1217,9 @@ void ModuleOpenGL::Draw()
 	glDrawBuffers(5, att2);
 
 
+	//Bloom
+	unsigned int blurredTex = BlurTexture(mGEmissive);
+
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
@@ -1111,6 +1245,8 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, (mCurrSkyBox) ? mCurrSkyBox->GetEnvBRDFTexId() : 0);
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, blurredTex);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
@@ -1149,6 +1285,8 @@ void ModuleOpenGL::Draw()
 	{
 		mTrails[i]->Draw();
 	}
+	
+
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight

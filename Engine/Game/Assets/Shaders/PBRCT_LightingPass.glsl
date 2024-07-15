@@ -86,6 +86,9 @@ layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
 
+layout(binding = 9)uniform sampler2D bloomTex;
+uniform float bloomIntensity;
+
 vec3 cDif;
 vec3 cSpec;
 float rough;
@@ -220,9 +223,14 @@ void main()
 	pbrCol += GetAmbientLight();
 	pbrCol += emissiveCol;
 
+	//bloom
+	pbrCol += texture(bloomTex, uv).rgb * bloomIntensity;
+
 	//HDR color  
 	vec3 hdrCol = pbrCol;
-	
+
+
+
 	//LDR color with reinhard tone Mapping
 	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
 	//LDR color with ACES filmic tone Mapping
@@ -230,7 +238,9 @@ void main()
 
 	//Gamma correction
 	ldrCol = pow(ldrCol, vec3(1/2.2));
-	
+
 	//Output
 	outColor = vec4(ldrCol, 1.0f);
+
+	//outColor = vec4(texture(bloomTex, uv).rgb * 1.0, 1.0);
 }
