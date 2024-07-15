@@ -81,7 +81,6 @@ void AIAgentComponent::StartCrowdNavigation()
 		agentParams.separationWeight = 2.0f;
 
 		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition(), agentParams);
-
 	}
 }
 

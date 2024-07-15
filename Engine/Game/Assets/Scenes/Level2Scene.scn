@@ -133,7 +133,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8978978395462037,
+                        "AspectRatio": 1.8176528215408326,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -16154,6 +16154,17 @@
             }
         ],
         "NavMeshResource": 594603088,
-        "SkyBoxResource": 458087203
+        "SkyBoxResource": 458087203,
+        "BloomIntensity": 0.5,
+        "DirectionalLight": [
+            0.0,
+            -1.0,
+            -1.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ]
     }
 }
