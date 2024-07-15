@@ -15,20 +15,10 @@ enum class ExplosiveEnemyState
 	DEATH
 };
 
-
 class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
 public:
-
-	enum class EnemyState
-	{
-		CHARGING,
-		EXPLOSION,
-		DEATH
-	};
-
-
 	EnemyExplosive(GameObject* owner);
 	~EnemyExplosive() {}
 	void Start() override;
