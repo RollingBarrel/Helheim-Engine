@@ -282,9 +282,8 @@ void ModuleScene::Load(const char* sceneName)
 
 		float directionalLight[]{ 0.0f, -1.0f, -1.0f, 0.0f, 1.f, 1.f, 1.f, 0.05f };
 		if (scene.HasMember("DirectionalLight"))
-			scene.GetFloats("BloomIntensity", directionalLight);
-		else
-			App->GetOpenGL()->SetDirectionalLight(*reinterpret_cast<DirectionalLight*>(directionalLight));
+			scene.GetFloats("DirectionalLight", directionalLight);
+		App->GetOpenGL()->SetDirectionalLight(*reinterpret_cast<DirectionalLight*>(directionalLight));
 
 		App->GetScriptManager()->AwakeScripts();
 		
