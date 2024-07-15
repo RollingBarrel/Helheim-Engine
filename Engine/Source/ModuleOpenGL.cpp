@@ -380,6 +380,8 @@ bool ModuleOpenGL::Init()
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
 	glUseProgram(0);
 
+	SetBloomIntensity(0.5f);
+
 	return true;
 }
 
@@ -844,6 +846,18 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
 	return mBlurTex[0];
+}
+
+void ModuleOpenGL::SetBloomIntensity(float intensity)
+{
+	if (intensity < 0.0001f)
+		intensity = 0.0f;
+	else if (intensity > 1.0f)
+		intensity = 1.0f;
+	mBloomIntensity = intensity;
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1f(glGetUniformLocation(mPbrLightingPassProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(0);
 }
 
 void ModuleOpenGL::InitDecals()

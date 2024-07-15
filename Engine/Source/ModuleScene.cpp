@@ -195,6 +195,7 @@ void ModuleScene::Save(const char* sceneName) const
 	}
 	scene.AddInt("NavMeshResource", App->GetNavigation()->GetResourceId());
 	scene.AddInt("SkyBoxResource", App->GetOpenGL()->GetSkyboxID());
+	scene.AddFloat("BloomIntensity", App->GetOpenGL()->GetBloomIntensity());
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -272,6 +273,11 @@ void ModuleScene::Load(const char* sceneName)
 			App->GetOpenGL()->SetSkybox(scene.GetInt("SkyBoxResource"));
 		else
 			App->GetOpenGL()->SetSkybox(0);
+		if (scene.HasMember("BloomIntensity"))
+			App->GetOpenGL()->SetBloomIntensity(scene.GetFloat("BloomIntensity"));
+		else
+			App->GetOpenGL()->SetBloomIntensity(0.5f);
+		
 
 		App->GetScriptManager()->AwakeScripts();
 		

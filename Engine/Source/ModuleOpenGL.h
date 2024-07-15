@@ -138,6 +138,9 @@ public:
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
 
 	unsigned int BlurTexture(unsigned int texId) const;
+	//Set the intensity between 0 and 1
+	void SetBloomIntensity(float intensity);
+	float GetBloomIntensity() const { return mBloomIntensity; };
 private:
 	void* context = nullptr;
 
@@ -160,6 +163,7 @@ private:
 	static const unsigned int mBlurPasses = 3;
 	unsigned int mBlurTex[mBlurPasses + 1];
 	unsigned int mBlurFBO;
+	float mBloomIntensity = 0.5f;
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	void InitBloomTextures(unsigned int width, unsigned int height);

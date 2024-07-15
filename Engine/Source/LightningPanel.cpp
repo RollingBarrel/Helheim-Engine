@@ -18,11 +18,7 @@ void LightningPanel::Draw(int windowFlags)
 
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	//if (ImGui::Button("Bake Ambient Light"))
-	//{
-	//	openGl->BakeIBL(mSkyboxFileName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
-	//}
-
+	ImGui::Text("Skybox and IBL");
 	//ImGui::Text(mSkyboxFileName.c_str());
 	if (ImGui::Button("Select Skybox"))
 	{
@@ -62,7 +58,8 @@ void LightningPanel::Draw(int windowFlags)
 
 	
 
-	
+	ImGui::Separator();
+	ImGui::Text("Directional Light");
 	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirLight.mCol[3], 0.05f, 0.0f, 100.0f))
 	{
 		openGl->mDLightUniBuffer->UpdateData(&openGl->mDirLight.mCol[3], sizeof(DirectionalLight::mCol[3]), offsetof(DirectionalLight, mCol[3]));
@@ -75,5 +72,14 @@ void LightningPanel::Draw(int windowFlags)
 	{ 
 		openGl->mDLightUniBuffer->UpdateData(openGl->mDirLight.mCol, sizeof(DirectionalLight::mCol), offsetof(DirectionalLight, mCol));
 	}
+
+	ImGui::Separator();
+	ImGui::Text("Bloom");
+	float bloomIntensity = openGl->GetBloomIntensity();
+	if (ImGui::DragFloat("Intensity", &bloomIntensity, 0.01f, 0.0f, 1.0f))
+	{
+		openGl->SetBloomIntensity(bloomIntensity);
+	}
+
 	ImGui::End();
 }

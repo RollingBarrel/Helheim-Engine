@@ -87,6 +87,7 @@ layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
 
 layout(binding = 9)uniform sampler2D bloomTex;
+uniform float bloomIntensity;
 
 vec3 cDif;
 vec3 cSpec;
@@ -223,7 +224,7 @@ void main()
 	pbrCol += emissiveCol;
 
 	//bloom
-	pbrCol += texture(bloomTex, uv).rgb * 1.0;
+	pbrCol += texture(bloomTex, uv).rgb * bloomIntensity;
 
 	//HDR color  
 	vec3 hdrCol = pbrCol;
