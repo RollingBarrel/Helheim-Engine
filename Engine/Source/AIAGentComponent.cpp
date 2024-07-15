@@ -31,19 +31,17 @@ AIAgentComponent::~AIAgentComponent()
 
 void AIAgentComponent::Update()
 {
-	if (mNavPositions.size() > 0)
+	if (mNavPositions.size() > 0 && App->IsPlayMode())
 	{
-		/*
-		if (mOwner->GetWorldPosition().Equals(mNavPositions[0], 0.1f))
-		{
-			mMoving = false;
-		}
-		*/
-		if (mMoving && mCrowdId != CROWD_OFF_INDEX)
+		if (mCrowdId != CROWD_OFF_INDEX)
 		{
 			float3 owner_pos = mOwner->GetWorldPosition();
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
 			mOwner->SetWorldPosition(owner_pos);
+		}
+		else
+		{
+			StartCrowdNavigation();
 		}
 
 	}
@@ -56,7 +54,6 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 void AIAgentComponent::SetNavigationPath(const float3& destination) 
 {
 	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
-	mMoving = true;
 	App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions.back());
 }
 
@@ -82,6 +79,11 @@ void AIAgentComponent::StartCrowdNavigation()
 
 		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition(), agentParams);
 
+	}
+	else
+	{
+		PauseCrowdNavigation();
+		StartCrowdNavigation();
 	}
 }
 
@@ -131,3 +133,14 @@ void AIAgentComponent::Load(const JsonObject& data, const std::unordered_map<uns
 	}
 }
 
+void AIAgentComponent::Enable()
+{
+
+	StartCrowdNavigation();
+	
+}
+
+void AIAgentComponent::Disable()
+{
+	PauseCrowdNavigation();
+}
