@@ -16,7 +16,6 @@ public:
 
 private:
 	void Attack() override;
-	void Death() override;
 
 	void PlayStepAudio();
 	void PlayMeleeAudio();

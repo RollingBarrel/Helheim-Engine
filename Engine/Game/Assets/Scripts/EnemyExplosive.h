@@ -19,18 +19,16 @@ class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
 public:
-	EnemyExplosive(GameObject* owner);
+	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
 	~EnemyExplosive() {}
 	void Start() override;
 	void Update() override;
-	void Idle();
-	void Chase();
+	void Chase() override;
 
 private:
 	void Charging();
 	void Explosion();
 	void ChargeWarningArea();
-	void Death() override;
 
 	ExplosiveEnemyState mCurrentState = ExplosiveEnemyState::IDLE;
 

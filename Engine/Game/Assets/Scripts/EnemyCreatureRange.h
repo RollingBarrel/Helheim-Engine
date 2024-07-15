@@ -15,7 +15,6 @@ public:
 
 private:
 	void Attack() override;
-	void Death() override;
 	void RangeAttack();
 
 

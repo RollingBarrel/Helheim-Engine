@@ -128,6 +128,23 @@ void Enemy::TakeDamage(float damage)
 		if (mHealth <= 0)
 		{
 			mDeath = true;
+
+			if (mAnimationComponent)
+			{
+				mAnimationComponent->SendTrigger("tDeath", 0.3f);
+			}
+
+			if (mAiAgentComponent)
+			{
+				mAiAgentComponent->PauseCrowdNavigation();
+			}
+
+			BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+			if (activeBattleArea)
+			{
+				activeBattleArea->EnemyDestroyed();
+			}
+
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
@@ -135,13 +152,11 @@ void Enemy::TakeDamage(float damage)
 
 void Enemy::Death()
 {
-	mGameObject->SetEnabled(false);
-	BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
-	if (activeBattleArea)
+	if (mDeathTimer.Delay(mDeathTime))
 	{
-		activeBattleArea->EnemyDestroyed();
+		mGameObject->SetEnabled(false);
+		DropItem();
 	}
-	DropItem();
 }
 
 bool Enemy::IsChasing()

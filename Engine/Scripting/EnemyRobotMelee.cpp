@@ -48,24 +48,6 @@ void EnemyRobotMelee::Attack()
     }
 }
 
-void EnemyRobotMelee::Death() 
-{
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    }
-    
-    if (mAiAgentComponent)
-    {
-        mAiAgentComponent->PauseCrowdNavigation();
-    }
-    
-    if(mDeathTimer.Delay(1.4f))
-    {
-        Enemy::Death();
-    }
-}
-
 void EnemyRobotMelee::PlayStepAudio()
 {
     // TODO: play sound according the animation

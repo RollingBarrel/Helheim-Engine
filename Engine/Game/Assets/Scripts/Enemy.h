@@ -69,8 +69,7 @@ protected:
 	TimerScript mDisengageTimer;
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
-	float mDeathTime = 1.6f;
-
-private:
+	float mDeathTime = 1.4f;
 	bool mDeath = false;
+
 };

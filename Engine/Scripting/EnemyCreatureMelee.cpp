@@ -47,21 +47,3 @@ void EnemyCreatureMelee::Attack()
         }
     }
 }
-
-void EnemyCreatureMelee::Death()
-{
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    }
-
-    if (mAiAgentComponent)
-    {
-        mAiAgentComponent->PauseCrowdNavigation();
-    }
-
-    if (mDeathTimer.Delay(1.4f))
-    {
-        Enemy::Death();
-    }
-}

@@ -15,7 +15,6 @@ CREATE(EnemyExplosive)
 	CLASS(owner);
 	SEPARATOR("STATS");
 	MEMBER(MemberType::INT, mHealth);
-
 	MEMBER(MemberType::FLOAT, mSpeed);;
 	MEMBER(MemberType::FLOAT, mChargingDistance);
 	MEMBER(MemberType::FLOAT, mExplosionDistance);
@@ -23,11 +22,6 @@ CREATE(EnemyExplosive)
 	MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
 	END_CREATE;
 
-}
-
-EnemyExplosive::EnemyExplosive(GameObject* owner) : Enemy(owner)
-{
-	mHealth = 15;
 }
 
 void EnemyExplosive::Start()
@@ -46,7 +40,11 @@ void EnemyExplosive::Update()
 {
 	if (GameManager::GetInstance()->IsPaused()) return;
 
-	Enemy::Update();
+	if (mDeath)
+	{
+		Death();
+	}
+
 	if (!mBeAttracted)
 	{
 		switch (mCurrentState)
@@ -71,25 +69,16 @@ void EnemyExplosive::Update()
 	mBeAttracted = false;
 }
 
-void EnemyExplosive::Idle()
-{
-	mAnimationComponent->SendTrigger("tIdle", 0.2f);
-	mCurrentState = ExplosiveEnemyState::CHASE;
-
-}
-
 void EnemyExplosive::Chase()
 {
 	mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-	mAnimationComponent->SendTrigger("tMovement", 0.2f);
-
+	if (mAnimationComponent) mAnimationComponent->SendTrigger("tMovement", 0.2f);
 
 	float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
 	direction.y = 0;
 	direction.Normalize();
 	float angle = std::atan2(direction.x, direction.z);
 	mGameObject->SetWorldRotation(float3(0, angle, 0));
-
 
 	if (IsPlayerInRange(mChargingDistance))
 	{
@@ -100,7 +89,7 @@ void EnemyExplosive::Chase()
 
 void EnemyExplosive::Charging()
 {
-	mAnimationComponent->SendTrigger("tCharging", 0.2f);
+	if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharging", 0.2f);
 
 	if (mWarningTimer >= mExplosionDelay)
 	{
@@ -122,7 +111,6 @@ void EnemyExplosive::Explosion()
 			playerScript->TakeDamage(mExplosionDamage);
 		}
 	}
-
 	mCurrentState = ExplosiveEnemyState::DEATH;
 }
 
@@ -134,19 +122,6 @@ void EnemyExplosive::ChargeWarningArea()
 
 	mExplosionWarningGO->SetWorldScale(newWarningSize);
 	LOG("WarningTimer: %f", mWarningTimer);
-}
-
-void EnemyExplosive::Death()
-{
-	mAnimationComponent->SendTrigger("tDeath", 0.2f);
-	if (mDeathTimer.Delay(mDeathTime))
-	{
-		Death();
-	}
-	if (mAiAgentComponent)
-	{
-		mAiAgentComponent->PauseCrowdNavigation();
-	}
 }
 
 

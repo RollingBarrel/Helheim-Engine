@@ -58,16 +58,3 @@ void EnemyRobotRange::RangeAttack()
     gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
 }
-
-void EnemyRobotRange::Death()
-{
-    mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    if (mDeathTimer.Delay(1.4f))
-    {
-        Enemy::Death();
-    }
-    if (mAiAgentComponent)
-    {
-        mAiAgentComponent->PauseCrowdNavigation();
-    }
-}

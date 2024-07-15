@@ -12,7 +12,6 @@ public:
 
 private:
 	void Attack() override;
-	void Death() override;
 
 	float mMeeleDamage = 10.0f;
 };
