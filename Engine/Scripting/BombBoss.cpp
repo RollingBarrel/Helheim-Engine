@@ -6,12 +6,13 @@
 #include "GameManager.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
+#include "DecalComponent.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
 CREATE(BombBoss)
 {
 	CLASS(owner);
-	MEMBER(MemberType::FLOAT, mArea);
+	MEMBER(MemberType::FLOAT, mRadius);
 	MEMBER(MemberType::FLOAT, mDamage);
 	MEMBER(MemberType::FLOAT, mTimeDelay);
 	END_CREATE;
@@ -28,11 +29,6 @@ BombBoss::~BombBoss()
 void BombBoss::Start()
 {
 	mGameObject->GetComponentsInChildren(ComponentType::PARTICLESYSTEM, mExplosionParticles);
-	for (Component* particlecomponent : mExplosionParticles)
-	{
-		particlecomponent->GetOwner()->SetEnabled(false);
-	}
-
 }
 
 
@@ -61,7 +57,7 @@ void BombBoss::Update()
 		{
 			particlecomponent->GetOwner()->SetEnabled(true);
 		}
-		if (distanceToCenter <= mArea)
+		if (distanceToCenter <= mRadius)
 		{
 			PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
 			playerScript->TakeDamage(mDamage);
@@ -78,5 +74,6 @@ void BombBoss::Init()
 	{
 		particlecomponent->GetOwner()->SetEnabled(false);
 	}
-
+	mGameObject->SetWorldScale(float3(mRadius*2));
+	
 }

@@ -108,5 +108,5 @@ void EnemyBoss::Death()
 
 void EnemyBoss::Reset()
 {
-
+    Enemy::Reset();
 }
