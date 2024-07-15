@@ -212,27 +212,25 @@ bool ModuleOpenGL::Init()
 	}
 
 	//Blur
-	glGenFramebuffers(2, mBlurFBO);
-	for (unsigned int i = 0; i < 2; ++i)
-	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i]);
-		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
-		//if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
-		//{
-		//	LOG("Error loading the framebuffer !!!");
-		//	return false;
-		//}
-		//const GLenum att3 = GL_COLOR_ATTACHMENT0;
-		//glDrawBuffers(1, &att3);
-	}
 	glGenTextures(mBlurPasses + 1, mBlurTex);
-	for (unsigned int i = 0; i < mBlurPasses + 1; ++i)
+	for (unsigned int i = 0; i <= mBlurPasses; ++i)
 	{
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+	glGenFramebuffers(1, &mBlurFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+	const GLenum att3 = GL_COLOR_ATTACHMENT0;
+	glDrawBuffers(1, &att3);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		LOG("Error loading the framebuffer !!!");
+		return false;
 	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -814,10 +812,10 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	//return mBlurTex[ret];
 
-	unsigned int w = mSceneWidth / 2;
-	unsigned int h = mSceneHeight / 2;
+	float w = mSceneWidth;
+	float h = mSceneHeight;
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
-	glDisable(GL_BLEND);
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(mEmptyVAO);
 	glBindTexture(GL_TEXTURE_2D, texId);
@@ -826,22 +824,20 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 	{
 		w /= 2;
 		h /= 2;
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i&1]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
 		glViewport(0, 0, w, h);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i + 1]);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
 	}
 	glUseProgram(mUpsampleProgramId);
 	for (int i = mBlurPasses - 1; i >= 0; --i)
 	{
 		w *= 2;
 		h *= 2;
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[i&1]);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
-		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
 		glViewport(0, 0, w, h);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
 	}
 	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);

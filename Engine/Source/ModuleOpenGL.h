@@ -84,6 +84,7 @@ public:
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferDepth() const { return mGDepth; }
 	unsigned int GetGBufferPos() const { return mGPosition; }
+	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -158,7 +159,7 @@ private:
 	//bloom bramebuffer
 	static const unsigned int mBlurPasses = 3;
 	unsigned int mBlurTex[mBlurPasses + 1];
-	unsigned int mBlurFBO[2];
+	unsigned int mBlurFBO;
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
 	void InitBloomTextures(unsigned int width, unsigned int height);
