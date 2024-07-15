@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
+#include "ModuleScriptManager.h"
+#include "ModuleCamera.h"
 
 #include "Component.h"
 #include "MeshRendererComponent.h"
@@ -25,7 +27,6 @@
 #include "TrailComponent.h"
 #include "DecalComponent.h"
 #include "TextComponent.h"
-#include "ModuleScriptManager.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -168,6 +169,12 @@ void GameObject::SetTag(const std::string& tag)
 	App->GetScene()->DeleteFromTagMap(mTag, this);
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
+
+	CameraComponent* camera = reinterpret_cast<CameraComponent*>(GetComponent(ComponentType::CAMERA));
+	if (camera)
+	{
+		App->GetCamera()->AddMainCamera(camera);
+	}
 }
 
 void GameObject::SetDynamic(bool dynamic)
