@@ -11,9 +11,6 @@
 
 bool ModuleGame::Init()
 {
-	const char* shaderSource[2] = { "GameVertex.glsl", "GameFragment.glsl" };
-	int shaderType[2] = { GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
-	mGameProgramId = App->GetOpenGL()->CreateShaderProgramFromPaths(shaderSource, shaderType, 2);
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere

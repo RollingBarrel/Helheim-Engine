@@ -84,7 +84,7 @@ public:
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferDepth() const { return mGDepth; }
 	unsigned int GetGBufferPos() const { return mGPosition; }
-	unsigned int GetGBufferSSAO() const { return mGSSAO; }
+	unsigned int GetGBufferSSAO() const { return mSSAO; }
 	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
 	void SetOpenGlCameraUniforms() const;
 
@@ -149,7 +149,7 @@ public:
 	float mAoRange = 1.0f;
 	float mAoBias = 0.0025f;
 	
-	unsigned int BlurTexture(unsigned int texId) const;
+	unsigned int BlurTexture(unsigned int texId, unsigned int intensity = 0) const;
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };
@@ -172,7 +172,7 @@ private:
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
 	//AO
-	unsigned int mGSSAO;
+	unsigned int mSSAO;
 	//bloom bramebuffer
 	static const unsigned int mBlurPasses = 3;
 	unsigned int mBlurTex[mBlurPasses + 1];
@@ -217,6 +217,7 @@ private:
 	//unsigned int mBlurProgramId = 0;
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
+	unsigned int mGameProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;

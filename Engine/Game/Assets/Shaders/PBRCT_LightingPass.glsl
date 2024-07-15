@@ -243,11 +243,11 @@ void main()
 	ldrCol = pow(ldrCol, vec3(1/2.2));
 
 	//Output
-	//if( activeAO)
-	//{
-	//	vec3 occlusionFactor = vec3(texture(ambientOcclusion, uv).r);
-	//	ldrCol = ldrCol * occlusionFactor;
-	//}
+	if( activeAO)
+	{
+		vec3 occlusionFactor = vec3(texture(ambientOcclusion, uv).r);
+		ldrCol = ldrCol * occlusionFactor;
+	}
 
 	outColor = vec4(ldrCol, 1.0f );	
 }
