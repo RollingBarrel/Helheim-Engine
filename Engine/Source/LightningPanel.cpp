@@ -1,9 +1,13 @@
 #include "LightningPanel.h"
 #include "EngineApp.h"
+#include "ModuleEngineResource.h"
 #include "ModuleOpenGL.h"
+#include "ModuleFileSystem.h"
+#include "Archive.h"
 #include "imgui.h"
 #include "glew.h"
 #include <ImGuiFileDialog.h>
+#include "ImporterIBL.h"
 
 
 LightningPanel::LightningPanel() : Panel(LIGHTNINGPANEL, true) {}
@@ -14,40 +18,48 @@ void LightningPanel::Draw(int windowFlags)
 
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
 
-	if (ImGui::Button("Bake Ambient Light"))
-	{
-		openGl->BakeIBL(mSkyboxFileName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
-	}
-
-	ImGui::Text(mSkyboxFileName.c_str());
-	ImGui::SameLine();
+	ImGui::Text("Skybox and IBL");
+	//ImGui::Text(mSkyboxFileName.c_str());
 	if (ImGui::Button("Select Skybox"))
 	{
 		IGFD::FileDialogConfig config;
-		config.path = "./Assets/Textures";
+		config.path = "./Assets/IBL";
 		ImGuiFileDialog::Instance()->OpenDialog("Skybox", "Choose Skybox File", ".hdr", config);
 	}
-
+	
 	ImGui::SetNextWindowSize(ImVec2(800, 400), ImGuiCond_Once);
 	if (ImGuiFileDialog::Instance()->Display("Skybox"))
 	{
 		if (ImGuiFileDialog::Instance()->IsOk())
 		{
-			const std::string& filePathName = ImGuiFileDialog::Instance()->GetFilePathName();
-			openGl->BakeIBL(filePathName.c_str(), mIrradianceSize, mSpecEnvBRDFSize, mSpecPrefilteredSize);
-			mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
-			mSkyboxFilePath = filePathName;
+			std::string filePathName = ASSETS_IBL_PATH;
+			filePathName += ImGuiFileDialog::Instance()->GetCurrentFileName();
+			Resource* res = EngineApp->GetEngineResource()->RequestResource(filePathName.c_str());
+			if (res)
+			{
+				App->GetOpenGL()->SetSkybox(res->GetUID());
+				//mSkyboxFileName = ImGuiFileDialog::Instance()->GetCurrentFileName();
+				App->GetResource()->ReleaseResource(res->GetUID());
+			}
 		}
-
+	
 		ImGuiFileDialog::Instance()->Close();
 	}
-	ImGui::InputInt("IrradianceSize", &mIrradianceSize);
-	ImGui::InputInt("SpecularPrefilteredSize", &mSpecPrefilteredSize);
-	ImGui::InputInt("BRDFEnvSize", &mSpecEnvBRDFSize);
+
+	ImGui::SameLine();
+	if (ImGui::Button("RemoveSkybox"))
+	{
+		App->GetOpenGL()->SetSkybox(0);
+		//mSkyboxFileName = "";
+	}
+	//ImGui::InputInt("IrradianceSize", &mIrradianceSize);
+	//ImGui::InputInt("SpecularPrefilteredSize", &mSpecPrefilteredSize);
+	//ImGui::InputInt("BRDFEnvSize", &mSpecEnvBRDFSize);
 
 	
 
-	
+	ImGui::Separator();
+	ImGui::Text("Directional Light");
 	if (ImGui::DragFloat("DirLIntensity", &openGl->mDirLight.mCol[3], 0.05f, 0.0f, 100.0f))
 	{
 		openGl->mDLightUniBuffer->UpdateData(&openGl->mDirLight.mCol[3], sizeof(DirectionalLight::mCol[3]), offsetof(DirectionalLight, mCol[3]));
@@ -60,6 +72,16 @@ void LightningPanel::Draw(int windowFlags)
 	{ 
 		openGl->mDLightUniBuffer->UpdateData(openGl->mDirLight.mCol, sizeof(DirectionalLight::mCol), offsetof(DirectionalLight, mCol));
 	}
+
+	ImGui::Separator();
+	ImGui::Text("Bloom");
+	float bloomIntensity = openGl->GetBloomIntensity();
+	if (ImGui::DragFloat("Intensity", &bloomIntensity, 0.01f, 0.0f, 1.0f))
+	{
+		openGl->SetBloomIntensity(bloomIntensity);
+	}
+
+	ImGui::Separator();
 	ImGui::Text("Ambient Occlusion");
 	if (ImGui::Checkbox("AO", &openGl->mAoActive))
 	{
@@ -84,5 +106,6 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1f(2, aoBias);
 		glUseProgram(0);
 	}
+
 	ImGui::End();
 }

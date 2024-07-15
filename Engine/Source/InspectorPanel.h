@@ -17,6 +17,7 @@ class AIAgentComponent;
 class NavMeshObstacleComponent;
 class AnimationComponent;
 class ImageComponent;
+class MaskComponent;
 class CanvasComponent;
 class ButtonComponent;
 class AudioSourceComponent;
@@ -63,6 +64,7 @@ private:
 	void DrawMeshRendererComponent(MeshRendererComponent& component);
 	void DrawAIAgentComponent(AIAgentComponent* component);
 	void DrawImageComponent(ImageComponent* component);
+	void DrawMaskComponent(MaskComponent* component);
 	void DrawCanvasComponent(CanvasComponent* component);
 	void DrawButtonComponent(ButtonComponent* component);
 	void DrawSliderComponent(SliderComponent* component);

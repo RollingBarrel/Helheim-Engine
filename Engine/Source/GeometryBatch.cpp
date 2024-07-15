@@ -270,7 +270,7 @@ void GeometryBatch::ComputeCommands(unsigned int bufferIdx, const math::Frustum&
 	glUniform1ui(0, mMeshComponents.size());
 	float planes[24];
 	frustum.GetPlanes(reinterpret_cast<Plane*>(planes));
-	glUniform4fv(1, 24, planes);
+	glUniform4fv(1, 6, planes);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 22, bufferIdx);
 	unsigned int sizeMatIdxs = mMeshComponents.size() * sizeof(unsigned int);
 	sizeMatIdxs += ALIGNED_STRUCT_SIZE(sizeMatIdxs, mSsboAligment) - sizeMatIdxs;

@@ -11,7 +11,8 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 
-CREATE(EnemyRobotMelee) {
+CREATE(EnemyRobotMelee) 
+{
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
@@ -30,6 +31,25 @@ EnemyRobotMelee::EnemyRobotMelee(GameObject* owner) : Enemy(owner)
 {
 }
 
+void EnemyRobotMelee::Start()
+{
+    Enemy::Start();
+
+    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+
+    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(true);
+
+    }
+    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+
+    if (mCollider)
+    {
+        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
+    }
+}
 
 void EnemyRobotMelee::Update()
 {
@@ -59,27 +79,6 @@ void EnemyRobotMelee::Update()
 
     mBeAttracted = false;
 }
-
-void EnemyRobotMelee::Start()
-{
-    Enemy::Start();
-
-    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
-
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->SetIsPlaying(true);
-
-    }
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
-    }
-}
-
 
 void EnemyRobotMelee::Idle()
 {
@@ -114,7 +113,6 @@ void EnemyRobotMelee::Chase()
                 }
 
             }
-            mAiAgentComponent->MoveAgent(mSpeed);
 
         }
         if (IsPlayerInRange(mMeleeDistance))
@@ -188,12 +186,23 @@ void EnemyRobotMelee::Death()
     {
         Enemy::Death();
     }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->PauseCrowdNavigation();
+    }
 }
-void EnemyRobotMelee::Reset()
+void EnemyRobotMelee::Init()
 {
-    Enemy::Reset();
-    mAnimationComponent->OnReset();
-    mAnimationComponent->SendTrigger("tIdle",0.0f);
+    Enemy::Init();
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->OnReset();
+        mAnimationComponent->SendTrigger("tIdle",0.0f);
+    }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)
 {

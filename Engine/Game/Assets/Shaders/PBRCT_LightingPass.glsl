@@ -86,9 +86,11 @@ layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
 
-layout(binding =9) uniform sampler2D ambientOcclusion;
-uniform bool activeAO;
+layout(binding = 9)uniform sampler2D bloomTex;
+uniform float bloomIntensity;
 
+layout(binding = 10) uniform sampler2D ambientOcclusion;
+uniform bool activeAO;
 
 vec3 cDif;
 vec3 cSpec;
@@ -224,10 +226,14 @@ void main()
 	pbrCol += GetAmbientLight();
 	pbrCol += emissiveCol;
 
-	//HDR color
+	//bloom
+	pbrCol += texture(bloomTex, uv).rgb * bloomIntensity;
 
+	//HDR color  
 	vec3 hdrCol = pbrCol;
-	
+
+
+
 	//LDR color with reinhard tone Mapping
 	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
 	//LDR color with ACES filmic tone Mapping
@@ -235,12 +241,12 @@ void main()
 
 	//Gamma correction
 	ldrCol = pow(ldrCol, vec3(1/2.2));
-	
+
 	//Output
 	if( activeAO)
 	{
 		vec3 occlusionFactor = vec3(texture(ambientOcclusion, uv).r);
-		ldrCol= ldrCol * occlusionFactor;
+		ldrCol = ldrCol * occlusionFactor;
 	}
 
 	outColor = vec4(ldrCol, 1.0f );	

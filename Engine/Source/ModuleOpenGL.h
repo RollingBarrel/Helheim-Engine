@@ -37,6 +37,7 @@ struct SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class ResourceIBL;
 typedef unsigned int GLenum;
 
 class ENGINE_API OpenGLBuffer {
@@ -75,7 +76,7 @@ public:
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return sceneTexture; }
 	void BindSceneFramebuffer();
-	void BindGFramebuffer();
+	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
@@ -84,6 +85,7 @@ public:
 	unsigned int GetGBufferDepth() const { return mGDepth; }
 	unsigned int GetGBufferPos() const { return mGPosition; }
 	unsigned int GetGBufferSSAO() const { return mGSSAO; }
+	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -97,14 +99,21 @@ public:
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetUIMaskProgramId() const { return mUIMaskProgramId; }
 	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
 	unsigned int GetSSAOProgramId() const { return mSSAOPassProgramId; }
+	unsigned int GetEnvironmentProgramId() const { return mEnvironmentProgramId; }
+	unsigned int GetIrradianceProgramId() const { return mIrradianceProgramId; }
+	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
+	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
 
 	float GetAoRange() const { return mAoRange; };
 	float GetAoBias() const { return mAoBias; };
 	void SetAoRange(float range) { mAoRange = range; };
 	void SetAoBias(float bias) { mAoBias = bias; };
 	//TODO: put all this calls into one without separating for light type??
+	const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
+	void SetDirectionalLight(const DirectionalLight& dirLight);
 	void AddPointLight(const PointLightComponent& component);
 	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
@@ -118,9 +127,6 @@ public:
 	void Draw();
 	void SetWireframe(bool wireframe);
 
-	void AddHighLight(const GameObject& gameObject);
-	void RemoveHighLight(const GameObject& gameObject);
-
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
 
@@ -132,13 +138,21 @@ public:
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	//void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	void SetSkybox(unsigned int uid);
+	inline unsigned int GetSkyboxID() const;
+	unsigned int GetSkyboxVAO() const { return mSkyVao; }
 	unsigned int GetSceneWidth() const { return mSceneWidth; }
 	unsigned int GetSceneHeight() const { return mSceneHeight; }
 
 	bool mAoActive{ true };
 	float mAoRange = 1.0f;
 	float mAoBias = 0.0025f;
+	
+	unsigned int BlurTexture(unsigned int texId) const;
+	//Set the intensity between 0 and 1
+	void SetBloomIntensity(float intensity);
+	float GetBloomIntensity() const { return mBloomIntensity; };
 private:
 	void* context = nullptr;
 
@@ -147,7 +161,7 @@ private:
 	//scene Framebuffer
 	unsigned int sFbo;
 	unsigned int sceneTexture;
-	unsigned int depthStencil;
+	//unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
@@ -157,8 +171,16 @@ private:
 	unsigned int mGEmissive;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
+	//AO
 	unsigned int mGSSAO;
+	//bloom bramebuffer
+	static const unsigned int mBlurPasses = 3;
+	unsigned int mBlurTex[mBlurPasses + 1];
+	unsigned int mBlurFBO;
+	float mBloomIntensity = 0.5f;
+
 	void ResizeGBuffer(unsigned int width, unsigned int height);
+	void InitBloomTextures(unsigned int width, unsigned int height);
 	//void Draw();
 
 	//Camera
@@ -191,22 +213,22 @@ private:
 	unsigned int mHighLightProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
 	unsigned int mSSAOPassProgramId = 0;
+	unsigned int mUIMaskProgramId = 0;
+	//unsigned int mBlurProgramId = 0;
+	unsigned int mDownsampleProgramId = 0;
+	unsigned int mUpsampleProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
 
 
 	//IBL
-	unsigned int mHDRTextureId = 0;
-	unsigned int mEnvironmentTextureId = 0;
-	unsigned int mIrradianceTextureId = 0;
-	unsigned int mSpecPrefilteredTexId = 0;
-	unsigned int mEnvBRDFTexId = 0;
+	ResourceIBL* mCurrSkyBox = nullptr;
 
 	unsigned int mEmptyVAO = 0;
 	
 	//Shadows
-	unsigned int mShadowsFrameBuffersId[NUM_SHADOW_MAPS] = {0};
+	unsigned int mShadowsFrameBufferId = 0;
 	unsigned int mShadowMaps[NUM_SHADOW_MAPS] = { 0 };
 	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
 	OpenGLBuffer* mShadowsBuffer = nullptr;
@@ -235,8 +257,8 @@ private:
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
 	std::vector<const TrailComponent*> mTrails;
 
-	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
-	std::vector<const GameObject*> mHighlightedObjects;
+	//void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
+	//std::vector<const GameObject*> mHighlightedObjects;
 
 	unsigned int mSceneWidth = 1;
 	unsigned int mSceneHeight = 1;
