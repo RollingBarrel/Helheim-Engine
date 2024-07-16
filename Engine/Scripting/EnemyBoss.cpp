@@ -6,6 +6,8 @@
 #include "GameManager.h"
 #include "PoolManager.h"
 #include "BombBoss.h"
+#include "ColorGradient.h"
+#include "Bullet.h"
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -78,24 +80,48 @@ void EnemyBoss::Attack()
 {
     if (Delay(mTimerAttack))
     {
-        BombAttack();
+        switch (rand() % 3)
+        {
+        case 0:
+            BulletAttack();
+            break;
+        case 1:
+            LaserAttack();
+            break;
+        case 2:
+            BombAttack();
+            break;
+        default:
+            break;
+        }
     }
 }
 
 void EnemyBoss::BulletAttack()
 {
-
+    float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
+    float3 direction = (mPlayer->GetWorldPosition() - bulletOriginPosition);
+    direction.y = 0;
+    direction.Normalize();
+    float angle = std::atan2(direction.x, direction.z);
+    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
+    bulletGO->SetWorldPosition(bulletOriginPosition);
+    bulletGO->SetWorldRotation(float3(0, angle, 0));
+    Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    ColorGradient gradient;
+    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
+    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mRangeDamage);
 }
 
 void EnemyBoss::LaserAttack()
 {
-
+    
 }
 
 void EnemyBoss::BombAttack()
 {
     float3 target = mPlayer->GetWorldPosition();
-    GameObject* bombGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBOMB);
+    GameObject* bombGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOMB_TEMPLATE_1);
     bombGO->SetWorldPosition(target);
     BombBoss* bombScript = reinterpret_cast<BombBoss*>(reinterpret_cast<ScriptComponent*>(bombGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     bombScript->Init();

@@ -35,7 +35,6 @@ void BombBoss::Start()
 void BombBoss::Update()
 {
 	mTimePassed += App->GetDt();
-	/*LOG("BUUULEEETT");*/
 	if (mHasExploded)
 	{
 		bool finishedExploding = true;
