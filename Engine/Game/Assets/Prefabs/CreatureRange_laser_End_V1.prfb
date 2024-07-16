@@ -49,7 +49,7 @@
                         "ShapeAngle": 0.7850000262260437,
                         "ShapeSize": [
                             1.0,
-                            1.0,
+                            0.0,
                             1.0
                         ],
                         "ShapeRandAngle": 0.0,
