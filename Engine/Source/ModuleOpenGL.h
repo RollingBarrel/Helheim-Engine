@@ -148,9 +148,9 @@ public:
 
 	bool mAoActive{ true };
 	float mAoRange = 1.0f;
-	float mAoBias = 0.0025f;
+	float mAoBias = 0.0001f;
 	
-	unsigned int BlurTexture(unsigned int texId, unsigned int passes = 0) const;
+	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };

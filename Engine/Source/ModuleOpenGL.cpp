@@ -864,7 +864,7 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int passes) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
 {
 	if (passes > mBlurPasses || passes == 0)
 		passes = mBlurPasses;
@@ -895,6 +895,8 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int passes) 
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		if(i == 1 && modifyTex)
+			glBindTexture(GL_TEXTURE_2D, texId);
 	}
 	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -1290,30 +1292,32 @@ void ModuleOpenGL::Draw()
 		//glEnable(GL_STENCIL_TEST);
 
 		//dual filter blur
-		//unsigned int blurredTex = BlurTexture(mSSAO);
+		BlurTexture(mSSAO, true);
 		
 		//Gausian blur
-		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-		glActiveTexture(GL_TEXTURE0);
-		glUseProgram(mGaussianBlurProgramId);
-		glBindVertexArray(mEmptyVAO);
-		bool horizontal = true;
-		unsigned int drawTex = mSSAO;
-		unsigned int sampleTex = mBlurTex[0];
-		for (int i = 0; i < 8; ++i)
-		{
-			glUniform1ui(0, horizontal);
-			if ((i&1) == 0)
-			{
-				unsigned int tmp = drawTex;
-				drawTex = sampleTex;
-				sampleTex = tmp;
-				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
-				glBindTexture(GL_TEXTURE_2D, sampleTex);
-			}
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-			horizontal = !horizontal;
-		}
+		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glUseProgram(mGaussianBlurProgramId);
+		//glBindVertexArray(mEmptyVAO);
+		//bool horizontal = true;
+		//unsigned int drawTex = mSSAO;
+		//unsigned int sampleTex = mBlurTex[0];
+		////tine que ser impar
+		//const unsigned int passes = 3;
+		//for (int i = 0; i < (passes*2+1); ++i)
+		//{
+		//	glUniform1ui(0, horizontal);
+		//	if ((i&1) == 0)
+		//	{
+		//		unsigned int tmp = drawTex;
+		//		drawTex = sampleTex;
+		//		sampleTex = tmp;
+		//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+		//		glBindTexture(GL_TEXTURE_2D, sampleTex);
+		//	}
+		//	glDrawArrays(GL_TRIANGLES, 0, 3);
+		//	horizontal = !horizontal;
+		//}
 
 		//simple ssao blur
 		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);

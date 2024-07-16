@@ -36,7 +36,7 @@ vec3 GetRandomTangent()
 {
 	vec2 screenPos = uv*vec2(screenSize);
 	ivec2 index = ivec2(int(mod(screenPos.y, TANGENT_ROWS)), int(mod(screenPos.x, TANGENT_COLS)));
-	return randomTangents[index.x * TANGENT_ROWS +index.y];
+	return randomTangents[index.y * TANGENT_ROWS + index.x];
 }
 
 float GetSceneDepthAtSamplePos(in vec3 samplePos)
