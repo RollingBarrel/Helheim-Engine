@@ -55,6 +55,7 @@ void Enemy::Update()
 			break;
 		case EnemyState::ATTACK:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
+			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Attack();
 			break;
 		}
@@ -87,7 +88,6 @@ void Enemy::Chase()
 			if (mGameObject->GetWorldRotation().y != angle)
 			{
 				mGameObject->SetWorldRotation(float3(0, angle, 0));
-
 			}
 		}
 		if (IsPlayerInRange(mAttackDistance))

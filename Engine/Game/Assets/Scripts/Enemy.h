@@ -51,6 +51,7 @@ protected:
 	float mRotationSpeed = 1.0f;
 	float mChaseDistance = 250.0f;
 	float mAttackDistance = 2.0f;
+	float mAttackDamage = 2.0f;
 
 	//DropRates
 	int mShieldDropRate = 20;

@@ -10,7 +10,8 @@
 
 #include "ColorGradient.h"
 
-CREATE(EnemyRobotRange) {
+CREATE(EnemyRobotRange) 
+{
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);

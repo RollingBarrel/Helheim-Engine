@@ -1,8 +1,8 @@
 #pragma once
 #include "Enemy.h"
 
-class AnimationStateMachine;
 class GameObject;
+class AnimationStateMachine;
 
 GENERATE_BODY(EnemyCreatureRange);
 class EnemyCreatureRange : public Enemy
@@ -12,15 +12,21 @@ class EnemyCreatureRange : public Enemy
 public:
 	EnemyCreatureRange(GameObject* owner) : Enemy(owner) {}
 	~EnemyCreatureRange() {}
+	
+	void Start() override;
 
 private:
 	void Attack() override;
-	void RangeAttack();
-
 
 	float mRangeDamage = 15.0f;
-	float mBulletSpeed = 3.0f;
+	float mAttackRotationSpeed = 10.0f;
+
+	bool mDoDamage = false;
 
 	GameObject* mLaserOrigin = nullptr;
+	GameObject* mLaserTrail = nullptr;
+	GameObject* mLaserEnd = nullptr;
+
+	bool mMoveTrail = false;
 };
 

@@ -21,7 +21,6 @@ CREATE(EnemyExplosive)
 	MEMBER(MemberType::FLOAT, mExplosionDamage);
 	MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
 	END_CREATE;
-
 }
 
 void EnemyExplosive::Start()

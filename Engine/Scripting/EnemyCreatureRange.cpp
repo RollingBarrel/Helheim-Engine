@@ -1,4 +1,5 @@
 #include "EnemyCreatureRange.h"
+#include "Application.h"
 #include "GameObject.h"
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
@@ -6,53 +7,144 @@
 
 #include "GameManager.h"
 #include "PoolManager.h"
-#include "Bullet.h"
+#include "PlayerController.h"
 
 #include "ColorGradient.h"
+#include "Physics.h"
+#include "Geometry/Ray.h"
+#include <MathFunc.h>
 
-CREATE(EnemyCreatureRange) {
-    CLASS(owner);
-    SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxHealth);
-    MEMBER(MemberType::FLOAT, mSpeed);
-    MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mRangeDamage);
-    MEMBER(MemberType::FLOAT, mBulletSpeed);
-    SEPARATOR("STATES");
-    MEMBER(MemberType::FLOAT, mAttackDistance);
-    END_CREATE;
+
+CREATE(EnemyCreatureRange)
+{
+	CLASS(owner);
+	SEPARATOR("STATS");
+	MEMBER(MemberType::FLOAT, mMaxHealth);
+	MEMBER(MemberType::FLOAT, mSpeed);
+	MEMBER(MemberType::FLOAT, mRotationSpeed);
+	MEMBER(MemberType::FLOAT, mRangeDamage);
+	MEMBER(MemberType::FLOAT, mAttackRotationSpeed);
+	MEMBER(MemberType::FLOAT, mAttackDamage);
+	MEMBER(MemberType::FLOAT, mAttackCoolDown);
+	SEPARATOR("STATES");
+	MEMBER(MemberType::FLOAT, mAttackDistance);
+	SEPARATOR("GAME OBJECTS");
+	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
+	MEMBER(MemberType::GAMEOBJECT, mLaserTrail);
+	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
+	END_CREATE;
+}
+
+void EnemyCreatureRange::Start()
+{
+	Enemy::Start();
+
+	if (mLaserOrigin)
+	{
+		mLaserOrigin->SetEnabled(false);
+	}
+
+	if (mLaserTrail)
+	{
+		mLaserTrail->SetEnabled(false);
+	}
+
+	if (mLaserEnd)
+	{
+		mLaserEnd->SetEnabled(false);
+	}
 }
 
 void EnemyCreatureRange::Attack()
 {
-    Enemy::Attack();
+	Enemy::Attack();
 
-    float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-    direction.y = 0;
-    direction.Normalize();
-    float angle = std::atan2(direction.x, direction.z);
+	if (mLaserOrigin)
+	{
+		mLaserOrigin->SetEnabled(true);
+	}
 
-    if (mGameObject->GetWorldRotation().y != angle)
-    {
-        mGameObject->SetWorldRotation(float3(0, angle, 0));
+	if (mLaserTrail)
+	{
+		mLaserTrail->SetEnabled(true);
+	}
 
-    }
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-    {
-        mAnimationComponent->SendTrigger("tAttack", 0.2f);
-        RangeAttack();
+	if (mLaserEnd)
+	{
+		mLaserEnd->SetEnabled(true);
+	}
+	mAnimationComponent->SendTrigger("tAttack", 0.2f);
 
-    }
-}
+	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+	direction.y = 0;
+	direction.Normalize();
+	
+	float targetRadianAngle = std::atan2(direction.x, direction.z);
+	float targetEulerAngle = RadToDeg(targetRadianAngle);
+	if (targetEulerAngle < 0)
+	{
+		targetEulerAngle = 360.0f + targetEulerAngle;
+	}
 
-void EnemyCreatureRange::RangeAttack()
-{
-    float3 bulletOriginPosition = mLaserOrigin->GetWorldPosition();
-    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
-    bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
-    Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mRangeDamage);
+	float currentRadianAngle = mGameObject->GetLocalEulerAngles().y;
+	float currentEulerAngle = RadToDeg(currentRadianAngle);
+	if (currentEulerAngle < 0)
+	{
+		currentEulerAngle = 360.0f + currentEulerAngle;
+	}
+
+	float attackRotaionSpeed = (targetEulerAngle - currentEulerAngle > 0) ? mAttackRotationSpeed : mAttackRotationSpeed * -1;
+	mGameObject->SetLocalRotation(float3(0.0f, currentRadianAngle + DegToRad(attackRotaionSpeed) * App->GetDt(), 0.0f));
+
+
+	if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
+	{
+		mDoDamage = true;
+	}
+
+	Hit hit;
+	Ray ray;
+	ray.dir = mGameObject->GetFront();
+	ray.pos = mLaserOrigin->GetWorldPosition();
+
+	Physics::Raycast(hit, ray, mAttackDistance);
+	if (hit.IsValid())
+	{
+		if (hit.mGameObject->GetTag().compare("Player") == 0 && mDoDamage)
+		{
+			ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+			PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+			player->TakeDamage(mAttackDamage);
+			mDoDamage = false;
+		}
+		mLaserEnd->SetWorldPosition(hit.mHitPoint);
+
+		if (mMoveTrail)
+		{
+			mLaserTrail->SetWorldPosition(hit.mHitPoint);
+			mMoveTrail = false;
+		}
+		else 
+		{
+			mMoveTrail = true;
+			mLaserTrail->SetWorldPosition(mLaserOrigin->GetWorldPosition());
+		}
+	}
+	else
+	{
+		float3 originPosition = mLaserOrigin->GetLocalPosition();
+		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
+		
+		if (mMoveTrail)
+		{
+			mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
+			mMoveTrail = false;
+		}
+		else
+		{
+			mLaserTrail->SetLocalPosition(originPosition);
+			mMoveTrail = true;
+		}
+		
+	}
 }
