@@ -43,8 +43,8 @@ EngineApplication::EngineApplication()
 	modules[7] = physics = new ModulePhysics();
 	modules[8] = engineScriptManager = new ModuleEngineScriptManager();
 	scriptManager = engineScriptManager;
-	modules[9] = debugDraw = new ModuleDebugDraw();
-	modules[10] = scene = new ModuleScene();
+	modules[9] = scene = new ModuleScene();
+	modules[10] = debugDraw = new ModuleDebugDraw();
 	modules[11] = navigation = new ModuleDetourNavigation();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = editor = new ModuleEditor();

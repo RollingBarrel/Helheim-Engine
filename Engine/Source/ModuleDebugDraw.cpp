@@ -852,7 +852,7 @@ void ModuleDebugDraw::DrawColliders(GameObject* root)
         {
             OBB obb;
             boxCollider->GetColliderOBB(obb);
-            EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.5f, 1.0f, 0.5f));
+            DrawCube(obb, float3(0.5f, 1.0f, 0.5f));
         }
 
         for (int i = 0; i < root->GetChildren().size(); i++) 

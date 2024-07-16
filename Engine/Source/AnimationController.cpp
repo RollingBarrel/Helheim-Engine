@@ -58,7 +58,9 @@ void AnimationController::Update()
 
 void AnimationController::Restart()
 {
-	mCurrentTime = mStartTime;
+	
+	mCurrentTime = 0.0f;
+	//mCurrentTime = mStartTime;
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda)

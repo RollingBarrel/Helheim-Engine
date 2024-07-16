@@ -184,6 +184,11 @@ void ScenePanel::MenuGBuffer()
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
 				currentSceneName = "DEPTH";
 			}
+			if (ImGui::Selectable("BLUR"))
+			{
+				currentScene = EngineApp->GetOpenGL()->GetBluredTexture();
+				currentSceneName = "BLUR";
+			}
 			ImGui::EndCombo();
 		}
 		ImGui::EndMenuBar();
