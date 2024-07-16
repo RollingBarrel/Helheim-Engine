@@ -99,7 +99,7 @@ void EnemyBoss::Attack()
 
 void EnemyBoss::BulletAttack()
 {
-    float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
+    float3 bulletOriginPosition = mGameObject->GetWorldPosition();
     float3 direction = (mPlayer->GetWorldPosition() - bulletOriginPosition);
     direction.y = 0;
     direction.Normalize();
@@ -123,8 +123,13 @@ void EnemyBoss::BombAttack()
     float3 target = mPlayer->GetWorldPosition();
     GameObject* bombGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOMB_TEMPLATE_1);
     bombGO->SetWorldPosition(target);
-    BombBoss* bombScript = reinterpret_cast<BombBoss*>(reinterpret_cast<ScriptComponent*>(bombGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    bombScript->Init();
+    std::vector<Component*> scriptComponents;
+    bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+    for (Component* scriptComponent : scriptComponents)
+    {
+        BombBoss* bombScript = reinterpret_cast<BombBoss*>(reinterpret_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+        bombScript->Init();
+    }
 }
 
 void EnemyBoss::Death()

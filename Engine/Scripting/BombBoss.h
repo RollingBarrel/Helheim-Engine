@@ -22,7 +22,7 @@ public:
 
 private:
 
-	float mRadius = 1.0f;
+	float mRadius = 2.5f;
 	float mDamage = 1.0f;
 	float mTimeDelay = 3.0f;
 	float mTimePassed = 0.0f;

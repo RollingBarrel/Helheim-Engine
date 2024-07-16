@@ -2,21 +2,21 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1586289135,
+                "UID": 106400762,
                 "ParentUID": 1,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -120.7811050415039,
-                    3.3812713623046877,
-                    -44.5096435546875
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
-                    -0.6961180567741394,
+                    -0.7071068286895752,
                     0.0,
                     0.0,
-                    0.7179273366928101
+                    0.7071068286895752
                 ],
                 "Scale": [
                     5.0,
@@ -76,8 +76,8 @@
                 ]
             },
             {
-                "UID": 1656258240,
-                "ParentUID": 1586289135,
+                "UID": 189737099,
+                "ParentUID": 106400762,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,

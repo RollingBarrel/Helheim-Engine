@@ -33,10 +33,10 @@ void PoolManager::Start()
 		{PoolType::RED_ENERGY, ObjectPool("Item_RedEnergy.prfb", mNumItems, RedEnergy)},
 		{PoolType::BULLET, ObjectPool("Bullet.prfb", numBullets, Bullet)},
 		{PoolType::ENEMYBULLET, ObjectPool("EnemyBullet.prfb", numBullets, EnemyBullet)},
-		{PoolType::BOMB_TEMPLATE_1, ObjectPool("BombingTemplate1.prfb", 1, EnemyBombs)},
-		{PoolType::BOMB_TEMPLATE_2, ObjectPool("BombingTemplate2.prfb", 1, EnemyBombs)},
+		{PoolType::BOMB_TEMPLATE_1, ObjectPool("BombingTemplate1.prfb", 5, EnemyBombs)},
+		/*{PoolType::BOMB_TEMPLATE_2, ObjectPool("BombingTemplate2.prfb", 1, EnemyBombs)},
 		{PoolType::BOMB_TEMPLATE_3, ObjectPool("BombingTemplate3.prfb", 1, EnemyBombs)},
-		{PoolType::BOMB_TEMPLATE_4, ObjectPool("BombingTemplate4.prfb", 1, EnemyBombs)}
+		{PoolType::BOMB_TEMPLATE_4, ObjectPool("BombingTemplate4.prfb", 1, EnemyBombs)}*/
 	};
 
 }
