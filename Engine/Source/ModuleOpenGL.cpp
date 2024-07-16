@@ -412,7 +412,7 @@ bool ModuleOpenGL::Init()
 			randomTangents[i][j] = dir;
 		}
 	}
-	const unsigned int kernelSize = 24;
+	const unsigned int kernelSize = 64;
 	float3 kernel[kernelSize];
 	//Generating kernels
 
@@ -425,7 +425,7 @@ bool ModuleOpenGL::Init()
 		dir.z = randoms(generator);
 		dir.Normalize();
 		dir *= randoms(generator); // random size
-		float scale = float(i) / float(kernelSize);
+		float scale = static_cast<float>(i) / static_cast<float>(kernelSize);
 		scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
 		dir *= scale;
 		kernel[i] = dir;
@@ -860,10 +860,10 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int intensity) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int passes) const
 {
-	if (intensity > mBlurPasses || intensity == 0)
-		intensity = mBlurPasses;
+	if (passes > mBlurPasses || passes == 0)
+		passes = mBlurPasses;
 
 	float w = mSceneWidth;
 	float h = mSceneHeight;
@@ -873,7 +873,7 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int intensit
 	glBindVertexArray(mEmptyVAO);
 	glBindTexture(GL_TEXTURE_2D, texId);
 	glUseProgram(mDownsampleProgramId);
-	for (unsigned int i = 0; i < intensity; ++i)
+	for (unsigned int i = 0; i < passes; ++i)
 	{
 		w /= 2;
 		h /= 2;
@@ -883,7 +883,7 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, unsigned int intensit
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
 	}
 	glUseProgram(mUpsampleProgramId);
-	for (int i = intensity - 1; i >= 0; --i)
+	for (int i = passes - 1; i >= 0; --i)
 	{
 		w *= 2;
 		h *= 2;
@@ -1283,7 +1283,7 @@ void ModuleOpenGL::Draw()
 	//glEnable(GL_STENCIL_TEST);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	unsigned int blurredTex = BlurTexture(mSSAO);
+	unsigned int blurredTex = BlurTexture(mSSAO, 2);
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
 	glActiveTexture(GL_TEXTURE0);
