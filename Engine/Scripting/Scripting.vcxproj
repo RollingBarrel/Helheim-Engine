@@ -210,6 +210,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
+    <ClInclude Include="EnemyExplosiveSpawner.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
@@ -225,6 +226,7 @@
     <ClCompile Include="EnemyCreatureMelee.cpp" />
     <ClCompile Include="EnemyCreatureRange.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
+    <ClCompile Include="EnemyExplosiveSpawner.cpp" />
     <ClCompile Include="EnemyRobotMelee.cpp" />
     <ClCompile Include="EnemyRobotRange.cpp" />
     <ClCompile Include="Spawner.cpp" />
