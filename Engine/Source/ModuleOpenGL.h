@@ -106,6 +106,7 @@ public:
 	unsigned int GetIrradianceProgramId() const { return mIrradianceProgramId; }
 	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
 	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
+	unsigned int GetScreenTexProgramId() const { return mGameProgramId; }
 
 	float GetAoRange() const { return mAoRange; };
 	float GetAoBias() const { return mAoBias; };
@@ -217,6 +218,8 @@ private:
 	//unsigned int mBlurProgramId = 0;
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
+	unsigned int mGaussianBlurProgramId = 0;
+	unsigned int mSsaoBlurProgramId = 0;
 	unsigned int mGameProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;

@@ -50,7 +50,7 @@ update_status ModuleGame::PreUpdate(float dt)
 
 update_status ModuleGame::Update(float dt)
 {
-	glUseProgram(mGameProgramId);
+	glUseProgram(App->GetOpenGL()->GetScreenTexProgramId());
 	glBindVertexArray(mVAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetFramebufferTexture());

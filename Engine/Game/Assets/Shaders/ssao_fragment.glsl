@@ -2,7 +2,7 @@
 
 #define TANGENT_ROWS 20
 #define TANGENT_COLS 20
-#define KERNEL_SIZE 64
+#define KERNEL_SIZE 24
 
 out vec3 color;
 in vec2 uv;
@@ -62,9 +62,7 @@ void main()
 		{
 			float rangeCheck = smoothstep(0.0, 1.0, 1 / abs(position.z - samplePosDepth));
 			occlusion += (samplePosDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
-			
 		}			
-
 	}
 
 	//vec3 occlusionFactor = vec3(texture(ambientOcclusion,uv).r);

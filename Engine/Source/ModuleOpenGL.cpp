@@ -326,9 +326,13 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "uiMask.fs";
 	mUIMaskProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	//sourcesPaths[0] = "GameVertex.glsl";
-	//sourcesPaths[1] = "Blur.glsl";
-	//mBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "GaussianBlur.glsl";
+	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SsaoBlur.glsl";
+	mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
@@ -412,7 +416,7 @@ bool ModuleOpenGL::Init()
 			randomTangents[i][j] = dir;
 		}
 	}
-	const unsigned int kernelSize = 64;
+	const unsigned int kernelSize = 24;
 	float3 kernel[kernelSize];
 	//Generating kernels
 
@@ -1267,34 +1271,70 @@ void ModuleOpenGL::Draw()
 	glDrawBuffers(5, att2);
 
 	//SSAO Pass
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SSAO Pass");
-	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
-	//glDisable(GL_STENCIL_TEST);
-	glDepthMask(0x00);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, mGNormals);
-	glBindVertexArray(mEmptyVAO);
-	glUseProgram(mSSAOPassProgramId);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glDepthMask(0xFF);
-	//glEnable(GL_STENCIL_TEST);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	if (mAoActive)
+	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SSAO Pass");
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
+		//glDisable(GL_STENCIL_TEST);
+		glDepthMask(0x00);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mGPosition);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, mGNormals);
+		glBindVertexArray(mEmptyVAO);
+		glUseProgram(mSSAOPassProgramId);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDepthMask(0xFF);
+		//glEnable(GL_STENCIL_TEST);
 
-	unsigned int blurredTex = BlurTexture(mSSAO, 2);
-	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, blurredTex);
-	glUseProgram(mGameProgramId);
-	glBindVertexArray(mEmptyVAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-	glPopDebugGroup();
+		//dual filter blur
+		//unsigned int blurredTex = BlurTexture(mSSAO);
+		
+		//Gausian blur
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		glActiveTexture(GL_TEXTURE0);
+		glUseProgram(mGaussianBlurProgramId);
+		glBindVertexArray(mEmptyVAO);
+		bool horizontal = true;
+		unsigned int drawTex = mSSAO;
+		unsigned int sampleTex = mBlurTex[0];
+		for (int i = 0; i < 8; ++i)
+		{
+			glUniform1ui(0, horizontal);
+			if ((i&1) == 0)
+			{
+				unsigned int tmp = drawTex;
+				drawTex = sampleTex;
+				sampleTex = tmp;
+				glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+				glBindTexture(GL_TEXTURE_2D, sampleTex);
+			}
+			glDrawArrays(GL_TRIANGLES, 0, 3);
+			horizontal = !horizontal;
+		}
+
+		//simple ssao blur
+		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glUseProgram(mSsaoBlurProgramId);
+		//glBindVertexArray(mEmptyVAO);
+		////for (int i = 0; i < 2; ++i)
+		////{
+		////	if ((i&1) == 0)
+		////	{
+		//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
+		//		glBindTexture(GL_TEXTURE_2D, mBlurTex[0]);
+		//	//}
+		//	glDrawArrays(GL_TRIANGLES, 0, 3);
+		////}
+
+		glPopDebugGroup();
+	}
 
 	//Bloom
-	blurredTex = BlurTexture(mGEmissive);
+	unsigned int blurredTex = BlurTexture(mGEmissive);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass

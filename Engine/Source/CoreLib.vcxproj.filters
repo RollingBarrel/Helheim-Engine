@@ -2092,13 +2092,22 @@
     <None Include="..\Game\Assets\Shaders\uiMask.fs">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\Blur.glsl">
+    <None Include="..\Game\Assets\Shaders\GaussianBlur.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl">
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\GameVertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\GameFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SsaoBlur.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
