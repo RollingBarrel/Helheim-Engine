@@ -14,19 +14,23 @@ public:
 	~EnemyCreatureRange() {}
 	
 	void Start() override;
-
-private:
+	void Update() override;
+	void Charge() override;
 	void Attack() override;
 
-	float mRangeDamage = 15.0f;
-	float mAttackRotationSpeed = 10.0f;
+private:
+	void Rotate();
 
+	float mAttackRotationSpeed = 10.0f;
 	bool mDoDamage = false;
 
 	GameObject* mLaserOrigin = nullptr;
 	GameObject* mLaserTrail = nullptr;
 	GameObject* mLaserEnd = nullptr;
+	GameObject* mLaserCharge = nullptr;
 
+	//Laser Trail WorkAround
 	bool mMoveTrail = false;
+
 };
 

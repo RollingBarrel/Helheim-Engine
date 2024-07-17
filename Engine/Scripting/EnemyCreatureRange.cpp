@@ -22,7 +22,9 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::FLOAT, mMaxHealth);
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mRotationSpeed);
-	MEMBER(MemberType::FLOAT, mRangeDamage);
+	MEMBER(MemberType::FLOAT, mAttackDamage);
+	MEMBER(MemberType::FLOAT, mAttackDuration);
+	MEMBER(MemberType::FLOAT, mChargeDuration);
 	MEMBER(MemberType::FLOAT, mAttackRotationSpeed);
 	MEMBER(MemberType::FLOAT, mAttackDamage);
 	MEMBER(MemberType::FLOAT, mAttackCoolDown);
@@ -32,6 +34,7 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
 	MEMBER(MemberType::GAMEOBJECT, mLaserTrail);
 	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
+	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
 	END_CREATE;
 }
 
@@ -39,64 +42,51 @@ void EnemyCreatureRange::Start()
 {
 	Enemy::Start();
 
-	if (mLaserOrigin)
+	if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
+	if (mLaserTrail) mLaserTrail->SetEnabled(false);
+	if (mLaserEnd) mLaserEnd->SetEnabled(false);
+	if (mLaserCharge)
 	{
-		mLaserOrigin->SetEnabled(false);
+		mLaserCharge->SetEnabled(false);
+		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
+}
 
-	if (mLaserTrail)
-	{
-		mLaserTrail->SetEnabled(false);
-	}
+void EnemyCreatureRange::Update()
+{
+	Enemy::Update();
 
-	if (mLaserEnd)
+	if (mCurrentState != EnemyState::ATTACK)
 	{
-		mLaserEnd->SetEnabled(false);
+		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
+		if (mLaserTrail)	mLaserTrail->SetEnabled(false);
+		if (mLaserEnd) mLaserEnd->SetEnabled(false);
 	}
+	if (mCurrentState != EnemyState::CHARGE)
+	{
+		if (mLaserCharge)	mLaserCharge->SetEnabled(false);
+	}
+}
+
+void EnemyCreatureRange::Charge()
+{
+	Enemy::Charge();
+	Rotate();
+
+	if (mLaserCharge)	mLaserCharge->SetEnabled(true);
 }
 
 void EnemyCreatureRange::Attack()
 {
 	Enemy::Attack();
+	Rotate();
 
-	if (mLaserOrigin)
-	{
-		mLaserOrigin->SetEnabled(true);
-	}
-
-	if (mLaserTrail)
-	{
-		mLaserTrail->SetEnabled(true);
-	}
-
-	if (mLaserEnd)
-	{
-		mLaserEnd->SetEnabled(true);
-	}
 	mAnimationComponent->SendTrigger("tAttack", 0.2f);
-
-	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-	direction.y = 0;
-	direction.Normalize();
 	
-	float targetRadianAngle = std::atan2(direction.x, direction.z);
-	float targetEulerAngle = RadToDeg(targetRadianAngle);
-	if (targetEulerAngle < 0)
-	{
-		targetEulerAngle = 360.0f + targetEulerAngle;
-	}
-
-	float currentRadianAngle = mGameObject->GetLocalEulerAngles().y;
-	float currentEulerAngle = RadToDeg(currentRadianAngle);
-	if (currentEulerAngle < 0)
-	{
-		currentEulerAngle = 360.0f + currentEulerAngle;
-	}
-
-	float attackRotaionSpeed = (targetEulerAngle - currentEulerAngle > 0) ? mAttackRotationSpeed : mAttackRotationSpeed * -1;
-	mGameObject->SetLocalRotation(float3(0.0f, currentRadianAngle + DegToRad(attackRotaionSpeed) * App->GetDt(), 0.0f));
-
-
+	if (mLaserOrigin)	mLaserOrigin->SetEnabled(true);
+	if (mLaserTrail)	mLaserTrail->SetEnabled(true);
+	if (mLaserEnd)		mLaserEnd->SetEnabled(true);
+	
 	if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
 	{
 		mDoDamage = true;
@@ -119,12 +109,13 @@ void EnemyCreatureRange::Attack()
 		}
 		mLaserEnd->SetWorldPosition(hit.mHitPoint);
 
+		//Trails WorkAround
 		if (mMoveTrail)
 		{
 			mLaserTrail->SetWorldPosition(hit.mHitPoint);
 			mMoveTrail = false;
 		}
-		else 
+		else
 		{
 			mMoveTrail = true;
 			mLaserTrail->SetWorldPosition(mLaserOrigin->GetWorldPosition());
@@ -134,7 +125,8 @@ void EnemyCreatureRange::Attack()
 	{
 		float3 originPosition = mLaserOrigin->GetLocalPosition();
 		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
-		
+
+		//Trails WorkAround
 		if (mMoveTrail)
 		{
 			mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
@@ -145,6 +137,31 @@ void EnemyCreatureRange::Attack()
 			mLaserTrail->SetLocalPosition(originPosition);
 			mMoveTrail = true;
 		}
-		
 	}
 }
+
+void EnemyCreatureRange::Rotate() //TODO IMPROVE ROTATE BEHAVIOUR
+{
+	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+	direction.y = 0;
+	direction.Normalize();
+
+	float targetRadianAngle = std::atan2(direction.x, direction.z);
+	float targetEulerAngle = RadToDeg(targetRadianAngle);
+	if (targetEulerAngle < 0)
+	{
+		targetEulerAngle = 360.0f + targetEulerAngle;
+	}
+
+	float currentRadianAngle = mGameObject->GetLocalEulerAngles().y;
+	float currentEulerAngle = RadToDeg(currentRadianAngle);
+	if (currentEulerAngle < 0)
+	{
+		currentEulerAngle = 360.0f + currentEulerAngle;
+	}
+
+	float attackRotaionSpeed = (targetEulerAngle - currentEulerAngle > 0) ? mAttackRotationSpeed : mAttackRotationSpeed * -1;
+	mGameObject->SetLocalRotation(float3(0.0f, currentRadianAngle + DegToRad(attackRotaionSpeed) * App->GetDt(), 0.0f));
+}
+
+

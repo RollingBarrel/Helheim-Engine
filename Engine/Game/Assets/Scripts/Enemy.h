@@ -12,6 +12,7 @@ enum class EnemyState
 {
 	IDLE,
 	CHASE,
+	CHARGE,
 	ATTACK,
 };
 
@@ -36,6 +37,7 @@ public:
 protected:
 	virtual void Idle();
 	virtual void Chase();
+	virtual void Charge();
 	virtual void Attack();
 
 	virtual void PlayStepAudio() {};
@@ -65,8 +67,12 @@ protected:
 	AIAgentComponent* mAiAgentComponent = nullptr;
 
 	//Timers
+	TimerScript mChargeDurationTimer;
+	float mChargeDuration = 0.0f;
+	TimerScript mAttackDurationTimer;
+	float mAttackDuration = 0.0f;
 	TimerScript mAttackCoolDownTimer;
-	float mAttackCoolDown = 2.0f;
+	float mAttackCoolDown = 1.0f;
 	TimerScript mDisengageTimer;
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;

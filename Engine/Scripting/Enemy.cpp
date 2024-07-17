@@ -47,15 +47,20 @@ void Enemy::Update()
 		{
 		case EnemyState::IDLE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
+			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Idle();
 			break;
 		case EnemyState::CHASE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
 			Chase();
 			break;
+		case EnemyState::CHARGE:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
+			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
+			Charge();
+			break;
 		case EnemyState::ATTACK:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
-			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Attack();
 			break;
 		}
@@ -92,12 +97,20 @@ void Enemy::Chase()
 		}
 		if (IsPlayerInRange(mAttackDistance))
 		{
-			mCurrentState = EnemyState::ATTACK;
+			mCurrentState = EnemyState::CHARGE;
 		}
 	}
 	else
 	{
 		mCurrentState = EnemyState::IDLE;
+	}
+}
+
+void Enemy::Charge()
+{
+	if (mChargeDurationTimer.Delay(mChargeDuration))
+	{
+ 		mCurrentState = EnemyState::ATTACK;
 	}
 }
 
@@ -108,6 +121,10 @@ void Enemy::Attack()
 	{
 		mCurrentState = EnemyState::CHASE;
 		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+	}
+	else if (mAttackDurationTimer.Delay(mAttackDuration))
+	{
+		mCurrentState = EnemyState::CHARGE;
 	}
 }
 
