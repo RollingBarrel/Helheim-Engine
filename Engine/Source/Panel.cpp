@@ -1,4 +1,6 @@
 #include "Panel.h"
+#include <string>
+#include <algorithm>
 
 Panel::Panel(){}
 
@@ -20,4 +22,16 @@ bool Panel::IsOpen() const
 void Panel::Draw(int windowFlags)
 {
 
+}
+
+static bool CharCompare(char a, char b)
+{
+	return std::tolower(a) == std::tolower(b);
+}
+
+bool Panel::CaseInsensitiveSubstringSearch(const std::string& str, const std::string& sub)
+{
+	std::string::const_iterator it = std::search(str.begin(), str.end(), sub.begin(), sub.end(), CharCompare);
+
+	return it != str.end();
 }

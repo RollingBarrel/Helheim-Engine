@@ -41,7 +41,7 @@ void Bullet::Update()
 	{
 		if (mTotalMovement <= mRange)
 		{
-			LOG("TotalMovement, %f", mTotalMovement);
+			//LOG("TotalMovement, %f", mTotalMovement);
 			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
 			
 			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed);
@@ -53,7 +53,7 @@ void Bullet::Update()
 	}
 	else
 	{
-		if (Delay(1.0f)) 
+		if (mTimer.Delay(1.0f))
 		{
 			mGameObject->SetEnabled(false);
 		}
@@ -97,22 +97,42 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 
 void Bullet::OnCollisionEnter(CollisionData* collisionData)
 {
-	if (mShooterIsPlayer)
+	if (!mHasCollided)
 	{
-		if (collisionData->collidedWith->GetTag().compare("Enemy") == 0 || collisionData->collidedWith->GetTag().compare("Wall") == 0)
+		if (mShooterIsPlayer)
 		{
-			if (mHitParticles)
+			if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
 			{
-				mHitParticles->SetEnable(true);
+				LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
+				if (mHitParticles)
+				{
+					mHitParticles->SetEnable(true);
+				}
+				mHasCollided = true;
+				return;
 			}
-			mHasCollided = true;
-			return;
 		}
-	}
-	else
-	{
+		else
+		{
+			if (collisionData->collidedWith->GetTag().compare("Player") == 0)
+			{
+				LOG("Collided with player");
+				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+				player->TakeDamage(mDamage);
+				mDamage = 0.0f;
+				if (mHitParticles)
+				{
+					mHitParticles->SetEnable(true);
+				}
+				mHasCollided = true;
+				mGameObject->SetEnabled(false);
+			}
+		}
+
 		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
 		{
+			LOG("Collided with WALL");
 			if (mHitParticles)
 			{
 				mHitParticles->SetEnable(true);
@@ -120,32 +140,5 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			mHasCollided = true;
 			return;
 		}
-		if (collisionData->collidedWith->GetTag().compare("Player") == 0)
-		{
-			LOG("Collided with player")
-				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-			PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
-			player->TakeDamage(mDamage);
-			mDamage = 0.0f;
-			if (mHitParticles)
-			{
-				mHitParticles->SetEnable(true);
-			}
-			mHasCollided = true;
-			mGameObject->SetEnabled(false);
-		}
 	}
-
-}
-
-bool Bullet::Delay(float delay)
-{
-	mTimePassed += App->GetDt();
-
-	if (mTimePassed >= delay)
-	{
-		mTimePassed = 0;
-		return true;
-	}
-	else return false;
 }

@@ -15,6 +15,7 @@
 #define ASSETS_PREFABS_PATH "Assets/Prefabs/"
 #define ASSETS_NAVMESH_PATH "Assets/NavMeshes/"
 #define ASSETS_SCRIPT_PATH "Assets/Scripts/"
+#define ASSETS_STATEMACHINE_PATH "Assets/StateMachines/"
 
 #define INTERNAL_ASSETS_PATH "InternalAssets/"
 #define INTERNAL_ASSETS_SCENES_PATH "InternalAssets/Scenes/"

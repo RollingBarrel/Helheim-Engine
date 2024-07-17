@@ -52,7 +52,7 @@ void Pistol::Enter()
 
 void Pistol::Attack(float time)
 {
-    LOG("Pistol Attack");
+   // LOG("Pistol Attack");
     
     //Audio
     if (GameManager::GetInstance()->GetAudio())
@@ -64,7 +64,7 @@ void Pistol::Attack(float time)
     if (mCurrentAmmo > 0) 
     {
         mCurrentAmmo--;
-        LOG("Bullets: %i", mCurrentAmmo);
+        //LOG("Bullets: %i", mCurrentAmmo);
     }
     
     GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
@@ -83,7 +83,7 @@ void Pistol::Attack(float time)
     {
         for (const Hit& hit : hits)
         {
-            if (hit.mGameObject->GetTag() == "Enemy")
+            if (hit.mGameObject->GetTag().compare("Enemy") == 0)
             {
                 LOG("Enemy %s has been hit at distance: %f", hits.begin()->mGameObject->GetName().c_str(), hits.begin()->mDistance);
 

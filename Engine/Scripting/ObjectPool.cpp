@@ -18,9 +18,9 @@ ObjectPool::ObjectPool(const char* PrefabFileName, unsigned int size, GameObject
 	
 	for (unsigned int i = 1; i < size; ++i)
 	{
-		//GameObject* duplicatedGameObject = App->GetScene()->InstantiatePrefab(PrefabFileName, parent);
+		GameObject* duplicatedGameObject = App->GetScene()->InstantiatePrefab(PrefabFileName, parent);
 
-		GameObject* duplicatedGameObject = App->GetScene()->DuplicateGameObject(prefab);
+		//GameObject* duplicatedGameObject = App->GetScene()->DuplicateGameObject(prefab);
 		duplicatedGameObject->SetEnabled(false);
 		mObjects.push_back(duplicatedGameObject);
 	}
