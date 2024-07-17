@@ -196,13 +196,6 @@ void MeshRendererComponent::CreateUiqueMaterial()
 	mUniqueMaterial = true;
 }
 
-void MeshRendererComponent::SetBaseColorFactor(const float4& baseColorFactor)
-{
-	assert(mMaterial);
-	mMaterial->SetBaseColorFactor(baseColorFactor);
-	App->GetOpenGL()->BatchEditMaterial(*this);
-}
-
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
@@ -328,3 +321,16 @@ void MeshRendererComponent::UpdatePalette()
 
 }
 
+void MeshRendererComponent::SetEnableBaseColorTexture(bool baseColorTex)
+{
+	assert(mMaterial);
+	mMaterial->SetEnableBaseColorTexture(baseColorTex);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}
+
+void MeshRendererComponent::SetBaseColorFactor(const float4& baseColor)
+{ 
+	assert(mMaterial);
+	mMaterial->SetBaseColorFactor(baseColor);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}

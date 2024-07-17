@@ -51,6 +51,9 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
+    SEPARATOR("Player Mesh");
+    MEMBER(MemberType::GAMEOBJECT, mPlayerMeshGO);
+
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxShield);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
@@ -215,13 +218,29 @@ void PlayerController::Start()
     {
         mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
     }
+    //Mesh
+    if (mPlayerMeshGO)
+    {
+        mPlayerMesh = (MeshRendererComponent*)mPlayerMeshGO->GetComponent(ComponentType::MESHRENDERER);
+        const ResourceMaterial* playerMaterial = mPlayerMesh->GetResourceMaterial();
+        mPlayerOgColor = playerMaterial->GetBaseColorFactor();
+    }
 
     mUpperState->Enter();
     mLowerState->Enter();
+    ActivateHitEffect();
 }
 
 void PlayerController::Update()
 {
+    //static int test = 0;
+    //if (Delay(1.0f)) 
+    //{
+    //    if (test == 0) test = 255;
+    //    else if (test == 255) test = 0;
+    //    mPlayerMesh->SetBaseColorFactor(float4(test, 0.0f, 0.0f, 1.0f));
+    //}
+
     if (GameManager::GetInstance()->IsPaused()) return;
 
     // Check input
@@ -273,6 +292,7 @@ void PlayerController::StateMachine()
 
 void PlayerController::CheckInput() 
 {
+
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
@@ -722,6 +742,16 @@ void PlayerController::TakeDamage(float damage)
     //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
     //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
     //}
+}
+void PlayerController::ActivateHitEffect()
+{
+    if (mPlayerMesh)
+    {
+       
+        mPlayerMesh->SetEnableBaseColorTexture(false);
+        mPlayerMesh->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+    }
+
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)

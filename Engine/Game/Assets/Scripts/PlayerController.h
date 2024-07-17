@@ -2,13 +2,16 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
+#include "float4.h"
 
+class Component;
 class AnimationComponent;
 class AnimationStateMachine;
 class AudioSourceComponent;
 struct CollisionData;
 class BoxColliderComponent;
-class Component;
+class MeshRendererComponent;
+
 
 class State;
 class DashState;
@@ -115,6 +118,10 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+
+    //Hit Effect
+    void ActivateHitEffect();
+    
     // States
     DashState* GetDashState() { return mDashState; }
     IdleState* GetIdleState() { return mIdleState; }
@@ -228,5 +235,9 @@ private:
     std::vector<Component*> mMeshComponents;
     std::vector<unsigned int> mMaterialIds;
     bool Delay(float delay);
- 
+
+    //Material
+    GameObject* mPlayerMeshGO;
+    MeshRendererComponent* mPlayerMesh;
+    float4 mPlayerOgColor;
 };
