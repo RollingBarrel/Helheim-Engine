@@ -605,8 +605,8 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	InitBloomTextures(width, height);
 	glBindTexture(GL_TEXTURE_2D, mSSAO);
 	//VOLVER A PONER EL RED
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
 	glUseProgram(mSSAOPassProgramId);
