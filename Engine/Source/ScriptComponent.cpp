@@ -57,19 +57,21 @@ ScriptComponent::~ScriptComponent()
 		mResourceScript = nullptr;
 	}
 
-	const std::vector<Member*>& members = mScript->GetMembers();
-
-	for (unsigned int i = 0; i < members.size(); ++i)
+	if (mScript)
 	{
-		if (members[i]->mType == MemberType::GAMEOBJECT)
+		const std::vector<Member*>& members = mScript->GetMembers();
+
+		for (unsigned int i = 0; i < members.size(); ++i)
 		{
-			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)mScript) + members[i]->mOffset));
-			App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
+			if (members[i]->mType == MemberType::GAMEOBJECT)
+			{
+				GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)mScript) + members[i]->mOffset));
+				App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
+			}
 		}
+		delete mScript;
 	}
 
-
-	delete mScript;
 }
 
 void ScriptComponent::Update()

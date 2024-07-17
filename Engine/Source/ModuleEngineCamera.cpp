@@ -103,9 +103,10 @@ bool ModuleEngineCamera::AddEnabledCamera(CameraComponent* camera)
 bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 {
 	bool removed = ModuleCamera::RemoveEnabledCamera(camera);
-	if (mIsEditorCameraActive || mCurrentCamera == nullptr)
+	if (mIsEditorCameraActive || !mCurrentCamera )
 	{
 		mCurrentCamera = mEditorCamera;
+		mIsEditorCameraActive = true;
 		App->GetOpenGL()->SetOpenGlCameraUniforms();
 	}
 

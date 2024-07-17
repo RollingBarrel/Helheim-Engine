@@ -143,10 +143,6 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 		{
 			if (ImGui::TreeNodeEx(nameWithIcon.c_str(), flags))
 			{
-				if (selected)
-				{
-					ImGui::PopStyleColor(3);
-				}
 				if (ImGui::IsItemClicked())
 				{
 					mSelectedAsset = current.assets[i];
@@ -174,6 +170,10 @@ const void ProjectPanel::DrawAssets(const PathNode& current)
 				}
 				ImGui::TreePop();
 			}
+		}
+		if (selected)
+		{
+			ImGui::PopStyleColor(3);
 		}
 	}
 }

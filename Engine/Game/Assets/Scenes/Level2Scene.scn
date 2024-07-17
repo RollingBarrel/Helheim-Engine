@@ -55,11 +55,6 @@
                                 "VariableData": 847967698
                             },
                             {
-                                "VariableName": "mEnemyPool",
-                                "MemberType": 3,
-                                "VariableData": 11401077
-                            },
-                            {
                                 "VariableName": "mPoolManager",
                                 "MemberType": 3,
                                 "VariableData": 2015268249
@@ -6973,8 +6968,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemyPool",
-                        "ScriptVariables": []
+                        "ScriptName": "EnemyPool"
                     }
                 ]
             },
@@ -9092,10 +9086,6 @@
                         "ScriptName": "BattleArea",
                         "ScriptVariables": [
                             {
-                                "VariableName": "Spawner",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
                                 "VariableData": 178605770
@@ -9124,6 +9114,20 @@
                                 "VariableName": "mTotalNumEnemies",
                                 "MemberType": 0,
                                 "VariableData": 4
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -9162,10 +9166,6 @@
                         "ScriptName": "BattleArea",
                         "ScriptVariables": [
                             {
-                                "VariableName": "Spawner",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
                                 "VariableData": 866209024
@@ -9194,6 +9194,20 @@
                                 "VariableName": "mTotalNumEnemies",
                                 "MemberType": 0,
                                 "VariableData": 10
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -9248,10 +9262,6 @@
                         "ScriptName": "BattleArea",
                         "ScriptVariables": [
                             {
-                                "VariableName": "Spawner",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
                                 "VariableData": 61942359
@@ -9280,6 +9290,20 @@
                                 "VariableName": "mTotalNumEnemies",
                                 "MemberType": 0,
                                 "VariableData": 10
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -9334,10 +9358,6 @@
                         "ScriptName": "BattleArea",
                         "ScriptVariables": [
                             {
-                                "VariableName": "Spawner",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
                                 "VariableData": 702066664
@@ -9366,6 +9386,20 @@
                                 "VariableName": "mTotalNumEnemies",
                                 "MemberType": 0,
                                 "VariableData": 20
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -9445,23 +9479,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9495,23 +9513,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9545,23 +9547,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9595,23 +9581,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9645,23 +9615,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9695,23 +9649,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9745,23 +9683,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9795,23 +9717,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9845,23 +9751,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 2.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9899,7 +9789,7 @@
                             1920.0,
                             1080.0
                         ],
-                        "ScreenSpace": true
+                        "Render": 1
                     },
                     {
                         "ComponentType": 3,
@@ -10122,6 +10012,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10198,6 +10090,8 @@
                             1.0
                         ],
                         "Alpha": 0.25699999928474429,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10338,6 +10232,8 @@
                             0.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10414,6 +10310,8 @@
                             0.686274528503418
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10554,6 +10452,8 @@
                             0.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10630,6 +10530,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10706,6 +10608,8 @@
                             0.0
                         ],
                         "Alpha": 0.7570000290870667,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10782,6 +10686,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10932,6 +10838,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11082,6 +10990,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11158,6 +11068,8 @@
                             0.0
                         ],
                         "Alpha": 0.7570000290870667,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11234,6 +11146,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11310,6 +11224,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11386,6 +11302,8 @@
                             0.0
                         ],
                         "Alpha": 0.75,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11462,6 +11380,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11602,6 +11522,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11678,6 +11600,8 @@
                             1.0
                         ],
                         "Alpha": 0.25,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11810,6 +11734,8 @@
                             0.563725471496582
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11886,6 +11812,8 @@
                             0.1921568661928177
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -11962,6 +11890,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12112,6 +12042,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12266,6 +12198,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12420,6 +12354,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12574,6 +12510,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12650,6 +12588,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12726,6 +12666,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12950,6 +12892,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -13174,6 +13118,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -13398,6 +13344,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -13622,6 +13570,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -13846,6 +13796,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14070,6 +14022,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14294,6 +14248,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14518,6 +14474,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14594,6 +14552,8 @@
                             0.41420724987983706
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14674,6 +14634,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14754,6 +14716,8 @@
                             0.39475205540657046
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14834,6 +14798,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -14914,6 +14880,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15068,6 +15036,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15248,6 +15218,8 @@
                             0.5784313678741455
                         ],
                         "Alpha": 0.3009999990463257,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15324,6 +15296,8 @@
                             0.45098039507865908
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15478,6 +15452,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15628,6 +15604,8 @@
                             0.45098039507865908
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15782,6 +15760,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -15932,6 +15912,8 @@
                             0.45098039507865908
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -16086,6 +16068,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -16169,7 +16153,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 1659583099,
+        "NavMeshResource": 594603088,
         "SkyBoxResource": 458087203
     }
 }

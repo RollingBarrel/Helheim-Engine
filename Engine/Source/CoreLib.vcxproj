@@ -791,6 +791,9 @@
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
+    <None Include="..\Game\Assets\Shaders\GaussianBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\CubeMap_VertexShader.glsl" />
     <None Include="..\Game\Assets\Shaders\DecalPass_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\DecalPass_Vertex.glsl" />
@@ -798,6 +801,8 @@
     <None Include="..\Game\Assets\Shaders\HighLight_Fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\HighLight_Vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl" />
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl" />
@@ -813,6 +818,8 @@
     <None Include="..\Game\Assets\Shaders\skybox.vs" />
     <None Include="..\Game\Assets\Shaders\SpecEnvBRDFFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\SpecPreFilteredEnvFragment.glsl" />
+    <None Include="..\Game\Assets\Shaders\SsaoBlur.glsl" />
+    <None Include="..\Game\Assets\Shaders\ssao_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\TileLightCulling.comp" />
     <None Include="..\Game\Assets\Shaders\trail_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\trail_vertex.glsl" />

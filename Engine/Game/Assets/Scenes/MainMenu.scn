@@ -230,6 +230,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -366,6 +368,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -520,6 +524,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -674,6 +680,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -828,6 +836,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -1102,6 +1112,8 @@
                             1.0
                         ],
                         "Alpha": 0.8040000200271606,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -1326,6 +1338,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -1550,6 +1564,8 @@
                             1.0
                         ],
                         "Alpha": 0.20100000500679017,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -1774,6 +1790,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -1998,6 +2016,8 @@
                             1.0
                         ],
                         "Alpha": 0.20100000500679017,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -2222,6 +2242,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -2446,6 +2468,8 @@
                             1.0
                         ],
                         "Alpha": 0.20100000500679017,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -2670,6 +2694,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -2894,6 +2920,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -3266,6 +3294,8 @@
                             1.0
                         ],
                         "Alpha": 0.14000000059604646,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -3420,6 +3450,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -3500,6 +3532,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -3576,6 +3610,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -3656,6 +3692,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,

@@ -23,8 +23,9 @@ class EnemyRobotMelee : public Enemy
 public:
 	EnemyRobotMelee(GameObject* owner);
 	~EnemyRobotMelee() {}
-	void Update() override;
+
 	void Start() override;
+	void Update() override;
 
 private:
 	void Idle();
@@ -33,8 +34,8 @@ private:
 	bool IsMoving();
 
 	void MeleeAttack();
-	void  Death() override;
-	void Reset() override;
+	void Death() override;
+	void Init() override;
 	void OnCollisionEnter(CollisionData* collisionData);
 
 	void PlayStepAudio();

@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "MathGeoLibFwd.h"
-
+#include "vector"
 
 class DDRenderInterfaceCoreGL;
 class Camera;
@@ -28,6 +28,7 @@ public:
     void SetRenderGrid(bool a) { mDrawGrid = a; }
     void DrawCube(const float center[3], const float width, const float heigh, const float depth, const float3& color);
     void DrawCube(const OBB& obb, const float3& color);
+    void DrawCube(const std::vector<float3>& points, const float3& color);
     void DrawSphere(const float center[3], const float color[3], const float radius);
     void DrawCone(const float pos[3], const float dir[3], const float color[3], const float bRadius);
     void DrawLine(const float3& position, const float3& direction, const float3& color);

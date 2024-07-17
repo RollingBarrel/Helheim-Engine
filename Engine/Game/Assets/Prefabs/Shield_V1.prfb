@@ -1,0 +1,53 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 641206440,
+                "ParentUID": 1389697526,
+                "Name": "Shield_V1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 20117050,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 6,
+                        "Rows": 6,
+                        "Speed": 30,
+                        "IsPlaying": true
+                    }
+                ]
+            }
+        ]
+    }
+}

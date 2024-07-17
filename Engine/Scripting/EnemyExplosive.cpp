@@ -52,6 +52,12 @@ void EnemyExplosive::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
     }
+
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
+
 }
 
 void EnemyExplosive::Update()
@@ -94,16 +100,14 @@ void EnemyExplosive::Chase()
 {
         mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
         mAnimationComponent->SendTrigger("tMovement", 0.2f);
-        if (mAiAgentComponent)
-        {
+
            
-            float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
-            direction.y = 0;
-            direction.Normalize();
-            float angle = std::atan2(direction.x, direction.z);
-            mGameObject->SetWorldRotation(float3(0, angle, 0));
-            mAiAgentComponent->MoveAgent(mSpeed);
-        }
+        float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
+        direction.y = 0;
+        direction.Normalize();
+        float angle = std::atan2(direction.x, direction.z);
+        mGameObject->SetWorldRotation(float3(0, angle, 0));
+        
         
         if (IsPlayerInRange(mChargingDistance))
         {
@@ -163,6 +167,10 @@ void EnemyExplosive::Die()
     if (Delay(0.5f))
     {
         Death();
+    }
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->PauseCrowdNavigation();
     }
  
 }

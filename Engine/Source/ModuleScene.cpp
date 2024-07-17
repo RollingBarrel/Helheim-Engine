@@ -34,14 +34,7 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
-	if (mRoot)
-	{
-		delete mRoot;
-	}
-	if (mBackgroundScene)
-	{
-		delete mBackgroundScene;
-	}
+	
 }
 
 #pragma region Basic Functions
@@ -97,6 +90,19 @@ update_status ModuleScene::PostUpdate(float dt)
 		LoadPrefab(mPrefabPath);
 	}
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleScene::CleanUp()
+{
+	if (mRoot)
+	{
+		delete mRoot;
+	}
+	if (mBackgroundScene)
+	{
+		delete mBackgroundScene;
+	}
+	return true;
 }
 
 #pragma endregion
@@ -189,6 +195,8 @@ void ModuleScene::Save(const char* sceneName) const
 	}
 	scene.AddInt("NavMeshResource", App->GetNavigation()->GetResourceId());
 	scene.AddInt("SkyBoxResource", App->GetOpenGL()->GetSkyboxID());
+	scene.AddFloat("BloomIntensity", App->GetOpenGL()->GetBloomIntensity());
+	scene.AddFloats("DirectionalLight", reinterpret_cast<const float*>(&App->GetOpenGL()->GetDirectionalLight()), sizeof(DirectionalLight) / sizeof(float));
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -266,6 +274,16 @@ void ModuleScene::Load(const char* sceneName)
 			App->GetOpenGL()->SetSkybox(scene.GetInt("SkyBoxResource"));
 		else
 			App->GetOpenGL()->SetSkybox(0);
+
+		if (scene.HasMember("BloomIntensity"))
+			App->GetOpenGL()->SetBloomIntensity(scene.GetFloat("BloomIntensity"));
+		else
+			App->GetOpenGL()->SetBloomIntensity(0.5f);
+
+		float directionalLight[]{ 0.0f, -1.0f, -1.0f, 0.0f, 1.f, 1.f, 1.f, 0.05f };
+		if (scene.HasMember("DirectionalLight"))
+			scene.GetFloats("DirectionalLight", directionalLight);
+		App->GetOpenGL()->SetDirectionalLight(*reinterpret_cast<DirectionalLight*>(directionalLight));
 
 		App->GetScriptManager()->AwakeScripts();
 		

@@ -29,7 +29,7 @@
 
 #include "SDL.h"
 #include "glew.h"
-
+#include <random>
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -74,7 +74,8 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_LOW: tmp_severity = "low"; break;
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
-	//LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+	if(severity == GL_DEBUG_SEVERITY_HIGH || severity == GL_DEBUG_SEVERITY_MEDIUM)
+		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -82,10 +83,10 @@ void ModuleOpenGL::BindSceneFramebuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 }
 
-void ModuleOpenGL::BindGFramebuffer()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
-}
+//void ModuleOpenGL::BindGFramebuffer()
+//{
+//	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
+//}
 
 void ModuleOpenGL::UnbindFramebuffer()
 {
@@ -126,14 +127,21 @@ bool ModuleOpenGL::Init()
 	//Initialize scene framebuffer
 	glGenFramebuffers(1, &sFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
-	glGenTextures(1, &depthStencil);
-	glBindTexture(GL_TEXTURE_2D, depthStencil);
+	glGenTextures(1, &mGDepth);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthStencil, 0);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
+	//glGenTextures(1, &depthStencil);
+	//glBindTexture(GL_TEXTURE_2D, depthStencil);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthStencil, 0);
 	glGenTextures(1, &sceneTexture);
 	glBindTexture(GL_TEXTURE_2D, sceneTexture);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, sceneTexture, 0);
@@ -153,14 +161,22 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGNormals);
 	glGenTextures(1, &mGColDepth);
 	glGenTextures(1, &mGEmissive);
-	glGenTextures(1, &mGDepth);
+	//glGenTextures(1, &mGDepth);
 	glGenTextures(1, &mGPosition);
+	glGenTextures(1, &mSSAO);
 
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+
+	//glBindTexture(GL_TEXTURE_2D, mGDepth);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
+	//glBindTexture(GL_TEXTURE_2D, mGDepth);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RED, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -181,6 +197,10 @@ bool ModuleOpenGL::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
@@ -188,9 +208,9 @@ bool ModuleOpenGL::Init()
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPosition, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, sceneTexture, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, mGSSAO, 0);
 	
-	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
+	const GLenum att2[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 , GL_COLOR_ATTACHMENT2 , GL_COLOR_ATTACHMENT3 , GL_COLOR_ATTACHMENT4 };
 	glDrawBuffers(1, att2);
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
@@ -198,6 +218,29 @@ bool ModuleOpenGL::Init()
 		LOG("Error loading the framebuffer !!!");
 		return false;
 	}
+
+	//Blur
+	glGenTextures(mBlurPasses + 1, mBlurTex);
+	for (unsigned int i = 0; i <= mBlurPasses; ++i)
+	{
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
+	glGenFramebuffers(1, &mBlurFBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+	const GLenum att3 = GL_COLOR_ATTACHMENT0;
+	glDrawBuffers(1, &att3);
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	{
+		LOG("Error loading the framebuffer !!!");
+		return false;
+	}
+
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	glGenVertexArrays(1, &mEmptyVAO);
@@ -276,9 +319,31 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "DecalPass_Fragment.glsl";
 	DecalPassProgramId= CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "ssao_fragment.glsl";
+	mSSAOPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 	sourcesPaths[0] = "ui.vs";
 	sourcesPaths[1] = "uiMask.fs";
 	mUIMaskProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "GaussianBlur.glsl";
+	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SsaoBlur.glsl";
+	mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
+	mDownsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "KawaseDualFilterUpBlur.glsl";
+	mUpsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "GameFragment.glsl";
+	mGameProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -297,14 +362,11 @@ bool ModuleOpenGL::Init()
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 
 	//SHADOWS
+	glGenFramebuffers(1, &mShadowsFrameBufferId);
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
+	glDrawBuffers(0, nullptr);
 	for (unsigned int i = 0; i < NUM_SHADOW_MAPS; ++i)
 	{
-		glGenFramebuffers(1, &mShadowsFrameBuffersId[i]);
-		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
-		glDrawBuffers(0, nullptr);
-		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-
-
 		glGenTextures(1, &mShadowMaps[i]);
 		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT32, SHADOW_MAPS_SIZE, SHADOW_MAPS_SIZE, 0, GL_DEPTH_COMPONENT, GL_FLOAT, nullptr);
@@ -316,6 +378,7 @@ bool ModuleOpenGL::Init()
 		glMakeTextureHandleResidentARB(mShadowMapsHandle[i]);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
 	mShadowsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 4, sizeof(Shadow) * NUM_SHADOW_MAPS, nullptr);
 
@@ -331,9 +394,63 @@ bool ModuleOpenGL::Init()
 	glUniform2ui(4, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 
+
+	//SSAO
+	const unsigned int randomTangentRows = 20;
+	const unsigned int randomTangentCols = 20;
+	float3 randomTangents[randomTangentRows][randomTangentCols];
+
+	//Generating random tangents
+	std::uniform_real_distribution<float> randoms(0.0f, 1.0f);
+	std::default_random_engine generator;
+
+	for (unsigned int i = 0; i < randomTangentRows; ++i)
+	{
+		for (unsigned int j = 0; j < randomTangentCols; ++j)
+		{
+			float3 dir;
+			dir.x = randoms(generator) * 2.0f - 1.0f;
+			dir.y = randoms(generator) * 2.0f - 1.0f;
+			dir.z = 0.0f;
+			dir.Normalize();
+			randomTangents[i][j] = dir;
+		}
+	}
+	const unsigned int kernelSize = 24;
+	float3 kernel[kernelSize];
+	//Generating kernels
+
+	for (unsigned int i = 0; i < kernelSize; ++i)
+	{
+
+		float3 dir;
+		dir.x = randoms(generator) * 2.0f - 1.0f;
+		dir.y = randoms(generator) * 2.0f - 1.0f;
+		dir.z = randoms(generator);
+		dir.Normalize();
+		dir *= randoms(generator); // random size
+		float scale = static_cast<float>(i) / static_cast<float>(kernelSize);
+		scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
+		dir *= scale;
+		kernel[i] = dir;
+	}
+
+	glUseProgram(mSSAOPassProgramId);
+	GLint randomTangentsLocation = glGetUniformLocation(mSSAOPassProgramId, "randomTangents");
+	GLint kernelSamplesLocation = glGetUniformLocation(mSSAOPassProgramId, "kernelSamples");
+	glUniform3fv(randomTangentsLocation, randomTangentRows*randomTangentCols, randomTangents[0][0].ptr());
+	glUniform3fv(kernelSamplesLocation, kernelSize, kernel[0].ptr());
+	glUniform1f(1, mAoRange);
+	glUniform1f(2, mAoBias);
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "activeAO"), mAoActive);
+	glUseProgram(0);
+
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
 	glUseProgram(0);
+
+	SetBloomIntensity(0.5f);
 
 	return true;
 }
@@ -341,30 +458,11 @@ bool ModuleOpenGL::Init()
 update_status ModuleOpenGL::PreUpdate(float dt)
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
-	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(6, colBuff);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	GLenum colBuff2[] = { GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(1, colBuff2);
+	//La depth la cleareja el sFBO perque comparteixen textura
+	glClear(GL_COLOR_BUFFER_BIT);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
-	
-	//Draw the skybox
-	if (mCurrSkyBox != nullptr)
-	{
-		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
-		glUseProgram(mSkyBoxProgramId);
-		glBindVertexArray(mSkyVao);
-		glDepthMask(GL_FALSE);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthMask(GL_TRUE);
-		glBindVertexArray(0);
-		glUseProgram(0);
-		glPopDebugGroup();
-	}
 
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
@@ -410,7 +508,7 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteProgram(mHighLightProgramId);
 	glDeleteProgram(DecalPassProgramId);
 	glDeleteTextures(1, &sceneTexture);
-	glDeleteTextures(1, &depthStencil);
+	//glDeleteTextures(1, &depthStencil);
 
 	//Destroy window
 	SDL_GL_DeleteContext(context);
@@ -501,11 +599,19 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	App->GetCamera()->SetAspectRatio((float)width / (float)height);
 	SetOpenGlCameraUniforms();
 	glBindTexture(GL_TEXTURE_2D, sceneTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, depthStencil);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
+	//glBindTexture(GL_TEXTURE_2D, depthStencil);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	InitBloomTextures(width, height);
+	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	//VOLVER A PONER EL RED
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
+	glUseProgram(mSSAOPassProgramId);
+	glUniform2ui(glGetUniformLocation(mSSAOPassProgramId, "screenSize"), width, height);
+	glUseProgram(0);
 }
 
 void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int screenHeight)
@@ -515,11 +621,43 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glBindBuffer(GL_TEXTURE_BUFFER, mPLightListImgBuffer);
 	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mPLightListImgBuffer);
-	//glUseProgram(mTileLightCullingProgramId);
-	//glUniform2ui(1, screenWidth, screenHeight);
+	glUseProgram(mTileLightCullingProgramId);
+	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform2ui(3, (screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
+}
+
+void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
+{
+	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGEmissive);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGNormals);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
+{
+	float w = width;
+	float h = height;
+	for (int i = 0; i <= mBlurPasses; ++i)
+	{
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+		w /= 2;
+		h /= 2;
+	}
 }
 
 void ModuleOpenGL::SetOpenGlCameraUniforms() const
@@ -551,25 +689,6 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		}
 		
 	}
-}
-
-void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
-{
-	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGEmissive);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGNormals);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
-	//glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ModuleOpenGL::InitSkybox()
@@ -745,6 +864,59 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
+{
+	if (passes > mBlurPasses || passes == 0)
+		passes = mBlurPasses;
+
+	float w = mSceneWidth;
+	float h = mSceneHeight;
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(mEmptyVAO);
+	glBindTexture(GL_TEXTURE_2D, texId);
+	glUseProgram(mDownsampleProgramId);
+	for (unsigned int i = 0; i < passes; ++i)
+	{
+		w /= 2;
+		h /= 2;
+		glViewport(0, 0, w, h);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i+1], 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
+	}
+	glUseProgram(mUpsampleProgramId);
+	for (int i = passes - 1; i >= 0; --i)
+	{
+		w *= 2;
+		h *= 2;
+		glViewport(0, 0, w, h);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		if(i == 1 && modifyTex)
+			glBindTexture(GL_TEXTURE_2D, texId);
+	}
+	glBindVertexArray(0);
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	glViewport(0 , 0, mSceneWidth, mSceneHeight);
+	glPopDebugGroup();
+	return mBlurTex[0];
+}
+
+void ModuleOpenGL::SetBloomIntensity(float intensity)
+{
+	if (intensity < 0.0001f)
+		intensity = 0.0f;
+	else if (intensity > 1.0f)
+		intensity = 1.0f;
+	mBloomIntensity = intensity;
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1f(glGetUniformLocation(mPbrLightingPassProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(0);
+}
+
 void ModuleOpenGL::InitDecals()
 {
 	float decalsVertices[] = {
@@ -815,6 +987,12 @@ void ModuleOpenGL::InitDecals()
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
 	glBindVertexArray(0);
+}
+
+void ModuleOpenGL::SetDirectionalLight(const DirectionalLight& dirLight)
+{
+	memcpy(&mDirLight, &dirLight, sizeof(DirectionalLight));
+	mDLightUniBuffer->UpdateData(&mDirLight, sizeof(DirectionalLight), 0);
 }
 
 //Es pot optimitzar el emplace back pasantli els parameters de PointLight ??
@@ -907,9 +1085,9 @@ void ModuleOpenGL::Draw()
 	
 	//Draw Shadowmaps
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate Shadow Maps");
+	glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBufferId);
 	for (unsigned int i = 0; i < chosenLights.size(); ++i)
 	{
-		glBindFramebuffer(GL_FRAMEBUFFER, mShadowsFrameBuffersId[i]);
 		glBindTexture(GL_TEXTURE_2D, mShadowMaps[i]);
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, mShadowMaps[i], 0);
 	
@@ -939,14 +1117,21 @@ void ModuleOpenGL::Draw()
 	//GaometryPass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GeometryPass");
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
-	GLenum colBuff[6] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4, GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(5, colBuff);
 	glDisable(GL_BLEND);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-	glStencilMask(0xFF);
+	//glEnable(GL_STENCIL_TEST);
+	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	//glStencilMask(0xFF);
 	mBatchManager.Draw(mPbrGeoPassProgramId, App->GetCamera()->GetCurrentCamera()->GetFrustum());
+	glPopDebugGroup();
+
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
+	//Light lists
+	glUseProgram(mTileLightCullingProgramId);
+	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY, 1);
 	glPopDebugGroup();
 
 	//Decal Pass
@@ -958,7 +1143,7 @@ void ModuleOpenGL::Draw()
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
-	glDisable(GL_STENCIL_TEST);
+	//glDisable(GL_STENCIL_TEST);
 	glDepthMask(0x00);
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
@@ -1079,30 +1264,89 @@ void ModuleOpenGL::Draw()
 		glDrawArrays(GL_TRIANGLES, 0, 36);
 	}
 	glDepthMask(0xFF);
-	glEnable(GL_STENCIL_TEST);
+	//glEnable(GL_STENCIL_TEST);
 	glDisable(GL_BLEND);
 
-	glBindVertexArray(0);
-	glUseProgram(0);
 	glPopDebugGroup();
 
-	const GLenum att2[] = { GL_COLOR_ATTACHMENT5 };
-	glDrawBuffers(1, att2);
+	const GLenum att2[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
+	glDrawBuffers(5, att2);
 
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
-	//Light lists
-	glUseProgram(mTileLightCullingProgramId);
-	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glDispatchCompute((mSceneWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (mSceneHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY, 1);
-	glUseProgram(0);
-	glPopDebugGroup();
+	//SSAO Pass
+	if (mAoActive)
+	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SSAO Pass");
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
+		//glDisable(GL_STENCIL_TEST);
+		glDepthMask(0x00);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mGPosition);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, mGNormals);
+		glBindVertexArray(mEmptyVAO);
+		glUseProgram(mSSAOPassProgramId);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDepthMask(0xFF);
+		//glEnable(GL_STENCIL_TEST);
 
+		//dual filter blur
+		BlurTexture(mSSAO, true);
+		
+		//Gausian blur
+		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glUseProgram(mGaussianBlurProgramId);
+		//glBindVertexArray(mEmptyVAO);
+		//bool horizontal = true;
+		//unsigned int drawTex = mSSAO;
+		//unsigned int sampleTex = mBlurTex[0];
+		////tine que ser impar
+		//const unsigned int passes = 3;
+		//for (int i = 0; i < (passes*2+1); ++i)
+		//{
+		//	glUniform1ui(0, horizontal);
+		//	if ((i&1) == 0)
+		//	{
+		//		unsigned int tmp = drawTex;
+		//		drawTex = sampleTex;
+		//		sampleTex = tmp;
+		//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+		//		glBindTexture(GL_TEXTURE_2D, sampleTex);
+		//	}
+		//	glDrawArrays(GL_TRIANGLES, 0, 3);
+		//	horizontal = !horizontal;
+		//}
+
+		//simple ssao blur
+		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glUseProgram(mSsaoBlurProgramId);
+		//glBindVertexArray(mEmptyVAO);
+		////for (int i = 0; i < 2; ++i)
+		////{
+		////	if ((i&1) == 0)
+		////	{
+		//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
+		//		glBindTexture(GL_TEXTURE_2D, mBlurTex[0]);
+		//	//}
+		//	glDrawArrays(GL_TRIANGLES, 0, 3);
+		////}
+
+		glPopDebugGroup();
+	}
+
+	//Bloom
+	unsigned int blurredTex = BlurTexture(mGEmissive);
+
+	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
-	glStencilFunc(GL_EQUAL, 1, 0xFF);
-	glStencilMask(0x00);
+	//glStencilFunc(GL_EQUAL, 1, 0xFF);
+	//glStencilMask(0x00);
 	glDisable(GL_DEPTH_TEST);
-	glDepthMask(0x00);
+	glDepthMask(GL_FALSE);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glActiveTexture(GL_TEXTURE1);
@@ -1121,19 +1365,39 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, (mCurrSkyBox) ? mCurrSkyBox->GetEnvBRDFTexId() : 0);
 	glActiveTexture(GL_TEXTURE8);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glActiveTexture(GL_TEXTURE9);
+	glBindTexture(GL_TEXTURE_2D, blurredTex);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, mSSAO);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mPbrLightingPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
 
-	glStencilMask(0xFF);
-	glDisable(GL_STENCIL_TEST);
+	//glStencilMask(0xFF);
+	//glDisable(GL_STENCIL_TEST);
 	glEnable(GL_DEPTH_TEST);
-	glDepthMask(0xFF);
+	glDepthMask(GL_TRUE);
 	glPopDebugGroup();
 
-	//Particles
+	//Draw the skybox
+	if (mCurrSkyBox != nullptr)
+	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
+		glDepthFunc(GL_LEQUAL);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
+		glUseProgram(mSkyBoxProgramId);
+		glBindVertexArray(mSkyVao);
+		glDepthMask(GL_FALSE);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LESS);
+		glPopDebugGroup();
+	}
+	
+	////Particles
 	glActiveTexture(GL_TEXTURE0);
 	for (size_t i = 0; i < mParticleSystems.size(); ++i)
 	{
@@ -1143,6 +1407,8 @@ void ModuleOpenGL::Draw()
 	{
 		mTrails[i]->Draw();
 	}
+	
+
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight
@@ -1180,7 +1446,6 @@ void ModuleOpenGL::Draw()
 	//glEnable(GL_DEPTH_TEST);
 
 	mBatchManager.EndFrameDraw();
-	glActiveTexture(GL_TEXTURE0);
 	glUseProgram(0);
 	glBindVertexArray(0);
 
