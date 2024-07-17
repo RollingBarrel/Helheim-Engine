@@ -9,6 +9,9 @@
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+
+#include "Algorithm/Random/LCG.h"
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
@@ -49,7 +52,15 @@ MeshRendererComponent::~MeshRendererComponent()
 	}
 	if (mMaterial)
 	{
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		if (mUniqueMaterial)
+		{
+			delete mMaterial;
+		}
+		else 
+		{
+			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		}
+
 		mMaterial = nullptr;
 	}
 
@@ -97,7 +108,10 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 			{
 				App->GetOpenGL()->BatchRemoveMesh(*this);
 			}
-			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+			if (mUniqueMaterial)
+				delete mMaterial;
+			else
+				App->GetResource()->ReleaseResource(mMaterial->GetUID());
 			mMaterial = nullptr;
 		}
 
@@ -166,6 +180,27 @@ void MeshRendererComponent::Disable()
 {
 	if (mMaterial && mMesh)
 		App->GetOpenGL()->BatchRemoveMesh(*this);
+}
+
+void MeshRendererComponent::CreateUiqueMaterial()
+{
+	assert(mMaterial && mMesh);
+	App->GetOpenGL()->BatchRemoveMesh(*this);
+	ResourceMaterial* rMat = new ResourceMaterial(LCG().Int(), nullptr,
+		mMaterial->GetBaseColorFactor().ptr(), mMaterial->GetMetallicFactor(), mMaterial->GetRoughnessFactor(), mMaterial->GetEmissiveFactor().ptr(),
+		mMaterial->GetBaseColorTexture()->GetUID(), mMaterial->GetMetallicRoughnessTexture()->GetUID(), mMaterial->GetNormalTexture()->GetUID(), mMaterial->GetEmissiveTexture()->GetUID(),
+		mMaterial->IsBaseColorEnabled(), mMaterial->IsMetallicRoughnessEnabled(), mMaterial->IsNormalMapEnabled(), mMaterial->IsEmissiveEnabled());
+	App->GetResource()->ReleaseResource(mMaterial->GetUID());
+	mMaterial = rMat;
+	App->GetOpenGL()->BatchAddMesh(*this);
+	mUniqueMaterial = true;
+}
+
+void MeshRendererComponent::SetBaseColorFactor(const float4& baseColorFactor)
+{
+	assert(mMaterial);
+	mMaterial->SetBaseColorFactor(baseColorFactor);
+	App->GetOpenGL()->BatchEditMaterial(*this);
 }
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const

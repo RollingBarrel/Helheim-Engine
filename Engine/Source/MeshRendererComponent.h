@@ -42,7 +42,11 @@ public:
 
 	void Enable() override;
 	void Disable() override;
-	
+
+	void CreateUiqueMaterial();
+	bool HasUniqueMaterial() const { return mUniqueMaterial; }
+
+	void SetBaseColorFactor(const float4& baseColorFactor);
 
 private:
 	void Save(JsonObject& obj) const override;
@@ -67,5 +71,5 @@ private:
 	std::vector<float4x4> mPalette;
 	const MeshRendererComponent* mPaletteOwner = nullptr;
 	bool mHasSkinning = false;
-
+	bool mUniqueMaterial = false;
 };

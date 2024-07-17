@@ -33,6 +33,7 @@ void Enemy::Start()
     for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
     {
         mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
+        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
     }
 
 }
@@ -105,11 +106,12 @@ void Enemy::TakeDamage(float damage)
 
     ////Hit Effect
     //mHit = true;
-    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //{
-    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    //}
+    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+    {
+        //reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
+        //reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
+        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetBaseColorFactor(float4(255, 0, 0, 1));
+    }
 }
 
 void Enemy::Death()

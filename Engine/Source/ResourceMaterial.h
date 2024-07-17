@@ -52,6 +52,8 @@ public:
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
     bool IsEmissiveEnabled() const { return mEnableEmissiveTexture; }
 
+    void SetBaseColorFactor(const float4& baseColorFactor){ mBaseColorFactor = baseColorFactor;}
+
     const char* GetName() const { return mName; }
     void SetName(const char* newName);
 
