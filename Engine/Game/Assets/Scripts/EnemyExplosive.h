@@ -1,20 +1,9 @@
 #pragma once
 #include "Enemy.h"
 
-struct CollisionData;
-class BoxColliderComponent;
 class GameObject;
+
 GENERATE_BODY(EnemyExplosive);
-
-enum class ExplosiveEnemyState
-{
-	IDLE,
-	CHASE,
-	CHARGING,
-	EXPLOSION,
-	DEATH
-};
-
 class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
@@ -22,22 +11,13 @@ public:
 	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
 	~EnemyExplosive() {}
 	void Start() override;
-	void Update() override;
-	void Chase() override;
+	void Charge() override;
+	void Attack() override;
 
 private:
-	void Charging();
-	void Explosion();
 	void ChargeWarningArea();
 
-	ExplosiveEnemyState mCurrentState = ExplosiveEnemyState::IDLE;
-
-	float mChargingDistance = 1.0f;
-	float mExplosionDistance = 5.0f;
-	float mExplosionDamage = 10.0f;
+	float mExplosionRadius = 5.0f;
 	GameObject* mExplosionWarningGO = nullptr;
-	float mWarningInitialSize = 0.1f;
-	float mWarningTimer = 0.0f;
-	float mExplosionDelay = 2.0f;
 	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
 };
