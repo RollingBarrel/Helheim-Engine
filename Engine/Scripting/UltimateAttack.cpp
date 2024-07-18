@@ -38,7 +38,8 @@ void UltimateAttack::Start()
 
 void UltimateAttack::Update()
 {
-    
+    if (mLaserGO)
+    {
         if (mLaserGO->GetLocalPosition().Equals(mLaserOrigin->GetLocalPosition()))
         {
             mLaserGO->SetLocalPosition(mLaserEnd->GetLocalPosition());
@@ -47,6 +48,8 @@ void UltimateAttack::Update()
         {
             mLaserGO->SetLocalPosition(mLaserOrigin->GetLocalPosition());
         }
+    }
+    
     
 }
 
