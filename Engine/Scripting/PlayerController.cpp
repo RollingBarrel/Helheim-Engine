@@ -311,9 +311,6 @@ void PlayerController::CheckInput()
                 }
                 mLowerState = mIdleState;
                 break;
-            case StateType::ULTIMATE:
-                mLowerState
-                break;
             case StateType::NONE:
                 break;
             default:

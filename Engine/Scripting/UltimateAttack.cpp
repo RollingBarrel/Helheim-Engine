@@ -9,6 +9,9 @@
 CREATE(UltimateAttack)
 {
     CLASS(owner);
+    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
+    MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
+    MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)
@@ -26,10 +29,25 @@ void UltimateAttack::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&UltimateAttack::OnCollisionEnter, this, std::placeholders::_1)));
     }
+
+    if (mLaserGO)
+    {
+        mLaserGO->SetLocalPosition(mLaserOrigin->GetLocalPosition());
+    }
 }
 
 void UltimateAttack::Update()
 {
+    
+        if (mLaserGO->GetLocalPosition().Equals(mLaserOrigin->GetLocalPosition()))
+        {
+            mLaserGO->SetLocalPosition(mLaserEnd->GetLocalPosition());
+        }
+        else
+        {
+            mLaserGO->SetLocalPosition(mLaserOrigin->GetLocalPosition());
+        }
+    
 }
 
 void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
