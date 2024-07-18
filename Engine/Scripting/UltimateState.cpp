@@ -51,7 +51,6 @@ void UltimateState::Exit()
 	mPlayerController->EnableUltimate(false);
 	mPlayerController->SetMovementSpeed(1.0f/ mPlayerController->GetUltimateSlow());
 	SetCooldown(mPlayerController->GetUltimateCooldown());
-	ResetCooldown();
 }
 
 StateType UltimateState::GetType()

@@ -58,13 +58,6 @@ StateType GrenadeState::HandleInput()
         return StateType::RELOAD;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() &&
-        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN))
-    {
-        mPlayerController->GetGrenadeState()->ResetCooldown();
-        return StateType::ULTIMATE;
-    }
-
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_UP)
     {
