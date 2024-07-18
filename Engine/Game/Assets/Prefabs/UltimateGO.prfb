@@ -101,7 +101,7 @@
                         "Image": 1485191790,
                         "MaxPoints": 1000,
                         "MinDistance": 0.0,
-                        "MaxLifeTime": 0.20000000298023225,
+                        "MaxLifeTime": 0.25,
                         "UVScroll": -7.0,
                         "IsFixedDirection": true,
                         "IsUVScrolling": true,
