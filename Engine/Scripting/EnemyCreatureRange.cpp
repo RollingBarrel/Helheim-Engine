@@ -22,11 +22,10 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::FLOAT, mMaxHealth);
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mRotationSpeed);
+	MEMBER(MemberType::FLOAT, mChargeDuration);
 	MEMBER(MemberType::FLOAT, mAttackDamage);
 	MEMBER(MemberType::FLOAT, mAttackDuration);
-	MEMBER(MemberType::FLOAT, mChargeDuration);
 	MEMBER(MemberType::FLOAT, mAttackRotationSpeed);
-	MEMBER(MemberType::FLOAT, mAttackDamage);
 	MEMBER(MemberType::FLOAT, mAttackCoolDown);
 	SEPARATOR("STATES");
 	MEMBER(MemberType::FLOAT, mAttackDistance);

@@ -418,7 +418,7 @@ void PlayerController::MoveInDirection(float3 direction)
         mPlayerDirection = direction;
     }
 
-    float3 newPos = (mGameObject->GetLocalPosition() + mPlayerDirection * App->GetDt() * mPlayerSpeed);
+    float3 newPos = (mGameObject->GetWorldPosition() + mPlayerDirection * App->GetDt() * mPlayerSpeed);
     mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
 }
 

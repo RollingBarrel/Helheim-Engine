@@ -1,6 +1,9 @@
 #pragma once
 #include "Enemy.h"
 
+class BoxColliderComponent;
+struct CollisionData;
+
 GENERATE_BODY(EnemyCreatureMelee);
 class EnemyCreatureMelee : public Enemy
 {
@@ -10,9 +13,16 @@ public:
 	EnemyCreatureMelee(GameObject* owner) : Enemy(owner) {}
 	~EnemyCreatureMelee() {}
 
-private:
+	void Start() override;
+	void Chase() override;
+	void Charge() override;
 	void Attack() override;
 
-	float mMeeleDamage = 10.0f;
+	void OnCollisionEnter(CollisionData* collisionData);
+
+private:
+
+	BoxColliderComponent* mCollider = nullptr;
+	bool mHit = false;
 };
 

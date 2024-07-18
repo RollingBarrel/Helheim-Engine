@@ -1,10 +1,12 @@
 #include "EnemyCreatureMelee.h"
 #include "Application.h"
-#include "GameObject.h"
+#include "ModuleDetourNavigation.h"
 
+#include "GameObject.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
 #include "AIAGentComponent.h"
+#include "BoxColliderComponent.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -17,33 +19,98 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::FLOAT, mMaxHealth);
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mRotationSpeed);
-	MEMBER(MemberType::INT, mShieldDropRate);
-	MEMBER(MemberType::FLOAT, mMeeleDamage);
-    SEPARATOR("STATES");
-    MEMBER(MemberType::FLOAT, mAttackDistance);
+	MEMBER(MemberType::FLOAT, mAttackDamage);
+	MEMBER(MemberType::FLOAT, mAttackDuration);
+	MEMBER(MemberType::FLOAT, mChargeDuration);
+	MEMBER(MemberType::FLOAT, mAttackCoolDown);
+	SEPARATOR("STATES");
+	MEMBER(MemberType::FLOAT, mAttackDistance);
 
 	END_CREATE;
 }
 
+void EnemyCreatureMelee::Start()
+{
+	Enemy::Start();
+
+	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	if (mCollider)
+	{
+		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyCreatureMelee::OnCollisionEnter, this, std::placeholders::_1)));
+	}
+
+	mDisengageTime = 0.0f;
+}
+
+void EnemyCreatureMelee::Chase()
+{
+	PlayStepAudio();
+	if (IsPlayerInRange(mChaseDistance))
+	{
+		if (mAiAgentComponent)
+		{
+			if (IsPlayerInRange(mAttackDistance))
+			{
+				mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
+				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+				direction.y = 0;
+				direction.Normalize();
+				float angle = std::atan2(direction.x, direction.z);;
+
+				if (mGameObject->GetWorldRotation().y != angle)
+				{
+					mGameObject->SetWorldRotation(float3(0, angle, 0));
+				}
+				mCurrentState = EnemyState::CHARGE;
+			}
+			else
+			{
+				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
+				mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+				direction.y = 0;
+				direction.Normalize();
+				float angle = std::atan2(direction.x, direction.z);;
+
+				if (mGameObject->GetWorldRotation().y != angle)
+				{
+					mGameObject->SetWorldRotation(float3(0, angle, 0));
+				}
+			}	
+		}
+	}
+	else
+	{
+		mCurrentState = EnemyState::IDLE;
+	}
+}
+
+void EnemyCreatureMelee::Charge()
+{
+	//if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
+	Enemy::Charge();
+	mHit = false;
+
+}
+
 void EnemyCreatureMelee::Attack()
 {
-    Enemy::Attack();
+	if (mAttackDurationTimer.Delay(mAttackDuration))
+	{
+		mCurrentState = EnemyState::CHASE;
+	}
+	
+	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
 
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-    {
-        float3 playerPosition = mPlayer->GetWorldPosition();
-        float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
-        float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
-        float3 playerToEnemy = (mGameObject->GetWorldPosition() - playerPosition).Normalized();
-        float dotProduct = playerToEnemy.Dot(enemyFrontNormalized);
+	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
+}
 
-        if (distanceToEnemy < 2.0f && dotProduct < 0)
-        {
-            PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
-            if (playerScript != nullptr)
-            {
-                playerScript->TakeDamage(mMeeleDamage);
-            }
-        }
-    }
+
+void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
+{
+	if (mCurrentState == EnemyState::ATTACK && !mHit && collisionData->collidedWith->GetTag() == "Player")
+	{
+		mHit = true;
+		LOG("hiteao");
+	}
 }
