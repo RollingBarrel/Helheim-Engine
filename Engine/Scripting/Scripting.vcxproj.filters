@@ -175,7 +175,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyExplosiveSpawner.h">
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveSpawner.h">
       <Filter>Enemies</Filter>
     </ClInclude>
   </ItemGroup>

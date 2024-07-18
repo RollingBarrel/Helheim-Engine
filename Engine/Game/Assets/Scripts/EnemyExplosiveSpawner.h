@@ -1,7 +1,10 @@
 #pragma once
-#include <Enemy.h>
+#include "Enemy.h"
 
+struct CollisionData;
+class BoxColliderComponent;
 GENERATE_BODY(EnemyExplosiveSpawner)
+
 class EnemyExplosiveSpawner : public Enemy
 {
 	FRIEND(EnemyExplosiveSpawner);
@@ -9,7 +12,23 @@ class EnemyExplosiveSpawner : public Enemy
 		EnemyExplosiveSpawner(GameObject* owner);
 		~EnemyExplosiveSpawner() {}
 
-	private:
+		void Start() override;
+		void Update() override;
+		void TakeDamage(float damage) override;
+		void Idle();
 
+	private:
+		enum class EnemyState {
+			IDLE,
+			SPAWNING,
+			DEATH
+		};
+
+		void Spawning();
+		void Die();
+		void OnCollisionEnter(CollisionData* collisionData);
+
+		EnemyState mCurrentState = EnemyState::IDLE;
+		BoxColliderComponent* mCollider = nullptr;
 };
 
