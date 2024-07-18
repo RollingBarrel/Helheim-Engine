@@ -77,6 +77,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
 		mOriginalAABB = mAABB;
 		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+
 		if (mMaterial)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);

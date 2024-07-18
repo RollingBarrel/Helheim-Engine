@@ -619,39 +619,40 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 		const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
 		if (bComp.component->HasSkinning())
 		{
-			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
-			//Transform the obb points as we set identity as the model matrix
-			math::OBB obb = bComp.component->GetOriginalAABB().Transform(bComp.component->GetOwner()->GetWorldTransform());
+			memcpy(&mSsboModelMatricesData[idx][16 * bComp.baseInstance], float4x4::identity.ptr(), sizeof(float) * 16);
+			//TODO: when artist fix the animation scales use this commented code instead of the line after the comented code
+			//math::OBB obb = abb.Transform(bComp.component->GetOwner()->GetWorldTransform());
+			math::OBB obb = bComp.component->GetOriginalAABB().Transform(float4x4::FromTRS(bComp.component->GetOwner()->GetWorldPosition(), bComp.component->GetOwner()->GetLocalRotation(), bComp.component->GetPalette()[0].GetScale()));
 			float3 points[8];
 			obb.GetCornerPoints(points);
 			for (int k = 0; k < 8; ++k)
 			{
-				memcpy(&mSsboObbsData[idx][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+				memcpy(&mSsboObbsData[idx][bComp.baseInstance * 32 + k * 4], points[k].ptr(), sizeof(float) * 3);
 			}
 			//obb.GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[idx][i * 32]));
-			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][i * 32], sizeof(float3) * 8);
-			mSkinDispatchIndirectBufferData[idx][currSkin*3] = (bComp.component->GetResourceMesh()->GetNumberVertices() + 63)/64;
-			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 1] = 1;
-			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 2] = 1;
+			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][bComp.baseInstance * 32], sizeof(float) * 32);
+			mSkinDispatchIndirectBufferData[idx][currSkin* 3] = (bComp.component->GetResourceMesh()->GetNumberVertices() + 63)/64;
+			mSkinDispatchIndirectBufferData[idx][currSkin* 3 + 1] = 1;
+			mSkinDispatchIndirectBufferData[idx][currSkin* 3 + 2] = 1;
 			++currSkin;
 		}
 		else
 		{
-			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+			memcpy(&mSsboModelMatricesData[idx][16 * bComp.baseInstance], bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 		}
 	}
 	if (mNumSkins)
 	{
-		glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
-		glUniform1ui(0, mNumSkins);
-		glUniform1ui(1, frustums.size());
-		const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
-		unsigned int sizeIndirectBuffers = ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment);
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, sizeIndirectBuffers * idx, sizeIndirectBuffers);
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
-		glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
-		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		//glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
+		//glUniform1ui(0, mNumSkins);
+		//glUniform1ui(1, frustums.size());
+		//const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
+		//glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
+		//unsigned int sizeIndirectBuffers = ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment);
+		//glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, sizeIndirectBuffers * idx, sizeIndirectBuffers);
+		//glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
+		//glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
+		//glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glBindBuffer(GL_DISPATCH_INDIRECT_BUFFER, mSkinDispatchIndirectBuffer);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{

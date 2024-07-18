@@ -704,6 +704,8 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
         DrawColliders(App->GetScene()->GetRoot());
     }
 
+    EngineApp->GetDebugDraw()->DrawBoundingBoxes(App->GetScene()->GetRoot());
+
     dd::flush();
 }
 
@@ -824,22 +826,43 @@ void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
     std::vector<Component*> meshComponents;
     gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 
-    if (!meshComponents.empty())
+    for (unsigned int i = 0; i < meshComponents.size(); ++i)
     {
-        AABB aabb = gameObject->GetAABB();
-        //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
-        if (aabb.IsFinite())
+        const MeshRendererComponent& comp = *reinterpret_cast<MeshRendererComponent*>(meshComponents[i]);
+        const math::AABB& abb = comp.GetOriginalAABB();
+        math::OBB obb;
+        if (comp.HasSkinning())
         {
-            //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+            //float4x4 world = comp.GetOwner()->GetWorldTransform();
+            //world.Scale(comp.GetPalette()[0].GetScale());
+            //float4x4 matrix = float4x4::FromTRS(comp.GetOwner()->GetWorldPosition(), comp.GetOwner()->GetWorldRotation(), comp.GetPalette()[0].GetScale());
+            obb = abb.Transform(float4x4::FromTRS(comp.GetOwner()->GetWorldPosition(), comp.GetOwner()->GetLocalRotation(), comp.GetPalette()[0].GetScale()));
         }
-
-      ////OBB obb = gameObject->GetOBB();
-      //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
-      //if (obb.IsFinite())
-      //{
-      //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
-      //}
+        else
+        {
+            obb = abb.Transform(comp.GetOwner()->GetWorldTransform());
+        }
+        math::AABB resAbb = obb.MinimalEnclosingAABB();
+        DrawCube(obb, float3(1.0f, 0.0f, 0.0f));
+        DrawCube(resAbb, float3(1.0f, 1.0f, 0.0f));
     }
+
+    //if (!meshComponents.empty())
+    //{
+    //    AABB aabb = gameObject->GetAABB();
+    //    //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
+    //    if (aabb.IsFinite())
+    //    {
+    //        //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+    //    }
+    //
+    //  ////OBB obb = gameObject->GetOBB();
+    //  //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
+    //  //if (obb.IsFinite())
+    //  //{
+    //  //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+    //  //}
+    //}
     
 }
 
