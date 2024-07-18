@@ -32,7 +32,18 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	mAABB = other.mAABB;
 	if (other.mMaterial)
 	{
-		SetMaterial(other.mMaterial->GetUID());
+		if (other.mUniqueMaterial)
+		{
+			mMaterial = new ResourceMaterial(LCG().Int(), nullptr,
+				other.mMaterial->GetBaseColorFactor().ptr(), other.mMaterial->GetMetallicFactor(), other.mMaterial->GetRoughnessFactor(), other.mMaterial->GetEmissiveFactor().ptr(),
+				other.mMaterial->GetBaseColorTexture()->GetUID(), other.mMaterial->GetMetallicRoughnessTexture()->GetUID(), other.mMaterial->GetNormalTexture()->GetUID(), other.mMaterial->GetEmissiveTexture()->GetUID(),
+				other.mMaterial->IsBaseColorEnabled(), other.mMaterial->IsMetallicRoughnessEnabled(), other.mMaterial->IsNormalMapEnabled(), other.mMaterial->IsEmissiveEnabled());
+			mUniqueMaterial = true;
+		}
+		else
+		{
+			SetMaterial(other.mMaterial->GetUID());
+		}
 	}
 	mHasSkinning = other.mHasSkinning;
 	mPaletteOwner = other.mPaletteOwner;
