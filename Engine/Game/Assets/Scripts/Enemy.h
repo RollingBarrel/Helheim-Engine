@@ -1,7 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
-
+#include "float4.h"
 class GameObject;
 class AnimationComponent;
 class AIAgentComponent;
@@ -30,7 +30,8 @@ class Enemy : public Script
 		bool Delay(float delay);
 		bool IsPlayerInRange(float range);		
 		void DropItem();
-		
+		void ActivateHitEffect();
+		void CheckHitEffect();
 		int mShieldDropRate = 20;
 		int mRedEnergyDropRate = 35;
 		int mBlueEnergyDropRate = 45;
@@ -44,16 +45,17 @@ class Enemy : public Script
 		GameObject* mPlayer = nullptr;
 		AnimationComponent* mAnimationComponent = nullptr;
 		AIAgentComponent* mAiAgentComponent = nullptr;
-
-	private:
-		void ActivateEnemy();
-
-		GameObject* mFootstepAudioHolder = nullptr;
-		
-		//Hit Effect
-		bool mHit = false;
 		bool mDeath = false;
 		float mTimePassed = 0.0f;
+		
+	private:
+		void ActivateEnemy();
+		GameObject* mFootstepAudioHolder = nullptr;	
+
+		//Hit Effect
+		bool mHit = false;
+		float mHitEffectTimePassed = 0.0f;
 		std::vector<Component*> mMeshComponents;
 		std::vector<unsigned int> mMaterialIds;
+		std::vector <float4> mOgColors;
 };

@@ -26,16 +26,15 @@ void Enemy::Start()
     mPlayer = GameManager::GetInstance()->GetPlayer();
     mHealth = mMaxHealth;  
 
-
     //Hit Effect
     mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
     mMaterialIds.reserve(mMeshComponents.size());
     for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
     {
-        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
-        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
+        static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
+        const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
+        mOgColors.push_back(material->GetBaseColorFactor());
     }
-
 }
 
 void Enemy::Update()
@@ -48,26 +47,34 @@ void Enemy::Update()
     }
 
     //Hit Effect
-    //if (mHit)
-    //{
-    //    if (Delay(0.1f))
-    //    {
-    //        mHit = false;
-    //
-    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //        {
-    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
-    //        }
-    //    }
-    //}
-
+    CheckHitEffect();
 }
 
-void Enemy::ActivateEnemy() 
+
+
+
+void Enemy::CheckHitEffect()
+{
+    if (mHit)
+    {
+        mHitEffectTimePassed += App->GetDt();
+        if (mHitEffectTimePassed > 0.3f)
+        {
+            for (size_t i = 0; i < mMeshComponents.size(); i++)
+            {
+                MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+                meshComponent->SetEnableBaseColorTexture(true);
+                meshComponent->SetBaseColorFactor(mOgColors[i]);
+            }
+            mHit = false;
+            mHitEffectTimePassed = 0.0f;
+
+        }
+    }
+}
+void Enemy::ActivateEnemy()
 {
 }
-
 bool Enemy::Delay(float delay)
 {
     mTimePassed += App->GetDt();
@@ -90,6 +97,8 @@ bool Enemy::IsPlayerInRange(float range)
 
 void Enemy::TakeDamage(float damage) 
 {   
+    LOG("DAMAGING")
+    ActivateHitEffect();
     if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
         mHealth -= damage;
@@ -99,19 +108,21 @@ void Enemy::TakeDamage(float damage)
             mDeath = true;
         }
     }
-        
-    
-
     LOG("Enemy Health: %f", mHealth);
+}
 
-    ////Hit Effect
-    //mHit = true;
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+void Enemy::ActivateHitEffect()
+{
+    if (mHit) return;
+    LOG("HIT EFFECT");
+    for (Component* mesh : mMeshComponents)
     {
-        //reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-        //reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-        reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetBaseColorFactor(float4(255, 0, 0, 1));
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
     }
+    mHit = true;
+
 }
 
 void Enemy::Death()

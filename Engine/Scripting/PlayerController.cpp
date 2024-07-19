@@ -51,9 +51,6 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    SEPARATOR("Player Mesh");
-    MEMBER(MemberType::GAMEOBJECT, mPlayerMeshGO);
-
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxShield);
     MEMBER(MemberType::FLOAT, mPlayerSpeed);
@@ -206,41 +203,27 @@ void PlayerController::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
     }
-    //Hit Effect
-    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
-    mMaterialIds.reserve(mMeshComponents.size());
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
-    }
     // Add Audio Listener
     if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
     {
         mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
     }
-    //Mesh
-    if (mPlayerMeshGO)
+
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+
+    for (Component* mesh : mMeshComponents)
     {
-        mPlayerMesh = (MeshRendererComponent*)mPlayerMeshGO->GetComponent(ComponentType::MESHRENDERER);
-        const ResourceMaterial* playerMaterial = mPlayerMesh->GetResourceMaterial();
-        mPlayerOgColor = playerMaterial->GetBaseColorFactor();
+        const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mesh)->GetResourceMaterial();
+        mPlayerOgColor.push_back(material->GetBaseColorFactor());
     }
 
     mUpperState->Enter();
     mLowerState->Enter();
-    ActivateHitEffect();
 }
 
 void PlayerController::Update()
 {
-    //static int test = 0;
-    //if (Delay(1.0f)) 
-    //{
-    //    if (test == 0) test = 255;
-    //    else if (test == 255) test = 0;
-    //    mPlayerMesh->SetBaseColorFactor(float4(test, 0.0f, 0.0f, 1.0f));
-    //}
-
     if (GameManager::GetInstance()->IsPaused()) return;
 
     // Check input
@@ -252,22 +235,10 @@ void PlayerController::Update()
     // Rotate the player to mouse
     HandleRotation();
 
-    CheckDebugOptions();
+    //Check HitEffect
+    CheckHitEffect();
 
-    //Hit Effect
-    //if (mHit)
-    //{
-    //    if (Delay(0.1f)) 
-    //    {
-    //        mHit = false;
-    //
-    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //        {
-    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
-    //        }
-    //    }
-    //}
+    CheckDebugOptions();
     mCollisionDirection = float3::zero;
 }
 
@@ -736,20 +707,40 @@ void PlayerController::TakeDamage(float damage)
 
 
     ////Hit Effect
-    //mHit = true;
-    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //{
-    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    //}
+    if (!mHit)
+    {
+        ActivateHitEffect();
+    }
+
+
 }
 void PlayerController::ActivateHitEffect()
 {
-    if (mPlayerMesh)
+    for (Component* mesh: mMeshComponents)
     {
-       
-        mPlayerMesh->SetEnableBaseColorTexture(false);
-        mPlayerMesh->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+    }   
+        mHit = true;    
+}
+
+void PlayerController::CheckHitEffect()
+{
+    if (mHit)
+    {
+        mHitEffectTimePassed += App->GetDt();
+        if (mHitEffectTimePassed > 0.15f)
+        {
+            for (size_t i = 0; i < mMeshComponents.size(); i++)
+            {
+                MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+                meshComponent->SetEnableBaseColorTexture(true);
+                meshComponent->SetBaseColorFactor(mPlayerOgColor[i]);
+            }
+            mHit = false;
+            mHitEffectTimePassed = 0.0f;
+        }
     }
 
 }

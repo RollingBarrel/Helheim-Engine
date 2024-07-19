@@ -135,6 +135,7 @@ public:
 
 private:
     void CheckInput();
+    void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
     void CheckDebugOptions();
@@ -228,16 +229,12 @@ private:
     // Debug
     bool mGodMode = false;
 
-
     //Hit Effect
     bool mHit = false;
-    float mTimePassed = 0.0f;
+    float mHitEffectTimePassed = 0.0f;
     std::vector<Component*> mMeshComponents;
-    std::vector<unsigned int> mMaterialIds;
-    bool Delay(float delay);
+    std::vector<float4> mPlayerOgColor;
 
-    //Material
-    GameObject* mPlayerMeshGO;
-    MeshRendererComponent* mPlayerMesh;
-    float4 mPlayerOgColor;
+    float mTimePassed = 0.0f;
+    bool Delay(float delay);
 };
