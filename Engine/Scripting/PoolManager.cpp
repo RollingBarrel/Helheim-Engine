@@ -47,7 +47,7 @@ void PoolManager::Start()
 		{ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) },
 		{ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) },
 		{ PoolType::CREATURE_RANGE, ObjectPool("Creature_Range.prfb", numEnemies, EnemyCreatureRange) },
-		//{ PoolType::ROBOT_RANGE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyRobotMelee) }
+		{ PoolType::CREATURE_MELEE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyCreatureMelee) }
 	};
 
 }
