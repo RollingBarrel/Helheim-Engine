@@ -39,11 +39,6 @@ void AIAgentComponent::Update()
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
 			mOwner->SetWorldPosition(owner_pos);
 		}
-		else
-		{
-			StartCrowdNavigation();
-		}
-
 	}
 }
 
@@ -85,6 +80,7 @@ void AIAgentComponent::StartCrowdNavigation()
 		PauseCrowdNavigation();
 		StartCrowdNavigation();
 	}
+
 }
 
 void AIAgentComponent::PauseCrowdNavigation()
@@ -97,6 +93,7 @@ void AIAgentComponent::PauseCrowdNavigation()
 
 		}
 		mCrowdId = CROWD_OFF_INDEX;
+		
 	}
 }
 
@@ -135,12 +132,13 @@ void AIAgentComponent::Load(const JsonObject& data, const std::unordered_map<uns
 
 void AIAgentComponent::Enable()
 {
-
-	StartCrowdNavigation();
-	
+	StartCrowdNavigation();	
 }
 
 void AIAgentComponent::Disable()
 {
-	PauseCrowdNavigation();
+	if (mCrowdId != CROWD_OFF_INDEX)
+	{
+		PauseCrowdNavigation();
+	}
 }
