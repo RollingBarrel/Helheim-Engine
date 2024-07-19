@@ -89,6 +89,9 @@ layout(location = 4) uniform uvec2 tileSize;
 layout(binding = 9)uniform sampler2D bloomTex;
 uniform float bloomIntensity;
 
+layout(binding = 10) uniform sampler2D ambientOcclusion;
+uniform bool activeAO;
+
 vec3 cDif;
 vec3 cSpec;
 float rough;
@@ -220,7 +223,12 @@ void main()
 		
 	}
 
-	pbrCol += GetAmbientLight();
+	vec3 occlusionFactor = vec3(1.0);
+	if (activeAO)
+	{
+		occlusionFactor = vec3(texture(ambientOcclusion, uv).r);
+	}
+	pbrCol += GetAmbientLight() * occlusionFactor;
 	pbrCol += emissiveCol;
 
 	//bloom
@@ -240,7 +248,5 @@ void main()
 	ldrCol = pow(ldrCol, vec3(1/2.2));
 
 	//Output
-	outColor = vec4(ldrCol, 1.0f);
-
-	//outColor = vec4(texture(bloomTex, uv).rgb * 1.0, 1.0);
+	outColor = vec4(ldrCol, 1.0f );	
 }

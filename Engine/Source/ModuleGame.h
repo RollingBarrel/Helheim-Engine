@@ -10,7 +10,6 @@ class ModuleGame: public Module
 	bool CleanUp() override;
 
 private:
-	unsigned int mGameProgramId = 0;
 	unsigned int mVAO = 0;
 	unsigned int mScreenPrevSizeX;
 	unsigned int mScreenPrevSizeY;
