@@ -696,15 +696,18 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             obb.Transform(focusGameObject->GetWorldTransform());
             dd::arrow(focusGameObject->GetWorldPosition(), focusGameObject->GetWorldPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
-        }        
+        }
+
+        if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
+        {
+            EngineApp->GetDebugDraw()->DrawBoundingBoxes(focusGameObject);
+        }
     }
     
     if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawColliders())
     {
         DrawColliders(App->GetScene()->GetRoot());
     }
-
-    EngineApp->GetDebugDraw()->DrawBoundingBoxes(App->GetScene()->GetRoot());
 
     dd::flush();
 }
@@ -829,20 +832,9 @@ void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
     for (unsigned int i = 0; i < meshComponents.size(); ++i)
     {
         const MeshRendererComponent& comp = *reinterpret_cast<MeshRendererComponent*>(meshComponents[i]);
-        const math::AABB& abb = comp.GetOriginalAABB();
         math::OBB obb;
-        if (comp.HasSkinning())
-        {
-            //float4x4 world = comp.GetOwner()->GetWorldTransform();
-            //world.Scale(comp.GetPalette()[0].GetScale());
-            //float4x4 matrix = float4x4::FromTRS(comp.GetOwner()->GetWorldPosition(), comp.GetOwner()->GetWorldRotation(), comp.GetPalette()[0].GetScale());
-            obb = abb.Transform(float4x4::FromTRS(comp.GetOwner()->GetWorldPosition(), comp.GetOwner()->GetLocalRotation(), comp.GetPalette()[0].GetScale()));
-        }
-        else
-        {
-            obb = abb.Transform(comp.GetOwner()->GetWorldTransform());
-        }
-        math::AABB resAbb = obb.MinimalEnclosingAABB();
+        math::AABB resAbb;
+        comp.GetAABBOBB(resAbb, obb);
         DrawCube(obb, float3(1.0f, 0.0f, 0.0f));
         DrawCube(resAbb, float3(1.0f, 1.0f, 0.0f));
     }

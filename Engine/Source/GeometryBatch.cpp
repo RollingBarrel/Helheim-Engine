@@ -622,7 +622,7 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 			memcpy(&mSsboModelMatricesData[idx][16 * bComp.baseInstance], float4x4::identity.ptr(), sizeof(float) * 16);
 			//TODO: when artist fix the animation scales use this commented code instead of the line after the comented code
 			//math::OBB obb = abb.Transform(bComp.component->GetOwner()->GetWorldTransform());
-			math::OBB obb = bComp.component->GetOriginalAABB().Transform(float4x4::FromTRS(bComp.component->GetOwner()->GetWorldPosition(), bComp.component->GetOwner()->GetLocalRotation(), bComp.component->GetPalette()[0].GetScale()));
+			math::OBB obb = bComp.component->GetOBB();
 			float3 points[8];
 			obb.GetCornerPoints(points);
 			for (int k = 0; k < 8; ++k)
@@ -643,16 +643,16 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 	}
 	if (mNumSkins)
 	{
-		//glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
-		//glUniform1ui(0, mNumSkins);
-		//glUniform1ui(1, frustums.size());
-		//const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
-		//glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
-		//unsigned int sizeIndirectBuffers = ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment);
-		//glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, sizeIndirectBuffers * idx, sizeIndirectBuffers);
-		//glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
-		//glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
-		//glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
+		glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
+		glUniform1ui(0, mNumSkins);
+		glUniform1ui(1, frustums.size());
+		const unsigned int sizeFrustums = frustums.size() * 24 * sizeof(float);
+		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 18, mFrustumsSsbo, idx * sizeFrustums, sizeFrustums);
+		unsigned int sizeIndirectBuffers = ALIGNED_STRUCT_SIZE(mNumSkins * sizeof(unsigned int) * 3, mSsboAligment);
+		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 16, mSkinDispatchIndirectBuffer, sizeIndirectBuffers * idx, sizeIndirectBuffers);
+		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 17, mSkinSsboObbs, idx * mNumSkins * 32 * sizeof(float), mNumSkins * 32 * sizeof(float));
+		glDispatchCompute((mNumSkins + 63) / 64, 1, 1);
+		glMemoryBarrier(GL_SHADER_STORAGE_BARRIER_BIT);
 		glBindBuffer(GL_DISPATCH_INDIRECT_BUFFER, mSkinDispatchIndirectBuffer);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
