@@ -87,6 +87,8 @@ void Sanity::CreateSelection(int arena)
 {
     if (arena < 0 || arena >= mBuffSelection.size()) return;
 
+    GameManager::GetInstance()->SetPaused(true, false);
+
     mCurrentBuffs = mBuffSelection[arena];
 
     // Card 1
@@ -186,6 +188,7 @@ void Sanity::OnCard1Click()
         mCurrentBuffs.at(0).Consume();
 
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard1HoverOn()
@@ -206,6 +209,7 @@ void Sanity::OnCard2Click()
         mCurrentBuffs.at(1).Consume();
 
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard2HoverOn()
@@ -226,6 +230,7 @@ void Sanity::OnCard3Click()
         mCurrentBuffs.at(2).Consume();
 
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard3HoverOn()

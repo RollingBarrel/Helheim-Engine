@@ -175,6 +175,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -308,5 +309,6 @@
     <ClCompile Include="EnemyCreatureMelee.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp" />
   </ItemGroup>
 </Project>
