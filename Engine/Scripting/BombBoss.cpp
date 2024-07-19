@@ -29,6 +29,14 @@ BombBoss::~BombBoss()
 void BombBoss::Start()
 {
 	mGameObject->GetComponentsInChildren(ComponentType::PARTICLESYSTEM, mExplosionParticles);
+	for (GameObject* go : mGameObject->GetChildren())
+	{
+		if (go->GetName() == "Bomb")
+		{
+			mBombGO = go;
+			break;
+		}
+	}
 }
 
 
@@ -65,10 +73,11 @@ void BombBoss::Update()
 	}
 }
 
-void BombBoss::Init()
+void BombBoss::Init(float3 bombOrigin)
 {
 	mHasExploded = false;
 	mTimePassed = 0.0f;
+	mBombOrigin = bombOrigin;
 	for (Component* particlecomponent : mExplosionParticles)
 	{
 		particlecomponent->GetOwner()->SetEnabled(false);

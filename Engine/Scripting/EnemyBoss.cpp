@@ -136,7 +136,7 @@ void EnemyBoss::BombAttack()
     for (Component* scriptComponent : scriptComponents)
     {
         BombBoss* bombScript = reinterpret_cast<BombBoss*>(reinterpret_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-        bombScript->Init();
+        bombScript->Init(mGameObject->GetWorldPosition());
     }
 }
 
