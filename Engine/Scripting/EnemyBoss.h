@@ -2,7 +2,6 @@
 #include "Enemy.h"
 #include "Geometry/Ray.h"
 #include "TimerScript.h"
-
 struct CollisionData;
 class BoxColliderComponent;
 
@@ -50,8 +49,11 @@ private:
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
 
-	// MoveSimulation
+	// MoveSimulationW
 	float mStepTimer = 0.0f;
 	float mStepCooldown = 0.5f;
+
+	const const char* mTemplateNames[1] = { "BombingTemplate1.prfb" };
+	std::vector<GameObject*> mTemplates;
 };
 

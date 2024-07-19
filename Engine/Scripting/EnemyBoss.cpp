@@ -34,6 +34,13 @@ void EnemyBoss::Start()
     Enemy::Start();
 
     //mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+    
+    for (const char* prefab : mTemplateNames)
+    {
+        GameObject* bombTemplate = new GameObject(prefab, mGameObject);
+        //bombTemplate->SetEnabled(false);
+        mTemplates.push_back(bombTemplate);
+    }
 
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
@@ -121,7 +128,8 @@ void EnemyBoss::LaserAttack()
 void EnemyBoss::BombAttack()
 {
     float3 target = mPlayer->GetWorldPosition();
-    GameObject* bombGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOMB_TEMPLATE_1);
+    int index = rand() % mTemplates.size();
+    GameObject* bombGO = mTemplates[index];
     bombGO->SetWorldPosition(target);
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
