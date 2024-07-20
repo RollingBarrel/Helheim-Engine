@@ -2110,5 +2110,8 @@
     <None Include="..\Game\Assets\Shaders\SsaoBlur.glsl">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\Fog.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

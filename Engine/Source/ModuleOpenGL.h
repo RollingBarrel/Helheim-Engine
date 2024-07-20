@@ -154,6 +154,12 @@ public:
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };
+	
+	void SetFogColor(float fogColor[3]);
+	void SetFogDensity(float density);
+	void SetFogHeightFallof(float heightFallof);
+	void SetMaxFog(float maxFog);
+
 private:
 	void* context = nullptr;
 
@@ -219,7 +225,8 @@ private:
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
-	unsigned int mSsaoBlurProgramId = 0;
+	//unsigned int mSsaoBlurProgramId = 0;
+	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
@@ -243,8 +250,12 @@ private:
 	void InitDecals();
 	std::vector<const DecalComponent*> mDecalComponents;
 
-	//Ambient Occlusion
-
+	//Fog
+	float mFogColor[3] = { 1.0f, 1.0f, 1.0f };
+	float mMaxFog = 0.73f;
+	float mDensity = 0.009f;
+	//A medida que se aleja de 0 la niebla baja respecto la vista de la camera
+	float mHeightFallof = 0.035f;
 
 	//Lighting uniforms
 	unsigned int mPLightListImgTex;

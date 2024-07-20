@@ -82,13 +82,39 @@ void LightningPanel::Draw(int windowFlags)
 	}
 
 	ImGui::Separator();
+	ImGui::Text("Fog");
+	if (ImGui::ColorPicker3("Fog Color", openGl->mFogColor))
+	{
+		glUseProgram(openGl->mFogProgramId);
+		glUniform3fv(1, 1, openGl->mFogColor);
+		glUseProgram(0);
+	}
+	if (ImGui::DragFloat("Max Fog", &openGl->mMaxFog, 0.01f, 0.0001f, 1.0f))
+	{
+		glUseProgram(openGl->mFogProgramId);
+		glUniform1f(2, openGl->mMaxFog);
+		glUseProgram(0);
+	}
+	if (ImGui::DragFloat("Density", &openGl->mDensity, 0.0001f, 0.0001f, 0.04f))
+	{
+		glUseProgram(openGl->mFogProgramId);
+		glUniform1f(3, openGl->mDensity);
+		glUseProgram(0);
+	}
+	if (ImGui::DragFloat("Height Fallof", &openGl->mHeightFallof, 0.005f, 0.0001f, 1.0f))
+	{
+		glUseProgram(openGl->mFogProgramId);
+		glUniform1f(4, openGl->mHeightFallof);
+		glUseProgram(0);
+	}
+
+	ImGui::Separator();
 	ImGui::Text("Ambient Occlusion");
 	if (ImGui::Checkbox("AO", &openGl->mAoActive))
 	{
 		glUseProgram(openGl->GetPbrLightingPassProgramId());
 		glUniform1i(glGetUniformLocation(openGl->GetPbrLightingPassProgramId(), "activeAO"),openGl->mAoActive);
 		glUseProgram(0);
-
 	}
 	float aoRange = openGl->GetAoRange();
 	float aoBias = openGl->GetAoBias();

@@ -330,9 +330,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "GaussianBlur.glsl";
 	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "GameVertex.glsl";
-	sourcesPaths[1] = "SsaoBlur.glsl";
-	mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	//sourcesPaths[0] = "GameVertex.glsl";
+	//sourcesPaths[1] = "SsaoBlur.glsl";
+	//mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
@@ -341,6 +341,11 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterUpBlur.glsl";
 	mUpsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "Fog.glsl";
+	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "GameFragment.glsl";
 	mGameProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -416,10 +421,10 @@ bool ModuleOpenGL::Init()
 			randomTangents[i][j] = dir;
 		}
 	}
+
+	//Generating kernels
 	const unsigned int kernelSize = 24;
 	float3 kernel[kernelSize];
-	//Generating kernels
-
 	for (unsigned int i = 0; i < kernelSize; ++i)
 	{
 
@@ -444,12 +449,18 @@ bool ModuleOpenGL::Init()
 	glUniform1f(2, mAoBias);
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "activeAO"), mAoActive);
-	glUseProgram(0);
-
-	glUseProgram(mPbrLightingPassProgramId);
+	//glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
+
+	//fog
+	glUseProgram(mFogProgramId);
+	glUniform3fv(1, 1, mFogColor);
+	glUniform1f(2, mMaxFog);
+	glUniform1f(3, mDensity);
+	glUniform1f(4, mHeightFallof);
 	glUseProgram(0);
 
+	//bloom
 	SetBloomIntensity(0.5f);
 
 	return true;
@@ -675,6 +686,8 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 			//world transform is the invViewMatrix
 			//glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
 			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
+			glUseProgram(mFogProgramId);
+			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
 			glUseProgram(0);
 		}
 		else
@@ -914,6 +927,38 @@ void ModuleOpenGL::SetBloomIntensity(float intensity)
 	mBloomIntensity = intensity;
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1f(glGetUniformLocation(mPbrLightingPassProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetFogColor(float fogColor[3])
+{
+	memcpy(mFogColor, fogColor, sizeof(float) * 3);
+	glUseProgram(mFogProgramId);
+	glUniform3fv(1, 1, fogColor);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetFogDensity(float density)
+{
+	mDensity = density;
+	glUseProgram(mFogProgramId);
+	glUniform1f(3, density);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetFogHeightFallof(float heightFallof)
+{
+	mHeightFallof = heightFallof;
+	glUseProgram(mFogProgramId);
+	glUniform1f(4, heightFallof);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetMaxFog(float maxFog)
+{
+	mMaxFog = maxFog;
+	glUseProgram(mFogProgramId);
+	glUniform1f(2, maxFog);
 	glUseProgram(0);
 }
 
@@ -1396,7 +1441,23 @@ void ModuleOpenGL::Draw()
 		glDepthFunc(GL_LESS);
 		glPopDebugGroup();
 	}
-	
+
+	//Fog
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Fog");
+	glBindVertexArray(mEmptyVAO);
+	glUseProgram(mFogProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glDepthMask(GL_FALSE);
+	glDisable(GL_DEPTH_TEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glEnable(GL_DEPTH_TEST);
+	glDisable(GL_BLEND);
+	glDepthMask(GL_TRUE);
+	glPopDebugGroup();
+
 	////Particles
 	glActiveTexture(GL_TEXTURE0);
 	for (size_t i = 0; i < mParticleSystems.size(); ++i)
@@ -1407,8 +1468,6 @@ void ModuleOpenGL::Draw()
 	{
 		mTrails[i]->Draw();
 	}
-	
-
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight
