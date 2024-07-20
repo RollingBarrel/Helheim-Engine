@@ -69,10 +69,9 @@ ScriptComponent::~ScriptComponent()
 				App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
 			}
 		}
+		delete mScript;
 	}
 
-
-	delete mScript;
 }
 
 void ScriptComponent::Update()

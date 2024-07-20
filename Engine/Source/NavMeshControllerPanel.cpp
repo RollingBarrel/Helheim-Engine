@@ -123,7 +123,6 @@ void NavMeshControllerPanel::Draw(int windowFlags)
         {
           LoadMeshVAO();
         }
-        DrawDebug();
         App->GetOpenGL()->BindSceneFramebuffer();
         DrawDebugPolyMesh();
         App->GetOpenGL()->UnbindFramebuffer();
@@ -131,20 +130,6 @@ void NavMeshControllerPanel::Draw(int windowFlags)
     }
 }
 
-void NavMeshControllerPanel::DrawDebug()
-{
-    App->GetNavigation()->GetQueryCenter();
-    App->GetNavigation()->GetQueryHalfSize();
-    float3 color = float3(1.0f, 0.0f, 0.0f);
-    EngineApp->GetDebugDraw()->DrawSphere(&App->GetNavigation()->GetQueryResult()[0], &color[0], 1.0f);
-    float3 color2 = float3(1.0f, 1.0f, 0.0f);
-    EngineApp->GetDebugDraw()->DrawSphere(&App->GetNavigation()->GetQueryCenter()[0], &color2[0], 1.0f);
-    float3 color3 = float3(0.0f, 0.0f, 1.0f);
-    float3 minAABB = App->GetNavigation()->GetQueryCenter() - App->GetNavigation()->GetQueryHalfSize();
-    float3 maxAABB = App->GetNavigation()->GetQueryCenter() + App->GetNavigation()->GetQueryHalfSize();
-    OBB cube = OBB(AABB(minAABB, maxAABB));
-    EngineApp->GetDebugDraw()->DrawCube(cube, color3);
-}
 void NavMeshControllerPanel::DrawDebugPolyMesh()
 {
     NavMeshController* navController = EngineApp->GetNavController();

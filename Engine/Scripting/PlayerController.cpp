@@ -35,6 +35,7 @@
 #include "SwitchState.h"
 #include "SpecialState.h"
 #include "ReloadState.h"
+#include "UltimateState.h"
 
 #include "Weapon.h"
 #include "MeleeWeapon.h"
@@ -77,6 +78,14 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
+
+    SEPARATOR("Ultimate");
+    MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
+    MEMBER(MemberType::FLOAT, mUltimateCooldown);
+    MEMBER(MemberType::FLOAT, mUltimateDuration);
+    MEMBER(MemberType::FLOAT, mUltimatePlayerSlow);
+    MEMBER(MemberType::FLOAT, mUltimateDamageTick);
+    MEMBER(MemberType::FLOAT, mUltimateDamageInterval);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -124,6 +133,7 @@ void PlayerController::Start()
     mAttackState = new AttackState(this, 0.0f); // Is later changed when having a weapon
     mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
     mReloadState = new ReloadState(this, 0.0f);
+    mUltimateState = new UltimateState(this, mUltimateCooldown, mUltimateDuration);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;
@@ -176,7 +186,9 @@ void PlayerController::Start()
         mEquippedSpecialGO->SetEnabled(false);
         mUnEquippedSpecialGO->SetEnabled(false);
     }
-        
+    
+    if (mUltimateGO)
+        mUltimateGO->SetEnabled(false);
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -249,6 +261,7 @@ void PlayerController::Update()
     //        }
     //    }
     //}
+    mCollisionDirection = float3::zero;
 }
 
 bool PlayerController::Delay(float delay)
@@ -336,6 +349,9 @@ void PlayerController::CheckInput()
             case StateType::RELOAD:
                 mUpperState = mReloadState;
                 break;
+            case StateType::ULTIMATE:
+                mUpperState = mUltimateState;
+                break;
             case StateType::NONE:
                 break;
             default:
@@ -387,7 +403,6 @@ void PlayerController::SetAnimation(std::string trigger, float transitionTime)
     {
         mAnimationComponent->SendTrigger(trigger, transitionTime);
     }
-    
 }
 
 void PlayerController::SetSpineAnimation(std::string trigger, float transitionTime)
@@ -408,8 +423,17 @@ void PlayerController::SetAnimationSpeed(float speed)
 
 void PlayerController::MoveInDirection(float3 direction)
 {
-    float3 newPos = (mGameObject->GetWorldPosition() + direction * App->GetDt() * mPlayerSpeed);
-    mPlayerDirection = direction;
+    float collisionDotProduct = direction.Dot(mCollisionDirection);
+    if (collisionDotProduct < 0.0f)
+    {
+        mPlayerDirection = direction - mCollisionDirection.Mul(collisionDotProduct);
+    }
+    else
+    {
+        mPlayerDirection = direction;
+    }
+
+    float3 newPos = (mGameObject->GetLocalPosition() + mPlayerDirection * App->GetDt() * mPlayerSpeed);
     mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
 }
 
@@ -589,11 +613,10 @@ void PlayerController::Reload() const
 void PlayerController::CheckDebugOptions()
 {
     const ModuleInput* input = App->GetInput();
-    if (input->GetKey(Keys::Keys_G) == KeyState::KEY_REPEAT)
+    if (input->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN)
     {
         mGodMode = !mGodMode;
     }
-
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);
@@ -683,6 +706,21 @@ void PlayerController::UseEnergy(int energy)
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
+void PlayerController::AddUltimateResource()
+{
+    if (mUltimateResource != 100) 
+        mUltimateResource += 10;
+    else return;
+}
+
+void PlayerController::EnableUltimate(bool enable)
+{
+    if (mUltimateGO)
+    {
+        mUltimateGO->SetEnabled(enable);
+    }
+}
+
 void PlayerController::TakeDamage(float damage)
 {
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
@@ -721,5 +759,11 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag() == "WinArea")
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }
+
+    if (collisionData->collidedWith->GetTag() == "Door")
+    {
+        mCollisionDirection = collisionData->collisionNormal;
+        LOG("HOLA")
     }
 }

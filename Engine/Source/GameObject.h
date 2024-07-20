@@ -52,7 +52,7 @@ public:
 	//Setters
 	void SetTag(const std::string& tag);;
 	void SetName(const char* name) { mName = name; };
-	void SetDynamic(bool dynamic) { mIsDynamic = dynamic; };
+	void SetDynamic(bool dynamic);
 	void SetParent(GameObject* newParent);
 	void SetEnabled(bool enabled);
 

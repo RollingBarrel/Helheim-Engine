@@ -695,11 +695,6 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mEnemyPool",
-                                "MemberType": 3,
-                                "VariableData": -1
-                            },
-                            {
                                 "VariableName": "mPoolManager",
                                 "MemberType": 3,
                                 "VariableData": 1549285316
@@ -1035,6 +1030,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 0
+        "NavMeshResource": 0,
+        "SkyBoxResource": 0
     }
 }

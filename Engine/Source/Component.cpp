@@ -48,6 +48,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Animation";
 		case ComponentType::IMAGE:
 			return "Image";
+		case ComponentType::MASK:
+			return "Mask";
 		case ComponentType::BUTTON:
 			return "Button";
 		case ComponentType::AUDIOLISTENER:

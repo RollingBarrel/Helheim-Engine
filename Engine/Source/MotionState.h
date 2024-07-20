@@ -14,6 +14,7 @@ public:
 
 	void getWorldTransform(btTransform& worldTransform) const override;
 	void setWorldTransform(const btTransform& worldTransform) override;
+	void SetCenterOffset(float3 centerOffset);
 
 private:
 	Component* mCollider = nullptr;

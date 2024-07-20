@@ -8,7 +8,7 @@ enum class ENGINE_API ComponentType : unsigned int
 	MESHRENDERER, POINTLIGHT, SPOTLIGHT, SCRIPT, NAVMESHOBSTACLE, AIAGENT, 
 	CAMERA, CANVAS, IMAGE, TRANSFORM2D, ANIMATION, BUTTON, SLIDER,
 	AUDIOSOURCE, AUDIOLISTENER, PARTICLESYSTEM, TEXT,
-	BOXCOLLIDER, TRAIL, DECAL, NONE
+	BOXCOLLIDER, TRAIL, DECAL, MASK, NONE
 };
 
 class GameObject;
@@ -20,7 +20,7 @@ public:
 	Component(GameObject* owner, ComponentType type);
 	virtual ~Component() {}
 
-	virtual	void Update() = 0;
+	virtual	void Update() {}
 	
 	virtual Component* Clone(GameObject* owner) const = 0;
 
@@ -39,7 +39,7 @@ public:
 	void SetEnable(bool enable);
 
 protected:
-	virtual	void Reset() = 0;
+	virtual	void Reset() {}
 	GameObject* mOwner = nullptr;
 private:
 	bool mIsEnabled = true;

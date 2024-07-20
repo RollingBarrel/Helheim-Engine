@@ -1,0 +1,142 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1309292248,
+                "ParentUID": 1,
+                "Name": "Fire_V1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 364023701,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 16,
+                        "Looping": true,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.299999952316284,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 2.0,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeAngle": 0.7850000262260437,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.6000000238418579,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 13.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.0,
+                                "MaxValue": 0.10999999940395355
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.013404831290245057,
+                                "Color": [
+                                    1.0,
+                                    0.8745098114013672,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.15951749682426454,
+                                "Color": [
+                                    1.0,
+                                    0.8745098114013672,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4718506634235382,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123328685760498,
+                                "Color": [
+                                    0.2639999985694885,
+                                    0.2038080096244812,
+                                    0.2038080096244812,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9839140772819519,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

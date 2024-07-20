@@ -16,7 +16,7 @@
 #include "ModuleResource.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
-
+#include "AIAGentComponent.h"
 
 Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
@@ -153,10 +153,14 @@ bool Enemy::IsMoving()
     return false;
 }
 
-void Enemy::Reset()
+void Enemy::Init()
 {
     mDeath = false;
     mHealth = mMaxHealth;
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
 }
 
 void Enemy::DropItem()
