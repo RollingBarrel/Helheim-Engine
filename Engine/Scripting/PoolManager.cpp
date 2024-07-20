@@ -31,6 +31,9 @@ void PoolManager::Start()
 	GameObject* EnemyRobotMelee = new GameObject("EnemyRobotMelee_Pool", mGameObject);
 	GameObject* EnemyRobotRange = new GameObject("EnemyRobotRange_Pool", mGameObject);
 
+	//Traps
+	GameObject* ExplosiveEnemySpawner = new GameObject("ExplosiveEnemySpawner_Pool", mGameObject);
+
 
 	mPoolMap =
 	{
@@ -43,7 +46,10 @@ void PoolManager::Start()
 
 		//ENEMIES
 		{ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) },
-		{ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) }
+		{ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) },
+
+		//TRAPS
+		{ PoolType::EXPLOSIVE_SPAWNER, ObjectPool("Explosive_Enemy_Spawner.prfb", numItems, Shield) }
 	};
 
 }

@@ -3,6 +3,7 @@
 
 struct CollisionData;
 class BoxColliderComponent;
+class BattleArea;
 GENERATE_BODY(EnemyExplosiveSpawner)
 
 class EnemyExplosiveSpawner : public Enemy
@@ -30,5 +31,6 @@ class EnemyExplosiveSpawner : public Enemy
 
 		EnemyState mCurrentState = EnemyState::IDLE;
 		BoxColliderComponent* mCollider = nullptr;
+
 };
 

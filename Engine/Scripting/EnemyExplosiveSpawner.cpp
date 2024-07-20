@@ -3,6 +3,8 @@
 #include "BoxColliderComponent.h"
 #include "GameManager.h"
 #include "AnimationComponent.h"
+#include "ScriptComponent.h"
+#include "BattleArea.h"
 
 CREATE(EnemyExplosiveSpawner)
 {
@@ -14,7 +16,7 @@ CREATE(EnemyExplosiveSpawner)
 EnemyExplosiveSpawner::EnemyExplosiveSpawner(GameObject* owner) : Enemy(owner)
 {
 	//TODO: Set the enemy values
-    mHealth = 15;
+    mHealth = 150;
 }
 
 void EnemyExplosiveSpawner::Start()
@@ -27,7 +29,6 @@ void EnemyExplosiveSpawner::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyExplosiveSpawner::OnCollisionEnter, this, std::placeholders::_1)));
     }
-
 }
 
 void EnemyExplosiveSpawner::Update()
