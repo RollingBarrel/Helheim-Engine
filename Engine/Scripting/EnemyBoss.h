@@ -53,7 +53,7 @@ private:
 	float mStepTimer = 0.0f;
 	float mStepCooldown = 0.5f;
 
-	const const char* mTemplateNames[1] = { "BombingTemplate1.prfb" };
+	const const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
 	std::vector<GameObject*> mTemplates;
 };
 

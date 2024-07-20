@@ -75,6 +75,7 @@ void BombBoss::Update()
 
 void BombBoss::Init(float3 bombOrigin)
 {
+	mGameObject->SetEnabled(true);
 	mHasExploded = false;
 	mTimePassed = 0.0f;
 	mBombOrigin = bombOrigin;

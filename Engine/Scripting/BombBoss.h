@@ -22,7 +22,6 @@ public:
 
 private:
 	GameObject* mBombGO = nullptr;
-	float3 mBombSpeed = float2::zero;
 	float mRadius = 2.5f;
 	float mDamage = 1.0f;
 	float mTimeDelay = 3.0f;

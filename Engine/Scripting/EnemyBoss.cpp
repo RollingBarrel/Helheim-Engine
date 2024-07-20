@@ -1,5 +1,7 @@
 #include "EnemyBoss.h"
+#include "Application.h"
 #include "GameObject.h"
+#include "ModuleScene.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
@@ -33,12 +35,11 @@ void EnemyBoss::Start()
 {
     Enemy::Start();
 
-    //mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
     
     for (const char* prefab : mTemplateNames)
     {
-        GameObject* bombTemplate = new GameObject(prefab, mGameObject);
-        //bombTemplate->SetEnabled(false);
+        GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+        bombTemplate->SetEnabled(false);
         mTemplates.push_back(bombTemplate);
     }
 
@@ -87,14 +88,15 @@ void EnemyBoss::Attack()
 {
     if (Delay(mTimerAttack))
     {
-        switch (rand() % 3)
+        switch (rand() % 1)
         {
         case 0:
+        case 1:
             BulletAttack();
             break;
-        case 1:
-            LaserAttack();
-            break;
+        //case 1:
+        //    LaserAttack();
+        //    break;
         case 2:
             BombAttack();
             break;
@@ -107,17 +109,13 @@ void EnemyBoss::Attack()
 void EnemyBoss::BulletAttack()
 {
     float3 bulletOriginPosition = mGameObject->GetWorldPosition();
-    float3 direction = (mPlayer->GetWorldPosition() - bulletOriginPosition);
-    direction.y = 0;
-    direction.Normalize();
-    float angle = std::atan2(direction.x, direction.z);
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->SetWorldRotation(float3(0, angle, 0));
+    bulletGO->LookAt(mPlayer->GetWorldPosition());
     Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
-    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mRangeDamage);
+    bulletScript->Init(bulletOriginPosition, bulletGO->GetFront(), mBulletSpeed, 1.0f, &gradient, mRangeDamage);
 }
 
 void EnemyBoss::LaserAttack()
@@ -133,6 +131,7 @@ void EnemyBoss::BombAttack()
     bombGO->SetWorldPosition(target);
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+    bombGO->SetEnabled(true);
     for (Component* scriptComponent : scriptComponents)
     {
         BombBoss* bombScript = reinterpret_cast<BombBoss*>(reinterpret_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
