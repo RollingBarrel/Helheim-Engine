@@ -8,6 +8,7 @@
 #include "AttackState.h"
 #include "SpecialState.h"
 #include "SwitchState.h"
+#include "UltimateState.h"
 
 ReloadState::ReloadState(PlayerController* player, float cooldown) : State(player, cooldown)
 {

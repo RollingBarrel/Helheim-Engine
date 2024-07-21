@@ -404,7 +404,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	{
 		mIsSpritesheet = data.GetBool("IsSpritesheet");
 	}
-	if (data.HasMember("Colums"))
+	if (data.HasMember("Columns"))
 	{
 		mColumns = data.GetInt("Columns");
 	}

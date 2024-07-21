@@ -10,6 +10,7 @@
 #include "SpecialState.h"
 #include "SwitchState.h"
 #include "ReloadState.h"
+#include "UltimateState.h"
 
 AimState::AimState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -61,6 +62,13 @@ StateType AimState::HandleInput()
     {
         mPlayerController->GetReloadState()->ResetCooldown();
         return StateType::RELOAD;
+    }
+
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() &&
+        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN))
+    {
+        mPlayerController->GetUltimateState()->ResetCooldown();
+        return StateType::ULTIMATE;
     }
 
 	return StateType::AIM;

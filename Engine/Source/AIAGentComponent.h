@@ -34,6 +34,9 @@ public:
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 private:
 
+	void Enable() override;
+	void Disable() override;
+
 	//Agent Parameters:
 	float mRadius = 0.6f;
 	float mHeight = 2.0f;
@@ -41,7 +44,6 @@ private:
 	float mMaxAcceleration = 16.0f;
 
 	std::vector<float3> mNavPositions;
-	bool mMoving = false;
 	unsigned int mCrowdId = CROWD_OFF_INDEX;
 };
 
