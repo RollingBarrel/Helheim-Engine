@@ -791,7 +791,7 @@
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Game\Assets\Shaders\Fog.glsl" />
+    <None Include="..\Game\Assets\Shaders\Fog.comp" />
     <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
     <None Include="..\Game\Assets\Shaders\GaussianBlur.glsl" />

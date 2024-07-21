@@ -74,7 +74,7 @@ public:
 	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
-	unsigned int GetFramebufferTexture() const { return sceneTexture; }
+	unsigned int GetFramebufferTexture() const { return mSceneTexture; }
 	void BindSceneFramebuffer();
 	//void BindGFramebuffer();
 	void UnbindFramebuffer();
@@ -167,7 +167,7 @@ private:
 
 	//scene Framebuffer
 	unsigned int sFbo;
-	unsigned int sceneTexture;
+	unsigned int mSceneTexture;
 	//unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;

@@ -15,7 +15,7 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-layout(binding = 0, r32i) uniform iimageBuffer outLightsList;
+uniform layout(binding = 0, r32i) writeonly iimageBuffer outLightsList;
 layout(location = 0)uniform uint maxPointLights;
 layout(location = 1)uniform uvec2 numPixels;
 shared uint pointsInTile;
