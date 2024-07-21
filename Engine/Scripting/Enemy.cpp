@@ -6,6 +6,8 @@
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
+#include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 
 #include "GameManager.h"
 #include "PoolManager.h"
@@ -49,7 +51,9 @@ void Enemy::Update()
 	if (mDeath)
 	{
 		Death();
+		return;
 	}
+	ActivateEnemy();
 
     //Hit Effect
     CheckHitEffect();

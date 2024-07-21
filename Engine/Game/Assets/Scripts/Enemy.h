@@ -29,7 +29,7 @@ public:
 	virtual void Death();
 	virtual void PushBack();
 	virtual void Init();
-
+	void ActivateEnemy();
 	bool IsChasing();
 	
 	//Grenade
