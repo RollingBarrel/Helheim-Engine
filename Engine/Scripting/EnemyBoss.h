@@ -2,6 +2,7 @@
 #include "Enemy.h"
 #include "Geometry/Ray.h"
 #include "TimerScript.h"
+
 struct CollisionData;
 class BoxColliderComponent;
 
@@ -35,8 +36,6 @@ private:
 
 	BossState mCurrentState = BossState::IDLE;
 
-	TimerScript mDeathTimer;
-
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
 	float mBulletSpeed = 0.65f;
@@ -48,12 +47,17 @@ private:
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
 
-	// MoveSimulationW
-	float mStepTimer = 0.0f;
-	float mStepCooldown = 0.5f;
-
 	const const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
+
+	//Timers
+	TimerScript mAttackDurationTimer;
+	float mAttackDuration = 0.0f;
+	TimerScript mAttackCoolDownTimer;
+	float mAttackCoolDown = 1.0f;
+	TimerScript mDeathTimer;
+	float mDeathTime = 1.4f;
+	bool mDeath = false;
 };
 

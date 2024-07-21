@@ -18,7 +18,6 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mChaseDelay);
     MEMBER(MemberType::FLOAT, mRangeDistance);
     MEMBER(MemberType::FLOAT, mRangeDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
@@ -82,15 +81,16 @@ void EnemyBoss::Update()
 
 void EnemyBoss::Idle()
 {
-    if (IsPlayerInRange(mActivationRange))
+    if (IsPlayerInRange(50))
     {
+        mAnimationComponent->SendTrigger("tWakeUp", 0.2f);
         mCurrentState = BossState::ATTACK;
     }
 }
 
 void EnemyBoss::Attack()
 {
-    if (Delay(mTimerAttack))
+    if (mAttackDurationTimer.Delay(mTimerAttack))
     {
         int attack = rand() % 3;
         if (attack == mLastAttack)
@@ -100,13 +100,16 @@ void EnemyBoss::Attack()
         switch (attack)
         {
         case 1:
+            mAnimationComponent->SendTrigger("tLaser", 0.2f);
             LaserAttack();
             break;
         case 2:
+            mAnimationComponent->SendTrigger("tEruption", 0.2f);
             BombAttack();
             break;
         case 0:
         default:
+            mAnimationComponent->SendTrigger("tBulletHell", 0.2f);
             BulletAttack();
             break;
         }
@@ -153,5 +156,7 @@ void EnemyBoss::BombAttack()
 
 void EnemyBoss::Death()
 {
+    mAnimationComponent->SendTrigger("tDeath", 0.2f);
+    mDeathTimer.Delay(mDeathTime);
     mGameObject->SetEnabled(false);
 }
