@@ -22,7 +22,7 @@ void Physics::Raycast(std::multiset<Hit>& hits, const Ray& ray, float maxDistanc
 ENGINE_API void Physics::Raycast(Hit& hit, const Ray& ray, float maxDistance)
 {
 	float3 from = float3(ray.pos);
-	float3 to = float3(ray.dir * maxDistance);
+	float3 to = float3(ray.pos + ray.dir * maxDistance);
 
 	App->GetPhysics()->RayCast(from, to, hit);
 }

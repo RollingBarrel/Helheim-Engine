@@ -683,12 +683,6 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
         }
 
-        BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-        if (boxCollider)
-        {
-            DrawColliders(focusGameObject);
-        }
-
         DecalComponent* decalComponent = reinterpret_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
         if (decalComponent)
         {
@@ -697,6 +691,8 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             dd::arrow(focusGameObject->GetWorldPosition(), focusGameObject->GetWorldPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
         }        
+        
+        DrawColliders(focusGameObject);
     }
     
     if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawColliders())

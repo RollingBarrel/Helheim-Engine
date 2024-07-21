@@ -133,7 +133,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.5882352590560914,
+                        "AspectRatio": 1.8176528215408326,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -10389,7 +10389,7 @@
                 "ParentUID": 698986377,
                 "Name": "Background",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10927,7 +10927,7 @@
                 "ParentUID": 1281157179,
                 "Name": "Bat",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11083,7 +11083,7 @@
                 "ParentUID": 1773377649,
                 "Name": "Pistol",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11459,7 +11459,7 @@
                 "ParentUID": 37771838,
                 "Name": "Background",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11643,7 +11643,7 @@
                 "ParentUID": 287084639,
                 "Name": "PauseScreen",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11671,7 +11671,7 @@
                 "ParentUID": 370699460,
                 "Name": "Background",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11749,7 +11749,7 @@
                 "ParentUID": 370699460,
                 "Name": "VerticalBackground",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11827,7 +11827,7 @@
                 "ParentUID": 538207586,
                 "Name": "Logo",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11905,7 +11905,7 @@
                 "ParentUID": 538207586,
                 "Name": "PauseText",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11979,7 +11979,7 @@
                 "ParentUID": 538207586,
                 "Name": "ContinueBtn",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12061,7 +12061,7 @@
                 "ParentUID": 793090067,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12135,7 +12135,7 @@
                 "ParentUID": 538207586,
                 "Name": "OptionsBtn",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12217,7 +12217,7 @@
                 "ParentUID": 964148864,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12291,7 +12291,7 @@
                 "ParentUID": 538207586,
                 "Name": "MainMenuBtn",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12373,7 +12373,7 @@
                 "ParentUID": 1134650693,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12447,7 +12447,7 @@
                 "ParentUID": 370699460,
                 "Name": "OptionsPanel",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12525,7 +12525,7 @@
                 "ParentUID": 1304456312,
                 "Name": "ControllsPanel",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12603,7 +12603,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12681,7 +12681,7 @@
                 "ParentUID": 1476420182,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12755,7 +12755,7 @@
                 "ParentUID": 1476420182,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12829,7 +12829,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12907,7 +12907,7 @@
                 "ParentUID": 1735897649,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12981,7 +12981,7 @@
                 "ParentUID": 1735897649,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13055,7 +13055,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (2)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13133,7 +13133,7 @@
                 "ParentUID": 1995862463,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13207,7 +13207,7 @@
                 "ParentUID": 1995862463,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13281,7 +13281,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (3)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13359,7 +13359,7 @@
                 "ParentUID": 112312027,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13433,7 +13433,7 @@
                 "ParentUID": 112312027,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13507,7 +13507,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (4)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13585,7 +13585,7 @@
                 "ParentUID": 377359174,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13659,7 +13659,7 @@
                 "ParentUID": 377359174,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13733,7 +13733,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (5)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13811,7 +13811,7 @@
                 "ParentUID": 640317691,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13885,7 +13885,7 @@
                 "ParentUID": 640317691,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -13959,7 +13959,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (6)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14037,7 +14037,7 @@
                 "ParentUID": 916086472,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14111,7 +14111,7 @@
                 "ParentUID": 916086472,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14185,7 +14185,7 @@
                 "ParentUID": 1390995215,
                 "Name": "HorizontalItem (7)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14263,7 +14263,7 @@
                 "ParentUID": 1185728605,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14337,7 +14337,7 @@
                 "ParentUID": 1185728605,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14411,7 +14411,7 @@
                 "ParentUID": 287084639,
                 "Name": "LoadingScreen",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14489,7 +14489,7 @@
                 "ParentUID": 287084639,
                 "Name": "VictoryScreen",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14562,7 +14562,7 @@
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": false
+                        "IsEnabled": true
                     }
                 ]
             },
@@ -14571,7 +14571,7 @@
                 "ParentUID": 1546156522,
                 "Name": "PopUP",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14653,7 +14653,7 @@
                 "ParentUID": 287084639,
                 "Name": "DefeatScreen",
                 "Enabled": false,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14726,7 +14726,7 @@
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": false
+                        "IsEnabled": true
                     }
                 ]
             },
@@ -14735,7 +14735,7 @@
                 "ParentUID": 1761355033,
                 "Name": "PopUp",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14817,7 +14817,7 @@
                 "ParentUID": 1852558543,
                 "Name": "AgainBtn",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14899,7 +14899,7 @@
                 "ParentUID": 1943692432,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14973,7 +14973,7 @@
                 "ParentUID": 1852558543,
                 "Name": "BackBtn",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -15055,7 +15055,7 @@
                 "ParentUID": 2123871580,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -16151,258 +16151,20 @@
                         "Alignment": 1
                     }
                 ]
-            },
-            {
-                "UID": 2076234769,
-                "ParentUID": 1,
-                "Name": "FinalBoss",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    163.5110626220703,
-                    67.6942367553711,
-                    25.68977165222168
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Enemy",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "EnemyBoss",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "STATS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mMaxHealth",
-                                "MemberType": 1,
-                                "VariableData": 6.0
-                            },
-                            {
-                                "VariableName": "mSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mRotationSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mChaseDelay",
-                                "MemberType": 1,
-                                "VariableData": 1.25
-                            },
-                            {
-                                "VariableName": "mRangeDistance",
-                                "MemberType": 1,
-                                "VariableData": 9.0
-                            },
-                            {
-                                "VariableName": "mRangeDamage",
-                                "MemberType": 1,
-                                "VariableData": 15.0
-                            },
-                            {
-                                "VariableName": "mBulletSpeed",
-                                "MemberType": 1,
-                                "VariableData": 0.6499999761581421
-                            },
-                            {
-                                "VariableName": "mTimerAttack",
-                                "MemberType": 1,
-                                "VariableData": 5.0
-                            },
-                            {
-                                "VariableName": "mBulletOrigin",
-                                "MemberType": 3,
-                                "VariableData": -1
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            10.0,
-                            10.0,
-                            8.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 2143627897,
-                "ParentUID": 2076234769,
-                "Name": "DamagedHelmet",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    8.0,
-                    10.0,
-                    5.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 49473936,
-                "ParentUID": 2143627897,
-                "Name": "node_damagedHelmet_-6514",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.7071068286895752,
-                    0.0,
-                    -0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 102594759,
-                "ParentUID": 49473936,
-                "Name": "node_damagedHelmet_-6514",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 539182079,
-                        "MaterialID": 539182084,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
-                "UID": 157804212,
-                "ParentUID": 2076234769,
-                "Name": "Light",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.14113587141036988,
-                    5.0750532150268559,
-                    9.633854866027832
-                ],
-                "Rotation": [
-                    0.006136506795883179,
-                    0.9862751960754395,
-                    -0.16063620150089265,
-                    -0.03767700120806694
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            163.36993408203126,
-                            72.769287109375,
-                            35.32362747192383,
-                            249.0
-                        ],
-                        "Direction": [
-                            -0.0762912780046463,
-                            -0.3164006173610687,
-                            -0.9455529451370239,
-                            0.9063077569007874
-                        ],
-                        "Color": [
-                            0.9440000057220459,
-                            0.80854731798172,
-                            0.4984320104122162,
-                            0.7880107760429382
-                        ],
-                        "Range": 15.0,
-                        "CastShadow": false,
-                        "Bias": 0.000009999999747378752
-                    }
-                ]
             }
         ],
         "NavMeshResource": 594603088,
-        "SkyBoxResource": 458087203
+        "SkyBoxResource": 458087203,
+        "BloomIntensity": 0.5,
+        "DirectionalLight": [
+            0.0,
+            -1.0,
+            -1.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+        ]
     }
 }
