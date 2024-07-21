@@ -25,11 +25,6 @@ CREATE(ElectricTrapController)
 
 ElectricTrapController::ElectricTrapController(GameObject* owner) : Script(owner)
 {
-    mSfx = App->GetScene()->InstantiatePrefab("TrapSFX.prfb");
-    if (mSfx)
-    {
-        mSfx->SetEnabled(mIsActive);
-    }
 }
 
 ElectricTrapController::~ElectricTrapController()
@@ -39,6 +34,12 @@ ElectricTrapController::~ElectricTrapController()
 
 void ElectricTrapController::Start()
 {
+    mSfx = App->GetScene()->InstantiatePrefab("TrapSFX.prfb");
+    if (mSfx)
+    {
+        mSfx->SetEnabled(mIsActive);
+    }
+
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {

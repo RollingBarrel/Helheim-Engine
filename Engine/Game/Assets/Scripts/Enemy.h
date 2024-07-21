@@ -63,7 +63,6 @@ protected:
 	int mShieldDropRate = 20;
 	int mRedEnergyDropRate = 35;
 	int mBlueEnergyDropRate = 45;
-	bool mBeAttracted = false;
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	GameObject* mPlayer = nullptr;
@@ -91,7 +90,7 @@ protected:
 	float mCurrentParalyzedTimer = mParalyzedTimer;
 	float mParalysisSeverityLevel = 1.0f;
 
-	private:
-		void ActivateEnemy();
+private:
+	void ActivateEnemy();
 
 };

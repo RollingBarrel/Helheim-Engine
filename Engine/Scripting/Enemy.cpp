@@ -188,11 +188,6 @@ void Enemy::Death()
 	}
 }
 
-bool Enemy::IsChasing()
-{
-	return (mCurrentState == EnemyState::CHASE);
-}
-
 void Enemy::PushBack()
 {
 	float3 direction = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
