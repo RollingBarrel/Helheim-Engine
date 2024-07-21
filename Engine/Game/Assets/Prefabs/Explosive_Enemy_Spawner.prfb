@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1979917944,
+                "UID": 151097314,
                 "ParentUID": 1,
-                "Name": "Explosive Enemy Spawner",
+                "Name": "Explosive_Enemy_Spawner",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    62.35393524169922,
-                    1.0,
-                    0.0
+                    82.39537811279297,
+                    0.0,
+                    -2.885258913040161
                 ],
                 "Rotation": [
                     0.0,
@@ -29,11 +29,17 @@
                 "Dynamic": false,
                 "Components": [
                     {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1052945264,
+                        "LowerSMUID": 0
+                    },
+                    {
                         "ComponentType": 17,
                         "IsEnabled": true,
                         "Center": [
                             0.0,
-                            0.0,
+                            1.0,
                             0.0
                         ],
                         "Size": [
@@ -58,9 +64,37 @@
                 ]
             },
             {
-                "UID": 199128104,
-                "ParentUID": 1979917944,
-                "Name": "Cube",
+                "UID": 928763884,
+                "ParentUID": 151097314,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1754886670,
+                "ParentUID": 928763884,
+                "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -86,9 +120,9 @@
                 "Components": []
             },
             {
-                "UID": 557328149,
-                "ParentUID": 199128104,
-                "Name": "Cube",
+                "UID": 332227254,
+                "ParentUID": 1754886670,
+                "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -115,13 +149,291 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 496453540,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
+                        "MeshID": 1052945257,
+                        "MaterialID": 1052945262,
+                        "HasSkinning": true,
                         "PaletteOwner": 0,
-                        "InverseBindMatrices": []
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 357266912,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1070394815,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    14.646199226379395,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -28.685579299926759,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    0.6269524097442627,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1849871531,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -16.953786849975587,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -28.685579299926759,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    0.6269524097442627,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
                     }
                 ]
+            },
+            {
+                "UID": 1056146412,
+                "ParentUID": 928763884,
+                "Name": "OB_ball_spawner_doors",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1781318748,
+                "ParentUID": 1056146412,
+                "Name": "OB_ball_spawner_doors",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1052945263,
+                        "MaterialID": 1052945262,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 357266912,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1070394815,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    14.646199226379395,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -28.685579299926759,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    0.6269524097442627,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1849871531,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -16.953786849975587,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -28.685579299926759,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    0.6269524097442627,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 357266912,
+                "ParentUID": 928763884,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071067690849304,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1070394815,
+                "ParentUID": 357266912,
+                "Name": "Leftdoor",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -14.646199226379395,
+                    28.68558120727539,
+                    -0.6269524097442627
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1849871531,
+                "ParentUID": 357266912,
+                "Name": "Rightdoor",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    16.95378875732422,
+                    28.68558120727539,
+                    -0.6269524097442627
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             }
         ]
     }

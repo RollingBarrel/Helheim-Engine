@@ -10,6 +10,7 @@ CREATE(Spawner)
 	CLASS(owner);
 	MEMBER(MemberType::INT, mPoolType);
 	MEMBER(MemberType::FLOAT, mSpawnRate);
+	MEMBER(MemberType::BOOL, mOnlyOnce);
 	END_CREATE;
 }
 
@@ -45,6 +46,10 @@ bool Spawner::Spawn()
  				enemyScript->Init();
 
 				mLastSpawnTime = 0.0f;
+				if(mOnlyOnce)
+				{
+					mIsActive = false;
+				}
 				return true;
 			}
 		}

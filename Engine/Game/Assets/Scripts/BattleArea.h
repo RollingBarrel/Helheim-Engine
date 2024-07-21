@@ -18,7 +18,7 @@ public:
 	void EnemyDestroyed();
 	void ActivateArea(bool activate);;
 	void OnCollisionEnter(CollisionData* collisionData);
-	int GetCurrentEnemies() const { return mCurrentEnemies; }
+	int* GetCurrentEnemies() { return &mCurrentEnemies; }
 
 private:
 

@@ -4,6 +4,7 @@
 struct CollisionData;
 class BoxColliderComponent;
 class BattleArea;
+class PoolManager;
 GENERATE_BODY(EnemyExplosiveSpawner)
 
 class EnemyExplosiveSpawner : public Enemy
@@ -31,6 +32,11 @@ class EnemyExplosiveSpawner : public Enemy
 
 		EnemyState mCurrentState = EnemyState::IDLE;
 		BoxColliderComponent* mCollider = nullptr;
+		PoolManager* mPoolManager = nullptr;
 
+		float mSpawnRate = 2.0f;
+		float mLastSpawnTime = 0.0f;
+		int mMaxActiveEnemies = 12;
+		int* mCurrentAreaEnemies = nullptr;
 };
 

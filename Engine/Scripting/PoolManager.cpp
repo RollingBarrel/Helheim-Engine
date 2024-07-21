@@ -18,7 +18,7 @@ void PoolManager::Start()
 	unsigned int numBullets = 50;
 	unsigned int numItems = 10;
 	unsigned int numEnemies = 15;
-
+	unsigned int numTraps = 2;
 
 	//Items
 	GameObject* Shield = new GameObject("Shield_Pool", mGameObject);
@@ -30,6 +30,7 @@ void PoolManager::Start()
 	//Enemies
 	GameObject* EnemyRobotMelee = new GameObject("EnemyRobotMelee_Pool", mGameObject);
 	GameObject* EnemyRobotRange = new GameObject("EnemyRobotRange_Pool", mGameObject);
+	GameObject* EnemyExplosiveBall = new GameObject("EnemyExplosiveBall_Pool", mGameObject);
 
 	//Traps
 	GameObject* ExplosiveEnemySpawner = new GameObject("ExplosiveEnemySpawner_Pool", mGameObject);
@@ -47,9 +48,10 @@ void PoolManager::Start()
 		//ENEMIES
 		{ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) },
 		{ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) },
+		{ PoolType::EXPLOSIVE_BALL, ObjectPool("Explosive_Ball.prfb", numEnemies, EnemyExplosiveBall) },
 
 		//TRAPS
-		{ PoolType::EXPLOSIVE_SPAWNER, ObjectPool("Explosive_Enemy_Spawner.prfb", numItems, Shield) }
+		{ PoolType::EXPLOSIVE_SPAWNER, ObjectPool("Explosive_Enemy_Spawner.prfb", numTraps, ExplosiveEnemySpawner) }
 	};
 
 }
