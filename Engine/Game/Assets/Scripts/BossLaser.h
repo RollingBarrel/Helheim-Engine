@@ -26,5 +26,7 @@ private:
 	float mDamage = 5.0f;
 	float mAngle = 90.0f;
 	float mSpeed = 25.0f;
+	float mRange = 10.0f;
+	unsigned int mIframes = 0;
 	float mSwipeProgress = 0.0f;
 };
