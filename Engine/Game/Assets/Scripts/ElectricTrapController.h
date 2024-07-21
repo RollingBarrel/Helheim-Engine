@@ -28,6 +28,7 @@ private:
 	std::vector<GameObject*> mInTrap;
 
 	float mArea = 1.0f; 
+	GameObject* mSfx = nullptr;
 
 	// Activation
 	float mTimer = 0.0f;

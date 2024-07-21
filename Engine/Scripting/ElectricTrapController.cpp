@@ -6,6 +6,8 @@
 #include "PlayerController.h"
 #include "Enemy.h"
 #include "Application.h"
+#include "ModuleScene.h"
+
 
 CREATE(ElectricTrapController)
 {
@@ -23,7 +25,11 @@ CREATE(ElectricTrapController)
 
 ElectricTrapController::ElectricTrapController(GameObject* owner) : Script(owner)
 {
-
+    mSfx = App->GetScene()->InstantiatePrefab("TrapSFX.prfb");
+    if (mSfx)
+    {
+        mSfx->SetEnabled(mIsActive);
+    }
 }
 
 ElectricTrapController::~ElectricTrapController()
@@ -83,6 +89,10 @@ void ElectricTrapController::DeactiveTrap()
 {
     mInTrap.clear();
     LOG("Trap not active");
+    if (mSfx)
+    {
+        mSfx->SetEnabled(false);
+    }
     // Reserved for effects, perticle, sounds...
 
 }
@@ -90,6 +100,10 @@ void ElectricTrapController::DeactiveTrap()
 void ElectricTrapController::ActiveTrap()
 {
     LOG("Trap active");
+    if (mSfx)
+    {
+        mSfx->SetEnabled(true);
+    }
     // Reserved for effects, perticle, sounds...
 }
 
