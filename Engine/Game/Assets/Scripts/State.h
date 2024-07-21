@@ -13,6 +13,7 @@ enum StateType
 	GRENADE,
 	SPECIAL,
 	RELOAD,
+	ULTIMATE,
 	NONE,
 };
 

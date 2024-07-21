@@ -209,6 +209,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
@@ -257,6 +259,8 @@
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="TimerScript.cpp" />
+    <ClCompile Include="UltimateAttack.cpp" />
+    <ClCompile Include="UltimateState.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

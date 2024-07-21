@@ -12,6 +12,7 @@
 #include "SpecialState.h"
 #include "SwitchState.h"
 #include "ReloadState.h"
+#include "UltimateState.h"
 
 GrenadeState::GrenadeState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
