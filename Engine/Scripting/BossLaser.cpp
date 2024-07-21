@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "MathFunc.h"
 #include "State.h"
+#include "Geometry/Ray.h"
 
 CREATE(BossLaser)
 {
@@ -14,6 +15,7 @@ CREATE(BossLaser)
 	MEMBER(MemberType::FLOAT, mAngle);
 	MEMBER(MemberType::FLOAT, mDamage);
 	MEMBER(MemberType::FLOAT, mSpeed);
+	MEMBER(MemberType::FLOAT, mRange);
 	END_CREATE;
 }
 
@@ -27,11 +29,7 @@ BossLaser::~BossLaser()
 
 void BossLaser::Start()
 {
-	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-	if (mCollider)
-	{
-		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BossLaser::OnCollisionEnter, this, std::placeholders::_1)));
-	}
+
 }
 
 
@@ -47,7 +45,29 @@ void BossLaser::Update()
 		mSwipeProgress += dt * mSpeed;
 		float newAngle = mSwipeProgress - (mAngle / 2);
 		mGameObject->SetLocalRotation(float3(0, DegToRad(newAngle), 0));
+		Ray ray;
+		ray.pos = mGameObject->GetWorldPosition();
+		ray.pos.y++;
+		ray.dir = mGameObject->GetFront();
+
+		Hit hit;
+		Physics::Raycast(hit, ray, mRange);
+		if (hit.IsValid())
+		{
+			if (hit.mGameObject->GetTag() == "Player" && mIframes == 0)
+			{
+				mIframes = 10.0;
+				LOG("Collided with player");
+				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+				if (player->GetPlayerLowerState()->GetType() != StateType::DASH)
+				{
+					player->TakeDamage(mDamage);
+				}
+			}
+		}
 	}
+	if (mIframes > 0) --mIframes;
 }
 
 void BossLaser::Init()
