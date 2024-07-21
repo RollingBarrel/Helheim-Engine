@@ -82,15 +82,6 @@
                         "ScriptName": "MainMenu",
                         "ScriptVariables": [
                             {
-                                "VariableName": "SCRIPTS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mMainMenuManagerHolder",
-                                "MemberType": 3,
-                                "VariableData": -1
-                            },
-                            {
                                 "VariableName": "MENUS",
                                 "MemberType": 5
                             },
@@ -128,6 +119,65 @@
                                 "VariableName": "mCreditsMenu",
                                 "MemberType": 3,
                                 "VariableData": 1098789503
+                            },
+                            {
+                                "VariableName": "mCreditsText",
+                                "MemberType": 3,
+                                "VariableData": 1087569214
+                            },
+                            {
+                                "VariableName": "mOptionsContainerGO",
+                                "MemberType": 3,
+                                "VariableData": 1936926760
+                            },
+                            {
+                                "VariableName": "mControlsGO",
+                                "MemberType": 3,
+                                "VariableData": 1852538699
+                            },
+                            {
+                                "VariableName": "mSettingsGO",
+                                "MemberType": 3,
+                                "VariableData": 13224123
+                            },
+                            {
+                                "VariableName": "mControlsButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 1520592196
+                            },
+                            {
+                                "VariableName": "mSettingsButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 1235355345
+                            },
+                            {
+                                "VariableName": "SETTINGS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mGeneralVolumeButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 1519662256
+                            },
+                            {
+                                "VariableName": "mMusicVolumeButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 1894694441
+                            },
+                            {
+                                "VariableName": "mEffectsVolumeButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 896442468
+                            },
+                            {
+                                "VariableName": "mVSyncButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 1269039088
+                            },
+                            {
+                                "VariableName": "mFullscreenButtonGO",
+                                "MemberType": 3,
+                                "VariableData": 1862532238
                             },
                             {
                                 "VariableName": "BUTTONS",
@@ -2962,7 +3012,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            100.0,
+                            0.0,
                             0.0
                         ],
                         "Rotation": [
@@ -3036,7 +3086,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -1250.0,
+                            -1000.0,
                             0.0
                         ],
                         "Rotation": [
@@ -3110,7 +3160,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -1075.0,
+                            -815.0,
                             0.0
                         ],
                         "Rotation": [
@@ -3184,7 +3234,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -300.0,
+                            -200.0,
                             0.0
                         ],
                         "Rotation": [
@@ -3617,10 +3667,6 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
                     }
                 ]
             },
@@ -3837,6 +3883,10 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": true
                     }
                 ]
             },
@@ -3989,6 +4039,10 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": true
                     }
                 ]
             },
@@ -5235,84 +5289,6 @@
                 ]
             },
             {
-                "UID": 1945449448,
-                "ParentUID": 1603273687,
-                "Name": "Button",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": true,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            25.0,
-                            40.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
                 "UID": 1643257206,
                 "ParentUID": 1603273687,
                 "Name": "Fill",
@@ -5343,7 +5319,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -100.0,
+                            -50.0,
                             0.0,
                             0.0
                         ],
@@ -5354,7 +5330,7 @@
                             1.0
                         ],
                         "Size": [
-                            200.0,
+                            300.0,
                             20.0
                         ],
                         "AnchorMin": [
@@ -5469,84 +5445,6 @@
                 ]
             },
             {
-                "UID": 969538313,
-                "ParentUID": 1552416303,
-                "Name": "Button",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": true,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            25.0,
-                            40.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
                 "UID": 104302619,
                 "ParentUID": 1552416303,
                 "Name": "Fill",
@@ -5577,7 +5475,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -100.0,
+                            -50.0,
                             0.0,
                             0.0
                         ],
@@ -5588,7 +5486,7 @@
                             1.0
                         ],
                         "Size": [
-                            200.0,
+                            300.0,
                             20.0
                         ],
                         "AnchorMin": [
@@ -5733,7 +5631,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -100.0,
+                            -50.0,
                             0.0,
                             0.0
                         ],
@@ -5744,7 +5642,7 @@
                             1.0
                         ],
                         "Size": [
-                            200.0,
+                            300.0,
                             20.0
                         ],
                         "AnchorMin": [
@@ -5847,7 +5745,7 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.5,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -5855,6 +5753,10 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": true
                     }
                 ]
             },
@@ -5925,167 +5827,7 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 1898735158,
-                "ParentUID": 1862532238,
-                "Name": "GameObject",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": true,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            30.0,
-                            30.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": true
-                    }
-                ]
-            },
-            {
-                "UID": 1164807967,
-                "ParentUID": 1269039088,
-                "Name": "GameObject",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": true,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            30.0,
-                            30.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.5,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -6163,9 +5905,9 @@
                         "IsEnabled": true,
                         "ImageID": 148626881,
                         "Color": [
-                            0.0,
-                            0.0,
-                            0.0
+                            0.7843137383460999,
+                            0.7843137383460999,
+                            0.7843137383460999
                         ],
                         "Alpha": 1.0,
                         "ShouldDraw": true,
@@ -6175,6 +5917,174 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1519662256,
+                "ParentUID": 1603273687,
+                "Name": "Button",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            25.0,
+                            40.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.7843137383460999,
+                            0.7843137383460999,
+                            0.7843137383460999
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1894694441,
+                "ParentUID": 1552416303,
+                "Name": "Button",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            25.0,
+                            40.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.7843137383460999,
+                            0.7843137383460999,
+                            0.7843137383460999
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": true
                     }
                 ]
             }
