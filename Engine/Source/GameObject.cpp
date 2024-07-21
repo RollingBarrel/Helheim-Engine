@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleOpenGL.h"
+#include "ModuleScriptManager.h"
+#include "ModuleCamera.h"
 
 #include "Component.h"
 #include "MeshRendererComponent.h"
@@ -10,6 +12,7 @@
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
 #include "ImageComponent.h"
+#include "MaskComponent.h"
 #include "CanvasComponent.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
@@ -24,7 +27,6 @@
 #include "TrailComponent.h"
 #include "DecalComponent.h"
 #include "TextComponent.h"
-#include "ModuleScriptManager.h"
 
 #include <algorithm>
 #include "Algorithm/Random/LCG.h"
@@ -65,7 +67,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 	mWorldTransformMatrix(original.GetWorldTransform()), mLocalTransformMatrix(original.mLocalTransformMatrix),
 	mWorldEulerAngles(original.GetWorldEulerAngles()), mLocalRotation(original.mLocalRotation), mWorldRotation(original.GetWorldRotation()), mLocalEulerAngles(original.mLocalEulerAngles),
 	mWorldScale(original.GetWorldScale()), mLocalScale(original.mLocalScale), 
-	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight), mIsTransformModified(false), mUpdatedTransform(false),
+	mFront(original.mFront), mUp(original.mUp), mRight(original.mRight), mIsTransformModified(true), mUpdatedTransform(true),
 	mPrefabId(original.mPrefabId), mIsPrefabOverride(original.mIsPrefabOverride), mIsDynamic(original.mIsDynamic)
 {
 	SetTag(original.mTag);
@@ -167,6 +169,21 @@ void GameObject::SetTag(const std::string& tag)
 	App->GetScene()->DeleteFromTagMap(mTag, this);
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
+
+	CameraComponent* camera = reinterpret_cast<CameraComponent*>(GetComponent(ComponentType::CAMERA));
+	if (camera)
+	{
+		App->GetCamera()->AddMainCamera(camera);
+	}
+}
+
+void GameObject::SetDynamic(bool dynamic)
+{
+	mIsDynamic = dynamic;
+	for (GameObject* child : mChildren)
+	{
+		child->SetDynamic(dynamic);
+	}
 }
 
 void GameObject::SetParent(GameObject* newParent)
@@ -212,14 +229,14 @@ void GameObject::SetActive(bool active)
 
 	mIsActive = active;
 
-	for (Component* component : mComponents)
+	for (unsigned int i = 0; i < mComponents.size(); ++i)
 	{
-		component->SetEnable(active);
+		mComponents[i]->SetEnable(active);
 	}
 
-	for (GameObject* child : mChildren)
+	for (unsigned int i = 0; i < mChildren.size(); ++i)
 	{
-		child->SetActive(active);
+		mChildren[i]->SetActive(active);
 	}
 }
 
@@ -439,6 +456,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::IMAGE:
 		newComponent = new ImageComponent(this);
+		break;
+	case ComponentType::MASK:
+		newComponent = new MaskComponent(this);
 		break;
 	case ComponentType::CANVAS:
 		newComponent = new CanvasComponent(this);

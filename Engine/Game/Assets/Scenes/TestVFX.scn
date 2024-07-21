@@ -10,7 +10,7 @@
                 "Active": true,
                 "Translation": [
                     0.0,
-                    -1.223358154296875,
+                    -1.0,
                     0.0
                 ],
                 "Rotation": [
@@ -126,12 +126,8 @@
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            1433628379
-                        ],
-                        "NumAnimationUIDs": 1,
-                        "LowerSMUID": 0,
-                        "UpperSMUID": 0
+                        "AnimationUID": 1433628379,
+                        "LowerSMUID": 0
                     }
                 ]
             },
@@ -6574,7 +6570,78 @@
                         ]
                     }
                 ]
+            },
+            {
+                "UID": 831132522,
+                "ParentUID": 1,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -8.295583724975586,
+                    1.9490737915039063,
+                    -1.7588496208190919
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 813309308,
+                        "MaxPoints": 1000,
+                        "MinDistance": 1.0,
+                        "MaxLifeTime": 4.0,
+                        "UVScroll": 1.0,
+                        "IsFixedDirection": false,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Gradient": {
+                            "Color Gradient": []
+                        }
+                    }
+                ]
             }
-        ]
+        ],
+        "NavMeshResource": 315485471
     }
 }

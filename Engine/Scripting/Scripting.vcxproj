@@ -168,22 +168,20 @@
   <ItemGroup>
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\ActiveBattleAreaController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\BulletEnemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyPool.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\EnemyRobot.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\EnemySpawner.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Spawner.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GrenadeState.h" />
@@ -212,28 +210,28 @@
     <ClInclude Include="..\Game\Assets\Scripts\Teleporter.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TestScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
     <ClCompile Include="AudioTester.cpp" />
-    <ClCompile Include="ActiveBattleAreaController.cpp" />
     <ClCompile Include="BattleArea.cpp" />
     <ClCompile Include="AimState.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Bullet.cpp" />
-    <ClCompile Include="BulletEnemy.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="Enemy.cpp" />
+    <ClCompile Include="EnemyCreatureMelee.cpp" />
+    <ClCompile Include="EnemyCreatureRange.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
-    <ClCompile Include="EnemyPool.cpp" />
-    <ClCompile Include="EnemyRobot.cpp" />
     <ClCompile Include="EnemyRobotMelee.cpp" />
     <ClCompile Include="EnemyRobotRange.cpp" />
-    <ClCompile Include="EnemySpawner.cpp" />
+    <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GrenadeState.cpp" />
     <ClCompile Include="Hammer.cpp" />
@@ -263,6 +261,8 @@
     <ClCompile Include="Teleporter.cpp" />
     <ClCompile Include="TestScript.cpp" />
     <ClCompile Include="TimerScript.cpp" />
+    <ClCompile Include="UltimateAttack.cpp" />
+    <ClCompile Include="UltimateState.cpp" />
     <ClCompile Include="Weapon.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

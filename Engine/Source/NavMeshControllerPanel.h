@@ -14,7 +14,6 @@ public:
     
 
 private:
-    void DrawDebug();
     void DrawDebugPolyMesh();
     void LoadMeshVAO();
 

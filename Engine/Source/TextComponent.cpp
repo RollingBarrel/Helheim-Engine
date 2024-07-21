@@ -322,7 +322,7 @@ void TextComponent::Draw()
     float4x4 model = float4x4::identity;
     float4x4 view = float4x4::identity;
 
-    if (mCanvas->GetScreenSpace()) //Ortographic Mode
+    if (mCanvas->GetRenderSpace() == RenderSpace::Screen) //Ortographic Mode
     {
         Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         if (component != nullptr)

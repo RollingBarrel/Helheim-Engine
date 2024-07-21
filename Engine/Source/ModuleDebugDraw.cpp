@@ -635,7 +635,7 @@ update_status  ModuleDebugDraw::Update(float dt)
         {
             float4x4 viewproj = camera->GetProjectionMatrix() * camera->GetViewMatrix();
             
-            EngineApp->GetOpenGL()->BindGFramebuffer();
+            EngineApp->GetOpenGL()->BindSceneFramebuffer();
             Draw(viewproj, EngineApp->GetWindow()->GetGameWindowsSize().x, EngineApp->GetWindow()->GetGameWindowsSize().y);
             EngineApp->GetOpenGL()->UnbindFramebuffer();
         }
@@ -683,12 +683,6 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
         }
 
-        BoxColliderComponent* boxCollider = reinterpret_cast<BoxColliderComponent*>(focusGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-        if (boxCollider)
-        {
-            DrawColliders(focusGameObject);
-        }
-
         DecalComponent* decalComponent = reinterpret_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
         if (decalComponent)
         {
@@ -696,16 +690,15 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             obb.Transform(focusGameObject->GetWorldTransform());
             dd::arrow(focusGameObject->GetWorldPosition(), focusGameObject->GetWorldPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
-        }
-
-        if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
-        {
-            DrawBoundingBoxes(focusGameObject);
-        }
+        }        
         
+        DrawColliders(focusGameObject);
     }
     
-
+    if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawColliders())
+    {
+        DrawColliders(App->GetScene()->GetRoot());
+    }
 
     dd::flush();
 }
@@ -724,6 +717,17 @@ void ModuleDebugDraw::DrawCube(const OBB& obb, const float3& color)
     {
         points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
     };
+    dd::box(orderedPoints, color);
+    dd::flush();
+}
+
+void ModuleDebugDraw::DrawCube(const std::vector<float3>& points, const float3& color)
+{
+    ddVec3 orderedPoints[8] =
+    {
+        points[0], points[1], points[3], points[2], points[4], points[5], points[7], points[6]
+    };
+
     dd::box(orderedPoints, color);
     dd::flush();
 }
@@ -840,9 +844,11 @@ void ModuleDebugDraw::DrawColliders(GameObject* root)
     if (root != nullptr) 
     {
         BoxColliderComponent* boxCollider = (BoxColliderComponent*)root->GetComponent(ComponentType::BOXCOLLIDER);
-        if (boxCollider != nullptr)
+        if (boxCollider != nullptr && boxCollider->IsEnabled())
         {
-            EngineApp->GetDebugDraw()->DrawCube(boxCollider->GetOBB(), float3(0.5f, 1.0f, 0.5f));
+            OBB obb;
+            boxCollider->GetColliderOBB(obb);
+            DrawCube(obb, float3(0.5f, 1.0f, 0.5f));
         }
 
         for (int i = 0; i < root->GetChildren().size(); i++) 

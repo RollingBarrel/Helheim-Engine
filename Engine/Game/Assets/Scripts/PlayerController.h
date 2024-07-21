@@ -20,6 +20,7 @@ class GrenadeState;
 class SwitchState;
 class SpecialState;
 class ReloadState;
+class UltimateState;
 enum StateType;
 
 class Weapon;
@@ -57,6 +58,7 @@ public:
     void Update() override;
 
     float3 GetPlayerDirection() { return mPlayerDirection; }
+    float3 GetCollisionDirection() { return mCollisionDirection; }
     float3 GetPlayerAimPosition() { return mAimPosition; }
     float3 GetPlayerPosition();
    
@@ -119,6 +121,18 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+    //Ultimate
+    GameObject* GetUltimateGO() const{ return mUltimateGO; };
+    void AddUltimateResource();
+    int GetUltimateResource() const { return mUltimateResource; };
+    float GetUltimateCooldown() const { return mUltimateCooldown; };
+    float GetUltimateSlow() const { return mUltimatePlayerSlow; };
+    float GetUltimateDuration() const { return mUltimateDuration; };
+    float GetUltimateDamageInterval() const { return mUltimateDamageInterval; };
+    float GetUltimateDamageTick() const { return mUltimateDamageTick; };
+    void SetUltimateResource(int resource) { mUltimateResource = resource; }
+    void EnableUltimate(bool enable);
+
     // States
     DashState* GetDashState() { return mDashState; }
     IdleState* GetIdleState() { return mIdleState; }
@@ -129,6 +143,7 @@ public:
     SwitchState* GetSwitchState() { return mSwitchState; }
     SpecialState* GetSpecialState() { return mSpecialState; }
     ReloadState* GetReloadState() { return mReloadState; }
+    UltimateState* GetUltimateState() { return mUltimateState; }
 
 private:
     void CheckInput();
@@ -154,6 +169,8 @@ private:
     SwitchState* mSwitchState = nullptr;
     SpecialState* mSpecialState = nullptr;
     ReloadState* mReloadState = nullptr;
+    UltimateState* mUltimateState = nullptr;
+
 
     // MOUSE
     float3 mPlayerDirection;
@@ -169,7 +186,7 @@ private:
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
     // Speed
-    float mPlayerSpeed = 2.0f;
+    float mPlayerSpeed;
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
@@ -179,6 +196,7 @@ private:
     Weapon* mSpecialWeapon = nullptr;
     int mCurrentEnergy = 0;
     EnergyType mEnergyType = EnergyType::NONE;
+    int mUltimateResource = 100;
 
     // RANGED
     RangeWeapon* mPistol = nullptr;
@@ -214,9 +232,18 @@ private:
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+
+    //Ultimate
+    GameObject* mUltimateGO = nullptr;
+    float mUltimateCooldown;
+    float mUltimateDuration;
+    float mUltimatePlayerSlow;
+    float mUltimateDamageTick;
+    float mUltimateDamageInterval;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
+    float3 mCollisionDirection = float3::zero;
 
     // Camera
     GameObject* mCamera = nullptr;

@@ -1,78 +1,97 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 class GameObject;
 class AnimationComponent;
 class AIAgentComponent;
 class Component;
 
-enum class EnemyType : int
+enum class EnemyState
 {
-	ROBOT_MELEE = 0,
-	ROBOT_RANGE,
-	COUNT
+	IDLE,
+	CHASE,
+	CHARGE,
+	ATTACK,
 };
 
 
 class Enemy : public Script
 {
-	public:
-		Enemy(GameObject* owner);
-		~Enemy() {}
-		void Start() override;
-		void Update() override;
+public:
+	Enemy(GameObject* owner);
+	~Enemy() {}
+	void Start() override;
+	void Update() override;
 
-		virtual void TakeDamage(float damage);
-		virtual void Death();
-		virtual void PushBack();
-		virtual bool IsMoving();
-		virtual void Reset();
+	virtual void TakeDamage(float damage);
+	virtual void Death();
+	virtual void PushBack();
+	virtual void Init();
 
-		void AddFootStepAudio(GameObject* audio);
+	void AddFootStepAudio(GameObject* audio);
 
-		// DEBUFF
-		virtual void GetParalyzed(float percentage);
-		virtual void GetParalysisCured(float percentage);
+	// DEBUFF
+	virtual void GetParalyzed(float percentage);
+	virtual void GetParalysisCured(float percentage);
 
-		virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
+	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
-	protected:
-		bool Delay(float delay);
-		bool IsPlayerInRange(float range);		
-		void DropItem();
-		
-		int mShieldDropRate = 20;
-		int mRedEnergyDropRate = 35;
-		int mBlueEnergyDropRate = 45;
-		float mHealth = 10.0f;
-		float mMaxHealth = 6.0f;
-		float mSpeed = 1.0f;
-		float mRotationSpeed = 1.0f;
-		float mActivationRange = 250.0f;
-		float mChaseDelay = 1.25f;
+protected:
+	virtual void Idle();
+	virtual void Chase();
+	virtual void Charge();
+	virtual void Attack();
 
-		GameObject* mPlayer = nullptr;
-		AnimationComponent* mAnimationComponent = nullptr;
-		AIAgentComponent* mAiAgentComponent = nullptr;
+	virtual void PlayStepAudio() {};
+	virtual void PlayAttackAudio() {};
 
-		// DEBUFF
-		bool mBeAttracted = false;
+	bool IsPlayerInRange(float range);
+	void DropItem();
 
-		bool mIsParalyzed = false;
-		const float mParalyzedTimer = 5.0f;
-		float mCurrentParalyzedTimer = mParalyzedTimer;
-		float mParalysisSeverityLevel = 1.0f;
+	//Stats
+	float mHealth = 10.0f;
+	float mMaxHealth = 6.0f;
+	float mSpeed = 1.0f;
+	float mRotationSpeed = 1.0f;
+	float mChaseDistance = 250.0f;
+	float mAttackDistance = 2.0f;
+	float mAttackDamage = 2.0f;
+
+	//DropRates
+	int mShieldDropRate = 20;
+	int mRedEnergyDropRate = 35;
+	int mBlueEnergyDropRate = 45;
+	bool mBeAttracted = false;
+
+	EnemyState mCurrentState = EnemyState::IDLE;
+	GameObject* mPlayer = nullptr;
+	AnimationComponent* mAnimationComponent = nullptr;
+	AIAgentComponent* mAiAgentComponent = nullptr;
+
+	//Timers
+	TimerScript mChargeDurationTimer;
+	float mChargeDuration = 0.0f;
+	TimerScript mAttackDurationTimer;
+	float mAttackDuration = 0.0f;
+	TimerScript mAttackCoolDownTimer;
+	float mAttackCoolDown = 1.0f;
+	TimerScript mDisengageTimer;
+	float mDisengageTime = 1.0f;
+	TimerScript mDeathTimer;
+	float mDeathTime = 1.4f;
+	bool mDeath = false;
+
+	// DEBUFF
+	bool mBeAttracted = false;
+
+	bool mIsParalyzed = false;
+	const float mParalyzedTimer = 5.0f;
+	float mCurrentParalyzedTimer = mParalyzedTimer;
+	float mParalysisSeverityLevel = 1.0f;
 
 	private:
 		void ActivateEnemy();
 
-		GameObject* mFootstepAudioHolder = nullptr;
-		
-		//Hit Effect
-		bool mHit = false;
-		bool mDeath = false;
-		float mTimePassed = 0.0f;
-		std::vector<Component*> mMeshComponents;
-		std::vector<unsigned int> mMaterialIds;
 };
