@@ -36,11 +36,7 @@ private:
 
 	BossState mCurrentState = BossState::IDLE;
 
-	float mRangeDistance = 9.0f;
-	float mRangeDamage = 15.0f;
 	float mBulletSpeed = 0.65f;
-	float mTimerAttack = 2.0f;
-	float mAttackCD = 0.0f;
 	int mLastAttack = -1;
 
 	//Collider

@@ -18,10 +18,10 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
-    MEMBER(MemberType::FLOAT, mRangeDistance);
-    MEMBER(MemberType::FLOAT, mRangeDamage);
+    MEMBER(MemberType::FLOAT, mAttackDistance);
+    MEMBER(MemberType::FLOAT, mAttackDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
-    MEMBER(MemberType::FLOAT, mTimerAttack);
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
 
     END_CREATE;
@@ -52,7 +52,6 @@ void EnemyBoss::Start()
         mAnimationComponent->SetIsPlaying(true);
 
     }
-    mAttackCD = mTimerAttack;
 }
 
 void EnemyBoss::Update()
@@ -90,7 +89,7 @@ void EnemyBoss::Idle()
 
 void EnemyBoss::Attack()
 {
-    if (mAttackDurationTimer.Delay(mTimerAttack))
+    if (mAttackDurationTimer.Delay(mAttackCoolDown))
     {
         int attack = rand() % 3;
         if (attack == mLastAttack)
@@ -125,7 +124,7 @@ void EnemyBoss::BulletAttack()
     Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
-    bulletScript->Init(bulletOriginPosition, bulletGO->GetFront(), mBulletSpeed, 1.0f, &gradient, mRangeDamage);
+    bulletScript->Init(bulletOriginPosition, bulletGO->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
 }
 
 void EnemyBoss::LaserAttack()
