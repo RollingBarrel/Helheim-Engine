@@ -26,7 +26,7 @@ public:
 
 	virtual void TakeDamage(float damage);
 	virtual void Death();
-	virtual void PushBack();
+	virtual void PushBack(); 
 	virtual void Init();
 
 	bool IsChasing();

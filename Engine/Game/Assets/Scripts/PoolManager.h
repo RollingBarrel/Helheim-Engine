@@ -18,12 +18,12 @@ enum class PoolType
 	//ENEMIES
 	ROBOT_MELEE,
 	ROBOT_RANGE,
+	ROBOT_EXPLOSIVE,
 	CREATURE_MELEE,
 	CREATURE_RANGE,
 
 	LAST
 };
-
 
 GENERATE_BODY(PoolManager);
 class PoolManager : public Script

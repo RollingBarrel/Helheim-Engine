@@ -39,6 +39,7 @@ void Enemy::Update()
 	if (mDeath)
 	{
 		Death();
+		return;
 	}
 
 	if (!mBeAttracted)
@@ -84,11 +85,12 @@ void Enemy::Chase()
 	{
 		if (mAiAgentComponent)
 		{
+			LOG("Setting navigation path to player position: %s", mPlayer->GetWorldPosition().ToString().c_str());
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
 			direction.y = 0;
 			direction.Normalize();
-			float angle = std::atan2(direction.x, direction.z);;
+			float angle = std::atan2(direction.x, direction.z);
 
 			if (mGameObject->GetWorldRotation().y != angle)
 			{

@@ -10,6 +10,7 @@ class EnemyExplosive : public Enemy
 public:
 	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
 	~EnemyExplosive() {}
+
 	void Start() override;
 	void Charge() override;
 	void Attack() override;
