@@ -70,11 +70,13 @@ void BossLaser::Update()
 	if (mIframes > 0) --mIframes;
 }
 
-void BossLaser::Init()
+void BossLaser::Init(int damage, int range)
 {
 	mSwipeProgress = 0.0f;
 	mGameObject->SetEnabled(true);
 	mGameObject->SetLocalRotation(float3(0, DegToRad(-mAngle / 2), 0));
+	mDamage = damage;
+	mRange = range;
 }
 
 void BossLaser::OnCollisionEnter(CollisionData* collisionData)

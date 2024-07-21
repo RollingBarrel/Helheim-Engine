@@ -17,7 +17,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init();
+	void Init(int damage, int range);
 
 	void OnCollisionEnter(CollisionData* collisionData);
 

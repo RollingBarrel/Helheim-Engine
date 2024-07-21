@@ -132,7 +132,7 @@ void EnemyBoss::LaserAttack()
     if (mLaserGO)
     {
         BossLaser* laserScript = reinterpret_cast<BossLaser*>(reinterpret_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) laserScript->Init();
+        if (laserScript) laserScript->Init(mAttackDamage, mAttackDistance);
     }
     
 }
