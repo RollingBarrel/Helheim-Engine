@@ -18,7 +18,9 @@ enum class PoolType
 	//ENEMIES
 	ROBOT_MELEE,
 	ROBOT_RANGE,
-	
+	CREATURE_MELEE,
+	CREATURE_RANGE,
+
 	LAST
 };
 
