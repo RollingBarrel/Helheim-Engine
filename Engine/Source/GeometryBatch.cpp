@@ -540,6 +540,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 	if (mMeshComponents.size() == 0)
 		return;
 
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Batch Draw Call");
 	unsigned int ibo = GetCommandsSsbo();
 	ComputeCommands(ibo, frustum);
 
@@ -580,6 +581,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 	//CleanUp
 	glBindVertexArray(0);
 	glDeleteBuffers(1, &ibo);
+	glPopDebugGroup();
 }
 
 void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
@@ -643,6 +645,7 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 	}
 	if (mNumSkins)
 	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skinning");
 		glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
 		glUniform1ui(0, mNumSkins);
 		glUniform1ui(1, frustums.size());
@@ -661,6 +664,7 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 				ComputeSkinning(mMeshComponents[i]);
 			}
 		}
+		glPopDebugGroup();
 	}
 }
 
