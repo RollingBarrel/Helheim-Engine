@@ -29,7 +29,7 @@ public:
     PlayerController* GetPlayerController() const { return mPlayerController; }
     AudioManager* GetAudio() const { return mAudioManager;}
     HudController* GetHud() const { return mHudController; }
-    bool UsingController() const { return mController; }
+    bool UsingController() const;
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
     PoolManager* GetPoolManager() const;
 

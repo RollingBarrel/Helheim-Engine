@@ -107,6 +107,11 @@ void GameManager::SetPaused(bool value)
     mHudController->SetScreen(SCREEN::PAUSE, mPaused);
 }
 
+bool GameManager::UsingController() const
+{
+	return App->GetInput()->isGamepadAvailable();
+}
+
 void GameManager::LoadLevel(const char* LevelName)
 {
     if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);

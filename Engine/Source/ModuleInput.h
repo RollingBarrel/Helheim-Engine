@@ -106,6 +106,7 @@ public:
 	float2 GetGlobalMousePosition() const { return float2(static_cast<float>(mMouseGlobalPositionX), static_cast<float>(mMouseGlobalPositionY)); }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
+	bool isGamepadAvailable() const { return mGameController.mId != nullptr; }
 
 	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }
@@ -116,8 +117,8 @@ public:
 	void SetGameControllerRumble(unsigned int low_freq, unsigned int high_freq, unsigned int time);
 	bool GetGameControllerReceivedInputs() const { return mGameControllerReceivedInput; }
 
-
 	void HandleGameControllerInput();
+
 
 protected:
 
