@@ -172,6 +172,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
@@ -224,6 +225,7 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BombBoss.cpp" />
+    <ClCompile Include="BossLaser.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Enemy.cpp" />

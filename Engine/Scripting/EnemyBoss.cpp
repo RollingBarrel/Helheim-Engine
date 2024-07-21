@@ -10,6 +10,7 @@
 #include "BombBoss.h"
 #include "ColorGradient.h"
 #include "Bullet.h"
+#include "BossLaser.h"
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -22,7 +23,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mRangeDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mTimerAttack);
-    MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
+    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
 
     END_CREATE;
 }
@@ -39,8 +40,11 @@ void EnemyBoss::Start()
     for (const char* prefab : mTemplateNames)
     {
         GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
-        bombTemplate->SetEnabled(false);
-        mTemplates.push_back(bombTemplate);
+        if (bombTemplate)
+        {
+            bombTemplate->SetEnabled(false);
+            mTemplates.push_back(bombTemplate);
+        }
     }
 
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
@@ -88,19 +92,22 @@ void EnemyBoss::Attack()
 {
     if (Delay(mTimerAttack))
     {
-        switch (rand() % 1)
+        int attack = rand() % 3;
+        if (attack == mLastAttack)
         {
-        case 0:
+            ++attack;
+        }
+        switch (attack)
+        {
         case 1:
-            BulletAttack();
+            LaserAttack();
             break;
-        //case 1:
-        //    LaserAttack();
-        //    break;
         case 2:
             BombAttack();
             break;
+        case 0:
         default:
+            BulletAttack();
             break;
         }
     }
@@ -109,7 +116,7 @@ void EnemyBoss::Attack()
 void EnemyBoss::BulletAttack()
 {
     float3 bulletOriginPosition = mGameObject->GetWorldPosition();
-    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMYBULLET);
+    GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->LookAt(mPlayer->GetWorldPosition());
     Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -120,6 +127,11 @@ void EnemyBoss::BulletAttack()
 
 void EnemyBoss::LaserAttack()
 {
+    if (mLaserGO)
+    {
+        BossLaser* laserScript = reinterpret_cast<BossLaser*>(reinterpret_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        if (laserScript) laserScript->Init();
+    }
     
 }
 
@@ -142,9 +154,4 @@ void EnemyBoss::BombAttack()
 void EnemyBoss::Death()
 {
     mGameObject->SetEnabled(false);
-}
-
-void EnemyBoss::Reset()
-{
-    Enemy::Reset();
 }

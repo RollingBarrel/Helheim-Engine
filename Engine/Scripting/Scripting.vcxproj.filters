@@ -181,6 +181,11 @@
     <ClInclude Include="BombBoss.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -318,6 +323,11 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyBoss.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="UltimateAttack.cpp" />
+    <ClCompile Include="UltimateState.cpp" />
+    <ClCompile Include="BossLaser.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
   </ItemGroup>
