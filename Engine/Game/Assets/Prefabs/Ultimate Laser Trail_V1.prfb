@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1393819585,
-                "ParentUID": 1,
+                "UID": 953384123,
+                "ParentUID": 1313924299,
                 "Name": "Ultimate Laser Trail_V1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    14.31946849822998,
-                    -2.5629913806915285,
-                    26.159046173095704
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -34,20 +34,20 @@
                         "Image": 1485191790,
                         "MaxPoints": 1000,
                         "MinDistance": 0.0,
-                        "MaxLifeTime": 0.0,
+                        "MaxLifeTime": 0.20000000298023225,
                         "UVScroll": -7.0,
                         "IsFixedDirection": true,
                         "IsUVScrolling": true,
                         "Direction": [
+                            2.0,
                             0.0,
-                            1.0,
                             0.0
                         ],
                         "Width": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.10000000149011612,
-                                "MaxValue": 0.10999999940395355
+                                "MinValue": 2.0,
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []

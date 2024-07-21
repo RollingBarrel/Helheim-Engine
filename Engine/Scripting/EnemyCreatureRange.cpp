@@ -40,6 +40,7 @@ CREATE(EnemyCreatureRange)
 void EnemyCreatureRange::Start()
 {
 	Enemy::Start();
+	Init();
 
 	if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
 	if (mLaserTrail) mLaserTrail->SetEnabled(false);
@@ -49,6 +50,8 @@ void EnemyCreatureRange::Start()
 		mLaserCharge->SetEnabled(false);
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
+
+
 }
 
 void EnemyCreatureRange::Update()

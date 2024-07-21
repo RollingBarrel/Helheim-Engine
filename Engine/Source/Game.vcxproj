@@ -157,10 +157,6 @@
     <ClInclude Include="GameApp.h" />
     <ClInclude Include="ModuleGame.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
-    <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

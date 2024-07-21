@@ -17,8 +17,8 @@ AnimationController::AnimationController(ResourceAnimation* animation) {
 	mAnimationUID = animation->GetUID();
 	mLoop = false;
 
-	mCurrentTime = 0.0f;
-	mStartTime = 0.0f;
+	mCurrentTime = 0.1f;
+	mStartTime = 0.1f;
 	mEndTime = animation->GetDuration();
 }
 
@@ -59,7 +59,7 @@ void AnimationController::Update()
 void AnimationController::Restart()
 {
 	
-	mCurrentTime = 0.0f;
+	mCurrentTime = 0.1f;
 	//mCurrentTime = mStartTime;
 }
 
@@ -92,7 +92,7 @@ Quat AnimationController::Interpolate(const Quat& first, const Quat& second, flo
 
 void AnimationController::SetStartTime(float time)
 {
-	mStartTime = std::max(time, 0.0f);
+	mStartTime = std::max(time, 0.1f);
 
 }
 

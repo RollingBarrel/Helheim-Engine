@@ -32,6 +32,7 @@ CREATE(EnemyCreatureMelee)
 void EnemyCreatureMelee::Start()
 {
 	Enemy::Start();
+	Init();
 
 	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
@@ -50,7 +51,8 @@ void EnemyCreatureMelee::Chase()
 		if (mAiAgentComponent)
 		{
 			if (IsPlayerInRange(mAttackDistance))
-			{
+			{	
+				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
 				mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
 				direction.y = 0;
@@ -61,7 +63,10 @@ void EnemyCreatureMelee::Chase()
 				{
 					mGameObject->SetWorldRotation(float3(0, angle, 0));
 				}
-				mCurrentState = EnemyState::CHARGE;
+				if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
+				{
+					mCurrentState = EnemyState::CHARGE;
+				}
 			}
 			else
 			{
@@ -87,7 +92,7 @@ void EnemyCreatureMelee::Chase()
 
 void EnemyCreatureMelee::Charge()
 {
-	//if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
+	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
 	Enemy::Charge();
 	mHit = false;
 
@@ -97,6 +102,7 @@ void EnemyCreatureMelee::Attack()
 {
 	if (mAttackDurationTimer.Delay(mAttackDuration))
 	{
+		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
 	}
 	
@@ -111,6 +117,6 @@ void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
 	if (mCurrentState == EnemyState::ATTACK && !mHit && collisionData->collidedWith->GetTag() == "Player")
 	{
 		mHit = true;
-		LOG("hiteao");
+		GameManager::GetInstance()->GetPlayerController()->TakeDamage(mAttackDamage);
 	}
 }
