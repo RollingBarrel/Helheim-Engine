@@ -37,6 +37,7 @@ void ElectricTrapController::Start()
     mSfx = App->GetScene()->InstantiatePrefab("TrapSFX.prfb");
     if (mSfx)
     {
+        mSfx->SetParent(mGameObject);
         mSfx->SetEnabled(mIsActive);
     }
 

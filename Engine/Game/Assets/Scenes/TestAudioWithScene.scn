@@ -12599,8 +12599,8 @@
                 "UID": 1101973766,
                 "ParentUID": 1,
                 "Name": "Trap",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12624,7 +12624,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -12640,7 +12640,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "ElectricTrapController",
                         "ScriptVariables": [
                             {
