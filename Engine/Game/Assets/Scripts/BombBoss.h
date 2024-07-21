@@ -4,7 +4,7 @@
 #include "float3.h"
 
 class BoxColliderComponent;
-class ParticleSystemComponent;
+class Component;
 struct CollisionData;
 
 GENERATE_BODY(BombBoss);
@@ -18,16 +18,17 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init();
+	void Init(float3 bombOrigin);
 
 private:
-
-	float mArea = 100.0f;
+	GameObject* mBombGO = nullptr;
+	float mRadius = 2.5f;
 	float mDamage = 1.0f;
 	float mTimeDelay = 3.0f;
 	float mTimePassed = 0.0f;
+	float3 mBombOrigin = float3::zero;
 	bool mHasExploded = false;
-	std::vector<ParticleSystemComponent*> mExplosionParticles = nullptr;
+	std::vector<Component*> mExplosionParticles;
 
 
 };

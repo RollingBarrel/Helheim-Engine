@@ -33,25 +33,21 @@ private:
 	void BombAttack();
 
 	void  Death() override;
-	void Reset() override;
 
 	BossState mCurrentState = BossState::IDLE;
-
-	TimerScript mDeathTimer;
 
 	float mRangeDistance = 9.0f;
 	float mRangeDamage = 15.0f;
 	float mBulletSpeed = 0.65f;
 	float mTimerAttack = 2.0f;
 	float mAttackCD = 0.0f;
-	float mTimerDisengage = 0.0f;
-	GameObject* mBulletOrigin = nullptr;
+	int mLastAttack = -1;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
 
-	// MoveSimulation
-	float mStepTimer = 0.0f;
-	float mStepCooldown = 0.5f;
+	const const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
+	std::vector<GameObject*> mTemplates;
+	GameObject* mLaserGO = nullptr;
 };
 

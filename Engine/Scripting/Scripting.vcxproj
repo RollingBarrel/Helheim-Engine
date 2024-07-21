@@ -172,10 +172,12 @@
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BombBoss.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
@@ -213,8 +215,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="BombBoss.h" />
-    <ClInclude Include="EnemyBoss.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
