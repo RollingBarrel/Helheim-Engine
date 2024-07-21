@@ -2,6 +2,7 @@
 #include "Enemy.h"
 
 class GameObject;
+class ParticleSystemComponent;
 
 GENERATE_BODY(EnemyExplosive);
 class EnemyExplosive : public Enemy
@@ -21,4 +22,5 @@ private:
 	float mExplosionRadius = 5.0f;
 	GameObject* mExplosionWarningGO = nullptr;
 	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
+	ParticleSystemComponent* mExplosionParticles = nullptr;
 };

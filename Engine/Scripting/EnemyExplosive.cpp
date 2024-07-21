@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+#include "ParticleSystemComponent.h"
+
 
 CREATE(EnemyExplosive)
 {
@@ -30,6 +32,17 @@ void EnemyExplosive::Start()
         mExplosionWarningGO->SetLocalPosition(float3(0.0f, 0.1f, 0.0f));
         mExplosionWarningGO->SetEnabled(false);
     }
+
+    GameObject* firstChild = *(mGameObject->GetChildren().begin());
+    if (firstChild)
+    {
+      mExplosionParticles = reinterpret_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
+      if (mExplosionParticles)
+      {
+          mExplosionParticles->SetEnable(false);
+      }
+    }
+
 }
 
 
@@ -42,10 +55,15 @@ void EnemyExplosive::Charge()
 
 void EnemyExplosive::Attack()
 {
-    LOG("BOOM");
     mExplosionWarningGO->SetWorldScale(float3(0.1f));
+
     if (IsPlayerInRange(mExplosionRadius))
     {
+        if (mExplosionParticles)
+        {
+            mExplosionParticles->SetEnable(true);
+        }
+
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
         {
