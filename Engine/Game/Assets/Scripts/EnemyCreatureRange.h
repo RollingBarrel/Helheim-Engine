@@ -1,18 +1,8 @@
 #pragma once
 #include "Enemy.h"
-#include "TimerScript.h"
 
-class AnimationStateMachine;
-struct CollisionData;
-class BoxColliderComponent;
 class GameObject;
-
-enum class EnemyState
-{
-	IDLE,
-	CHASE,
-	ATTACK,
-};
+class AnimationStateMachine;
 
 GENERATE_BODY(EnemyCreatureRange);
 class EnemyCreatureRange : public Enemy
@@ -20,32 +10,27 @@ class EnemyCreatureRange : public Enemy
 	FRIEND(EnemyCreatureRange)
 
 public:
-	EnemyCreatureRange(GameObject* owner);
+	EnemyCreatureRange(GameObject* owner) : Enemy(owner) {}
 	~EnemyCreatureRange() {}
-
+	
 	void Start() override;
 	void Update() override;
+	void Charge() override;
+	void Attack() override;
 
 private:
-	void Idle();
-	void Chase();
-	void Attack();
-	bool IsMoving();
-	void Death() override;
-	void Init() override;
-	void RangeAttack();
+	void Rotate();
 
-	EnemyState mCurrentState = EnemyState::IDLE;
-	TimerScript mDeathTimer;
+	float mAttackRotationSpeed = 10.0f;
+	bool mDoDamage = false;
 
-	float mRangeDistance = 9.0f;
-	float mRangeDamage = 15.0f;
-	float mBulletSpeed = 0.65f;
-	float mTimerAttack = 2.0f;
-	float mAttackCD = 0.0f;
-	float mTimerDisengage = 0.0f;
+	GameObject* mLaserOrigin = nullptr;
+	GameObject* mLaserTrail = nullptr;
+	GameObject* mLaserEnd = nullptr;
+	GameObject* mLaserCharge = nullptr;
 
-	GameObject* mBulletOrigin = nullptr;
-	BoxColliderComponent* mCollider = nullptr;
+	//Laser Trail WorkAround
+	bool mMoveTrail = false;
+
 };
 
