@@ -1,13 +1,16 @@
 #include "EnemyCreatureMelee.h"
 #include "Application.h"
-#include "AIAGentComponent.h"
-#include "AnimationComponent.h"
-#include "BoxColliderComponent.h"
+#include "ModuleDetourNavigation.h"
+
 #include "GameObject.h"
+#include "ScriptComponent.h"
+#include "AnimationComponent.h"
+#include "AIAGentComponent.h"
+#include "BoxColliderComponent.h"
 
 #include "GameManager.h"
-#include <MathFunc.h>
-
+#include "AudioManager.h"
+#include "PlayerController.h"
 
 CREATE(EnemyCreatureMelee)
 {
@@ -16,132 +19,69 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::FLOAT, mMaxHealth);
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mRotationSpeed);
-	MEMBER(MemberType::INT, mShieldDropRate);
-	MEMBER(MemberType::FLOAT, mChaseDelay);
-	MEMBER(MemberType::FLOAT, mMeleeAttackCoolDown);
-	MEMBER(MemberType::FLOAT, mMeleeDistance);
-	MEMBER(MemberType::FLOAT, mMeeleDamage);
+	MEMBER(MemberType::FLOAT, mAttackDamage);
+	MEMBER(MemberType::FLOAT, mAttackDuration);
+	MEMBER(MemberType::FLOAT, mChargeDuration);
+	MEMBER(MemberType::FLOAT, mAttackCoolDown);
+	SEPARATOR("STATES");
+	MEMBER(MemberType::FLOAT, mAttackDistance);
 
 	END_CREATE;
-}
-
-
-
-EnemyCreatureMelee::EnemyCreatureMelee(GameObject* owner) : Enemy(owner)
-{
 }
 
 void EnemyCreatureMelee::Start()
 {
 	Enemy::Start();
+	Init();
 
-	mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
-
-	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-	if (mAnimationComponent)
-	{
-		mAnimationComponent->SetIsPlaying(true);
-
-	}
 	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyCreatureMelee::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-}
 
-void EnemyCreatureMelee::Update()
-{
-	if (GameManager::GetInstance()->IsPaused()) return;
-
-	Enemy::Update();
-
-	if (!mBeAttracted)
-	{
-		switch (mCurrentState)
-		{
-		case EnemyState::IDLE:
-			mAnimationComponent->SendTrigger("tIdle", 0.2f);
-			Idle();
-
-			break;
-		case EnemyState::CHASE:
-			mAnimationComponent->SendTrigger("tChase", 0.2f);
-			Chase();
-			break;
-		case EnemyState::ATTACK:
-			mAnimationComponent->SendTrigger("tAttack", 0.2f);
-			Attack();
-			break;
-		}
-	}
-
-	mBeAttracted = false;
-}
-
-void EnemyCreatureMelee::Idle()
-{
-	if (IsPlayerInRange(mActivationRange))
-	{
-		mCurrentState = EnemyState::CHASE;
-		//mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-	}
+	mDisengageTime = 0.0f;
 }
 
 void EnemyCreatureMelee::Chase()
 {
 	PlayStepAudio();
-	if (IsPlayerInRange(mActivationRange))
+	if (IsPlayerInRange(mChaseDistance))
 	{
 		if (mAiAgentComponent)
 		{
-			float rotationSpeed = 100.0f * App->GetDt();
+			if (IsPlayerInRange(mAttackDistance))
+			{	
+				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
+				mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
+				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+				direction.y = 0;
+				direction.Normalize();
+				float angle = std::atan2(direction.x, direction.z);;
 
-			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-
-			float3 oldPosition = mGameObject->GetWorldPosition();
-
-			float3 direction = (mGameObject->GetWorldPosition() - oldPosition);
-			direction.y = 0;
-			direction.Normalize();
-			float angle = std::atan2(direction.x, direction.z);
-			float eulerAngle = RadToDeg(angle);
-
-			float currentAngle = mGameObject->GetWorldEulerAngles().y;
-			float currentAngleEuler = RadToDeg(currentAngle);
-			//mGameObject->SetLocalRotation(float3(0, DegToRad(currentAngleEuler + 10.0f * App->GetDt()), 0));
-			
-			if (eulerAngle > currentAngleEuler)
-			{
-				if (currentAngleEuler + rotationSpeed <= eulerAngle)
-				{
-					mGameObject->SetWorldRotation(float3(0, DegToRad(currentAngleEuler + rotationSpeed), 0));
-				}
-				else
+				if (mGameObject->GetWorldRotation().y != angle)
 				{
 					mGameObject->SetWorldRotation(float3(0, angle, 0));
 				}
-
-			}
-			else if (eulerAngle <= currentAngleEuler)
-			{
-				if (currentAngleEuler - rotationSpeed >= eulerAngle)
+				if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
 				{
-					mGameObject->SetWorldRotation(float3(0, DegToRad(currentAngleEuler - rotationSpeed), 0));
+					mCurrentState = EnemyState::CHARGE;
 				}
-				else
+			}
+			else
+			{
+				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
+				mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
+				direction.y = 0;
+				direction.Normalize();
+				float angle = std::atan2(direction.x, direction.z);;
+
+				if (mGameObject->GetWorldRotation().y != angle)
 				{
 					mGameObject->SetWorldRotation(float3(0, angle, 0));
 				}
-
-			}
-
-
-		}
-		if (IsPlayerInRange(mMeleeDistance))
-		{
-			// mCurrentState = EnemyState::ATTACK;
+			}	
 		}
 	}
 	else
@@ -150,35 +90,33 @@ void EnemyCreatureMelee::Chase()
 	}
 }
 
+void EnemyCreatureMelee::Charge()
+{
+	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
+	Enemy::Charge();
+	mHit = false;
+
+}
+
 void EnemyCreatureMelee::Attack()
 {
+	if (mAttackDurationTimer.Delay(mAttackDuration))
+	{
+		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
+		mCurrentState = EnemyState::CHASE;
+	}
+	
+	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
+
+	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
 }
 
-bool EnemyCreatureMelee::IsMoving()
-{
-	return (mCurrentState == EnemyState::CHASE);
-}
-
-void EnemyCreatureMelee::MeleeAttack()
-{
-}
-
-void EnemyCreatureMelee::Death()
-{
-}
-
-void EnemyCreatureMelee::Init()
-{
-}
 
 void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
 {
-}
-
-void EnemyCreatureMelee::PlayStepAudio()
-{
-}
-
-void EnemyCreatureMelee::PlayMeleeAudio()
-{
+	if (mCurrentState == EnemyState::ATTACK && !mHit && collisionData->collidedWith->GetTag() == "Player")
+	{
+		mHit = true;
+		GameManager::GetInstance()->GetPlayerController()->TakeDamage(mAttackDamage);
+	}
 }

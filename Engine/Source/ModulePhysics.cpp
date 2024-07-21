@@ -100,7 +100,7 @@ void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits)
 					float3 hitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
 
 					hit.mDistance = from.Distance(hitPoint);
-					hit.mGameObject = component->GetOwner();;
+					hit.mGameObject = component->GetOwner();
 					hit.mHitPoint = float3(callback.m_hitPointWorld[i].x(), callback.m_hitPointWorld[i].y(), callback.m_hitPointWorld[i].z());
 
 					hits.insert(hit);
