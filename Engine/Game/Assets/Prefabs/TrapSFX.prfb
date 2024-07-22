@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 185043221,
+                "UID": 553542095,
                 "ParentUID": 1,
                 "Name": "TrapSFX",
                 "Enabled": true,
@@ -48,9 +48,9 @@
                         "ShapeRadius": 0.009999999776482582,
                         "ShapeAngle": 0.699999988079071,
                         "ShapeSize": [
-                            3.0,
-                            3.0,
-                            3.0
+                            2.0,
+                            2.0,
+                            2.0
                         ],
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,

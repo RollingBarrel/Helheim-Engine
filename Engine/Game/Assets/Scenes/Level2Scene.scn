@@ -16215,26 +16215,26 @@
                 ]
             },
             {
-                "UID": 1818660975,
+                "UID": 1223266838,
                 "ParentUID": 1219442477,
-                "Name": "Trap",
+                "Name": "Electric_trap (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    128.70384216308595,
-                    64.56792449951172,
+                    111.68000030517578,
+                    65.0199966430664,
                     12.979999542236329
                 ],
                 "Rotation": [
                     0.0,
+                    0.7071068286895752,
                     0.0,
-                    0.0,
-                    1.0
+                    0.7071068286895752
                 ],
                 "Scale": [
+                    4.0,
                     1.0,
-                    1.0,
-                    1.0
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -16250,9 +16250,9 @@
                             0.0
                         ],
                         "Size": [
+                            2.0,
                             3.0,
-                            3.0,
-                            3.0
+                            2.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -16300,15 +16300,43 @@
                 ]
             },
             {
-                "UID": 1236011179,
-                "ParentUID": 1219442477,
-                "Name": "Trap (1)",
+                "UID": 1308552563,
+                "ParentUID": 1223266838,
+                "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    111.68194580078125,
-                    64.56792449951172,
-                    12.979999542236329
+                    0.0,
+                    0.004999999888241291,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.004999999888241291,
+                    0.5
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1355825222,
+                "ParentUID": 1308552563,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -16327,6 +16355,44 @@
                 "Dynamic": false,
                 "Components": [
                     {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1472061458,
+                        "MaterialID": 1472061463,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2026205738,
+                "ParentUID": 1219442477,
+                "Name": "Electric_trap",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    130.3262176513672,
+                    65.0199966430664,
+                    12.979998588562012
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    4.0,
+                    1.0,
+                    4.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
                         "ComponentType": 17,
                         "IsEnabled": true,
                         "Center": [
@@ -16335,9 +16401,9 @@
                             0.0
                         ],
                         "Size": [
+                            2.0,
                             3.0,
-                            3.0,
-                            3.0
+                            2.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -16381,6 +16447,72 @@
                                 "VariableData": 0.30000001192092898
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 612040084,
+                "ParentUID": 2026205738,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.004999999888241291,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.004999999888241291,
+                    0.5
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 666553327,
+                "ParentUID": 612040084,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1472061458,
+                        "MaterialID": 1472061463,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
                     }
                 ]
             }
