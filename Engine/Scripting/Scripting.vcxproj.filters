@@ -169,6 +169,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -313,6 +314,7 @@
     <ClCompile Include="TimerScript.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="EnemyCreatureRange.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
