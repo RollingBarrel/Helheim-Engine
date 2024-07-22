@@ -2,13 +2,15 @@
 
 #include "GameObject.h"
 #include <BoxColliderComponent.h>
-#include "GameApp.h"
+#include "Application.h"
+#include "PlayerController.h"
 
 
 CREATE(Teleporter)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mDestination);
+    MEMBER(MemberType::FLOAT, mDuration);
     END_CREATE;
 }
 
@@ -40,12 +42,20 @@ void Teleporter::Update()
 {
     if (mIsTriggered)
     {
-        mCurrentTime += GameApp->GetDt();
-        mGameObject->SetWorldPosition(LerpPosition());
+        mCurrentTime += App->GetDt();
+        float3 position = LerpPosition();
+        mPlayer->SetWorldPosition(position);
+        mGameObject->SetWorldPosition(position);
         if (mCurrentTime > mDuration)
         {
             mIsTriggered = false;
             mCurrentTime = 0.0f;
+            mGameObject->SetWorldPosition(mStartPos);
+            if (mPlayerController)
+            {
+                mPlayerController->SetIsInElevator(false);
+            }
+            
         }
     }
 }
@@ -58,6 +68,10 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         // TODO: Pause player movement
         collisionData->collidedWith->SetWorldPosition(mDestination->GetWorldPosition());
         mIsTriggered = true;
+        mPlayer = collisionData->collidedWith;
+        mPlayerController = reinterpret_cast<PlayerController*>(collisionData->collidedWith->GetComponent(ComponentType::SCRIPT));
+
+        mPlayerController->SetIsInElevator(true);
     }
 }
 

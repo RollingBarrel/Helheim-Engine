@@ -423,6 +423,10 @@ void PlayerController::SetAnimationSpeed(float speed)
 
 void PlayerController::MoveInDirection(float3 direction)
 {
+    if (mIsInElevator)
+    {
+        return;
+    }
     float collisionDotProduct = direction.Dot(mCollisionDirection);
     if (collisionDotProduct < 0.0f)
     {

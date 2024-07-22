@@ -5,6 +5,7 @@
 
 
 class BoxColliderComponent;
+class PlayerController;
 struct CollisionData;
 
 GENERATE_BODY(Teleporter);
@@ -36,5 +37,7 @@ private:
 	float mDistance = 0.0f;
 	float3 mDirection;
 	float3 mStartPos;
+	GameObject* mPlayer = nullptr;
+	PlayerController* mPlayerController = nullptr;
 };
 
