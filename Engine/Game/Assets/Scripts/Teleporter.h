@@ -1,6 +1,8 @@
 #pragma once
 #include <Script.h>
 #include "Macros.h"
+#include "float3.h"
+
 
 class BoxColliderComponent;
 struct CollisionData;
@@ -16,15 +18,23 @@ public:
 	~Teleporter();
 
 	void Start() override;
+	void Update() override;
 
-	void Teleport();
 
+	
 
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private:
 	
+	float3 LerpPosition();
 	GameObject* mDestination;
 	BoxColliderComponent* mCollider;
+	float mDuration = 4.0f; // Expose as script variable
+	float mCurrentTime = 0.0f;
+	bool mIsTriggered = false;
+	float mDistance = 0.0f;
+	float3 mDirection;
+	float3 mStartPos;
 };
 
