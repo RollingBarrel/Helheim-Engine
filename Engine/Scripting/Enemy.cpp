@@ -38,9 +38,9 @@ void Enemy::Update()
 
 	if (mIsParalyzed)
 	{
-		if (mParalyzedTimerScript.Delay(mParalyzedTimer))
+		if (mParalyzedTimerScript.Delay(mParalyzedDuration))
 		{
-			GetParalyzed(mParalysisSeverityLevel, false);
+			Paralyzed(mParalysisSeverityLevel, false);
 		}
 	}
 
@@ -207,7 +207,7 @@ void Enemy::Init()
 	}
 }
 
-void Enemy::GetParalyzed(float percentage, bool paralyzed)
+void Enemy::Paralyzed(float percentage, bool paralyzed)
 {
 	if (paralyzed)
 	{

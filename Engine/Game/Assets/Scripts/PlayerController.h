@@ -110,7 +110,7 @@ public:
 
     void CheckOtherTimers();
 
-    void GetParalyzed(float percentage, bool paralysis);
+    void Paralyzed(float percentage, bool paralysis);
 
     bool CanReload() const;
     void Reload() const;
@@ -261,7 +261,7 @@ private:
  
     // DEBUFF
     bool mIsParalyzed = false;
-    const float mParalyzedTimer = 5.0f;
+    const float mParalyzedDuration = 5.0f;
     TimerScript mParalyzedTimerScript;
-    float mParalysisSeverityLevel = 1.0f;
+    float mParalysisSpeedReductionFactor = 1.0f;
 };
