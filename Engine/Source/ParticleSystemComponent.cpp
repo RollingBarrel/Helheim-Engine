@@ -445,3 +445,8 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
         return float3(0, 0, 1);
     }
 }
+
+bool ParticleSystemComponent::HasEnded() const
+{
+    return (mEmitterTime > mDuration) && mParticles.empty() && !mLooping;
+}
