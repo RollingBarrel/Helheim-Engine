@@ -2,6 +2,7 @@
 #include <Script.h>
 #include <vector>
 #include "Macros.h"
+#include "TimerScript.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -21,8 +22,7 @@ public:
 
 private:
 	bool CheckIfCaptured(const GameObject* target);
-	void DeactiveTrap();
-	void ActiveTrap();
+	void ActiveTrap(bool active);
 
 	BoxColliderComponent* mCollider = nullptr;
 	std::vector<GameObject*> mInTrap;
@@ -31,10 +31,11 @@ private:
 	GameObject* mSfx = nullptr;
 
 	// Activation
-	float mTimer = 0.0f;
 	bool mIsActive = false;
 	float mActivationInterval = 8.0f;
 	float mActivationDuration = 4.0f;
+	TimerScript mActivationIntervalTimer;
+	TimerScript mActivationDurationTimer;
 	
 	// Damage
 	float mDamageAmount = 5.0f;

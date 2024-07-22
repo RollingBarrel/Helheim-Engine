@@ -50,25 +50,20 @@ void ElectricTrapController::Start()
 
 void ElectricTrapController::Update()
 {
-    // Update the timer
-    mTimer -= App->GetDt();
-
     if (mIsActive)
     {
-        if (mTimer <= 0.0f)
+        if (mActivationDurationTimer.Delay(mActivationDuration))
         {
-            mTimer = mActivationInterval;
             mIsActive = false;
-            DeactiveTrap();
+            ActiveTrap(false);
         }
     }
     else
     {
-        if (mTimer <= 0.0f)
+        if (mActivationIntervalTimer.Delay(mActivationInterval))
         {
-            mTimer = mActivationDuration;
             mIsActive = true;
-            ActiveTrap();
+            ActiveTrap(true);
         }
     }
 }
@@ -87,26 +82,27 @@ bool ElectricTrapController::CheckIfCaptured(const GameObject* target)
     return false;
 }
 
-void ElectricTrapController::DeactiveTrap()
+void ElectricTrapController::ActiveTrap(bool active)
 {
-    mInTrap.clear();
-    LOG("Trap not active");
-    if (mSfx)
+    if (active)
     {
-        mSfx->SetEnabled(false);
+        LOG("Trap active");
+        if (mSfx)
+        {
+            mSfx->SetEnabled(true);
+        }
+        // Reserved for effects, perticle, sounds...
     }
-    // Reserved for effects, perticle, sounds...
-
-}
-
-void ElectricTrapController::ActiveTrap()
-{
-    LOG("Trap active");
-    if (mSfx)
+    else
     {
-        mSfx->SetEnabled(true);
+        mInTrap.clear();
+        LOG("Trap not active");
+        if (mSfx)
+        {
+            mSfx->SetEnabled(false);
+        }
+        // Reserved for effects, perticle, sounds...
     }
-    // Reserved for effects, perticle, sounds...
 }
 
 void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
