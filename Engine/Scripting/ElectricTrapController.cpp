@@ -74,7 +74,7 @@ bool ElectricTrapController::CheckIfCaptured(const GameObject* target)
 {
     for (auto captured : mInTrap)
     {
-        if (captured == target)
+        if (captured->GetID() == target->GetID())
         {
             return true;
         }
