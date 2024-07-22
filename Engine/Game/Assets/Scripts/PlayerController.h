@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
+#include "TimerScript.h"
 
 class AnimationComponent;
 class AnimationStateMachine;
@@ -109,8 +110,7 @@ public:
 
     void CheckOtherTimers();
 
-    void GetParalyzed(float percentage);
-    void GetParalysisCured(float percentage);
+    void GetParalyzed(float percentage, bool paralysis);
 
     bool CanReload() const;
     void Reload() const;
@@ -262,6 +262,6 @@ private:
     // DEBUFF
     bool mIsParalyzed = false;
     const float mParalyzedTimer = 5.0f;
-    float mCurrentParalyzedTimer = mParalyzedTimer;
+    TimerScript mParalyzedTimerScript;
     float mParalysisSeverityLevel = 1.0f;
 };

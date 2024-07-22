@@ -286,23 +286,25 @@ void PlayerController::StateMachine()
     mUpperState->Update();
 }
 
-void PlayerController::GetParalyzed(float percentage)
+void PlayerController::GetParalyzed(float percentage, bool paralysis)
 {
-    if (!mIsParalyzed)
+    if (paralysis)
     {
-        mIsParalyzed = true;
-        mPlayerSpeed *= percentage;
-        mCurrentParalyzedTimer = mParalyzedTimer;
-        mParalysisSeverityLevel = percentage;
+        if (!mIsParalyzed)
+        {
+            mIsParalyzed = true;
+            mPlayerSpeed *= percentage;
+            mParalyzedTimerScript = TimerScript();
+            mParalysisSeverityLevel = percentage;
+        }
     }
-}
+    else
+    {
+        mIsParalyzed = false;
+        mPlayerSpeed /= percentage;
 
-void PlayerController::GetParalysisCured(float percentage)
-{
-    mIsParalyzed = false;
-    mPlayerSpeed /= percentage;
-
-    mParalysisSeverityLevel = 1.0f;
+        mParalysisSeverityLevel = 1.0f;
+    }
 }
 
 void PlayerController::CheckInput()
@@ -625,13 +627,9 @@ void PlayerController::CheckOtherTimers()
     // Paralizys
     if (mIsParalyzed)
     {
-        if (mCurrentParalyzedTimer >= 0)
+        if (mParalyzedTimerScript.Delay(mParalyzedTimer))
         {
-            mCurrentParalyzedTimer -= App->GetDt();
-        }
-        else {
-            GetParalysisCured(mParalysisSeverityLevel);
-            mCurrentParalyzedTimer = mParalyzedTimer;
+            GetParalyzed(mParalysisSeverityLevel, false);
         }
     }
 }

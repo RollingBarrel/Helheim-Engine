@@ -33,8 +33,7 @@ public:
 	void AddFootStepAudio(GameObject* audio);
 
 	// DEBUFF
-	virtual void GetParalyzed(float percentage);
-	virtual void GetParalysisCured(float percentage);
+	virtual void GetParalyzed(float percentage, bool paralyzed);
 
 	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
@@ -87,7 +86,7 @@ protected:
 
 	bool mIsParalyzed = false;
 	const float mParalyzedTimer = 5.0f;
-	float mCurrentParalyzedTimer = mParalyzedTimer;
+	TimerScript mParalyzedTimerScript;
 	float mParalysisSeverityLevel = 1.0f;
 
 private:

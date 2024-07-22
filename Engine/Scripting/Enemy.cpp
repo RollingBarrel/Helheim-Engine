@@ -36,18 +36,14 @@ void Enemy::Update()
 {
 	if (GameManager::GetInstance()->IsPaused()) return;
 
-    if (mIsParalyzed)
-    {
-        if (mCurrentParalyzedTimer >= 0)
-        {
-            mCurrentParalyzedTimer -= App->GetDt();
-        }
-        else 
-        {
-            GetParalysisCured(mParalysisSeverityLevel);
-            mCurrentParalyzedTimer = mParalyzedTimer;
-        }
-    }
+	if (mIsParalyzed)
+	{
+		if (mParalyzedTimerScript.Delay(mParalyzedTimer))
+		{
+			GetParalyzed(mParalysisSeverityLevel, false);
+		}
+	}
+
     if (mDeath)
     {
         Death();
@@ -211,22 +207,24 @@ void Enemy::Init()
 	}
 }
 
-void Enemy::GetParalyzed(float percentage)
+void Enemy::GetParalyzed(float percentage, bool paralyzed)
 {
-    mIsParalyzed = true;
-    mSpeed *= percentage;
-    mCurrentParalyzedTimer = mParalyzedTimer;
-    mParalysisSeverityLevel = percentage;
+	if (paralyzed)
+	{
+		mIsParalyzed = true;
+		mSpeed *= percentage;
+		mParalyzedTimerScript = TimerScript();
+		mParalysisSeverityLevel = percentage;
+	}
+	else 
+	{
+		mIsParalyzed = false;
+		mSpeed /= percentage;
+
+		mParalysisSeverityLevel = 1.0f;
+	}
 }
 
-void Enemy::GetParalysisCured(float percentage)
-{    
-    mIsParalyzed = false;
-    mSpeed /= percentage;
-    mCurrentParalyzedTimer = 0;
-
-    mParalysisSeverityLevel = 1.0f;
-}
 
 void Enemy::DropItem()
 {
