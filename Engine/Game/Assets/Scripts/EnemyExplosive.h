@@ -12,8 +12,11 @@ class EnemyExplosive : public Enemy
 	public:
 		EnemyExplosive(GameObject* owner);
 		~EnemyExplosive() {}
+
 		void Start() override;
 		void Update() override;
+		void Init() override;
+
 		void Idle();
 		void Chase();
 		void TakeDamage(float damage) override;

@@ -2,28 +2,28 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 353900314,
+                "UID": 1145561327,
                 "ParentUID": 1,
                 "Name": "Explosive_Ball",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -21.780488967895509,
-                    2.0430164337158205,
-                    0.13837981224060059
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
-                    0.7093494534492493,
                     0.0,
-                    0.7048569917678833
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": true,
@@ -32,7 +32,7 @@
                         "ComponentType": 10,
                         "IsEnabled": true,
                         "AnimationUID": 285479947,
-                        "LowerSMUID": 0
+                        "LowerSMUID": 1736968423
                     },
                     {
                         "ComponentType": 5,
@@ -54,7 +54,7 @@
                             {
                                 "VariableName": "mHealth",
                                 "MemberType": 0,
-                                "VariableData": 1086324736
+                                "VariableData": 5
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -79,15 +79,31 @@
                             {
                                 "VariableName": "mExplosionWarningGO",
                                 "MemberType": 3,
-                                "VariableData": 568261288
+                                "VariableData": 1090001684
                             }
                         ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            2.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 3,
+                        "FreezeRotation": false
                     }
                 ]
             },
             {
-                "UID": 1094667754,
-                "ParentUID": 353900314,
+                "UID": 1873031156,
+                "ParentUID": 1145561327,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -114,8 +130,8 @@
                 "Components": []
             },
             {
-                "UID": 1825409770,
-                "ParentUID": 1094667754,
+                "UID": 441181768,
+                "ParentUID": 1873031156,
                 "Name": "OB_exploding_ball_lower_part",
                 "Enabled": true,
                 "Active": true,
@@ -142,8 +158,8 @@
                 "Components": []
             },
             {
-                "UID": 413541609,
-                "ParentUID": 1825409770,
+                "UID": 1150271653,
+                "ParentUID": 441181768,
                 "Name": "OB_exploding_ball_lower_part",
                 "Enabled": true,
                 "Active": true,
@@ -177,7 +193,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 499221158,
+                                "GoId": 1118918301,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -198,7 +214,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1235811338,
+                                "GoId": 1821533433,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -219,7 +235,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1980059828,
+                                "GoId": 374297804,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -244,8 +260,8 @@
                 ]
             },
             {
-                "UID": 1149435579,
-                "ParentUID": 1094667754,
+                "UID": 1853374132,
+                "ParentUID": 1873031156,
                 "Name": "OB_exploding_ball_upper_part",
                 "Enabled": true,
                 "Active": true,
@@ -272,8 +288,8 @@
                 "Components": []
             },
             {
-                "UID": 1901133516,
-                "ParentUID": 1149435579,
+                "UID": 412056288,
+                "ParentUID": 1853374132,
                 "Name": "OB_exploding_ball_upper_part",
                 "Enabled": true,
                 "Active": true,
@@ -307,7 +323,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 499221158,
+                                "GoId": 1118918301,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -328,7 +344,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1235811338,
+                                "GoId": 1821533433,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -349,7 +365,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1980059828,
+                                "GoId": 374297804,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -374,8 +390,8 @@
                 ]
             },
             {
-                "UID": 499221158,
-                "ParentUID": 1094667754,
+                "UID": 1118918301,
+                "ParentUID": 1873031156,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -402,8 +418,8 @@
                 "Components": []
             },
             {
-                "UID": 1235811338,
-                "ParentUID": 499221158,
+                "UID": 1821533433,
+                "ParentUID": 1118918301,
                 "Name": "UpperPart",
                 "Enabled": true,
                 "Active": true,
@@ -430,8 +446,8 @@
                 "Components": []
             },
             {
-                "UID": 1980059828,
-                "ParentUID": 499221158,
+                "UID": 374297804,
+                "ParentUID": 1118918301,
                 "Name": "LowerPart",
                 "Enabled": true,
                 "Active": true,
@@ -458,8 +474,8 @@
                 "Components": []
             },
             {
-                "UID": 568261288,
-                "ParentUID": 353900314,
+                "UID": 1090001684,
+                "ParentUID": 1145561327,
                 "Name": "WarningArea",
                 "Enabled": false,
                 "Active": false,
@@ -486,8 +502,8 @@
                 "Components": []
             },
             {
-                "UID": 1299629893,
-                "ParentUID": 568261288,
+                "UID": 1784401538,
+                "ParentUID": 1090001684,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": false,
@@ -514,8 +530,8 @@
                 "Components": []
             },
             {
-                "UID": 2023061704,
-                "ParentUID": 1299629893,
+                "UID": 337374772,
+                "ParentUID": 1784401538,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": false,

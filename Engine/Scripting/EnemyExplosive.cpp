@@ -52,12 +52,6 @@ void EnemyExplosive::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
     }
-
-    if (mAiAgentComponent)
-    {
-        mAiAgentComponent->StartCrowdNavigation();
-    }
-
 }
 
 void EnemyExplosive::Update()
@@ -89,6 +83,15 @@ void EnemyExplosive::Update()
     mBeAttracted = false;
 }
 
+void EnemyExplosive::Init()
+{
+    Enemy::Init();
+    if (mAiAgentComponent)
+    {
+        mAiAgentComponent->StartCrowdNavigation();
+    }
+}
+
 void EnemyExplosive::Idle()
 {
     mAnimationComponent->SendTrigger("tIdle",0.2f);
@@ -98,22 +101,20 @@ void EnemyExplosive::Idle()
 
 void EnemyExplosive::Chase()
 {
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-        mAnimationComponent->SendTrigger("tMovement", 0.2f);
+    mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+    mAnimationComponent->SendTrigger("tMovement", 0.2f);
 
-           
-        float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
-        direction.y = 0;
-        direction.Normalize();
-        float angle = std::atan2(direction.x, direction.z);
-        mGameObject->SetWorldRotation(float3(0, angle, 0));
-        
-        
-        if (IsPlayerInRange(mChargingDistance))
-        {
-            mCurrentState = EnemyState::CHARGING;
-            mExplosionWarningGO->SetEnabled(true);
-        }
+    float3 direction = mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition();
+    direction.y = 0;
+    direction.Normalize();
+    float angle = std::atan2(direction.x, direction.z);
+    mGameObject->SetWorldRotation(float3(0, angle, 0));
+          
+    if (IsPlayerInRange(mChargingDistance))
+    {
+        mCurrentState = EnemyState::CHARGING;
+        mExplosionWarningGO->SetEnabled(true);
+    }
 }
 
 void EnemyExplosive::TakeDamage(float damage)
@@ -124,12 +125,12 @@ void EnemyExplosive::Charging()
 {
     mAnimationComponent->SendTrigger("tCharging", 0.2f);
 
-       
-        if(mWarningTimer>= mExplosionDelay)
-        {
-                mWarningTimer = 0.0f;
-                mCurrentState = EnemyState::EXPLOSION;
-        }
+    if(mWarningTimer>= mExplosionDelay)
+    {
+            mWarningTimer = 0.0f;
+            mCurrentState = EnemyState::EXPLOSION;
+    }
+
     ChargeWarningArea();
 }
 
@@ -147,8 +148,6 @@ void EnemyExplosive::Explosion()
     }
 
     mCurrentState = EnemyState::DEATH;
-        
-
 }
 
 void EnemyExplosive::ChargeWarningArea()
@@ -172,7 +171,6 @@ void EnemyExplosive::Die()
     {
         mAiAgentComponent->PauseCrowdNavigation();
     }
- 
 }
 
 void EnemyExplosive::OnCollisionEnter(CollisionData* collisionData)

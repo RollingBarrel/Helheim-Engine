@@ -40,22 +40,19 @@ void EnemyExplosiveSpawner::Update()
     if (GameManager::GetInstance()->IsPaused()) return;
 
     Enemy::Update();
-    if (!mBeAttracted)
+
+    switch (mCurrentState)
     {
-        switch (mCurrentState)
-        {
-        case EnemyState::IDLE:
-            Idle();
-            break;
-        case EnemyState::SPAWNING:
-            Spawning();
-            break;
-        case EnemyState::DEATH:
-            Die();
-        }
+    case EnemyState::IDLE:
+        Idle();
+        break;
+    case EnemyState::SPAWNING:
+        Spawning();
+        break;
+    case EnemyState::DEATH:
+        Die();
     }
 
-    mBeAttracted = false;
     mLastSpawnTime += App->GetDt();
 }
 
@@ -72,6 +69,11 @@ void EnemyExplosiveSpawner::TakeDamage(float damage)
     }
 
     LOG("Enemy Health: %f", mHealth);
+}
+
+void EnemyExplosiveSpawner::PushBack()
+{
+    //Trap can't be pushed back
 }
 
 void EnemyExplosiveSpawner::Idle()

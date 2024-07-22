@@ -17,6 +17,7 @@ class EnemyExplosiveSpawner : public Enemy
 		void Start() override;
 		void Update() override;
 		void TakeDamage(float damage) override;
+		void PushBack() override;
 		void Idle();
 
 	private:
