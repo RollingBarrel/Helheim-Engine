@@ -254,18 +254,6 @@ void PlayerController::Update()
     mCollisionDirection = float3::zero;
 }
 
-bool PlayerController::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
-    {
-        mTimePassed = 0;
-        return true;
-    }
-    else return false;
-}
-
 void PlayerController::StateMachine()
 {
     // Check if dead
@@ -759,8 +747,7 @@ void PlayerController::CheckHitEffect()
 {
     if (mHit)
     {
-        mHitEffectTimePassed += App->GetDt();
-        if (mHitEffectTimePassed > 0.15f)
+        if (mHitEffectTimer.Delay(mHitEffectTime))
         {
             for (size_t i = 0; i < mMeshComponents.size(); i++)
             {
@@ -769,7 +756,6 @@ void PlayerController::CheckHitEffect()
                 meshComponent->SetBaseColorFactor(mPlayerOgColor[i]);
             }
             mHit = false;
-            mHitEffectTimePassed = 0.0f;
         }
     }
 
@@ -785,6 +771,6 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag() == "Door")
     {
         mCollisionDirection = collisionData->collisionNormal;
-        LOG("HOLA")
+        //LOG("HOLA")
     }
 }

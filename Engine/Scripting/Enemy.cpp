@@ -66,20 +66,21 @@ void Enemy::CheckHitEffect()
 {
     if (mHit)
     {
-        mHitEffectTimePassed += App->GetDt();
-        if (mHitEffectTimePassed > 0.3f)
+        if (mHitEffectTimer.Delay(mHitEffectTime))
         {
-            for (size_t i = 0; i < mMeshComponents.size(); i++)
-            {
-                MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
-                meshComponent->SetEnableBaseColorTexture(true);
-                meshComponent->SetBaseColorFactor(mOgColors[i]);
-            }
+			ResetEnemyColor();
             mHit = false;
-            mHitEffectTimePassed = 0.0f;
-
         }
     }
+}
+void Enemy::ResetEnemyColor()
+{
+	for (size_t i = 0; i < mMeshComponents.size(); i++)
+	{
+		MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+		meshComponent->SetEnableBaseColorTexture(true);
+		meshComponent->SetBaseColorFactor(mOgColors[i]);
+	}
 }
 void Enemy::ActivateEnemy()
 {
@@ -213,7 +214,7 @@ void Enemy::TakeDamage(float damage)
 void Enemy::ActivateHitEffect()
 {
     if (mHit) return;
-    LOG("HIT EFFECT");
+   //LOG("HIT EFFECT");
     for (Component* mesh : mMeshComponents)
     {
         MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
@@ -226,6 +227,7 @@ void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
+		ResetEnemyColor();
 		mGameObject->SetEnabled(false);
 		DropItem();
 	}

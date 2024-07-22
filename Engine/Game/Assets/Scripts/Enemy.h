@@ -49,6 +49,8 @@ protected:
 
 	void ActivateHitEffect();
 	void CheckHitEffect();
+	void ResetEnemyColor();
+
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;
@@ -82,10 +84,12 @@ protected:
 	float mDeathTime = 1.4f;
 	bool mDeath = false;
 	float mTimePassed = 0.0f;
+	TimerScript  mHitEffectTimer;
+	float mHitEffectTime = 0.15f;
+
 
 	//Hit Effect
 	bool mHit = false;
-	float mHitEffectTimePassed = 0.0f;
 	std::vector<Component*> mMeshComponents;
 	std::vector<unsigned int> mMaterialIds;
 	std::vector <float4> mOgColors;

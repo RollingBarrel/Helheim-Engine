@@ -3,6 +3,7 @@
 #include "Macros.h"
 #include "float3.h"
 #include "float4.h"
+#include "TimerScript.h"
 
 class Component;
 class AnimationComponent;
@@ -255,11 +256,10 @@ private:
     bool mGodMode = false;
 
     //Hit Effect
+    TimerScript  mHitEffectTimer;
+    float mHitEffectTime = 0.15f;
     bool mHit = false;
-    float mHitEffectTimePassed = 0.0f;
     std::vector<Component*> mMeshComponents;
     std::vector<float4> mPlayerOgColor;
 
-    float mTimePassed = 0.0f;
-    bool Delay(float delay);
 };
