@@ -2,6 +2,7 @@
 #include <Script.h>
 #include "Macros.h"
 #include <vector>
+#include "TimerScript.h"
 
 class GameObject;
 class TextComponent;
@@ -36,4 +37,7 @@ private:
     // Provisional
     std::string mDialog[5] = { "Knock, knock.", "Who's there?", "Tank.", "Tank who?", "You're welcome."};
     int mCurrentDialog = 0;
+
+    TimerScript mClickTimout;
+    bool mTimeout = true;
 };

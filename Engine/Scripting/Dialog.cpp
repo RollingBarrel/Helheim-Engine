@@ -41,12 +41,14 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
+    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
 }
 
 void Dialog::StartDialog()
 {
     GameManager::GetInstance()->SetPaused(true, false);
     mCurrentDialog = 0;
+    mTimeout = true;
     UpdateDialog();
 }
 
@@ -57,6 +59,8 @@ void Dialog::UpdateDialog()
 
 void Dialog::OnClick() 
 {
+    if (mTimeout) return;
+
     if (mCurrentDialog < 4) 
     {
         if (*mProtagonistImage->GetAlpha() == 0.5f) {

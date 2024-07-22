@@ -34,12 +34,12 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
-	if (GameManager::GetInstance()->IsPaused()) return;
-
 	if (mDeath)
 	{
 		Death();
 	}
+
+	if (GameManager::GetInstance()->IsPaused()) return;
 
 	if (!mBeAttracted)
 	{
