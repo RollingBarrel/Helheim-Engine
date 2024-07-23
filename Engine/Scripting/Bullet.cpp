@@ -39,11 +39,15 @@ void Bullet::Update()
 {
 	if (!mHasCollided)
 	{
-		if (mTotalMovement <= mRange)
+		if (mTotalMovement == 0.0f)
+		{
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
+
+		}
+		else if (mTotalMovement <= mRange)
 		{
 			//LOG("TotalMovement, %f", mTotalMovement);
 			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
-			
 			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed);
 		}
 		else
