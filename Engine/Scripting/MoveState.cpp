@@ -34,9 +34,7 @@ StateType MoveState::HandleInput()
         }
 
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY) != 0)
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
         {
             return StateType::MOVE;
         }
@@ -100,6 +98,10 @@ void MoveState::Update()
             mMoveDirection -= float3::unitY.Cross(mCameraFront);
         }
     }
+
+    // Early return if there's no move direction vector
+    if (mMoveDirection.Equals(float3::zero)) return;
+
     mMoveDirection.Normalize();
     mPlayerController->MoveInDirection(mMoveDirection);
 

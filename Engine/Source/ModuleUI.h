@@ -27,5 +27,7 @@ private:
 	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
 
 	std::vector<GameObject*> mCanvasList;
+
+	bool mButtonPressed = false;
 };
 

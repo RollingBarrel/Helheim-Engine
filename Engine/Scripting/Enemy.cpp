@@ -34,6 +34,11 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+    if (mDeath)
+    {
+        Death();
+    }
+	
 	if (GameManager::GetInstance()->IsPaused()) return;
 
 	if (mIsParalyzed)
@@ -43,11 +48,6 @@ void Enemy::Update()
 			Paralyzed(mParalysisSeverityLevel, false);
 		}
 	}
-
-    if (mDeath)
-    {
-        Death();
-    }
 
 	if (!mBeAttracted)
 	{

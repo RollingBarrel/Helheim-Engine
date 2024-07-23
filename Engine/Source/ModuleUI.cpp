@@ -153,10 +153,11 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			{
 				KeyState mouseButtonLeftState = App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT);
 				
-				if (mouseButtonLeftState == KeyState::KEY_UP)
+				if (mouseButtonLeftState == KeyState::KEY_UP && mButtonPressed)
 				{
 					button->TriggerEvent(EventType::CLICK);
 					eventTriggered = true;
+					mButtonPressed = false;
 					return; 
 				}
 				// Button pressed
@@ -164,6 +165,7 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 				{
 					button->TriggerEvent(EventType::PRESS);
 					eventTriggered = true;
+					mButtonPressed = true;
 					return; 
 				}
 				// Mouse hover

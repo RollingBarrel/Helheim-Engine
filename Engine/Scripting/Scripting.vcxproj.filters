@@ -176,6 +176,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
@@ -322,6 +323,7 @@
     <ClCompile Include="EnemyCreatureMelee.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="BombBoss.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
