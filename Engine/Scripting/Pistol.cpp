@@ -36,11 +36,7 @@ Pistol::Pistol() : RangeWeapon()
 	mBulletSpeed = 50.0f;
 
 	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
-	if (mFire)
-	{
-		mFire->SetEnabled(false);
-	}
-
+	if (mFire)	mFire->SetEnabled(false);
 }
 
 Pistol::~Pistol()
@@ -57,7 +53,7 @@ void Pistol::Attack(float time)
 {
 	// LOG("Pistol Attack");
 
-	 //Audio
+	//Audio
 	if (GameManager::GetInstance()->GetAudio())
 	{
 		PlayHitSound();
@@ -79,7 +75,7 @@ void Pistol::Attack(float time)
 	ray.pos.y++;
 	ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
-	std::vector<std::string> ignoreTags = {"Bullet"};
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea" };
 	Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
 	if (hit.IsValid())
@@ -88,14 +84,12 @@ void Pistol::Attack(float time)
 		if (hit.mGameObject->GetTag().compare("Enemy") == 0)
 		{
 			//LOG("Enemy %s has been hit at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
-
 			Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
 			if (enemy)
 			{
 				enemy->TakeDamage(mDamage);
 			}
 		}
-
 	}
 
 	//PARTICLES
@@ -122,7 +116,6 @@ void Pistol::Attack(float time)
 		{
 			bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
 		}
-		
 	}
 }
 

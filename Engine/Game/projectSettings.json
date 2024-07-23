@@ -3,6 +3,7 @@
         "WinArea",
         "Wall",
         "Door",
-        "Bullet"
+        "Bullet",
+        "BattleArea"
     ]
 }
