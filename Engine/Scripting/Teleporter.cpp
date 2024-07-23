@@ -92,6 +92,8 @@ void Teleporter::Update()
             mIsExiting = false;
             mCurrentTime = 0.0f;
             mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
+            mDestination->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
+
 
         }
     }
@@ -100,6 +102,10 @@ void Teleporter::Update()
 
 void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 {
+    if (!mGameObject->GetComponent(ComponentType::SCRIPT)->IsEnabled())
+    {
+        return;
+    }
     if (collisionData->collidedWith->GetTag() == "Player")
     {
         // TODO: Pause player movement
@@ -118,6 +124,8 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         mStartPos = mPlayer->GetWorldPosition();
 
         mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
+
+        mDestination->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
 
     }
 }
