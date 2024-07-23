@@ -63,7 +63,8 @@ void Dialog::OnClick()
 
     if (mCurrentDialog < 4) 
     {
-        if (*mProtagonistImage->GetAlpha() == 0.5f) {
+        if (*mProtagonistImage->GetAlpha() == 0.5f)
+        {
             mProtagonistImage->SetAlpha(1.0f);
             mWifeImage->SetAlpha(0.5f);
         }

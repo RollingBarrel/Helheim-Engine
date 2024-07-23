@@ -10,7 +10,8 @@ class ImageComponent;
 class ButtonComponent;
 
 GENERATE_BODY(Dialog);
-class Dialog : public Script {
+class Dialog : public Script 
+{
     FRIEND(Dialog)
 public:
     Dialog(GameObject* owner);

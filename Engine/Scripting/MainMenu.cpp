@@ -13,6 +13,8 @@
 #include "Resource.h"
 #include "ModuleResource.h"
 #include "TextComponent.h"
+#include "Timer.h"
+#include "ModuleWindow.h"
 
 CREATE(MainMenu)
 {
@@ -327,14 +329,30 @@ void MainMenu::OnSettingsButtonClick()
 
 void MainMenu::OnVSyncButtonClick()
 {
-    if (*mVSyncImage->GetAlpha() == 1.0f) mVSyncImage->SetAlpha(0.5f);
-    else mVSyncImage->SetAlpha(1.0f);
+    if (*mVSyncImage->GetAlpha() == 1.0f)
+    {
+        mVSyncImage->SetAlpha(0.5f);
+        App->GetCurrentClock()->SetVsyncStatus(false);
+    }
+    else
+    {
+        mVSyncImage->SetAlpha(1.0f);
+        App->GetCurrentClock()->SetVsyncStatus(true);
+    }
 }
 
 void MainMenu::OnFullscreenButtonClick()
 {
-    if (*mFullscreenImage->GetAlpha() == 1.0f) mFullscreenImage->SetAlpha(0.5f);
-    else mFullscreenImage->SetAlpha(1.0f);
+    if (*mFullscreenImage->GetAlpha() == 1.0f)
+    {
+        mFullscreenImage->SetAlpha(0.5f);
+        App->GetWindow()->WindowFullscreen(false);
+    }
+    else
+    {
+        mFullscreenImage->SetAlpha(1.0f);
+        App->GetWindow()->WindowFullscreen(true);
+    }
 }
 
 // SELECTED
