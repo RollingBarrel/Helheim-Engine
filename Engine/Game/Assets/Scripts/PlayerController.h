@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
+#include "TimerScript.h"
 
 class AnimationComponent;
 class AnimationStateMachine;
@@ -106,6 +107,10 @@ public:
     void SetGrenadeVisuals(bool value);
     void UpdateGrenadeVisuals();
     void ThrowGrenade();
+
+    void CheckOtherTimers();
+
+    void Paralyzed(float percentage, bool paralysis);
 
     bool CanReload() const;
     void Reload() const;
@@ -254,4 +259,9 @@ private:
     std::vector<unsigned int> mMaterialIds;
     bool Delay(float delay);
  
+    // DEBUFF
+    bool mIsParalyzed = false;
+    const float mParalyzedDuration = 5.0f;
+    TimerScript mParalyzedTimerScript;
+    float mParalysisSpeedReductionFactor = 1.0f;
 };

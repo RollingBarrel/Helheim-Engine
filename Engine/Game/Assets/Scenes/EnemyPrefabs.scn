@@ -1721,6 +1721,188 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
+            },
+            {
+                "UID": 1361016298,
+                "ParentUID": 1,
+                "Name": "FinalBoss",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": ""
+                    }
+                ]
+            },
+            {
+                "UID": 715268874,
+                "ParentUID": 1361016298,
+                "Name": "DamagedHelmet",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    8.0,
+                    10.0,
+                    5.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 735180480,
+                "ParentUID": 715268874,
+                "Name": "node_damagedHelmet_-6514",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    -0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 744857799,
+                "ParentUID": 735180480,
+                "Name": "node_damagedHelmet_-6514",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 539182079,
+                        "MaterialID": 539182084,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 273259587,
+                "ParentUID": 1361016298,
+                "Name": "Light",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.14113587141036988,
+                    5.0750532150268559,
+                    9.633854866027832
+                ],
+                "Rotation": [
+                    0.006136506795883179,
+                    0.9862751960754395,
+                    -0.16063620150089265,
+                    -0.03767700120806694
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.14113587141036988,
+                            5.0750532150268559,
+                            9.633854866027832,
+                            249.0
+                        ],
+                        "Direction": [
+                            -0.0762912780046463,
+                            -0.3164006173610687,
+                            -0.9455529451370239,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            0.9440000057220459,
+                            0.80854731798172,
+                            0.4984320104122162,
+                            0.7880107760429382
+                        ],
+                        "Range": 15.0,
+                        "CastShadow": false,
+                        "Bias": 0.000009999999747378752
+                    }
+                ]
             }
         ],
         "NavMeshResource": 0
