@@ -186,7 +186,7 @@ private:
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
     // Speed
-    float mPlayerSpeed;
+    float mPlayerSpeed = 10.f;
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
