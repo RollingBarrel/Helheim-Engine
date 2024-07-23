@@ -545,6 +545,26 @@ void GameObject::GetComponentsInChildren(ComponentType type, std::vector<Compone
 	}
 }
 
+Component* GameObject::GetComponentInChildren(ComponentType type) const
+{
+	Component* gameObjectComponent = GetComponent(type);
+
+	if (gameObjectComponent)
+	{
+		return gameObjectComponent;
+	}
+
+	for (GameObject* child : mChildren)
+	{
+		gameObjectComponent = child->GetComponentInChildren(type);
+
+		if (gameObjectComponent)
+		{
+			return gameObjectComponent;
+		}
+	}
+}
+
 void GameObject::GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const
 {
 	MeshRendererComponent* gameObjectComponent = reinterpret_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
