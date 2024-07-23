@@ -15,6 +15,7 @@
 #include "SliderComponent.h"
 #include "ScriptComponent.h"
 #include "Sanity.h"
+#include "Dialog.h"
 
 
 CREATE(HudController)
@@ -42,8 +43,9 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
-    SEPARATOR("Sanity");
+    SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
+    MEMBER(MemberType::GAMEOBJECT, mDialogGO);
     END_CREATE;
 }
 
@@ -125,6 +127,7 @@ void HudController::Start()
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
 
     if (mSanityGO) mSanity = reinterpret_cast<Sanity*>(reinterpret_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (mDialogGO) mDialog = reinterpret_cast<Dialog*>(reinterpret_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 void HudController::Update()
@@ -199,6 +202,12 @@ void HudController::SetSanity()
     mSanity->CreateSelection(mArenaCounter);
 }
 
+void HudController::SetDialog()
+{
+    mDialogGO->SetEnabled(true);
+    mDialog->StartDialog();
+}
+
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
@@ -232,17 +241,17 @@ void HudController::SetEnergy(int energy, EnergyType type)
 
 void HudController::SetHealth(float health)
 {
+    if (health < mHealthSlider->GetValue()) 
+    {
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
+    }
+
     if (health == 0) 
     {
         if (mFeedbackImage) mFeedbackImage->SetAlpha(-1.0f);
-        if (mHealthSlider) mHealthSlider->SetValue(health);
-    }
-    else if (health < mHealthSlider->GetValue())
-    {
-        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
-        if (mHealthSlider) mHealthSlider->SetValue(health);
     }
 
+    if (mHealthSlider) mHealthSlider->SetValue(health);
     mTargetHealth = health;
 }
 
@@ -338,7 +347,7 @@ void HudController::OnLoseButtonClick()
 
 void HudController::OnContinueBtnClick()
 {
-    GameManager::GetInstance()->SetPaused(false);
+    GameManager::GetInstance()->SetPaused(false, true);
 }
 
 void HudController::OnContinueBtnHoverOn()

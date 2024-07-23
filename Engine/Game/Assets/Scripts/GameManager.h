@@ -34,7 +34,7 @@ public:
     PoolManager* GetPoolManager() const;
 
     bool IsPaused() { return mPaused; }
-    void SetPaused(bool value);
+    void SetPaused(bool value, bool screen);
 
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea);

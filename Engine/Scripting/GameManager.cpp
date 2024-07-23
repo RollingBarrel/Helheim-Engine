@@ -83,7 +83,7 @@ void GameManager::Update()
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
     {
-        SetPaused(!mPaused);
+        SetPaused(!mPaused, true);
     }
 }
 
@@ -101,10 +101,10 @@ PoolManager* GameManager::GetPoolManager() const
     return reinterpret_cast<PoolManager*>(reinterpret_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
-void GameManager::SetPaused(bool value)
+void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
-    mHudController->SetScreen(SCREEN::PAUSE, mPaused);
+    if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
 }
 
 void GameManager::LoadLevel(const char* LevelName)

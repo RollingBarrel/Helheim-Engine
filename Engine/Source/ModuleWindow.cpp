@@ -51,9 +51,9 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		mWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 
-		if(window == NULL)
+		if(mWindow == NULL)
 		{
 			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
 			ret = false;
@@ -62,12 +62,12 @@ bool ModuleWindow::Init()
 		{
 			//Get window surface
 			
-			screen_surface = SDL_GetWindowSurface(window);
+			mScreenSurface = SDL_GetWindowSurface(mWindow);
 		}
 	}
 
 	int windowPositionX, windowPositionY;
-	SDL_GetWindowPosition(window, &windowPositionX, &windowPositionY);
+	SDL_GetWindowPosition(mWindow, &windowPositionX, &windowPositionY);
 	mGameWindowsSize = float2(width, height);
 	mGameWindowsPosition = float2(windowPositionX, windowPositionY);
 	return ret;
@@ -79,9 +79,9 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(window != NULL)
+	if(mWindow != NULL)
 	{
-		SDL_DestroyWindow(window);
+		SDL_DestroyWindow(mWindow);
 	}
 
 	//Quit SDL subsystems
@@ -91,12 +91,24 @@ bool ModuleWindow::CleanUp()
 
 void ModuleWindow::SetMousePositionInWindow(float2 position)
 {
-	SDL_WarpMouseInWindow(window, position.x, position.y);
+	SDL_WarpMouseInWindow(mWindow, position.x, position.y);
 }
 
 void ModuleWindow::WindowResized(unsigned width, unsigned height)
 {
 	this->width = width;
 	this->height = height;
+}
+
+void ModuleWindow::WindowFullscreen(bool value)
+{
+	if (value)
+	{
+		SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN_DESKTOP);
+	}
+	else
+	{
+		SDL_SetWindowFullscreen(mWindow, 0);
+	}
 }
 
