@@ -103,7 +103,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
 			{
-				LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
+				//LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
 				if (mHitParticles)
 				{
 					mHitParticles->SetEnable(true);
@@ -116,7 +116,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (collisionData->collidedWith->GetTag().compare("Player") == 0)
 			{
-				LOG("Collided with player");
+				//LOG("Collided with player");
 				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
 				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
 				player->TakeDamage(mDamage);
@@ -131,7 +131,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 
 		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
 		{
-			LOG("Collided with WALL");
+			//LOG("Collided with WALL");
 			if (mHitParticles)
 			{
 				mHitParticles->SetEnable(true);
