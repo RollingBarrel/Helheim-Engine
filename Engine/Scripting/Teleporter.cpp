@@ -3,7 +3,7 @@
 #include "GameObject.h"
 #include <BoxColliderComponent.h>
 #include "Application.h"
-#include "PlayerController.h"
+#include "ModuleDetourNavigation.h"
 
 
 CREATE(Teleporter)
@@ -32,30 +32,67 @@ void Teleporter::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Teleporter::OnCollisionEnter, this, std::placeholders::_1)));
     }
-
+    /*
     mDistance = mGameObject->GetWorldPosition().Distance(mDestination->GetWorldPosition());
     mDirection = mDestination->GetWorldPosition().Sub(mGameObject->GetWorldPosition()).Normalized();
     mStartPos = mGameObject->GetWorldPosition();
+    */
 }
 
 void Teleporter::Update()
 {
+
     if (mIsTriggered)
     {
         mCurrentTime += App->GetDt();
-        float3 position = LerpPosition();
+        float3 position = LerpPosition(mDuration);
         mPlayer->SetWorldPosition(position);
         mGameObject->SetWorldPosition(position);
         if (mCurrentTime > mDuration)
         {
             mIsTriggered = false;
+            mIsExiting = true;
             mCurrentTime = 0.0f;
             mGameObject->SetWorldPosition(mStartPos);
-            if (mPlayerController)
-            {
-                mPlayerController->SetIsInElevator(false);
-            }
-            
+
+            //Compute nearest nav point to player after reaching elevator stop
+            mStartPos = mPlayer->GetWorldPosition();
+            float3 destination = App->GetNavigation()->FindNearestPoint(mStartPos, float3(1.0f));
+            mDistance = mStartPos.Distance(destination);
+            mDirection = destination.Sub(mStartPos).Normalized();
+
+        }
+    }
+    else if (mIsEntering)
+    {
+        mCurrentTime += App->GetDt();
+        float3 positon = LerpPosition(mEnterDuration);
+        mPlayer->SetWorldPosition(positon);
+        if (mCurrentTime > mEnterDuration)
+        {
+            mIsTriggered = true;
+            mIsEntering = false;
+            mCurrentTime = 0.0f;
+
+            mDistance = mGameObject->GetWorldPosition().Distance(mDestination->GetWorldPosition());
+            mDirection = mDestination->GetWorldPosition().Sub(mGameObject->GetWorldPosition()).Normalized();
+            mStartPos = mGameObject->GetWorldPosition();
+
+
+        }
+
+    }
+    else if (mIsExiting)
+    {
+        mCurrentTime += App->GetDt();
+        float3 positon = LerpPosition(mEnterDuration);
+        mPlayer->SetWorldPosition(positon);
+        if (mCurrentTime > mEnterDuration)
+        {
+            mIsExiting = false;
+            mCurrentTime = 0.0f;
+            mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
+
         }
     }
 }
@@ -67,26 +104,36 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
     {
         // TODO: Pause player movement
         //collisionData->collidedWith->SetWorldPosition(mDestination->GetWorldPosition());
-        mIsTriggered = true;
+        if (mIsEntering || mIsTriggered || mIsExiting)
+        {
+            return;
+        }
+        mCurrentTime = 0.0f;
+        mIsEntering = true;
         mPlayer = collisionData->collidedWith;
-        mPlayerController = reinterpret_cast<PlayerController*>(collisionData->collidedWith->GetComponent(ComponentType::SCRIPT));
 
-        mPlayerController->SetIsInElevator(true);
+        
+        mDistance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
+        mDirection = mGameObject->GetWorldPosition().Sub(mPlayer->GetWorldPosition()).Normalized();
+        mStartPos = mPlayer->GetWorldPosition();
+
+        mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
+
     }
 }
 
-float3 Teleporter::LerpPosition()
+float3 Teleporter::LerpPosition(float duration)
 {
     if (mCurrentTime < 0.0f)
     {
         return mStartPos;
     }
-    else if (mCurrentTime > mDuration)
+    else if (mCurrentTime > duration)
     {
         return mDestination->GetWorldPosition();
     }
-    float halfDuration = mDuration / 2;
-    float maxVelocity = mDistance / mDuration;
+    float halfDuration = duration / 2;
+    float maxVelocity = mDistance / duration;
 
     float lerpFactor = 0.0f;
 

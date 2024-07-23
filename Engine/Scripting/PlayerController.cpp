@@ -235,7 +235,6 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
-
     // Check input
     CheckInput();
 
@@ -423,10 +422,7 @@ void PlayerController::SetAnimationSpeed(float speed)
 
 void PlayerController::MoveInDirection(float3 direction)
 {
-    if (mIsInElevator)
-    {
-        return;
-    }
+
     float collisionDotProduct = direction.Dot(mCollisionDirection);
     if (collisionDotProduct < 0.0f)
     {
@@ -443,6 +439,7 @@ void PlayerController::MoveInDirection(float3 direction)
 
 void PlayerController::MoveToPosition(float3 position)
 {
+
     mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(position, float3(10.0f)));
 }
 

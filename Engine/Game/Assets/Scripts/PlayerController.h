@@ -141,11 +141,6 @@ public:
     UltimateState* GetUltimateState() { return mUltimateState; }
 
 
-    //Elevator state
-
-    bool GetIsInElevator() const { return mIsInElevator; }
-    void SetIsInElevator(bool isInElevator) { mIsInElevator = isInElevator; }
-
 private:
     void CheckInput();
     void StateMachine();
@@ -260,7 +255,5 @@ private:
     std::vector<unsigned int> mMaterialIds;
     bool Delay(float delay);
 
-    // Elevator state
-    bool mIsInElevator = false;
  
 };

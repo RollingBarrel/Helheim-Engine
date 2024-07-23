@@ -5,7 +5,6 @@
 
 
 class BoxColliderComponent;
-class PlayerController;
 struct CollisionData;
 
 GENERATE_BODY(Teleporter);
@@ -28,16 +27,18 @@ public:
 
 private:
 	
-	float3 LerpPosition();
+	float3 LerpPosition(float duration);
 	GameObject* mDestination;
 	BoxColliderComponent* mCollider;
 	float mDuration = 4.0f; // Expose as script variable
+	float mEnterDuration = 1.5f;
 	float mCurrentTime = 0.0f;
 	bool mIsTriggered = false;
+	bool mIsEntering = false;
+	bool mIsExiting = false;
 	float mDistance = 0.0f;
 	float3 mDirection;
 	float3 mStartPos;
 	GameObject* mPlayer = nullptr;
-	PlayerController* mPlayerController = nullptr;
 };
 
