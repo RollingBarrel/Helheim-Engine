@@ -66,7 +66,7 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag() == "Player")
     {
         // TODO: Pause player movement
-        collisionData->collidedWith->SetWorldPosition(mDestination->GetWorldPosition());
+        //collisionData->collidedWith->SetWorldPosition(mDestination->GetWorldPosition());
         mIsTriggered = true;
         mPlayer = collisionData->collidedWith;
         mPlayerController = reinterpret_cast<PlayerController*>(collisionData->collidedWith->GetComponent(ComponentType::SCRIPT));
