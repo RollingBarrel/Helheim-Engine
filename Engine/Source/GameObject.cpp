@@ -563,6 +563,8 @@ Component* GameObject::GetComponentInChildren(ComponentType type) const
 			return gameObjectComponent;
 		}
 	}
+
+	return nullptr;
 }
 
 void GameObject::GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const

@@ -23,8 +23,8 @@
 
 Machinegun::Machinegun()
 {
-	mDamage = 2.0f;
-	mAttackDuration = 0.7f;
+	mDamage = 4.0f;
+	mAttackDuration = 0.3f;
     mAttackCooldown = 0.3f;
 	mAttackRange = 25.0f;
     mNumBullets = 3;
