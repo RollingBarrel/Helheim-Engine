@@ -4,7 +4,7 @@
 #include "HudController.h"
 #include "PoolManager.h"
 #include "AudioManager.h"
-#include "Bullet.h"
+#include "RayCastBullet.h"
 #include "Enemy.h"
 
 #include "GameObject.h"
@@ -23,11 +23,13 @@
 
 Machinegun::Machinegun()
 {
-	mAttackRange = 100.0f;
 	mDamage = 2.0f;
 	mAttackDuration = 0.7f;
     mAttackCooldown = 0.3f;
+	mAttackRange = 25.0f;
     mNumBullets = 3;
+
+    mBulletSpeed = 60.0f;
 
     mShootDuration = mAttackDuration / static_cast<float>(mNumBullets);
 
@@ -78,7 +80,8 @@ void Machinegun::Attack(float time)
         //ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
 
         Hit hit;
-        Physics::Raycast(hit, ray, mAttackRange);
+        std::vector<std::string> ignoreTags = { "Bullet" };
+        Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
         if (hit.IsValid())
         {
@@ -105,13 +108,20 @@ void Machinegun::Attack(float time)
         if (GameManager::GetInstance()->GetPoolManager())
         {
             GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-            Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+            RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(0.686f, 0.0f, 1.0f, 1.0f));
             gradient.AddColorGradientMark(0.6f, float4(0.0f, 0.0f, 1.0f, 1.0f));
             bullet->SetEnabled(false);
-            bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
+            if (hit.IsValid())
+            {
+                bulletScript->Init(ray.pos, hit.mHitPoint, mBulletSpeed, mBulletSize, true, &gradient);
+            }
+            else
+            {
+                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
+            }
         }
 
     }

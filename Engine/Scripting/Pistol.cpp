@@ -13,7 +13,7 @@
 #include "PoolManager.h"
 #include "HudController.h"
 #include "Enemy.h"
-#include "Bullet.h"
+#include "RayCastBullet.h"
 #include "Bat.h"
 #include "TrailComponent.h"
 #include "HudController.h"
@@ -30,7 +30,10 @@ Pistol::Pistol() : RangeWeapon()
 	mMaxAmmo = 16;
 	mDamage = 2.0f;
 	mAttackDuration = 0.0f;
-	mAttackCooldown = 0.2f;
+	mAttackCooldown = 0.15f;
+	mAttackRange = 25.0f;
+
+	mBulletSpeed = 50.0f;
 
 	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
 	if (mFire)
@@ -76,8 +79,8 @@ void Pistol::Attack(float time)
 	ray.pos.y++;
 	ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
-	float distance = 100.0f;
-	Physics::Raycast(hit, ray, distance);
+	std::vector<std::string> ignoreTags = {"Bullet"};
+	Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
 	if (hit.IsValid())
 	{
@@ -106,11 +109,20 @@ void Pistol::Attack(float time)
 	if (GameManager::GetInstance()->GetPoolManager())
 	{
 		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-		Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		ColorGradient gradient;
 		gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
 		bullet->SetEnabled(false);
-		bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
+
+		if (hit.IsValid())
+		{
+			bulletScript->Init(ray.pos, hit.mHitPoint, mBulletSpeed, mBulletSize, true, &gradient);
+		}
+		else
+		{
+			bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
+		}
+		
 	}
 }
 
