@@ -32,7 +32,7 @@ void EnemyExplosive::Start()
         mExplosionWarningGO->SetLocalPosition(float3(0.0f, 0.1f, 0.0f));
         mExplosionWarningGO->SetEnabled(false);
     }
-
+/*
     GameObject* firstChild = *(mGameObject->GetChildren().begin());
     if (firstChild)
     {
@@ -41,8 +41,7 @@ void EnemyExplosive::Start()
       {
           mExplosionParticles->SetEnable(false);
       }
-    }
-
+      }*/
 }
 
 
@@ -59,10 +58,10 @@ void EnemyExplosive::Attack()
 
     if (IsPlayerInRange(mExplosionRadius))
     {
-        if (mExplosionParticles)
+       /* if (mExplosionParticles)
         {
             mExplosionParticles->SetEnable(true);
-        }
+        }*/
 
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
