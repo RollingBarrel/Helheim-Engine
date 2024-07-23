@@ -6660,7 +6660,7 @@
                 "Active": true,
                 "Translation": [
                     90.61681365966797,
-                    65.22063446044922,
+                    64.71537780761719,
                     13.012613296508789
                 ],
                 "Rotation": [
@@ -6687,8 +6687,8 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    63.35051345825195,
-                    36.54130554199219,
+                    62.47916793823242,
+                    36.1075439453125,
                     13.012613296508789
                 ],
                 "Rotation": [
@@ -9958,13 +9958,18 @@
                                 "VariableData": 1456554295
                             },
                             {
-                                "VariableName": "Sanity",
+                                "VariableName": "Sanity & Dialog",
                                 "MemberType": 5
                             },
                             {
                                 "VariableName": "mSanityGO",
                                 "MemberType": 3,
                                 "VariableData": 157263291
+                            },
+                            {
+                                "VariableName": "mDialogGO",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -16207,7 +16212,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 594603088,
+        "NavMeshResource": 300660758,
         "SkyBoxResource": 458087203,
         "BloomIntensity": 0.5,
         "DirectionalLight": [

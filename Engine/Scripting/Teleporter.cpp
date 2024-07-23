@@ -57,7 +57,7 @@ void Teleporter::Update()
 
             //Compute nearest nav point to player after reaching elevator stop
             mStartPos = mPlayer->GetWorldPosition();
-            float3 destination = App->GetNavigation()->FindNearestPoint(mStartPos, float3(1.0f));
+            float3 destination = App->GetNavigation()->FindNearestPoint(mDestination->GetWorldPosition(), float3(10.0f));
             mDistance = mStartPos.Distance(destination);
             mDirection = destination.Sub(mStartPos).Normalized();
 
