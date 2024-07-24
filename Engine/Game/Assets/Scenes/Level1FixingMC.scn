@@ -2403,44 +2403,6 @@
                 "Components": []
             },
             {
-                "UID": 2063520869,
-                "ParentUID": 2043957368,
-                "Name": "elevator-final-stage-1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 1027741701,
-                        "MaterialID": 1027741666,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
                 "UID": 233926708,
                 "ParentUID": 856718795,
                 "Name": "cryotubes-storage_1",
@@ -3003,9 +2965,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.02933502197265625,
+                    0.0977783203125,
+                    -0.000370025634765625
                 ],
                 "Rotation": [
                     0.0,
@@ -4654,7 +4616,7 @@
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.0,
+                    0.362762451171875,
                     0.0
                 ],
                 "Rotation": [
@@ -4711,44 +4673,6 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
-            },
-            {
-                "UID": 1370043735,
-                "ParentUID": 1331334459,
-                "Name": "elevator-start",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 1027741737,
-                        "MaterialID": 1027741666,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
             },
             {
                 "UID": 1706661270,
@@ -6342,7 +6266,7 @@
                 "Active": true,
                 "Translation": [
                     87.39856719970703,
-                    64.23529815673828,
+                    65.30999755859375,
                     13.012613296508789
                 ],
                 "Rotation": [
@@ -6389,7 +6313,7 @@
                         "Size": [
                             1.899999976158142,
                             2.4000000953674318,
-                            1.899999976158142
+                            3.8499999046325685
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -6397,54 +6321,26 @@
                 ]
             },
             {
-                "UID": 1168049975,
+                "UID": 2063520869,
                 "ParentUID": 1111378481,
-                "Name": "Cube",
+                "Name": "elevator-final-stage-1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -0.03406524658203125,
+                    -0.30999755859375,
+                    0.048371315002441409
                 ],
                 "Rotation": [
                     0.0,
+                    1.0,
                     0.0,
-                    0.0,
-                    1.0
+                    -1.6292068494294654e-7
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1204670621,
-                "ParentUID": 1168049975,
-                "Name": "Cube",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    2.0,
+                    0.5,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -6454,8 +6350,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 496453540,
-                        "MaterialID": 999999999,
+                        "MeshID": 1027741701,
+                        "MaterialID": 1027741666,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -6470,7 +6366,7 @@
                 "Active": true,
                 "Translation": [
                     67.25299072265625,
-                    35.30011749267578,
+                    36.06999969482422,
                     13.012613296508789
                 ],
                 "Rotation": [
@@ -6517,7 +6413,7 @@
                         "Size": [
                             1.899999976158142,
                             2.4000000953674318,
-                            1.899999976158142
+                            3.8499999046325685
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -6525,54 +6421,26 @@
                 ]
             },
             {
-                "UID": 110723059,
+                "UID": 1370043735,
                 "ParentUID": 1791676385,
-                "Name": "Cube",
+                "Name": "elevator-start",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    0.11151123046875,
+                    -1.0699996948242188,
+                    0.04837226867675781
                 ],
                 "Rotation": [
                     0.0,
+                    1.0,
                     0.0,
-                    0.0,
-                    1.0
+                    -1.6292068494294654e-7
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 161546389,
-                "ParentUID": 110723059,
-                "Name": "Cube",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    2.0,
+                    0.5,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -6582,8 +6450,8 @@
                     {
                         "ComponentType": 0,
                         "IsEnabled": true,
-                        "MeshID": 496453540,
-                        "MaterialID": 999999999,
+                        "MeshID": 1027741737,
+                        "MaterialID": 1027741666,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []

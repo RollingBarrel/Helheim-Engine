@@ -92,7 +92,7 @@ void Teleporter::Update()
             mIsExiting = false;
             mCurrentTime = 0.0f;
             mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
-            //mDestination->SetEnabled(true);
+            mDestination->SetEnabled(true);
 
 
         }
