@@ -42,7 +42,8 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        mAnimationComponent->SendTrigger("tAttack", 0.2f);
+        //mAnimationComponent->SendTrigger("tAttack", 0.2f);
+        mAnimationComponent->OnRestart();
         RangeAttack();
 
     }

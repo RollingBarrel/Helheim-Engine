@@ -43,6 +43,10 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    MEMBER(MemberType::GAMEOBJECT, mTryAgainBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mLoseMenuBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mWinMenuBtnGO);
+    
     SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     MEMBER(MemberType::GAMEOBJECT, mDialogGO);
@@ -90,18 +94,22 @@ void HudController::Start()
     if (mWinScreen) 
     {
         mWinScreen->SetEnabled(false);
-        mWinBtn = static_cast<ButtonComponent*>(mWinScreen->GetComponent(ComponentType::BUTTON));
+        mWinBtn = static_cast<ButtonComponent*>(mWinMenuBtnGO->GetComponent(ComponentType::BUTTON));
         mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
     }
     if (mLoseScreen)
     {
         mLoseScreen->SetEnabled(false);
-        mLoseBtn = static_cast<ButtonComponent*>(mLoseScreen->GetComponent(ComponentType::BUTTON));
+        if (mLoseMenuBtnGO) mLoseBtn = static_cast<ButtonComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::BUTTON));
+        if (mTryAgainBtnGO) mTryAgainBtn = static_cast<ButtonComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::BUTTON));
         mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnLoseButtonClick, this)));
+        mLoseBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnLoseButtonHoverOn, this)));
+        mLoseBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnLoseButtonHoverOff, this)));
+        mTryAgainBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonClick, this)));
+        mTryAgainBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOn, this)));
+        mTryAgainBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOff, this)));
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
-
-    
 
     if (mHealthGO)
     {
@@ -353,7 +361,36 @@ void HudController::OnWinButtonClick()
 
 void HudController::OnLoseButtonClick()
 {
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+}
+
+void HudController::OnTryAgainButtonClick()
+{
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+}
+
+void HudController::OnTryAgainButtonHoverOn()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.25f);
+}
+
+void HudController::OnTryAgainButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void HudController::OnLoseButtonHoverOn() 
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.25f);
+}
+
+void HudController::OnLoseButtonHoverOff() 
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
 }
 
 #pragma endregion

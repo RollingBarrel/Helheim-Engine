@@ -81,5 +81,5 @@ private:
     ButtonComponent* mCard3Btn = nullptr;
 
     TimerScript mClickTimout;
-    bool mTimeout = true;
+    bool mTimeout = false;
 };

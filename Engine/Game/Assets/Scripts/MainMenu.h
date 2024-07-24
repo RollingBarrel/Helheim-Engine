@@ -57,6 +57,7 @@ private:
     void OnBackCreditsButtonHover();
     void OnControlsButtonHover();
     void OnSettingsButtonHover();
+    void OnBackButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
@@ -65,6 +66,7 @@ private:
     void OnBackCreditsButtonHoverOff();
     void OnControlsButtonHoverOff();
     void OnSettingsButtonHoverOff();
+    void OnBackButtonHoverOff();
     
     int mOption = 0;
     int mSettingOption = 0;
