@@ -49,7 +49,12 @@ private:
     bool Delay(float delay);
 
     void OnWinButtonClick();
+    void OnTryAgainButtonClick();
+    void OnTryAgainButtonHoverOn();
+    void OnTryAgainButtonHoverOff();
     void OnLoseButtonClick();
+    void OnLoseButtonHoverOn();
+    void OnLoseButtonHoverOff();
 
     void OnContinueBtnClick();
     void OnContinueBtnHoverOn();
@@ -89,8 +94,13 @@ private:
     GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
 
+    GameObject* mTryAgainBtnGO = nullptr;
+    GameObject* mLoseMenuBtnGO = nullptr;
+    GameObject* mWinMenuBtnGO = nullptr;
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
+    ButtonComponent* mTryAgainBtn = nullptr;
+
     SliderComponent* mHealthSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
     TextComponent* mEnergyText = nullptr;
