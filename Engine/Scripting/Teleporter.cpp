@@ -57,7 +57,7 @@ void Teleporter::Update()
 
             //Compute nearest nav point to player after reaching elevator stop
             mStartPos = mPlayer->GetWorldPosition();
-            float3 destination = App->GetNavigation()->FindNearestPoint(mDestination->GetWorldPosition(), float3(10.0f));
+            float3 destination = App->GetNavigation()->FindNearestPoint(mDestination->GetWorldPosition() + float3(mDirection.x, 0.0f, mDirection.z) * 10, float3(10.0f));
             mDistance = mStartPos.Distance(destination);
             mDirection = destination.Sub(mStartPos).Normalized();
 
@@ -92,7 +92,7 @@ void Teleporter::Update()
             mIsExiting = false;
             mCurrentTime = 0.0f;
             mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
-            mDestination->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
+            //mDestination->SetEnabled(true);
 
 
         }
@@ -125,8 +125,7 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 
         mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
 
-        mDestination->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
-
+        mDestination->SetEnabled(false);
     }
 }
 
@@ -138,7 +137,7 @@ float3 Teleporter::LerpPosition(float duration)
     }
     else if (mCurrentTime > duration)
     {
-        return mDestination->GetWorldPosition();
+        return mStartPos + mDirection * mDistance;
     }
     float halfDuration = duration / 2;
     float maxVelocity = mDistance / duration;
