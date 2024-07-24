@@ -17,7 +17,12 @@ public:
 	virtual void Reload() = 0;
 
 protected:
-	GameObject* mFire = nullptr;
 	virtual void PlayHitSound() = 0;
+	
+	float mBulletSpeed = 10.0f;
+	float mBulletSize = 1.0f;
+
+	GameObject* mFire = nullptr;
+
 };
 

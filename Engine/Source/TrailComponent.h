@@ -52,7 +52,7 @@ private:
 	const char* mFileName = nullptr;
 
 	float mMinDistance = 0.1f;
-	int mMaxPoints = 1000.0f;
+	int mMaxPoints = 1000;
 
 	std::deque<TrailPoint> mPoints;
 	float mMaxLifeTime = 0; // If maxLiftime is 0, it means infinite lifetime
