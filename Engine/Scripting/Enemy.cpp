@@ -83,6 +83,7 @@ void Enemy::CheckHitEffect()
 }
 void Enemy::ResetEnemyColor()
 {
+	if (mDeath) return;
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
 	{
 		MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
@@ -196,6 +197,7 @@ void Enemy::TakeDamage(float damage)
 
 		if (mHealth <= 0)
 		{
+		    ResetEnemyColor();
 			mDeath = true;
 
 			if (mAnimationComponent)
@@ -235,7 +237,7 @@ void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
-		ResetEnemyColor();
+		
 		mGameObject->SetEnabled(false);
 		DropItem();
 	}

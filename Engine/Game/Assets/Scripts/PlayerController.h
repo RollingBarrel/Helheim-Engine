@@ -265,9 +265,6 @@ private:
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
     std::vector<float4> mPlayerOgColor;
-
-    std::vector<unsigned int> mMaterialIds;
-
  
     // DEBUFF
     bool mIsParalyzed = false;
