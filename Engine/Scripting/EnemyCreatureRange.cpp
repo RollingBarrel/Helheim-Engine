@@ -146,7 +146,7 @@ void EnemyCreatureRange::Attack()
 void EnemyCreatureRange::Rotate() //TODO IMPROVE ROTATE BEHAVIOUR
 {
 	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-	direction.y = 0;
+	direction.y = 0.0f;
 	direction.Normalize();
 
 	float targetRadianAngle = std::atan2(direction.x, direction.z);
@@ -156,14 +156,31 @@ void EnemyCreatureRange::Rotate() //TODO IMPROVE ROTATE BEHAVIOUR
 		targetEulerAngle = 360.0f + targetEulerAngle;
 	}
 
-	float currentRadianAngle = mGameObject->GetWorldEulerAngles().y;
+	float3 currentDirection = mGameObject->GetFront();
+	currentDirection.y = 0.0f;
+	currentDirection.Normalize();
+
+	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
 	float currentEulerAngle = RadToDeg(currentRadianAngle);
 	if (currentEulerAngle < 0)
 	{
 		currentEulerAngle = 360.0f + currentEulerAngle;
 	}
 
-	float attackRotaionSpeed = (targetEulerAngle - currentEulerAngle > 0) ? mAttackRotationSpeed : mAttackRotationSpeed * -1;
+	//if (abs(targetEulerAngle - currentEulerAngle) > 180.0f)
+	//{
+	//	float rotation = (mGameObject->GetLocalEulerAngles().y + DegToRad(mAttackRotationSpeed)) * App->GetDt();
+	//	mGameObject->SetLocalRotation(float3(0.0f, rotation, 0.0f));
+	//}
+	//else
+	//{
+	//	float rotation = -1 * (mGameObject->GetLocalEulerAngles().y + DegToRad(mAttackRotationSpeed)) * App->GetDt();
+	//	mGameObject->SetLocalRotation(float3(0.0f, rotation, 0.0f));
+	//}
+
+
+
+	float attackRotaionSpeed = (targetEulerAngle - currentEulerAngle > 0.0f) ? mAttackRotationSpeed : mAttackRotationSpeed * -1.0f;
 	mGameObject->SetLocalRotation(float3(0.0f, currentRadianAngle + DegToRad(attackRotaionSpeed) * App->GetDt(), 0.0f));
 }
 
