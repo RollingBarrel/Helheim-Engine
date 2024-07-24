@@ -49,25 +49,25 @@ void Enemy::Update()
 		switch (mCurrentState)
 		{
 		case EnemyState::IDLE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Idle();
 			break;
 		case EnemyState::CHASE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
 			Chase();
 			break;
 		case EnemyState::CHARGE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Charge();
 			break;
 		case EnemyState::ATTACK:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
 			Attack();
 			break;
 		case EnemyState::DEATH:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", 0.0f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
 			Death();
 			break;
 		}

@@ -41,7 +41,7 @@ void EnemyCreatureMelee::Start()
 	}
 
 	mDisengageTime = 0.0f;
-	mDeathTime = 1.2f;
+	mDeathTime = 1.0f;
 }
 
 void EnemyCreatureMelee::Chase()

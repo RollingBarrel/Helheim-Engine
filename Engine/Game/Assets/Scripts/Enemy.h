@@ -79,6 +79,13 @@ protected:
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
 
+	//Transition Times
+	float mIdleTransitionDuration = 0.2f;
+	float mChaseTransitionDuration = 0.2f;
+	float mChargeTransitionDuration = 0.2f;
+	float mAttackTransitionDuration = 0.2f;
+	float mDeathTransitionDuration = 0.2f;
+
 	// DEBUFF
 	bool mBeAttracted = false;
 
