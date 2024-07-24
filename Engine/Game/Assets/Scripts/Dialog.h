@@ -40,5 +40,5 @@ private:
     int mCurrentDialog = 0;
 
     TimerScript mClickTimout;
-    bool mTimeout = true;
+    bool mTimeout = false;
 };
