@@ -189,6 +189,8 @@ void MeshRendererComponent::Enable()
 
 void MeshRendererComponent::Disable()
 {
+	if (mUniqueMaterial)
+		LOG("heeeeeY");
 	if (mMaterial && mMesh)
 		App->GetOpenGL()->BatchRemoveMesh(*this);
 }
@@ -196,15 +198,18 @@ void MeshRendererComponent::Disable()
 void MeshRendererComponent::CreateUiqueMaterial()
 {
 	assert(mMaterial && mMesh);
-	App->GetOpenGL()->BatchRemoveMesh(*this);
-	ResourceMaterial* rMat = new ResourceMaterial(LCG().Int(), nullptr,
-		mMaterial->GetBaseColorFactor().ptr(), mMaterial->GetMetallicFactor(), mMaterial->GetRoughnessFactor(), mMaterial->GetEmissiveFactor().ptr(),
-		mMaterial->GetBaseColorTexture()->GetUID(), mMaterial->GetMetallicRoughnessTexture()->GetUID(), mMaterial->GetNormalTexture()->GetUID(), mMaterial->GetEmissiveTexture()->GetUID(),
-		mMaterial->IsBaseColorEnabled(), mMaterial->IsMetallicRoughnessEnabled(), mMaterial->IsNormalMapEnabled(), mMaterial->IsEmissiveEnabled());
-	App->GetResource()->ReleaseResource(mMaterial->GetUID());
-	mMaterial = rMat;
-	App->GetOpenGL()->BatchAddMesh(*this);
-	mUniqueMaterial = true;
+	if (!mUniqueMaterial)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(*this);
+		ResourceMaterial* rMat = new ResourceMaterial(LCG().Int(), nullptr,
+			mMaterial->GetBaseColorFactor().ptr(), mMaterial->GetMetallicFactor(), mMaterial->GetRoughnessFactor(), mMaterial->GetEmissiveFactor().ptr(),
+			mMaterial->GetBaseColorTexture()->GetUID(), mMaterial->GetMetallicRoughnessTexture()->GetUID(), mMaterial->GetNormalTexture()->GetUID(), mMaterial->GetEmissiveTexture()->GetUID(),
+			mMaterial->IsBaseColorEnabled(), mMaterial->IsMetallicRoughnessEnabled(), mMaterial->IsNormalMapEnabled(), mMaterial->IsEmissiveEnabled());
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = rMat;
+		App->GetOpenGL()->BatchAddMesh(*this);
+		mUniqueMaterial = true;
+	}
 }
 
 Component* MeshRendererComponent::Clone(GameObject* owner) const
