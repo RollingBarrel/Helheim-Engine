@@ -94,7 +94,7 @@ private:
     int mRows = 1;
     int mCurrentFrame = 0;
     long double mElapsedTime = 0;
-    int mFPS = 30.0f;
+    int mFPS = 30;
     bool mIsPlaying = false;
 
     CanvasComponent* mCanvas = nullptr;

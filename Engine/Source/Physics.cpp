@@ -11,20 +11,20 @@
 #include "Geometry/LineSegment.h"
 #include "float2.h"
 
-void Physics::Raycast(std::multiset<Hit>& hits, const Ray& ray, float maxDistance)
+void Physics::Raycast(std::multiset<Hit>& hits, const Ray& ray, float maxDistance, std::vector<std::string>* ignoreTags)
 {
 	float3 from = float3(ray.pos);
 	float3 to = float3(ray.pos + ray.dir * maxDistance);
 
-	App->GetPhysics()->RayCast(from, to, hits);
+	App->GetPhysics()->RayCast(from, to, hits, ignoreTags);
 }
 
-ENGINE_API void Physics::Raycast(Hit& hit, const Ray& ray, float maxDistance)
+ENGINE_API void Physics::Raycast(Hit& hit, const Ray& ray, float maxDistance, std::vector<std::string>* ignoreTags)
 {
 	float3 from = float3(ray.pos);
 	float3 to = float3(ray.pos + ray.dir * maxDistance);
 
-	App->GetPhysics()->RayCast(from, to, hit);
+	App->GetPhysics()->RayCast(from, to, hit, ignoreTags);
 }
 
 /* //JORDI SOLUTION

@@ -106,6 +106,7 @@ public:
 	float2 GetGlobalMousePosition() const { return float2(static_cast<float>(mMouseGlobalPositionX), static_cast<float>(mMouseGlobalPositionY)); }
 	int GetMouseWheelMotion() const { return mWheelY; }
 	bool GetMouseRecieveInputs() const { return mMouseReceivedInput; }
+	bool isGamepadAvailable() const { return mGameController.mId != nullptr; }
 
 	ButtonState	GetGameControllerButton(int id) const { return mGameController.mButtons[id]; }
 	ButtonState	GetGameControllerTrigger(int id) const { return mGameController.mTriggers[id]; }

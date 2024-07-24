@@ -213,7 +213,7 @@ void HudController::SetAmmo(int ammo)
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
 }
 
-void HudController::SetEnergy(int energy, EnergyType type)
+void HudController::SetEnergy(float energy, EnergyType type)
 {
     if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
 

@@ -8,8 +8,8 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "TrailComponent.h"
-#include <PlayerController.h>
-#include <Bullet.h>
+#include "PlayerController.h"
+#include "RayCastBullet.h"
 
 #include "Application.h"
 #include "ModuleScene.h"
@@ -23,9 +23,11 @@
 Shootgun::Shootgun()
 {
     mDamage = 2.0f;
-    mAttackRange = 100.0f;
+    mAttackRange = 25.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.5f;
+
+    mBulletSpeed = 30.0f;
 
     mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
     if (mFire)
@@ -78,7 +80,10 @@ void Shootgun::Attack(float time)
         ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
 
         Hit hit;
-        Physics::Raycast(hit, ray, mAttackRange);
+        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea"};
+        Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
+
+
 
         if (hit.IsValid())
         {
@@ -101,14 +106,21 @@ void Shootgun::Attack(float time)
         if (GameManager::GetInstance()->GetPoolManager())
         {
             GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-            Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+            RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
             gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
 
             bullet->SetEnabled(false);
-            bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
+            if (hit.IsValid())
+            {
+                bulletScript->Init(ray.pos, hit.mHitPoint, mBulletSpeed, mBulletSize, true, &gradient);
+            }
+            else
+            {
+                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
+            }
         }
 
 

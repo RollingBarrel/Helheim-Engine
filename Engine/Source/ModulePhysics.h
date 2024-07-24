@@ -37,8 +37,8 @@ public:
 	float GetGravity() { return mGravity; }
 	void SetGravity(float gravity) { mGravity = gravity; }
 
-	void RayCast(float3 from, float3 to, std::multiset<Hit>& hits);
-	void RayCast(float3 from, float3 to, Hit& hit);
+	void RayCast(float3 from, float3 to, std::multiset<Hit>& hits, std::vector<std::string>* ignoreTags);
+	void RayCast(float3 from, float3 to, Hit& hit, std::vector<std::string>* ignoreTags);
 
 	void CreateBoxRigidbody(BoxColliderComponent* boxCollider);
 	void RemoveBoxRigidbody(BoxColliderComponent* boxCollider);
