@@ -27,7 +27,6 @@ void Enemy::Start()
 
     //Hit Effect
     mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
-    mMaterialIds.reserve(mMeshComponents.size());
     for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
     {
         static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
@@ -77,7 +76,7 @@ void Enemy::CheckHitEffect()
 }
 void Enemy::ResetEnemyColor()
 {
-	if (mDeath) return;
+	if (IsDeath()) return;
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
 	{
 		MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);

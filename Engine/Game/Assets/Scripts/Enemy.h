@@ -51,11 +51,11 @@ protected:
 
 	bool IsPlayerInRange(float range);
 	void DropItem();
-
+	void ActivateEnemy();
 	void ActivateHitEffect();
 	void CheckHitEffect();
 	void ResetEnemyColor();
-
+	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;
@@ -100,7 +100,6 @@ protected:
 	//Hit Effect
 	bool mHit = false;
 	std::vector<Component*> mMeshComponents;
-	std::vector<unsigned int> mMaterialIds;
 	std::vector <float4> mOgColors;
 	// DEBUFF
 	bool mBeAttracted = false;
