@@ -10790,7 +10790,7 @@
                             {
                                 "VariableName": "mSpawnRate",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 0.0
                             }
                         ]
                     }

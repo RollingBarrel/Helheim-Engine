@@ -34,11 +34,6 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
-    if (mDeath)
-    {
-        Death();
-    }
-	
 	if (GameManager::GetInstance()->IsPaused()) return;
 
 	if (mIsParalyzed)
@@ -70,6 +65,10 @@ void Enemy::Update()
 		case EnemyState::ATTACK:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
 			Attack();
+			break;
+		case EnemyState::DEATH:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", 0.0f);
+			Death();
 			break;
 		}
 	}
@@ -152,24 +151,12 @@ void Enemy::TakeDamage(float damage)
 
 		if (mHealth <= 0)
 		{
-			mDeath = true;
-
-			if (mAnimationComponent)
-			{
-				mAnimationComponent->SendTrigger("tDeath", 0.3f);
-			}
+			mCurrentState = EnemyState::DEATH;
 
 			if (mAiAgentComponent)
 			{
 				mAiAgentComponent->PauseCrowdNavigation();
 			}
-
-			BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
-			if (activeBattleArea)
-			{
-				activeBattleArea->EnemyDestroyed();
-			}
-
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
@@ -181,6 +168,12 @@ void Enemy::Death()
 	{
 		mGameObject->SetEnabled(false);
 		DropItem();
+
+		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+		if (activeBattleArea)
+		{
+			activeBattleArea->EnemyDestroyed();
+		}
 	}
 }
 
@@ -193,8 +186,8 @@ void Enemy::PushBack()
 
 void Enemy::Init()
 {
-	mDeath = false;
 	mHealth = mMaxHealth;
+	mCurrentState = EnemyState::IDLE;
 
 	if (mAnimationComponent)
 	{
@@ -249,7 +242,7 @@ void Enemy::DropItem()
 	if (poolType != PoolType::LAST)
 	{
 		float3 enemyPosition = mGameObject->GetWorldPosition();
-		float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+		float3 dropPosition = float3(enemyPosition.x, enemyPosition.y + 0.25f, enemyPosition.z);
 
 		GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
 		itemGameObject->SetWorldPosition(dropPosition);
