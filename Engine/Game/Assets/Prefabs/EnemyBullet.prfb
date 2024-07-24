@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 496989846,
+                "UID": 577699760,
                 "ParentUID": 1,
                 "Name": "EnemyBullet",
                 "Enabled": true,
@@ -59,8 +59,8 @@
                 ]
             },
             {
-                "UID": 1619071503,
-                "ParentUID": 496989846,
+                "UID": 2110266833,
+                "ParentUID": 577699760,
                 "Name": "VFX",
                 "Enabled": true,
                 "Active": true,

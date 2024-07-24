@@ -35,6 +35,7 @@ private:
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
+    void HoverSubMenu(int type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
 
@@ -54,14 +55,21 @@ private:
     void OnCreditsButtonHover();
     void OnPlayButtonHover();
     void OnBackCreditsButtonHover();
+    void OnControlsButtonHover();
+    void OnSettingsButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
     void OnPlayButtonHoverOff();
     void OnBackCreditsButtonHoverOff();
+    void OnControlsButtonHoverOff();
+    void OnSettingsButtonHoverOff();
     
-    int mOption = 0;  
+    int mOption = 0;
+    int mSettingOption = 0;
+    int mSection = 0;
+
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;

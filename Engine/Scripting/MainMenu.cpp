@@ -85,6 +85,10 @@ void MainMenu::Start()
 
     mSettingsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonClick, this)));
     mControlsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonClick, this)));
+    mSettingsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonHover, this)));
+    mControlsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonHover, this)));
+    mSettingsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonHoverOff, this)));
+    mControlsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonHoverOff, this)));
 
     mTextTransform = static_cast<Transform2DComponent*>(mCreditsText->GetComponent(ComponentType::TRANSFORM2D));
 
@@ -104,13 +108,13 @@ void MainMenu::Start()
 
 void MainMenu::Update()
 {
+    Controls();
     if (mIsInitial) 
     {
         if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::STUDIO) OpenMenu(MENU_TYPE::ENGINE);
         else if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::ENGINE)
         {
             OpenMenu(MENU_TYPE::SPLASH);
-            mIsInitial = false;
         }
         return;
     }
@@ -118,15 +122,15 @@ void MainMenu::Update()
     if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
-        mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+        if (currentPosition.y > 3400.0f) mTextTransform->SetPosition(float3(currentPosition.x, -500.0f, currentPosition.z));
+        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
     }
 
-    if (mLoadlevel == true && Delay(0.1f)) 
+    if (mLoadlevel == true && Delay(1.0f)) 
     {
         App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
 
-    Controls();
 }
 
 
@@ -148,45 +152,97 @@ void MainMenu::Controls()
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN) 
     {
         //mMainMenuManager->PlaySelectSFX();
-        if (mOption > 0)
-        {
-            mOption--;
+        if (mSection == 0) // MENU MAIN BUTTONS
+        { 
+            if (mOption > 0)
+            {
+                mOption--;
+            }
+            else
+            {
+                mOption = 3;
+            }
+            HoverMenu(static_cast<MENU_TYPE>(mOption));
         }
-        else
+        else if (mSection == 1) // CONTROLS INSIDE OPTIONS
         {
-            mOption = 3;
+            if (mSettingOption > 0)
+            {
+                mSettingOption--;
+            }
+            else
+            {
+                mSettingOption = 1;
+            }
+            HoverSubMenu(mSettingOption);
         }
 
-        HoverMenu(static_cast<MENU_TYPE>(mOption));
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
     {
         //mMainMenuManager->PlaySelectSFX();
-        if (mOption < 3)
+        if (mSection == 0)
         {
-            mOption++;
+            if (mOption < 3)
+            {
+                mOption++;
+            }
+            else
+            {
+                mOption = 0;
+            }
+            HoverMenu(static_cast<MENU_TYPE>(mOption));
         }
-        else
+        else if (mSection == 1)
         {
-            mOption = 0;
+            if (mSettingOption < 1)
+            {
+                mSettingOption++;
+            }
+            else
+            {
+                mSettingOption = 0;
+            }
+            HoverSubMenu(mSettingOption);
         }
-
-        HoverMenu(static_cast<MENU_TYPE>(mOption));
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN || 
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
-        ClickMenu(static_cast<MENU_TYPE>(mOption));
+        if (mIsInitial) 
+        {
+            ClickMenu(MENU_TYPE::MAIN);
+            mIsInitial = false;
+            return;
+        }
+        if (mSection == 0)
+        {
+            mSection++;
+            ClickMenu(static_cast<MENU_TYPE>(mOption));
+        } 
+        else if (mSection == 1)
+        {
+            if (mSettingOption == 0) OnControlsButtonClick();
+            else OnSettingsButtonClick();
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
-        OpenMenu(static_cast<MENU_TYPE>(0));
+        if (mSection == 1)
+        {
+            OpenMenu(static_cast<MENU_TYPE>(0));
+            mSection--;
+        }
+        else
+        {
+            mSection--;
+        }
     }
 }
 
@@ -215,11 +271,13 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     {
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
+            mIsInitial = false;
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
-            mSettingsGO->SetEnabled(true);
+            mControlsGO->SetEnabled(true);
+            OnControlsButtonHover();
             break;
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
@@ -359,28 +417,35 @@ void MainMenu::OnFullscreenButtonClick()
 
 void MainMenu::HoverMenu(MENU_TYPE type) 
 {
-
-    //OnNewButtonHoverOff();
-    //OnOptionsButtonHoverOff();
-    //OnCreditsButtonHoverOff();
-    //OnQuitButtonHoverOff();
-
-    switch (type) {
-    case MENU_TYPE::MAIN:
-        OnPlayButtonHover();
-        break;
-    case MENU_TYPE::OPTIONS:
-        OnOptionsButtonHover();
-        break;
-    case MENU_TYPE::CREDITS:
-        OnCreditsButtonHover();
-        break;
-    case MENU_TYPE::LOADING:
-        OnQuitButtonHover();
-        break;
+    switch (type) 
+    {
+        case MENU_TYPE::MAIN:
+            OnPlayButtonHover();
+            break;
+        case MENU_TYPE::OPTIONS:
+            OnOptionsButtonHover();
+            break;
+        case MENU_TYPE::CREDITS:
+            OnCreditsButtonHover();
+            break;
+        case MENU_TYPE::LOADING:
+            OnQuitButtonHover();
+            break;
     }
 }
 
+void MainMenu::HoverSubMenu(int type)
+{
+    switch (type) 
+    {
+        case 0:
+            OnControlsButtonHover();
+            break;
+        case 1:
+            OnSettingsButtonHover();
+            break;
+    }
+}
 
 void MainMenu::OnQuitButtonHover() 
 {
@@ -480,5 +545,37 @@ void MainMenu::OnBackCreditsButtonHover()
 void MainMenu::OnBackCreditsButtonHoverOff() 
 {
     ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnControlsButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mControlsButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
+    mSettingOption = 0;
+
+    // Set the other hovers off (integration mouse/click)
+    OnSettingsButtonHoverOff();
+}
+
+void MainMenu::OnControlsButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mControlsButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnSettingsButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
+    mSettingOption = 1;
+
+    // Set the other hovers off (integration mouse/click)
+    OnControlsButtonHoverOff();
+}
+
+void MainMenu::OnSettingsButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.0f);
 }

@@ -77,6 +77,7 @@ void BattleArea::Update()
 			if (mEnemySpawner2->Spawn())
 			{
 				mCurrentEnemies++;
+				mTotalNumEnemies--;
 			}
 		}
 		if (mEnemySpawner3 && mCurrentEnemies < mMaxSimulNumEnemies)
@@ -84,6 +85,7 @@ void BattleArea::Update()
 			if (mEnemySpawner3->Spawn())
 			{
 				mCurrentEnemies++;
+				mTotalNumEnemies--;
 			}
 		}
 		if (mEnemySpawner4 && mCurrentEnemies < mMaxSimulNumEnemies)
@@ -91,6 +93,7 @@ void BattleArea::Update()
 			if (mEnemySpawner4->Spawn())
 			{
 				mCurrentEnemies++;
+				mTotalNumEnemies--;
 			}
 		}
 	}
