@@ -73,10 +73,9 @@ void Dialog::OnClick()
 {
     if (mTimeout) return;
 
-    int numElements = sizeof(mDialog) / sizeof(mDialog[0]);
-
     // Verify if the dialog is over
-    if (mCurrentDialog == (sizeof(mDialog) / sizeof(mDialog[0])) - 1) {
+    if (mCurrentDialog == (sizeof(mDialog) / sizeof(mDialog[0])) - 1)
+    {
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->SetPaused(false, false);
         GameManager::GetInstance()->GetHud()->SetSanity();
@@ -84,15 +83,15 @@ void Dialog::OnClick()
     }
 
     if (*mProtagonistImage->GetAlpha() == 0.5f)
-        {
-            mProtagonistImage->SetAlpha(1.0f);
-            mWifeImage->SetAlpha(0.5f);
-        }
+    {
+        mProtagonistImage->SetAlpha(1.0f);
+        mWifeImage->SetAlpha(0.5f);
+    }
     else 
-        {
-            mProtagonistImage->SetAlpha(0.5f);
-            mWifeImage->SetAlpha(1.0f);
-        }
+    {
+        mProtagonistImage->SetAlpha(0.5f);
+        mWifeImage->SetAlpha(1.0f);
+    }
 
     mCurrentDialog++;
     UpdateDialog();
