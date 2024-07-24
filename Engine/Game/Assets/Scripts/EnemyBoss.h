@@ -6,13 +6,6 @@
 struct CollisionData;
 class BoxColliderComponent;
 
-enum class BossState
-{
-	IDLE,
-	ATTACK,
-	DEAD,
-};
-
 
 
 GENERATE_BODY(EnemyBoss);
@@ -35,7 +28,7 @@ private:
 
 	void  Death() override;
 
-	BossState mCurrentState = BossState::IDLE;
+	EnemyState mCurrentState = EnemyState::IDLE;
 
 	float mBulletSpeed = 0.65f;
 	int mLastAttack = -1;

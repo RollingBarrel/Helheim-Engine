@@ -52,7 +52,7 @@ void EnemyBoss::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-        mAnimationComponent->SendTrigger("tIdle", 0.2f);
+        mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
     }
 }
 
@@ -60,35 +60,27 @@ void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
-    if (mDeath)
-    {
-        Death();
-    }
-
     if (!mBeAttracted)
     {
         switch (mCurrentState)
         {
-        case BossState::IDLE:
+        case EnemyState::IDLE:
             if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
             {
-                mCurrentState = BossState::ATTACK;
+                mCurrentState = EnemyState::ATTACK;
                 SelectAttack();
             }
             break;
-        case BossState::ATTACK:
+        case EnemyState::ATTACK:
             if (mAttackDurationTimer.Delay(mAttackDuration))
             {
-                mAnimationComponent->SendTrigger("tIdle", 0.2f);
-                mCurrentState = BossState::IDLE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
+                mCurrentState = EnemyState::IDLE;
             }
             break;
-        case BossState::DEAD:
-            if (mDeathTimer.Delay(mDeathTime))
-            {
-                //mGameObject->SetEnabled(false);
-                GameManager::GetInstance()->Victory();
-            }
+        case EnemyState::DEATH:
+            if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+            Death();
         }
     }
 
@@ -104,16 +96,16 @@ void EnemyBoss::SelectAttack()
     switch (attack)
     {
     case 1:
-        mAnimationComponent->SendTrigger("tLaser", 0.2f);
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
         LaserAttack();
         break;
     case 2:
-        mAnimationComponent->SendTrigger("tEruption", 0.2f);
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
         BombAttack();
         break;
     case 0:
     default:
-        mAnimationComponent->SendTrigger("tBulletHell", 0.2f);
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
         BulletAttack();
         break;
     }
@@ -159,7 +151,10 @@ void EnemyBoss::BombAttack()
 
 void EnemyBoss::Death()
 {
-    mAnimationComponent->SendTrigger("tDeath", 0.2f);
-    mCurrentState = BossState::DEAD;    
+    if (mDeathTimer.Delay(mDeathTime))
+    {
+        mGameObject->SetEnabled(false);
+
+    }
 
 }
