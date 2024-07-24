@@ -10,6 +10,7 @@ enum class BossState
 {
 	IDLE,
 	ATTACK,
+	DEAD,
 };
 
 
@@ -26,8 +27,8 @@ public:
 	void Start() override;
 
 private:
-	void Idle();
-	void Attack();
+	//void Idle();
+	void SelectAttack();
 	void BulletAttack();
 	void LaserAttack();
 	void BombAttack();

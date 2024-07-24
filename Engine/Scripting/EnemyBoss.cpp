@@ -22,6 +22,8 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mAttackDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
+    MEMBER(MemberType::FLOAT, mAttackDuration);
+    MEMBER(MemberType::FLOAT, mDeathTime);
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
 
     END_CREATE;
@@ -50,7 +52,7 @@ void EnemyBoss::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-
+        mAnimationComponent->SendTrigger("tIdle", 0.2f);
     }
 }
 
@@ -58,60 +60,62 @@ void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
-    Enemy::Update();
+    if (mDeath)
+    {
+        Death();
+    }
 
     if (!mBeAttracted)
     {
         switch (mCurrentState)
         {
         case BossState::IDLE:
-            //mAnimationComponent->SendTrigger("tIdle", 0.2f);
-            Idle();
-
+            if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
+            {
+                mCurrentState = BossState::ATTACK;
+                SelectAttack();
+            }
             break;
         case BossState::ATTACK:
-
-            Attack();
+            if (mAttackDurationTimer.Delay(mAttackDuration))
+            {
+                mAnimationComponent->SendTrigger("tIdle", 0.2f);
+                mCurrentState = BossState::IDLE;
+            }
             break;
+        case BossState::DEAD:
+            if (mDeathTimer.Delay(mDeathTime))
+            {
+                //mGameObject->SetEnabled(false);
+                GameManager::GetInstance()->Victory();
+            }
         }
     }
 
 }
 
-void EnemyBoss::Idle()
+void EnemyBoss::SelectAttack()
 {
-    if (IsPlayerInRange(50))
+    int attack = rand() % 3;
+    if (attack == mLastAttack)
     {
-        mAnimationComponent->SendTrigger("tWakeUp", 0.2f);
-        mCurrentState = BossState::ATTACK;
+        ++attack;
     }
-}
-
-void EnemyBoss::Attack()
-{
-    if (mAttackDurationTimer.Delay(mAttackCoolDown))
+    switch (attack)
     {
-        int attack = rand() % 3;
-        if (attack == mLastAttack)
-        {
-            ++attack;
-        }
-        switch (attack)
-        {
-        case 1:
-            mAnimationComponent->SendTrigger("tLaser", 0.2f);
-            LaserAttack();
-            break;
-        case 2:
-            mAnimationComponent->SendTrigger("tEruption", 0.2f);
-            BombAttack();
-            break;
-        case 0:
-        default:
-            mAnimationComponent->SendTrigger("tBulletHell", 0.2f);
-            BulletAttack();
-            break;
-        }
+    case 1:
+        mAnimationComponent->SendTrigger("tLaser", 0.2f);
+        LaserAttack();
+        break;
+    case 2:
+        mAnimationComponent->SendTrigger("tEruption", 0.2f);
+        BombAttack();
+        break;
+    case 0:
+    default:
+        mAnimationComponent->SendTrigger("tBulletHell", 0.2f);
+        BulletAttack();
+        break;
     }
 }
 
@@ -156,6 +160,6 @@ void EnemyBoss::BombAttack()
 void EnemyBoss::Death()
 {
     mAnimationComponent->SendTrigger("tDeath", 0.2f);
-    mDeathTimer.Delay(mDeathTime);
-    mGameObject->SetEnabled(false);
+    mCurrentState = BossState::DEAD;    
+
 }

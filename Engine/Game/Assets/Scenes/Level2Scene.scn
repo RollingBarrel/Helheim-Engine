@@ -7008,117 +7008,6 @@
                 ]
             },
             {
-                "UID": 1223800112,
-                "ParentUID": 1,
-                "Name": "WinArea",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -131.23736572265626,
-                    0.11660170555114746,
-                    -44.03788757324219
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    5.718088626861572,
-                    1.0,
-                    4.871864318847656
-                ],
-                "Tag": "WinArea",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            11.800000190734864,
-                            2.799999952316284,
-                            10.25
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1286946359,
-                "ParentUID": 1223800112,
-                "Name": "Cube",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1324820183,
-                "ParentUID": 1286946359,
-                "Name": "Cube",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 496453540,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
                 "UID": 1348134739,
                 "ParentUID": 1,
                 "Name": "character",
@@ -16193,22 +16082,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -132.2950897216797,
-                    0.9676258563995361,
-                    -43.42271423339844
+                    -127.77877044677735,
+                    0.9477605223655701,
+                    -44.864017486572269
                 ],
                 "Rotation": [
-                    0.0,
-                    0.7299616932868958,
-                    0.0,
-                    0.6834880709648132
+                    -3.1102445063879715e-9,
+                    0.6961275935173035,
+                    0.00000210461394090089,
+                    0.7179180979728699
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -16247,7 +16136,7 @@
                             {
                                 "VariableName": "mMaxHealth",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 10.0
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -16260,24 +16149,34 @@
                                 "VariableData": 1.0
                             },
                             {
-                                "VariableName": "mRangeDistance",
+                                "VariableName": "mAttackDistance",
                                 "MemberType": 1,
-                                "VariableData": 9.0
+                                "VariableData": 10.0
                             },
                             {
-                                "VariableName": "mRangeDamage",
+                                "VariableName": "mAttackDamage",
                                 "MemberType": 1,
-                                "VariableData": 15.0
+                                "VariableData": 5.0
                             },
                             {
                                 "VariableName": "mBulletSpeed",
                                 "MemberType": 1,
-                                "VariableData": 0.6499999761581421
+                                "VariableData": 0.20000000298023225
                             },
                             {
-                                "VariableName": "mTimerAttack",
+                                "VariableName": "mAttackCoolDown",
                                 "MemberType": 1,
-                                "VariableData": 2.0
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mAttackDuration",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mDeathTime",
+                                "MemberType": 1,
+                                "VariableData": 4.449999809265137
                             },
                             {
                                 "VariableName": "mLaserGO",
