@@ -15,6 +15,7 @@ enum class EnemyState
 	CHASE,
 	CHARGE,
 	ATTACK,
+	DEATH
 };
 
 
@@ -33,8 +34,6 @@ public:
 	bool IsChasing();
 	
 	//Grenade
-
-	void AddFootStepAudio(GameObject* audio);
 
 	// DEBUFF
 	virtual void Paralyzed(float percentage, bool paralyzed);
@@ -87,10 +86,15 @@ protected:
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
-	bool mDeath = false;
-	float mTimePassed = 0.0f;
 	TimerScript  mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
+
+	//Transition Times
+	float mIdleTransitionDuration = 0.2f;
+	float mChaseTransitionDuration = 0.2f;
+	float mChargeTransitionDuration = 0.2f;
+	float mAttackTransitionDuration = 0.2f;
+	float mDeathTransitionDuration = 0.2f;
 
 
 	//Hit Effect
@@ -105,8 +109,5 @@ protected:
 	const float mParalyzedDuration = 5.0f;
 	TimerScript mParalyzedTimerScript;
 	float mParalysisSeverityLevel = 1.0f;
-
-private:
-	void ActivateEnemy();
 
 };

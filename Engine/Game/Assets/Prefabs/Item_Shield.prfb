@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1480618438,
+                "UID": 358277716,
                 "ParentUID": 1,
                 "Name": "Item_Shield",
                 "Enabled": true,
@@ -23,10 +23,10 @@
                     0.15000000596046449,
                     0.15000000596046449
                 ],
-                "Tag": "Untagged",
+                "Tag": "Drop",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 3,
@@ -42,11 +42,6 @@
                                 "VariableName": "mHealthRecovered",
                                 "MemberType": 1,
                                 "VariableData": 15.0
-                            },
-                            {
-                                "VariableName": "mActivationRange",
-                                "MemberType": 1,
-                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -69,8 +64,8 @@
                 ]
             },
             {
-                "UID": 1540840603,
-                "ParentUID": 1480618438,
+                "UID": 484500589,
+                "ParentUID": 358277716,
                 "Name": "OB_collecteable_shield",
                 "Enabled": true,
                 "Active": true,
@@ -93,23 +88,19 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 10,
                         "IsEnabled": true,
-                        "AnimationsUIDs": [
-                            463091395,
-                            463091396
-                        ],
-                        "NumAnimationUIDs": 2,
+                        "AnimationUID": 463091395,
                         "LowerSMUID": 0
                     }
                 ]
             },
             {
-                "UID": 1566878857,
-                "ParentUID": 1540840603,
+                "UID": 629660374,
+                "ParentUID": 484500589,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -132,12 +123,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1591942417,
-                "ParentUID": 1566878857,
+                "UID": 737851408,
+                "ParentUID": 629660374,
                 "Name": "OB_collecteable_shield.001",
                 "Enabled": true,
                 "Active": true,
@@ -160,12 +151,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1617005977,
-                "ParentUID": 1591942417,
+                "UID": 845276611,
+                "ParentUID": 737851408,
                 "Name": "OB_collecteable_shield.001",
                 "Enabled": true,
                 "Active": true,
@@ -188,7 +179,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -199,7 +190,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1642278400,
+                                "GoId": 952423330,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -220,7 +211,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1667063476,
+                                "GoId": 1059570049,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -241,7 +232,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1692892867,
+                                "GoId": 1168457293,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -262,7 +253,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1717747564,
+                                "GoId": 1275952117,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -287,8 +278,8 @@
                 ]
             },
             {
-                "UID": 1642278400,
-                "ParentUID": 1566878857,
+                "UID": 952423330,
+                "ParentUID": 629660374,
                 "Name": "root",
                 "Enabled": true,
                 "Active": true,
@@ -311,12 +302,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1667063476,
-                "ParentUID": 1642278400,
+                "UID": 1059570049,
+                "ParentUID": 952423330,
                 "Name": "circle_1_skn",
                 "Enabled": true,
                 "Active": true,
@@ -339,12 +330,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1692892867,
-                "ParentUID": 1642278400,
+                "UID": 1168457293,
+                "ParentUID": 952423330,
                 "Name": "circle_2_skn",
                 "Enabled": true,
                 "Active": true,
@@ -367,12 +358,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1717747564,
-                "ParentUID": 1642278400,
+                "UID": 1275952117,
+                "ParentUID": 952423330,
                 "Name": "shield_skn",
                 "Enabled": true,
                 "Active": true,
@@ -395,7 +386,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             }
         ]

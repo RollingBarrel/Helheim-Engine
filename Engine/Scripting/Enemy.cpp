@@ -46,12 +46,6 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
-    if (mDeath)
-    {
-        Death();
-		return;
-    }
-	
 	if (GameManager::GetInstance()->IsPaused()) return;
 
 	if (mIsParalyzed)
@@ -98,22 +92,26 @@ void Enemy::ActivateEnemy()
 		switch (mCurrentState)
 		{
 		case EnemyState::IDLE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Idle();
 			break;
 		case EnemyState::CHASE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
 			Chase();
 			break;
 		case EnemyState::CHARGE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Charge();
 			break;
 		case EnemyState::ATTACK:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
 			Attack();
+			break;
+		case EnemyState::DEATH:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+			Death();
 			break;
 		}
 	}
@@ -197,25 +195,13 @@ void Enemy::TakeDamage(float damage)
 
 		if (mHealth <= 0)
 		{
-		    ResetEnemyColor();
-			mDeath = true;
-
-			if (mAnimationComponent)
-			{
-				mAnimationComponent->SendTrigger("tDeath", 0.3f);
-			}
+			ResetEnemyColor();
+			mCurrentState = EnemyState::DEATH;
 
 			if (mAiAgentComponent)
 			{
 				mAiAgentComponent->PauseCrowdNavigation();
 			}
-
-			BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
-			if (activeBattleArea)
-			{
-				activeBattleArea->EnemyDestroyed();
-			}
-
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
@@ -240,6 +226,12 @@ void Enemy::Death()
 		
 		mGameObject->SetEnabled(false);
 		DropItem();
+
+		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+		if (activeBattleArea)
+		{
+			activeBattleArea->EnemyDestroyed();
+		}
 	}
 }
 
@@ -252,8 +244,8 @@ void Enemy::PushBack()
 
 void Enemy::Init()
 {
-	mDeath = false;
 	mHealth = mMaxHealth;
+	mCurrentState = EnemyState::IDLE;
 
 	if (mAnimationComponent)
 	{
@@ -308,7 +300,7 @@ void Enemy::DropItem()
 	if (poolType != PoolType::LAST)
 	{
 		float3 enemyPosition = mGameObject->GetWorldPosition();
-		float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+		float3 dropPosition = float3(enemyPosition.x, enemyPosition.y + 0.25f, enemyPosition.z);
 
 		GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
 		itemGameObject->SetWorldPosition(dropPosition);
