@@ -2,6 +2,7 @@
 #include <Script.h>
 #include "Macros.h"
 #include <vector>
+#include "TimerScript.h"
 
 class GameObject;
 class TextComponent;
@@ -78,4 +79,7 @@ private:
     TextComponent* mCard3Text = nullptr;
     ImageComponent* mCard3BuffImage = nullptr;
     ButtonComponent* mCard3Btn = nullptr;
+
+    TimerScript mClickTimout;
+    bool mTimeout = true;
 };

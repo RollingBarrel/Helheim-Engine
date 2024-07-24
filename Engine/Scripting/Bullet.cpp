@@ -41,14 +41,15 @@ void Bullet::Update()
 	{
 		if (mTotalMovement == 0.0f)
 		{
-			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed * App->GetDt())));
 
 		}
 		else if (mTotalMovement <= mRange)
 		{
 			//LOG("TotalMovement, %f", mTotalMovement);
-			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
-			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed);
+
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed * App->GetDt())));
+			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed * App->GetDt());
 		}
 		else
 		{

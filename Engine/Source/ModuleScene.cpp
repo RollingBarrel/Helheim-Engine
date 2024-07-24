@@ -619,11 +619,10 @@ void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* seco
 		mSceneGO.push_back(second);
 	}
 
-	for (unsigned int i = 0; i < second->GetChildren().size(); ++i)
+	for (int i = second->GetChildren().size() - 1; i >= 0; --i)
 	{
 		SwitchGameObjectsFromScene(second, second->GetChildren()[i]);
 	}
-	
 }
 
 void ModuleScene::DeleteGameObjects()

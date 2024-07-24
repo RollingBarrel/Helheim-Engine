@@ -75,7 +75,7 @@
     <TargetName>$(ProjectName)</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(ProjectDir)Output</OutDir>
+    <OutDir>$(ProjectDir)Output\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -176,6 +176,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h" />
@@ -184,6 +185,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Spawner.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h" />
@@ -229,6 +231,7 @@
     <ClCompile Include="BossLaser.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
+    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyCreatureMelee.cpp" />
@@ -237,6 +240,7 @@
     <ClCompile Include="EnemyExplosive.cpp" />
     <ClCompile Include="EnemyRobotMelee.cpp" />
     <ClCompile Include="EnemyRobotRange.cpp" />
+    <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GrenadeState.cpp" />

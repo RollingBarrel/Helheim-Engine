@@ -4,11 +4,11 @@
 #include "Math/float3.h"
 
 struct dtNavMeshCreateParams;
+struct dtCrowdAgentParams;
 class dtNavMesh;
 class dtNavMeshQuery;
 class ResourceNavMesh;
 class dtCrowd;
-class dtCrowdAgentParams;
 
 class ENGINE_API ModuleDetourNavigation :public Module
 {
