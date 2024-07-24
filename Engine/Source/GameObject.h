@@ -101,6 +101,7 @@ public:
 	template<typename T> T* GetComponentInParent() const;											
 	Component* GetComponentInParent(ComponentType type) const;											
 	void GetComponentsInChildren(ComponentType type, std::vector<Component*>& componentVector) const;
+	Component* GetComponentInChildren(ComponentType type) const;
 	//TODO: do the template correctly,SRRY
 	void GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const;
 	void AddComponentToDelete(Component* component);
