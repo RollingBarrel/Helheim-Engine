@@ -194,7 +194,7 @@ void Enemy::TakeDamage(float damage)
 
 		if (mHealth <= 0)
 		{
-			ResetEnemyColor();
+			
 			mCurrentState = EnemyState::DEATH;
 
 			if (mAiAgentComponent)
@@ -220,6 +220,11 @@ void Enemy::ActivateHitEffect()
 }
 void Enemy::Death()
 {
+	if (mHitEffectTimer.Delay(mHitEffectTime))
+	{
+		ResetEnemyColor();
+		mHit = false;
+	}
 	if (mDeathTimer.Delay(mDeathTime))
 	{
 		
