@@ -11,6 +11,7 @@
 #include "ColorGradient.h"
 #include "Bullet.h"
 #include "BossLaser.h"
+#include "HudController.h"
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -59,6 +60,7 @@ void EnemyBoss::Start()
 void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
+    GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
 
     if (!mBeAttracted)
     {
@@ -67,6 +69,7 @@ void EnemyBoss::Update()
         case EnemyState::IDLE:
             if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
             {
+                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 mCurrentState = EnemyState::ATTACK;
                 SelectAttack();
             }
@@ -104,7 +107,6 @@ void EnemyBoss::SelectAttack()
         BombAttack();
         break;
     case 0:
-    default:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
         BulletAttack();
         break;
@@ -114,14 +116,14 @@ void EnemyBoss::SelectAttack()
 void EnemyBoss::BulletAttack()
 {
     float3 bulletOriginPosition = mGameObject->GetWorldPosition();
-    bulletOriginPosition.y = mPlayer->GetWorldPosition().y;
+    bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->LookAt(mPlayer->GetWorldPosition());
+    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
-    bulletScript->Init(bulletOriginPosition, bulletGO->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
+    gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
+    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
 }
 
 void EnemyBoss::LaserAttack()
