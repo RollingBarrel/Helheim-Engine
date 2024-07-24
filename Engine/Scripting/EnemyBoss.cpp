@@ -107,7 +107,6 @@ void EnemyBoss::SelectAttack()
         BombAttack();
         break;
     case 0:
-    default:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
         BulletAttack();
         break;
@@ -117,14 +116,14 @@ void EnemyBoss::SelectAttack()
 void EnemyBoss::BulletAttack()
 {
     float3 bulletOriginPosition = mGameObject->GetWorldPosition();
-    bulletOriginPosition.y = mPlayer->GetWorldPosition().y;
+    bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->LookAt(mPlayer->GetWorldPosition());
+    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
-    bulletScript->Init(bulletOriginPosition, bulletGO->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
+    gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
+    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
 }
 
 void EnemyBoss::LaserAttack()

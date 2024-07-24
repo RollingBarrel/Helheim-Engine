@@ -28,7 +28,7 @@ private:
 
 	void  Death() override;
 
-	float mBulletSpeed = 0.65f;
+	float mBulletSpeed = 15.0f;
 	int mLastAttack = -1;
 
 	//Collider
