@@ -5,6 +5,7 @@
         "Door",
         "Bullet",
         "BattleArea",
-        "Trap"
+        "Trap",
+        "Drop"
     ]
 }

@@ -51,6 +51,7 @@ void EnemyCreatureRange::Start()
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
 
+	mDeathTime = 1.0f;
 
 }
 
@@ -155,7 +156,7 @@ void EnemyCreatureRange::Rotate() //TODO IMPROVE ROTATE BEHAVIOUR
 		targetEulerAngle = 360.0f + targetEulerAngle;
 	}
 
-	float currentRadianAngle = mGameObject->GetLocalEulerAngles().y;
+	float currentRadianAngle = mGameObject->GetWorldEulerAngles().y;
 	float currentEulerAngle = RadToDeg(currentRadianAngle);
 	if (currentEulerAngle < 0)
 	{
