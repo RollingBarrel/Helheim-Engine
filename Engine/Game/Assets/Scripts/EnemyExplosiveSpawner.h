@@ -7,6 +7,13 @@ class BattleArea;
 class PoolManager;
 GENERATE_BODY(EnemyExplosiveSpawner)
 
+enum SpawnState
+{
+	IDLE,
+	OPENING,
+	CLOSING
+};
+
 class EnemyExplosiveSpawner : public Enemy
 {
 	FRIEND(EnemyExplosiveSpawner);
@@ -26,7 +33,7 @@ class EnemyExplosiveSpawner : public Enemy
 			SPAWNING,
 			DEATH
 		};
-
+		 
 		void Spawning();
 		void Die();
 		void OnCollisionEnter(CollisionData* collisionData);
@@ -39,5 +46,6 @@ class EnemyExplosiveSpawner : public Enemy
 		float mLastSpawnTime = 0.0f;
 		int mMaxActiveEnemies = 12;
 		int* mCurrentAreaEnemies = nullptr;
+		SpawnState mTrapState = SpawnState::IDLE;
 };
 

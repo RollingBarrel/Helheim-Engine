@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 938143042,
+                "UID": 1225926250,
                 "ParentUID": 1,
                 "Name": "Explosive_Enemy_Spawner",
                 "Enabled": true,
@@ -32,7 +32,7 @@
                         "ComponentType": 10,
                         "IsEnabled": true,
                         "AnimationUID": 1763703722,
-                        "LowerSMUID": 0
+                        "LowerSMUID": 2026352958
                     },
                     {
                         "ComponentType": 17,
@@ -64,8 +64,8 @@
                 ]
             },
             {
-                "UID": 1304697607,
-                "ParentUID": 938143042,
+                "UID": 1961193631,
+                "ParentUID": 1225926250,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -92,8 +92,8 @@
                 "Components": []
             },
             {
-                "UID": 1788842041,
-                "ParentUID": 1304697607,
+                "UID": 539717772,
+                "ParentUID": 1961193631,
                 "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
@@ -120,8 +120,8 @@
                 "Components": []
             },
             {
-                "UID": 2125250713,
-                "ParentUID": 1788842041,
+                "UID": 1274080080,
+                "ParentUID": 539717772,
                 "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
@@ -155,7 +155,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1626457646,
+                                "GoId": 1346044292,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -176,7 +176,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2000809763,
+                                "GoId": 2074976162,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -197,7 +197,7 @@
                                 ]
                             },
                             {
-                                "GoId": 204146335,
+                                "GoId": 653639545,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -222,8 +222,8 @@
                 ]
             },
             {
-                "UID": 633244460,
-                "ParentUID": 1304697607,
+                "UID": 2000575215,
+                "ParentUID": 1961193631,
                 "Name": "OB_ball_spawner_doors",
                 "Enabled": true,
                 "Active": true,
@@ -250,8 +250,8 @@
                 "Components": []
             },
             {
-                "UID": 1095319037,
-                "ParentUID": 633244460,
+                "UID": 588219707,
+                "ParentUID": 2000575215,
                 "Name": "OB_ball_spawner_doors",
                 "Enabled": true,
                 "Active": true,
@@ -285,7 +285,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1626457646,
+                                "GoId": 1346044292,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -306,7 +306,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2000809763,
+                                "GoId": 2074976162,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -327,7 +327,7 @@
                                 ]
                             },
                             {
-                                "GoId": 204146335,
+                                "GoId": 653639545,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -352,21 +352,21 @@
                 ]
             },
             {
-                "UID": 1626457646,
-                "ParentUID": 1304697607,
+                "UID": 1346044292,
+                "ParentUID": 1961193631,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
+                    47.23698425292969,
                     0.0,
                     0.0
                 ],
                 "Rotation": [
-                    -0.7071067690849304,
+                    -0.7071068286895752,
                     0.0,
                     0.0,
-                    0.7071067690849304
+                    0.7071068286895752
                 ],
                 "Scale": [
                     1.0,
@@ -380,13 +380,13 @@
                 "Components": []
             },
             {
-                "UID": 2000809763,
-                "ParentUID": 1626457646,
+                "UID": 2074976162,
+                "ParentUID": 1346044292,
                 "Name": "Leftdoor",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -14.646199226379395,
+                    -14.775136947631836,
                     28.68558120727539,
                     -0.6269524097442627
                 ],
@@ -408,13 +408,13 @@
                 "Components": []
             },
             {
-                "UID": 204146335,
-                "ParentUID": 1626457646,
+                "UID": 653639545,
+                "ParentUID": 1346044292,
                 "Name": "Rightdoor",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    16.95378875732422,
+                    17.4512939453125,
                     28.68558120727539,
                     -0.6269524097442627
                 ],
