@@ -25,6 +25,7 @@ public:
 	TrailComponent(const TrailComponent& original, GameObject* owner);
 	~TrailComponent() final;
 	const char* GetFileName() const { return mFileName; }
+	float GetLifeTime() const { return mMaxLifeTime; }
 	void Reset() override;
 
 	void Init();
@@ -52,7 +53,7 @@ private:
 	const char* mFileName = nullptr;
 
 	float mMinDistance = 0.1f;
-	int mMaxPoints = 1000.0f;
+	int mMaxPoints = 1000;
 
 	std::deque<TrailPoint> mPoints;
 	float mMaxLifeTime = 0; // If maxLiftime is 0, it means infinite lifetime

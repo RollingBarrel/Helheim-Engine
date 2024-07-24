@@ -98,7 +98,7 @@ bool ModuleOpenGL::Init()
 {
 	LOG("Creating Renderer context");
 
-	context = SDL_GL_CreateContext(App->GetWindow()->window);
+	context = SDL_GL_CreateContext(App->GetWindow()->mWindow);
 
 	GLenum err = glewInit();
 	LOG("Using Glew %s", glGetString(GLEW_VERSION));
@@ -473,7 +473,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 update_status ModuleOpenGL::PostUpdate(float dt)
 {
 
-	SDL_GL_SwapWindow(App->GetWindow()->window);
+	SDL_GL_SwapWindow(App->GetWindow()->mWindow);
 
 	return UPDATE_CONTINUE;
 }

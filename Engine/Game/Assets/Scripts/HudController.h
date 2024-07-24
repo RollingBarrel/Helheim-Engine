@@ -11,6 +11,7 @@ class TextComponent;
 class ImageComponent;
 class PlayerController;
 class Sanity;
+class Dialog;
 enum class EnergyType;
 
 enum class SCREEN {
@@ -29,7 +30,7 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(int energy, EnergyType type);
+    void SetEnergy(float energy, EnergyType type);
     void SetHealth(float health);
     void SetMaxHealth(float health);
     void SwitchWeapon();
@@ -39,6 +40,7 @@ public:
     SliderComponent* mHealthGradualSlider = nullptr;
 
     void SetSanity();
+    void SetDialog();
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -111,5 +113,10 @@ private:
     // Sanity
     GameObject* mSanityGO = nullptr;
     Sanity* mSanity = nullptr;
+
+    // Dialog
+    GameObject* mDialogGO = nullptr;
+    Dialog* mDialog = nullptr;
+
     int mArenaCounter = 0;
 };

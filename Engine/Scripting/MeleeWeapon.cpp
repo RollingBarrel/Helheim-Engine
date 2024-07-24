@@ -24,6 +24,8 @@ MeleeWeapon::MeleeWeapon(BoxColliderComponent* collider, TrailComponent* trail) 
         );
     }
     mTrail = trail;
+    if (mTrail) mTrail->SetEnable(false);
+
     mPlayerGO = GameManager::GetInstance()->GetPlayer();
     mPlayerController = GameManager::GetInstance()->GetPlayerController();
     mLastComboStartTime = 0.0f;

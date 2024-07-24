@@ -74,9 +74,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.3429248332977297,
+                    -7.654719352722168,
                     0.0804731547832489,
-                    -5.424061298370361
+                    -7.451303958892822
                 ],
                 "Rotation": [
                     0.0,
@@ -103,75 +103,15 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemyRobot",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "STATS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mMaxHealth",
-                                "MemberType": 1,
-                                "VariableData": 6.0
-                            },
-                            {
-                                "VariableName": "mSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mRotationSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mShieldDropRate",
-                                "MemberType": 0,
-                                "VariableData": 20
-                            },
-                            {
-                                "VariableName": "mChaseDelay",
-                                "MemberType": 1,
-                                "VariableData": 1.25
-                            },
-                            {
-                                "VariableName": "RANGE",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mRangeDistance",
-                                "MemberType": 1,
-                                "VariableData": 9.0
-                            },
-                            {
-                                "VariableName": "mRangeDamage",
-                                "MemberType": 1,
-                                "VariableData": 15.0
-                            },
-                            {
-                                "VariableName": "MELEE",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mMeleeAttackCoolDown",
-                                "MemberType": 1,
-                                "VariableData": 2.0
-                            },
-                            {
-                                "VariableName": "mMeleeDistance",
-                                "MemberType": 1,
-                                "VariableData": 2.0
-                            },
-                            {
-                                "VariableName": "mMeeleDamage",
-                                "MemberType": 1,
-                                "VariableData": 10.0
-                            }
-                        ]
+                        "ScriptName": "EnemyRobot"
                     },
                     {
                         "ComponentType": 5,
-                        "IsEnabled": true
+                        "IsEnabled": true,
+                        "Height": 2.0,
+                        "Radius": 0.6000000238418579,
+                        "MaxSpeed": 5.0,
+                        "MaxAcceleration": 16.0
                     },
                     {
                         "ComponentType": 17,
@@ -333,6 +273,40 @@
                                 "VariableName": "mGrenadeCoolDown",
                                 "MemberType": 1,
                                 "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "Ultimate",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mUltimateGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mUltimateCooldown",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mUltimateDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mUltimatePlayerSlow",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mUltimateDamageTick",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mUltimateDamageInterval",
+                                "MemberType": 1,
+                                "VariableData": 0.0
                             },
                             {
                                 "VariableName": "DEBUG MODE",
@@ -4060,11 +4034,6 @@
                                 "VariableData": 824034060
                             },
                             {
-                                "VariableName": "mEnemyPool",
-                                "MemberType": 3,
-                                "VariableData": 953417862
-                            },
-                            {
                                 "VariableName": "mPoolManager",
                                 "MemberType": 3,
                                 "VariableData": 1574378482
@@ -4107,7 +4076,7 @@
                             1920.0,
                             1080.0
                         ],
-                        "ScreenSpace": true
+                        "Render": 1
                     },
                     {
                         "ComponentType": 3,
@@ -4475,6 +4444,8 @@
                             0.563725471496582
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -4551,6 +4522,8 @@
                             0.1921568661928177
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -4627,6 +4600,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -4777,6 +4752,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -4931,6 +4908,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -5085,6 +5064,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -5239,6 +5220,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -5315,6 +5298,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -5391,6 +5376,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -5615,6 +5602,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -5839,6 +5828,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -6063,6 +6054,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -6287,6 +6280,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -6511,6 +6506,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -6735,6 +6732,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -6959,6 +6958,8 @@
                             0.0
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7183,6 +7184,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7259,6 +7262,8 @@
                             0.41420724987983706
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7339,6 +7344,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7419,6 +7426,8 @@
                             0.39475205540657046
                         ],
                         "Alpha": 0.5,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7499,6 +7508,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7579,6 +7590,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7733,6 +7746,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7915,6 +7930,8 @@
                             1.0
                         ],
                         "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -7991,6 +8008,8 @@
                             1.0
                         ],
                         "Alpha": 0.25699999928474429,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8195,6 +8214,8 @@
                             0.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8271,6 +8292,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8347,6 +8370,8 @@
                             0.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8423,6 +8448,8 @@
                             0.686274528503418
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8499,6 +8526,8 @@
                             0.0
                         ],
                         "Alpha": 0.7570000290870667,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8575,6 +8604,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8651,6 +8682,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8801,6 +8834,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8877,6 +8912,8 @@
                             0.0
                         ],
                         "Alpha": 0.7570000290870667,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -8953,6 +8990,8 @@
                             0.0
                         ],
                         "Alpha": 0.75,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9029,6 +9068,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9105,6 +9146,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9181,6 +9224,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9321,6 +9366,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9397,6 +9444,8 @@
                             1.0
                         ],
                         "Alpha": 0.25,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9574,8 +9623,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemyPool",
-                        "ScriptVariables": []
+                        "ScriptName": "EnemyPool"
                     }
                 ]
             },
@@ -9628,10 +9676,6 @@
                         "ScriptName": "BattleArea",
                         "ScriptVariables": [
                             {
-                                "VariableName": "Spawner",
-                                "MemberType": 5
-                            },
-                            {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
                                 "VariableData": 1193197279
@@ -9660,6 +9704,20 @@
                                 "VariableName": "mTotalNumEnemies",
                                 "MemberType": 0,
                                 "VariableData": 10
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -9695,23 +9753,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
@@ -9809,6 +9851,8 @@
                             0.5784313678741455
                         ],
                         "Alpha": 0.3009999990463257,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -9885,6 +9929,8 @@
                             0.45098039507865908
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10039,6 +10085,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10189,6 +10237,8 @@
                             0.45098039507865908
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10343,6 +10393,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10493,6 +10545,8 @@
                             0.45098039507865908
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -10647,6 +10701,8 @@
                             1.0
                         ],
                         "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
@@ -12414,8 +12470,229 @@
                         "InverseBindMatrices": []
                     }
                 ]
+            },
+            {
+                "UID": 1121316309,
+                "ParentUID": 1,
+                "Name": "BattleAreas",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1226165535,
+                "ParentUID": 1121316309,
+                "Name": "BattleArea1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.4203829765319826,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            2.9000000953674318,
+                            4.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BattleArea",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpawnerGO1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mSpawnerGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mMaxSimulNumEnemies",
+                                "MemberType": 0,
+                                "VariableData": 2
+                            },
+                            {
+                                "VariableName": "mTotalNumEnemies",
+                                "MemberType": 0,
+                                "VariableData": 4
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1101973766,
+                "ParentUID": 1,
+                "Name": "Trap",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            3.0,
+                            3.0,
+                            3.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": false,
+                        "ScriptName": "ElectricTrapController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "ACTIVATION PARAMETER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mActivationInterval",
+                                "MemberType": 1,
+                                "VariableData": 8.0
+                            },
+                            {
+                                "VariableName": "mActivationDuration",
+                                "MemberType": 1,
+                                "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "SIDE EFFECT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDamageAmount",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mSpeedReduction",
+                                "MemberType": 1,
+                                "VariableData": 0.30000001192092898
+                            }
+                        ]
+                    }
+                ]
             }
         ],
-        "NavMeshResource": 315485471
+        "NavMeshResource": 0,
+        "SkyBoxResource": 0,
+        "BloomIntensity": 0.5,
+        "DirectionalLight": [
+            0.0,
+            -1.0,
+            -1.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            0.05000000074505806
+        ]
     }
 }

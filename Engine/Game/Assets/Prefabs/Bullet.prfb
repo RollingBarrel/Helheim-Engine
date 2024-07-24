@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 131511459,
+                "UID": 836458136,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -31,37 +31,15 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "Bullet",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mShooterIsPlayer",
-                                "MemberType": 2,
-                                "VariableData": true
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.10000000149011612,
-                            0.10000000149011612,
-                            0.10000000149011612
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
+                        "ScriptName": "RayCastBullet",
+                        "ScriptVariables": []
                     }
                 ]
             },
             {
-                "UID": 197164062,
-                "ParentUID": 131511459,
-                "Name": "VFX",
+                "UID": 239573401,
+                "ParentUID": 836458136,
+                "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -92,7 +70,9 @@
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
                         "MaxLifeTime": 0.25,
+                        "UVScroll": 1.0,
                         "IsFixedDirection": false,
+                        "IsUVScrolling": true,
                         "Direction": [
                             0.0,
                             1.0,
@@ -123,7 +103,36 @@
                         "Gradient": {
                             "Color Gradient": []
                         }
-                    },
+                    }
+                ]
+            },
+            {
+                "UID": 1415750575,
+                "ParentUID": 836458136,
+                "Name": "HitParticles",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
@@ -133,8 +142,8 @@
                         "EmissionRate": 200.0,
                         "MaxParticles": 20,
                         "Looping": false,
-                        "StretchedBillboard": true,
-                        "StretchedRatio": 2.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.4000000059604645,

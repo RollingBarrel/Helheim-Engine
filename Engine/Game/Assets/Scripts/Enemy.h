@@ -14,7 +14,9 @@ enum class EnemyState
 	CHASE,
 	CHARGE,
 	ATTACK,
+	DEATH
 };
+
 
 class Enemy : public Script
 {
@@ -29,9 +31,9 @@ public:
 	virtual void PushBack();
 	virtual void Init();
 
-	bool IsChasing();
-	
-	//Grenade
+	// DEBUFF
+	virtual void Paralyzed(float percentage, bool paralyzed);
+
 	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
 protected:
@@ -59,7 +61,6 @@ protected:
 	int mShieldDropRate = 20;
 	int mRedEnergyDropRate = 35;
 	int mBlueEnergyDropRate = 45;
-	bool mBeAttracted = false;
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	GameObject* mPlayer = nullptr;
@@ -76,7 +77,21 @@ protected:
 	TimerScript mDisengageTimer;
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
-	float mDeathTime = 4.45f;
-	bool mDeath = false;
+	float mDeathTime = 1.4f;
+
+	//Transition Times
+	float mIdleTransitionDuration = 0.2f;
+	float mChaseTransitionDuration = 0.2f;
+	float mChargeTransitionDuration = 0.2f;
+	float mAttackTransitionDuration = 0.2f;
+	float mDeathTransitionDuration = 0.2f;
+
+	// DEBUFF
+	bool mBeAttracted = false;
+
+	bool mIsParalyzed = false;
+	const float mParalyzedDuration = 5.0f;
+	TimerScript mParalyzedTimerScript;
+	float mParalysisSeverityLevel = 1.0f;
 
 };
