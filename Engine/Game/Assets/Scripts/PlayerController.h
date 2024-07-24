@@ -83,13 +83,13 @@ public:
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
-    int GetShieldPercetage() const { return static_cast<int>(mShield / mMaxShield) * 100.0f;}
+    float GetShieldPercetage() const { return (mShield / mMaxShield) * 100.0f;}
 
     void EquipMeleeWeapon(bool equip);
     void EquipRangedWeapons(bool equip);
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
-    int GetCurrentEnergy() const { return mCurrentEnergy; }
+    float GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
     void SetMovementSpeed(float percentage) { mPlayerSpeed *= percentage; }
@@ -110,6 +110,10 @@ public:
     void SetGrenadeVisuals(bool value);
     void UpdateGrenadeVisuals();
     void ThrowGrenade();
+
+    void CheckOtherTimers();
+
+    void Paralyzed(float percentage, bool paralysis);
 
     bool CanReload() const;
     void Reload() const;
@@ -190,7 +194,7 @@ private:
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
     // Speed
-    float mPlayerSpeed;
+    float mPlayerSpeed = 10.f;
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
@@ -198,7 +202,7 @@ private:
     // WEAPONS
     Weapon* mWeapon = nullptr;
     Weapon* mSpecialWeapon = nullptr;
-    int mCurrentEnergy = 0;
+    float mCurrentEnergy = 0.0f;
     EnergyType mEnergyType = EnergyType::NONE;
     int mUltimateResource = 100;
 
@@ -239,11 +243,11 @@ private:
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;
-    float mUltimateCooldown;
-    float mUltimateDuration;
-    float mUltimatePlayerSlow;
-    float mUltimateDamageTick;
-    float mUltimateDamageInterval;
+    float mUltimateCooldown = 1.0f;
+    float mUltimateDuration = 3.0f;
+    float mUltimatePlayerSlow = 1.0f;
+    float mUltimateDamageTick = 1.0f;
+    float mUltimateDamageInterval = 1.0f;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
@@ -262,4 +266,12 @@ private:
     std::vector<Component*> mMeshComponents;
     std::vector<float4> mPlayerOgColor;
 
+    std::vector<unsigned int> mMaterialIds;
+
+ 
+    // DEBUFF
+    bool mIsParalyzed = false;
+    const float mParalyzedDuration = 5.0f;
+    TimerScript mParalyzedTimerScript;
+    float mParalysisSpeedReductionFactor = 1.0f;
 };

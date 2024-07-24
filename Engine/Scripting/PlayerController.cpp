@@ -249,6 +249,8 @@ void PlayerController::Update()
 
     //Check HitEffect
     CheckHitEffect();
+    // Buff, Debuff timers...
+    CheckOtherTimers();
 
     CheckDebugOptions();
     mCollisionDirection = float3::zero;
@@ -261,7 +263,28 @@ void PlayerController::StateMachine()
     mUpperState->Update();
 }
 
-void PlayerController::CheckInput() 
+void PlayerController::Paralyzed(float percentage, bool paralysis)
+{
+    if (paralysis)
+    {
+        if (!mIsParalyzed)
+        {
+            mIsParalyzed = true;
+            mPlayerSpeed *= percentage;
+            mParalyzedTimerScript = TimerScript();
+            mParalysisSpeedReductionFactor = percentage;
+        }
+    }
+    else
+    {
+        mIsParalyzed = false;
+        mPlayerSpeed /= percentage;
+
+        mParalysisSpeedReductionFactor = 1.0f;
+    }
+}
+
+void PlayerController::CheckInput()
 {
 
     // Lowerbody state machine
@@ -574,6 +597,19 @@ void PlayerController::ThrowGrenade()
     {
         mGrenade->SetDestination(mGrenadePosition);
     }  
+}
+
+void PlayerController::CheckOtherTimers()
+{
+
+    // Paralizys
+    if (mIsParalyzed)
+    {
+        if (mParalyzedTimerScript.Delay(mParalyzedDuration))
+        {
+            Paralyzed(mParalysisSpeedReductionFactor, false);
+        }
+    }
 }
 
 bool PlayerController::CanReload() const

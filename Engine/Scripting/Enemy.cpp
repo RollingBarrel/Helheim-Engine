@@ -46,12 +46,20 @@ void Enemy::Start()
 
 void Enemy::Update()
 {
+    if (mDeath)
+    {
+        Death();
+		return;
+    }
+	
 	if (GameManager::GetInstance()->IsPaused()) return;
 
-	if (mDeath)
+	if (mIsParalyzed)
 	{
-		Death();
-		return;
+		if (mParalyzedTimerScript.Delay(mParalyzedDuration))
+		{
+			Paralyzed(mParalysisSeverityLevel, false);
+		}
 	}
 	ActivateEnemy();
 
@@ -233,11 +241,6 @@ void Enemy::Death()
 	}
 }
 
-bool Enemy::IsChasing()
-{
-	return (mCurrentState == EnemyState::CHASE);
-}
-
 void Enemy::PushBack()
 {
 	float3 direction = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
@@ -260,6 +263,25 @@ void Enemy::Init()
 		mAiAgentComponent->StartCrowdNavigation();
 	}
 }
+
+void Enemy::Paralyzed(float percentage, bool paralyzed)
+{
+	if (paralyzed)
+	{
+		mIsParalyzed = true;
+		mSpeed *= percentage;
+		mParalyzedTimerScript = TimerScript();
+		mParalysisSeverityLevel = percentage;
+	}
+	else 
+	{
+		mIsParalyzed = false;
+		mSpeed /= percentage;
+
+		mParalysisSeverityLevel = 1.0f;
+	}
+}
+
 
 void Enemy::DropItem()
 {

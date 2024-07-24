@@ -81,11 +81,16 @@ void Sanity::Start()
 
 void Sanity::Update()
 {
+    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
 }
 
 void Sanity::CreateSelection(int arena)
 {
     if (arena < 0 || arena >= mBuffSelection.size()) return;
+
+    GameManager::GetInstance()->SetPaused(true, false);
+    
+    mTimeout = true;
 
     mCurrentBuffs = mBuffSelection[arena];
 
@@ -182,10 +187,13 @@ void Buff::Consume()
 
 void Sanity::OnCard1Click()
 {
+    if (mTimeout) return;
+
     if (!mCurrentBuffs.empty())
         mCurrentBuffs.at(0).Consume();
 
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard1HoverOn()
@@ -202,10 +210,13 @@ void Sanity::OnCard1HoverOff()
 
 void Sanity::OnCard2Click()
 {
+    if (mTimeout) return;
+
     if (mCurrentBuffs.size() > 1)
         mCurrentBuffs.at(1).Consume();
 
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard2HoverOn()
@@ -222,10 +233,13 @@ void Sanity::OnCard2HoverOff()
 
 void Sanity::OnCard3Click()
 {
+    if (mTimeout) return;
+
     if (mCurrentBuffs.size() > 2)
         mCurrentBuffs.at(2).Consume();
 
     mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard3HoverOn()

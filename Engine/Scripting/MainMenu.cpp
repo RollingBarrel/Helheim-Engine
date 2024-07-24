@@ -12,12 +12,13 @@
 #include "ImageComponent.h"
 #include "Resource.h"
 #include "ModuleResource.h"
+#include "TextComponent.h"
+#include "Timer.h"
+#include "ModuleWindow.h"
 
 CREATE(MainMenu)
 {
     CLASS(owner);
-    SEPARATOR("SCRIPTS");
-    MEMBER(MemberType::GAMEOBJECT, mMainMenuManagerHolder);
 
     SEPARATOR("MENUS");
     MEMBER(MemberType::GAMEOBJECT, mSplashScreen);
@@ -28,9 +29,21 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mMainMenu);
     MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
     MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsText);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsContainerGO);
+    MEMBER(MemberType::GAMEOBJECT, mControlsGO);
+    MEMBER(MemberType::GAMEOBJECT, mSettingsGO);
+    MEMBER(MemberType::GAMEOBJECT, mControlsButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mSettingsButtonGO);
 
-    //MEMBER(MemberType::GAMEOBJECT, mContainerGO);
-    //MEMBER(MemberType::GAMEOBJECT, mOptionsContainerGO);
+    SEPARATOR("SETTINGS");
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonGO);
+
+
     SEPARATOR("BUTTONS");
     MEMBER(MemberType::GAMEOBJECT, mPlayGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
@@ -44,18 +57,14 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
-    if (mMainMenuManagerHolder != nullptr) 
-    {
-        ScriptComponent* script = (ScriptComponent*)mMainMenuManagerHolder->GetComponent(ComponentType::SCRIPT);
-        mMainMenuManager = (MainMenuManager*)script->GetScriptInstance();
-    }
-
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
     mPlayButton = static_cast<ButtonComponent*>(mPlayGO->GetComponent(ComponentType::BUTTON));
     mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
     mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
     mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
     mBackCreditButton = static_cast<ButtonComponent*>(mBackCreditGO->GetComponent(ComponentType::BUTTON));
+    mSettingsButton = static_cast<ButtonComponent*>(mSettingsButtonGO->GetComponent(ComponentType::BUTTON));
+    mControlsButton = static_cast<ButtonComponent*>(mControlsButtonGO->GetComponent(ComponentType::BUTTON));
 
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
     mPlayButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnNewButtonClick, this)));
@@ -74,26 +83,48 @@ void MainMenu::Start()
     mCreditsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHoverOff, this)));
     mQuitButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHoverOff, this)));
 
-    OpenMenu(MENU_TYPE::SPLASH);
+    mSettingsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonClick, this)));
+    mControlsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonClick, this)));
+
+    mTextTransform = static_cast<Transform2DComponent*>(mCreditsText->GetComponent(ComponentType::TRANSFORM2D));
+
+    mMusicVolumeButton = static_cast<ButtonComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::BUTTON));
+    mGeneralVolumeButton = static_cast<ButtonComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::BUTTON));
+    mEffectsVolumeButton = static_cast<ButtonComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::BUTTON));
+    mVSyncButton = static_cast<ButtonComponent*>(mVSyncButtonGO->GetComponent(ComponentType::BUTTON));
+    mFullscreenButton = static_cast<ButtonComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::BUTTON));
+    mVSyncImage = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
+    mFullscreenImage = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
+
+    mVSyncButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonClick, this)));
+    mFullscreenButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonClick, this)));
+
+    OpenMenu(MENU_TYPE::STUDIO);
 }
 
 void MainMenu::Update()
 {
+    if (mIsInitial) 
+    {
+        if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::STUDIO) OpenMenu(MENU_TYPE::ENGINE);
+        else if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::ENGINE)
+        {
+            OpenMenu(MENU_TYPE::SPLASH);
+            mIsInitial = false;
+        }
+        return;
+    }
+
+    if (mIsScrolling)
+    {
+        float3 currentPosition = mTextTransform->GetPosition();
+        mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+    }
+
     if (mLoadlevel == true && Delay(0.1f)) 
     {
         App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
-    
-    /*int mouseWheelDelta = GetMouseWheelDelta();
-    if (mouseWheelDelta != 0)
-    {
-        // Adjust the position based on the mouse wheel delta.
-        float scrollSpeed = 0.1f; // Adjust this value as needed.
-        float3 newPosition = mPosition;
-        newPosition.y += mouseWheelDelta * scrollSpeed;
-        newPosition.y = std::max(mLowerLimit.y, std::min(mPosition.y, mUpperLimit.y));
-        SetPosition(newPosition);
-    }*/
 
     Controls();
 }
@@ -113,7 +144,8 @@ bool MainMenu::Delay(float delay)
 
 void MainMenu::Controls()
 {
-    if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN)
+    if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN) 
     {
         //mMainMenuManager->PlaySelectSFX();
         if (mOption > 0)
@@ -128,7 +160,8 @@ void MainMenu::Controls()
         HoverMenu(static_cast<MENU_TYPE>(mOption));
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN)
+    if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
     {
         //mMainMenuManager->PlaySelectSFX();
         if (mOption < 3)
@@ -143,12 +176,15 @@ void MainMenu::Controls()
         HoverMenu(static_cast<MENU_TYPE>(mOption));
     }
 
-    if ((App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) || (App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN))
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN || 
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
         ClickMenu(static_cast<MENU_TYPE>(mOption));
     }
 
-    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
+    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
         OpenMenu(static_cast<MENU_TYPE>(0));
     }
@@ -158,32 +194,37 @@ void MainMenu::Controls()
 
 void MainMenu::OpenMenu(MENU_TYPE type) 
 {
+    mCurrentMenu = type;
+
     mEngineScreen->SetEnabled(false);
     mStudioScreen->SetEnabled(false);
     mSplashScreen->SetEnabled(false);
     mLoadingScreen->SetEnabled(false);
 
-    //mMainMenu->SetEnabled(false);
     mOptionsMenu->SetEnabled(false);
     mCreditsMenu->SetEnabled(false);
 
-    //mBackCreditGO->SetEnabled(false);
-    //mContainerGO->SetEnabled(false);
-    //mOptionsContainerGO->SetEnabled(false);
+    mSettingsGO->SetEnabled(false);
+    mControlsGO->SetEnabled(false);
+    mOptionsContainerGO->SetEnabled(false);
+
+    mIsScrolling = false;
+
 
     switch (type) 
     {
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
-            //mContainerGO->SetEnabled(true);
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
-            //mContainerGO->SetEnabled(true);
+            mOptionsContainerGO->SetEnabled(true);
+            mSettingsGO->SetEnabled(true);
             break;
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
-            //mBackCreditGO->SetEnabled(true);
+            mIsScrolling = true;
+            mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
             break;
         case MENU_TYPE::LOADING:
             mLoadingScreen->SetEnabled(true);
@@ -196,6 +237,16 @@ void MainMenu::OpenMenu(MENU_TYPE type)
             break;
         case MENU_TYPE::STUDIO:
             mStudioScreen->SetEnabled(true);
+            break;
+        case MENU_TYPE::CONTROLS:
+            mOptionsMenu->SetEnabled(true);
+            mOptionsContainerGO->SetEnabled(true);
+            mControlsGO->SetEnabled(true);
+            break;
+        case MENU_TYPE::SETTINGS:
+            mOptionsMenu->SetEnabled(true);
+            mOptionsContainerGO->SetEnabled(true);
+            mSettingsGO->SetEnabled(true);
             break;
     }
 }
@@ -262,6 +313,46 @@ void MainMenu::OnSplashButtonClick()
     OnPlayButtonHover();
     //mMainMenuManager->PlayOKSFX();
     OpenMenu(MENU_TYPE::MAIN);
+}
+
+void MainMenu::OnControlsButtonClick()
+{
+    //mMainMenuManager->PlayOKSFX();
+    OpenMenu(MENU_TYPE::CONTROLS);
+}
+
+void MainMenu::OnSettingsButtonClick()
+{
+    //mMainMenuManager->PlayOKSFX();
+    OpenMenu(MENU_TYPE::SETTINGS);
+}
+
+void MainMenu::OnVSyncButtonClick()
+{
+    if (*mVSyncImage->GetAlpha() == 1.0f)
+    {
+        mVSyncImage->SetAlpha(0.5f);
+        App->GetCurrentClock()->SetVsyncStatus(false);
+    }
+    else
+    {
+        mVSyncImage->SetAlpha(1.0f);
+        App->GetCurrentClock()->SetVsyncStatus(true);
+    }
+}
+
+void MainMenu::OnFullscreenButtonClick()
+{
+    if (*mFullscreenImage->GetAlpha() == 1.0f)
+    {
+        mFullscreenImage->SetAlpha(0.5f);
+        App->GetWindow()->WindowFullscreen(false);
+    }
+    else
+    {
+        mFullscreenImage->SetAlpha(1.0f);
+        App->GetWindow()->WindowFullscreen(true);
+    }
 }
 
 // SELECTED
