@@ -75,7 +75,7 @@ void Pistol::Attack(float time)
 	ray.pos.y++;
 	ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
-	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea" };
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap"};
 	Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
 	if (hit.IsValid())

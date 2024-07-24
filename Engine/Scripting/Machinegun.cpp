@@ -80,7 +80,7 @@ void Machinegun::Attack(float time)
         //ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
 
         Hit hit;
-        std::vector<std::string> ignoreTags = {"Bullet", "BattleArea" };
+        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap" };
         Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
         if (hit.IsValid())
