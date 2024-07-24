@@ -24,6 +24,7 @@ public:
 private:
     void UpdateDialog();
     void OnClick();
+    void Controls();
 
     GameObject* mDialogGO = nullptr;
     GameObject* mProtagonistGO = nullptr;
