@@ -33,6 +33,8 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
     MEMBER(MemberType::GAMEOBJECT, mFeedbackGO);
+    MEMBER(MemberType::GAMEOBJECT, mBossHealthGO);
+    MEMBER(MemberType::GAMEOBJECT, mBossHealthGradualGO);
     SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
     MEMBER(MemberType::GAMEOBJECT, mContinueBtnGO);
@@ -94,20 +96,29 @@ void HudController::Start()
     if (mWinScreen) 
     {
         mWinScreen->SetEnabled(false);
-        mWinBtn = static_cast<ButtonComponent*>(mWinMenuBtnGO->GetComponent(ComponentType::BUTTON));
-        mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
+        if (mWinMenuBtnGO)
+        {
+            mWinBtn = static_cast<ButtonComponent*>(mWinMenuBtnGO->GetComponent(ComponentType::BUTTON));
+            mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
+        }
     }
     if (mLoseScreen)
     {
         mLoseScreen->SetEnabled(false);
-        if (mLoseMenuBtnGO) mLoseBtn = static_cast<ButtonComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::BUTTON));
-        if (mTryAgainBtnGO) mTryAgainBtn = static_cast<ButtonComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::BUTTON));
-        mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnLoseButtonClick, this)));
-        mLoseBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnLoseButtonHoverOn, this)));
-        mLoseBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnLoseButtonHoverOff, this)));
-        mTryAgainBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonClick, this)));
-        mTryAgainBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOn, this)));
-        mTryAgainBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOff, this)));
+        if (mLoseMenuBtnGO)
+        {
+            mLoseBtn = static_cast<ButtonComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::BUTTON));
+            mLoseBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnLoseButtonClick, this)));
+            mLoseBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnLoseButtonHoverOn, this)));
+            mLoseBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnLoseButtonHoverOff, this)));
+        }
+        if (mTryAgainBtnGO) {
+            mTryAgainBtn = static_cast<ButtonComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::BUTTON));
+
+            mTryAgainBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonClick, this)));
+            mTryAgainBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOn, this)));
+            mTryAgainBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOff, this)));
+        }
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
 
@@ -121,6 +132,18 @@ void HudController::Start()
     {
         mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
         mHealthGradualSlider->SetValue(1.0f);
+    }
+    
+    if (mBossHealthGO)
+    {
+        mBossHealthSlider = static_cast<SliderComponent*>(mBossHealthGO->GetComponent(ComponentType::SLIDER));
+        mBossHealthSlider->SetValue(1.0f);
+    }
+
+    if (mBossHealthGradualGO) 
+    {
+        mBossHealthGradualSlider = static_cast<SliderComponent*>(mBossHealthGradualGO->GetComponent(ComponentType::SLIDER));
+        mBossHealthGradualSlider->SetValue(1.0f);
     }
 
     if (mGrenadeSliderGO)
@@ -446,6 +469,21 @@ void HudController::OnMainMenuBtnHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.0f);
+}
+
+void HudController::SetBossHealthBarEnabled(bool enabled)
+{
+    if (mBossHealthGO) mBossHealthGO->GetParent()->SetEnabled(enabled);
+
+}
+
+void HudController::SetBossHealth(float health)
+{
+    if (health <= 0)
+    {
+        SetBossHealthBarEnabled(false);
+    }
+    else  if (mBossHealthSlider) mBossHealthSlider->SetValue(health);
 }
 
 #pragma endregion

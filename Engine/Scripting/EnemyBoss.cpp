@@ -11,6 +11,7 @@
 #include "ColorGradient.h"
 #include "Bullet.h"
 #include "BossLaser.h"
+#include "HudController.h"
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -59,6 +60,7 @@ void EnemyBoss::Start()
 void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
+    GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
 
     if (!mBeAttracted)
     {
@@ -67,6 +69,7 @@ void EnemyBoss::Update()
         case EnemyState::IDLE:
             if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
             {
+                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 mCurrentState = EnemyState::ATTACK;
                 SelectAttack();
             }
