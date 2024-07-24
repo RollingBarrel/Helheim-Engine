@@ -271,6 +271,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     {
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
+            mIsInitial = false;
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
