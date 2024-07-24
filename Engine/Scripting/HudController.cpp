@@ -266,6 +266,9 @@ void HudController::SetMaxHealth(float health)
 
     if (mHealthSlider)
     {
+        float currentValue = mHealthSlider->GetValue();
+        mHealthSlider->SetValue(1.0f);
+
         Transform2DComponent* transform = static_cast<Transform2DComponent*>(mHealthSlider->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         float2 currentSize = transform->GetSize();
         float3 currentPosition = transform->GetPosition();
@@ -274,9 +277,14 @@ void HudController::SetMaxHealth(float health)
 
         float newPositionX = currentPosition.x + (newWidth - currentSize.x) / 2;
         transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
+
+        mHealthSlider->SetValue(currentValue);
     }
     if (mHealthGradualSlider)
     {
+        float currentValue = mHealthGradualSlider->GetValue();
+        mHealthGradualSlider->SetValue(1.0f);
+
         Transform2DComponent* transform = static_cast<Transform2DComponent*>(mHealthGradualSlider->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         float2 currentSize = transform->GetSize();
         float3 currentPosition = transform->GetPosition();
@@ -285,6 +293,8 @@ void HudController::SetMaxHealth(float health)
 
         float newPositionX = currentPosition.x + (newWidth - currentSize.x) / 2;
         transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
+
+        mHealthGradualSlider->SetValue(currentValue);
     }
 }
 
