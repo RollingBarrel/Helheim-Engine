@@ -60,7 +60,7 @@ void EnemyBoss::Start()
 void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
-    GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
+    if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
 
     if (!mBeAttracted)
     {

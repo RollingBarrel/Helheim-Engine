@@ -63,7 +63,7 @@ void BossLaser::Update()
 		{
 			if (hit.mGameObject->GetTag() == "Player" && mIframes == 0)
 			{
-				mIframes = 10.0;
+				mIframes = 10.0f;
 				LOG("Collided with player");
 				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
 				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
@@ -90,18 +90,21 @@ void BossLaser::Update()
 		}
 		else
 		{
-			float3 originPosition = mLaserOrigin->GetLocalPosition();
-			mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mRange));
+			float3 originPosition = mLaserOrigin->GetWorldPosition();
+			//mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mRange));
+			mLaserEnd->SetWorldPosition(originPosition + mGameObject->GetFront() * mRange);
 
 			//Trails WorkAround
 			if (mMoveTrail)
 			{
-				mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mRange));
+				//mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mRange));
+				mLaserTrail->SetWorldPosition(originPosition + mGameObject->GetFront() * mRange);
 				mMoveTrail = false;
 			}
 			else
 			{
-				mLaserTrail->SetLocalPosition(originPosition);
+				//mLaserTrail->SetLocalPosition(originPosition);
+				mLaserTrail->SetWorldPosition(originPosition);
 				mMoveTrail = true;
 			}
 		}
@@ -109,7 +112,7 @@ void BossLaser::Update()
 	if (mIframes > 0) --mIframes;
 }
 
-void BossLaser::Init(int damage, int range)
+void BossLaser::Init(float damage, float range)
 {
 	mSwipeProgress = 0.0f;
 	mGameObject->SetEnabled(true);
