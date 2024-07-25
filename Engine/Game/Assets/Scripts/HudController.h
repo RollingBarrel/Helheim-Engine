@@ -30,7 +30,7 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(float energy, EnergyType type);
+    void SetEnergy(int energy, EnergyType type);
     void SetHealth(float health);
     void SetBossHealth(float health);
     void SetBossHealthBarEnabled(bool enabled);
