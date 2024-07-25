@@ -169,12 +169,14 @@
     <ClInclude Include="..\Game\Assets\Scripts\TimerScript.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h">
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
@@ -186,6 +188,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -313,12 +316,14 @@
     <ClCompile Include="TimerScript.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="EnemyCreatureRange.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="EnemyCreatureMelee.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="BombBoss.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -330,5 +335,6 @@
     <ClCompile Include="BossLaser.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="RayCastBullet.cpp" />
   </ItemGroup>
 </Project>

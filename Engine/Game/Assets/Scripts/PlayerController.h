@@ -2,13 +2,17 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
+#include "float4.h"
+#include "TimerScript.h"
 
+class Component;
 class AnimationComponent;
 class AnimationStateMachine;
 class AudioSourceComponent;
 struct CollisionData;
 class BoxColliderComponent;
-class Component;
+class MeshRendererComponent;
+
 
 class State;
 class DashState;
@@ -79,7 +83,7 @@ public:
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
-    int GetShieldPercetage() const { return static_cast<int>(mShield / mMaxShield) * 100.0f;}
+    float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
 
     void EquipMeleeWeapon(bool equip);
     void EquipRangedWeapons(bool equip);
@@ -107,6 +111,10 @@ public:
     void UpdateGrenadeVisuals();
     void ThrowGrenade();
 
+    void CheckOtherTimers();
+
+    void Paralyzed(float percentage, bool paralysis);
+
     bool CanReload() const;
     void Reload() const;
     
@@ -116,6 +124,10 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+
+    //Hit Effect
+    void ActivateHitEffect();
+    
     //Ultimate
     GameObject* GetUltimateGO() const{ return mUltimateGO; };
     void AddUltimateResource();
@@ -142,6 +154,7 @@ public:
 
 private:
     void CheckInput();
+    void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
     void CheckDebugOptions();
@@ -181,7 +194,7 @@ private:
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
     // Speed
-    float mPlayerSpeed;
+    float mPlayerSpeed = 10.f;
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
@@ -189,7 +202,7 @@ private:
     // WEAPONS
     Weapon* mWeapon = nullptr;
     Weapon* mSpecialWeapon = nullptr;
-    int mCurrentEnergy = 0;
+    int mCurrentEnergy = 100;
     EnergyType mEnergyType = EnergyType::NONE;
     int mUltimateResource = 100;
 
@@ -230,11 +243,11 @@ private:
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;
-    float mUltimateCooldown;
-    float mUltimateDuration;
-    float mUltimatePlayerSlow;
-    float mUltimateDamageTick;
-    float mUltimateDamageInterval;
+    float mUltimateCooldown = 1.0f;
+    float mUltimateDuration = 3.0f;
+    float mUltimatePlayerSlow = 1.0f;
+    float mUltimateDamageTick = 1.0f;
+    float mUltimateDamageInterval = 1.0f;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
@@ -246,12 +259,16 @@ private:
     // Debug
     bool mGodMode = false;
 
-
     //Hit Effect
+    TimerScript  mHitEffectTimer;
+    float mHitEffectTime = 0.15f;
     bool mHit = false;
-    float mTimePassed = 0.0f;
     std::vector<Component*> mMeshComponents;
-    std::vector<unsigned int> mMaterialIds;
-    bool Delay(float delay);
+    std::vector<float4> mPlayerOgColor;
  
+    // DEBUFF
+    bool mIsParalyzed = false;
+    const float mParalyzedDuration = 5.0f;
+    TimerScript mParalyzedTimerScript;
+    float mParalysisSpeedReductionFactor = 1.0f;
 };

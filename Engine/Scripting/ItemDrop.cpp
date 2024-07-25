@@ -33,7 +33,7 @@ void ItemDrop::Init()
         }
     }
 
-    mDespawnTimer = 30.0f;
+    mDespawnTimer = 60.0f;
 
 }
 
@@ -64,7 +64,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
-        mGameObject->SetEnabled(false);
+       
 
         PlayerController* playerScript =  reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (playerScript != nullptr)
@@ -72,17 +72,26 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
             switch (mDropId)
             {
             case 1:
-                playerScript->RechargeShield(mHealthRecovered);
+                if (playerScript->GetShieldPercetage() != 100.0f)
+                {
+                    playerScript->RechargeShield(mHealthRecovered);
+                    mGameObject->SetEnabled(false);
+                }
                 break;
             case 2:
                 playerScript->RechargeBattery(EnergyType::BLUE);
+                mGameObject->SetEnabled(false);
                 break;
             case 3:
                 playerScript->RechargeBattery(EnergyType::RED);
+                mGameObject->SetEnabled(false);
                 break;
             default:
                 break;
             }
         }
+
+
+
     }
 }

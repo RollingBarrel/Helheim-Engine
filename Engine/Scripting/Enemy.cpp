@@ -1,4 +1,4 @@
-#include "Enemy.h"
+﻿#include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "GameObject.h"
@@ -6,6 +6,8 @@
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
+#include "MeshRendererComponent.h"
+#include "ResourceMaterial.h"
 
 #include "GameManager.h"
 #include "PoolManager.h"
@@ -23,8 +25,53 @@ void Enemy::Start()
 	mPlayer = GameManager::GetInstance()->GetPlayer();
 	mHealth = mMaxHealth;
 
-	mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+    //Hit Effect
 
+	if (!(mGameObject->GetName() == "FinalBoss")) 
+		/*
+		⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀
+		⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀
+		⠀⠀⠀⠀⠈⠢⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠴⠊⠀⠀⠀⠀⠀
+		⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⢀⣀⣀⣀⣀⣀⡀⠤⠄⠒⠈⠀⠀⠀⠀⠀⠀⠀⠀
+		⠀⠀⠀⠀⠀⠀⠀⠘⣀⠄⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+		⠀
+		⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠛⠛⠋⠉⠈⠉⠉⠉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣿⣿
+		⣿⣿⣿⣿⡏⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿
+		⣿⣿⣿⢏⣴⣿⣷⠀⠀⠀⠀⠀⢾⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿
+		⣿⣿⣟⣾⣿⡟⠁⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣷⢢⠀⠀⠀⠀⠀⠀⠀⢸⣿
+		⣿⣿⣿⣿⣟⠀⡴⠄⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⣿
+		⣿⣿⣿⠟⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠶⢴⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⣿
+		⣿⣁⡀⠀⠀⢰⢠⣦⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⡄⠀⣴⣶⣿⡄⣿
+		⣿⡋⠀⠀⠀⠎⢸⣿⡆⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⠗⢘⣿⣟⠛⠿⣼
+		⣿⣿⠋⢀⡌⢰⣿⡿⢿⡀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⡇⠀⢸⣿⣿⣧⢀⣼
+		⣿⣿⣷⢻⠄⠘⠛⠋⠛⠃⠀⠀⠀⠀⠀⢿⣧⠈⠉⠙⠛⠋⠀⠀⠀⣿⣿⣿⣿⣿
+		⣿⣿⣧⠀⠈⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠟⠀⠀⠀⠀⢀⢃⠀⠀⢸⣿⣿⣿⣿
+		⣿⣿⡿⠀⠴⢗⣠⣤⣴⡶⠶⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡸⠀⣿⣿⣿⣿
+		⣿⣿⣿⡀⢠⣾⣿⠏⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠉⠀⣿⣿⣿⣿
+		⣿⣿⣿⣧⠈⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿
+		⣿⣿⣿⣿⡄⠈⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣿⣦⣄⣀⣀⣀⣀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠙⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠁⠀⠀⠹⣿⠃⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢐⣿⣿⣿⣿⣿⣿⣿⣿⣿
+		⣿⣿⣿⣿⠿⠛⠉⠉⠁⠀⢻⣿⡇⠀⠀⠀⠀⠀⠀⢀⠈⣿⣿⡿⠉⠛⠛⠛⠉⠉
+		⣿⡿⠋⠁⠀⠀⢀⣀⣠⡴⣸⣿⣇⡄⠀⠀⠀⠀⢀⡿⠄⠙⠛⠀⣀⣠⣤⣤⠄
+		*/
+	{
+		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
+		{
+			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
+			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
+			mOgColors.push_back(material->GetBaseColorFactor());
+		}
+	}
+	mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+	
 	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
 	if (mAnimationComponent)
 	{
@@ -36,32 +83,69 @@ void Enemy::Update()
 {
 	if (GameManager::GetInstance()->IsPaused()) return;
 
-	if (mDeath)
+	if (mIsParalyzed)
 	{
-		Death();
+		if (mParalyzedTimerScript.Delay(mParalyzedDuration))
+		{
+			Paralyzed(mParalysisSeverityLevel, false);
+		}
 	}
+	ActivateEnemy();
 
+    //Hit Effect
+    CheckHitEffect();
+}
+
+
+
+
+void Enemy::CheckHitEffect()
+{
+    if (mHit)
+    {
+        if (mHitEffectTimer.Delay(mHitEffectTime))
+        {
+			ResetEnemyColor();
+            mHit = false;
+        }
+    }
+}
+void Enemy::ResetEnemyColor()
+{
+	for (size_t i = 0; i < mMeshComponents.size(); i++)
+	{
+		MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+		meshComponent->SetEnableBaseColorTexture(true);
+		meshComponent->SetBaseColorFactor(mOgColors[i]);
+	}
+}
+void Enemy::ActivateEnemy()
+{
 	if (!mBeAttracted)
 	{
 		switch (mCurrentState)
 		{
 		case EnemyState::IDLE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Idle();
 			break;
 		case EnemyState::CHASE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
 			Chase();
 			break;
 		case EnemyState::CHARGE:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Charge();
 			break;
 		case EnemyState::ATTACK:
-			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
 			Attack();
+			break;
+		case EnemyState::DEATH:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+			Death();
 			break;
 		}
 	}
@@ -140,45 +224,48 @@ void Enemy::TakeDamage(float damage)
 {
 	if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
 	{
+		ActivateHitEffect();
 		mHealth -= damage;
 
 		if (mHealth <= 0)
 		{
-			mDeath = true;
-
-			if (mAnimationComponent)
-			{
-				mAnimationComponent->SendTrigger("tDeath", 0.3f);
-			}
+			mCurrentState = EnemyState::DEATH;
 
 			if (mAiAgentComponent)
 			{
 				mAiAgentComponent->PauseCrowdNavigation();
 			}
-
-			BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
-			if (activeBattleArea)
-			{
-				activeBattleArea->EnemyDestroyed();
-			}
-
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
 }
 
+void Enemy::ActivateHitEffect()
+{
+    if (mHit) return;
+   //LOG("HIT EFFECT");
+    for (Component* mesh : mMeshComponents)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+    }
+    mHit = true;
+}
 void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
+		ResetEnemyColor();
 		mGameObject->SetEnabled(false);
 		DropItem();
-	}
-}
 
-bool Enemy::IsChasing()
-{
-	return (mCurrentState == EnemyState::CHASE);
+		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+		if (activeBattleArea)
+		{
+			activeBattleArea->EnemyDestroyed();
+		}
+	}
 }
 
 void Enemy::PushBack()
@@ -190,8 +277,8 @@ void Enemy::PushBack()
 
 void Enemy::Init()
 {
-	mDeath = false;
 	mHealth = mMaxHealth;
+	mCurrentState = EnemyState::IDLE;
 
 	if (mAnimationComponent)
 	{
@@ -203,6 +290,25 @@ void Enemy::Init()
 		mAiAgentComponent->StartCrowdNavigation();
 	}
 }
+
+void Enemy::Paralyzed(float percentage, bool paralyzed)
+{
+	if (paralyzed)
+	{
+		mIsParalyzed = true;
+		mSpeed *= percentage;
+		mParalyzedTimerScript = TimerScript();
+		mParalysisSeverityLevel = percentage;
+	}
+	else 
+	{
+		mIsParalyzed = false;
+		mSpeed /= percentage;
+
+		mParalysisSeverityLevel = 1.0f;
+	}
+}
+
 
 void Enemy::DropItem()
 {
@@ -227,7 +333,7 @@ void Enemy::DropItem()
 	if (poolType != PoolType::LAST)
 	{
 		float3 enemyPosition = mGameObject->GetWorldPosition();
-		float3 dropPosition = float3(enemyPosition.x, 0.25f, enemyPosition.z);
+		float3 dropPosition = float3(enemyPosition.x, enemyPosition.y + 0.25f, enemyPosition.z);
 
 		GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
 		itemGameObject->SetWorldPosition(dropPosition);

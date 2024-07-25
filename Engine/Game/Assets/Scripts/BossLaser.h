@@ -4,6 +4,7 @@
 #include "float3.h"
 
 class BoxColliderComponent;
+class GameObject;
 struct CollisionData;
 
 GENERATE_BODY(BossLaser);
@@ -17,7 +18,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init(int damage, int range);
+	void Init(float damage, float range);
 
 	void OnCollisionEnter(CollisionData* collisionData);
 
@@ -29,4 +30,15 @@ private:
 	float mRange = 10.0f;
 	unsigned int mIframes = 0;
 	float mSwipeProgress = 0.0f;
+
+	//Gameobject
+	GameObject* mLaserOrigin = nullptr;
+	GameObject* mLaserTrail = nullptr;
+	GameObject* mLaserEnd = nullptr;
+	GameObject* mLaserCharge = nullptr;
+
+
+	//Laser WorkAround
+	bool mMoveTrail = false;
+
 };

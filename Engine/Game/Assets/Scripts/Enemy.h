@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "float4.h"
 #include "TimerScript.h"
 
 class GameObject;
@@ -14,7 +15,9 @@ enum class EnemyState
 	CHASE,
 	CHARGE,
 	ATTACK,
+	DEATH
 };
+
 
 class Enemy : public Script
 {
@@ -28,10 +31,13 @@ public:
 	virtual void Death();
 	virtual void PushBack();
 	virtual void Init();
-
 	bool IsChasing();
 	
 	//Grenade
+
+	// DEBUFF
+	virtual void Paralyzed(float percentage, bool paralyzed);
+
 	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
 protected:
@@ -45,7 +51,11 @@ protected:
 
 	bool IsPlayerInRange(float range);
 	void DropItem();
-
+	void ActivateEnemy();
+	void ActivateHitEffect();
+	void CheckHitEffect();
+	void ResetEnemyColor();
+	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;
@@ -59,7 +69,6 @@ protected:
 	int mShieldDropRate = 20;
 	int mRedEnergyDropRate = 35;
 	int mBlueEnergyDropRate = 45;
-	bool mBeAttracted = false;
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	GameObject* mPlayer = nullptr;
@@ -77,6 +86,27 @@ protected:
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
-	bool mDeath = false;
+	TimerScript  mHitEffectTimer;
+	float mHitEffectTime = 0.15f;
+
+	//Transition Times
+	float mIdleTransitionDuration = 0.2f;
+	float mChaseTransitionDuration = 0.2f;
+	float mChargeTransitionDuration = 0.2f;
+	float mAttackTransitionDuration = 0.2f;
+	float mDeathTransitionDuration = 0.2f;
+
+
+	//Hit Effect
+	bool mHit = false;
+	std::vector<Component*> mMeshComponents;
+	std::vector <float4> mOgColors;
+	// DEBUFF
+	bool mBeAttracted = false;
+
+	bool mIsParalyzed = false;
+	const float mParalyzedDuration = 5.0f;
+	TimerScript mParalyzedTimerScript;
+	float mParalysisSeverityLevel = 1.0f;
 
 };
