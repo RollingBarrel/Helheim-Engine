@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1225926250,
+                "UID": 1135396554,
                 "ParentUID": 1,
                 "Name": "Explosive_Enemy_Spawner",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
+                    58.98816680908203,
                     0.0,
-                    0.0,
-                    0.0
+                    4.039506912231445
                 ],
                 "Rotation": [
                     0.0,
@@ -52,7 +52,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "EnemyExplosiveSpawner",
                         "ScriptVariables": [
                             {
@@ -64,8 +64,8 @@
                 ]
             },
             {
-                "UID": 1961193631,
-                "ParentUID": 1225926250,
+                "UID": 1857923292,
+                "ParentUID": 1135396554,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -92,8 +92,8 @@
                 "Components": []
             },
             {
-                "UID": 539717772,
-                "ParentUID": 1961193631,
+                "UID": 443618396,
+                "ParentUID": 1857923292,
                 "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
@@ -120,8 +120,8 @@
                 "Components": []
             },
             {
-                "UID": 1274080080,
-                "ParentUID": 539717772,
+                "UID": 1167189449,
+                "ParentUID": 443618396,
                 "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
@@ -155,7 +155,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1346044292,
+                                "GoId": 1345325686,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -176,7 +176,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2074976162,
+                                "GoId": 2074396798,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -197,7 +197,7 @@
                                 ]
                             },
                             {
-                                "GoId": 653639545,
+                                "GoId": 653269044,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -222,8 +222,8 @@
                 ]
             },
             {
-                "UID": 2000575215,
-                "ParentUID": 1961193631,
+                "UID": 1898906159,
+                "ParentUID": 1857923292,
                 "Name": "OB_ball_spawner_doors",
                 "Enabled": true,
                 "Active": true,
@@ -250,8 +250,8 @@
                 "Components": []
             },
             {
-                "UID": 588219707,
-                "ParentUID": 2000575215,
+                "UID": 526721968,
+                "ParentUID": 1898906159,
                 "Name": "OB_ball_spawner_doors",
                 "Enabled": true,
                 "Active": true,
@@ -285,7 +285,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1346044292,
+                                "GoId": 1345325686,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -306,7 +306,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2074976162,
+                                "GoId": 2074396798,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -327,7 +327,7 @@
                                 ]
                             },
                             {
-                                "GoId": 653639545,
+                                "GoId": 653269044,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -352,8 +352,8 @@
                 ]
             },
             {
-                "UID": 1346044292,
-                "ParentUID": 1961193631,
+                "UID": 1345325686,
+                "ParentUID": 1857923292,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -380,8 +380,8 @@
                 "Components": []
             },
             {
-                "UID": 2074976162,
-                "ParentUID": 1346044292,
+                "UID": 2074396798,
+                "ParentUID": 1345325686,
                 "Name": "Leftdoor",
                 "Enabled": true,
                 "Active": true,
@@ -408,8 +408,8 @@
                 "Components": []
             },
             {
-                "UID": 653639545,
-                "ParentUID": 1346044292,
+                "UID": 653269044,
+                "ParentUID": 1345325686,
                 "Name": "Rightdoor",
                 "Enabled": true,
                 "Active": true,

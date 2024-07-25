@@ -21,6 +21,11 @@ CREATE(BattleArea)
 	SEPARATOR("DOORS");
 	MEMBER(MemberType::GAMEOBJECT, mDoor1);
 	MEMBER(MemberType::GAMEOBJECT, mDoor2);
+	SEPARATOR("TRAPS");
+	MEMBER(MemberType::GAMEOBJECT, mTrap1);
+	MEMBER(MemberType::GAMEOBJECT, mTrap2);
+	MEMBER(MemberType::GAMEOBJECT, mTrap3);
+	MEMBER(MemberType::GAMEOBJECT, mTrap4);
 	END_CREATE;
 }
 
@@ -133,6 +138,11 @@ inline void BattleArea::ActivateArea(bool activate)
 		mEnemySpawner4->Active(activate);
 	}
 
+	SetTrapState(mTrap1, activate);
+	SetTrapState(mTrap2, activate);
+	SetTrapState(mTrap3, activate);
+	SetTrapState(mTrap4, activate);
+
 	if (!activate)
 	{
 		GameManager::GetInstance()->SetActiveBattleArea(nullptr);
@@ -150,6 +160,25 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
+	}
+}
+
+void BattleArea::SetTrapState(GameObject* trap, bool enable)
+{
+	if (trap)
+	{
+		auto scriptComponent = reinterpret_cast<ScriptComponent*>(trap->GetComponent(ComponentType::SCRIPT));
+		if (scriptComponent)
+		{
+			if (enable)
+			{
+				scriptComponent->Enable();
+			}
+			else
+			{
+				scriptComponent->Disable();
+			}
+		}
 	}
 }
 
