@@ -9,7 +9,8 @@
 CREATE(Teleporter)
 {
     CLASS(owner);
-    MEMBER(MemberType::GAMEOBJECT, mDestination);
+    MEMBER(MemberType::FLOAT3, mStartPos);
+    MEMBER(MemberType::FLOAT3, mEndPos);
     MEMBER(MemberType::FLOAT, mDuration);
     END_CREATE;
 }
@@ -45,7 +46,7 @@ void Teleporter::Update()
     if (mIsTriggered)
     {
         mCurrentTime += App->GetDt();
-        float3 position = LerpPosition(mDuration);
+        float3 position = LerpPosition(mDuration, mIsAtStart ? mStartPos : mEndPos);
         mPlayer->SetWorldPosition(position);
         mGameObject->SetWorldPosition(position);
         if (mCurrentTime > mDuration)
@@ -53,20 +54,28 @@ void Teleporter::Update()
             mIsTriggered = false;
             mIsExiting = true;
             mCurrentTime = 0.0f;
-            mGameObject->SetWorldPosition(mStartPos);
 
-            //Compute nearest nav point to player after reaching elevator stop
-            mStartPos = mPlayer->GetWorldPosition();
-            float3 destination = App->GetNavigation()->FindNearestPoint(mDestination->GetWorldPosition() + float3(mDirection.x, 0.0f, mDirection.z) * 10, float3(10.0f));
-            mDistance = mStartPos.Distance(destination);
-            mDirection = destination.Sub(mStartPos).Normalized();
+            if (mIsAtStart)
+            {
+                float3 destination = App->GetNavigation()->FindNearestPoint(mEndPos + float3(mCurrentDirection.x, 0.0f, mCurrentDirection.z) * 10, float3(10.0f));
+                mDistance = mPlayer->GetWorldPosition().Distance(destination);
+                mCurrentDirection = destination.Sub(mPlayer->GetWorldPosition()).Normalized();
+
+            }
+            else
+            {
+                float3 destination = App->GetNavigation()->FindNearestPoint(mStartPos + float3(mCurrentDirection.x, 0.0f, mCurrentDirection.z) * 10, float3(10.0f));
+                mDistance = mPlayer->GetWorldPosition().Distance(destination);
+                mCurrentDirection = destination.Sub(mPlayer->GetWorldPosition()).Normalized();
+
+            }
 
         }
     }
     else if (mIsEntering)
     {
         mCurrentTime += App->GetDt();
-        float3 positon = LerpPosition(mEnterDuration);
+        float3 positon = LerpPosition(mEnterDuration, mFirstPlayerPos);
         mPlayer->SetWorldPosition(positon);
         if (mCurrentTime > mEnterDuration)
         {
@@ -74,26 +83,31 @@ void Teleporter::Update()
             mIsEntering = false;
             mCurrentTime = 0.0f;
 
-            mDistance = mGameObject->GetWorldPosition().Distance(mDestination->GetWorldPosition());
-            mDirection = mDestination->GetWorldPosition().Sub(mGameObject->GetWorldPosition()).Normalized();
-            mStartPos = mGameObject->GetWorldPosition();
+            if (mIsAtStart)
+            {
+                mDistance = mStartPos.Distance(mEndPos);
+                mCurrentDirection = mEndPos.Sub(mStartPos).Normalized();
+            }
+            else
+            {
+                mDistance = mStartPos.Distance(mEndPos);
+                mCurrentDirection = mStartPos.Sub(mEndPos).Normalized();
 
-
+            }
         }
 
     }
     else if (mIsExiting)
     {
         mCurrentTime += App->GetDt();
-        float3 positon = LerpPosition(mEnterDuration);
+        float3 positon = LerpPosition(mEnterDuration, mIsAtStart ? mEndPos : mStartPos);
         mPlayer->SetWorldPosition(positon);
         if (mCurrentTime > mEnterDuration)
         {
             mIsExiting = false;
             mCurrentTime = 0.0f;
             mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
-            mDestination->SetEnabled(true);
-
+            mIsAtStart = !mIsAtStart;
 
         }
     }
@@ -117,27 +131,35 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         mCurrentTime = 0.0f;
         mIsEntering = true;
         mPlayer = collisionData->collidedWith;
+        mFirstPlayerPos = mPlayer->GetWorldPosition();
 
-        
-        mDistance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-        mDirection = mGameObject->GetWorldPosition().Sub(mPlayer->GetWorldPosition()).Normalized();
-        mStartPos = mPlayer->GetWorldPosition();
+        if (mIsAtStart)
+        {
+            mDistance = mStartPos.Distance(mPlayer->GetWorldPosition());
+            mCurrentDirection = mStartPos.Sub(mPlayer->GetWorldPosition()).Normalized();
+
+        }
+        else
+        {
+            mDistance = mEndPos.Distance(mPlayer->GetWorldPosition());
+            mCurrentDirection = mEndPos.Sub(mPlayer->GetWorldPosition()).Normalized();
+
+        }
 
         mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
 
-        mDestination->SetEnabled(false);
     }
 }
 
-float3 Teleporter::LerpPosition(float duration)
+float3 Teleporter::LerpPosition(float duration, float3 startPos)
 {
     if (mCurrentTime < 0.0f)
     {
-        return mStartPos;
+        return startPos;
     }
     else if (mCurrentTime > duration)
     {
-        return mStartPos + mDirection * mDistance;
+        return startPos + mCurrentDirection * mDistance;
     }
     float halfDuration = duration / 2;
     float maxVelocity = mDistance / duration;
@@ -154,5 +176,5 @@ float3 Teleporter::LerpPosition(float duration)
         lerpFactor = distAcc + maxVelocity * (mCurrentTime - halfDuration);
     }
 
-    return mStartPos + mDirection * lerpFactor;
+    return startPos + mCurrentDirection * lerpFactor;
 }

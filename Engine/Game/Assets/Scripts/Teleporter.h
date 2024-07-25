@@ -27,18 +27,24 @@ public:
 
 private:
 	
-	float3 LerpPosition(float duration);
-	GameObject* mDestination;
+	float3 LerpPosition(float duration, float3 startPos);
+
 	BoxColliderComponent* mCollider;
-	float mDuration = 4.0f; // Expose as script variable
+	float mDuration;
 	float mEnterDuration = 1.5f;
 	float mCurrentTime = 0.0f;
 	bool mIsTriggered = false;
 	bool mIsEntering = false;
 	bool mIsExiting = false;
+
+	bool mIsAtStart = true;
+
 	float mDistance = 0.0f;
-	float3 mDirection;
+	float3 mCurrentDirection;
+
 	float3 mStartPos;
+	float3 mEndPos;
+	float3 mFirstPlayerPos;
 	GameObject* mPlayer = nullptr;
 };
 
