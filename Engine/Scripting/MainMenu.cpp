@@ -15,6 +15,7 @@
 #include "TextComponent.h"
 #include "Timer.h"
 #include "ModuleWindow.h"
+#include "AudioManager.h"
 
 CREATE(MainMenu)
 {
@@ -43,13 +44,16 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonGO);
 
-
     SEPARATOR("BUTTONS");
     MEMBER(MemberType::GAMEOBJECT, mPlayGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
     MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
     MEMBER(MemberType::GAMEOBJECT, mQuitGO);
     MEMBER(MemberType::GAMEOBJECT, mBackCreditGO);
+
+    SEPARATOR("OTHERS");
+    MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+
     END_CREATE;
 }
 
@@ -99,6 +103,13 @@ void MainMenu::Start()
     mVSyncButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonClick, this)));
     mFullscreenButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonClick, this)));
 
+    if (mAudioManagerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
+        mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
+        mBGMID = mAudioManager->Play(BGM::MAINMENU);
+    }
+
     OpenMenu(MENU_TYPE::STUDIO);
 }
 
@@ -123,6 +134,7 @@ void MainMenu::Update()
 
     if (mLoadlevel == true && Delay(0.1f)) 
     {
+        mAudioManager->Release(BGM::MAINMENU, mBGMID);
         App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
 
@@ -147,7 +159,7 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN) 
     {
-        //mMainMenuManager->PlaySelectSFX();
+        mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
         if (mOption > 0)
         {
             mOption--;
@@ -163,7 +175,7 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
     {
-        //mMainMenuManager->PlaySelectSFX();
+        mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
         if (mOption < 3)
         {
             mOption++;
@@ -279,31 +291,31 @@ void MainMenu::ClickMenu(MENU_TYPE type)
 
 void MainMenu::OnMainButtonClick() 
 {
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnQuitButtonClick() {
     App->Exit();
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     exit(0);
 }
 
 void MainMenu::OnOptionsButtonClick() 
 {
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::OPTIONS);
 }
 
 void MainMenu::OnCreditsButtonClick() 
 {
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::CREDITS);
 }
 
 void MainMenu::OnNewButtonClick() 
 {
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::LOADING);
     mLoadlevel = true;
 }
@@ -311,19 +323,19 @@ void MainMenu::OnNewButtonClick()
 void MainMenu::OnSplashButtonClick() 
 {
     OnPlayButtonHover();
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnControlsButtonClick()
 {
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::CONTROLS);
 }
 
 void MainMenu::OnSettingsButtonClick()
 {
-    //mMainMenuManager->PlayOKSFX();
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::SETTINGS);
 }
 
@@ -386,7 +398,7 @@ void MainMenu::OnQuitButtonHover()
 {
     if (mOption != 3) 
     {
-        //mMainMenuManager->PlaySelectSFX();
+        mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
     ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
@@ -408,7 +420,7 @@ void MainMenu::OnOptionsButtonHover()
 {
     if (mOption != 1)
     {
-        //mMainMenuManager->PlaySelectSFX();
+        mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
     ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
@@ -430,7 +442,7 @@ void MainMenu::OnCreditsButtonHover()
 {
     if (mOption != 2)
     {
-        //mMainMenuManager->PlaySelectSFX();
+        mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
     ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
@@ -452,7 +464,7 @@ void MainMenu::OnPlayButtonHover()
 {
     if (mOption != 0)
     {
-        //mMainMenuManager->PlaySelectSFX();
+        mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
     ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
