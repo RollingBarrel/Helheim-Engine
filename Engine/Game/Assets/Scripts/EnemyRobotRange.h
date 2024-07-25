@@ -19,7 +19,7 @@ private:
 	void RangeAttack();
 
 	float mRangeDamage = 15.0f;
-	float mBulletSpeed = 3.0f;
+	float mBulletSpeed = 15.0f;
 	float mTimerDisengage = 0.0f;
 
 	GameObject* mBulletOrigin = nullptr;

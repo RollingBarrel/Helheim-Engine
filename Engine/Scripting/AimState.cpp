@@ -65,7 +65,8 @@ StateType AimState::HandleInput()
     }
 
     if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() && (
-        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSTICK) == ButtonState::BUTTON_DOWN))
+        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN))
     {
         mPlayerController->GetUltimateState()->ResetCooldown();
         return StateType::ULTIMATE;

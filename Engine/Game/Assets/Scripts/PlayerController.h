@@ -2,14 +2,17 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
+#include "float4.h"
 #include "TimerScript.h"
 
+class Component;
 class AnimationComponent;
 class AnimationStateMachine;
 class AudioSourceComponent;
 struct CollisionData;
 class BoxColliderComponent;
-class Component;
+class MeshRendererComponent;
+
 
 class State;
 class DashState;
@@ -80,13 +83,13 @@ public:
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
-    float GetShieldPercetage() const { return (mShield / mMaxShield) * 100.0f;}
+    float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
 
     void EquipMeleeWeapon(bool equip);
     void EquipRangedWeapons(bool equip);
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
-    float GetCurrentEnergy() const { return mCurrentEnergy; }
+    int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
     void SetMovementSpeed(float percentage) { mPlayerSpeed *= percentage; }
@@ -121,6 +124,10 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+
+    //Hit Effect
+    void ActivateHitEffect();
+    
     //Ultimate
     GameObject* GetUltimateGO() const{ return mUltimateGO; };
     void AddUltimateResource();
@@ -148,6 +155,7 @@ public:
 
 private:
     void CheckInput();
+    void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
     void CheckDebugOptions();
@@ -195,7 +203,7 @@ private:
     // WEAPONS
     Weapon* mWeapon = nullptr;
     Weapon* mSpecialWeapon = nullptr;
-    float mCurrentEnergy = 0.0f;
+    int mCurrentEnergy = 100;
     EnergyType mEnergyType = EnergyType::NONE;
     int mUltimateResource = 100;
 
@@ -252,14 +260,15 @@ private:
     // Debug
     bool mGodMode = false;
 
-
     //Hit Effect
+    TimerScript  mHitEffectTimer;
+    float mHitEffectTime = 0.15f;
     bool mHit = false;
-    float mTimePassed = 0.0f;
     std::vector<Component*> mMeshComponents;
     std::vector<unsigned int> mMaterialIds;
     bool Delay(float delay);
 
+    std::vector<float4> mPlayerOgColor;
  
     // DEBUFF
     bool mIsParalyzed = false;

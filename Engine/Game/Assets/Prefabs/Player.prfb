@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1997353307,
+                "UID": 1493071180,
                 "ParentUID": 1,
                 "Name": "Player",
                 "Enabled": true,
@@ -26,7 +26,7 @@
                 "Tag": "Player",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 10,
@@ -80,52 +80,52 @@
                             {
                                 "VariableName": "mEquippedMeleeGO",
                                 "MemberType": 3,
-                                "VariableData": 623776696
+                                "VariableData": 178393935
                             },
                             {
                                 "VariableName": "mUnEquippedMeleeGO",
                                 "MemberType": 3,
-                                "VariableData": 239468776
+                                "VariableData": 1900980619
                             },
                             {
                                 "VariableName": "mEquippedGunGO",
                                 "MemberType": 3,
-                                "VariableData": 810569839
+                                "VariableData": 383567022
                             },
                             {
                                 "VariableName": "mUnEquippedGunGO",
                                 "MemberType": 3,
-                                "VariableData": 125151094
+                                "VariableData": 1786454074
                             },
                             {
                                 "VariableName": "mEquippedSpecialGO",
                                 "MemberType": 3,
-                                "VariableData": 943058602
+                                "VariableData": 521834328
                             },
                             {
                                 "VariableName": "mUnEquippedSpecialGO",
                                 "MemberType": 3,
-                                "VariableData": 182797282
+                                "VariableData": 1843752157
                             },
                             {
                                 "VariableName": "mMeleeCollider",
                                 "MemberType": 3,
-                                "VariableData": 66530212
+                                "VariableData": 1725674941
                             },
                             {
                                 "VariableName": "mBatTrail",
                                 "MemberType": 3,
-                                "VariableData": 791841790
+                                "VariableData": 363446553
                             },
                             {
                                 "VariableName": "mKatanaTrail",
                                 "MemberType": 3,
-                                "VariableData": 773183362
+                                "VariableData": 340610865
                             },
                             {
                                 "VariableName": "mHammerTrail",
                                 "MemberType": 3,
-                                "VariableData": 754664176
+                                "VariableData": 317009346
                             },
                             {
                                 "VariableName": "Grenade",
@@ -158,7 +158,7 @@
                             {
                                 "VariableName": "mUltimateGO",
                                 "MemberType": 3,
-                                "VariableData": 2077208594
+                                "VariableData": 1589426644
                             },
                             {
                                 "VariableName": "mUltimateCooldown",
@@ -215,8 +215,8 @@
                 ]
             },
             {
-                "UID": 2077208594,
-                "ParentUID": 1997353307,
+                "UID": 1589426644,
+                "ParentUID": 1493071180,
                 "Name": "UltimateGO",
                 "Enabled": true,
                 "Active": true,
@@ -239,7 +239,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 3,
@@ -249,17 +249,17 @@
                             {
                                 "VariableName": "mLaserGO",
                                 "MemberType": 3,
-                                "VariableData": 2104360784
+                                "VariableData": 1615952245
                             },
                             {
                                 "VariableName": "mLaserOrigin",
                                 "MemberType": 3,
-                                "VariableData": 2129702828
+                                "VariableData": 1640110732
                             },
                             {
                                 "VariableName": "mLaserEnd",
                                 "MemberType": 3,
-                                "VariableData": 5820700
+                                "VariableData": 1663433767
                             }
                         ]
                     },
@@ -282,8 +282,8 @@
                 ]
             },
             {
-                "UID": 2104360784,
-                "ParentUID": 2077208594,
+                "UID": 1615952245,
+                "ParentUID": 1589426644,
                 "Name": "Ultimate Laser Trail_V1",
                 "Enabled": true,
                 "Active": true,
@@ -306,7 +306,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 18,
@@ -349,8 +349,8 @@
                 ]
             },
             {
-                "UID": 2129702828,
-                "ParentUID": 2077208594,
+                "UID": 1640110732,
+                "ParentUID": 1589426644,
                 "Name": "Ultimate_laser_Origin_V1",
                 "Enabled": true,
                 "Active": true,
@@ -373,7 +373,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -481,8 +481,8 @@
                 ]
             },
             {
-                "UID": 5820700,
-                "ParentUID": 2077208594,
+                "UID": 1663433767,
+                "ParentUID": 1589426644,
                 "Name": "Ultimate_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -505,7 +505,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -613,8 +613,8 @@
                 ]
             },
             {
-                "UID": 26915863,
-                "ParentUID": 5820700,
+                "UID": 1684807414,
+                "ParentUID": 1663433767,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
@@ -637,7 +637,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -745,8 +745,8 @@
                 ]
             },
             {
-                "UID": 46897090,
-                "ParentUID": 2077208594,
+                "UID": 1705275988,
+                "ParentUID": 1589426644,
                 "Name": "Laser_End_Trail",
                 "Enabled": true,
                 "Active": true,
@@ -769,7 +769,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 18,
@@ -873,8 +873,8 @@
                 ]
             },
             {
-                "UID": 66530212,
-                "ParentUID": 1997353307,
+                "UID": 1725674941,
+                "ParentUID": 1493071180,
                 "Name": "Collider",
                 "Enabled": true,
                 "Active": true,
@@ -897,7 +897,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -918,8 +918,8 @@
                 ]
             },
             {
-                "UID": 85815229,
-                "ParentUID": 1997353307,
+                "UID": 1745934652,
+                "ParentUID": 1493071180,
                 "Name": "Character",
                 "Enabled": true,
                 "Active": true,
@@ -942,12 +942,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 106005319,
-                "ParentUID": 85815229,
+                "UID": 1767029815,
+                "ParentUID": 1745934652,
                 "Name": "mixamorig:Hips",
                 "Enabled": true,
                 "Active": true,
@@ -970,12 +970,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 125151094,
-                "ParentUID": 106005319,
+                "UID": 1786454074,
+                "ParentUID": 1767029815,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -998,12 +998,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 144436111,
-                "ParentUID": 125151094,
+                "UID": 1805530228,
+                "ParentUID": 1786454074,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -1026,12 +1026,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 163581886,
-                "ParentUID": 144436111,
+                "UID": 1824745624,
+                "ParentUID": 1805530228,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -1054,7 +1054,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -1068,8 +1068,8 @@
                 ]
             },
             {
-                "UID": 182797282,
-                "ParentUID": 106005319,
+                "UID": 1843752157,
+                "ParentUID": 1767029815,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -1092,12 +1092,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 201943057,
-                "ParentUID": 182797282,
+                "UID": 1862967553,
+                "ParentUID": 1843752157,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -1120,12 +1120,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 220671106,
-                "ParentUID": 201943057,
+                "UID": 1882043707,
+                "ParentUID": 1862967553,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -1148,7 +1148,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -1162,8 +1162,8 @@
                 ]
             },
             {
-                "UID": 239468776,
-                "ParentUID": 106005319,
+                "UID": 1900980619,
+                "ParentUID": 1767029815,
                 "Name": "OB_melee_weapon_Back",
                 "Enabled": true,
                 "Active": true,
@@ -1186,12 +1186,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 258336067,
-                "ParentUID": 239468776,
+                "UID": 1920544120,
+                "ParentUID": 1900980619,
                 "Name": "OB_melee_weapon",
                 "Enabled": true,
                 "Active": true,
@@ -1214,12 +1214,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 277064116,
-                "ParentUID": 258336067,
+                "UID": 1940038000,
+                "ParentUID": 1920544120,
                 "Name": "OB_melee_weapon",
                 "Enabled": true,
                 "Active": true,
@@ -1242,7 +1242,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -1256,8 +1256,8 @@
                 ]
             },
             {
-                "UID": 295722544,
-                "ParentUID": 106005319,
+                "UID": 1959114154,
+                "ParentUID": 1767029815,
                 "Name": "mixamorig:RightUpLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1280,12 +1280,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 314589835,
-                "ParentUID": 295722544,
+                "UID": 1987449901,
+                "ParentUID": 1959114154,
                 "Name": "mixamorig:RightLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1308,12 +1308,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 333387505,
-                "ParentUID": 314589835,
+                "UID": 2012931187,
+                "ParentUID": 1987449901,
                 "Name": "mixamorig:RightFoot",
                 "Enabled": true,
                 "Active": true,
@@ -1336,12 +1336,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 352185175,
-                "ParentUID": 333387505,
+                "UID": 2035279528,
+                "ParentUID": 2012931187,
                 "Name": "mixamorig:RightToeBase",
                 "Enabled": true,
                 "Active": true,
@@ -1364,12 +1364,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 371122087,
-                "ParentUID": 352185175,
+                "UID": 2060551951,
+                "ParentUID": 2035279528,
                 "Name": "mixamorig:RightToe_End",
                 "Enabled": true,
                 "Active": true,
@@ -1392,12 +1392,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 389780515,
-                "ParentUID": 106005319,
+                "UID": 2085267406,
+                "ParentUID": 1767029815,
                 "Name": "mixamorig:LeftUpLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1420,12 +1420,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 408856669,
-                "ParentUID": 389780515,
+                "UID": 2108938546,
+                "ParentUID": 2085267406,
                 "Name": "mixamorig:LeftLeg",
                 "Enabled": true,
                 "Active": true,
@@ -1448,12 +1448,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 427654339,
-                "ParentUID": 408856669,
+                "UID": 2128710910,
+                "ParentUID": 2108938546,
                 "Name": "mixamorig:LeftFoot",
                 "Enabled": true,
                 "Active": true,
@@ -1476,12 +1476,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 446382388,
-                "ParentUID": 427654339,
+                "UID": 442659,
+                "ParentUID": 2128710910,
                 "Name": "mixamorig:LeftToeBase",
                 "Enabled": true,
                 "Active": true,
@@ -1504,12 +1504,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 465040816,
-                "ParentUID": 446382388,
+                "UID": 19866918,
+                "ParentUID": 442659,
                 "Name": "mixamorig:LeftToe_End",
                 "Enabled": true,
                 "Active": true,
@@ -1532,12 +1532,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 483629623,
-                "ParentUID": 106005319,
+                "UID": 39291177,
+                "ParentUID": 1767029815,
                 "Name": "mixamorig:Spine",
                 "Enabled": true,
                 "Active": true,
@@ -1560,12 +1560,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 502079188,
-                "ParentUID": 483629623,
+                "UID": 62753454,
+                "ParentUID": 39291177,
                 "Name": "mixamorig:Spine1",
                 "Enabled": true,
                 "Active": true,
@@ -1588,12 +1588,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 520737616,
-                "ParentUID": 502079188,
+                "UID": 82177713,
+                "ParentUID": 62753454,
                 "Name": "mixamorig:Spine2",
                 "Enabled": true,
                 "Active": true,
@@ -1616,12 +1616,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 539326423,
-                "ParentUID": 520737616,
+                "UID": 101393109,
+                "ParentUID": 82177713,
                 "Name": "mixamorig:RightShoulder",
                 "Enabled": true,
                 "Active": true,
@@ -1644,12 +1644,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 557984851,
-                "ParentUID": 539326423,
+                "UID": 120678126,
+                "ParentUID": 101393109,
                 "Name": "mixamorig:RightArm",
                 "Enabled": true,
                 "Active": true,
@@ -1672,12 +1672,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 586320598,
-                "ParentUID": 557984851,
+                "UID": 139823901,
+                "ParentUID": 120678126,
                 "Name": "mixamorig:RightForeArm",
                 "Enabled": true,
                 "Active": true,
@@ -1700,12 +1700,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 605118268,
-                "ParentUID": 586320598,
+                "UID": 159108918,
+                "ParentUID": 139823901,
                 "Name": "mixamorig:RightHand",
                 "Enabled": true,
                 "Active": true,
@@ -1728,12 +1728,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 623776696,
-                "ParentUID": 605118268,
+                "UID": 178393935,
+                "ParentUID": 159108918,
                 "Name": "OB_melee_weapon",
                 "Enabled": true,
                 "Active": true,
@@ -1756,12 +1756,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 642435124,
-                "ParentUID": 623776696,
+                "UID": 197470089,
+                "ParentUID": 178393935,
                 "Name": "OB_melee_weapon",
                 "Enabled": true,
                 "Active": true,
@@ -1784,12 +1784,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 660954310,
-                "ParentUID": 642435124,
+                "UID": 216894348,
+                "ParentUID": 197470089,
                 "Name": "OB_melee_weapon",
                 "Enabled": true,
                 "Active": true,
@@ -1812,7 +1812,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -1826,8 +1826,8 @@
                 ]
             },
             {
-                "UID": 679682359,
-                "ParentUID": 605118268,
+                "UID": 236318607,
+                "ParentUID": 159108918,
                 "Name": "mixamorig:RightHandIndex1",
                 "Enabled": true,
                 "Active": true,
@@ -1850,12 +1850,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 698271166,
-                "ParentUID": 679682359,
+                "UID": 256369455,
+                "ParentUID": 236318607,
                 "Name": "mixamorig:RightHandIndex2",
                 "Enabled": true,
                 "Active": true,
@@ -1878,12 +1878,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 717208078,
-                "ParentUID": 698271166,
+                "UID": 276489924,
+                "ParentUID": 256369455,
                 "Name": "mixamorig:RightHandIndex3",
                 "Enabled": true,
                 "Active": true,
@@ -1906,12 +1906,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 735727264,
-                "ParentUID": 717208078,
+                "UID": 296610393,
+                "ParentUID": 276489924,
                 "Name": "mixamorig:RightHandIndex4",
                 "Enabled": true,
                 "Active": true,
@@ -1934,12 +1934,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 754664176,
-                "ParentUID": 605118268,
+                "UID": 317009346,
+                "ParentUID": 159108918,
                 "Name": "TrailHammer",
                 "Enabled": true,
                 "Active": true,
@@ -1962,7 +1962,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 18,
@@ -2036,8 +2036,8 @@
                 ]
             },
             {
-                "UID": 773183362,
-                "ParentUID": 605118268,
+                "UID": 340610865,
+                "ParentUID": 159108918,
                 "Name": "TrailKatana",
                 "Enabled": true,
                 "Active": true,
@@ -2060,7 +2060,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 18,
@@ -2134,8 +2134,8 @@
                 ]
             },
             {
-                "UID": 791841790,
-                "ParentUID": 605118268,
+                "UID": 363446553,
+                "ParentUID": 159108918,
                 "Name": "TrailBat",
                 "Enabled": true,
                 "Active": true,
@@ -2158,7 +2158,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 18,
@@ -2232,8 +2232,8 @@
                 ]
             },
             {
-                "UID": 810569839,
-                "ParentUID": 605118268,
+                "UID": 383567022,
+                "ParentUID": 159108918,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -2256,12 +2256,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 829019404,
-                "ParentUID": 810569839,
+                "UID": 402921660,
+                "ParentUID": 383567022,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -2284,12 +2284,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 847817074,
-                "ParentUID": 829019404,
+                "UID": 422206677,
+                "ParentUID": 402921660,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -2312,7 +2312,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -2326,8 +2326,8 @@
                 ]
             },
             {
-                "UID": 866197018,
-                "ParentUID": 520737616,
+                "UID": 441491694,
+                "ParentUID": 82177713,
                 "Name": "mixamorig:LeftShoulder",
                 "Enabled": true,
                 "Active": true,
@@ -2350,12 +2350,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 884994688,
-                "ParentUID": 866197018,
+                "UID": 460915953,
+                "ParentUID": 441491694,
                 "Name": "mixamorig:LeftArm",
                 "Enabled": true,
                 "Active": true,
@@ -2378,12 +2378,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 903722737,
-                "ParentUID": 884994688,
+                "UID": 480479454,
+                "ParentUID": 460915953,
                 "Name": "mixamorig:LeftForeArm",
                 "Enabled": true,
                 "Active": true,
@@ -2406,12 +2406,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 922520407,
-                "ParentUID": 903722737,
+                "UID": 500321439,
+                "ParentUID": 480479454,
                 "Name": "mixamorig:LeftHand",
                 "Enabled": true,
                 "Active": true,
@@ -2434,12 +2434,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 943058602,
-                "ParentUID": 922520407,
+                "UID": 521834328,
+                "ParentUID": 500321439,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -2462,12 +2462,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 961647409,
-                "ParentUID": 943058602,
+                "UID": 540980103,
+                "ParentUID": 521834328,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -2490,12 +2490,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 980236216,
-                "ParentUID": 961647409,
+                "UID": 560125878,
+                "ParentUID": 540980103,
                 "Name": "OB_gun",
                 "Enabled": true,
                 "Active": true,
@@ -2518,7 +2518,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -2532,8 +2532,8 @@
                 ]
             },
             {
-                "UID": 998755402,
-                "ParentUID": 922520407,
+                "UID": 579271653,
+                "ParentUID": 500321439,
                 "Name": "mixamorig:LeftHandIndex1",
                 "Enabled": true,
                 "Active": true,
@@ -2556,12 +2556,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1017553072,
-                "ParentUID": 998755402,
+                "UID": 598487049,
+                "ParentUID": 579271653,
                 "Name": "mixamorig:LeftHandIndex2",
                 "Enabled": true,
                 "Active": true,
@@ -2584,12 +2584,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1036281121,
-                "ParentUID": 1017553072,
+                "UID": 617772066,
+                "ParentUID": 598487049,
                 "Name": "mixamorig:LeftHandIndex3",
                 "Enabled": true,
                 "Active": true,
@@ -2612,12 +2612,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1055009170,
-                "ParentUID": 1036281121,
+                "UID": 637196325,
+                "ParentUID": 617772066,
                 "Name": "mixamorig:LeftHandIndex4",
                 "Enabled": true,
                 "Active": true,
@@ -2640,12 +2640,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1073737219,
-                "ParentUID": 520737616,
+                "UID": 656411721,
+                "ParentUID": 82177713,
                 "Name": "mixamorig:Neck",
                 "Enabled": true,
                 "Active": true,
@@ -2668,12 +2668,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1092674131,
-                "ParentUID": 1073737219,
+                "UID": 675766359,
+                "ParentUID": 656411721,
                 "Name": "mixamorig:Head",
                 "Enabled": true,
                 "Active": true,
@@ -2696,12 +2696,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1111262938,
-                "ParentUID": 1092674131,
+                "UID": 694842513,
+                "ParentUID": 675766359,
                 "Name": "mixamorig:HeadTop_End",
                 "Enabled": true,
                 "Active": true,
@@ -2724,12 +2724,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1129921366,
-                "ParentUID": 85815229,
+                "UID": 714475635,
+                "ParentUID": 1745934652,
                 "Name": "OB_maincharacter_tpose",
                 "Enabled": true,
                 "Active": true,
@@ -2752,12 +2752,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1148649415,
-                "ParentUID": 1129921366,
+                "UID": 733969515,
+                "ParentUID": 714475635,
                 "Name": "OB_maincharacter_tpose",
                 "Enabled": true,
                 "Active": true,
@@ -2780,7 +2780,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -2791,7 +2791,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 106005319,
+                                "GoId": 1767029815,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -2812,7 +2812,7 @@
                                 ]
                             },
                             {
-                                "GoId": 483629623,
+                                "GoId": 39291177,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -2833,7 +2833,7 @@
                                 ]
                             },
                             {
-                                "GoId": 502079188,
+                                "GoId": 62753454,
                                 "Matrix": [
                                     1.0,
                                     -6.602696167590239e-11,
@@ -2854,7 +2854,7 @@
                                 ]
                             },
                             {
-                                "GoId": 520737616,
+                                "GoId": 82177713,
                                 "Matrix": [
                                     1.0,
                                     5.877437425638732e-11,
@@ -2875,7 +2875,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1073737219,
+                                "GoId": 656411721,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -2896,7 +2896,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1092674131,
+                                "GoId": 675766359,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -2917,7 +2917,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1111262938,
+                                "GoId": 694842513,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -2938,7 +2938,7 @@
                                 ]
                             },
                             {
-                                "GoId": 866197018,
+                                "GoId": 441491694,
                                 "Matrix": [
                                     -0.03987814486026764,
                                     -0.9969154596328735,
@@ -2959,7 +2959,7 @@
                                 ]
                             },
                             {
-                                "GoId": 884994688,
+                                "GoId": 460915953,
                                 "Matrix": [
                                     0.05445292219519615,
                                     -0.9942036271095276,
@@ -2980,7 +2980,7 @@
                                 ]
                             },
                             {
-                                "GoId": 903722737,
+                                "GoId": 480479454,
                                 "Matrix": [
                                     -0.014144989661872387,
                                     -0.9957934617996216,
@@ -3001,7 +3001,7 @@
                                 ]
                             },
                             {
-                                "GoId": 922520407,
+                                "GoId": 500321439,
                                 "Matrix": [
                                     -0.017664697021245958,
                                     -0.9957332015037537,
@@ -3022,7 +3022,7 @@
                                 ]
                             },
                             {
-                                "GoId": 998755402,
+                                "GoId": 579271653,
                                 "Matrix": [
                                     0.06097639352083206,
                                     -0.9939756393432617,
@@ -3043,7 +3043,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1017553072,
+                                "GoId": 598487049,
                                 "Matrix": [
                                     0.06097524240612984,
                                     -0.9939759373664856,
@@ -3064,7 +3064,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1036281121,
+                                "GoId": 617772066,
                                 "Matrix": [
                                     0.06097596138715744,
                                     -0.993975818157196,
@@ -3085,7 +3085,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1055009170,
+                                "GoId": 637196325,
                                 "Matrix": [
                                     0.060975994914770129,
                                     -0.993975818157196,
@@ -3106,7 +3106,7 @@
                                 ]
                             },
                             {
-                                "GoId": 539326423,
+                                "GoId": 101393109,
                                 "Matrix": [
                                     0.0034436779096722605,
                                     0.9977232217788696,
@@ -3127,7 +3127,7 @@
                                 ]
                             },
                             {
-                                "GoId": 557984851,
+                                "GoId": 120678126,
                                 "Matrix": [
                                     0.019080067053437234,
                                     0.9972531199455261,
@@ -3148,7 +3148,7 @@
                                 ]
                             },
                             {
-                                "GoId": 586320598,
+                                "GoId": 139823901,
                                 "Matrix": [
                                     -0.022387027740478517,
                                     0.9972731471061707,
@@ -3169,7 +3169,7 @@
                                 ]
                             },
                             {
-                                "GoId": 605118268,
+                                "GoId": 159108918,
                                 "Matrix": [
                                     0.02894962579011917,
                                     0.9971582889556885,
@@ -3190,7 +3190,7 @@
                                 ]
                             },
                             {
-                                "GoId": 679682359,
+                                "GoId": 236318607,
                                 "Matrix": [
                                     0.001100113964639604,
                                     0.9975733757019043,
@@ -3211,7 +3211,7 @@
                                 ]
                             },
                             {
-                                "GoId": 698271166,
+                                "GoId": 256369455,
                                 "Matrix": [
                                     0.0011001270031556488,
                                     0.9975734949111939,
@@ -3232,7 +3232,7 @@
                                 ]
                             },
                             {
-                                "GoId": 717208078,
+                                "GoId": 276489924,
                                 "Matrix": [
                                     0.001100539811886847,
                                     0.9975733757019043,
@@ -3253,7 +3253,7 @@
                                 ]
                             },
                             {
-                                "GoId": 735727264,
+                                "GoId": 296610393,
                                 "Matrix": [
                                     0.0011004195548593999,
                                     0.9975733757019043,
@@ -3274,7 +3274,7 @@
                                 ]
                             },
                             {
-                                "GoId": 389780515,
+                                "GoId": 2085267406,
                                 "Matrix": [
                                     -0.9998184442520142,
                                     -0.00007666608144063503,
@@ -3295,7 +3295,7 @@
                                 ]
                             },
                             {
-                                "GoId": 408856669,
+                                "GoId": 2108938546,
                                 "Matrix": [
                                     -0.999938428401947,
                                     0.00004299286592868157,
@@ -3316,7 +3316,7 @@
                                 ]
                             },
                             {
-                                "GoId": 427654339,
+                                "GoId": 2128710910,
                                 "Matrix": [
                                     -0.9994747638702393,
                                     -0.02999412827193737,
@@ -3337,7 +3337,7 @@
                                 ]
                             },
                             {
-                                "GoId": 446382388,
+                                "GoId": 442659,
                                 "Matrix": [
                                     -0.9995105266571045,
                                     -0.022104403004050256,
@@ -3358,7 +3358,7 @@
                                 ]
                             },
                             {
-                                "GoId": 465040816,
+                                "GoId": 19866918,
                                 "Matrix": [
                                     -0.9995105266571045,
                                     -0.022104401141405107,
@@ -3379,7 +3379,7 @@
                                 ]
                             },
                             {
-                                "GoId": 295722544,
+                                "GoId": 1959114154,
                                 "Matrix": [
                                     -0.9998183846473694,
                                     0.00018344097770750523,
@@ -3400,7 +3400,7 @@
                                 ]
                             },
                             {
-                                "GoId": 314589835,
+                                "GoId": 1987449901,
                                 "Matrix": [
                                     -0.9999385476112366,
                                     -0.0001054053645930253,
@@ -3421,7 +3421,7 @@
                                 ]
                             },
                             {
-                                "GoId": 333387505,
+                                "GoId": 2012931187,
                                 "Matrix": [
                                     -0.9995288848876953,
                                     0.027945229783654214,
@@ -3442,7 +3442,7 @@
                                 ]
                             },
                             {
-                                "GoId": 352185175,
+                                "GoId": 2035279528,
                                 "Matrix": [
                                     -0.9995442032814026,
                                     0.021672649309039117,
@@ -3463,7 +3463,7 @@
                                 ]
                             },
                             {
-                                "GoId": 371122087,
+                                "GoId": 2060551951,
                                 "Matrix": [
                                     -0.9995442032814026,
                                     0.02167264185845852,
@@ -3488,8 +3488,8 @@
                 ]
             },
             {
-                "UID": 1169535715,
-                "ParentUID": 1997353307,
+                "UID": 761260947,
+                "ParentUID": 1493071180,
                 "Name": "Billboard",
                 "Enabled": true,
                 "Active": true,
@@ -3512,7 +3512,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
