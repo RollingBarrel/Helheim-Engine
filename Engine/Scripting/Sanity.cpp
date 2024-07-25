@@ -282,13 +282,13 @@ void Sanity::OnCard1Click()
 void Sanity::OnCard1HoverOn()
 {
     if (mCard1Image)
-        mCard1Image->SetAlpha(0.9f);
+        mCard1Image->SetAlpha(0.95f);
 }
 
 void Sanity::OnCard1HoverOff()
 {
     if (mCard1Image)
-        mCard1Image->SetAlpha(0.7f);
+        mCard1Image->SetAlpha(0.6f);
 }
 
 void Sanity::OnCard2Click()
@@ -305,13 +305,13 @@ void Sanity::OnCard2Click()
 void Sanity::OnCard2HoverOn()
 {
     if (mCard2Image)
-        mCard2Image->SetAlpha(0.9f);
+        mCard2Image->SetAlpha(0.95f);
 }
 
 void Sanity::OnCard2HoverOff()
 {
     if (mCard2Image)
-        mCard2Image->SetAlpha(0.7f);
+        mCard2Image->SetAlpha(0.6f);
 }
 
 void Sanity::OnCard3Click()
@@ -328,11 +328,11 @@ void Sanity::OnCard3Click()
 void Sanity::OnCard3HoverOn()
 {
     if (mCard3Image)
-        mCard3Image->SetAlpha(0.9f);
+        mCard3Image->SetAlpha(0.95f);
 }
 
 void Sanity::OnCard3HoverOff()
 {
     if (mCard3Image)
-        mCard3Image->SetAlpha(0.7f);
+        mCard3Image->SetAlpha(0.6f);
 }

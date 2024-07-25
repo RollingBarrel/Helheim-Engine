@@ -3428,7 +3428,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "To Skip",
+                        "Text": "B To Skip",
                         "Color": [
                             1.0,
                             1.0,
