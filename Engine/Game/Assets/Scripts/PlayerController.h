@@ -83,7 +83,7 @@ public:
     float GetSwitchCooldown() const { return mSwitchCoolDown; }
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
-    float GetShieldPercetage() const { return (mShield / mMaxShield) * 100.0f;}
+    float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
 
     void EquipMeleeWeapon(bool equip);
     void EquipRangedWeapons(bool equip);
