@@ -2,7 +2,6 @@
 #include "ResourceTexture.h"
 #include "Application.h"
 #include "ModuleResource.h"
-
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
     float* baseColorFactor,

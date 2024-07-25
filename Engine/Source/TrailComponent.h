@@ -25,6 +25,7 @@ public:
 	TrailComponent(const TrailComponent& original, GameObject* owner);
 	~TrailComponent() final;
 	const char* GetFileName() const { return mFileName; }
+	float GetLifeTime() const { return mMaxLifeTime; }
 	void Reset() override;
 
 	void Init();

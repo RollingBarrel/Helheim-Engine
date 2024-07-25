@@ -30,11 +30,14 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(float energy, EnergyType type);
+    void SetEnergy(int energy, EnergyType type);
     void SetHealth(float health);
+    void SetBossHealth(float health);
+    void SetBossHealthBarEnabled(bool enabled);
     void SetMaxHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
+    void SetUltimateCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);
 
     SliderComponent* mHealthGradualSlider = nullptr;
@@ -46,10 +49,18 @@ private:
     ~HudController();
 
     void Loading();
+    void Controls();
+    void ButtonHover();
+    void ButtonClick();
     bool Delay(float delay);
 
     void OnWinButtonClick();
+    void OnTryAgainButtonClick();
+    void OnTryAgainButtonHoverOn();
+    void OnTryAgainButtonHoverOff();
     void OnLoseButtonClick();
+    void OnLoseButtonHoverOn();
+    void OnLoseButtonHoverOff();
 
     void OnContinueBtnClick();
     void OnContinueBtnHoverOn();
@@ -85,18 +96,32 @@ private:
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mSecondWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
+    GameObject* mUltimateSliderGO = nullptr;
     GameObject* mEnergyGO = nullptr;
     GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
 
+    GameObject* mTryAgainBtnGO = nullptr;
+    GameObject* mLoseMenuBtnGO = nullptr;
+    GameObject* mWinMenuBtnGO = nullptr;
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
+    ButtonComponent* mTryAgainBtn = nullptr;
+
     SliderComponent* mHealthSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
+    SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
+
+    //Boss Health bar
+    GameObject* mBossHealthGO = nullptr;
+    GameObject* mBossHealthGradualGO = nullptr;
+    float mBossHealth = 0.0;
+    SliderComponent* mBossHealthSlider = nullptr;
+    SliderComponent* mBossHealthGradualSlider = nullptr;
 
     float mTargetHealth = 1;
 
@@ -109,6 +134,8 @@ private:
 
     float mGrenadeCooldown = 0.0f;
     float mGrenadeTimer = 0.0f;
+    float mUltimateCooldown = 0.0f;
+    float mUltimateTimer = 0.0f;
 
     // Sanity
     GameObject* mSanityGO = nullptr;
@@ -119,4 +146,6 @@ private:
     Dialog* mDialog = nullptr;
 
     int mArenaCounter = 0;
+
+    int mCurrentOption = 0;
 };
