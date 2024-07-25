@@ -8,9 +8,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    7.181972794256808e-9,
-                    0.0,
-                    -7.091347065113496e-9
+                    2.930325706529402e-7,
+                    0.020234109833836557,
+                    -2.9659420874850186e-7
                 ],
                 "Rotation": [
                     3.190825736965053e-8,
@@ -92,7 +92,7 @@
                             {
                                 "VariableName": "mExplosionWarningGO",
                                 "MemberType": 3,
-                                "VariableData": 1238702316
+                                "VariableData": 1913752713
                             }
                         ]
                     },
@@ -111,100 +111,6 @@
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1238702316,
-                "ParentUID": 1582545884,
-                "Name": "WariningArea",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    82.27300262451172,
-                    0.0,
-                    -4.1524457931518559
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 2012470110,
-                "ParentUID": 1238702316,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 447783854,
-                "ParentUID": 2012470110,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 81892183,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
                     }
                 ]
             },
@@ -573,6 +479,222 @@
                     1.0,
                     1.0,
                     1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1081580504,
+                "ParentUID": 1582545884,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.028643198311328889,
+                    0.3175089657306671,
+                    0.03178377076983452
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 985945546,
+                        "EmisiveName": "Warning_Icon.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1913752713,
+                "ParentUID": 1582545884,
+                "Name": "Fire_V1",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    3.124500835838262e-8,
+                    1.5314438343048096,
+                    -0.00007018290489213541
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 364023701,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 30,
+                        "Looping": true,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.299999952316284,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 2.0,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 2.299999952316284,
+                        "ShapeAngle": 0.7850000262260437,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.6000000238418579,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 5.0,
+                                "MaxValue": 13.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.0,
+                                "MaxValue": 0.10999999940395355
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.013404831290245057,
+                                "Color": [
+                                    1.0,
+                                    0.8745098114013672,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.15951749682426454,
+                                "Color": [
+                                    1.0,
+                                    0.8745098114013672,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4718506634235382,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8123328685760498,
+                                "Color": [
+                                    0.2639999985694885,
+                                    0.2038080096244812,
+                                    0.2038080096244812,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9839140772819519,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 736716185,
+                "ParentUID": 1582545884,
+                "Name": "WarningArea",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.10000000149011612,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.10000000149011612,
+                    0.10000000149011612,
+                    0.10000000149011612
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
