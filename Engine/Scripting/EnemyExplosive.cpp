@@ -32,7 +32,7 @@ void EnemyExplosive::Start()
         mExplosionWarningGO->SetLocalPosition(float3(0.0f, 0.1f, 0.0f));
         mExplosionWarningGO->SetEnabled(false);
     }
-/*
+
     GameObject* firstChild = *(mGameObject->GetChildren().begin());
     if (firstChild)
     {
@@ -41,15 +41,18 @@ void EnemyExplosive::Start()
       {
           mExplosionParticles->SetEnable(false);
       }
-      }*/
+     }
 }
 
 
 void EnemyExplosive::Charge()
 {
     Enemy::Charge();
-    mExplosionWarningGO->SetEnabled(true);
-    ChargeWarningArea();
+    if (mExplosionWarningGO)
+    {
+        mExplosionWarningGO->SetEnabled(true);
+        ChargeWarningArea();
+    }
 }
 
 void EnemyExplosive::Attack()
@@ -58,10 +61,10 @@ void EnemyExplosive::Attack()
 
     if (IsPlayerInRange(mExplosionRadius))
     {
-       /* if (mExplosionParticles)
+        if (mExplosionParticles)
         {
             mExplosionParticles->SetEnable(true);
-        }*/
+        }
 
         PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
         if (playerScript != nullptr)
@@ -78,7 +81,24 @@ void EnemyExplosive::Attack()
 
 void EnemyExplosive::ChargeWarningArea()
 {
-    float increment = (mExplosionRadius - mExplosionWarningGO->GetWorldScale().x) * App->GetDt();
-    float3 newWarningSize = float3(mWarningSize.x += increment, mWarningSize.y, mWarningSize.z += increment);
-    mExplosionWarningGO->SetWorldScale(newWarningSize);
+    if (mExplosionWarningGO)
+    {
+        float dt = App->GetDt();
+        float warningScaleMax = mExplosionRadius * 2.0f; // Final scale (diameter)
+        float scaleSpeed = 0.5f; // Speed factor for how fast the warning grows
+
+        // Current scale
+        float3 currentScale = mExplosionWarningGO->GetWorldScale();
+
+        // Calculate the increment based on dt and scaleSpeed
+        float increment = dt * scaleSpeed * warningScaleMax;
+
+        // Calculate new scale
+        float newScaleX = std::min(currentScale.x + increment, warningScaleMax);
+        float newScaleZ = std::min(currentScale.z + increment, warningScaleMax);
+
+        // Set the new scale, keeping Y scale constant
+        float3 newScale = float3(newScaleX, currentScale.y, newScaleZ);
+        mExplosionWarningGO->SetWorldScale(newScale);
+    }
 }
