@@ -207,6 +207,15 @@
                                 "VariableName": "mBackCreditGO",
                                 "MemberType": 3,
                                 "VariableData": 1216033341
+                            },
+                            {
+                                "VariableName": "OTHERS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAudioManagerGO",
+                                "MemberType": 3,
+                                "VariableData": 1044790463
                             }
                         ]
                     }
@@ -6085,6 +6094,59 @@
                     {
                         "ComponentType": 11,
                         "IsEnabled": true
+                    }
+                ]
+            },
+            {
+                "UID": 1044790463,
+                "ParentUID": 1,
+                "Name": "AudioManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AudioManager",
+                        "ScriptVariables": []
+                    },
+                    {
+                        "ComponentType": 13,
+                        "IsEnabled": true,
+                        "Audios": [
+                            {
+                                "Name": "event:/Music/Level 01",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/UI/Okay",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/UI/Cancel",
+                                "PreviewPlayID": 1
+                            }
+                        ]
                     }
                 ]
             }
