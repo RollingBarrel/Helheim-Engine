@@ -156,6 +156,8 @@ void HudController::Update()
 {
     Loading();
 
+    Controls();
+
     if (GameManager::GetInstance()->IsPaused()) return;
 
     // Gradually decrease the gradual health slider
@@ -215,6 +217,86 @@ void HudController::Loading()
             GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
         }
     }*/
+}
+
+void HudController::Controls()
+{
+    if (!GameManager::GetInstance()->IsPaused()) return;
+
+    if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentOption > 1)
+        {
+            mCurrentOption = 0;
+        }
+        else
+        {
+            mCurrentOption++;
+        }
+        ButtonHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentOption == 0)
+        {
+            mCurrentOption = 2;
+        }
+        else
+        {
+            mCurrentOption--;
+        }
+        ButtonHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+    {
+        ButtonClick();
+    }
+}
+
+void HudController::ButtonClick()
+{
+    switch (mCurrentOption)
+    {
+    case 0:
+        OnContinueBtnClick();
+        break;
+    case 1:
+        OnOptionsBtnClick();
+        break;
+    case 2:
+        OnMainMenuBtnClick();
+        break;
+    default:
+        break;
+    }
+}
+
+void HudController::ButtonHover()
+{
+    OnContinueBtnHoverOff();
+    OnOptionsBtnHoverOff();
+    OnMainMenuBtnHoverOff();
+
+    switch (mCurrentOption)
+    {
+    case 0:
+        OnContinueBtnHoverOn();
+        break;
+    case 1:
+        OnOptionsBtnHoverOn();
+        break;
+    case 2:
+        OnMainMenuBtnHoverOn();
+        break;
+    default:
+        break;
+    }
 }
 
 void HudController::SetSanity()

@@ -9,6 +9,8 @@
 #include "ButtonComponent.h"
 #include "GameManager.h"
 #include "PlayerController.h"
+#include "ModuleInput.h"
+#include "Keys.h"
 
 CREATE(Sanity)
 {
@@ -81,7 +83,47 @@ void Sanity::Start()
 
 void Sanity::Update()
 {
+    Controls();
+
     if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+}
+
+void Sanity::Controls() 
+{
+    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentBuff > 1)
+        {
+            mCurrentBuff = 0;
+        }
+        else
+        {
+            mCurrentBuff++;
+        }
+        CardHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentBuff == 0)
+        {
+            mCurrentBuff = 2;
+        }
+        else
+        {
+            mCurrentBuff--;
+        }
+        CardHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+    {
+        CardClick();
+    }
 }
 
 void Sanity::CreateSelection(int arena)
@@ -91,6 +133,7 @@ void Sanity::CreateSelection(int arena)
     GameManager::GetInstance()->SetPaused(true, false);
     
     mTimeout = true;
+    CardHover();
 
     mCurrentBuffs = mBuffSelection[arena];
 
@@ -164,6 +207,46 @@ unsigned int Sanity::GetImage(const Buff& buff)
             return App->GetResource()->Find("ui-health-buff.png");
         default:
             return 0;
+    }
+}
+
+void Sanity::CardClick()
+{
+    switch (mCurrentBuff)
+    {
+        case 0:
+            OnCard1Click();
+            break;
+        case 1:
+            OnCard2Click();
+            break;
+        case 2:
+            OnCard3Click();
+            break;
+        default:
+            break;
+    }
+}
+
+void Sanity::CardHover()
+{
+    OnCard1HoverOff();
+    OnCard2HoverOff();
+    OnCard3HoverOff();
+
+    switch (mCurrentBuff)
+    {
+    case 0:
+        OnCard1HoverOn();
+        break;
+    case 1:
+        OnCard2HoverOn();
+        break;
+    case 2:
+        OnCard3HoverOn();
+        break;
+    default:
+        break;
     }
 }
 

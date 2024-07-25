@@ -42,9 +42,13 @@ public:
     void Update() override;
 
 private:
+    void Controls();
     std::string GetBuffTitle(const Buff& buff);
     std::string GetBuffDescription(const Buff& buff);
     unsigned int GetImage(const Buff& buff);
+
+    void CardClick();
+    void CardHover();
 
     void OnCard1Click();
     void OnCard1HoverOn();
@@ -82,4 +86,6 @@ private:
 
     TimerScript mClickTimout;
     bool mTimeout = false;
+
+    int mCurrentBuff = 0;
 };

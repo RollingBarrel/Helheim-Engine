@@ -48,6 +48,9 @@ private:
     ~HudController();
 
     void Loading();
+    void Controls();
+    void ButtonHover();
+    void ButtonClick();
     bool Delay(float delay);
 
     void OnWinButtonClick();
@@ -138,4 +141,6 @@ private:
     Dialog* mDialog = nullptr;
 
     int mArenaCounter = 0;
+
+    int mCurrentOption = 0;
 };
