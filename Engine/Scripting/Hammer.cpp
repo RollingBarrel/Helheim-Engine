@@ -6,7 +6,7 @@
 Hammer::Hammer(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
     mDamage = 7.f;
-    mEnergyCost = 10.f;
+    mEnergyCost = 10;
     mCooldownMultiplier = 1.5f;
     mCombo1st = 2.f;
     mCombo2nd = 2.f;

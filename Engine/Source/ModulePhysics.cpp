@@ -88,7 +88,7 @@ void ModulePhysics::RayCast(float3 from, float3 to, std::multiset<Hit>& hits, st
 	
 	if (callback.hasHit())
 	{
-		for (unsigned int i = 0; i < callback.m_collisionObjects.size(); ++i)
+		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
 		{
 			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
 			if (collider)
@@ -138,7 +138,7 @@ void ModulePhysics::RayCast(float3 from, float3 to, Hit& hit, std::vector<std::s
 		Hit closestHit;
 		closestHit.mDistance = FLT_MAX;
 
-		for (unsigned int i = 0; i < callback.m_collisionObjects.size(); ++i)
+		for (int i = 0; i < callback.m_collisionObjects.size(); ++i)
 		{
 			Collider* collider = reinterpret_cast<Collider*>(callback.m_collisionObjects[i]->getUserPointer());
 			if (collider)

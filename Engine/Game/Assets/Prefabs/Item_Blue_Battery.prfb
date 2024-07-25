@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1663669871,
+                "UID": 466430549,
                 "ParentUID": 1,
                 "Name": "Item_Blue_Battery",
                 "Enabled": true,
@@ -23,10 +23,10 @@
                     0.15000000596046449,
                     0.15000000596046449
                 ],
-                "Tag": "Untagged",
+                "Tag": "Drop",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 3,
@@ -64,8 +64,8 @@
                 ]
             },
             {
-                "UID": 1442414917,
-                "ParentUID": 1663669871,
+                "UID": 600102869,
+                "ParentUID": 466430549,
                 "Name": "OB_blue_battery_particle",
                 "Enabled": true,
                 "Active": true,
@@ -88,12 +88,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 126066768,
-                "ParentUID": 1442414917,
+                "UID": 707528072,
+                "ParentUID": 600102869,
                 "Name": "OB_blue_battery_particle",
                 "Enabled": true,
                 "Active": true,
@@ -116,12 +116,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 869758290,
-                "ParentUID": 126066768,
+                "UID": 814674791,
+                "ParentUID": 707528072,
                 "Name": "OB_blue_battery_particle",
                 "Enabled": true,
                 "Active": true,
@@ -144,7 +144,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,

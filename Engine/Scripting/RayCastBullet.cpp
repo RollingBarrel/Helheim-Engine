@@ -14,7 +14,6 @@ CREATE(RayCastBullet)
 
 void RayCastBullet::Update()
 {
-	
 	if ((mBulletTrail->GetOwner()->GetWorldPosition() - mHitPoint).Dot(mDirection) < 0)
 	{
 		float3 newPosition = mBulletTrail->GetOwner()->GetWorldPosition() + mDirection * mSpeed * App->GetDt();
@@ -30,22 +29,15 @@ void RayCastBullet::Update()
 	}
 	else
 	{
-		if (mHit)
+		if (mHit && mHitParticles)
 		{
-			if (mHitParticles)
-			{
-				mHitParticles->SetEnable(true);
-				if (mHitTimer.Delay(1.0f))
-				{
-					mGameObject->SetEnabled(false);
-				}
-			}
+			mHitParticles->SetEnable(true);
 		}
-		else 
+
+		if (mHitTimer.Delay(mBulletTrail->GetLifeTime()))
 		{
 			mGameObject->SetEnabled(false);
 		}
-		
 	}
 }
 
@@ -57,7 +49,7 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 	mSpeed = speed;
 
 	mGameObject->SetEnabled(true);
-	
+
 	mHitParticles = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
 	mBulletTrail = reinterpret_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
 	if (mBulletTrail)
@@ -68,7 +60,6 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 		{
 			mBulletTrail->SetColorGradient(*gradient);
 		}
-
 	}
 	if (mHitParticles)
 	{

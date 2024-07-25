@@ -37,5 +37,7 @@ protected:
 	std::unordered_map<unsigned int, std::vector<GameObject**>> mGameObjectsPointersMap;
 
 	void* mHandle = nullptr;
+	bool mFirstFrame = true;
+
 };
 

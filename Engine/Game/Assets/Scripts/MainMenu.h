@@ -5,6 +5,7 @@
 class ButtonComponent;
 class Transform2DComponent;
 class ImageComponent;
+class AudioManager;
 
 enum MENU_TYPE {
     MAIN,
@@ -35,6 +36,7 @@ private:
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
+    void HoverSubMenu(int type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
 
@@ -54,14 +56,23 @@ private:
     void OnCreditsButtonHover();
     void OnPlayButtonHover();
     void OnBackCreditsButtonHover();
+    void OnControlsButtonHover();
+    void OnSettingsButtonHover();
+    void OnBackButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
     void OnPlayButtonHoverOff();
     void OnBackCreditsButtonHoverOff();
+    void OnControlsButtonHoverOff();
+    void OnSettingsButtonHoverOff();
+    void OnBackButtonHoverOff();
     
-    int mOption = 0;  
+    int mOption = 0;
+    int mSettingOption = 0;
+    int mSection = 0;
+
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;
@@ -111,6 +122,10 @@ private:
     GameObject* mFullscreenButtonGO = nullptr;
     ImageComponent* mFullscreenImage = nullptr;
     ButtonComponent* mFullscreenButton = nullptr;
+
+    GameObject* mAudioManagerGO = nullptr;
+    AudioManager* mAudioManager = nullptr;
+    int mBGMID = -1;
 
     bool mIsScrolling = false;
     bool mIsInitial = true;
