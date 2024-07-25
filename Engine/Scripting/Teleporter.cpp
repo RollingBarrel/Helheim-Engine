@@ -62,18 +62,24 @@ void Teleporter::Update()
 
             if (mIsAtStart)
             {
+
                 float3 destination = App->GetNavigation()->FindNearestPoint(mEndPos + float3(mCurrentDirection.x, 0.0f, mCurrentDirection.z) * 10, float3(10.0f));
                 mDistance = mPlayer->GetWorldPosition().Distance(destination);
                 mCurrentDirection = destination.Sub(mPlayer->GetWorldPosition()).Normalized();
+                mPlayer->LookAt(destination);
+
 
             }
             else
             {
+
                 float3 destination = App->GetNavigation()->FindNearestPoint(mStartPos + float3(mCurrentDirection.x, 0.0f, mCurrentDirection.z) * 10, float3(10.0f));
                 mDistance = mPlayer->GetWorldPosition().Distance(destination);
                 mCurrentDirection = destination.Sub(mPlayer->GetWorldPosition()).Normalized();
+                mPlayer->LookAt(destination);
 
             }
+
 
         }
     }
@@ -160,12 +166,16 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 
         if (mIsAtStart)
         {
+            mPlayer->LookAt(mStartPos);
+
             mDistance = mStartPos.Distance(mPlayer->GetWorldPosition());
             mCurrentDirection = mStartPos.Sub(mPlayer->GetWorldPosition()).Normalized();
 
         }
         else
         {
+            mPlayer->LookAt(mEndPos);
+
             mDistance = mEndPos.Distance(mPlayer->GetWorldPosition());
             mCurrentDirection = mEndPos.Sub(mPlayer->GetWorldPosition()).Normalized();
 
