@@ -229,7 +229,7 @@ void MainMenu::Controls()
     {
         if (mIsInitial) 
         {
-            ClickMenu(MENU_TYPE::MAIN);
+            OpenMenu(MENU_TYPE::MAIN);
             mIsInitial = false;
             return;
         }
