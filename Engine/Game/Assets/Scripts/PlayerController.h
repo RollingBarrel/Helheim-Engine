@@ -89,7 +89,7 @@ public:
     void EquipRangedWeapons(bool equip);
     Weapon* GetWeapon() const { return mWeapon; }
     Weapon* GetSpecialWeapon() const { return mSpecialWeapon; }
-    float GetCurrentEnergy() const { return mCurrentEnergy; }
+    int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
     void SetMovementSpeed(float percentage) { mPlayerSpeed *= percentage; }
