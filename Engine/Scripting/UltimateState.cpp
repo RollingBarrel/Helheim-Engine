@@ -6,8 +6,8 @@
 #include "PlayerController.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
-
-
+#include "GameManager.h"
+#include "HudController.h"
 
 UltimateState::UltimateState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
@@ -51,6 +51,11 @@ void UltimateState::Exit()
 	mPlayerController->EnableUltimate(false);
 	mPlayerController->SetMovementSpeed(1.0f/ mPlayerController->GetUltimateSlow());
 	SetCooldown(mPlayerController->GetUltimateCooldown());
+
+	if (GameManager::GetInstance()->GetHud())
+	{
+		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mPlayerController->GetUltimateCooldown());
+	}
 }
 
 StateType UltimateState::GetType()

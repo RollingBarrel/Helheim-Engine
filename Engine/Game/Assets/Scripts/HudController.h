@@ -37,6 +37,7 @@ public:
     void SetMaxHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
+    void SetUltimateCooldown(float cooldown);
     void SetScreen(SCREEN menu, bool active);
 
     SliderComponent* mHealthGradualSlider = nullptr;
@@ -95,6 +96,7 @@ private:
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mSecondWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
+    GameObject* mUltimateSliderGO = nullptr;
     GameObject* mEnergyGO = nullptr;
     GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
@@ -111,6 +113,7 @@ private:
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
+    SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
 
     //Boss Health bar
@@ -131,6 +134,8 @@ private:
 
     float mGrenadeCooldown = 0.0f;
     float mGrenadeTimer = 0.0f;
+    float mUltimateCooldown = 0.0f;
+    float mUltimateTimer = 0.0f;
 
     // Sanity
     GameObject* mSanityGO = nullptr;

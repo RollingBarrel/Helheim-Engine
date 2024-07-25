@@ -29,6 +29,7 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
@@ -143,6 +144,12 @@ void HudController::Start()
         mGrenadeSlider->SetValue(0.001f);
     }
 
+    if (mUltimateSliderGO)
+    {
+        mUltimateSlider = static_cast<SliderComponent*>(mUltimateSliderGO->GetComponent(ComponentType::SLIDER));
+        mUltimateSlider->SetValue(0.001f);
+    }
+
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
@@ -189,6 +196,20 @@ void HudController::Update()
         else
         {
             mGrenadeCooldown = 0.0f;
+        }
+    }
+
+    // Ultimate cooldown update
+    if (mUltimateSlider != nullptr && mUltimateCooldown != 0.0f)
+    {
+        if (mUltimateTimer <= mUltimateCooldown)
+        {
+            mUltimateTimer += App->GetDt();
+            mUltimateSlider->SetValue(1 - (mUltimateTimer / mUltimateCooldown));
+        }
+        else
+        {
+            mUltimateCooldown = 0.0f;
         }
     }
 }
@@ -426,6 +447,12 @@ void HudController::SetGrenadeCooldown(float cooldown)
 {
     mGrenadeCooldown = cooldown;
     mGrenadeTimer = 0.001f;
+}
+
+void HudController::SetUltimateCooldown(float cooldown)
+{
+    mUltimateCooldown = cooldown;
+    mUltimateTimer = 0.001f;
 }
 
 void HudController::SetScreen(SCREEN name, bool active)
