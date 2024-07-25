@@ -5,6 +5,7 @@
 
 
 class BoxColliderComponent;
+class AnimationComponent;
 struct CollisionData;
 
 GENERATE_BODY(Teleporter);
@@ -46,5 +47,7 @@ private:
 	float3 mEndPos;
 	float3 mFirstPlayerPos;
 	GameObject* mPlayer = nullptr;
+	GameObject* mCamera = nullptr;
+	AnimationComponent* mPlayerAnimation = nullptr;
 };
 

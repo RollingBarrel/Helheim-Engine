@@ -4,6 +4,7 @@
 #include <BoxColliderComponent.h>
 #include "Application.h"
 #include "ModuleDetourNavigation.h"
+#include "AnimationComponent.h"
 
 
 CREATE(Teleporter)
@@ -12,6 +13,7 @@ CREATE(Teleporter)
     MEMBER(MemberType::FLOAT3, mStartPos);
     MEMBER(MemberType::FLOAT3, mEndPos);
     MEMBER(MemberType::FLOAT, mDuration);
+    MEMBER(MemberType::GAMEOBJECT, mCamera);
     END_CREATE;
 }
 
@@ -33,11 +35,7 @@ void Teleporter::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Teleporter::OnCollisionEnter, this, std::placeholders::_1)));
     }
-    /*
-    mDistance = mGameObject->GetWorldPosition().Distance(mDestination->GetWorldPosition());
-    mDirection = mDestination->GetWorldPosition().Sub(mGameObject->GetWorldPosition()).Normalized();
-    mStartPos = mGameObject->GetWorldPosition();
-    */
+    
 }
 
 void Teleporter::Update()
@@ -54,6 +52,13 @@ void Teleporter::Update()
             mIsTriggered = false;
             mIsExiting = true;
             mCurrentTime = 0.0f;
+
+            if (mPlayerAnimation)
+            {
+                mPlayerAnimation->SendTrigger("tWalkForward", 0.2f);
+                mPlayerAnimation->SendSpineTrigger("tWalkForward", 0.2f);
+
+            }
 
             if (mIsAtStart)
             {
@@ -83,6 +88,13 @@ void Teleporter::Update()
             mIsEntering = false;
             mCurrentTime = 0.0f;
 
+            if (mPlayerAnimation)
+            {
+                mPlayerAnimation->SendTrigger("tIdle", 0.2f);
+                mPlayerAnimation->SendSpineTrigger("tIdle", 0.2f);
+
+            }
+
             if (mIsAtStart)
             {
                 mDistance = mStartPos.Distance(mEndPos);
@@ -104,6 +116,12 @@ void Teleporter::Update()
         mPlayer->SetWorldPosition(positon);
         if (mCurrentTime > mEnterDuration)
         {
+            if (mPlayerAnimation)
+            {
+                mPlayerAnimation->SendTrigger("tIdle", 0.2f);
+                mPlayerAnimation->SendSpineTrigger("tIdle", 0.2f);
+
+            }
             mIsExiting = false;
             mCurrentTime = 0.0f;
             mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
@@ -131,6 +149,13 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         mCurrentTime = 0.0f;
         mIsEntering = true;
         mPlayer = collisionData->collidedWith;
+        if (mPlayer)
+        {
+            mPlayerAnimation = reinterpret_cast<AnimationComponent*>(mPlayer->GetComponent(ComponentType::ANIMATION));
+            mPlayerAnimation->SendTrigger("tWalkForward", 0.2f);
+            mPlayerAnimation->SendSpineTrigger("tWalkForward", 0.2f);
+        }
+
         mFirstPlayerPos = mPlayer->GetWorldPosition();
 
         if (mIsAtStart)

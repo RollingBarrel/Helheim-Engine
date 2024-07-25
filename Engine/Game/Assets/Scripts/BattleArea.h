@@ -39,7 +39,7 @@ private:
 
 	GameObject* mDoor1 = nullptr;
 	GameObject* mDoor2 = nullptr;
-
+	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 };
 
