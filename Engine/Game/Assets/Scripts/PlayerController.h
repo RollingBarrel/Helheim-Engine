@@ -203,7 +203,7 @@ private:
     Weapon* mWeapon = nullptr;
     Weapon* mSpecialWeapon = nullptr;
     int mCurrentEnergy = 100;
-    EnergyType mEnergyType = EnergyType::RED;
+    EnergyType mEnergyType = EnergyType::NONE;
     int mUltimateResource = 100;
 
     // RANGED

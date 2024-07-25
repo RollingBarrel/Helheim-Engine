@@ -189,8 +189,6 @@ void MeshRendererComponent::Enable()
 
 void MeshRendererComponent::Disable()
 {
-	if (mUniqueMaterial)
-		LOG("heeeeeY");
 	if (mMaterial && mMesh)
 		App->GetOpenGL()->BatchRemoveMesh(*this);
 }
@@ -283,7 +281,7 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 	if (data.HasMember("InverseBindMatrices"))
 	{
 		JsonArray arr = data.GetJsonArray("InverseBindMatrices");
-		for (int i = 0; i < arr.Size(); ++i)
+		for (unsigned int i = 0; i < arr.Size(); ++i)
 		{
 			JsonObject obj = arr.GetJsonObject(i);
 			if (obj.HasMember("GoId"))
