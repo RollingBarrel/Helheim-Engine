@@ -2,14 +2,17 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
+#include "float4.h"
 #include "TimerScript.h"
 
+class Component;
 class AnimationComponent;
 class AnimationStateMachine;
 class AudioSourceComponent;
 struct CollisionData;
 class BoxColliderComponent;
-class Component;
+class MeshRendererComponent;
+
 
 class State;
 class DashState;
@@ -121,6 +124,10 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
+
+    //Hit Effect
+    void ActivateHitEffect();
+    
     //Ultimate
     GameObject* GetUltimateGO() const{ return mUltimateGO; };
     void AddUltimateResource();
@@ -147,6 +154,7 @@ public:
 
 private:
     void CheckInput();
+    void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
     void CheckDebugOptions();
@@ -251,13 +259,12 @@ private:
     // Debug
     bool mGodMode = false;
 
-
     //Hit Effect
+    TimerScript  mHitEffectTimer;
+    float mHitEffectTime = 0.15f;
     bool mHit = false;
-    float mTimePassed = 0.0f;
     std::vector<Component*> mMeshComponents;
-    std::vector<unsigned int> mMaterialIds;
-    bool Delay(float delay);
+    std::vector<float4> mPlayerOgColor;
  
     // DEBUFF
     bool mIsParalyzed = false;

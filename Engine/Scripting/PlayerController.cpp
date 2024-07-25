@@ -215,17 +215,19 @@ void PlayerController::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
     }
-    //Hit Effect
-    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
-    mMaterialIds.reserve(mMeshComponents.size());
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
-    }
     // Add Audio Listener
     if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
     {
         mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
+    }
+
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+
+    for (Component* mesh : mMeshComponents)
+    {
+        const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mesh)->GetResourceMaterial();
+        mPlayerOgColor.push_back(material->GetBaseColorFactor());
     }
 
     mUpperState->Enter();
@@ -245,38 +247,13 @@ void PlayerController::Update()
     // Rotate the player to mouse
     HandleRotation();
 
+    //Check HitEffect
+    CheckHitEffect();
     // Buff, Debuff timers...
     CheckOtherTimers();
 
     CheckDebugOptions();
-
-    //Hit Effect
-    //if (mHit)
-    //{
-    //    if (Delay(0.1f)) 
-    //    {
-    //        mHit = false;
-    //
-    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //        {
-    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
-    //        }
-    //    }
-    //}
     mCollisionDirection = float3::zero;
-}
-
-bool PlayerController::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
-    {
-        mTimePassed = 0;
-        return true;
-    }
-    else return false;
 }
 
 void PlayerController::StateMachine()
@@ -309,6 +286,7 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 
 void PlayerController::CheckInput()
 {
+
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
@@ -402,9 +380,8 @@ void PlayerController::HandleRotation()
         if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
 
         float3 position = mGameObject->GetWorldPosition();
-        mAimPosition.x = position.x - rightX;
-        mAimPosition.y = position.y;
-        mAimPosition.z = position.z - rightY;
+        float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
+        mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
     }
     else
     {
@@ -783,12 +760,40 @@ void PlayerController::TakeDamage(float damage)
 
 
     ////Hit Effect
-    //mHit = true;
-    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //{
-    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    //}
+    if (!mHit)
+    {
+        ActivateHitEffect();
+    }
+
+
+}
+void PlayerController::ActivateHitEffect()
+{
+    for (Component* mesh: mMeshComponents)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+    }   
+        mHit = true;    
+}
+
+void PlayerController::CheckHitEffect()
+{
+    if (mHit)
+    {
+        if (mHitEffectTimer.Delay(mHitEffectTime))
+        {
+            for (size_t i = 0; i < mMeshComponents.size(); i++)
+            {
+                MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+                meshComponent->SetEnableBaseColorTexture(true);
+                meshComponent->SetBaseColorFactor(mPlayerOgColor[i]);
+            }
+            mHit = false;
+        }
+    }
+
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
@@ -801,6 +806,6 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag() == "Door")
     {
         mCollisionDirection = collisionData->collisionNormal;
-        LOG("HOLA")
+        //LOG("HOLA")
     }
 }

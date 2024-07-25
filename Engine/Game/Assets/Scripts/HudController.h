@@ -32,6 +32,8 @@ public:
     void SetAmmo(int ammo);
     void SetEnergy(float energy, EnergyType type);
     void SetHealth(float health);
+    void SetBossHealth(float health);
+    void SetBossHealthBarEnabled(bool enabled);
     void SetMaxHealth(float health);
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
@@ -49,7 +51,12 @@ private:
     bool Delay(float delay);
 
     void OnWinButtonClick();
+    void OnTryAgainButtonClick();
+    void OnTryAgainButtonHoverOn();
+    void OnTryAgainButtonHoverOff();
     void OnLoseButtonClick();
+    void OnLoseButtonHoverOn();
+    void OnLoseButtonHoverOff();
 
     void OnContinueBtnClick();
     void OnContinueBtnHoverOn();
@@ -89,14 +96,26 @@ private:
     GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
 
+    GameObject* mTryAgainBtnGO = nullptr;
+    GameObject* mLoseMenuBtnGO = nullptr;
+    GameObject* mWinMenuBtnGO = nullptr;
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
+    ButtonComponent* mTryAgainBtn = nullptr;
+
     SliderComponent* mHealthSlider = nullptr;
     TextComponent* mAmmoText = nullptr;
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
+
+    //Boss Health bar
+    GameObject* mBossHealthGO = nullptr;
+    GameObject* mBossHealthGradualGO = nullptr;
+    float mBossHealth = 0.0;
+    SliderComponent* mBossHealthSlider = nullptr;
+    SliderComponent* mBossHealthGradualSlider = nullptr;
 
     float mTargetHealth = 1;
 

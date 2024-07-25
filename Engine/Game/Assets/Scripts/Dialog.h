@@ -24,6 +24,7 @@ public:
 private:
     void UpdateDialog();
     void OnClick();
+    void Controls();
 
     GameObject* mDialogGO = nullptr;
     GameObject* mProtagonistGO = nullptr;
@@ -40,5 +41,5 @@ private:
     int mCurrentDialog = 0;
 
     TimerScript mClickTimout;
-    bool mTimeout = true;
+    bool mTimeout = false;
 };

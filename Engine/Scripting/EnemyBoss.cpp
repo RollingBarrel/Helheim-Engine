@@ -11,6 +11,7 @@
 #include "ColorGradient.h"
 #include "Bullet.h"
 #include "BossLaser.h"
+#include "HudController.h"
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -22,6 +23,8 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mAttackDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
+    MEMBER(MemberType::FLOAT, mAttackDuration);
+    MEMBER(MemberType::FLOAT, mDeathTime);
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
 
     END_CREATE;
@@ -34,8 +37,8 @@ EnemyBoss::EnemyBoss(GameObject* owner) : Enemy(owner)
 void EnemyBoss::Start()
 {
     Enemy::Start();
+    mCurrentState = EnemyState::IDLE;
 
-    
     for (const char* prefab : mTemplateNames)
     {
         GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
@@ -50,81 +53,77 @@ void EnemyBoss::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-
+        mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
     }
 }
 
 void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
-
-    Enemy::Update();
+    GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
 
     if (!mBeAttracted)
     {
         switch (mCurrentState)
         {
-        case BossState::IDLE:
-            //mAnimationComponent->SendTrigger("tIdle", 0.2f);
-            Idle();
-
+        case EnemyState::IDLE:
+            if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
+            {
+                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
+                mCurrentState = EnemyState::ATTACK;
+                SelectAttack();
+            }
             break;
-        case BossState::ATTACK:
-
-            Attack();
+        case EnemyState::ATTACK:
+            if (mAttackDurationTimer.Delay(mAttackDuration))
+            {
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
+                mCurrentState = EnemyState::IDLE;
+            }
             break;
+        case EnemyState::DEATH:
+            if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+            Death();
         }
     }
 
 }
 
-void EnemyBoss::Idle()
+void EnemyBoss::SelectAttack()
 {
-    if (IsPlayerInRange(50))
+    int attack = rand() % 3;
+    if (attack == mLastAttack)
     {
-        mAnimationComponent->SendTrigger("tWakeUp", 0.2f);
-        mCurrentState = BossState::ATTACK;
+        ++attack;
     }
-}
-
-void EnemyBoss::Attack()
-{
-    if (mAttackDurationTimer.Delay(mAttackCoolDown))
+    switch (attack)
     {
-        int attack = rand() % 3;
-        if (attack == mLastAttack)
-        {
-            ++attack;
-        }
-        switch (attack)
-        {
-        case 1:
-            mAnimationComponent->SendTrigger("tLaser", 0.2f);
-            LaserAttack();
-            break;
-        case 2:
-            mAnimationComponent->SendTrigger("tEruption", 0.2f);
-            BombAttack();
-            break;
-        case 0:
-        default:
-            mAnimationComponent->SendTrigger("tBulletHell", 0.2f);
-            BulletAttack();
-            break;
-        }
+    case 1:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
+        LaserAttack();
+        break;
+    case 2:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
+        BombAttack();
+        break;
+    case 0:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
+        BulletAttack();
+        break;
     }
 }
 
 void EnemyBoss::BulletAttack()
 {
     float3 bulletOriginPosition = mGameObject->GetWorldPosition();
+    bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->LookAt(mPlayer->GetWorldPosition());
+    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
     Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.0f, 0.0f));
-    bulletScript->Init(bulletOriginPosition, bulletGO->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
+    gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
+    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
 }
 
 void EnemyBoss::LaserAttack()
@@ -134,7 +133,7 @@ void EnemyBoss::LaserAttack()
         BossLaser* laserScript = reinterpret_cast<BossLaser*>(reinterpret_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (laserScript) laserScript->Init(mAttackDamage, mAttackDistance);
     }
-    
+
 }
 
 void EnemyBoss::BombAttack()
@@ -155,7 +154,10 @@ void EnemyBoss::BombAttack()
 
 void EnemyBoss::Death()
 {
-    mAnimationComponent->SendTrigger("tDeath", 0.2f);
-    mDeathTimer.Delay(mDeathTime);
-    mGameObject->SetEnabled(false);
+    if (mDeathTimer.Delay(mDeathTime))
+    {
+        mGameObject->SetEnabled(false);
+        GameManager::GetInstance()->Victory();
+    }
+
 }

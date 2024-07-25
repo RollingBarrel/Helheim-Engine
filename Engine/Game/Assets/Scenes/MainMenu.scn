@@ -3050,7 +3050,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "Producer\nOscar Pellice\nDavid Bardina\n\nLead Engine\nAdrian Mirabel\n\nLead Gameplay\nCarlos García\n\nLead Artist\nLaia Ruiz\n\nLead Game Design\nDavid Longaron\nCarlos Nunez\n\nLead Audio\nJaime Coronado",
+                        "Text": "Producer\nOscar Pellice\n\nLead Engine\nAdrian Mirabel\n\nLead Gameplay\nCarlos Garcia\n\nLead Artist\nLaia Ruiz\n\nLead Game Design\nDavid Longaron\nCarlos Nunez\n\nLead Audio\nJaime Coronado",
                         "Color": [
                             1.0,
                             1.0,
@@ -3849,7 +3849,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -575.0,
-                            150.0,
+                            25.0,
                             0.0
                         ],
                         "Rotation": [
@@ -4005,7 +4005,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -575.0,
-                            25.0,
+                            150.0,
                             0.0
                         ],
                         "Rotation": [
