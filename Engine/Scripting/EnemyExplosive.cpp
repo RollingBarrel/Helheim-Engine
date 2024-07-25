@@ -19,6 +19,8 @@ CREATE(EnemyExplosive)
     MEMBER(MemberType::FLOAT, mAttackDistance);
     SEPARATOR("GAMEOBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
+    MEMBER(MemberType::GAMEOBJECT, mExplosionParticle);
+
 
     END_CREATE;
 }
@@ -33,8 +35,8 @@ void EnemyExplosive::Start()
         mWarningSize = mExplosionWarningGO->GetWorldScale();
         mExplosionWarningGO->SetLocalPosition(float3(0.0f, 0.1f, 0.0f));
         mExplosionWarningGO->SetEnabled(false);
+        mExplosionParticle->SetEnabled(false);
     }
-
 }
 
 
@@ -45,6 +47,7 @@ void EnemyExplosive::Charge()
     {
         mExplosionWarningGO->SetEnabled(true);
         ChargeWarningArea();
+        mExplosionParticle->SetEnabled(true);
     }
 }
 
@@ -60,6 +63,7 @@ void EnemyExplosive::Attack()
             playerScript->TakeDamage(mAttackDamage);
         }
     }
+
     TakeDamage(mMaxHealth);
 }
 
@@ -76,9 +80,9 @@ void EnemyExplosive::ChargeWarningArea()
         float increment = dt * scaleSpeed * warningScaleMax;
 
         float newScaleX = std::min(currentScale.x + increment, warningScaleMax);
-        float newScaleZ = std::min(currentScale.z + increment, warningScaleMax);
+        float newScaleY = std::min(currentScale.y + increment, warningScaleMax);
 
-        float3 newScale = float3(newScaleX, currentScale.y, newScaleZ);
+        float3 newScale = float3(newScaleX, newScaleY, currentScale.z);
         mExplosionWarningGO->SetWorldScale(newScale);
     }
 }
