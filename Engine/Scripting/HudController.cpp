@@ -282,6 +282,8 @@ void HudController::Controls()
 
 void HudController::ButtonClick()
 {
+    if (mWinScreen->IsActive()) OnWinButtonClick();
+    if (mLoseScreen->IsActive()) OnLoseButtonClick();
     switch (mCurrentOption)
     {
     case 0:
