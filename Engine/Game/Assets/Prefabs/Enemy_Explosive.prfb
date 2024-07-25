@@ -8,22 +8,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    6.887233006125371e-9,
-                    -0.07828539609909058,
-                    -6.800346508128996e-9
+                    7.181972794256808e-9,
+                    0.0,
+                    -7.091347065113496e-9
                 ],
                 "Rotation": [
-                    6.181692668860706e-8,
+                    3.190825736965053e-8,
                     -0.7093474864959717,
-                    1.9620216562543647e-10,
-                    0.7048589587211609
+                    0.000010053376172436402,
+                    -0.7048589587211609
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": true,
@@ -54,7 +54,7 @@
                             {
                                 "VariableName": "mMaxHealth",
                                 "MemberType": 1,
-                                "VariableData": 2.0
+                                "VariableData": 100.0
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -95,6 +95,22 @@
                                 "VariableData": 1238702316
                             }
                         ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.850000023841858,
+                            0.05000000074505806
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            0.550000011920929,
+                            0.699999988079071
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             },
