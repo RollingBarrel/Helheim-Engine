@@ -234,8 +234,11 @@ void PlayerController::Start()
     mUpperState->Enter();
     mLowerState->Enter();
 
-
-    if (App->GetScene()->GetName().compare("Level2Scene") == 0)
+    if (App->GetScene()->GetName().compare("Level1Scene") == 0)
+    {
+        mGameObject->SetWorldPosition(float3(82.27f, 0.0f, -4.15f));
+    }
+    else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
     {
         mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
     }
