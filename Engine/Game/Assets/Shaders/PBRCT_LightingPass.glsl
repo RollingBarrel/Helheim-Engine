@@ -156,11 +156,11 @@ void main()
 	V = normalize(cPos - pos);
 
 	vec3 baseColor = texture(diffuseTex, uv).rgb;
-	vec4 specColorTex = texture(metalRoughTex, uv);
-	float metal = specColorTex.b;
-	rough = max(specColorTex.g * specColorTex.g, 0.001f);
+	vec2 specColorTex = texture(metalRoughTex, uv).gb;
+	float metal = specColorTex.y;
+	rough = max(specColorTex.x * specColorTex.x, 0.001f);
 	
-	cDif = baseColor * (1- specColorTex.b);
+	cDif = baseColor * (1 - metal);
 	cSpec = mix(vec3(0.04), baseColor, metal);
 
 

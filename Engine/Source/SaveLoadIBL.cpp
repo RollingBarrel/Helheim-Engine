@@ -115,7 +115,7 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips - 1);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         w = environmentSize;
@@ -138,7 +138,7 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         unsigned int irradianceSize = *reinterpret_cast<unsigned int*>(cursor);
         cursor += sizeof(unsigned int);
         //numMips = log2(std::max(irradianceSize, irradianceSize)) + 1;
-        numMips = 1;
+        numMips = 0;
         unsigned int irradianceTextureId;
         glGenTextures(1, &irradianceTextureId);
         glBindTexture(GL_TEXTURE_CUBE_MAP, irradianceTextureId);
@@ -173,8 +173,8 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips - 1);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         w = specPrefilteredSize;
         h = specPrefilteredSize;
@@ -196,13 +196,14 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         unsigned int specEnvBRDFSize = *reinterpret_cast<unsigned int*>(cursor);
         cursor += sizeof(unsigned int);
         //numMips = log2(std::max(specEnvBRDFSize, specEnvBRDFSize)) + 1;
-        numMips = 1;
+        numMips = 0;
         unsigned int envBRDFTexId;
         glGenTextures(1, &envBRDFTexId);
         glBindTexture(GL_TEXTURE_2D, envBRDFTexId);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, numMips);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         w = specEnvBRDFSize;
