@@ -14,7 +14,7 @@ void EngineLog(const char file[], int line, const char* format, ...);
 	#ifdef _DEBUG
 	#define LOG(format, ...) CoreLog(__FILE__, __LINE__, format, __VA_ARGS__);
 	#else
-	#define LOG(format, ...)
+	#define LOG(format, ...);
 	#endif // _DEBUG
 void ENGINE_API CoreLog(const char file[], int line, const char* format, ...);
 #endif // ENGINE
