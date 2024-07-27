@@ -3,6 +3,7 @@
 
 class GameObject;
 class ParticleSystemComponent;
+class PlayerController;
 
 GENERATE_BODY(EnemyExplosive);
 class EnemyExplosive : public Enemy
@@ -23,6 +24,6 @@ private:
 	GameObject* mExplosionWarningGO = nullptr;
 	GameObject* mExplosionParticle = nullptr;
 	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
-	//std::vector<Component*> mExplosionParticle;
+	PlayerController* playerScript = nullptr;
 
 };
