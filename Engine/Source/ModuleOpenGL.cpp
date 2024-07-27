@@ -367,6 +367,7 @@ bool ModuleOpenGL::Init()
 
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
+	mSpotsBoundingSpheres = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 2, 16, &numSpotLights);
 
 	//SHADOWS
 	glGenFramebuffers(1, &mShadowsFrameBufferId);
@@ -392,6 +393,8 @@ bool ModuleOpenGL::Init()
 	//ListOfLights for the culling
 	glGenTextures(1, &mPLightListImgTex);
 	glGenBuffers(1, &mPLightListImgBuffer);
+	glGenTextures(1, &mSLightListImgTex);
+	glGenBuffers(1, &mSLightListImgBuffer);
 	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform1ui(0, CULL_LIST_LIGHTS_SIZE);
@@ -497,6 +500,7 @@ bool ModuleOpenGL::CleanUp()
 
 	delete mPointsBuffer;
 	delete mSpotsBuffer;
+	delete mSpotsBoundingSpheres;
 	delete mDLightUniBuffer;
 
 	glDeleteVertexArrays(1, &mSkyVao);
@@ -633,6 +637,10 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glBindBuffer(GL_TEXTURE_BUFFER, mPLightListImgBuffer);
 	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mPLightListImgBuffer);
+	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mSLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mSLightListImgBuffer);
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
@@ -1175,6 +1183,7 @@ void ModuleOpenGL::Draw()
 	//Light lists
 	glUseProgram(mTileLightCullingProgramId);
 	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
+	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
 	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
@@ -1415,6 +1424,8 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, blurredTex);
 	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
@@ -1464,7 +1475,7 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 
@@ -1526,8 +1537,12 @@ void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 {
 	mSpotLights.push_back(&component);
 	mSpotsBuffer->PushBackData(&component.GetData(), sizeof(SpotLight));
+	float boundingSphere[4];
+	component.GetBoundingSphere(boundingSphere);
+	mSpotsBoundingSpheres->PushBackData(boundingSphere, sizeof(boundingSphere));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
+	mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
@@ -1537,6 +1552,9 @@ void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
 			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(SpotLight), 16 + sizeof(SpotLight) * i);
+			float boundingSphere[4];
+			cSpotLight.GetBoundingSphere(boundingSphere);
+			mSpotsBoundingSpheres->UpdateData(boundingSphere, sizeof(boundingSphere), 16 + sizeof(boundingSphere) * i);
 			return;
 		}
 	}
@@ -1550,8 +1568,10 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
 			mSpotsBuffer->RemoveData(sizeof(SpotLight), 16 + sizeof(SpotLight) * i);
+			mSpotsBoundingSpheres->RemoveData(sizeof(float[4]), 16 + sizeof(float[4]) * i);
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
+			mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
 			return;
 		}
 	}

@@ -601,6 +601,16 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 		ImGui::EndDisabled();
 	}
 
+	static bool seeSphere = false;
+	ImGui::Checkbox("See Bounding Sphere", &seeSphere);
+	if (seeSphere)
+	{
+		float sphere[4]; component->GetBoundingSphere(sphere);
+		EngineApp->GetOpenGL()->BindSceneFramebuffer();
+		EngineApp->GetDebugDraw()->DrawSphere(sphere, col, sphere[3]);
+		EngineApp->GetOpenGL()->UnbindFramebuffer();
+	}
+
 }
 
 void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component) 

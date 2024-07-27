@@ -82,6 +82,7 @@ layout(binding = 7)uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
 layout(binding = 8) uniform isamplerBuffer pointLightList;
+layout(binding = 11) uniform isamplerBuffer spotLightList;
 layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
@@ -168,9 +169,9 @@ void main()
 	//Directional light
 	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
-	//Point lights
 	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
+	//Point lights
 	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	{
@@ -184,16 +185,18 @@ void main()
 	}
 	
 	//Spot lights
-	for (int i = 0; i < numSLights; ++i)
+	idx = (texelFetch(spotLightList, int(tileIdx * lightListSize))).x;
+	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 	{
+		SpotLight sLight = sLights[idx];
 		//Shadows
 		float shadowValue = 1.0;
-		if (sLights[i].shadowIndex >= 0)
+		if (sLight.shadowIndex >= 0)
 		{
-			vec4 lightClipSpace = shadows[sLights[i].shadowIndex].viewProjMatrix * vec4(pos, 1);
+			vec4 lightClipSpace = shadows[sLight.shadowIndex].viewProjMatrix * vec4(pos, 1);
 			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
-			float shadowDepth = texture(shadows[sLights[i].shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLights[i].shadowIndex].bias;
+			float shadowDepth = texture(shadows[sLight.shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLight.shadowIndex].bias;
 			float fragmentDepth = lightNDC.z;
 
 			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
@@ -204,23 +207,23 @@ void main()
 				}
 		}
 
-			vec3 mVector = pos - sLights[i].pos.xyz;
-			vec3 sDir = normalize(mVector);
-			vec3 aimDir = normalize(sLights[i].aimD.xyz);
-			float dist = dot(mVector, aimDir);
-			//TODO: Check that the radius of spot light is correct
-			float r = sLights[i].radius;
-			float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
-			float c = dot(sDir, aimDir);
-			float cInner = sLights[i].aimD.w;
-			float cOuter = sLights[i].col.w;
-			//float cAtt = 1;
-			//if(cInner > c && c > cOuter)
-				//cAtt = (c - cOuter) / (cInner - cOuter);
-			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
-			att *= cAtt;
-			pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb, sLights[i].pos.w, att) * shadowValue;
-		
+		vec3 mVector = pos - sLight.pos.xyz;
+		vec3 sDir = normalize(mVector);
+		vec3 aimDir = normalize(sLight.aimD.xyz);
+		float dist = dot(mVector, aimDir);
+		//TODO: Check that the radius of spot light is correct
+		float r = sLight.radius;
+		float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
+		float c = dot(sDir, aimDir);
+		float cInner = sLight.aimD.w;
+		float cOuter = sLight.col.w;
+		//float cAtt = 1;
+		//if(cInner > c && c > cOuter)
+			//cAtt = (c - cOuter) / (cInner - cOuter);
+		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+		att *= cAtt;
+		pbrCol += GetPBRLightColor(sDir, sLight.col.rgb, sLight.pos.w, att) * shadowValue;
+		++i;
 	}
 
 	vec3 occlusionFactor = vec3(1.0);

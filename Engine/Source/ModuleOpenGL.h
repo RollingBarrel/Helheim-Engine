@@ -260,6 +260,8 @@ private:
 	//Lighting uniforms
 	unsigned int mPLightListImgTex;
 	unsigned int mPLightListImgBuffer;
+	unsigned int mSLightListImgTex;
+	unsigned int mSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;
@@ -267,6 +269,7 @@ private:
 	OpenGLBuffer* mPointsBuffer = nullptr;
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
+	OpenGLBuffer* mSpotsBoundingSpheres = nullptr;
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
