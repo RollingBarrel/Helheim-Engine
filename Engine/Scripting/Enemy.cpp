@@ -168,7 +168,6 @@ void Enemy::Chase()
 	{
 		if (mAiAgentComponent)
 		{
-			LOG("Setting navigation path to player position: %s", mPlayer->GetWorldPosition().ToString().c_str());
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
 			direction.y = 0;

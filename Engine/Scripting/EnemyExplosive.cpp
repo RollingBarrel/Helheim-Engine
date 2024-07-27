@@ -28,15 +28,22 @@ CREATE(EnemyExplosive)
 void EnemyExplosive::Start()
 {
     Enemy::Start();
-    mHealth = 100;
+    mMaxHealth = 1.0f;
+    mAttackDistance = 1.0f;
+    mChargeDuration = 1.0f;
 
     if (mExplosionWarningGO)
     {
         mWarningSize = mExplosionWarningGO->GetWorldScale();
         mExplosionWarningGO->SetLocalPosition(float3(0.0f, 0.1f, 0.0f));
         mExplosionWarningGO->SetEnabled(false);
+    }
+
+    if (mExplosionParticle)
+    {
         mExplosionParticle->SetEnabled(false);
     }
+
 }
 
 
@@ -47,7 +54,6 @@ void EnemyExplosive::Charge()
     {
         mExplosionWarningGO->SetEnabled(true);
         ChargeWarningArea();
-        mExplosionParticle->SetEnabled(true);
     }
 }
 
@@ -55,9 +61,17 @@ void EnemyExplosive::Attack()
 {
     mExplosionWarningGO->SetWorldScale(float3(0.1f));
 
+    if (mExplosionParticle)
+    {
+        mExplosionParticle->SetEnabled(true);  
+    }
+
+
     if (IsPlayerInRange(mExplosionRadius))
     {
-        PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+        ScriptComponent* script = static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT));
+        playerScript = static_cast<PlayerController*>(script->GetScriptInstance());
+
         if (playerScript != nullptr)
         {
             playerScript->TakeDamage(mAttackDamage);
@@ -73,7 +87,7 @@ void EnemyExplosive::ChargeWarningArea()
     {
         float dt = App->GetDt();
         float warningScaleMax = mExplosionRadius * 2.0f; 
-        float scaleSpeed = 0.50f; 
+        float scaleSpeed = 2.0f; 
 
         float3 currentScale = mExplosionWarningGO->GetWorldScale();
 
