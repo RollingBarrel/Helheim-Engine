@@ -175,6 +175,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\BombBoss.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h" />
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
@@ -230,6 +231,7 @@
     <ClCompile Include="BombBoss.cpp" />
     <ClCompile Include="BossLaser.cpp" />
     <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="CinematicCamera.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />

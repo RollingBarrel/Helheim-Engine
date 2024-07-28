@@ -105,6 +105,10 @@ void BattleArea::EnemyDestroyed()
 	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0)
 	{
 		ActivateArea(false);
+
+		//MG
+		mHasBeenActivated = false;
+
 		mGameObject->SetEnabled(false);
 		return;
 	}

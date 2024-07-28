@@ -18,6 +18,7 @@ public:
 	void EnemyDestroyed();
 	void ActivateArea(bool activate);;
 	void OnCollisionEnter(CollisionData* collisionData);
+	bool IsAreaActive() { return mHasBeenActivated; }
 
 private:
 
