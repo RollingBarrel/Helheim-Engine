@@ -45,9 +45,12 @@ private:
 
 	float3 mStartPos;
 	float3 mEndPos;
+	float3 mCameraPos;
 	float3 mFirstPlayerPos;
+	GameObject* mBattleArea = nullptr;
 	GameObject* mPlayer = nullptr;
 	GameObject* mCamera = nullptr;
 	AnimationComponent* mPlayerAnimation = nullptr;
+
 };
 

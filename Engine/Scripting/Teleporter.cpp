@@ -6,7 +6,6 @@
 #include "ModuleDetourNavigation.h"
 #include "AnimationComponent.h"
 
-
 CREATE(Teleporter)
 {
     CLASS(owner);
@@ -14,6 +13,9 @@ CREATE(Teleporter)
     MEMBER(MemberType::FLOAT3, mEndPos);
     MEMBER(MemberType::FLOAT, mDuration);
     MEMBER(MemberType::GAMEOBJECT, mCamera);
+    MEMBER(MemberType::GAMEOBJECT, mCamera);
+    MEMBER(MemberType::FLOAT3, mCameraPos);
+    MEMBER(MemberType::GAMEOBJECT, mBattleArea);
     END_CREATE;
 }
 
@@ -213,3 +215,4 @@ float3 Teleporter::LerpPosition(float duration, float3 startPos)
 
     return startPos + mCurrentDirection * lerpFactor;
 }
+
