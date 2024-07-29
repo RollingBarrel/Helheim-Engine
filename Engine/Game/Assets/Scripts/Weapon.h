@@ -3,9 +3,11 @@
 class Weapon
 {
 public:
-	enum class WeaponType {
+	enum class WeaponType 
+	{
 		RANGE,
-		MELEE
+		MELEE,
+		NONE
 	};
 
 	Weapon();
@@ -26,7 +28,7 @@ public:
 	void SetDamage(float value) { mDamage = value; }
 protected:
 	virtual void PlayHitSound() = 0;
-	WeaponType mType;
+	WeaponType mType = WeaponType::NONE;
 
 	float mDamage = 0.0f;
 	float mAttackRange = 0.0f;

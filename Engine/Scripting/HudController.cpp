@@ -1,21 +1,27 @@
 #include "HudController.h"
 
-#include "GameObject.h"
 #include "Application.h"
-#include "MainMenu.h"
-#include "GameManager.h"
 #include "ModuleInput.h"
-#include "Keys.h"
-#include "PlayerController.h"
+#include "ModuleScene.h"
 
+#include "PlayerStats.h"
+
+#include "GameObject.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ScriptComponent.h"
-#include "Sanity.h"
+
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "MainMenu.h"
+#include "Keys.h"
 #include "Dialog.h"
+#include "Sanity.h"
+
+
 
 
 CREATE(HudController)
@@ -119,12 +125,15 @@ void HudController::Start()
         mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
         mHealthSlider->SetValue(1.0f);
     }
-
+    
     if (mHealthGradualGO) 
     {
         mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
         mHealthGradualSlider->SetValue(1.0f);
     }
+
+    SetMaxHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
+    //SetHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
     
     if (mBossHealthGO)
     {
