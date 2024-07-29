@@ -6,6 +6,7 @@
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
+#include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
@@ -231,10 +232,10 @@ void Enemy::TakeDamage(float damage)
 		{
 			mCurrentState = EnemyState::DEATH;
 
-			if (mAiAgentComponent)
-			{
-				mAiAgentComponent->PauseCrowdNavigation();
-			}
+			BoxColliderComponent* collider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+			if (collider) collider->SetEnable(false);
+
+			if (mAiAgentComponent)	mAiAgentComponent->PauseCrowdNavigation();
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
