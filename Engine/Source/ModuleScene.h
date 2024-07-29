@@ -13,6 +13,7 @@ class GameObject;
 class MeshRendererComponent;
 class Archive;
 class Tag;
+class PlayerStats;
 
 class ENGINE_API ModuleScene : public Module
 {
@@ -66,6 +67,9 @@ public:
 
 	const std::unordered_map<unsigned int, unsigned int>& GetPrefabUIDMap() { return mPrefabOldNewUid; }
 
+	//Player Stats
+	PlayerStats* GetPlayerStats() const { return mPlayerStats; }
+
 private:
 	void AddGameObjectToDuplicate(GameObject* gameObject) { mGameObjectsToDuplicate.push_back(gameObject); }
 	void DuplicateGameObjects();
@@ -83,8 +87,10 @@ private:
 	// Prefabs
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
-
 	std::unordered_map<unsigned int, unsigned int> mPrefabOldNewUid;
+
+	//Player Stats
+	PlayerStats* mPlayerStats = nullptr;
 
 	static const std::vector<GameObject*> mEmptyVector; //This is used to avoid creating objects in methods and returning them as reference.
 };

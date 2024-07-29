@@ -5,23 +5,24 @@
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "ModuleDetourNavigation.h"
-#include "ModuleResource.h"
+
 #include "GameObject.h"
 #include "Physics.h"
+#include "PlayerStats.h"
 
 #include "AudioSourceComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+
 #include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
+
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
-#include <functional>
 
 #include "GameManager.h"
 #include "HudController.h"
@@ -53,9 +54,9 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxShield);
-    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    //SEPARATOR("STATS");
+    //MEMBER(MemberType::FLOAT, mMaxShield);
+    //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
@@ -124,6 +125,16 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    //Player Stats
+    mPlayerStats = App->GetScene()->GetPlayerStats();
+
+    mMaxShield = mPlayerStats->GetMaxHealth();
+    mShield = mMaxShield;
+    //GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
+    //GameManager::GetInstance()->GetHud()->SetHealth(mMaxShield);
+
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -550,14 +561,22 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
+void PlayerController::SetMovementSpeed(float percentage) 
+{
+    mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+    mPlayerStats->SetDamageModifier(mPlayerStats->GetDamageModifier() * percentage);
+    mDamageModifier = mPlayerStats->GetDamageModifier();
 }
 
 void PlayerController::SetMaxShield(float percentage)
 {
-    mMaxShield *= percentage; 
+    mPlayerStats->SetMaxHealth(mPlayerStats->GetMaxHealth() * percentage);
+    mMaxShield = mPlayerStats->GetMaxHealth();
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 

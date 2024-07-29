@@ -17,7 +17,7 @@
 
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
-#include <PlayerController.h>
+#include "PlayerController.h"
 
 #include "ModuleInput.h"
 
@@ -91,7 +91,7 @@ void Machinegun::Attack(float time)
                 Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
-                    enemy->TakeDamage(mDamage);
+                    enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
                 }
             }
         }
