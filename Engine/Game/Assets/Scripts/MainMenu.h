@@ -71,7 +71,9 @@ private:
     
     int mOption = 0;
     int mSettingOption = 0;
+    int mSubsettingOption = 0;
     int mSection = 0;
+    int mSubSection = 0;
 
     bool mLoadlevel = false;
 

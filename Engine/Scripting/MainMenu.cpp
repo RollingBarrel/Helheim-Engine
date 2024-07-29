@@ -211,15 +211,29 @@ void MainMenu::Controls()
         }
         else if (mSection == 1)
         {
-            if (mSettingOption < 1)
-            {
-                mSettingOption++;
+            if (mSubSection == 1) {
+                if (mSubsettingOption < 4)
+                {
+                    mSettingOption++;
+                }
+                else
+                {
+                    mSettingOption = 0;
+                }
+                HoverSubMenu(mSettingOption);
             }
-            else
-            {
-                mSettingOption = 0;
+            else {
+                if (mSettingOption < 1)
+                {
+                    mSettingOption++;
+                }
+                else
+                {
+                    mSettingOption = 0;
+                }
+                HoverSubMenu(mSettingOption);
             }
-            HoverSubMenu(mSettingOption);
+
         }
     }
 
@@ -396,6 +410,7 @@ void MainMenu::OnControlsButtonClick()
 void MainMenu::OnSettingsButtonClick()
 {
     mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+    mSubSection = 1;
     OpenMenu(MENU_TYPE::SETTINGS);
 }
 
@@ -458,6 +473,19 @@ void MainMenu::HoverSubMenu(int type)
         case 1:
             OnSettingsButtonHover();
             break;
+    }
+}
+
+void MainMenu::HoverSubSubMenu(int type)
+{
+    switch (type)
+    {
+    case 0:
+        OnControlsButtonHover();
+        break;
+    case 1:
+        OnSettingsButtonHover();
+        break;
     }
 }
 
