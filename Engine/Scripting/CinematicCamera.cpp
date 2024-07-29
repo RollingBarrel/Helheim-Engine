@@ -158,6 +158,8 @@ void CinematicCamera::StartCinematic(GameObject* target, float posX, float posY,
             mPlayingCinematic = false;
             App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
             App->GetCamera()->AddEnabledCamera(mMainCamera);
+            App->GetCamera()->ActivateFirstCamera();
+
             GameManager::GetInstance()->SetPaused(false, false);
 
             if (mBArea1->IsAreaActive())
