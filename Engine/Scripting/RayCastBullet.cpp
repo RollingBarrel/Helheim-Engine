@@ -1,10 +1,14 @@
 #include "RayCastBullet.h"
 #include "Application.h"
 
-
 #include "GameObject.h"
 #include "TrailComponent.h"
 #include "ParticleSystemComponent.h"
+#include "ScriptComponent.h"
+
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "Enemy.h"
 
 CREATE(RayCastBullet)
 {
@@ -25,11 +29,23 @@ void RayCastBullet::Update()
 		else
 		{
 			mBulletTrail->GetOwner()->SetWorldPosition(mHitPoint + mDirection * 1.01f);
+
+			if (mHit.IsValid())
+			{
+				if (mHit.mGameObject->GetTag().compare("Enemy") == 0)
+				{
+					Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)mHit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+					if (enemy)
+					{
+						enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
+					}
+				}
+			}
 		}
 	}
 	else
 	{
-		if (mHit && mHitParticles)
+		if (mHit.IsValid() && mHitParticles)
 		{
 			mHitParticles->SetEnable(true);
 		}
@@ -41,12 +57,40 @@ void RayCastBullet::Update()
 	}
 }
 
-void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float speed, float size, bool hit, ColorGradient* gradient)
+void RayCastBullet::Init(const float3& startposition, Hit& hit, float damage, float speed, float size, ColorGradient* gradient)
 {
 	mHit = hit;
+	mHitPoint = hit.mHitPoint;
+	mDirection = (hit.mHitPoint - startposition).Normalized();
+	mSpeed = speed;
+	mDamage = damage;
+
+	mGameObject->SetEnabled(true);
+
+	mHitParticles = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	mBulletTrail = reinterpret_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
+	if (mBulletTrail)
+	{
+		mBulletTrail->GetOwner()->SetWorldPosition(startposition);
+		mBulletTrail->SetEnable(true);
+		if (gradient)
+		{
+			mBulletTrail->SetColorGradient(*gradient);
+		}
+	}
+	if (mHitParticles)
+	{
+		mHitParticles->GetOwner()->SetWorldPosition(mHitPoint);
+		mHitParticles->SetEnable(false);
+	}
+}
+
+void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, ColorGradient* gradient)
+{
 	mHitPoint = endPosition;
 	mDirection = (endPosition - startposition).Normalized();
 	mSpeed = speed;
+	mDamage = damage;
 
 	mGameObject->SetEnabled(true);
 

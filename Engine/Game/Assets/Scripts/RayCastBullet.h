@@ -1,11 +1,14 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "Physics.h"
 #include "TimerScript.h"
+
 
 class ParticleSystemComponent;
 class TrailComponent;
 class ColorGradient;
+
 
 GENERATE_BODY(RayCastBullet);
 class RayCastBullet : public Script
@@ -17,14 +20,15 @@ public:
 
 	void Update() override;
 
-	void Init(const float3& startposition, const float3& endPosition, float speed, float size, bool hit, ColorGradient* gradient = nullptr);
-
+	void Init(const float3& startposition, Hit& hit, float damage, float speed, float size, ColorGradient* gradient = nullptr);
+	void Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, ColorGradient* gradient = nullptr);
 private:
 	float mSpeed = 0.1f;
+	float mDamage = 1.0f;
 	bool mShooterIsPlayer = false;
 	float3 mHitPoint = float3::zero;
 	float3 mDirection = float3::zero;
-	bool mHit = false;
+	Hit mHit;
 	ParticleSystemComponent* mHitParticles = nullptr;
 	TrailComponent* mBulletTrail = nullptr;
 

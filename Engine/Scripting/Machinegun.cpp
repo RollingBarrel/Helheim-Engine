@@ -83,19 +83,6 @@ void Machinegun::Attack(float time)
         std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop" };
         Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
-        if (hit.IsValid())
-        {
-            if (hit.mGameObject->GetTag() == "Enemy")
-            {
-                LOG("Enemy %s has been hit with MachineGun at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
-                if (enemy)
-                {
-                    enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
-                }
-            }
-        }
-
         //PARTICLES
 
         if (mFire)
@@ -116,11 +103,11 @@ void Machinegun::Attack(float time)
             bullet->SetEnabled(false);
             if (hit.IsValid())
             {
-                bulletScript->Init(ray.pos, hit.mHitPoint, mBulletSpeed, mBulletSize, true, &gradient);
+                bulletScript->Init(ray.pos, hit, mDamage, mBulletSpeed, mBulletSize, &gradient);
             }
             else
             {
-                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
+                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mDamage, mBulletSpeed, mBulletSize, &gradient);
             }
         }
 

@@ -63,11 +63,9 @@ void Shootgun::Attack(float time)
     }
 
     //Shoot Logic
-    int count = 0;
+
     for (int i = 0; i < numBullets; ++i)
     {
-        
-
         Ray ray;
         ray.pos = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
         ray.pos.y++;
@@ -84,24 +82,6 @@ void Shootgun::Attack(float time)
         Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
 
-
-        if (hit.IsValid())
-        {
-            if (hit.mGameObject->GetTag() == "Enemy")
-            {
-                LOG("Enemy %s has been hit with ShotGun at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
-                if (enemy)
-                {
-                    enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
-                }
-            }
-        }
-        else
-        {
-            count++;
-        }
-
         //PARTICLES
         if (GameManager::GetInstance()->GetPoolManager())
         {
@@ -115,16 +95,13 @@ void Shootgun::Attack(float time)
             bullet->SetEnabled(false);
             if (hit.IsValid())
             {
-                bulletScript->Init(ray.pos, hit.mHitPoint, mBulletSpeed, mBulletSize, true, &gradient);
+                bulletScript->Init(ray.pos, hit, mDamage, mBulletSpeed,  mBulletSize, &gradient);
             }
             else
             {
-                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
+                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mDamage, mBulletSpeed, mBulletSize, &gradient);
             }
         }
-
-
-
     }
     
     //PARTICLES
