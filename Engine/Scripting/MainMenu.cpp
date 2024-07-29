@@ -214,13 +214,13 @@ void MainMenu::Controls()
             if (mSubSection == 1) {
                 if (mSubsettingOption < 4)
                 {
-                    mSettingOption++;
+                    mSubsettingOption++;
                 }
                 else
                 {
-                    mSettingOption = 0;
+                    mSubsettingOption = 0;
                 }
-                HoverSubMenu(mSettingOption);
+                HoverSubSubMenu(mSubsettingOption);
             }
             else {
                 if (mSettingOption < 1)
@@ -481,12 +481,18 @@ void MainMenu::HoverSubSubMenu(int type)
     switch (type)
     {
     case 0:
-        OnControlsButtonHover();
+        OnGeneralVolumeButtonHover();
         break;
     case 1:
-        OnSettingsButtonHover();
+        //OnSettingsButtonHover();
         break;
     }
+}
+
+void MainMenu::OnGeneralVolumeButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
 }
 
 void MainMenu::OnQuitButtonHover() 

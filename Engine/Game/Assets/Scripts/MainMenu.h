@@ -3,6 +3,7 @@
 #include "Macros.h"
 
 class ButtonComponent;
+class SliderComponent;
 class Transform2DComponent;
 class ImageComponent;
 class AudioManager;
@@ -37,6 +38,7 @@ private:
 
     void HoverMenu(MENU_TYPE type);
     void HoverSubMenu(int type);
+	void HoverSubSubMenu(int type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
 
@@ -59,6 +61,7 @@ private:
     void OnControlsButtonHover();
     void OnSettingsButtonHover();
     void OnBackButtonHover();
+	void OnGeneralVolumeButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
