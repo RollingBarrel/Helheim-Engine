@@ -20,8 +20,8 @@ public:
 
 	void Update() override;
 
-	void Init(const float3& startposition, Hit& hit, float damage, float speed, float size, ColorGradient* gradient = nullptr);
-	void Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, ColorGradient* gradient = nullptr);
+	void Init(const float3& startposition, Hit& hit, float damage, float speed, float size, const ColorGradient* gradient = nullptr);
+	void Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, const ColorGradient* gradient = nullptr);
 private:
 	float mSpeed = 0.1f;
 	float mDamage = 1.0f;
@@ -33,6 +33,9 @@ private:
 	TrailComponent* mBulletTrail = nullptr;
 
 	TimerScript mHitTimer;
+
+	//Trails WorkAround
+	bool mFirstFrame = true;
 
 };
 

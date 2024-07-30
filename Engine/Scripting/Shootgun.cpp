@@ -61,58 +61,29 @@ void Shootgun::Attack(float time)
         PlayHitSound();
     }
 
-    //Shoot Logic
+    ColorGradient gradient;
+    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
+    gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
 
+    //Shoot Logic
     for (int i = 0; i < numBullets; ++i)
     {
-        Ray ray;
-        ray.pos = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
-        ray.pos.y++;
-        ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
-
         float3 spread = float3::zero;
         spread += GameManager::GetInstance()->GetPlayer()->GetUp() * LCG().Float(-1.0f, 1.0f);
         spread += GameManager::GetInstance()->GetPlayer()->GetRight() * LCG().Float(-1.0f, 1.0f);
 
-        ray.dir += spread.Normalized() * LCG().Float(0.0f, 0.2f);
+        float3 rayDirection = GameManager::GetInstance()->GetPlayer()->GetFront() + spread.Normalized() * LCG().Float(0.0f, 0.2f);;
 
-        Hit hit;
-        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop" };
-        Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
-
-
-        //PARTICLES
-        if (GameManager::GetInstance()->GetPoolManager())
-        {
-            GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-            RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-            
-            ColorGradient gradient;
-            gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
-            gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
-
-            bullet->SetEnabled(false);
-            if (hit.IsValid())
-            {
-                bulletScript->Init(ray.pos, hit, mDamage, mBulletSpeed,  mBulletSize, &gradient);
-            }
-            else
-            {
-                bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mDamage, mBulletSpeed, mBulletSize, &gradient);
-            }
-        }
+        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), rayDirection , gradient);
     }
     
-    //PARTICLES
+    //Fire Particles
     if (mFire)
     {
         mFire->SetEnabled(false);
         mFire->SetEnabled(true);
-        mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayer()->GetWorldPosition() + float3(0.0f,1.0f,0.0f) + GameManager::GetInstance()->GetPlayer()->GetFront());
+        mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
     }
-
-
-    LOG("Missed bullets = %i", count);
 }
 
 void Shootgun::Exit()

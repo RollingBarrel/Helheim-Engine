@@ -58,10 +58,14 @@ CREATE(PlayerController)
     //MEMBER(MemberType::FLOAT, mMaxShield);
     //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
+
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
+
+    SEPARATOR("RANGE");
+    MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);

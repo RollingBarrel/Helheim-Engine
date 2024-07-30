@@ -1,6 +1,6 @@
 #pragma once
 #include "RangeWeapon.h"
-
+#include "TimerScript.h"
 class Machinegun : public RangeWeapon
 {
 public:
@@ -13,10 +13,12 @@ public:
 	void Reload() override;
 private:
 	void PlayHitSound();
-	bool Delay(float delay);
 
 	unsigned int mNumBullets;
 	float mShootDuration;
 	bool mFirstShoot = true;
 	float mTimePassed = 0.0f;
+
+	TimerScript mShootTimer;
+
 };

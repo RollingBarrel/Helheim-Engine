@@ -1,7 +1,10 @@
 #pragma once
 #include "Weapon.h"
+#include "Math/float3.h"
 
 class GameObject;
+class ColorGradient;
+
 
 class RangeWeapon : public Weapon
 {
@@ -13,7 +16,7 @@ public:
 	float GetAttackDuration() override { return mAttackDuration; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
 	int GetMaxAmmo() { return mMaxAmmo; }
-
+	void Shoot(const float3& position, const float3& direction, const ColorGradient& trailGradient);
 	virtual void Reload() = 0;
 
 protected:

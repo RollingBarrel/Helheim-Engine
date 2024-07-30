@@ -18,6 +18,13 @@ CREATE(RayCastBullet)
 
 void RayCastBullet::Update()
 {
+	if (mFirstFrame)
+	{
+		mFirstFrame = false;
+		return;
+	}
+
+
 	if ((mBulletTrail->GetOwner()->GetWorldPosition() - mHitPoint).Dot(mDirection) < 0)
 	{
 		float3 newPosition = mBulletTrail->GetOwner()->GetWorldPosition() + mDirection * mSpeed * App->GetDt();
@@ -34,7 +41,7 @@ void RayCastBullet::Update()
 			{
 				if (mHit.mGameObject->GetTag().compare("Enemy") == 0)
 				{
-					Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)mHit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+					Enemy* enemy = static_cast<Enemy*>(((ScriptComponent*)mHit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
 					if (enemy)
 					{
 						enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
@@ -57,36 +64,16 @@ void RayCastBullet::Update()
 	}
 }
 
-void RayCastBullet::Init(const float3& startposition, Hit& hit, float damage, float speed, float size, ColorGradient* gradient)
+void RayCastBullet::Init(const float3& startposition, Hit& hit, float damage, float speed, float size, const ColorGradient* gradient)
 {
 	mHit = hit;
-	mHitPoint = hit.mHitPoint;
-	mDirection = (hit.mHitPoint - startposition).Normalized();
-	mSpeed = speed;
-	mDamage = damage;
-
-	mGameObject->SetEnabled(true);
-
-	mHitParticles = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
-	mBulletTrail = reinterpret_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
-	if (mBulletTrail)
-	{
-		mBulletTrail->GetOwner()->SetWorldPosition(startposition);
-		mBulletTrail->SetEnable(true);
-		if (gradient)
-		{
-			mBulletTrail->SetColorGradient(*gradient);
-		}
-	}
-	if (mHitParticles)
-	{
-		mHitParticles->GetOwner()->SetWorldPosition(mHitPoint);
-		mHitParticles->SetEnable(false);
-	}
+	Init(startposition, hit.mHitPoint, damage, speed, size, gradient);
 }
 
-void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, ColorGradient* gradient)
+void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, const ColorGradient* gradient)
 {
+	mFirstFrame = true;
+
 	mHitPoint = endPosition;
 	mDirection = (endPosition - startposition).Normalized();
 	mSpeed = speed;
@@ -94,8 +81,8 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 
 	mGameObject->SetEnabled(true);
 
-	mHitParticles = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
-	mBulletTrail = reinterpret_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
+	mHitParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	mBulletTrail = static_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
 	if (mBulletTrail)
 	{
 		mBulletTrail->GetOwner()->SetWorldPosition(startposition);
