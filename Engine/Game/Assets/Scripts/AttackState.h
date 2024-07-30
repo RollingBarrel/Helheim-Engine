@@ -44,6 +44,8 @@ private:
     float mComboDuration = 3.0f;
 
     bool mAttackWhenPossible = false;
+    TimerScript mPressedAttackTimer;
+    float mAttackPressedCoolDown = 0.4f;
 
     // Player Dash
     float  mMoveRange = 10.f;
