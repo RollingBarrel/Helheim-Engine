@@ -16,7 +16,7 @@ CREATE(EnemyExplosive)
     SEPARATOR("STATS");
     MEMBER(MemberType::INT, mHealth);
 
-    MEMBER(MemberType::FLOAT, mSpeed);;
+    MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mChargingDistance);
     MEMBER(MemberType::FLOAT, mExplosionDistance);
     MEMBER(MemberType::FLOAT, mExplosionDamage);
@@ -165,7 +165,8 @@ void EnemyExplosive::Die()
     mAnimationComponent->SendTrigger("tDeath", 0.2f);
     if (Delay(0.5f))
     {
-        Death();
+        mGameObject->SetEnabled(false);
+        Enemy::DropItem();
     }
     if (mAiAgentComponent)
     {

@@ -19,9 +19,6 @@ enum class PoolType
 	ROBOT_MELEE,
 	ROBOT_RANGE,
 	EXPLOSIVE_BALL,
-
-	//TRAPS
-	EXPLOSIVE_SPAWNER,
 	
 	LAST
 };

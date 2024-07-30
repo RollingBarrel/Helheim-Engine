@@ -11,14 +11,14 @@
 CREATE(EnemyExplosiveSpawner)
 {
     CLASS(owner);
-    SEPARATOR("STATS");
+    MEMBER(MemberType::INT, mHealth);
+    MEMBER(MemberType::FLOAT, mSpawnRate);
+    MEMBER(MemberType::INT, mMaxActiveEnemies);
     END_CREATE;
 }
 
 EnemyExplosiveSpawner::EnemyExplosiveSpawner(GameObject* owner) : Enemy(owner)
 {
-	//TODO: Set the enemy values
-    mHealth = 15;
 }
 
 void EnemyExplosiveSpawner::Start()
@@ -121,10 +121,8 @@ void EnemyExplosiveSpawner::Spawning()
 
 void EnemyExplosiveSpawner::Die()
 {
-    if (Delay(0.5f))
-    {
-        Enemy::Death();
-    }
+    mGameObject->SetEnabled(false);
+    Enemy::DropItem();
 }
 
 void EnemyExplosiveSpawner::OnCollisionEnter(CollisionData* collisionData)
