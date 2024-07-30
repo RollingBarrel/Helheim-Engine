@@ -17,7 +17,7 @@ AttackState::~AttackState()
 {
 }
 
-StateType AttackState::HandleInput()
+StateType AttackState:: HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
     if (mWeapon->GetCurrentAmmo() == 0) return StateType::RELOAD;
@@ -25,12 +25,6 @@ StateType AttackState::HandleInput()
     mAttackTimer += App->GetDt();
     if (mAttackTimer < mWeapon->GetAttackDuration())
     {
-        // MOVE TO WEAPON
-        /* if (mWeapon->GetType() == Weapon::WeaponType::MELEE and
-            App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-        {
-            reinterpret_cast<MeleeWeapon*>(mWeapon)->IncreaseComboStep();
-        } */
         return StateType::ATTACK;
     }
        
@@ -57,6 +51,7 @@ void AttackState::Enter()
     }
 
     mWeapon->Enter();
+    mAttackWhenPossible = false;
 }
 
 void AttackState::Exit()
@@ -93,6 +88,11 @@ bool AttackState::IsReady()
         {
             return true;
         }
+    }
+    else if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE && mPlayerController->GetWeapon()->GetCurrentAmmo() != 0 && App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
+    {
+        //This is neccesary to get an stable shoot time when clicking fast
+        mAttackWhenPossible = true;
     }
     return false;
 }

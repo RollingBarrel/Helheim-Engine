@@ -19,6 +19,7 @@ public:
 	StateType GetType() override;
 
     bool IsReady() override;
+    bool CanAttackWhenPossible() { return mAttackWhenPossible; }
 
 private:
 	Weapon* mWeapon = nullptr;
@@ -41,6 +42,8 @@ private:
     float mComboMilestone1 = 1.0f;
     float mComboMilestone2 = 2.0f;
     float mComboDuration = 3.0f;
+
+    bool mAttackWhenPossible = false;
 
     // Player Dash
     float  mMoveRange = 10.f;

@@ -1,31 +1,28 @@
 #include "Machinegun.h"
 #include "Application.h"
-#include "GameManager.h"
-#include "HudController.h"
-#include "PoolManager.h"
-#include "AudioManager.h"
-#include "RayCastBullet.h"
-#include "Enemy.h"
+#include "ModuleScene.h"
+#include "ModuleInput.h"
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "TrailComponent.h"
 #include "Physics.h"
 
-#include "Application.h"
-#include "ModuleScene.h"
-
 #include "Geometry/Ray.h"
-#include "Algorithm/Random/LCG.h"
-#include "PlayerController.h"
 
-#include "ModuleInput.h"
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "HudController.h"
+#include "PoolManager.h"
+#include "AudioManager.h"
+#include "RayCastBullet.h"
+
 
 Machinegun::Machinegun()
 {
 	mDamage = 4.0f;
 	mAttackDuration = 0.3f;
-    mAttackCooldown = 0.3f;
+    mAttackCooldown = 0.35f;
 	mAttackRange = 25.0f;
     mNumBullets = 3;
 

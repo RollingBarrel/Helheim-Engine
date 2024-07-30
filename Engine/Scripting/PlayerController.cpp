@@ -130,8 +130,6 @@ void PlayerController::Start()
 
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
-    //GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
-    //GameManager::GetInstance()->GetHud()->SetHealth(mMaxShield);
 
     mPlayerSpeed = mPlayerStats->GetSpeed();
 
@@ -253,7 +251,6 @@ void PlayerController::Start()
     {
         mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
     }
-
 }
 
 void PlayerController::Update()
@@ -271,6 +268,7 @@ void PlayerController::Update()
 
     //Check HitEffect
     CheckHitEffect();
+
     // Buff, Debuff timers...
     CheckOtherTimers();
 
@@ -280,7 +278,6 @@ void PlayerController::Update()
 
 void PlayerController::StateMachine()
 {
-    // Check if dead
     mLowerState->Update();
     mUpperState->Update();
 }
@@ -308,7 +305,6 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 
 void PlayerController::CheckInput()
 {
-
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 

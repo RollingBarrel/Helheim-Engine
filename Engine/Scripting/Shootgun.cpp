@@ -1,24 +1,23 @@
 #include "Shootgun.h"
-#include "GameManager.h"
-#include "PoolManager.h"
-#include "HudController.h"
-#include "AudioManager.h"
-#include "Enemy.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "ModuleInput.h"
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "TrailComponent.h"
-#include "PlayerController.h"
-#include "RayCastBullet.h"
-
-#include "Application.h"
-#include "ModuleScene.h"
-
 #include "Physics.h"
+
 #include "Geometry/Ray.h"
 #include "Algorithm/Random/LCG.h"
 
-#include "ModuleInput.h"
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "HudController.h"
+#include "PoolManager.h"
+#include "AudioManager.h"
+#include "RayCastBullet.h"
+
 
 Shootgun::Shootgun()
 {

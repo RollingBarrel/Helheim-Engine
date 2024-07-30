@@ -32,9 +32,9 @@ StateType AimState::HandleInput()
         return StateType::GRENADE;
     }
 
-    if (mPlayerController->GetAttackState()->IsReady() &&
-       (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN))
+    if ((mPlayerController->GetAttackState()->IsReady() &&
+       ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN) || mPlayerController->GetAttackState()->CanAttackWhenPossible())))
     {
         mPlayerController->GetAttackState()->ResetCooldown();
         return StateType::ATTACK;
