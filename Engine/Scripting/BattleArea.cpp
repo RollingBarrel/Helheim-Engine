@@ -146,7 +146,7 @@ inline void BattleArea::ActivateArea(bool activate)
 	if (!activate)
 	{
 		GameManager::GetInstance()->SetActiveBattleArea(nullptr);
-		GameManager::GetInstance()->GetHud()->SetSanity();
+		GameManager::GetInstance()->GetHud()->SetDialog();
 		//LOG("Sanity");
 	}
 }

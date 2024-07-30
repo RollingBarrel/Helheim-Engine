@@ -1,30 +1,18 @@
 #include "ModuleScene.h"
-#include "GameObject.h"
 #include "Application.h"
-#include "ModuleCamera.h"
-#include "glew.h"
-#include "MeshRendererComponent.h"
-#include "CameraComponent.h"
-#include "Component.h"
-#include "ModuleUI.h"
+#include "Globals.h"
 
+#include "ModuleCamera.h"
+#include "ModuleUI.h"
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
-#include "HierarchyPanel.h"
-#include "ModuleEditor.h"
-#include "ModuleResource.h"
-#include "Globals.h"
+#include "MeshRendererComponent.h"
 
-#include "ResourceScene.h"
+#include "glew.h"
 
-#include <algorithm>
-#include <iterator>
-#include "Algorithm/Random/LCG.h"
-
-#include "GeometryBatch.h"
-#include "ImporterMesh.h"
+#include "PlayerStats.h"
 
 const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
 
@@ -42,6 +30,7 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("EmptyScene", nullptr);
+	mPlayerStats = new PlayerStats();
 	return true;
 }
 
@@ -102,6 +91,9 @@ bool ModuleScene::CleanUp()
 	{
 		delete mBackgroundScene;
 	}
+
+	delete mPlayerStats;
+
 	return true;
 }
 
@@ -619,11 +611,10 @@ void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* seco
 		mSceneGO.push_back(second);
 	}
 
-	for (unsigned int i = 0; i < second->GetChildren().size(); ++i)
+	for (int i = second->GetChildren().size() - 1; i >= 0; --i)
 	{
 		SwitchGameObjectsFromScene(second, second->GetChildren()[i]);
 	}
-	
 }
 
 void ModuleScene::DeleteGameObjects()

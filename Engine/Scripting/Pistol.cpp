@@ -13,11 +13,12 @@
 #include "PoolManager.h"
 #include "HudController.h"
 #include "Enemy.h"
-#include "Bullet.h"
+#include "RayCastBullet.h"
 #include "Bat.h"
 #include "TrailComponent.h"
 #include "HudController.h"
 #include "GameManager.h"
+#include "PlayerController.h"
 #include "AudioManager.h"
 
 #include "ModuleInput.h"
@@ -26,18 +27,17 @@
 
 Pistol::Pistol() : RangeWeapon()
 {
-    mCurrentAmmo = 16;
-    mMaxAmmo = 16;
-    mDamage = 2.0f;
-    mAttackDuration = 0.0f;
-    mAttackCooldown = 0.2f;
+	mCurrentAmmo = 16;
+	mMaxAmmo = 16;
+	mDamage = 2.0f;
+	mAttackDuration = 0.0f;
+	mAttackCooldown = 0.15f;
+	mAttackRange = 25.0f;
 
-    mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
-    if (mFire)
-    {
-        mFire->SetEnabled(false);
-    }
-    
+	mBulletSpeed = 50.0f;
+
+	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
+	if (mFire)	mFire->SetEnabled(false);
 }
 
 Pistol::~Pistol()
@@ -46,84 +46,89 @@ Pistol::~Pistol()
 
 void Pistol::Enter()
 {
-    //CONTROLLER VIBRATION
-    App->GetInput()->SetGameControllerRumble(45000, 0, 100);
+	//CONTROLLER VIBRATION
+	App->GetInput()->SetGameControllerRumble(45000, 0, 100);
 }
 
 void Pistol::Attack(float time)
 {
-   // LOG("Pistol Attack");
-    
-    //Audio
-    if (GameManager::GetInstance()->GetAudio())
-    {
-        PlayHitSound();
-    }
+	// LOG("Pistol Attack");
 
-    GameObject* bullet = nullptr;
-    if (mCurrentAmmo > 0) 
-    {
-        mCurrentAmmo--;
-        //LOG("Bullets: %i", mCurrentAmmo);
-    }
-    
-    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+	//Audio
+	if (GameManager::GetInstance()->GetAudio())
+	{
+		PlayHitSound();
+	}
 
-    std::multiset<Hit> hits;
+	GameObject* bullet = nullptr;
+	if (mCurrentAmmo > 0)
+	{
+		mCurrentAmmo--;
+		//LOG("Bullets: %i", mCurrentAmmo);
+	}
 
-    Ray ray;
-    ray.pos = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
-    ray.pos.y++;
-    ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
+	GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 
-    float distance = 100.0f;
-    Physics::Raycast(hits, ray, distance);
+	Hit hit;
 
-    if (!hits.empty())
-    {
-        for (const Hit& hit : hits)
-        {
-            if (hit.mGameObject->GetTag().compare("Enemy") == 0)
-            {
-                LOG("Enemy %s has been hit at distance: %f", hits.begin()->mGameObject->GetName().c_str(), hits.begin()->mDistance);
+	Ray ray;
+	ray.pos = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
+	ray.pos.y++;
+	ray.dir = GameManager::GetInstance()->GetPlayer()->GetFront();
 
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
-                if (enemy)
-                {
-                    enemy->TakeDamage(mDamage);
-                }
-            }
-        }
-    }
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop"};
+	Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
-    //PARTICLES
-    if (mFire)
-    {
-        mFire->SetEnabled(false);
-        mFire->SetEnabled(true);
-        mFire->SetWorldPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
-    }
-    
-    if (GameManager::GetInstance()->GetPoolManager())
-    {
-        GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-        Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        ColorGradient gradient;
-        gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
-        bullet->SetEnabled(false);
-        bulletScript->Init(ray.pos, ray.dir, 1.0f, 1.0f, &gradient);
-    }
+	if (hit.IsValid())
+	{
+		//LOG("Object %s has been hit at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
+		if (hit.mGameObject->GetTag().compare("Enemy") == 0)
+		{
+			//LOG("Enemy %s has been hit at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
+			Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+			if (enemy)
+			{
+				enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
+			}
+		}
+	}
+
+	//PARTICLES
+	if (mFire)
+	{
+		mFire->SetEnabled(false);
+		mFire->SetEnabled(true);
+		mFire->SetWorldPosition(ray.pos + GameManager::GetInstance()->GetPlayer()->GetFront());
+	}
+
+	if (GameManager::GetInstance()->GetPoolManager())
+	{
+		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+		RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		ColorGradient gradient;
+		gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
+		bullet->SetEnabled(false);
+
+		if (hit.IsValid())
+		{
+			bulletScript->Init(ray.pos, hit.mHitPoint, mBulletSpeed, mBulletSize, true, &gradient);
+		}
+		else
+		{
+			bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mBulletSpeed, mBulletSize, false, &gradient);
+		}
+	}
 }
 
 void Pistol::Reload()
 {
-    mCurrentAmmo = mMaxAmmo;
-    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
+	mCurrentAmmo = mMaxAmmo;
+	GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }
 
 void Pistol::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }
 
 void Pistol::Exit()

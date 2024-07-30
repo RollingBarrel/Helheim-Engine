@@ -2,6 +2,10 @@
     "Tags": [
         "WinArea",
         "Wall",
-        "Door"
+        "Door",
+        "Bullet",
+        "BattleArea",
+        "Trap",
+        "Drop"
     ]
 }

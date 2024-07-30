@@ -29,7 +29,7 @@
 
 #include "SDL.h"
 #include "glew.h"
-
+#include <random>
 
 
 ModuleOpenGL::ModuleOpenGL()
@@ -98,7 +98,7 @@ bool ModuleOpenGL::Init()
 {
 	LOG("Creating Renderer context");
 
-	context = SDL_GL_CreateContext(App->GetWindow()->window);
+	context = SDL_GL_CreateContext(App->GetWindow()->mWindow);
 
 	GLenum err = glewInit();
 	LOG("Using Glew %s", glGetString(GLEW_VERSION));
@@ -163,6 +163,8 @@ bool ModuleOpenGL::Init()
 	glGenTextures(1, &mGEmissive);
 	//glGenTextures(1, &mGDepth);
 	glGenTextures(1, &mGPosition);
+	glGenTextures(1, &mSSAO);
+
 
 	//glBindTexture(GL_TEXTURE_2D, mGDepth);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
@@ -195,6 +197,10 @@ bool ModuleOpenGL::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
 	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
@@ -202,6 +208,7 @@ bool ModuleOpenGL::Init()
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPosition, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT4, GL_TEXTURE_2D, mGEmissive, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT5, GL_TEXTURE_2D, mGSSAO, 0);
 	
 	const GLenum att2[] = { GL_COLOR_ATTACHMENT0 , GL_COLOR_ATTACHMENT1 , GL_COLOR_ATTACHMENT2 , GL_COLOR_ATTACHMENT3 , GL_COLOR_ATTACHMENT4 };
 	glDrawBuffers(1, att2);
@@ -312,13 +319,20 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "DecalPass_Fragment.glsl";
 	DecalPassProgramId= CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "ssao_fragment.glsl";
+	mSSAOPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 	sourcesPaths[0] = "ui.vs";
 	sourcesPaths[1] = "uiMask.fs";
 	mUIMaskProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
-	sourcesPaths[1] = "Blur.glsl";
-	mBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[1] = "GaussianBlur.glsl";
+	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SsaoBlur.glsl";
+	mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
@@ -327,6 +341,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterUpBlur.glsl";
 	mUpsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "GameFragment.glsl";
+	mGameProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
 	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
@@ -377,6 +394,58 @@ bool ModuleOpenGL::Init()
 	glUniform2ui(4, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 
+
+	//SSAO
+	const unsigned int randomTangentRows = 20;
+	const unsigned int randomTangentCols = 20;
+	float3 randomTangents[randomTangentRows][randomTangentCols];
+
+	//Generating random tangents
+	std::uniform_real_distribution<float> randoms(0.0f, 1.0f);
+	std::default_random_engine generator;
+
+	for (unsigned int i = 0; i < randomTangentRows; ++i)
+	{
+		for (unsigned int j = 0; j < randomTangentCols; ++j)
+		{
+			float3 dir;
+			dir.x = randoms(generator) * 2.0f - 1.0f;
+			dir.y = randoms(generator) * 2.0f - 1.0f;
+			dir.z = 0.0f;
+			dir.Normalize();
+			randomTangents[i][j] = dir;
+		}
+	}
+	const unsigned int kernelSize = 24;
+	float3 kernel[kernelSize];
+	//Generating kernels
+
+	for (unsigned int i = 0; i < kernelSize; ++i)
+	{
+
+		float3 dir;
+		dir.x = randoms(generator) * 2.0f - 1.0f;
+		dir.y = randoms(generator) * 2.0f - 1.0f;
+		dir.z = randoms(generator);
+		dir.Normalize();
+		dir *= randoms(generator); // random size
+		float scale = static_cast<float>(i) / static_cast<float>(kernelSize);
+		scale = 0.1f + (scale * scale) * (1.0f - 0.1f);
+		dir *= scale;
+		kernel[i] = dir;
+	}
+
+	glUseProgram(mSSAOPassProgramId);
+	GLint randomTangentsLocation = glGetUniformLocation(mSSAOPassProgramId, "randomTangents");
+	GLint kernelSamplesLocation = glGetUniformLocation(mSSAOPassProgramId, "kernelSamples");
+	glUniform3fv(randomTangentsLocation, randomTangentRows*randomTangentCols, randomTangents[0][0].ptr());
+	glUniform3fv(kernelSamplesLocation, kernelSize, kernel[0].ptr());
+	glUniform1f(1, mAoRange);
+	glUniform1f(2, mAoBias);
+	glUseProgram(mPbrLightingPassProgramId);
+	glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "activeAO"), mAoActive);
+	glUseProgram(0);
+
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
 	glUseProgram(0);
@@ -404,7 +473,7 @@ update_status ModuleOpenGL::PreUpdate(float dt)
 update_status ModuleOpenGL::PostUpdate(float dt)
 {
 
-	SDL_GL_SwapWindow(App->GetWindow()->window);
+	SDL_GL_SwapWindow(App->GetWindow()->mWindow);
 
 	return UPDATE_CONTINUE;
 }
@@ -534,8 +603,15 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	InitBloomTextures(width, height);
+	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	//VOLVER A PONER EL RED
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, width, height, 0, GL_RED, GL_FLOAT, NULL);
+	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, width, height, 0, GL_RGB, GL_FLOAT, NULL);
 	ResizeGBuffer(width, height);
 	LightCullingLists(width, height);
+	glUseProgram(mSSAOPassProgramId);
+	glUniform2ui(glGetUniformLocation(mSSAOPassProgramId, "screenSize"), width, height);
+	glUseProgram(0);
 }
 
 void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int screenHeight)
@@ -788,32 +864,10 @@ unsigned int ModuleOpenGL::GetSkyboxID() const
 	return (mCurrSkyBox) ? mCurrSkyBox->GetUID() : 0;
 }
 
-unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
+unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
 {
-	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[1]);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[0]);
-	//glClear(GL_COLOR_BUFFER_BIT);
-	//bool horizontal = true;
-	//unsigned int ret = 0;
-	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Blur");
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, texId);
-	//glUseProgram(mBlurProgramId);
-	//glBindVertexArray(mEmptyVAO);
-	//for (unsigned int i = 0; i < amount * 2; ++i)
-	//{
-	//	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO[horizontal]);
-	//	glUniform1ui(0, horizontal);
-	//	glDrawArrays(GL_TRIANGLES, 0, 3);
-	//	glBindTexture(GL_TEXTURE_2D, mBlurTex[i % 2]);
-	//	ret = i % 2;
-	//	horizontal = !horizontal;
-	//}
-	//glBindVertexArray(0);
-	//glPopDebugGroup();
-	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	//return mBlurTex[ret];
+	if (passes > mBlurPasses || passes == 0)
+		passes = mBlurPasses;
 
 	float w = mSceneWidth;
 	float h = mSceneHeight;
@@ -823,7 +877,7 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 	glBindVertexArray(mEmptyVAO);
 	glBindTexture(GL_TEXTURE_2D, texId);
 	glUseProgram(mDownsampleProgramId);
-	for (unsigned int i = 0; i < mBlurPasses; ++i)
+	for (unsigned int i = 0; i < passes; ++i)
 	{
 		w /= 2;
 		h /= 2;
@@ -833,7 +887,7 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i+1]);
 	}
 	glUseProgram(mUpsampleProgramId);
-	for (int i = mBlurPasses - 1; i >= 0; --i)
+	for (int i = passes - 1; i >= 0; --i)
 	{
 		w *= 2;
 		h *= 2;
@@ -841,6 +895,8 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId) const
 		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
+		if(i == 1 && modifyTex)
+			glBindTexture(GL_TEXTURE_2D, texId);
 	}
 	glBindVertexArray(0);
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -1216,6 +1272,70 @@ void ModuleOpenGL::Draw()
 	const GLenum att2[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
 	glDrawBuffers(5, att2);
 
+	//SSAO Pass
+	if (mAoActive)
+	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SSAO Pass");
+		glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
+		//glDisable(GL_STENCIL_TEST);
+		glDepthMask(0x00);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, mGPosition);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, mGNormals);
+		glBindVertexArray(mEmptyVAO);
+		glUseProgram(mSSAOPassProgramId);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		glDepthMask(0xFF);
+		//glEnable(GL_STENCIL_TEST);
+
+		//dual filter blur
+		BlurTexture(mSSAO, true);
+		
+		//Gausian blur
+		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glUseProgram(mGaussianBlurProgramId);
+		//glBindVertexArray(mEmptyVAO);
+		//bool horizontal = true;
+		//unsigned int drawTex = mSSAO;
+		//unsigned int sampleTex = mBlurTex[0];
+		////tine que ser impar
+		//const unsigned int passes = 3;
+		//for (int i = 0; i < (passes*2+1); ++i)
+		//{
+		//	glUniform1ui(0, horizontal);
+		//	if ((i&1) == 0)
+		//	{
+		//		unsigned int tmp = drawTex;
+		//		drawTex = sampleTex;
+		//		sampleTex = tmp;
+		//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+		//		glBindTexture(GL_TEXTURE_2D, sampleTex);
+		//	}
+		//	glDrawArrays(GL_TRIANGLES, 0, 3);
+		//	horizontal = !horizontal;
+		//}
+
+		//simple ssao blur
+		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+		//glActiveTexture(GL_TEXTURE0);
+		//glUseProgram(mSsaoBlurProgramId);
+		//glBindVertexArray(mEmptyVAO);
+		////for (int i = 0; i < 2; ++i)
+		////{
+		////	if ((i&1) == 0)
+		////	{
+		//		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSSAO, 0);
+		//		glBindTexture(GL_TEXTURE_2D, mBlurTex[0]);
+		//	//}
+		//	glDrawArrays(GL_TRIANGLES, 0, 3);
+		////}
+
+		glPopDebugGroup();
+	}
 
 	//Bloom
 	unsigned int blurredTex = BlurTexture(mGEmissive);
@@ -1247,6 +1367,8 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glActiveTexture(GL_TEXTURE9);
 	glBindTexture(GL_TEXTURE_2D, blurredTex);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_2D, mSSAO);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);

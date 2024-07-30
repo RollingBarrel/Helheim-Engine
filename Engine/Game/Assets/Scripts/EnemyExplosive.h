@@ -1,51 +1,29 @@
 #pragma once
 #include "Enemy.h"
 
-
-struct CollisionData;
-class BoxColliderComponent;
 class GameObject;
+class ParticleSystemComponent;
+class PlayerController;
+
 GENERATE_BODY(EnemyExplosive);
 class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
-	public:
-		EnemyExplosive(GameObject* owner);
-		~EnemyExplosive() {}
+public:
+	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
+	~EnemyExplosive() {}
 
-		void Start() override;
-		void Update() override;
-		void Init() override;
+	void Start() override;
+	void Charge() override;
+	void Attack() override;
 
-		void Idle();
-		void Chase();
-		void TakeDamage(float damage) override;
+private:
+	void ChargeWarningArea();
 
-	private:
-		enum class EnemyState {
-			IDLE,
-			CHASE,
-			CHARGING,
-			EXPLOSION,
-			DEATH
-		};
+	float mExplosionRadius = 5.0f;
+	GameObject* mExplosionWarningGO = nullptr;
+	GameObject* mExplosionParticle = nullptr;
+	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
+	PlayerController* playerScript = nullptr;
 
-		void Charging();
-		void Explosion();
-		void ChargeWarningArea();
-		void Die();
-		void OnCollisionEnter(CollisionData* collisionData);
-
-		EnemyState mCurrentState = EnemyState::IDLE;
-
-		float mChargingDistance = 1.0f;
-		float mExplosionDistance = 5.0f;
-		float mExplosionDamage = 10.0f;
-		GameObject* mExplosionWarningGO = nullptr;
-		float mWarningInitialSize = 0.1f;
-		float mWarningTimer = 0.0f;
-		float mExplosionDelay = 2.0f;
-		float3 mWarningSize = float3(0.1f,0.1f,0.1f);
-		//Collider
-		BoxColliderComponent* mCollider = nullptr;
 };
