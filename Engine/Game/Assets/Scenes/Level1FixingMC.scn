@@ -6312,6 +6312,25 @@
                                 "VariableName": "mDuration",
                                 "MemberType": 1,
                                 "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mCamera",
+                                "MemberType": 3,
+                                "VariableData": 2117687861
+                            },
+                            {
+                                "VariableName": "mCameraPos",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    77.0,
+                                    45.0,
+                                    13.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mBattleArea",
+                                "MemberType": 3,
+                                "VariableData": 911659187
                             }
                         ]
                     },
@@ -6425,6 +6444,25 @@
                                 "VariableName": "mDuration",
                                 "MemberType": 1,
                                 "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mCamera",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraPos",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mBattleArea",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -6481,7 +6519,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    62.47916793823242,
+                    54.951480865478519,
                     36.1075439453125,
                     13.012613296508789
                 ],
@@ -6622,6 +6660,25 @@
                                 "VariableName": "mDuration",
                                 "MemberType": 1,
                                 "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mCamera",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraPos",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mBattleArea",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -8989,6 +9046,11 @@
                                 "VariableName": "mDoor2",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mElevator",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -9067,6 +9129,11 @@
                             },
                             {
                                 "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mElevator",
                                 "MemberType": 3,
                                 "VariableData": -1
                             }
@@ -9165,6 +9232,11 @@
                                 "VariableName": "mDoor2",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mElevator",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -9259,6 +9331,11 @@
                             },
                             {
                                 "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mElevator",
                                 "MemberType": 3,
                                 "VariableData": -1
                             }
@@ -9697,6 +9774,11 @@
                                 "VariableData": 37771838
                             },
                             {
+                                "VariableName": "mUltimateSliderGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "mAmmoGO",
                                 "MemberType": 3,
                                 "VariableData": 1607610048
@@ -9715,6 +9797,16 @@
                                 "VariableName": "mFeedbackGO",
                                 "MemberType": 3,
                                 "VariableData": 296089650
+                            },
+                            {
+                                "VariableName": "mBossHealthGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBossHealthGradualGO",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "Pause Screen",
@@ -9763,6 +9855,21 @@
                                 "VariableName": "mLoadingScreen",
                                 "MemberType": 3,
                                 "VariableData": 1456554295
+                            },
+                            {
+                                "VariableName": "mTryAgainBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mLoseMenuBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mWinMenuBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "Sanity & Dialog",

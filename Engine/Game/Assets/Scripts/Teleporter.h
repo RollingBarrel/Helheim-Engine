@@ -46,6 +46,7 @@ private:
 	float3 mStartPos;
 	float3 mEndPos;
 	float3 mCameraPos;
+	float3 mCameraEndPos;
 	float3 mFirstPlayerPos;
 	GameObject* mBattleArea = nullptr;
 	GameObject* mPlayer = nullptr;
