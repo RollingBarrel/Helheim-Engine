@@ -106,6 +106,10 @@ void MainMenu::Start()
     mVSyncImage = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
     mFullscreenImage = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
 
+
+    mGeneralVolumeButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnGeneralVolumeButtonClick, this)));
+    mMusicVolumeButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMusicVolumeButtonClick, this)));
+    mEffectsVolumeButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsVolumeButtonClick, this)));
     mVSyncButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonClick, this)));
     mFullscreenButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonClick, this)));
 
@@ -178,7 +182,7 @@ void MainMenu::Controls()
             }
             HoverMenu(static_cast<MENU_TYPE>(mOption));
         }
-        else if (mSection == 1) // CONTROLS INSIDE OPTIONS
+        else if (mSection == 1 && mCurrentMenu != MENU_TYPE::SETTINGS) // CONTROLS INSIDE OPTIONS
         {
             if (mSettingOption > 0)
             {
@@ -212,6 +216,7 @@ void MainMenu::Controls()
         else if (mSection == 1)
         {
             if (mSubSection == 1) {
+                HoverSubSubMenu(mSubsettingOption);
                 if (mSubsettingOption < 4)
                 {
                     mSubsettingOption++;
@@ -220,7 +225,6 @@ void MainMenu::Controls()
                 {
                     mSubsettingOption = 0;
                 }
-                HoverSubSubMenu(mSubsettingOption);
             }
             else {
                 if (mSettingOption < 1)
@@ -442,6 +446,18 @@ void MainMenu::OnFullscreenButtonClick()
     }
 }
 
+void MainMenu::OnGeneralVolumeButtonClick()
+{
+	LOG("General Volume");
+}
+
+void MainMenu::OnMusicVolumeButtonClick() {
+    LOG("Music Volume");
+}
+void MainMenu::OnEffectsVolumeButtonClick() {
+    LOG("Effects Volume");
+}
+
 // SELECTED
 
 void MainMenu::HoverMenu(MENU_TYPE type) 
@@ -484,8 +500,17 @@ void MainMenu::HoverSubSubMenu(int type)
         OnGeneralVolumeButtonHover();
         break;
     case 1:
-        //OnSettingsButtonHover();
+        OnMusicVolumeButtonHover();
         break;
+	case 2:
+        OnEffectsVolumeButtonHover();
+        break;
+	case 3:
+        OnVSyncButtonHover();
+		break;
+	case 4:
+        OnFullscreenButtonHover();
+		break;
     }
 }
 
@@ -493,6 +518,56 @@ void MainMenu::OnGeneralVolumeButtonHover()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
+
+	//TODO: Abstract this abomination (in all the hover functions)
+    OnMusicVolumeButtonHoverOff();
+    OnEffectsVolumeButtonHoverOff();
+    OnVSyncButtonHoverOff();
+    OnFullscreenButtonHoverOff();
+}
+
+void MainMenu::OnMusicVolumeButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
+
+    OnGeneralVolumeButtonHoverOff();
+    OnEffectsVolumeButtonHoverOff();
+    OnVSyncButtonHoverOff();
+    OnFullscreenButtonHoverOff();
+}
+
+void MainMenu::OnEffectsVolumeButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
+
+    OnGeneralVolumeButtonHoverOff();
+    OnMusicVolumeButtonHoverOff();
+    OnVSyncButtonHoverOff();
+    OnFullscreenButtonHoverOff();
+}
+
+void MainMenu::OnVSyncButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
+
+    OnGeneralVolumeButtonHoverOff();
+    OnMusicVolumeButtonHoverOff();
+    OnEffectsVolumeButtonHoverOff();
+    OnFullscreenButtonHoverOff();
+}
+
+void MainMenu::OnFullscreenButtonHover()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.8f);
+
+    OnGeneralVolumeButtonHoverOff();
+    OnMusicVolumeButtonHoverOff();
+    OnEffectsVolumeButtonHoverOff();
+    OnVSyncButtonHoverOff();
 }
 
 void MainMenu::OnQuitButtonHover() 
@@ -637,6 +712,36 @@ void MainMenu::OnBackButtonHover()
 void MainMenu::OnBackButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnGeneralVolumeButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnMusicVolumeButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnEffectsVolumeButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnVSyncButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
+    image->SetAlpha(0.0f);
+}
+
+void MainMenu::OnFullscreenButtonHoverOff()
+{
+    ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.0f);
 }
 

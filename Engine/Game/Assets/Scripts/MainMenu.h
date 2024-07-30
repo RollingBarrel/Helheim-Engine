@@ -52,6 +52,10 @@ private:
     void OnSettingsButtonClick();
     void OnVSyncButtonClick();
     void OnFullscreenButtonClick();
+    void OnGeneralVolumeButtonClick();
+    void OnMusicVolumeButtonClick();
+    void OnEffectsVolumeButtonClick();
+
 
     void OnQuitButtonHover();
     void OnOptionsButtonHover();
@@ -62,6 +66,10 @@ private:
     void OnSettingsButtonHover();
     void OnBackButtonHover();
 	void OnGeneralVolumeButtonHover();
+    void OnMusicVolumeButtonHover();
+    void OnEffectsVolumeButtonHover();
+    void OnVSyncButtonHover();
+    void OnFullscreenButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
@@ -71,6 +79,11 @@ private:
     void OnControlsButtonHoverOff();
     void OnSettingsButtonHoverOff();
     void OnBackButtonHoverOff();
+    void OnGeneralVolumeButtonHoverOff();
+    void OnMusicVolumeButtonHoverOff();
+    void OnEffectsVolumeButtonHoverOff();
+    void OnVSyncButtonHoverOff();
+    void OnFullscreenButtonHoverOff();
     
     int mOption = 0;
     int mSettingOption = 0;
