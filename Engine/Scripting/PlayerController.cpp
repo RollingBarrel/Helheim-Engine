@@ -58,7 +58,6 @@ CREATE(PlayerController)
     //MEMBER(MemberType::FLOAT, mMaxShield);
     //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
-
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
