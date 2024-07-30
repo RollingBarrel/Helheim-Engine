@@ -99,7 +99,7 @@ void GameManager::Clean()
 
 PoolManager* GameManager::GetPoolManager() const 
 { 
-    return reinterpret_cast<PoolManager*>(reinterpret_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    return reinterpret_cast<PoolManager*>(static_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 bool GameManager::UsingController() const

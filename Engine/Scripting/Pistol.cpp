@@ -85,7 +85,7 @@ void Pistol::Attack(float time)
 		if (hit.mGameObject->GetTag().compare("Enemy") == 0)
 		{
 			//LOG("Enemy %s has been hit at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
-			Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+			Enemy* enemy = static_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
 			if (enemy)
 			{
 				enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
@@ -104,7 +104,7 @@ void Pistol::Attack(float time)
 	if (GameManager::GetInstance()->GetPoolManager())
 	{
 		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-		RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		RayCastBullet* bulletScript = static_cast<RayCastBullet*>(static_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		ColorGradient gradient;
 		gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
 		bullet->SetEnabled(false);

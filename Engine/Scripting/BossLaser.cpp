@@ -65,8 +65,8 @@ void BossLaser::Update()
 			{
 				mIframes = 10.0f;
 				LOG("Collided with player");
-				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+				ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+				PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
 				if (player->GetPlayerLowerState()->GetType() != StateType::DASH)
 				{
 					player->TakeDamage(mDamage);

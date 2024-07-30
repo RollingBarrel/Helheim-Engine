@@ -26,7 +26,7 @@ void ItemDrop::Init()
 
     if (!components.empty())
     {
-        mAnimation = reinterpret_cast<AnimationComponent*>(*components.begin());
+        mAnimation = static_cast<AnimationComponent*>(*components.begin());
         if (mAnimation)
         {
             mAnimation->SetIsPlaying(true);
@@ -42,7 +42,7 @@ void ItemDrop::Start()
     ModuleScene* scene = App->GetScene();
     mPlayer = GameManager::GetInstance()->GetPlayer();
     
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ItemDrop::OnCollisionEnter, this, std::placeholders::_1)));
@@ -66,7 +66,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
     {
        
 
-        PlayerController* playerScript =  reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (playerScript != nullptr)
         {
             switch (mDropId)

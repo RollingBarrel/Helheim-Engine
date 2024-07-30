@@ -850,7 +850,7 @@ void ModuleOpenGL::SetSkybox(unsigned int uid)
 	}
 	if (uid != 0)
 	{
-		mCurrSkyBox = reinterpret_cast<ResourceIBL*>(App->GetResource()->RequestResource(uid, Resource::Type::IBL));
+		mCurrSkyBox = static_cast<ResourceIBL*>(App->GetResource()->RequestResource(uid, Resource::Type::IBL));
 		assert(mCurrSkyBox);
 		glUseProgram(mPbrLightingPassProgramId);
 		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), log2(std::max(mCurrSkyBox->GetSpecPrefilteredTexSize(), mCurrSkyBox->GetSpecPrefilteredTexSize())));

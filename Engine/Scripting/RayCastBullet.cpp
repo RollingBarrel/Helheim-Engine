@@ -50,8 +50,8 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 
 	mGameObject->SetEnabled(true);
 
-	mHitParticles = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
-	mBulletTrail = reinterpret_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
+	mHitParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	mBulletTrail = static_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
 	if (mBulletTrail)
 	{
 		mBulletTrail->GetOwner()->SetWorldPosition(startposition);
