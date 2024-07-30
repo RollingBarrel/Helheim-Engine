@@ -12,9 +12,9 @@
 #include "PlayerController.h"
 #include "RayCastBullet.h"
 
-
 #include <vector>
 #include <string>
+
 
 RangeWeapon::RangeWeapon() : Weapon()
 {
@@ -25,13 +25,19 @@ RangeWeapon::~RangeWeapon()
 {
 }
 
-void RangeWeapon::Shoot(const float3& position, const float3& direction, const ColorGradient& trailGradient)
+void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGradient& trailGradient)
 {
+
+	float3 front = GameManager::GetInstance()->GetPlayer()->GetFront();
+	float3 up = GameManager::GetInstance()->GetPlayer()->GetUp();
+	float3 right = GameManager::GetInstance()->GetPlayer()->GetRight();
+	float3 bulletDirection = Spread(front, up, right, 0.3f);
+
 	Hit hit;
 
 	Ray ray;
 	ray.pos = position;
-	ray.dir = direction;
+	ray.dir = bulletDirection;
 
 	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop" };
 	Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
@@ -51,6 +57,24 @@ void RangeWeapon::Shoot(const float3& position, const float3& direction, const C
 			bulletScript->Init(ray.pos, ray.pos + ray.dir.Mul(mAttackRange), mDamage, mBulletSpeed, mBulletSize, &trailGradient);
 		}
 	}
+}
 
+float3 RangeWeapon::Spread(const float3& front, const float3& up, const float3& right, float maxSpread)
+{
+	float random = ((float)rand()) / (float)RAND_MAX;
+	float diff = maxSpread - (-maxSpread);
+	float upSpread = random * diff;
+	random = ((float)rand()) / (float)RAND_MAX;
+	float rightSpread = random * diff;
+	random = ((float)rand()) / (float)RAND_MAX;
+	diff = 0.2f;
+	float r = random * diff;
+
+	float3 spread = float3::zero;
+	spread += up * upSpread;
+	spread += right * rightSpread;
+	spread *= r;
+
+	return (front + spread).Normalized();
 }
 

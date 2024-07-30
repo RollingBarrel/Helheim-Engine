@@ -30,6 +30,7 @@ Pistol::Pistol() : RangeWeapon()
 	mAttackRange = 25.0f;
 
 	mBulletSpeed = 50.0f;
+	mBulletMaxSpread = 0.3f;
 
 	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
 	if (mFire)	mFire->SetEnabled(false);
@@ -47,27 +48,20 @@ void Pistol::Enter()
 
 void Pistol::Attack(float time)
 {
-	// LOG("Pistol Attack");
-
 	//Audio
 	if (GameManager::GetInstance()->GetAudio())
 	{
 		PlayHitSound();
 	}
 
-	GameObject* bullet = nullptr;
-	if (mCurrentAmmo > 0)
-	{
-		mCurrentAmmo--;
-		//LOG("Bullets: %i", mCurrentAmmo);
-	}
-
+	mCurrentAmmo--;
 	GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
-
+	
+	
 	ColorGradient gradient;
 	gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
-	Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), GameManager::GetInstance()->GetPlayer()->GetFront(), gradient);
-
+	Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
+	
 	//Fire Particles
 	if (mFire)
 	{

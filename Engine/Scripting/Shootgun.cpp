@@ -27,6 +27,7 @@ Shootgun::Shootgun()
     mAttackCooldown = 0.5f;
 
     mBulletSpeed = 30.0f;
+    mBulletMaxSpread = 0.5f;
 
     mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
     if (mFire)
@@ -68,13 +69,7 @@ void Shootgun::Attack(float time)
     //Shoot Logic
     for (int i = 0; i < numBullets; ++i)
     {
-        float3 spread = float3::zero;
-        spread += GameManager::GetInstance()->GetPlayer()->GetUp() * LCG().Float(-1.0f, 1.0f);
-        spread += GameManager::GetInstance()->GetPlayer()->GetRight() * LCG().Float(-1.0f, 1.0f);
-
-        float3 rayDirection = GameManager::GetInstance()->GetPlayer()->GetFront() + spread.Normalized() * LCG().Float(0.0f, 0.2f);;
-
-        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), rayDirection , gradient);
+        Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
     }
     
     //Fire Particles
