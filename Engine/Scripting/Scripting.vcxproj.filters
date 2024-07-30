@@ -140,9 +140,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Spawner.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -189,6 +186,9 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
