@@ -31,13 +31,9 @@ public:
 	virtual void Death();
 	virtual void PushBack(); 
 	virtual void Init();
-	bool IsChasing();
 	
-	//Grenade
-
 	// DEBUFF
 	virtual void Paralyzed(float percentage, bool paralyzed);
-
 	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
 protected:
@@ -56,6 +52,7 @@ protected:
 	void CheckHitEffect();
 	void ResetEnemyColor();
 	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
+	
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;
