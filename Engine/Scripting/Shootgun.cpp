@@ -34,11 +34,6 @@ Shootgun::Shootgun()
     {
         mFire->SetEnabled(false);
     }
-
-}
-
-Shootgun::~Shootgun()
-{
 }
 
 void Shootgun::Enter()
@@ -49,13 +44,8 @@ void Shootgun::Enter()
 
 void Shootgun::Attack(float time)
 {
-    LOG("ShotGun Attack");
-    int numBullets = 10;
-
-    //TODO: Rethink this
-    static_cast<PlayerController*>(static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
+    //LOG("ShotGun Attack");
    
-
     //Audio
     if (GameManager::GetInstance()->GetAudio())
     {
@@ -67,6 +57,8 @@ void Shootgun::Attack(float time)
     gradient.AddColorGradientMark(0.6f, float4(1.0f, 0.0f, 0.0f, 1.0f));
 
     //Shoot Logic
+    int numBullets = 10;
+    GameManager::GetInstance()->GetPlayerController()->UseEnergy(numBullets);
     for (int i = 0; i < numBullets; ++i)
     {
         Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
@@ -79,16 +71,6 @@ void Shootgun::Attack(float time)
         mFire->SetEnabled(true);
         mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
     }
-}
-
-void Shootgun::Exit()
-{
-}
-
-void Shootgun::Reload()
-{
-    //mCurrentAmmo = mMaxAmmo;
-    //GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }
 
 void Shootgun::PlayHitSound()

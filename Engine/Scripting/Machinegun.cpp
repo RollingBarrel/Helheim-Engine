@@ -38,10 +38,6 @@ Machinegun::Machinegun()
     }
 }
 
-Machinegun::~Machinegun()
-{
-}
-
 void Machinegun::Enter()
 {
     //CONTROLLER VIBRATION
@@ -59,7 +55,8 @@ void Machinegun::Attack(float time)
    
     if (mShootTimer.Delay(delay))
     {
-        static_cast<PlayerController*>(static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(mNumBullets);
+        GameManager::GetInstance()->GetPlayerController()->UseEnergy(mNumBullets);
+        
         //Audio
         if (GameManager::GetInstance()->GetAudio())
         {
@@ -85,12 +82,6 @@ void Machinegun::Attack(float time)
 void Machinegun::Exit()
 {
     mFirstShoot = true;
-}
-
-void Machinegun::Reload()
-{
-    mCurrentAmmo = mMaxAmmo;
-    GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 }
 
 void Machinegun::PlayHitSound()

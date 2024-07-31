@@ -649,8 +649,7 @@ bool PlayerController::CanReload() const
 
 void PlayerController::Reload() const
 {
-    mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
-    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
+    static_cast<Pistol*>(mPistol)->Reload();
 }
 
 void PlayerController::CheckDebugOptions()

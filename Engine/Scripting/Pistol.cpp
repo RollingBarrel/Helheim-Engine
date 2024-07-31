@@ -36,10 +36,6 @@ Pistol::Pistol() : RangeWeapon()
 	if (mFire)	mFire->SetEnabled(false);
 }
 
-Pistol::~Pistol()
-{
-}
-
 void Pistol::Enter()
 {
 	//CONTROLLER VIBRATION
@@ -57,7 +53,6 @@ void Pistol::Attack(float time)
 	mCurrentAmmo--;
 	GameManager::GetInstance()->GetHud()->SetAmmo(mCurrentAmmo);
 	
-	
 	ColorGradient gradient;
 	gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
 	Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
@@ -69,7 +64,6 @@ void Pistol::Attack(float time)
 		mFire->SetEnabled(true);
 		mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
 	}
-
 }
 
 void Pistol::Reload()
@@ -81,8 +75,4 @@ void Pistol::Reload()
 void Pistol::PlayHitSound()
 {
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-}
-
-void Pistol::Exit()
-{
 }
