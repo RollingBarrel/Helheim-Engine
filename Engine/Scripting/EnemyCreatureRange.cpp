@@ -105,8 +105,8 @@ void EnemyCreatureRange::Attack()
 	{
 		if (hit.mGameObject->GetTag().compare("Player") == 0 && mDoDamage)
 		{
-			ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-			PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+			ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+			PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
 			player->TakeDamage(mAttackDamage);
 			mDoDamage = false;
 		}

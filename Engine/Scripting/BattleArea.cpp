@@ -36,22 +36,22 @@ void BattleArea::Start()
 {
 	if (mSpawnerGO1)
 	{
-		mEnemySpawner1 = reinterpret_cast<Spawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mEnemySpawner1 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 	}
 	if (mSpawnerGO2)
 	{
-		mEnemySpawner2 = reinterpret_cast<Spawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mEnemySpawner2 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 	}
 	if (mSpawnerGO3)
 	{
-		mEnemySpawner3 = reinterpret_cast<Spawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mEnemySpawner3 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 	}
 	if (mSpawnerGO4)
 	{
-		mEnemySpawner4 = reinterpret_cast<Spawner*>(reinterpret_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 	}
 
-	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
@@ -159,7 +159,7 @@ void BattleArea::CloseDoors(bool close)
 
 	if (mDoor1)
 	{
-		AnimationComponent* doorAnimation1 = reinterpret_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
+		AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation1)
 		{
 			doorAnimation1->SetIsPlaying(true);
@@ -167,7 +167,7 @@ void BattleArea::CloseDoors(bool close)
 			
 		}
 
-		BoxColliderComponent* door1Collider = reinterpret_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
+		BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
 		if (door1Collider)
 		{
 			door1Collider->SetEnable(close);
@@ -175,14 +175,14 @@ void BattleArea::CloseDoors(bool close)
 	}
 	if (mDoor2)
 	{
-		AnimationComponent* doorAnimation2 = reinterpret_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
+		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation2)
 		{
 			doorAnimation2->SetIsPlaying(true);
 			doorAnimation2->SendTrigger(trigger, 0.6f);
 		}
 
-		BoxColliderComponent* door2Collider = reinterpret_cast<BoxColliderComponent*>(mDoor2->GetComponent(ComponentType::BOXCOLLIDER));
+		BoxColliderComponent* door2Collider = static_cast<BoxColliderComponent*>(mDoor2->GetComponent(ComponentType::BOXCOLLIDER));
 		if (door2Collider)
 		{
 			door2Collider->SetEnable(close);

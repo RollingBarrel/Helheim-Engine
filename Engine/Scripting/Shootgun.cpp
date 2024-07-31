@@ -53,7 +53,7 @@ void Shootgun::Attack(float time)
     int numBullets = 10;
 
     //TODO: Rethink this
-    reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
+    static_cast<PlayerController*>(static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->UseEnergy(numBullets);
    
 
     //Audio
@@ -90,7 +90,7 @@ void Shootgun::Attack(float time)
             if (hit.mGameObject->GetTag() == "Enemy")
             {
                 LOG("Enemy %s has been hit with ShotGun at distance: %f", hit.mGameObject->GetName().c_str(), hit.mDistance);
-                Enemy* enemy = reinterpret_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
+                Enemy* enemy = static_cast<Enemy*>(((ScriptComponent*)hit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
                 if (enemy)
                 {
                     enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
@@ -106,7 +106,7 @@ void Shootgun::Attack(float time)
         if (GameManager::GetInstance()->GetPoolManager())
         {
             GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-            RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+            RayCastBullet* bulletScript = static_cast<RayCastBullet*>(static_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.62f, 0.275f, 1.0f));
