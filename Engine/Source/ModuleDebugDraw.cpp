@@ -662,13 +662,13 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             DrawSkeleton(focusGameObject);
         }
 
-        CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
+        CameraComponent* camera = static_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
         if (camera)
         {
             DrawFrustum(camera->GetFrustum());
         }
 
-        SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
+        SpotLightComponent* spotLight = static_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
         if (spotLight)
         {
             float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
@@ -677,13 +677,13 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             //DrawFrustum(spotLight->GetFrustum());
         }
 
-        PointLightComponent* pointLight = reinterpret_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
+        PointLightComponent* pointLight = static_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
         if (pointLight)
         {
             DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
         }
 
-        DecalComponent* decalComponent = reinterpret_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
+        DecalComponent* decalComponent = static_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
         if (decalComponent)
         {
             OBB obb = OBB(AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f)));

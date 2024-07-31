@@ -37,8 +37,8 @@ bool Spawner::Spawn()
 			GameObject* enemy = mPoolManager->Spawn(mPoolType);
 			if (enemy)
 			{
-				ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
-				Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
+				ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
+				Enemy* enemyScript = static_cast<Enemy*>(script->GetScriptInstance());
 				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
 				enemy->SetEnabled(true);
  				enemyScript->Init();

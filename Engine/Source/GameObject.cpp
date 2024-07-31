@@ -77,7 +77,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 		mComponents.push_back(cloned);
 		if (meshRendererComps && cloned->GetType() == ComponentType::MESHRENDERER)
 		{
-			meshRendererComps->push_back(reinterpret_cast<MeshRendererComponent*>(cloned));
+			meshRendererComps->push_back(static_cast<MeshRendererComponent*>(cloned));
 		}
 	}
 
@@ -155,7 +155,7 @@ AABB GameObject::GetAABB()
 
 	for (Component* component : components)
 	{
-		mixedAABB.Enclose(reinterpret_cast<MeshRendererComponent*>(component)->GetAABB());
+		mixedAABB.Enclose(static_cast<MeshRendererComponent*>(component)->GetAABB());
 	}
 
 	return mixedAABB;
@@ -170,7 +170,7 @@ void GameObject::SetTag(const std::string& tag)
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
 
-	CameraComponent* camera = reinterpret_cast<CameraComponent*>(GetComponent(ComponentType::CAMERA));
+	CameraComponent* camera = static_cast<CameraComponent*>(GetComponent(ComponentType::CAMERA));
 	if (camera)
 	{
 		App->GetCamera()->AddMainCamera(camera);
@@ -569,7 +569,7 @@ Component* GameObject::GetComponentInChildren(ComponentType type) const
 
 void GameObject::GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const
 {
-	MeshRendererComponent* gameObjectComponent = reinterpret_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
+	MeshRendererComponent* gameObjectComponent = static_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
 
 	if (gameObjectComponent)
 	{
