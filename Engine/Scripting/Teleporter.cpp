@@ -13,8 +13,7 @@ CREATE(Teleporter)
     MEMBER(MemberType::FLOAT3, mEndPos);
     MEMBER(MemberType::FLOAT, mDuration);
     MEMBER(MemberType::GAMEOBJECT, mCamera);
-    MEMBER(MemberType::FLOAT3, mCameraPos);
-    MEMBER(MemberType::GAMEOBJECT, mBattleArea);
+    MEMBER(MemberType::FLOAT3, mCameraDif);
     END_CREATE;
 }
 
@@ -41,7 +40,7 @@ void Teleporter::Start()
 
 void Teleporter::Update()
 {
-
+    
     if (mIsTriggered)
     {
         mCurrentTime += App->GetDt();
@@ -49,8 +48,9 @@ void Teleporter::Update()
         mPlayer->SetWorldPosition(position);
         mGameObject->SetWorldPosition(position);
 
-        float3 cameraMovement = mCameraPos - mCameraEndPos;
-        mCamera->Translate(cameraMovement.Normalized() / mDuration * App->GetDt());
+
+        mCamera->SetWorldPosition(position + mDeltaCamera + mCameraDif);
+        mCamera->GetWorldPosition();
 
         if (mCurrentTime > mDuration)
         {
@@ -85,7 +85,6 @@ void Teleporter::Update()
 
             }
 
-            mCamera->LookAt(mPlayer->GetWorldPosition());
 
         }
     }
@@ -95,8 +94,9 @@ void Teleporter::Update()
         float3 positon = LerpPosition(mEnterDuration, mFirstPlayerPos);
         mPlayer->SetWorldPosition(positon);
 
-        float3 cameraMovement = mCamera->GetWorldPosition() - mCameraPos;
-        mCamera->Translate(cameraMovement.Normalized()/mEnterDuration * App->GetDt());
+        mCamera->SetWorldPosition(mDeltaCamera + positon + mCameraDif * mCurrentTime / mEnterDuration);
+        mCamera->GetWorldPosition();
+
 
         if (mCurrentTime > mEnterDuration)
         {
@@ -104,7 +104,6 @@ void Teleporter::Update()
             mIsEntering = false;
             mCurrentTime = 0.0f;
 
-            mCamera->LookAt(mBattleArea->GetWorldPosition()); // Testing
 
             if (mPlayerAnimation)
             {
@@ -133,7 +132,10 @@ void Teleporter::Update()
         float3 positon = LerpPosition(mEnterDuration, mIsAtStart ? mEndPos : mStartPos);
         mPlayer->SetWorldPosition(positon);
 
-        mCamera->Translate(mCurrentDirection / mEnterDuration * App->GetDt()); // Test
+        mCamera->SetWorldPosition(mDeltaCamera + positon + mCameraDif * (mEnterDuration - mCurrentTime) / mEnterDuration);
+        mCamera->GetWorldPosition();
+
+        
         if (mCurrentTime > mEnterDuration)
         {
             if (mPlayerAnimation)
@@ -199,8 +201,8 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
 
         mCamera->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
-        mCameraEndPos = mEndPos + (mStartPos - mCamera->GetWorldPosition());
-        //Camera Idea: On Entering -> Start moving to mCameraPos and rotate to look at mBattleArea. On Trigger -> start moving to mCameraEndPos while lookAt mBattleArea. On Exit -> Start looking to mPlayer and move with him
+
+        mDeltaCamera = mCamera->GetWorldPosition() - mPlayer->GetWorldPosition();
         
 
     }

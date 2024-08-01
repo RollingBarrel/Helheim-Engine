@@ -6319,18 +6319,13 @@
                                 "VariableData": 2117687861
                             },
                             {
-                                "VariableName": "mCameraPos",
+                                "VariableName": "mCameraDif",
                                 "MemberType": 4,
                                 "VariableData": [
-                                    77.0,
-                                    45.0,
-                                    13.0
+                                    3.0,
+                                    13.0,
+                                    -10.0
                                 ]
-                            },
-                            {
-                                "VariableName": "mBattleArea",
-                                "MemberType": 3,
-                                "VariableData": 911659187
                             }
                         ]
                     },
@@ -6451,18 +6446,13 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mCameraPos",
+                                "VariableName": "mCameraDif",
                                 "MemberType": 4,
                                 "VariableData": [
                                     0.0,
                                     0.0,
                                     0.0
                                 ]
-                            },
-                            {
-                                "VariableName": "mBattleArea",
-                                "MemberType": 3,
-                                "VariableData": -1
                             }
                         ]
                     },
@@ -6667,18 +6657,13 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mCameraPos",
+                                "VariableName": "mCameraDif",
                                 "MemberType": 4,
                                 "VariableData": [
                                     0.0,
                                     0.0,
                                     0.0
                                 ]
-                            },
-                            {
-                                "VariableName": "mBattleArea",
-                                "MemberType": 3,
-                                "VariableData": -1
                             }
                         ]
                     },
