@@ -17,9 +17,6 @@
 
 #include "Math/MathFunc.h"
 
-
-Enemy::Enemy(GameObject* owner) : Script(owner) {}
-
 void Enemy::Start()
 {
 	ModuleScene* scene = App->GetScene();
@@ -97,9 +94,6 @@ void Enemy::Update()
     CheckHitEffect();
 }
 
-
-
-
 void Enemy::CheckHitEffect()
 {
     if (mHit)
@@ -111,6 +105,7 @@ void Enemy::CheckHitEffect()
         }
     }
 }
+
 void Enemy::ResetEnemyColor()
 {
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
@@ -120,6 +115,7 @@ void Enemy::ResetEnemyColor()
 		meshComponent->SetBaseColorFactor(mOgColors[i]);
 	}
 }
+
 void Enemy::ActivateEnemy()
 {
 	if (!mBeAttracted)
@@ -170,15 +166,7 @@ void Enemy::Chase()
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-			float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-			direction.y = 0;
-			direction.Normalize();
-			float angle = std::atan2(direction.x, direction.z);
-
-			if (mGameObject->GetWorldRotation().y != angle)
-			{
-				mGameObject->SetWorldRotation(float3(0, angle, 0));
-			}
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
 		if (IsPlayerInRange(mAttackDistance))
 		{
@@ -253,6 +241,7 @@ void Enemy::ActivateHitEffect()
     }
     mHit = true;
 }
+
 void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
@@ -309,7 +298,6 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 		mParalysisSeverityLevel = 1.0f;
 	}
 }
-
 
 void Enemy::DropItem()
 {

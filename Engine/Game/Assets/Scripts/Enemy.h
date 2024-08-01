@@ -22,7 +22,7 @@ enum class EnemyState
 class Enemy : public Script
 {
 public:
-	Enemy(GameObject* owner);
+	Enemy(GameObject* owner) : Script(owner) {}
 	~Enemy() {}
 	void Start() override;
 	void Update() override;
@@ -52,7 +52,7 @@ protected:
 	void CheckHitEffect();
 	void ResetEnemyColor();
 	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
-	
+
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;
