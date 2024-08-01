@@ -51,7 +51,7 @@ void EnemyCreatureRange::Start()
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
 
-	mDeathTime = 1.0f;
+	mDeathTime = 2.20f;
 
 }
 
