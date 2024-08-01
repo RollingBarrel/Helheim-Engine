@@ -81,7 +81,8 @@ void GameManager::Update()
 
     HandleAudio();
 
-    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
+    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
+        (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
         SetPaused(!mPaused, true);
     }
@@ -98,7 +99,7 @@ void GameManager::Clean()
 
 PoolManager* GameManager::GetPoolManager() const 
 { 
-    return reinterpret_cast<PoolManager*>(reinterpret_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    return reinterpret_cast<PoolManager*>(static_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 bool GameManager::UsingController() const

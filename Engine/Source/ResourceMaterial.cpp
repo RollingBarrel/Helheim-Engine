@@ -2,7 +2,6 @@
 #include "ResourceTexture.h"
 #include "Application.h"
 #include "ModuleResource.h"
-
 ResourceMaterial::ResourceMaterial(
     unsigned int uid,
     float* baseColorFactor,
@@ -15,10 +14,10 @@ ResourceMaterial::ResourceMaterial(
     unsigned int emissiveTexUid) :
     Resource(uid, Type::Material), mName(nullptr),
     mBaseColorFactor(float4(baseColorFactor)), mMetallicFactor(metallicFactor), mRoughnessFactor(roughnessFactor), mEmissiveFactor(float3(emissiveFactor)),
-    mBaseColorTexture((baseColorTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture)) : nullptr),
-    mMetallicRoughnessTexture((metallicRoughTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture)) : nullptr),
-    mNormalTexture((normalTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture)) : nullptr),
-    mEmissiveTexture((emissiveTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(emissiveTexUid, Resource::Type::Texture)) : nullptr),
+    mBaseColorTexture((baseColorTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture)) : nullptr),
+    mMetallicRoughnessTexture((metallicRoughTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture)) : nullptr),
+    mNormalTexture((normalTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture)) : nullptr),
+    mEmissiveTexture((emissiveTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(emissiveTexUid, Resource::Type::Texture)) : nullptr),
     mEnableBaseColorTexture((mBaseColorTexture != nullptr) ? true : false),
     mEnableMetallicRoughnessTexture((mMetallicRoughnessTexture != nullptr) ? true : false),
     mEnableNormalMap((mNormalTexture != nullptr) ? true : false),
@@ -43,10 +42,10 @@ ResourceMaterial::ResourceMaterial(
     bool enableEmissiveTexture) :
     Resource(uid, Type::Material), mName(nullptr),
     mBaseColorFactor(float4(baseColorFactor)), mMetallicFactor(metallicFactor), mRoughnessFactor(roughnessFactor), mEmissiveFactor(float3(emissiveFactor)),
-    mBaseColorTexture((baseColorTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture)) : nullptr),
-    mMetallicRoughnessTexture((metallicRoughTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture)) : nullptr),
-    mNormalTexture((normalTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture)) : nullptr),
-    mEmissiveTexture((emissiveTexUid != 0) ? reinterpret_cast<ResourceTexture*>(App->GetResource()->RequestResource(emissiveTexUid, Resource::Type::Texture)) : nullptr),
+    mBaseColorTexture((baseColorTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(baseColorTexUid, Resource::Type::Texture)) : nullptr),
+    mMetallicRoughnessTexture((metallicRoughTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(metallicRoughTexUid, Resource::Type::Texture)) : nullptr),
+    mNormalTexture((normalTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(normalTexUid, Resource::Type::Texture)) : nullptr),
+    mEmissiveTexture((emissiveTexUid != 0) ? static_cast<ResourceTexture*>(App->GetResource()->RequestResource(emissiveTexUid, Resource::Type::Texture)) : nullptr),
     mEnableBaseColorTexture(enableBaseColorTexture),
     mEnableMetallicRoughnessTexture(enableMetallicRoughnessTexture),
     mEnableNormalMap(enableNormalMap),

@@ -227,7 +227,7 @@ void ImageComponent::Draw()
 		{
 		case RenderSpace::Screen: //Ortographic Mode
 		{
-			Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+			Transform2DComponent* component = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 			if (component != nullptr)
 			{
 				model = component->GetGlobalMatrix();
@@ -531,7 +531,7 @@ void ImageComponent::RenderMask()
 	glUseProgram(UIMaskProgram);
 
 	// Orthographic mode is used for stencil mask rendering
-	Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+	Transform2DComponent* component = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 	if (component != nullptr)
 	{
 		float4x4 proj = float4x4::identity;

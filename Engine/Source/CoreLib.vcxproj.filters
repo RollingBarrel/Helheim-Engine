@@ -465,6 +465,9 @@
     <ClCompile Include="MaskComponent.cpp">
       <Filter>GameObjects\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerStats.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1969,6 +1972,9 @@
     </ClInclude>
     <ClInclude Include="MaskComponent.h">
       <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStats.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

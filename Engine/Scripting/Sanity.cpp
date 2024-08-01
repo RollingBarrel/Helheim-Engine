@@ -9,6 +9,8 @@
 #include "ButtonComponent.h"
 #include "GameManager.h"
 #include "PlayerController.h"
+#include "ModuleInput.h"
+#include "Keys.h"
 
 CREATE(Sanity)
 {
@@ -81,7 +83,47 @@ void Sanity::Start()
 
 void Sanity::Update()
 {
-    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+    Controls();
+
+    if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
+}
+
+void Sanity::Controls() 
+{
+    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentBuff > 1)
+        {
+            mCurrentBuff = 0;
+        }
+        else
+        {
+            mCurrentBuff++;
+        }
+        CardHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentBuff == 0)
+        {
+            mCurrentBuff = 2;
+        }
+        else
+        {
+            mCurrentBuff--;
+        }
+        CardHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+    {
+        CardClick();
+    }
 }
 
 void Sanity::CreateSelection(int arena)
@@ -91,6 +133,7 @@ void Sanity::CreateSelection(int arena)
     GameManager::GetInstance()->SetPaused(true, false);
     
     mTimeout = true;
+    CardHover();
 
     mCurrentBuffs = mBuffSelection[arena];
 
@@ -167,6 +210,46 @@ unsigned int Sanity::GetImage(const Buff& buff)
     }
 }
 
+void Sanity::CardClick()
+{
+    switch (mCurrentBuff)
+    {
+        case 0:
+            OnCard1Click();
+            break;
+        case 1:
+            OnCard2Click();
+            break;
+        case 2:
+            OnCard3Click();
+            break;
+        default:
+            break;
+    }
+}
+
+void Sanity::CardHover()
+{
+    OnCard1HoverOff();
+    OnCard2HoverOff();
+    OnCard3HoverOff();
+
+    switch (mCurrentBuff)
+    {
+    case 0:
+        OnCard1HoverOn();
+        break;
+    case 1:
+        OnCard2HoverOn();
+        break;
+    case 2:
+        OnCard3HoverOn();
+        break;
+    default:
+        break;
+    }
+}
+
 void Buff::Consume()
 {
     switch (stat) 
@@ -199,13 +282,13 @@ void Sanity::OnCard1Click()
 void Sanity::OnCard1HoverOn()
 {
     if (mCard1Image)
-        mCard1Image->SetAlpha(0.9f);
+        mCard1Image->SetAlpha(0.95f);
 }
 
 void Sanity::OnCard1HoverOff()
 {
     if (mCard1Image)
-        mCard1Image->SetAlpha(0.7f);
+        mCard1Image->SetAlpha(0.6f);
 }
 
 void Sanity::OnCard2Click()
@@ -222,13 +305,13 @@ void Sanity::OnCard2Click()
 void Sanity::OnCard2HoverOn()
 {
     if (mCard2Image)
-        mCard2Image->SetAlpha(0.9f);
+        mCard2Image->SetAlpha(0.95f);
 }
 
 void Sanity::OnCard2HoverOff()
 {
     if (mCard2Image)
-        mCard2Image->SetAlpha(0.7f);
+        mCard2Image->SetAlpha(0.6f);
 }
 
 void Sanity::OnCard3Click()
@@ -245,11 +328,11 @@ void Sanity::OnCard3Click()
 void Sanity::OnCard3HoverOn()
 {
     if (mCard3Image)
-        mCard3Image->SetAlpha(0.9f);
+        mCard3Image->SetAlpha(0.95f);
 }
 
 void Sanity::OnCard3HoverOff()
 {
     if (mCard3Image)
-        mCard3Image->SetAlpha(0.7f);
+        mCard3Image->SetAlpha(0.6f);
 }

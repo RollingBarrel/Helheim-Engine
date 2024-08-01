@@ -1,5 +1,4 @@
 #include "Dialog.h"
-
 #include "Application.h"
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
@@ -10,6 +9,8 @@
 #include "GameManager.h"
 #include "PlayerController.h"
 #include "HudController.h"
+#include "Keys.h"
+#include "ModuleInput.h"
 
 CREATE(Dialog)
 {
@@ -41,7 +42,18 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
+    Controls();
+}
+
+void Dialog::Controls()
+{
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+    {
+        OnClick();
+    }
 }
 
 void Dialog::StartDialog()
@@ -61,26 +73,27 @@ void Dialog::OnClick()
 {
     if (mTimeout) return;
 
-    if (mCurrentDialog < 4) 
-    {
-        if (*mProtagonistImage->GetAlpha() == 0.5f)
-        {
-            mProtagonistImage->SetAlpha(1.0f);
-            mWifeImage->SetAlpha(0.5f);
-        }
-        else 
-        {
-            mProtagonistImage->SetAlpha(0.5f);
-            mWifeImage->SetAlpha(1.0f);
-        }
-        mCurrentDialog++;
-        UpdateDialog();
-    }
-    else
+    // Verify if the dialog is over
+    if (mCurrentDialog == (sizeof(mDialog) / sizeof(mDialog[0])) - 1)
     {
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->SetPaused(false, false);
         GameManager::GetInstance()->GetHud()->SetSanity();
+        return;
     }
+
+    if (*mProtagonistImage->GetAlpha() == 0.5f)
+    {
+        mProtagonistImage->SetAlpha(1.0f);
+        mWifeImage->SetAlpha(0.5f);
+    }
+    else 
+    {
+        mProtagonistImage->SetAlpha(0.5f);
+        mWifeImage->SetAlpha(1.0f);
+    }
+
+    mCurrentDialog++;
+    UpdateDialog();
 }
 
