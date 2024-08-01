@@ -69,7 +69,7 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
-	SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+	SettingsPanel* settingsPanel = static_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
 	
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
@@ -145,7 +145,7 @@ void InspectorPanel::Draw(int windowFlags)
 				{
 					focusedObject->SetTag(settingsPanel->GetTags()[i]);
 
-					AnimationComponent* animComp = reinterpret_cast<AnimationComponent*>(focusedObject->GetComponent(ComponentType::ANIMATION));
+					AnimationComponent* animComp = static_cast<AnimationComponent*>(focusedObject->GetComponent(ComponentType::ANIMATION));
 					if (animComp)
 					{
 						animComp->ReloadGameObjects();
@@ -462,64 +462,64 @@ void InspectorPanel::DrawComponents(GameObject* object)
 			switch (component->GetType()) 
 			{
 				case ComponentType::MESHRENDERER:
-					DrawMeshRendererComponent(*reinterpret_cast<MeshRendererComponent*>(component));
+					DrawMeshRendererComponent(*static_cast<MeshRendererComponent*>(component));
 					break;
 				case ComponentType::AIAGENT:
-					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+					DrawAIAgentComponent(static_cast<AIAgentComponent*>(component));
 					break;
 				case ComponentType::POINTLIGHT:
-					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+					DrawPointLightComponent(static_cast<PointLightComponent*>(component));
 					break;
 				case ComponentType::SPOTLIGHT:
-					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
+					DrawSpotLightComponent(static_cast<SpotLightComponent*>(component));
 					break;
 				case ComponentType::CAMERA:
-					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					DrawCameraComponent(static_cast<CameraComponent*>(component));
 					break;
 				case ComponentType::SCRIPT:
-					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
+					DrawScriptComponent(static_cast<ScriptComponent*>(component));
 					break;
 				case ComponentType::NAVMESHOBSTACLE: 
-					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+					DrawNavMeshObstacleComponent(static_cast<NavMeshObstacleComponent*>(component));
 					break;
 				case ComponentType::ANIMATION: 
-					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
+					DrawAnimationComponent(static_cast<AnimationComponent*>(component));
 					break;
 				case ComponentType::IMAGE:
-					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					DrawImageComponent(static_cast<ImageComponent*>(component));
 					break;
 				case ComponentType::MASK:
-					DrawMaskComponent(reinterpret_cast<MaskComponent*>(component));
+					DrawMaskComponent(static_cast<MaskComponent*>(component));
 					break;
 				case ComponentType::CANVAS:
-					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					DrawCanvasComponent(static_cast<CanvasComponent*>(component));
 					break;
 				case ComponentType::SLIDER:
-					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
+					DrawSliderComponent(static_cast<SliderComponent*>(component));
 					break;
 				case ComponentType::BUTTON:
-					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
+					DrawButtonComponent(static_cast<ButtonComponent*>(component));
 					break;
 				case ComponentType::AUDIOSOURCE: 
-					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
+					DrawAudioSourceComponent(static_cast<AudioSourceComponent*>(component));
 					break;
 				case ComponentType::TRANSFORM2D:
-					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
+					DrawTransform2DComponent(static_cast<Transform2DComponent*>(component));
 					break;
 				case ComponentType::PARTICLESYSTEM:
-					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					DrawParticleSystemComponent(static_cast<ParticleSystemComponent*>(component));
 					break;
 				case ComponentType::TEXT:
-					DrawTextComponent(reinterpret_cast<TextComponent*>(component));
+					DrawTextComponent(static_cast<TextComponent*>(component));
 					break;
 				case ComponentType::BOXCOLLIDER:
-					DrawBoxColliderComponent(reinterpret_cast<BoxColliderComponent*>(component));
+					DrawBoxColliderComponent(static_cast<BoxColliderComponent*>(component));
 					break;
 				case ComponentType::TRAIL:
-					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
+					DrawTrailComponent(static_cast<TrailComponent*>(component));
 					break;
 				case ComponentType::DECAL:
-					DrawDecalComponent(reinterpret_cast<DecalComponent*>(component));
+					DrawDecalComponent(static_cast<DecalComponent*>(component));
 					break;
 			}
 		}
@@ -1031,7 +1031,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 		if (ImGui::Button("Open state machine panel"))
 		{
-			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			AnimationSMPanel* panel = static_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
 			panel->SetStateMachine(component->GetStateMachine());
 			panel->Open();
 		}
@@ -1051,7 +1051,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 				{
 					smName = assets[n].c_str();
 					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
-					ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+					ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
 					component->SetStateMachine(newSM->GetStateMachine());
 					component->SetSMUID(newSM->GetUID());
 				}
@@ -1077,7 +1077,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 					{
 						spineSMName = assets[n].c_str();
 						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
-						ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+						ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
 						component->SetSpineStateMachine(newSM->GetStateMachine());
 						component->SetSpineSMUID(newSM->GetUID());
 

@@ -6,6 +6,7 @@
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
+#include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
@@ -70,9 +71,9 @@ void Enemy::Start()
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
 	}
-	mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+	mAiAgentComponent = static_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
 	
-	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
 	if (mAnimationComponent)
 	{
 		mAnimationComponent->SetIsPlaying(true);
@@ -231,10 +232,10 @@ void Enemy::TakeDamage(float damage)
 		{
 			mCurrentState = EnemyState::DEATH;
 
-			if (mAiAgentComponent)
-			{
-				mAiAgentComponent->PauseCrowdNavigation();
-			}
+			BoxColliderComponent* collider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+			if (collider) collider->SetEnable(false);
+
+			if (mAiAgentComponent)	mAiAgentComponent->PauseCrowdNavigation();
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
@@ -337,7 +338,7 @@ void Enemy::DropItem()
 
 		GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
 		itemGameObject->SetWorldPosition(dropPosition);
-		ItemDrop* item = reinterpret_cast<ItemDrop*>(reinterpret_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		ItemDrop* item = static_cast<ItemDrop*>(static_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		item->Init();
 	}
 }

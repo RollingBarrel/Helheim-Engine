@@ -54,7 +54,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 			if (rModel.mAnimationUids[0] != 0)
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
-				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
+				cAnimation = static_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
 				cAnimation->SetAnimationUid(rModel.mAnimationUids[0]);
 				cAnimation->StartUp();
 
@@ -66,14 +66,14 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 	{
 		if (node.mLight.mType.compare("point") == 0)
 		{
-			PointLightComponent* cPoint = reinterpret_cast<PointLightComponent*>(gameObject->CreateComponent(ComponentType::POINTLIGHT));
+			PointLightComponent* cPoint = static_cast<PointLightComponent*>(gameObject->CreateComponent(ComponentType::POINTLIGHT));
 			cPoint->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
 			cPoint->SetIntensity(node.mLight.mIntensity);
 			cPoint->SetRadius(node.mLight.mRange);
 		}
 		else if (node.mLight.mType.compare("spot") == 0)
 		{
-			SpotLightComponent* cSpot = reinterpret_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
+			SpotLightComponent* cSpot = static_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
 			cSpot->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
 			cSpot->SetIntensity(node.mLight.mIntensity);
 			cSpot->SetRange(node.mLight.mRange);
@@ -91,7 +91,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 				name = "MeshRenderer";
 			}
 			GameObject* gO = new GameObject(name, gameObject);
-			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
+			MeshRendererComponent* cMesh = static_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
 			//MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gameObject->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
@@ -246,7 +246,7 @@ void ScenePanel::DrawScene()
 					GameObject* gameObjectRoot = new GameObject(name.c_str(), EngineApp->GetScene()->GetRoot());
 
 					std::vector<GameObject*> tempVec;
-					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
+					ResourceModel* rModel = static_cast<ResourceModel*>(resource);
 					
 					std::unordered_map<unsigned int, GameObject*> gltfGoMap;
 					std::vector<GameObject*>skinGos;
@@ -281,7 +281,7 @@ void ScenePanel::DrawScene()
 
 					//Load animation data
 
-					AnimationComponent* rootAnim = reinterpret_cast<AnimationComponent*>(gameObjectRoot->GetComponent(ComponentType::ANIMATION));
+					AnimationComponent* rootAnim = static_cast<AnimationComponent*>(gameObjectRoot->GetComponent(ComponentType::ANIMATION));
 					if (rootAnim)
 					{
 						rootAnim->ReloadGameObjects();
@@ -297,11 +297,11 @@ void ScenePanel::DrawScene()
 							invBindVec.emplace_back(gltfGoMap[rModel->mInvBindMatrices[j][i].first], rModel->mInvBindMatrices[j][i].second);
 						}
 						assert(skinGos[j]->GetChildren().size() != 0 && skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER) != nullptr);
-						MeshRendererComponent* paletteOwner = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER));
+						MeshRendererComponent* paletteOwner = static_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER));
 						paletteOwner->SetInvBindMatrices(std::move(invBindVec));
 						for (int z = 1; z < skinGos[j]->GetChildren().size(); ++z)
 						{
-							MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[z]->GetComponent(ComponentType::MESHRENDERER));
+							MeshRendererComponent* meshRenderer = static_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[z]->GetComponent(ComponentType::MESHRENDERER));
 							if(meshRenderer != nullptr)
 								meshRenderer->SetInvBindMatrices(std::move(invBindVec), paletteOwner);
 						}

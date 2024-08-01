@@ -13,9 +13,9 @@ public:
 	Weapon();
 	~Weapon();
 
-	virtual void Enter() = 0;
+	virtual void Enter() {}
 	virtual void Attack(float time) = 0;
-	virtual void Exit() = 0;
+	virtual void Exit() {}
 
 	WeaponType GetType() { return mType; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
