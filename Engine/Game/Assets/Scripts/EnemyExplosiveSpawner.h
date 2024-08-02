@@ -26,7 +26,7 @@ class EnemyExplosiveSpawner : public Enemy
 		void Update() override;
 		void TakeDamage(float damage) override;
 		void PushBack() override;
-		void Idle();
+		void Death() override;
 
 	private:
 		enum class EnemyState {
@@ -35,8 +35,8 @@ class EnemyExplosiveSpawner : public Enemy
 			DEATH
 		};
 		 
+		void Idle();
 		void Spawning();
-		void Die();
 		void OnCollisionEnter(CollisionData* collisionData);
 
 		EnemyState mCurrentState = EnemyState::IDLE;

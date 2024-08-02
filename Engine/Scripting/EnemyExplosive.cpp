@@ -81,6 +81,16 @@ void EnemyExplosive::Attack()
     TakeDamage(mMaxHealth);
 }
 
+void EnemyExplosive::Death()
+{
+    if (mDeathTimer.Delay(mDeathTime))
+    {
+        ResetEnemyColor();
+        mGameObject->SetEnabled(false);
+        DropItem();
+    }
+}
+
 void EnemyExplosive::ChargeWarningArea()
 {
     if (mExplosionWarningGO)
