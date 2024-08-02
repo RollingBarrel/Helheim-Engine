@@ -58,8 +58,6 @@ void EnemyExplosiveSpawner::Update()
     case EnemyState::DEATH:
         Death();
     }
-
-    mLastSpawnTime += App->GetDt();
 }
 
 void EnemyExplosiveSpawner::TakeDamage(float damage)
@@ -80,20 +78,10 @@ void EnemyExplosiveSpawner::PushBack()
     //Trap can't be pushed back
 }
 
-void EnemyExplosiveSpawner::Death()
-{
-    if (mDeathTimer.Delay(mDeathTime))
-    {
-        ResetEnemyColor();
-        mGameObject->SetEnabled(false);
-        DropItem();
-    }
-}
-
 void EnemyExplosiveSpawner::Idle()
 {
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
-    if (mLastSpawnTime >= mSpawnRate && *mCurrentAreaEnemies < mMaxActiveEnemies)
+    if (mSpawnTimer.Delay(mSpawnRate) && *mCurrentAreaEnemies < mMaxActiveEnemies && mGameObject->IsEnabled())
     {
 		mCurrentState = EnemyState::SPAWNING;
 	}
@@ -118,7 +106,6 @@ void EnemyExplosiveSpawner::Spawning()
             enemy->SetWorldPosition(pos);
             enemy->SetEnabled(true);
             enemyScript->Init();
-            mLastSpawnTime = 0.0f;
         }
         mTrapState = SpawnState::CLOSING;
 	}

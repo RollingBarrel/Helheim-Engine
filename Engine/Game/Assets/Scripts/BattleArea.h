@@ -15,7 +15,7 @@ public:
 	~BattleArea();
 	void Start() override;
 	void Update() override;
-	void EnemyDestroyed();
+	void EnemyDestroyed(GameObject* Enemy);
 	void ActivateArea(bool activate);;
 	void OnCollisionEnter(CollisionData* collisionData);
 	int* GetCurrentEnemies() { return &mCurrentEnemies; }
@@ -23,11 +23,13 @@ public:
 private:
 
 	void SetTrapState(GameObject* trap, bool enable);
+	void UpdateTrapNumber();
 	void CloseDoors(bool close);
 
 	int mMaxSimulNumEnemies = 0;
 	int mCurrentEnemies = 0;
 	int mTotalNumEnemies = 0;
+	int mCurrentTraps = 0;
 	bool mHasBeenActivated = false;
 
 	GameObject* mSpawnerGO1 = nullptr;
@@ -39,7 +41,7 @@ private:
 	Spawner* mEnemySpawner2 = nullptr;
 	Spawner* mEnemySpawner3 = nullptr;
 	Spawner* mEnemySpawner4 = nullptr;
-
+	
 	GameObject* mTrap1 = nullptr;
 	GameObject* mTrap2 = nullptr;
 	GameObject* mTrap3 = nullptr;

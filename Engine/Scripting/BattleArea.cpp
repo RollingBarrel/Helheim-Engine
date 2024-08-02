@@ -62,6 +62,8 @@ void BattleArea::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
+	UpdateTrapNumber();
+
 	CloseDoors(false);
 }
 
@@ -104,10 +106,29 @@ void BattleArea::Update()
 	}
 }
 
-void BattleArea::EnemyDestroyed()
+void BattleArea::EnemyDestroyed(GameObject* enemy)
 {
-	mCurrentEnemies--;
-	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0)
+	std::string scriptName = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptName();
+
+	if (scriptName == "EnemyExplosiveSpawner" && enemy->IsEnabled())
+	{
+		mCurrentTraps--;
+	}
+	else if (scriptName == "EnemyExplosive")
+	{
+		//Count explosive enemies apart
+	}
+	else // Any enemy except traps and explosive enemies
+	{
+		mCurrentEnemies--;
+	}
+
+	LOG("ENEMY DESTROYED");
+	LOG("TOTAL ENEMIES: %i", mTotalNumEnemies);
+	LOG("ENEMIES: %i", mCurrentEnemies);
+	LOG("TRAPS: %i", mCurrentTraps);
+
+	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0 && mCurrentTraps <= 0)
 	{
 		ActivateArea(false);
 		mGameObject->SetEnabled(false);
@@ -151,7 +172,6 @@ inline void BattleArea::ActivateArea(bool activate)
 	}
 }
 
-
 void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mHasBeenActivated)
@@ -178,6 +198,19 @@ void BattleArea::SetTrapState(GameObject* trap, bool enable)
 			{
 				scriptComponent->Disable();
 			}
+		}
+	}
+}
+
+void BattleArea::UpdateTrapNumber()
+{
+	GameObject* trapsArray[] = { mTrap1, mTrap2, mTrap3, mTrap4 };
+
+	for (GameObject* trap : trapsArray)
+	{
+		if (trap != nullptr)
+		{
+			mCurrentTraps++;
 		}
 	}
 }
