@@ -15,6 +15,7 @@ public:
 	~EnemyRobotRange() {}
 
 private:
+	void Start() override;
 	void Attack() override;
 	void RangeAttack();
 

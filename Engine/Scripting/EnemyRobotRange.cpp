@@ -26,6 +26,12 @@ CREATE(EnemyRobotRange)
     END_CREATE;
 }
 
+void EnemyRobotRange::Start()
+{
+    Enemy::Start();
+    mDisengageTime = 0.5f;
+}
+
 void EnemyRobotRange::Attack()
 {
     Enemy::Attack();
@@ -42,10 +48,8 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        //mAnimationComponent->SendTrigger("tAttack", 0.2f);
         mAnimationComponent->OnRestart();
         RangeAttack();
-
     }
 }
 
