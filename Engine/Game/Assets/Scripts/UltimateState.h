@@ -23,6 +23,7 @@ public:
 	TimerScript mTimer;
 
 	float mUltimateDuration;
+	float mUltimateWindUp = 2.0;
 
 private:
 	UltimateAttack* mUltimateScript = nullptr;

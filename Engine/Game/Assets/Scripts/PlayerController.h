@@ -139,6 +139,7 @@ public:
     float GetUltimateDamageTick() const { return mUltimateDamageTick; };
     void SetUltimateResource(int resource) { mUltimateResource = resource; }
     void EnableUltimate(bool enable);
+    void UltimateInterpolateLookAt(const float3& target); 
 
     // States
     DashState* GetDashState() { return mDashState; }
@@ -248,6 +249,8 @@ private:
     float mUltimatePlayerSlow = 1.0f;
     float mUltimateDamageTick = 1.0f;
     float mUltimateDamageInterval = 1.0f;
+    float mUltimateAimSpeed = 1.0f;
+    TimerScript UltimateRotationTimer;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
