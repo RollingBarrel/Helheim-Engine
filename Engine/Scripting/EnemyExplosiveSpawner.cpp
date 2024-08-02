@@ -7,6 +7,7 @@
 #include "BattleArea.h"
 #include "Application.h"
 #include "PoolManager.h"
+#include "TimerScript.h"
 
 CREATE(EnemyExplosiveSpawner)
 {
@@ -96,9 +97,9 @@ void EnemyExplosiveSpawner::Spawning()
         mTrapState = SpawnState::OPENING;
     }
 
-    if (Delay(1.f) && mTrapState == SpawnState::OPENING)
+    if (mAnimationTimer.Delay(1.f) && mTrapState == SpawnState::OPENING)
     {
-        GameObject* enemy = mPoolManager->Spawn(PoolType::EXPLOSIVE_BALL);
+        GameObject* enemy = mPoolManager->Spawn(PoolType::ROBOT_EXPLOSIVE);
         if (enemy)
         {
             ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
@@ -112,7 +113,7 @@ void EnemyExplosiveSpawner::Spawning()
         mTrapState = SpawnState::CLOSING;
 	}
     // Wait until the trap closes
-    if (Delay(1.f) && mTrapState == SpawnState::CLOSING)
+    if (mAnimationTimer.Delay(1.f) && mTrapState == SpawnState::CLOSING)
     {
         mTrapState = SpawnState::IDLE;
         mCurrentState = EnemyState::IDLE;

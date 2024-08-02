@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1135396554,
+                "UID": 123018099,
                 "ParentUID": 1,
                 "Name": "Explosive_Enemy_Spawner",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    58.98816680908203,
                     0.0,
-                    4.039506912231445
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -56,16 +56,27 @@
                         "ScriptName": "EnemyExplosiveSpawner",
                         "ScriptVariables": [
                             {
-                                "VariableName": "STATS",
-                                "MemberType": 5
+                                "VariableName": "mHealth",
+                                "MemberType": 0,
+                                "VariableData": 1092616192
+                            },
+                            {
+                                "VariableName": "mSpawnRate",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mMaxActiveEnemies",
+                                "MemberType": 0,
+                                "VariableData": 12
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1857923292,
-                "ParentUID": 1135396554,
+                "UID": 922824147,
+                "ParentUID": 123018099,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -92,8 +103,8 @@
                 "Components": []
             },
             {
-                "UID": 443618396,
-                "ParentUID": 1857923292,
+                "UID": 1639154616,
+                "ParentUID": 922824147,
                 "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
@@ -120,8 +131,8 @@
                 "Components": []
             },
             {
-                "UID": 1167189449,
-                "ParentUID": 443618396,
+                "UID": 209184995,
+                "ParentUID": 1639154616,
                 "Name": "OB_ball_spawner",
                 "Enabled": true,
                 "Active": true,
@@ -155,7 +166,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1345325686,
+                                "GoId": 181800040,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -176,7 +187,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2074396798,
+                                "GoId": 895276048,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -197,7 +208,7 @@
                                 ]
                             },
                             {
-                                "GoId": 653269044,
+                                "GoId": 1605967216,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -222,8 +233,8 @@
                 ]
             },
             {
-                "UID": 1898906159,
-                "ParentUID": 1857923292,
+                "UID": 898850621,
+                "ParentUID": 922824147,
                 "Name": "OB_ball_spawner_doors",
                 "Enabled": true,
                 "Active": true,
@@ -250,8 +261,8 @@
                 "Components": []
             },
             {
-                "UID": 526721968,
-                "ParentUID": 1898906159,
+                "UID": 1607174675,
+                "ParentUID": 898850621,
                 "Name": "OB_ball_spawner_doors",
                 "Enabled": true,
                 "Active": true,
@@ -285,7 +296,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1345325686,
+                                "GoId": 181800040,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -306,7 +317,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2074396798,
+                                "GoId": 895276048,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -327,7 +338,7 @@
                                 ]
                             },
                             {
-                                "GoId": 653269044,
+                                "GoId": 1605967216,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -352,8 +363,8 @@
                 ]
             },
             {
-                "UID": 1345325686,
-                "ParentUID": 1857923292,
+                "UID": 181800040,
+                "ParentUID": 922824147,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -380,8 +391,8 @@
                 "Components": []
             },
             {
-                "UID": 2074396798,
-                "ParentUID": 1345325686,
+                "UID": 895276048,
+                "ParentUID": 181800040,
                 "Name": "Leftdoor",
                 "Enabled": true,
                 "Active": true,
@@ -408,8 +419,8 @@
                 "Components": []
             },
             {
-                "UID": 653269044,
-                "ParentUID": 1345325686,
+                "UID": 1605967216,
+                "ParentUID": 181800040,
                 "Name": "Rightdoor",
                 "Enabled": true,
                 "Active": true,

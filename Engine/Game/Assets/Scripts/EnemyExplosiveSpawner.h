@@ -5,6 +5,7 @@ struct CollisionData;
 class BoxColliderComponent;
 class BattleArea;
 class PoolManager;
+class TimerScript;
 GENERATE_BODY(EnemyExplosiveSpawner)
 
 enum SpawnState
@@ -46,6 +47,7 @@ class EnemyExplosiveSpawner : public Enemy
 		float mLastSpawnTime = 0.0f;
 		int mMaxActiveEnemies = 12;
 		int* mCurrentAreaEnemies = nullptr;
+		TimerScript mAnimationTimer;
 		SpawnState mTrapState = SpawnState::IDLE;
 };
 
