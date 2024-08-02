@@ -170,7 +170,7 @@ void MainMenu::Controls()
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN) 
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
-        if (mSection == 0) // MENU MAIN BUTTONS
+        if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         { 
             if (mOption > 0)
             {
@@ -182,26 +182,25 @@ void MainMenu::Controls()
             }
             HoverMenu(static_cast<MENU_TYPE>(mOption));
         }
-        else if (mSection == 1 && mCurrentMenu != MENU_TYPE::SETTINGS) // CONTROLS INSIDE OPTIONS
+        else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-            if (mSettingOption > 0)
+            if (mSettingOption > 7)
             {
                 mSettingOption--;
             }
             else
             {
-                mSettingOption = 1;
+                mSettingOption = 8;
             }
-            HoverSubMenu(mSettingOption);
+            HoverSubMenu(static_cast<MENU_TYPE>(mSettingOption));
         }
-
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
-        if (mSection == 0)
+        if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         {
             if (mOption < 3)
             {
@@ -213,31 +212,29 @@ void MainMenu::Controls()
             }
             HoverMenu(static_cast<MENU_TYPE>(mOption));
         }
-        else if (mSection == 1)
+        else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-            if (mSubSection == 1) {
-                HoverSubSubMenu(mSubsettingOption);
-                if (mSubsettingOption < 4)
-                {
-                    mSubsettingOption++;
-                }
-                else
-                {
-                    mSubsettingOption = 0;
-                }
+            if (mSettingOption < 8)
+            {
+                mSettingOption++;
             }
-            else {
-                if (mSettingOption < 1)
-                {
-                    mSettingOption++;
-                }
-                else
-                {
-                    mSettingOption = 0;
-                }
-                HoverSubMenu(mSettingOption);
+            else
+            {
+                mSettingOption = 7;
             }
-
+            HoverSubMenu(static_cast<MENU_TYPE>(mSettingOption));
+            //else if (mSettingsGO->IsEnabled()) 
+            //{
+            //    HoverSubSubMenu(mSubsettingOption);
+            //    if (mSubsettingOption < 4)
+            //    {
+            //        mSubsettingOption++;
+            //    }
+            //    else
+            //    {
+            //        mSubsettingOption = 0;
+            //    }
+            //}
         }
     }
 
@@ -251,30 +248,29 @@ void MainMenu::Controls()
             mIsInitial = false;
             return;
         }
-        if (mSection == 0)
+        if (mCurrentMenu == MENU_TYPE::MAIN)
         {
-            mSection++;
             ClickMenu(static_cast<MENU_TYPE>(mOption));
         } 
-        else if (mSection == 1)
+        else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-            if (mSettingOption == 0) OnControlsButtonClick();
-            else OnSettingsButtonClick();
+            OpenMenu(static_cast<MENU_TYPE>(mSettingOption));
         }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
-        if (mSection == 1)
+        if (mCurrentMenu == MENU_TYPE::SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS)
         {
-            OpenMenu(static_cast<MENU_TYPE>(0));
-            mSection--;
+			mSettingOption = 7; // Reset the settings option
+            OpenMenu(MENU_TYPE::OPTIONS);
         }
-        else
+		else
         {
-            mSection--;
-        }
+            mOption = 0; // Reset the option
+			OpenMenu(MENU_TYPE::MAIN);
+		}
     }
 }
 
@@ -304,12 +300,12 @@ void MainMenu::OpenMenu(MENU_TYPE type)
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
             mIsInitial = false;
+            OnPlayButtonHover();
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
-            mControlsGO->SetEnabled(true);
-            OnControlsButtonHover();
+			OnControlsButtonHover();
             break;
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
@@ -407,15 +403,15 @@ void MainMenu::OnSplashButtonClick()
 
 void MainMenu::OnControlsButtonClick()
 {
+	mSettingsGO->SetEnabled(false);
     mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::CONTROLS);
 }
 
 void MainMenu::OnSettingsButtonClick()
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
-    mSubSection = 1;
-    OpenMenu(MENU_TYPE::SETTINGS);
+        mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+        OpenMenu(MENU_TYPE::SETTINGS);
 }
 
 void MainMenu::OnVSyncButtonClick()
@@ -479,14 +475,14 @@ void MainMenu::HoverMenu(MENU_TYPE type)
     }
 }
 
-void MainMenu::HoverSubMenu(int type)
+void MainMenu::HoverSubMenu(MENU_TYPE type)
 {
     switch (type) 
     {
-        case 0:
+        case MENU_TYPE::CONTROLS:
             OnControlsButtonHover();
             break;
-        case 1:
+        case MENU_TYPE::SETTINGS:
             OnSettingsButtonHover();
             break;
     }
@@ -675,7 +671,6 @@ void MainMenu::OnControlsButtonHover()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mControlsButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
-    mSettingOption = 0;
 
     // Set the other hovers off (integration mouse/click)
     OnSettingsButtonHoverOff();
@@ -684,15 +679,13 @@ void MainMenu::OnControlsButtonHover()
 void MainMenu::OnControlsButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mControlsButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    image->SetAlpha(0.2f);
 }
 
 void MainMenu::OnSettingsButtonHover()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
-    mSettingOption = 1;
-
     // Set the other hovers off (integration mouse/click)
     OnControlsButtonHoverOff();
 }
@@ -700,7 +693,7 @@ void MainMenu::OnSettingsButtonHover()
 void MainMenu::OnSettingsButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    image->SetAlpha(0.2f);
 }
 
 void MainMenu::OnBackButtonHover()

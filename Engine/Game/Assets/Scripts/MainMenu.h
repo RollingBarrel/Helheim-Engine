@@ -20,6 +20,14 @@ enum MENU_TYPE {
     SETTINGS
 };
 
+enum SETTING_TYPE {
+	GENERAL_VOLUME,
+	MUSIC_VOLUME,
+	EFFECTS_VOLUME,
+	VSYNC,
+	FULL_SCREEN // Using underscore to avoid conflict with fullscreen macro
+};
+
 GENERATE_BODY(MainMenu);
 
 class MainMenu : public Script
@@ -37,7 +45,7 @@ private:
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
-    void HoverSubMenu(int type);
+    void HoverSubMenu(MENU_TYPE type);
 	void HoverSubSubMenu(int type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
@@ -86,10 +94,8 @@ private:
     void OnFullscreenButtonHoverOff();
     
     int mOption = 0;
-    int mSettingOption = 0;
+    int mSettingOption = 7;
     int mSubsettingOption = 0;
-    int mSection = 0;
-    int mSubSection = 0;
 
     bool mLoadlevel = false;
 
