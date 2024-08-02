@@ -29,6 +29,7 @@ public:
 	void SetMaxSpeed(float speed) { mMaxSpeed = speed; };
 	void SetMaxAcceleration(float acceleration) { mMaxAcceleration = acceleration; };
 
+	const float3& GetDirection() const { return mDirection; }
 
 	void Save(JsonObject& obj) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
@@ -36,6 +37,8 @@ private:
 
 	void Enable() override;
 	void Disable() override;
+
+	float3 mDirection = float3::zero;
 
 	//Agent Parameters:
 	float mRadius = 0.6f;
