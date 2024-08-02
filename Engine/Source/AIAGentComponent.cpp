@@ -37,6 +37,7 @@ void AIAgentComponent::Update()
 		{
 			float3 owner_pos = mOwner->GetWorldPosition();
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
+			mDirection = owner_pos - mOwner->GetWorldPosition();
 			mOwner->SetWorldPosition(owner_pos);
 		}
 	}
