@@ -3,6 +3,7 @@
 #include "GameObject.h"
 
 #include "ScriptComponent.h"
+#include "AnimationComponent.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -28,6 +29,7 @@ void EnemyRobotMelee::Attack()
     
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
     {
+        mAnimationComponent->OnRestart();
         PlayMeleeAudio();
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
