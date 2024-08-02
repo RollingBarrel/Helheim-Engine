@@ -14,6 +14,7 @@ enum StateType
 	SPECIAL,
 	RELOAD,
 	ULTIMATE,
+	ULTIMATE_CHARGE,
 	NONE,
 };
 

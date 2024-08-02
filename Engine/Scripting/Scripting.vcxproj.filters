@@ -191,6 +191,9 @@
       <Filter>States\Attack</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h">
+      <Filter>Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h">
       <Filter>States\Attack</Filter>
     </ClInclude>
   </ItemGroup>
@@ -342,6 +345,9 @@
       <Filter>States\Attack</Filter>
     </ClCompile>
     <ClCompile Include="UltimateAttack.cpp">
+      <Filter>Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="UltimateChargeState.cpp">
       <Filter>States\Attack</Filter>
     </ClCompile>
   </ItemGroup>

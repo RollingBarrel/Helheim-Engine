@@ -37,6 +37,7 @@
 #include "SpecialState.h"
 #include "ReloadState.h"
 #include "UltimateState.h"
+#include "UltimateChargeState.h"
 
 #include "Weapon.h"
 #include "MeleeWeapon.h"
@@ -82,8 +83,10 @@ CREATE(PlayerController)
 
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltimateChargeGO);
     MEMBER(MemberType::FLOAT, mUltimateCooldown);
     MEMBER(MemberType::FLOAT, mUltimateDuration);
+    MEMBER(MemberType::FLOAT, mUltimateChargeDuration);
     MEMBER(MemberType::FLOAT, mUltimatePlayerSlow);
     MEMBER(MemberType::FLOAT, mUltimateDamageTick);
     MEMBER(MemberType::FLOAT, mUltimateDamageInterval);
@@ -136,6 +139,7 @@ void PlayerController::Start()
     mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
     mReloadState = new ReloadState(this, 0.0f);
     mUltimateState = new UltimateState(this, mUltimateCooldown, mUltimateDuration);
+    mUltimateChargeState = new UltimateChargeState(this, 0.0f, mUltimateChargeDuration);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;
@@ -189,8 +193,12 @@ void PlayerController::Start()
         mUnEquippedSpecialGO->SetEnabled(false);
     }
     
+    //ULTIMATE
     if (mUltimateGO)
         mUltimateGO->SetEnabled(false);
+
+    if (mUltimateChargeGO)
+        mUltimateChargeGO->SetEnabled(false);
 
     // COLLIDER
     mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -274,6 +282,7 @@ void PlayerController::StateMachine()
     mLowerState->Update();
     mUpperState->Update();
 }
+
 
 void PlayerController::Paralyzed(float percentage, bool paralysis)
 {
@@ -365,6 +374,9 @@ void PlayerController::CheckInput()
                 break;
             case StateType::ULTIMATE:
                 mUpperState = mUltimateState;
+                break;
+            case StateType::ULTIMATE_CHARGE:
+                mUpperState = mUltimateChargeState;
                 break;
             case StateType::NONE:
                 break;
@@ -746,6 +758,14 @@ void PlayerController::EnableUltimate(bool enable)
     if (mUltimateGO)
     {
         mUltimateGO->SetEnabled(enable);
+    }
+}
+
+void PlayerController::EnableChargeUltimate(bool enable)
+{
+    if (mUltimateChargeGO)
+    {
+        mUltimateChargeGO->SetEnabled(enable);
     }
 }
 

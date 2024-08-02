@@ -25,6 +25,7 @@ class SwitchState;
 class SpecialState;
 class ReloadState;
 class UltimateState;
+class UltimateChargeState;
 enum StateType;
 
 class Weapon;
@@ -135,10 +136,12 @@ public:
     float GetUltimateCooldown() const { return mUltimateCooldown; };
     float GetUltimateSlow() const { return mUltimatePlayerSlow; };
     float GetUltimateDuration() const { return mUltimateDuration; };
+    float GetUltimateChargeDuration() const { return mUltimateChargeDuration; }
     float GetUltimateDamageInterval() const { return mUltimateDamageInterval; };
     float GetUltimateDamageTick() const { return mUltimateDamageTick; };
     void SetUltimateResource(int resource) { mUltimateResource = resource; }
     void EnableUltimate(bool enable);
+    void EnableChargeUltimate(bool enable);
     void UltimateInterpolateLookAt(const float3& target); 
 
     // States
@@ -179,7 +182,7 @@ private:
     SpecialState* mSpecialState = nullptr;
     ReloadState* mReloadState = nullptr;
     UltimateState* mUltimateState = nullptr;
-
+    UltimateChargeState* mUltimateChargeState = nullptr;
 
     // MOUSE
     float3 mPlayerDirection;
@@ -195,7 +198,7 @@ private:
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
     // Speed
-    float mPlayerSpeed = 10.f;
+    float mPlayerSpeed;
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
@@ -244,7 +247,9 @@ private:
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;
+    GameObject* mUltimateChargeGO = nullptr;
     float mUltimateCooldown = 1.0f;
+    float mUltimateChargeDuration = 1.0f;
     float mUltimateDuration = 3.0f;
     float mUltimatePlayerSlow = 1.0f;
     float mUltimateDamageTick = 1.0f;

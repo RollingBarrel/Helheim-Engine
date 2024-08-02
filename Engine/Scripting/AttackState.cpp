@@ -21,7 +21,7 @@ StateType AttackState::HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
     if (mWeapon->GetCurrentAmmo() == 0) return StateType::RELOAD;
-
+    
     mAttackTimer += App->GetDt();
     if (mAttackTimer < mWeapon->GetAttackDuration())
     {
