@@ -5,23 +5,24 @@
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "ModuleDetourNavigation.h"
-#include "ModuleResource.h"
+
 #include "GameObject.h"
 #include "Physics.h"
+#include "PlayerStats.h"
 
 #include "AudioSourceComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+
 #include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
+
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
-#include <functional>
 
 #include "GameManager.h"
 #include "HudController.h"
@@ -54,14 +55,17 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxShield);
-    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    //SEPARATOR("STATS");
+    //MEMBER(MemberType::FLOAT, mMaxShield);
+    //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
+
+    SEPARATOR("RANGE");
+    MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
@@ -128,6 +132,14 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    //Player Stats
+    mPlayerStats = App->GetScene()->GetPlayerStats();
+
+    mMaxShield = mPlayerStats->GetMaxHealth();
+    mShield = mMaxShield;
+
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -151,7 +163,7 @@ void PlayerController::Start()
     BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
     {
-        weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        weaponCollider = static_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
     }
     TrailComponent* batTrail = nullptr;
     if (mBatTrail)
@@ -201,7 +213,7 @@ void PlayerController::Start()
         mUltimateChargeGO->SetEnabled(false);
 
     // COLLIDER
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&PlayerController::OnCollisionEnter, this, std::placeholders::_1)));
@@ -220,7 +232,7 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -243,15 +255,14 @@ void PlayerController::Start()
     mUpperState->Enter();
     mLowerState->Enter();
 
-    if (App->GetScene()->GetName().compare("Level1Scene") == 0)
-    {
-        mGameObject->SetWorldPosition(float3(82.27f, 0.0f, -4.15f));
-    }
-    else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
-    {
-        mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
-    }
-
+    //if (App->GetScene()->GetName().compare("Level1Scene") == 0)
+    //{
+    //    mGameObject->SetWorldPosition(float3(82.27f, 0.0f, -4.15f));
+    //}
+    //else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
+    //{
+    //    mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
+    //}
 }
 
 void PlayerController::Update()
@@ -269,6 +280,7 @@ void PlayerController::Update()
 
     //Check HitEffect
     CheckHitEffect();
+
     // Buff, Debuff timers...
     CheckOtherTimers();
 
@@ -278,7 +290,6 @@ void PlayerController::Update()
 
 void PlayerController::StateMachine()
 {
-    // Check if dead
     mLowerState->Update();
     mUpperState->Update();
 }
@@ -307,7 +318,6 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 
 void PlayerController::CheckInput()
 {
-
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
@@ -565,14 +575,22 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
+void PlayerController::SetMovementSpeed(float percentage) 
+{
+    mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+    mPlayerStats->SetDamageModifier(mPlayerStats->GetDamageModifier() * percentage);
+    mDamageModifier = mPlayerStats->GetDamageModifier();
 }
 
 void PlayerController::SetMaxShield(float percentage)
 {
-    mMaxShield *= percentage; 
+    mPlayerStats->SetMaxHealth(mPlayerStats->GetMaxHealth() * percentage);
+    mMaxShield = mPlayerStats->GetMaxHealth();
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
@@ -646,8 +664,7 @@ bool PlayerController::CanReload() const
 
 void PlayerController::Reload() const
 {
-    mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
-    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
+    static_cast<Pistol*>(mPistol)->Reload();
 }
 
 void PlayerController::CheckDebugOptions()

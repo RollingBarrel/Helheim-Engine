@@ -3,8 +3,6 @@
 #include "GameObject.h"
 
 #include "ScriptComponent.h"
-#include "AnimationComponent.h"
-#include "AIAGentComponent.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"

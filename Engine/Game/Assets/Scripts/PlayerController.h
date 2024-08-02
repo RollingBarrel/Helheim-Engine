@@ -9,10 +9,11 @@ class Component;
 class AnimationComponent;
 class AnimationStateMachine;
 class AudioSourceComponent;
-struct CollisionData;
-class BoxColliderComponent;
 class MeshRendererComponent;
+class BoxColliderComponent;
+struct CollisionData;
 
+class PlayerStats;
 
 class State;
 class DashState;
@@ -85,6 +86,8 @@ public:
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
     float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
+    float GetDamageModifier() const { return mDamageModifier; }
+    GameObject* GetShootOriginGO() const { return mShootOrigin; }
 
     void EquipMeleeWeapon(bool equip);
     void EquipRangedWeapons(bool equip);
@@ -93,7 +96,7 @@ public:
     int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
-    void SetMovementSpeed(float percentage) { mPlayerSpeed *= percentage; }
+    void SetMovementSpeed(float percentage);
     void SetWeaponDamage(float percentage); 
     void SetMaxShield(float percentage); 
 
@@ -193,6 +196,7 @@ private:
     AnimationStateMachine* mStateMachine = nullptr;
 
     // STATS
+    PlayerStats* mPlayerStats = nullptr;
     // Dash
     float mDashCoolDown = 2.0f;
     float mDashDuration = 0.5f;
@@ -209,11 +213,13 @@ private:
     int mCurrentEnergy = 100;
     EnergyType mEnergyType = EnergyType::NONE;
     int mUltimateResource = 100;
+    float mDamageModifier = 1.0f;
 
     // RANGED
     RangeWeapon* mPistol = nullptr;
     RangeWeapon* mMachinegun = nullptr;
     RangeWeapon* mShootgun = nullptr;
+    GameObject* mShootOrigin = nullptr;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;

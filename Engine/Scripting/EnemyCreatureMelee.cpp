@@ -34,14 +34,14 @@ void EnemyCreatureMelee::Start()
 	Enemy::Start();
 	Init();
 
-	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyCreatureMelee::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
 	mDisengageTime = 0.0f;
-	mDeathTime = 1.0f;
+	mDeathTime = 2.20f;
 }
 
 void EnemyCreatureMelee::Chase()

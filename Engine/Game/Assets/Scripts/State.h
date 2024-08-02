@@ -1,4 +1,5 @@
 #pragma once
+#include "TimerScript.h"
 
 class PlayerController;
 
@@ -33,14 +34,14 @@ public:
 	virtual StateType GetType();
 
 	virtual bool IsReady();
-	void ResetCooldown() { mStateTimer = 0.0f; }
+	void ResetCooldown() { mStateTimer.Reset(); }
 	void SetCooldown(float cooldown) { mStateCooldown = cooldown; }
 
 protected:
 	PlayerController* mPlayerController = nullptr;
 
 	float mStateCooldown = 0.0f;
-	float mStateTimer = 10.0f;
+	TimerScript mStateTimer;
 
 private:
 };

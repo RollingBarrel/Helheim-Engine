@@ -15,7 +15,7 @@ UltimateState::UltimateState(PlayerController* player, float cooldown, float dur
 	GameObject* ultimateGO = mPlayerController->GetUltimateGO();
 	if (ultimateGO)
 	{
-		mUltimateScript =  reinterpret_cast<UltimateAttack*>(reinterpret_cast<ScriptComponent*>(ultimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mUltimateScript = static_cast<UltimateAttack*>(static_cast<ScriptComponent*>(ultimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 	}
 }
 
@@ -68,8 +68,7 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	mStateTimer += App->GetDt();
-	if (mPlayerController->GetUltimateGO() && mStateTimer >= mStateCooldown ) return true;
+	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
 	return false;
 }
 

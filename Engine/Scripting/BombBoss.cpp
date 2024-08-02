@@ -48,7 +48,7 @@ void BombBoss::Update()
 		bool finishedExploding = true;
 		for (Component* particlecomponent : mExplosionParticles)
 		{
-			finishedExploding = reinterpret_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
+			finishedExploding = static_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
 		}
 		if (finishedExploding)
 		{

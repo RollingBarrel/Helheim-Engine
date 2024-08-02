@@ -29,7 +29,8 @@ enum class SFX
 
 namespace FMOD 
 {
-	namespace Studio {
+	namespace Studio 
+	{
 		class EventInstance;
 		class EventDescription;
 	}

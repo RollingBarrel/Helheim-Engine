@@ -1,21 +1,27 @@
 #include "HudController.h"
 
-#include "GameObject.h"
 #include "Application.h"
-#include "MainMenu.h"
-#include "GameManager.h"
 #include "ModuleInput.h"
-#include "Keys.h"
-#include "PlayerController.h"
+#include "ModuleScene.h"
 
+#include "PlayerStats.h"
+
+#include "GameObject.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ScriptComponent.h"
-#include "Sanity.h"
+
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "MainMenu.h"
+#include "Keys.h"
 #include "Dialog.h"
+#include "Sanity.h"
+
+
 
 
 CREATE(HudController)
@@ -119,12 +125,15 @@ void HudController::Start()
         mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
         mHealthSlider->SetValue(1.0f);
     }
-
+    
     if (mHealthGradualGO) 
     {
         mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
         mHealthGradualSlider->SetValue(1.0f);
     }
+
+    SetMaxHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
+    //SetHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
     
     if (mBossHealthGO)
     {
@@ -155,8 +164,8 @@ void HudController::Start()
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
 
-    if (mSanityGO) mSanity = reinterpret_cast<Sanity*>(reinterpret_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    if (mDialogGO) mDialog = reinterpret_cast<Dialog*>(reinterpret_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 void HudController::Update()
