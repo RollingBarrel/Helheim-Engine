@@ -46,6 +46,7 @@ protected:
 	virtual void PlayAttackAudio() {};
 
 	bool IsPlayerInRange(float range);
+	bool IsPlayerReachable();
 	void DropItem();
 	void ActivateEnemy();
 	void ActivateHitEffect();

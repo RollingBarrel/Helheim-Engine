@@ -10,6 +10,9 @@
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
+#include "Physics.h"
+#include "Geometry/Ray.h"
+
 #include "GameManager.h"
 #include "PoolManager.h"
 #include "ItemDrop.h"
@@ -168,7 +171,8 @@ void Enemy::Chase()
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
-		if (IsPlayerInRange(mAttackDistance))
+		
+		if (IsPlayerReachable())
 		{
 			mCurrentState = EnemyState::CHARGE;
 		}
@@ -189,8 +193,8 @@ void Enemy::Charge()
 
 void Enemy::Attack()
 {
-	bool playerInRange = IsPlayerInRange(mAttackDistance);
-	if (!playerInRange && mDisengageTimer.Delay(mDisengageTime))
+	bool playerReachable = IsPlayerReachable();
+	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
 		mCurrentState = EnemyState::CHASE;
 		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
@@ -207,6 +211,34 @@ bool Enemy::IsPlayerInRange(float range)
 	distance = (mPlayer) ? mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition()) : inf;
 
 	return (distance <= range);
+}
+
+bool Enemy::IsPlayerReachable()
+{
+	bool reachable = false;
+
+	if (IsPlayerInRange(mAttackDistance))
+	{
+		Hit hit;
+		Ray ray;
+
+		float3 enemyPosition = mGameObject->GetWorldPosition();
+		float3 playerPosition = mPlayer->GetWorldPosition();
+
+		ray.pos = enemyPosition;
+		ray.dir = (playerPosition - enemyPosition).Normalized();
+
+		float distance = enemyPosition.Distance(playerPosition);
+
+		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
+		Physics::Raycast(hit, ray, distance, &ignoreTags);
+
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
+		{
+			reachable = true;
+		}
+	}
+	return reachable;
 }
 
 void Enemy::TakeDamage(float damage)
