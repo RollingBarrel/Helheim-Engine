@@ -46,7 +46,7 @@ private:
 
     void HoverMenu(MENU_TYPE type);
     void HoverSubMenu(MENU_TYPE type);
-	void HoverSubSubMenu(int type);
+	void HoverSubSubMenu(SETTING_TYPE type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
 
@@ -101,6 +101,7 @@ private:
 
     float mTimePassed = 0.0f;
     MENU_TYPE mCurrentMenu;
+	SETTING_TYPE mCurrentSetting;
 
     // Screens
     GameObject* mSplashScreen = nullptr;
