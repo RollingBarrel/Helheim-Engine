@@ -15,13 +15,21 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-uniform layout(binding = 0, r32i) writeonly iimageBuffer outLightsList;
-layout(location = 0)uniform uint maxPointLights;
+uniform layout(binding = 0, r32i) writeonly iimageBuffer outPointLightsList;
+readonly layout(binding = 2) buffer spotLightSpheres
+{
+	uint numSLights;
+	vec4 sLights[];
+};
+uniform layout(binding = 1, r32i) writeonly iimageBuffer outSpotLightsList;
+layout(location = 0)uniform uint maxListLights;
 layout(location = 1)uniform uvec2 numPixels;
-shared uint pointsInTile;
 
 //uniform layout(binding = 1, r32f) readonly image2D depthImage;
 layout(binding = 0) uniform sampler2D gDepth;
+
+shared uint pointsInTile;
+shared uint spotsInTile;
 shared uint minZ;
 shared uint maxZ;
 
@@ -53,6 +61,7 @@ void main()
 		minZ = 0xFFFFFFFF;
         maxZ = 0;
 		pointsInTile = 0;
+		spotsInTile = 0;
 	}
 	barrier();
 
@@ -77,6 +86,7 @@ void main()
 	float viewMinZ = GetLinearZ(uintBitsToFloat(minZ));
 	float viewMaxZ = GetLinearZ(uintBitsToFloat(maxZ));
 
+	//Point Lights
 	for(uint i=gl_LocalInvocationIndex;i<numPLights; i+=threadCount)
 	{
 		PointLight light = pLights[i];
@@ -89,9 +99,29 @@ void main()
         (viewMaxZ - viewPos.z) < light.pos.w)
 		{
 			uint index = atomicAdd(pointsInTile, 1);
-			if(index < maxPointLights)
+			if(index < maxListLights)
 	        {
-				imageStore(outLightsList, int(tileIndex*maxPointLights+index), ivec4(i));
+				imageStore(outPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+	        }
+		}
+	}
+
+	//Spot Lights
+	for(uint i=gl_LocalInvocationIndex;i<numSLights; i+=threadCount)
+	{
+		vec4 light = sLights[i];
+		vec3 viewPos = (view*vec4(light.xyz,1.0)).xyz;
+		if(dot(viewPos, tileFrustumPlanes[0].xyz) < light.w &&
+		dot(viewPos, tileFrustumPlanes[1].xyz) < light.w &&
+		dot(viewPos, tileFrustumPlanes[2].xyz) < light.w &&
+		dot(viewPos, tileFrustumPlanes[3].xyz) < light.w &&
+		(viewMinZ - viewPos.z) > (-light.w) &&
+        (viewMaxZ - viewPos.z) < light.w)
+		{
+			uint index = atomicAdd(spotsInTile, 1);
+			if(index < maxListLights)
+	        {
+				imageStore(outSpotLightsList, int(tileIndex*maxListLights+index), ivec4(i));
 	        }
 		}
 	}
@@ -99,9 +129,13 @@ void main()
 	barrier();
 	if(gl_LocalInvocationIndex == 0)
 	{
-		if(pointsInTile < maxPointLights)
+		if(pointsInTile < maxListLights)
 		{
-			imageStore(outLightsList, int(tileIndex*maxPointLights+pointsInTile), ivec4(-1));
+			imageStore(outPointLightsList, int(tileIndex*maxListLights+pointsInTile), ivec4(-1));
+		}
+		if(spotsInTile < maxListLights)
+		{
+			imageStore(outSpotLightsList, int(tileIndex*maxListLights+spotsInTile), ivec4(-1));
 		}
 	}
 }
