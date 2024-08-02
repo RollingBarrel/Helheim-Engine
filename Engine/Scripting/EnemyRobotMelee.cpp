@@ -4,6 +4,7 @@
 
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "AIAGentComponent.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -18,9 +19,22 @@ CREATE(EnemyRobotMelee)
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::INT, mShieldDropRate);
     MEMBER(MemberType::FLOAT, mMeeleDamage);
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
     END_CREATE;
+}
+
+void EnemyRobotMelee::Start()
+{
+    Enemy::Start();
+    mDisengageTime = 0.1f;
+}
+
+void EnemyRobotMelee::Charge()
+{
+    Enemy::Charge();
+    mGameObject->LookAt(mPlayer->GetWorldPosition());
 }
 
 void EnemyRobotMelee::Attack()
