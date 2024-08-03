@@ -123,10 +123,9 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 		mCurrentEnemies--;
 	}
 
-	/*LOG("ENEMY DESTROYED");
-	LOG("TOTAL ENEMIES: %i", mTotalNumEnemies);
-	LOG("ENEMIES: %i", mCurrentEnemies);
-	LOG("TRAPS: %i", mCurrentTraps);*/
+	LOG("CURRENT TRAPS: %i", mCurrentTraps);
+	LOG("CURRENT EXPLOSIVE ENEMIES: %i", mCurrentExplosiveEnemies);
+	LOG("CURRENT ENEMIES: %i", mCurrentEnemies);
 
 	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0 && mCurrentTraps <= 0)
 	{

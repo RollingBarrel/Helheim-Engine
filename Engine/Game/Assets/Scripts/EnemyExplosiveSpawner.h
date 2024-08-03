@@ -8,13 +8,6 @@ class PoolManager;
 class TimerScript;
 GENERATE_BODY(EnemyExplosiveSpawner)
 
-enum SpawnState
-{
-	IDLE,
-	OPENING,
-	CLOSING
-};
-
 class EnemyExplosiveSpawner : public Enemy
 {
 	FRIEND(EnemyExplosiveSpawner);
@@ -42,10 +35,12 @@ class EnemyExplosiveSpawner : public Enemy
 		PoolManager* mPoolManager = nullptr;
 
 		float mSpawnRate = 2.0f;
+		float mGateMoves = 1.0f;
 		TimerScript mSpawnTimer;
+		TimerScript mOpeningTrap;
+		TimerScript mClosingTrap;
 		int mMaxActiveEnemies = 12;
 		BattleArea* mActiveBattleArea = nullptr;
-		TimerScript mAnimationTimer;
-		SpawnState mTrapState = SpawnState::IDLE;
+		bool mIsSpawning = false;
 };
 
