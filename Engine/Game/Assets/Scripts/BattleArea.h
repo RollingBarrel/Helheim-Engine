@@ -16,9 +16,11 @@ public:
 	void Start() override;
 	void Update() override;
 	void EnemyDestroyed(GameObject* Enemy);
-	void ActivateArea(bool activate);;
+	void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
-	int* GetCurrentEnemies() { return &mCurrentEnemies; }
+	int GetCurrentEnemies() { return mCurrentEnemies; }
+	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
+	void AddExplosiveEnemy();
 
 private:
 
@@ -29,6 +31,7 @@ private:
 	int mMaxSimulNumEnemies = 0;
 	int mCurrentEnemies = 0;
 	int mTotalNumEnemies = 0;
+	int mCurrentExplosiveEnemies = 0;
 	int mCurrentTraps = 0;
 	bool mHasBeenActivated = false;
 

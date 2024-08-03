@@ -26,15 +26,10 @@ void EnemyExplosiveSpawner::Start()
 {
     Enemy::Start();
 
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     mPoolManager = GameManager::GetInstance()->GetPoolManager();
-    mCurrentAreaEnemies = GameManager::GetInstance()->GetActiveBattleArea()->GetCurrentEnemies();
+    mActiveBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
 
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyExplosiveSpawner::OnCollisionEnter, this, std::placeholders::_1)));
-    }
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -68,7 +63,7 @@ void EnemyExplosiveSpawner::TakeDamage(float damage)
 
         if (mHealth <= 0)
         {
-            mCurrentState = EnemyState::DEATH;
+			Death();
         }
     }
 }
@@ -78,13 +73,30 @@ void EnemyExplosiveSpawner::PushBack()
     //Trap can't be pushed back
 }
 
+void EnemyExplosiveSpawner::Death()
+{
+    BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
+    if (activeBattleArea)
+    {
+        activeBattleArea->EnemyDestroyed(mGameObject);
+    }
+    ResetEnemyColor();
+    mGameObject->SetEnabled(false);
+    DropItem();
+    reinterpret_cast<ScriptComponent*>(mGameObject->GetComponent(ComponentType::SCRIPT))->Disable();
+}
+
 void EnemyExplosiveSpawner::Idle()
 {
     mAnimationComponent->SendTrigger("tIdle", 0.0f);
-    if (mSpawnTimer.Delay(mSpawnRate) && *mCurrentAreaEnemies < mMaxActiveEnemies && mGameObject->IsEnabled())
+	int totalEnemies = mActiveBattleArea->GetCurrentEnemies() + mActiveBattleArea->GetCurrentExplosiveEnemies();
+    if (mSpawnTimer.Delay(mSpawnRate) && totalEnemies < mMaxActiveEnemies)
     {
-		mCurrentState = EnemyState::SPAWNING;
-	}
+        mCurrentState = EnemyState::SPAWNING;
+    }
+	LOG("Total Enemies: %i", totalEnemies);
+	LOG("Total Explosive Enemies: %i", mActiveBattleArea->GetCurrentExplosiveEnemies());
+	LOG("Total Enemies: %i", mActiveBattleArea->GetCurrentEnemies());
 }
 
 void EnemyExplosiveSpawner::Spawning()
@@ -106,6 +118,7 @@ void EnemyExplosiveSpawner::Spawning()
             enemy->SetWorldPosition(pos);
             enemy->SetEnabled(true);
             enemyScript->Init();
+			mActiveBattleArea->AddExplosiveEnemy();
         }
         mTrapState = SpawnState::CLOSING;
 	}
@@ -115,8 +128,4 @@ void EnemyExplosiveSpawner::Spawning()
         mTrapState = SpawnState::IDLE;
         mCurrentState = EnemyState::IDLE;
     }
-}
-
-void EnemyExplosiveSpawner::OnCollisionEnter(CollisionData* collisionData)
-{
 }

@@ -26,6 +26,7 @@ class EnemyExplosiveSpawner : public Enemy
 		void Update() override;
 		void TakeDamage(float damage) override;
 		void PushBack() override;
+		void Death() override;
 
 	private:
 		enum class EnemyState {
@@ -36,16 +37,14 @@ class EnemyExplosiveSpawner : public Enemy
 		 
 		void Idle();
 		void Spawning();
-		void OnCollisionEnter(CollisionData* collisionData);
 
 		EnemyState mCurrentState = EnemyState::IDLE;
-		BoxColliderComponent* mCollider = nullptr;
 		PoolManager* mPoolManager = nullptr;
 
 		float mSpawnRate = 2.0f;
 		TimerScript mSpawnTimer;
 		int mMaxActiveEnemies = 12;
-		int* mCurrentAreaEnemies = nullptr;
+		BattleArea* mActiveBattleArea = nullptr;
 		TimerScript mAnimationTimer;
 		SpawnState mTrapState = SpawnState::IDLE;
 };

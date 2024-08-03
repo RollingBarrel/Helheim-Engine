@@ -110,23 +110,23 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 {
 	std::string scriptName = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptName();
 
-	if (scriptName == "EnemyExplosiveSpawner" && enemy->IsEnabled())
+	if (scriptName == "EnemyExplosiveSpawner")
 	{
 		mCurrentTraps--;
 	}
 	else if (scriptName == "EnemyExplosive")
 	{
-		//Count explosive enemies apart
+		mCurrentExplosiveEnemies--;
 	}
 	else // Any enemy except traps and explosive enemies
 	{
 		mCurrentEnemies--;
 	}
 
-	LOG("ENEMY DESTROYED");
+	/*LOG("ENEMY DESTROYED");
 	LOG("TOTAL ENEMIES: %i", mTotalNumEnemies);
 	LOG("ENEMIES: %i", mCurrentEnemies);
-	LOG("TRAPS: %i", mCurrentTraps);
+	LOG("TRAPS: %i", mCurrentTraps);*/
 
 	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0 && mCurrentTraps <= 0)
 	{
@@ -181,6 +181,11 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
 	}
+}
+
+void BattleArea::AddExplosiveEnemy()
+{
+	mCurrentExplosiveEnemies++;
 }
 
 void BattleArea::SetTrapState(GameObject* trap, bool enable)
