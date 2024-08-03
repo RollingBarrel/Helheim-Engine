@@ -63,7 +63,7 @@ StateType AimState::HandleInput()
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN))
     {
         mPlayerController->GetUltimateState()->ResetCooldown();
-        return StateType::ULTIMATE;
+        return StateType::ULTIMATE_CHARGE;
     }
 
 	return StateType::AIM;
