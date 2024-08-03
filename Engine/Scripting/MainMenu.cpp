@@ -288,6 +288,18 @@ void MainMenu::Controls()
      *  Maybe we could also add left and right shoulder buttons to increase/decrease by 10
     */
 
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
+    {
+        OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::LEFT);
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
+    {
+        OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::RIGHT);
+    }
+
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
@@ -475,6 +487,47 @@ void MainMenu::OnFullscreenButtonClick()
     {
         mFullscreenImage->SetAlpha(1.0f);
         App->GetWindow()->WindowFullscreen(true);
+    }
+}
+
+void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction)
+{
+	// Early return just for double checking
+    if (type != SETTING_TYPE::GENERAL_VOLUME && type != SETTING_TYPE::MUSIC_VOLUME && type != SETTING_TYPE::EFFECTS_VOLUME) return;
+
+    switch (type)
+    {
+    case SETTING_TYPE::GENERAL_VOLUME:
+		if (direction == DIRECTION::LEFT)
+        {
+			// TODO: Implement the volume slider
+		}
+        else
+        {
+			// TODO: Implement the volume slider
+		}
+        break;
+    case SETTING_TYPE::MUSIC_VOLUME:
+        if (direction == DIRECTION::LEFT)
+        {
+            // TODO: Implement the volume slider
+        }
+        else
+        {
+            // TODO: Implement the volume slider
+        }
+        break;
+        break;
+    case SETTING_TYPE::EFFECTS_VOLUME:
+        if (direction == DIRECTION::LEFT)
+        {
+            // TODO: Implement the volume slider
+        }
+        else
+        {
+            // TODO: Implement the volume slider
+        }
+        break;
     }
 }
 

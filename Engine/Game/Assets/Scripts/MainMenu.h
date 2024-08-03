@@ -28,6 +28,11 @@ enum SETTING_TYPE {
 	FULL_SCREEN // Using underscore to avoid conflict with fullscreen macro
 };
 
+enum DIRECTION {
+	LEFT,
+	RIGHT
+};
+
 GENERATE_BODY(MainMenu);
 
 class MainMenu : public Script
@@ -50,6 +55,7 @@ private:
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
 
+
     void OnMainButtonClick();
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
@@ -63,6 +69,8 @@ private:
     void OnGeneralVolumeButtonClick();
     void OnMusicVolumeButtonClick();
     void OnEffectsVolumeButtonClick();
+    void OnSlideLeft(SETTING_TYPE type);
+    void OnSlide(SETTING_TYPE type, DIRECTION direction);
 
 
     void OnQuitButtonHover();
