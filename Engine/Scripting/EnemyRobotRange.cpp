@@ -20,6 +20,7 @@ CREATE(EnemyRobotRange)
     MEMBER(MemberType::FLOAT, mRangeDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
 
