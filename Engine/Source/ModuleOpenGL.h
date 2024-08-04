@@ -228,6 +228,8 @@ private:
 	//unsigned int mSsaoBlurProgramId = 0;
 	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
+	unsigned int mNoiseProgramId = 0;
+	unsigned int mVolLightProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
@@ -280,6 +282,8 @@ private:
 
 	unsigned int mSceneWidth = 1;
 	unsigned int mSceneHeight = 1;
+
+	unsigned int mNoiseTexId = 0;
 };
 
 #endif /* _MODULEOPENGL_H_ */

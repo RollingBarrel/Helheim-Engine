@@ -804,6 +804,7 @@
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl" />
+    <None Include="..\Game\Assets\Shaders\Noise.comp" />
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl" />
@@ -828,6 +829,7 @@
     <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="..\Game\Assets\Shaders\uiMask.fs" />
     <None Include="..\Game\Assets\Shaders\uiText.fs" />
+    <None Include="..\Game\Assets\Shaders\Volumetric.comp" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs" />

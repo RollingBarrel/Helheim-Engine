@@ -304,6 +304,10 @@ bool ModuleOpenGL::Init()
 	mTileLightCullingProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Fog.comp";
 	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "Noise.comp";
+	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	//sourcesPaths[0] = "Volumetric.comp";
+	//mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	//sourcesPaths[0] = "GameVertex.glsl";
 	//sourcesPaths[1] = "Fog.glsl";
@@ -467,6 +471,18 @@ bool ModuleOpenGL::Init()
 	//bloom
 	SetBloomIntensity(0.5f);
 
+	//Generate Noise Texture
+	glGenTextures(1, &mNoiseTexId);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, 2048, 2048, 0, GL_RED, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glUseProgram(mNoiseProgramId);
+	glBindImageTexture(0, mNoiseTexId, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+	glDispatchCompute((2048 + 8) / 8, (2048 + 8) / 8, 1);
 	return true;
 }
 
@@ -1123,15 +1139,20 @@ void ModuleOpenGL::Draw()
 		{
 			break;
 		}
-		count++;
-	
-		chosenLights.push_back(it->second);
+		//if (App->GetCamera()->GetCurrentCamera()->GetFrustum().Intersects(it->second->GetFrustum()))
+		//{
+			count++;
+			chosenLights.push_back(it->second);
+		//}
 	}
 
 	std::vector<const math::Frustum*> mRenderFrustums;
 	for (int i = 0; i < chosenLights.size(); ++i)
 	{
-		mRenderFrustums.push_back(&chosenLights[i]->GetFrustum());
+		//if (App->GetCamera()->GetCurrentCamera()->GetFrustum().Intersects(chosenLights[i]->GetFrustum()))
+		//{
+			mRenderFrustums.push_back(&chosenLights[i]->GetFrustum());
+		//}
 	}
 	mRenderFrustums.push_back(&App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	mBatchManager.Update(mRenderFrustums);
@@ -1479,7 +1500,7 @@ void ModuleOpenGL::Draw()
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 
-	////Particles
+	//Particles
 	glActiveTexture(GL_TEXTURE0);
 	for (size_t i = 0; i < mParticleSystems.size(); ++i)
 	{
