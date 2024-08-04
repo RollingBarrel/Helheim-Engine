@@ -66,11 +66,7 @@ private:
     void OnSettingsButtonClick();
     void OnVSyncButtonClick();
     void OnFullscreenButtonClick();
-    void OnGeneralVolumeButtonClick();
-    void OnMusicVolumeButtonClick();
-    void OnEffectsVolumeButtonClick();
-    void OnSlideLeft(SETTING_TYPE type);
-    void OnSlide(SETTING_TYPE type, DIRECTION direction);
+	void OnSlide(SETTING_TYPE type, DIRECTION direction, float step); // step is the amount of change in the slider, usually 0.01f or 0.1f
 
 
     void OnQuitButtonHover();
@@ -135,6 +131,7 @@ private:
     GameObject* mBackCreditGO = nullptr;
     ButtonComponent* mBackCreditButton = nullptr;
 
+    // Options
     GameObject* mOptionsContainerGO = nullptr;
     GameObject* mSettingsButtonGO = nullptr;
     GameObject* mSettingsGO = nullptr;
@@ -143,10 +140,20 @@ private:
     GameObject* mControlsButtonGO = nullptr;
     ButtonComponent* mControlsButton = nullptr;
 
+    // Settings
     GameObject* mGeneralVolumeButtonGO = nullptr;
+
     ButtonComponent* mGeneralVolumeButton = nullptr;
+
+    GameObject* mGeneralVolumeFillGO = nullptr;
+	ImageComponent* mGeneralVolumeFill = nullptr;
+
+    GameObject* mGeneralVolumeSliderGO = nullptr;
+	SliderComponent* mGeneralVolumeSlider = nullptr;
+
     GameObject* mMusicVolumeButtonGO = nullptr;
     ButtonComponent* mMusicVolumeButton = nullptr;
+
     GameObject* mEffectsVolumeButtonGO = nullptr;
     ButtonComponent* mEffectsVolumeButton = nullptr;
     GameObject* mVSyncButtonGO = nullptr;

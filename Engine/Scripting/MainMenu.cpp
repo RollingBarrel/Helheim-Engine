@@ -10,6 +10,7 @@
 #include "Transform2DComponent.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
+#include "SliderComponent.h"
 #include "Resource.h"
 #include "ModuleResource.h"
 #include "TextComponent.h"
@@ -39,6 +40,8 @@ CREATE(MainMenu)
 
     SEPARATOR("SETTINGS");
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeButtonGO);
+	MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeSliderGO);
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeFillGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeButtonGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeButtonGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonGO);
@@ -97,19 +100,17 @@ void MainMenu::Start()
     mControlsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonHoverOff, this)));
 
     mTextTransform = static_cast<Transform2DComponent*>(mCreditsText->GetComponent(ComponentType::TRANSFORM2D));
+    mGeneralVolumeButton = static_cast<ButtonComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::BUTTON));
+    mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
+    mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
 
     mMusicVolumeButton = static_cast<ButtonComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::BUTTON));
-    mGeneralVolumeButton = static_cast<ButtonComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::BUTTON));
     mEffectsVolumeButton = static_cast<ButtonComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::BUTTON));
     mVSyncButton = static_cast<ButtonComponent*>(mVSyncButtonGO->GetComponent(ComponentType::BUTTON));
     mFullscreenButton = static_cast<ButtonComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::BUTTON));
     mVSyncImage = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
     mFullscreenImage = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
 
-
-    mGeneralVolumeButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnGeneralVolumeButtonClick, this)));
-    mMusicVolumeButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMusicVolumeButtonClick, this)));
-    mEffectsVolumeButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsVolumeButtonClick, this)));
     mVSyncButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonClick, this)));
     mFullscreenButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonClick, this)));
 
@@ -283,22 +284,45 @@ void MainMenu::Controls()
         }
     }
 
-    /*
-     *  TODO: Add right and left control to handle the settings that use sliders
-     *  Maybe we could also add left and right shoulder buttons to increase/decrease by 10
-    */
-
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
     {
-        OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::LEFT);
+        if (mCurrentMenu == MENU_TYPE::SETTINGS)
+        {
+            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::LEFT, 0.01f);
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
     {
-        OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::RIGHT);
+        if (mCurrentMenu == MENU_TYPE::SETTINGS)
+        {
+            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::RIGHT, 0.01f);
+        }
+        
     }
+
+    //TODO: Implement a way to increase/decrease x10 using the keyboard also
+    if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentMenu == MENU_TYPE::SETTINGS)
+        {
+            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::RIGHT, 0.1f); //
+        }
+
+    }
+
+    if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
+    {
+        if (mCurrentMenu == MENU_TYPE::SETTINGS)
+        {
+            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::LEFT, 0.1f); //
+        }
+
+    }
+
+
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
@@ -490,22 +514,42 @@ void MainMenu::OnFullscreenButtonClick()
     }
 }
 
-void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction)
+void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
 {
-	// Early return just for double checking
+	// Early return. Just double checking we're not calling it on elements that are not sliders within the settings menu.
     if (type != SETTING_TYPE::GENERAL_VOLUME && type != SETTING_TYPE::MUSIC_VOLUME && type != SETTING_TYPE::EFFECTS_VOLUME) return;
 
     switch (type)
     {
     case SETTING_TYPE::GENERAL_VOLUME:
+        float generalVolumeValue;
 		if (direction == DIRECTION::LEFT)
         {
-			// TODO: Implement the volume slider
+            generalVolumeValue = App->GetAudio()->GetVolume("bus:/");
+            if (generalVolumeValue - step < 0.0f)
+            {
+                App->GetAudio()->SetVolume("bus:/", 0.f);
+				mGeneralVolumeSlider->SetValue(0.f);
+            }
+            else
+			{
+				App->GetAudio()->SetVolume("bus:/", generalVolumeValue - step);
+                mGeneralVolumeSlider->SetValue(generalVolumeValue - step);
+            }
 		}
-        else
+		else // DIRECTION::RIGHT
         {
-			// TODO: Implement the volume slider
-		}
+            generalVolumeValue = App->GetAudio()->GetVolume("bus:/");
+            if (generalVolumeValue + step > 1.f)
+            {
+                App->GetAudio()->SetVolume("bus:/", 1.f);
+            }
+            else
+            {
+                App->GetAudio()->SetVolume("bus:/", generalVolumeValue + step);
+            }
+        }
+		LOG("General Volume: %f", App->GetAudio()->GetVolume("bus:/"));
         break;
     case SETTING_TYPE::MUSIC_VOLUME:
         if (direction == DIRECTION::LEFT)
@@ -516,7 +560,6 @@ void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction)
         {
             // TODO: Implement the volume slider
         }
-        break;
         break;
     case SETTING_TYPE::EFFECTS_VOLUME:
         if (direction == DIRECTION::LEFT)
@@ -531,20 +574,7 @@ void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction)
     }
 }
 
-void MainMenu::OnGeneralVolumeButtonClick()
-{
-	LOG("General Volume");
-}
-
-void MainMenu::OnMusicVolumeButtonClick() {
-    LOG("Music Volume");
-}
-void MainMenu::OnEffectsVolumeButtonClick() {
-    LOG("Effects Volume");
-}
-
 // SELECTED
-
 void MainMenu::HoverMenu(MENU_TYPE type) 
 {
     switch (type) 
@@ -601,8 +631,8 @@ void MainMenu::HoverSubSubMenu(SETTING_TYPE type)
 
 void MainMenu::OnGeneralVolumeButtonHover()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(1.f);
+    //ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
+    mGeneralVolumeFill->SetAlpha(1.f);
 	mCurrentSetting = SETTING_TYPE::GENERAL_VOLUME;
 
 	//TODO: Abstract this abomination (in all the hover functions)
