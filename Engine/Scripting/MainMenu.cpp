@@ -315,7 +315,7 @@ void MainMenu::Controls()
     {
         if (mCurrentMenu == MENU_TYPE::SETTINGS)
         {
-            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::RIGHT, 0.1f); //
+            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::RIGHT, 0.1f);
         }
 
     }
@@ -324,7 +324,7 @@ void MainMenu::Controls()
     {
         if (mCurrentMenu == MENU_TYPE::SETTINGS)
         {
-            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::LEFT, 0.1f); //
+            OnSlide(static_cast<SETTING_TYPE>(mSubsettingOption), DIRECTION::LEFT, 0.1f);
         }
 
     }
@@ -645,7 +645,7 @@ void MainMenu::OnGeneralVolumeHover()
     mGeneralVolumeFill->SetAlpha(1.f);
 	mCurrentSetting = SETTING_TYPE::GENERAL_VOLUME;
 
-	//TODO: Abstract this abomination (in all the hover functions)
+	//TODO: Abstract this abomination (in all of the hover functions)
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
     OnVSyncButtonHoverOff();

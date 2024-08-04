@@ -66,7 +66,7 @@ private:
     void OnSettingsButtonClick();
     void OnVSyncButtonClick();
     void OnFullscreenButtonClick();
-	void OnSlide(SETTING_TYPE type, DIRECTION direction, float step); // step is the amount of change in the slider, usually 0.01f or 0.1f
+	void OnSlide(SETTING_TYPE type, DIRECTION direction, float step); // step is the increment/decrement amount, usually 0.01f (1%) or 0.1f (10%)
 
 
     void OnQuitButtonHover();
