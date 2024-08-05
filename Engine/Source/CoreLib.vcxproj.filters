@@ -456,6 +456,18 @@
     <ClCompile Include="ResourcePrefab.cpp">
       <Filter>Resources</Filter>
     </ClCompile>
+    <ClCompile Include="ResourceIBL.cpp">
+      <Filter>Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadIBL.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="MaskComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerStats.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1952,6 +1964,18 @@
     <ClInclude Include="ResourcePrefab.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="ResourceIBL.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveLoadIBL.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="MaskComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerStats.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -2063,6 +2087,33 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\SelectSkins.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\ssao_fragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\TileLightCulling.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\uiMask.fs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\GaussianBlur.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\GameVertex.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\GameFragment.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\SsaoBlur.glsl">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

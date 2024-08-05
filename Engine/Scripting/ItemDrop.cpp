@@ -26,14 +26,14 @@ void ItemDrop::Init()
 
     if (!components.empty())
     {
-        mAnimation = reinterpret_cast<AnimationComponent*>(*components.begin());
+        mAnimation = static_cast<AnimationComponent*>(*components.begin());
         if (mAnimation)
         {
             mAnimation->SetIsPlaying(true);
         }
     }
 
-    mDespawnTimer = 30.0f;
+    mDespawnTimer = 60.0f;
 
 }
 
@@ -42,7 +42,7 @@ void ItemDrop::Start()
     ModuleScene* scene = App->GetScene();
     mPlayer = GameManager::GetInstance()->GetPlayer();
     
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ItemDrop::OnCollisionEnter, this, std::placeholders::_1)));
@@ -64,25 +64,34 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
-        mGameObject->SetEnabled(false);
+       
 
-        PlayerController* playerScript =  reinterpret_cast<PlayerController*>(reinterpret_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (playerScript != nullptr)
         {
             switch (mDropId)
             {
             case 1:
-                playerScript->RechargeShield(mHealthRecovered);
+                if (playerScript->GetShieldPercetage() != 100.0f)
+                {
+                    playerScript->RechargeShield(mHealthRecovered);
+                    mGameObject->SetEnabled(false);
+                }
                 break;
             case 2:
                 playerScript->RechargeBattery(EnergyType::BLUE);
+                mGameObject->SetEnabled(false);
                 break;
             case 3:
                 playerScript->RechargeBattery(EnergyType::RED);
+                mGameObject->SetEnabled(false);
                 break;
             default:
                 break;
             }
         }
+
+
+
     }
 }

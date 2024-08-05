@@ -1,164 +1,50 @@
 #include "EnemyRobotMelee.h"
-#include "ModuleScene.h"
 #include "Application.h"
-#include "PlayerController.h"
-#include "AIAGentComponent.h"
-#include "AnimationComponent.h"
-#include "Physics.h"
-#include "BoxColliderComponent.h"
 #include "GameObject.h"
+
 #include "ScriptComponent.h"
+#include "AnimationComponent.h"
+#include "AIAGentComponent.h"
+
 #include "GameManager.h"
 #include "AudioManager.h"
+#include "PlayerController.h"
 
-CREATE(EnemyRobotMelee) {
+CREATE(EnemyRobotMelee) 
+{
     CLASS(owner);
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::INT, mShieldDropRate);
-    MEMBER(MemberType::FLOAT, mChaseDelay);
-    MEMBER(MemberType::FLOAT, mMeleeAttackCoolDown);
-    MEMBER(MemberType::FLOAT, mMeleeDistance);
     MEMBER(MemberType::FLOAT, mMeeleDamage);
-
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
+    SEPARATOR("STATES");
+    MEMBER(MemberType::FLOAT, mAttackDistance);
     END_CREATE;
-}
-
-EnemyRobotMelee::EnemyRobotMelee(GameObject* owner) : Enemy(owner)
-{
-}
-
-
-void EnemyRobotMelee::Update()
-{
-    if (GameManager::GetInstance()->IsPaused()) return;
-
-    Enemy::Update();
-
-    if (!mBeAttracted)
-    {
-        switch (mCurrentState)
-        {
-        case EnemyState::IDLE:
-            mAnimationComponent->SendTrigger("tIdle", 0.2f);
-            Idle();
-
-            break;
-        case EnemyState::CHASE:
-            mAnimationComponent->SendTrigger("tChase", 0.2f);
-            Chase();
-            break;
-        case EnemyState::ATTACK:
-            mAnimationComponent->SendTrigger("tAttack", 0.2f);
-            Attack();
-            break;
-        }
-    }
-
-    mBeAttracted = false;
 }
 
 void EnemyRobotMelee::Start()
 {
     Enemy::Start();
-
-    mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
-
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-    if (mAnimationComponent)
-    {
-        mAnimationComponent->SetIsPlaying(true);
-
-    }
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-
-    if (mCollider)
-    {
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotMelee::OnCollisionEnter, this, std::placeholders::_1)));
-    }
+    mDisengageTime = 0.1f;
 }
 
-
-void EnemyRobotMelee::Idle()
+void EnemyRobotMelee::Charge()
 {
-
-
-    if (IsPlayerInRange(mActivationRange))
-    {
-        mCurrentState = EnemyState::CHASE;
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-    }
-}
-
-void EnemyRobotMelee::Chase()
-{
-    PlayStepAudio();
-    if (IsPlayerInRange(mActivationRange))
-    {
-        if (mAiAgentComponent)
-        {
-            if (Delay(mChaseDelay))
-            {
-                mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-                float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-                direction.y = 0;
-                direction.Normalize();
-                float angle = std::atan2(direction.x, direction.z);;
-
-                if (mGameObject->GetWorldRotation().y != angle)
-                {
-                    mGameObject->SetWorldRotation(float3(0, angle, 0));
-
-                }
-
-            }
-            mAiAgentComponent->MoveAgent(mSpeed);
-
-        }
-        if (IsPlayerInRange(mMeleeDistance))
-        {
-            mCurrentState = EnemyState::ATTACK;
-        }
-    }
-    else
-    {
-        mCurrentState = EnemyState::IDLE;
-    }
+    Enemy::Charge();
+    mGameObject->LookAt(mPlayer->GetWorldPosition());
 }
 
 void EnemyRobotMelee::Attack()
 {
-    MeleeAttack();
-
-    bool playerInRange = IsPlayerInRange(mMeleeDistance);
-
-    if (!playerInRange && mTimerDisengage > 1.0f)
+    Enemy::Attack();
+    
+    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
     {
-
-        mCurrentState = EnemyState::CHASE;
-        mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-        mTimerDisengage = 0.0f;
-    }
-    else if (!playerInRange)
-    {
-        mTimerDisengage += App->GetDt();
-    }
-
-}
-
-bool EnemyRobotMelee::IsMoving()
-{
-    return (mCurrentState == EnemyState::CHASE);
-}
-
-void EnemyRobotMelee::MeleeAttack()
-{
-    if (mTimerAttack > mMeleeAttackCoolDown)
-    {
+        mAnimationComponent->OnRestart();
         PlayMeleeAudio();
-        MeshRendererComponent* enemyMesh = (MeshRendererComponent*)mPlayer->GetComponent(ComponentType::MESHRENDERER);
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
         float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
@@ -173,30 +59,7 @@ void EnemyRobotMelee::MeleeAttack()
                 playerScript->TakeDamage(mMeeleDamage);
             }
         }
-
-        mTimerAttack = 0.0f;
     }
-    else
-    {
-        mTimerAttack += App->GetDt();
-    }
-}
-void EnemyRobotMelee::Death() 
-{
-    mAnimationComponent->SendTrigger("tDeath", 0.3f);
-    if(mDeathTimer.Delay(1.4f))
-    {
-        Enemy::Death();
-    }
-}
-void EnemyRobotMelee::Reset()
-{
-    Enemy::Reset();
-    mAnimationComponent->OnReset();
-    mAnimationComponent->SendTrigger("tIdle",0.0f);
-}
-void EnemyRobotMelee::OnCollisionEnter(CollisionData* collisionData)
-{
 }
 
 void EnemyRobotMelee::PlayStepAudio()

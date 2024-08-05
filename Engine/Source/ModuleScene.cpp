@@ -1,30 +1,18 @@
 #include "ModuleScene.h"
-#include "GameObject.h"
 #include "Application.h"
-#include "ModuleCamera.h"
-#include "glew.h"
-#include "MeshRendererComponent.h"
-#include "CameraComponent.h"
-#include "Component.h"
-#include "ModuleUI.h"
+#include "Globals.h"
 
+#include "ModuleCamera.h"
+#include "ModuleUI.h"
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
-#include "HierarchyPanel.h"
-#include "ModuleEditor.h"
-#include "ModuleResource.h"
-#include "Globals.h"
+#include "MeshRendererComponent.h"
 
-#include "ResourceScene.h"
+#include "glew.h"
 
-#include <algorithm>
-#include <iterator>
-#include "Algorithm/Random/LCG.h"
-
-#include "GeometryBatch.h"
-#include "ImporterMesh.h"
+#include "PlayerStats.h"
 
 const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
 
@@ -34,14 +22,7 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
-	if (mRoot)
-	{
-		delete mRoot;
-	}
-	if (mBackgroundScene)
-	{
-		delete mBackgroundScene;
-	}
+	
 }
 
 #pragma region Basic Functions
@@ -49,6 +30,7 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("EmptyScene", nullptr);
+	mPlayerStats = new PlayerStats();
 	return true;
 }
 
@@ -97,6 +79,22 @@ update_status ModuleScene::PostUpdate(float dt)
 		LoadPrefab(mPrefabPath);
 	}
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleScene::CleanUp()
+{
+	if (mRoot)
+	{
+		delete mRoot;
+	}
+	if (mBackgroundScene)
+	{
+		delete mBackgroundScene;
+	}
+
+	delete mPlayerStats;
+
+	return true;
 }
 
 #pragma endregion
@@ -187,7 +185,10 @@ void ModuleScene::Save(const char* sceneName) const
 		JsonObject gameObjectData = objArray.PushBackNewObject();
 		go->Save(gameObjectData);
 	}
-
+	scene.AddInt("NavMeshResource", App->GetNavigation()->GetResourceId());
+	scene.AddInt("SkyBoxResource", App->GetOpenGL()->GetSkyboxID());
+	scene.AddFloat("BloomIntensity", App->GetOpenGL()->GetBloomIntensity());
+	scene.AddFloats("DirectionalLight", reinterpret_cast<const float*>(&App->GetOpenGL()->GetDirectionalLight()), sizeof(DirectionalLight) / sizeof(float));
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -231,7 +232,7 @@ void ModuleScene::Load(const char* sceneName)
 		mGameObjectsByTags.clear();
 		mRoot = new GameObject("EmptyScene", nullptr);
 		Archive doc(fileBuffer);
-		delete fileBuffer;
+		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
 
 		JsonObject scene = root.GetJsonObject("Scene");
@@ -255,7 +256,26 @@ void ModuleScene::Load(const char* sceneName)
 			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		App->GetNavigation()->LoadResourceData();
+		unsigned int resourceNavMesh = scene.GetInt("NavMeshResource");
+		if(resourceNavMesh != 0)
+			App->GetNavigation()->CreateQuery(resourceNavMesh);
+		else
+			App->GetNavigation()->ReleaseResource();
+
+		if(scene.HasMember("SkyBoxResource"))
+			App->GetOpenGL()->SetSkybox(scene.GetInt("SkyBoxResource"));
+		else
+			App->GetOpenGL()->SetSkybox(0);
+
+		if (scene.HasMember("BloomIntensity"))
+			App->GetOpenGL()->SetBloomIntensity(scene.GetFloat("BloomIntensity"));
+		else
+			App->GetOpenGL()->SetBloomIntensity(0.5f);
+
+		float directionalLight[]{ 0.0f, -1.0f, -1.0f, 0.0f, 1.f, 1.f, 1.f, 0.05f };
+		if (scene.HasMember("DirectionalLight"))
+			scene.GetFloats("DirectionalLight", directionalLight);
+		App->GetOpenGL()->SetDirectionalLight(*reinterpret_cast<DirectionalLight*>(directionalLight));
 
 		App->GetScriptManager()->AwakeScripts();
 		
@@ -591,11 +611,10 @@ void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* seco
 		mSceneGO.push_back(second);
 	}
 
-	for (unsigned int i = 0; i < second->GetChildren().size(); ++i)
+	for (int i = second->GetChildren().size() - 1; i >= 0; --i)
 	{
 		SwitchGameObjectsFromScene(second, second->GetChildren()[i]);
 	}
-	
 }
 
 void ModuleScene::DeleteGameObjects()
@@ -628,6 +647,9 @@ void ModuleScene::NewScene()
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();
+
+	App->GetNavigation()->ReleaseResource();
+	App->GetOpenGL()->SetSkybox(0);
 
 	delete mRoot;
 	mRoot = new GameObject("EmptyScene", nullptr);

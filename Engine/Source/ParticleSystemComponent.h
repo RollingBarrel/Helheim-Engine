@@ -35,6 +35,8 @@ public:
 	void Enable() override;
 	void Disable() override;
 
+	bool HasEnded() const;
+
 	float3 ShapeInitPosition() const;
 
 	float3 ShapeInitDirection(const float3& pos) const;
@@ -66,7 +68,7 @@ private:
 	float mStretchedRatio = 0.0f;
 
 	float mEmissionRate = 10.0f;
-	int mMaxParticles = 1000.0f;
+	int mMaxParticles = 1000;
 	bool mLooping = true;
 
 	//EmitterShape* mShape;

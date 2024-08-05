@@ -171,6 +171,16 @@ void AnimationStateMachine::DeleteTransition(int index)
 	mTransitions.erase(mTransitions.begin() + index);
 }
 
+void AnimationStateMachine::SetTransitionSource(int index, const std::string& sourceName)
+{
+	mTransitions[index].mSource = sourceName;
+}
+
+void AnimationStateMachine::SetTransitionTarget(int index, const std::string& targetName)
+{
+	mTransitions[index].mTarget = targetName;
+}
+
 void AnimationStateMachine::SaveResource(const char* path, bool isLibrary) const
 {
 	unsigned int header[3] = { mAnimationUID, GetNumStates(), GetNumTransitions() };

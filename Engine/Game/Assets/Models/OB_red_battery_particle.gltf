@@ -15,7 +15,7 @@
 	"nodes":[
 		{
 			"mesh":0,
-			"name":"OB_battery_particle"
+			"name":"OB_red_battery_particle"
 		}
 	],
 	"materials":[
@@ -29,7 +29,7 @@
 			"emissiveTexture":{
 				"index":0
 			},
-			"name":"T_battery_particle",
+			"name":"T_red_battery_particle",
 			"pbrMetallicRoughness":{
 				"baseColorTexture":{
 					"index":1
@@ -69,8 +69,8 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"T_battery_particle_Emissive",
-			"uri":"T_battery_particle_Emissive.png"
+			"name":"T_red_battery_particle_Emissive",
+			"uri":"T_red_battery_particle_Emissive.png"
 		},
 		{
 			"mimeType":"image/png",
@@ -90,8 +90,8 @@
 			],
 			"min":[
 				-2.2298598289489746,
-				-0.08261454105377197,
-				-2.229860305786133
+				-0.08261449635028839,
+				-2.2298600673675537
 			],
 			"type":"VEC3"
 		},

@@ -5,12 +5,6 @@
 
 ObjectPool::ObjectPool(const char* PrefabFileName, unsigned int size, GameObject* parent)
 {
-	if (!parent)
-	{
-		parent = App->GetScene()->GetRoot();
-	}
-	
-
 	mObjects.reserve(size);
 	GameObject* prefab = App->GetScene()->InstantiatePrefab(PrefabFileName, parent);
 	prefab->SetEnabled(false);
@@ -24,10 +18,6 @@ ObjectPool::ObjectPool(const char* PrefabFileName, unsigned int size, GameObject
 		duplicatedGameObject->SetEnabled(false);
 		mObjects.push_back(duplicatedGameObject);
 	}
-}
-
-ObjectPool::~ObjectPool()
-{
 }
 
 GameObject* ObjectPool::GetObject()
@@ -46,5 +36,4 @@ GameObject* ObjectPool::GetObject()
 	newGameObject->SetEnabled(true);
 	mObjects.push_back(newGameObject);
 	return newGameObject;
-
 }

@@ -27,7 +27,7 @@ Bullet::~Bullet()
 
 void Bullet::Start()
 {
-	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Bullet::OnCollisionEnter, this, std::placeholders::_1)));
@@ -39,12 +39,17 @@ void Bullet::Update()
 {
 	if (!mHasCollided)
 	{
-		if (mTotalMovement <= mRange)
+		if (mTotalMovement == 0.0f)
+		{
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed * App->GetDt())));
+
+		}
+		else if (mTotalMovement <= mRange)
 		{
 			//LOG("TotalMovement, %f", mTotalMovement);
-			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed)));
-			
-			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed);
+
+			mTotalMovement += mGameObject->GetWorldPosition().Distance((mGameObject->GetWorldPosition() + mGameObject->GetFront().Mul(mSpeed * App->GetDt())));
+			mGameObject->SetWorldPosition(mGameObject->GetWorldPosition() + mDirection * mSpeed * App->GetDt());
 		}
 		else
 		{
@@ -76,8 +81,8 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	GameObject* firstChild = *(mGameObject->GetChildren().begin());
 	if (firstChild)
 	{
-		mHitParticles = reinterpret_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
-		mBulletTrail = reinterpret_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
+		mHitParticles = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
+		mBulletTrail = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
 		if (mBulletTrail)
 		{
 			mBulletTrail->SetEnable(true);
@@ -103,7 +108,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
 			{
-				LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
+				//LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
 				if (mHitParticles)
 				{
 					mHitParticles->SetEnable(true);
@@ -116,9 +121,9 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		{
 			if (collisionData->collidedWith->GetTag().compare("Player") == 0)
 			{
-				LOG("Collided with player");
-				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+				//LOG("Collided with player");
+				ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+				PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
 				player->TakeDamage(mDamage);
 				mDamage = 0.0f;
 				if (mHitParticles)
@@ -126,13 +131,12 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 					mHitParticles->SetEnable(true);
 				}
 				mHasCollided = true;
-				mGameObject->SetEnabled(false);
 			}
 		}
 
 		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
 		{
-			LOG("Collided with WALL");
+			//LOG("Collided with WALL");
 			if (mHitParticles)
 			{
 				mHitParticles->SetEnable(true);

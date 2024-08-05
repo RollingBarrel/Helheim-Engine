@@ -81,7 +81,7 @@ bool ModuleEditor::Init()
 	mIO->IniFilename = nullptr;
 
 
-	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->window, EngineApp->GetOpenGL()->GetOpenGlContext());
+	ImGui_ImplSDL2_InitForOpenGL(EngineApp->GetWindow()->mWindow, EngineApp->GetOpenGL()->GetOpenGlContext());
 	ImGui_ImplOpenGL3_Init("#version 460");
 
 	mIO->Fonts->AddFontDefault();

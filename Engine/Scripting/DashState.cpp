@@ -24,9 +24,7 @@ StateType DashState::HandleInput()
     if (GameManager::GetInstance()->UsingController())
     {
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY) != 0)
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
         {
             return StateType::MOVE;
         }
@@ -49,9 +47,23 @@ void DashState::Update()
 {
     float dashSpeed = mPlayerController->GetDashRange() / mPlayerController->GetDashDuration();
     float3 currentPos = mPlayerController->GetPlayerPosition();
-    float3 futurePos = currentPos + mPlayerController->GetPlayerDirection() * dashSpeed * App->GetDt();
+    float3 direction;
+
+    float collisionDotProduct = mPlayerController->GetPlayerDirection().Dot(mPlayerController->GetCollisionDirection());
+    if (collisionDotProduct < 0.0f)
+    {
+        direction = mPlayerController->GetPlayerDirection() - mPlayerController->GetCollisionDirection().Mul(collisionDotProduct);
+    }
+    else
+    {
+        direction = mPlayerController->GetPlayerDirection();
+    }
+
+    float3 futurePos = currentPos + (direction) * dashSpeed * App->GetDt();
 
     mPlayerController->MoveToPosition(futurePos);
+
+
 }
 
 void DashState::Enter()

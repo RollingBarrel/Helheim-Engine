@@ -46,10 +46,13 @@ public:
 	std::string GetCurrentStateName();
 	void SendTrigger(const std::string& trigger, float transitionTime);
 	void ChangeState(const std::string& stateName, float transitionTime);
+	bool HasCurrentStateFinished(float deltaTime = 0.01f);
 	
 	std::string GetCurrentSpineStateName();
 	void SendSpineTrigger(const std::string& trigger, float transitionTime);
 	void ChangeSpineState(const std::string& stateName, float transitionTime);
+	bool HasCurrentSpineStateFinished(float deltaTime = 0.01f);
+
 
 	//Animations UUIDs
 	void SetAnimationUid(const unsigned int uid) { mAnimationUID = uid; }

@@ -8,15 +8,23 @@ enum class PoolType
 {
 	FIRST = 0,
 	
+	//ITEMS
 	SHIELD,
 	BLUE_ENERGY,
 	RED_ENERGY,
 	BULLET,
-	ENEMYBULLET,
-	
+	ENEMY_BULLET,
+
+	//ENEMIES
+	ROBOT_MELEE,		//6
+	ROBOT_RANGE,		//7
+	CREATURE_MELEE,		//8
+	CREATURE_RANGE,		//9
+	ROBOT_EXPLOSIVE,	//10
+
+
 	LAST
 };
-
 
 GENERATE_BODY(PoolManager);
 class PoolManager : public Script
@@ -25,7 +33,6 @@ class PoolManager : public Script
 public:	
 
 	PoolManager(GameObject* owner);
-	~PoolManager();
 
 	void Start() override;
 
@@ -34,6 +41,5 @@ public:
 private:
 
 	std::map<PoolType, ObjectPool> mPoolMap;
-	unsigned int mNumItems = 10;
 };
 

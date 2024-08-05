@@ -43,8 +43,8 @@ EngineApplication::EngineApplication()
 	modules[7] = physics = new ModulePhysics();
 	modules[8] = engineScriptManager = new ModuleEngineScriptManager();
 	scriptManager = engineScriptManager;
-	modules[9] = debugDraw = new ModuleDebugDraw();
-	modules[10] = scene = new ModuleScene();
+	modules[9] = scene = new ModuleScene();
+	modules[10] = debugDraw = new ModuleDebugDraw();
 	modules[11] = navigation = new ModuleDetourNavigation();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = editor = new ModuleEditor();
@@ -109,13 +109,13 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	if (!IsPlayMode())
+	if (!IsPlayMode() && !App->GetScene()->IsPrefabScene())
 	{
 		editor->SaveSettings();
 	}
 	bool ret = true;
 
-	for (int i = 0; i < NUM_MODULES; ++i)
+	for (int i = NUM_MODULES - 1; i != 0 ; --i)
 		ret = modules[i]->CleanUp();
 
 	return ret;

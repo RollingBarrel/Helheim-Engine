@@ -29,7 +29,6 @@ public:
 
 	const PointLight& GetData() const { return mData; };
 	const float* GetPosition() const;
-	void SetPosition(const float pos[3]);
 	const float* GetColor() const { return mData.color; }
 	void SetColor(float col[3]);
 	float GetIntensity() const { return mData.intensity; }

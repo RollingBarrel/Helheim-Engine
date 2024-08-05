@@ -76,13 +76,13 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 	if (gameObject->IsEnabled())
 	{
 		//TODO: Check this...
-		ImageComponent* image = reinterpret_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
 		if (image && image->IsEnabled())
 		{
 			image->Draw();
 		}
 		
-		TextComponent* text = reinterpret_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
+		TextComponent* text = static_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
 		if (text && text->IsEnabled())
 		{
 			text->Draw();
@@ -153,10 +153,11 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 			{
 				KeyState mouseButtonLeftState = App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT);
 				
-				if (mouseButtonLeftState == KeyState::KEY_UP)
+				if (mouseButtonLeftState == KeyState::KEY_UP && mButtonPressed)
 				{
 					button->TriggerEvent(EventType::CLICK);
 					eventTriggered = true;
+					mButtonPressed = false;
 					return; 
 				}
 				// Button pressed
@@ -164,6 +165,7 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 				{
 					button->TriggerEvent(EventType::PRESS);
 					eventTriggered = true;
+					mButtonPressed = true;
 					return; 
 				}
 				// Mouse hover
