@@ -2,25 +2,12 @@
 #define PI 3.1415926535897932384626433832795
 #extension GL_ARB_bindless_texture : require
 
-//layout(location = 0)uniform mat4 invView;
-//layout(std140, binding = 0) uniform CameraMatrices
-//{
-//	mat4 view;
-//	mat4 proj;
-//};
-//float GetLinearZ(float inputDepth)
-//{
-//	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
-//}
-//
-//vec3 GetWorldPos(float inDepth, vec2 texCoords)
-//{
-//	float viewZ = GetLinearZ(inDepth);
-//	float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
-//	float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
-//	vec3 viewPos = vec3(viewX, viewY, viewZ);
-//	return (invView * vec4(viewPos, 1.0)).xyz;
-//}
+layout(std140, binding = 0) uniform CameraMatrices
+{
+	mat4 view;
+	mat4 proj;
+	mat4 invView;
+};
 
 //Light properties
 layout(std140, binding = 1) uniform DirLight
@@ -67,7 +54,6 @@ readonly layout(std430, binding = 4) buffer SpotLightShadows
 
 in vec2 uv;
 
-layout(location = 1)uniform vec3 cPos;
 //Gbuffer
 layout(binding = 0)uniform sampler2D diffuseTex;
 //layout(binding = 1)uniform sampler2D specularRoughTex;
@@ -154,7 +140,8 @@ void main()
 	//pos = GetWorldPos(depth, uv);
 	pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;
-	V = normalize(cPos - pos);
+	vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
+	V = normalize(cameraPos - pos);
 
 	vec3 baseColor = texture(diffuseTex, uv).rgb;
 	vec2 specColorTex = texture(metalRoughTex, uv).gb;

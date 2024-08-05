@@ -8,13 +8,13 @@ layout(std140, binding = 0) uniform CameraMatrices
 {
 	mat4 view;
 	mat4 proj;
+	mat4 invView;
 };
 layout(binding = 0) uniform sampler2D depthTex;
 layout(binding = 1) uniform sampler2D noiseTexture;
 
-layout(location = 0) uniform mat4 invView;
-layout(location = 1) uniform float baseExtCoeff;
-layout(location = 2) uniform float currTime;
+layout(location = 0) uniform float baseExtCoeff;
+layout(location = 1) uniform float currTime;
 
 float GetLinearZ(float inputDepth)
 {
@@ -31,25 +31,25 @@ vec3 GetWorldPos(float depth, vec2 uvs)
 
 float noise(vec3 position, float time)
 {
-	return texture(noiseTexture, position.xy + vec2(position.z+time)) * 2.0 - 1.0;
+	return texture(noiseTexture, position.xy + vec2(position.z+time)).r * 2.0 - 1.0;
 }
 
-float CalculateExtintionCoeff(vec3 currPos)
+float CalculateExtinctionCoeff(vec3 currPos)
 {
-	return baseExtCoeff * noise(currentPos, currTime) * noiseAmount;
+	return baseExtCoeff * noise(currPos, currTime) * noiseAmount;
 }
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 void main()
 {
-	const ivec2 texSize = textureSize(screenImage, 0);
-	if(gl_GlobalInvocation.x < texSize.x && gl_GlobalInvocation.y < texSize.y)
+	const ivec2 texSize = imageSize(screenImage);
+	if(gl_GlobalInvocationID.x < texSize.x && gl_GlobalInvocationID.y < texSize.y)
 	{
 		const vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(texSize);
-		const vec3 worldPos = GetWorldPos(texture(depthTexture, uv).r, uv);
+		const vec3 worldPos = GetWorldPos(texture(depthTex, uv).r, uv);
 
-		const vec3 currPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
-		const rayDir = worldPos - currPos;
+		vec3 currPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
+		const vec3 rayDir = worldPos - currPos;
 
 		const vec3 marchingStep = rayDir / float(NUM_STEPS);
 		const float stepSize = length(marchingStep);
@@ -58,14 +58,14 @@ void main()
 		//vec3 accInScattering = 0.0;
 		for(int i = 0; i < NUM_STEPS; ++i)
 		{
-			extCoeff += CalculateExtintionCoefficient(currPos)*stepSize;
+			extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
 			//vec3 inScattering = CalculateInScattering(currentPos)*stepSize;
 			//accInScattering += inScattering*exp(-extCoeff);
 			currPos += marchingStep;
 		}
 		float transmitance = fogIntensity*exp(-extCoeff);
-		vec4 pixelCol = imageLoad(screenImage, ivec2(glGlobalInvocationID.xy));
+		vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
 		pixelCol = vec4(pixelCol.rgb * transmitance, pixelCol.a);
-		imageStrore(screenImage, ivec2(glGlobalInvocationID.xy), vec4(pixelCol));
+		imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
 	}
 }

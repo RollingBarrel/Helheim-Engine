@@ -8,9 +8,9 @@ layout(std140, binding = 0) uniform CameraMatrices
 {
 	mat4 view;
 	mat4 proj;
+	mat4 invView;
 };
 layout(binding = 0) uniform sampler2D depthTex;
-layout(location = 0) uniform mat4 invView;
 layout(location = 1) uniform vec3 fogColor;
 layout(location = 2) uniform float maxFog;
 layout(location = 3) uniform float density;

@@ -306,8 +306,8 @@ bool ModuleOpenGL::Init()
 	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Noise.comp";
 	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	sourcesPaths[0] = "Volumetric.comp";
-	mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	//sourcesPaths[0] = "Volumetric.comp";
+	//mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	//sourcesPaths[0] = "GameVertex.glsl";
 	//sourcesPaths[1] = "Fog.glsl";
@@ -357,7 +357,7 @@ bool ModuleOpenGL::Init()
 	mGameProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
-	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
+	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 3);
 	SetOpenGlCameraUniforms();
 
 	InitSkybox();
@@ -706,24 +706,13 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		{
 			mCameraUniBuffer->UpdateData(camera->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
 			mCameraUniBuffer->UpdateData(camera->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
-			glUseProgram(mPbrLightingPassProgramId);
-			//world transform is the invViewMatrix
-			//glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
-			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
-			glUseProgram(mFogProgramId);
-			glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
-			glUseProgram(0);
+			mCameraUniBuffer->UpdateData(float4x4(camera->GetFrustum().WorldMatrix()).Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16 * 2);
 		}
 		else
 		{
-			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, 0);
-			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
-			glUseProgram(mPbrLightingPassProgramId);
-			//glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
-			glUniform3fv(1, 1, float3::zero.ptr());
-			glUseProgram(0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.ptr(), sizeof(float) * 16, sizeof(float) * 16);
+			mCameraUniBuffer->UpdateData(float4x4::identity.ptr(), sizeof(float) * 16, sizeof(float) * 16 * 2);
 		}
 		
 	}
@@ -1225,8 +1214,8 @@ void ModuleOpenGL::Draw()
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
 
-	float4x4 invView = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
-	glUniformMatrix4fv(15, 1, GL_TRUE, invView.ptr());
+	//float4x4 invView = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
+	//glUniformMatrix4fv(15, 1, GL_TRUE, invView.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
