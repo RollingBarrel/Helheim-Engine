@@ -14,6 +14,13 @@ class ENGINE_API TrailComponent : public Component
 {
 	friend class InspectorPanel;
 public:
+	struct BufferVertex
+	{
+		float3 mPosition;
+		float2 mTexCoord;
+		float mDistance;
+		float3 mDirection;
+	};
 	struct TrailPoint
 	{
 		TrailPoint(float3 position, float3 direction, float time, float mDistanceUV);
@@ -44,15 +51,7 @@ public:
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
 
 private:
-    std::vector<float> CalculateDistances();
-	void UpdateTrailBuffer();
-    void SetupOpenGLState() const;
-    void ResetOpenGLState() const;
-    float CalculateDeltaPos(int i, const std::vector<float>& distances) const;
-    float3 CalculatePosition(int i) const;
-    float3 CalculateDirection(int i, const float3& position, const float3& norm) const;
-    void CalculateTexCoords(int i, float deltaPos, float2& topPointTexCoord, float2& botPointTexCoord) const;
-    void CopyVertexData(std::byte*& ptr, const float3& position, const float2& texCoord, const float4& color) const;
+    float3 CalculateDirection(const float3& position, const float3& norm) const;
 
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mFileName = fileName; }
@@ -65,6 +64,8 @@ private:
 	int mMaxPoints = 1000.0f;
 
 	std::deque<TrailPoint> mPoints;
+	std::vector<BufferVertex> mBuffer;
+
 	float mMaxLifeTime = 0; // If maxLiftime is 0, it means infinite lifetime
 	ColorGradient mGradient;
 	float3 mDirection = float3::unitY; // Fixed direction for the normal of the trailPoints
@@ -81,6 +82,8 @@ private:
 
 	unsigned int mVAO = 0;
 	unsigned int mVBO = 0;
+	unsigned int mSSBOColor = 0;
+	unsigned int mSSBOWidth = 0;
 
 	BezierCurve mWidth = BezierCurve(); // TODO: Make it a pointer so every particle that has a trail dont have a bezierCurve by itself
 };
