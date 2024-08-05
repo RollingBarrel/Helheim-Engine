@@ -8,6 +8,14 @@ class GameObject;
 struct CollisionData;
 
 GENERATE_BODY(BossLaser);
+
+enum class LaserState {
+	CHARGING,
+	FIRING,
+	COOLDOWN
+};
+
+
 class BossLaser : public Script
 {
 	FRIEND(BossLaser)
@@ -20,25 +28,39 @@ public:
 
 	void Init(float damage, float range);
 
-	void OnCollisionEnter(CollisionData* collisionData);
 
 private:
-	BoxColliderComponent* mCollider = nullptr;
-	float mDamage = 5.0f;
-	float mAngle = 90.0f;
-	float mSpeed = 25.0f;
-	float mRange = 10.0f;
-	unsigned int mIframes = 0;
-	float mSwipeProgress = 0.0f;
 
-	//Gameobject
-	GameObject* mLaserOrigin = nullptr;
-	GameObject* mLaserTrail = nullptr;
-	GameObject* mLaserEnd = nullptr;
-	GameObject* mLaserCharge = nullptr;
+    void ChangeState(LaserState newState);
+    void UpdateCharging(float dt);
+    void UpdateFiring(float dt);
+    void UpdateCooldown(float dt);
+    void SpawnEyeballs();
 
+    void SummonEyeballs(const std::vector<float3>& position);
 
-	//Laser WorkAround
-	bool mMoveTrail = false;
+    // Helper methods
+    void mMoveLaser(float dt);
+    void mApplyDamage();
+
+    BoxColliderComponent* mCollider = nullptr;
+    float mDamage = 3.0f;
+    float mRange = 10.0f;
+    float mDuration = 5.0f;
+    float mRotationSpeed = 2.0f;
+    float mChargeTime = 1.0f;
+    float mCooldownTime = 2.0f;
+    float mCurrentAngle = 0.0f;
+    float mDirection = 1.0f;
+    float mStateTimer = 0.0f;
+    LaserState mCurrentState = LaserState::CHARGING;
+
+    std::vector<GameObject*> mEnemyEye;
+
+    // Laser VFX components
+    GameObject* mLaserOrigin = nullptr;
+    GameObject* mLaserTrail = nullptr;
+    GameObject* mLaserEnd = nullptr;
+    GameObject* mLaserCharge = nullptr;
 
 };
