@@ -2,7 +2,6 @@
 #include "Enemy.h"
 
 class GameObject;
-class AnimationStateMachine;
 
 GENERATE_BODY(EnemyCreatureRange);
 class EnemyCreatureRange : public Enemy

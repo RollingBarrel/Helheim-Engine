@@ -1,8 +1,13 @@
-#include "ScriptComponent.h"
+#include <Script.h>
+#include "Macros.h"
 
 class GameObject;
 
-class BossLaserEyeBall : public Script {
+GENERATE_BODY(BossLaserEyeBall);
+
+class BossLaserEyeBall : public Script 
+{
+    FRIEND(BossLaserEyeBall)
 
 public:
     BossLaserEyeBall(GameObject* owner);
@@ -23,5 +28,12 @@ private:
     bool mRotatingRight = true;
 
     float mElapsedTime = 0.0f;
+
+    GameObject* mLaserOrigin = nullptr;
+    GameObject* mLaserTrail = nullptr;
+    GameObject* mLaserEnd = nullptr;
+
+    //Laser Trail WorkAround
+    bool mMoveTrail = false;
 };
 

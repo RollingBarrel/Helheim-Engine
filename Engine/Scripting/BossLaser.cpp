@@ -104,7 +104,7 @@ void BossLaser::SpawnEyeBalls()
 
     for (const auto& pos : positions)
     {
-        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("Eye.prefab", mGameObject);
+        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prefab", mGameObject);
         if (eyeBall)
         {
             eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + pos);
