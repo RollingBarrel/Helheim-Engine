@@ -9,9 +9,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    9.28739070892334,
-                    -2.4359166622161867,
-                    10.488988876342774
+                    5.07974910736084,
+                    -7.630558490753174,
+                    17.857084274291993
                 ],
                 "Rotation": [
                     0.0,
@@ -37,7 +37,7 @@
                         "MinDistance": 0.10000000149011612,
                         "MaxLifeTime": 0.0,
                         "UVScroll": 1.0,
-                        "IsFixedDirection": false,
+                        "IsFixedDirection": true,
                         "IsUVScrolling": false,
                         "Direction": [
                             0.0,
@@ -46,9 +46,9 @@
                         ],
                         "Width": {
                             "Value": {
-                                "IsValueRandom": true,
+                                "IsValueRandom": false,
                                 "MinValue": 1.0,
-                                "MaxValue": 2.0
+                                "MaxValue": 10.0
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -60,8 +60,8 @@
                                 },
                                 {
                                     "Point": [
-                                        0.7225000262260437,
-                                        0.7050000429153442
+                                        0.8525000214576721,
+                                        0.9200000166893005
                                     ]
                                 },
                                 {
@@ -97,6 +97,19 @@
                     }
                 ]
             }
+        ],
+        "NavMeshResource": 0,
+        "SkyBoxResource": 0,
+        "BloomIntensity": 0.5,
+        "DirectionalLight": [
+            0.0,
+            -1.0,
+            -1.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            0.05000000074505806
         ]
     }
 }

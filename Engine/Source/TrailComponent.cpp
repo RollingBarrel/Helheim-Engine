@@ -10,6 +10,7 @@
 #include "ModuleResource.h"
 #include "glew.h"
 #include "MathGeoLib.h"
+#include "Timer.h"
 
 #define POSITION_LOCATION 0
 #define TEXCOORD_LOCATION 1
@@ -166,6 +167,7 @@ void TrailComponent::Draw() const
     glUniform1i(glGetUniformLocation(programId, "isRandWidth"), mWidth.GetValue().IsRand());
     glUniform1f(glGetUniformLocation(programId, "minWidth"), mWidth.GetValue().GetMinValue());
     glUniform1f(glGetUniformLocation(programId, "maxWidth"), mWidth.GetValue().GetMaxValue());
+    glUniform1f(glGetUniformLocation(programId, "time"), App->GetCurrentClock()->GetTotalTime());
 
     glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
     glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);

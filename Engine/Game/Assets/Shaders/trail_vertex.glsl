@@ -19,6 +19,7 @@ uniform int isCurve;
 uniform int isRandWidth;
 uniform float minWidth;
 uniform float maxWidth;
+uniform float time;
 
 struct ColorPoint
 {
@@ -48,7 +49,8 @@ vec4 calculateVertexColor(float deltaPos);
 vec3 modifyWidth(float deltaPos);
 float CurveValue(float deltaPos);
 float GetDeltaPosition();
-float rand();
+float noise(float x);
+float random(float i);
 
 void main()
 {
@@ -97,7 +99,7 @@ vec3 modifyWidth(float deltaPos)
     float scalar = -(1 - percentage) * minWidth * 0.5;
     if (isRandWidth > 0) 
     {
-        float randWidth = rand() * (maxWidth - minWidth);
+        float randWidth = noise(deltaPos * time) * (maxWidth - minWidth);
         scalar += percentage * randWidth * 0.5;
     }
     return vertex + direction * (scalar * (texCoord.y * 2 - 1));
@@ -120,7 +122,19 @@ float CurveValue(float deltaPos)
     return pointWidth[widthSize - 1].width;
 }
 
-float rand()
+float noise(float x)
 {
-    return 1.0;
+    float i = floor(x);
+    float f = fract(x);
+    float ga = random(i) * 2.0 - 1.0; // convert to range [-1, 1]
+    float gb = random(i + 1.0) * 2.0 - 1.0;
+    float va = ga * f;
+    float vb = gb * (1.0 - f);
+    float u = f * f * (3.0 - 2.0 * f);
+    return mix(va, vb, u);
+}
+
+float random(float x)
+{
+    return fract(sin(x) * 345235.323);
 }
