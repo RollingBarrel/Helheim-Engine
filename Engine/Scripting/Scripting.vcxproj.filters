@@ -194,6 +194,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h">
       <Filter>States\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -346,5 +347,6 @@
     <ClCompile Include="UltimateState.cpp">
       <Filter>States\Attack</Filter>
     </ClCompile>
+    <ClCompile Include="LoreCollectible.cpp" />
   </ItemGroup>
 </Project>
