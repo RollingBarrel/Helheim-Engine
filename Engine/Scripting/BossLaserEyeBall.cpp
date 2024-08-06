@@ -1,39 +1,68 @@
 #include "BossLaserEyeBall.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "Transform2DComponent.h"
-#include "GameObject.h" 
+#include "GameObject.h"
 
 #include <MathFunc.h>
 
 
-BossLaserEyeBall::BossLaserEyeBall(GameObject* owner)
-    : Script(owner), mCurrentAngle(0.0f), mRotationDirection(1.0f), mRotationSpeed(2.0f), mIsActive(false) {
+BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner)
+{
 }
 
-void BossLaserEyeBall::Start() {
-    GameObject* bombTemplate = App->GetScene()->InstantiatePrefab("Enemy_Ball", mGameObject);
+void BossLaserEyeBall::Start()
+{
+    mElapsedTime = 0.0f;
 }
 
-void BossLaserEyeBall::Update() {
-    if (mIsActive) {
+void BossLaserEyeBall::Update()
+{
+    float deltaTime = App->GetDt();
+    mElapsedTime += deltaTime;
+
+    if (mElapsedTime >= mDuration)
+    {
+        mGameObject->SetEnabled(false); // or Destroy(mGameObject)
+    }
+    else
+    {
         RotateLaser();
     }
 }
 
-void BossLaserEyeBall::SetPhase(bool isActive) {
-    mIsActive = isActive;
-    if (!mIsActive) {
-        // Optionally stop or hide lasers or other effects
-    }
+void BossLaserEyeBall::Init(float damage, float distance, float duration, float rotationSpeed)
+{
+    mDamage = damage;
+    mDistance = distance;
+    mDuration = duration;
+    mRotationSpeed = rotationSpeed;
+    mCurrentRotation = 0.0f;
+    mRotatingRight = true;
+    mElapsedTime = 0.0f;
 }
 
-void BossLaserEyeBall::RotateLaser() {
-    mCurrentAngle += mRotationDirection * mRotationSpeed * App->GetDt(); // Use delta time for frame rate independence
+void BossLaserEyeBall::RotateLaser()
+{
+    float deltaTime = App->GetDt();
+    float rotationAmount = mRotationSpeed * deltaTime;
 
-    if (mCurrentAngle >= 45.0f || mCurrentAngle <= -45.0f) {
-        mRotationDirection *= -1.0f; // Reverse direction when limits are reached
+    if (mRotatingRight)
+    {
+        mCurrentRotation += rotationAmount;
+        if (mCurrentRotation >= 45.0f)
+        {
+            mRotatingRight = false;
+        }
+    }
+    else
+    {
+        mCurrentRotation -= rotationAmount;
+        if (mCurrentRotation <= -45.0f)
+        {
+            mRotatingRight = true;
+        }
     }
 
-    mGameObject->SetLocalRotation(float3(0, DegToRad(mCurrentAngle), 0));
+    // Rotate the laser visually here based on mCurrentRotation
+    // This is where you'd update the laser's direction in your game engine
 }
