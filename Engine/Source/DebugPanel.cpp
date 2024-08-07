@@ -52,7 +52,14 @@ void DebugPanel::Draw(int windowFlags) {
                 GameObject* root = EngineApp->GetScene()->GetRoot();
                 SetShouldDrawForAll(root, mDrawColliders);
             }
-            ImGui::Text("Total number of triangles on scene: %i", GetTotalTriangleCount(EngineApp->GetScene()->GetRoot()));
+            ImGui::Checkbox("Draw Bounding Boxes", &mBoundingBoxes);
+            unsigned int vertices = 0;
+            unsigned int indices = 0;
+            unsigned int tris = 0;
+            GetCountInfo(*EngineApp->GetScene()->GetRoot(), &vertices, &indices, &tris);
+            ImGui::Text("Total number of Indices on scene: %i", vertices);
+            ImGui::Text("Total number of Vertices on scene: %i", indices);
+            ImGui::Text("Total number of Tris on scene: %i", tris);
             ImGui::TreePop();
 		}
 
@@ -118,21 +125,21 @@ void DebugPanel::SetShouldDrawForAll(GameObject* root, bool shouldDraw)
     }
 }
 
-int DebugPanel::GetTotalTriangleCount(GameObject* root) 
+void DebugPanel::GetCountInfo(const GameObject& root, unsigned int* vertices, unsigned int* indices, unsigned int* tris)
 {
-	int total = 0;
-	if (root != nullptr) 
+    MeshRendererComponent* renderer = (MeshRendererComponent*)root.GetComponent(ComponentType::MESHRENDERER);
+    if (renderer != nullptr && root.IsActive() && renderer->IsEnabled())
     {
-		MeshRendererComponent* renderer = (MeshRendererComponent*)root->GetComponent(ComponentType::MESHRENDERER);
-		if (renderer != nullptr) 
-        {
-			total += renderer->GetResourceMesh()->GetNumberIndices() / 3;
-		}
+        if(vertices)
+            *vertices += renderer->GetResourceMesh()->GetNumberVertices();
+        if(indices)
+            *indices += renderer->GetResourceMesh()->GetNumberIndices();
+        if(tris)
+            *tris += renderer->GetResourceMesh()->GetNumberVertices() / 3;
+    }
 
-		for (int i = 0; i < root->GetChildren().size(); i++) 
-        {
-			total += GetTotalTriangleCount(root->GetChildren()[i]);
-		}
-	}
-	return total;
+    for (int i = 0; i < root.GetChildren().size(); i++)
+    {
+        GetCountInfo(*root.GetChildren()[i], vertices, indices, tris);
+    }
 }
