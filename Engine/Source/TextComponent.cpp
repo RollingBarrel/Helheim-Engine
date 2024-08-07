@@ -324,7 +324,7 @@ void TextComponent::Draw()
 
     if (mCanvas->GetRenderSpace() == RenderSpace::Screen) //Ortographic Mode
     {
-        Transform2DComponent* component = reinterpret_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        Transform2DComponent* component = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         if (component != nullptr)
         {
             model = component->GetGlobalMatrix();

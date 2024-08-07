@@ -83,7 +83,7 @@ MeshRendererComponent::~MeshRendererComponent()
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
 {
-	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
+	ResourceMesh* tmpMesh = static_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
 	if (tmpMesh)
 	{
 		if (mMesh)
@@ -114,7 +114,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
-	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
+	ResourceMaterial* tmpMaterial = static_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
 	if (tmpMaterial)
 	{
 		if (mMaterial)
@@ -162,7 +162,7 @@ void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const
 	if (mPaletteOwner != nullptr)
 	{
 		assert(originalToNew.find(mPaletteOwner->GetOwner()) != originalToNew.end() && originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER) != nullptr);
-		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
+		mPaletteOwner = static_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
 	}
 	else
 	{
@@ -309,7 +309,7 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(id));
 			if (got != uidPointerMap.end())
 			{
-				mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(uids.at(id))->GetComponent(ComponentType::MESHRENDERER));
+				mPaletteOwner = static_cast<MeshRendererComponent*>(uidPointerMap.at(uids.at(id))->GetComponent(ComponentType::MESHRENDERER));
 			}
 		}
 		else
@@ -317,7 +317,7 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(id);
 			if (got != uidPointerMap.end())
 			{
-				mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+				mPaletteOwner = static_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
 			}
 		}
 

@@ -30,17 +30,12 @@ StateType ReloadState::HandleInput()
         return StateType::GRENADE;
     }
 
-    if (mPlayerController->GetAttackState()->IsReady() &&
-        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetAttackState()->IsReady())
     {
-        mPlayerController->GetAttackState()->ResetCooldown();
         return StateType::ATTACK;
     }
 
-    if (mPlayerController->GetSpecialState()->IsReady() &&
-        (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetSpecialState()->IsReady())
     {
         mPlayerController->GetSpecialState()->ResetCooldown();
         return StateType::SPECIAL;
@@ -91,7 +86,6 @@ StateType ReloadState::GetType()
 
 bool ReloadState::IsReady()
 {
-    mStateTimer += App->GetDt();
-    if (mStateTimer >= mStateCooldown && mPlayerController->CanReload()) return true;
+    if (mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->CanReload()) return true;
     return false;
 }

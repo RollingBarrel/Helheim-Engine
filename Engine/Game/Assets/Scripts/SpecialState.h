@@ -22,4 +22,9 @@ public:
 private:
 	Weapon* mSpecialWeapon = nullptr;
 	float mSpecialAttackTimer = 0.0f;
+
+	TimerScript mPressedSpecialAttackTimer;
+	float mRedSpecialAttackPressedCoolDown = 1.0f;
+	float mBlueSpecialAttackPressedCoolDown = 0.6f;
+
 };

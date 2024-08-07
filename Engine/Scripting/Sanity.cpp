@@ -85,7 +85,7 @@ void Sanity::Update()
 {
     Controls();
 
-    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
 }
 
 void Sanity::Controls() 

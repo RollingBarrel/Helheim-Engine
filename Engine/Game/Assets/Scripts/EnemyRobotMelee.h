@@ -15,6 +15,8 @@ public:
 	~EnemyRobotMelee() {}
 
 private:
+	void Start() override;
+	void Charge() override;
 	void Attack() override;
 
 	void PlayStepAudio();

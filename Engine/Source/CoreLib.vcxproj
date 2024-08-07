@@ -252,6 +252,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystemComponent.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlayerStats.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="RandomFloat.cpp" />
@@ -755,6 +756,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystemComponent.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlayerStats.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="RandomFloat.h" />

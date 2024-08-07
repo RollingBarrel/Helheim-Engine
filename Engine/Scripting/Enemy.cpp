@@ -6,8 +6,12 @@
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
 #include "AnimationComponent.h"
+#include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
+
+#include "Physics.h"
+#include "Geometry/Ray.h"
 
 #include "GameManager.h"
 #include "PoolManager.h"
@@ -15,9 +19,6 @@
 #include "BattleArea.h"
 
 #include "Math/MathFunc.h"
-
-
-Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()
 {
@@ -70,9 +71,9 @@ void Enemy::Start()
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
 	}
-	mAiAgentComponent = reinterpret_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
+	mAiAgentComponent = static_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
 	
-	mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
 	if (mAnimationComponent)
 	{
 		mAnimationComponent->SetIsPlaying(true);
@@ -96,9 +97,6 @@ void Enemy::Update()
     CheckHitEffect();
 }
 
-
-
-
 void Enemy::CheckHitEffect()
 {
     if (mHit)
@@ -110,6 +108,7 @@ void Enemy::CheckHitEffect()
         }
     }
 }
+
 void Enemy::ResetEnemyColor()
 {
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
@@ -119,6 +118,7 @@ void Enemy::ResetEnemyColor()
 		meshComponent->SetBaseColorFactor(mOgColors[i]);
 	}
 }
+
 void Enemy::ActivateEnemy()
 {
 	if (!mBeAttracted)
@@ -169,17 +169,10 @@ void Enemy::Chase()
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-			float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-			direction.y = 0;
-			direction.Normalize();
-			float angle = std::atan2(direction.x, direction.z);;
-
-			if (mGameObject->GetWorldRotation().y != angle)
-			{
-				mGameObject->SetWorldRotation(float3(0, angle, 0));
-			}
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
-		if (IsPlayerInRange(mAttackDistance))
+		
+		if (IsPlayerReachable())
 		{
 			mCurrentState = EnemyState::CHARGE;
 		}
@@ -200,8 +193,8 @@ void Enemy::Charge()
 
 void Enemy::Attack()
 {
-	bool playerInRange = IsPlayerInRange(mAttackDistance);
-	if (!playerInRange && mDisengageTimer.Delay(mDisengageTime))
+	bool playerReachable = IsPlayerReachable();
+	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
 		mCurrentState = EnemyState::CHASE;
 		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
@@ -220,6 +213,34 @@ bool Enemy::IsPlayerInRange(float range)
 	return (distance <= range);
 }
 
+bool Enemy::IsPlayerReachable()
+{
+	bool reachable = false;
+
+	if (IsPlayerInRange(mAttackDistance))
+	{
+		Hit hit;
+		Ray ray;
+
+		float3 enemyPosition = mGameObject->GetWorldPosition();
+		float3 playerPosition = mPlayer->GetWorldPosition();
+
+		ray.pos = enemyPosition;
+		ray.dir = (playerPosition - enemyPosition).Normalized();
+
+		float distance = enemyPosition.Distance(playerPosition);
+
+		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
+		Physics::Raycast(hit, ray, distance, &ignoreTags);
+
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
+		{
+			reachable = true;
+		}
+	}
+	return reachable;
+}
+
 void Enemy::TakeDamage(float damage)
 {
 	if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
@@ -231,10 +252,10 @@ void Enemy::TakeDamage(float damage)
 		{
 			mCurrentState = EnemyState::DEATH;
 
-			if (mAiAgentComponent)
-			{
-				mAiAgentComponent->PauseCrowdNavigation();
-			}
+			BoxColliderComponent* collider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+			if (collider) collider->SetEnable(false);
+
+			if (mAiAgentComponent)	mAiAgentComponent->PauseCrowdNavigation();
 		}
 	}
 	LOG("Enemy Health: %f", mHealth);
@@ -252,6 +273,7 @@ void Enemy::ActivateHitEffect()
     }
     mHit = true;
 }
+
 void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
@@ -309,7 +331,6 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 	}
 }
 
-
 void Enemy::DropItem()
 {
 	srand(static_cast<unsigned int>(std::time(nullptr)));
@@ -337,7 +358,7 @@ void Enemy::DropItem()
 
 		GameObject* itemGameObject = GameManager::GetInstance()->GetPoolManager()->Spawn(poolType);
 		itemGameObject->SetWorldPosition(dropPosition);
-		ItemDrop* item = reinterpret_cast<ItemDrop*>(reinterpret_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		ItemDrop* item = static_cast<ItemDrop*>(static_cast<ScriptComponent*>(itemGameObject->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		item->Init();
 	}
 }

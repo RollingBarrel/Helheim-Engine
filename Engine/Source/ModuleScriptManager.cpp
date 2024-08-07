@@ -116,7 +116,7 @@ void ModuleScriptManager::AwakeGameObjectScripts(GameObject* gameobject)
 
 	for (unsigned int i = 0; i < components.size(); ++i)
 	{
-		ScriptComponent* scriptComponent = reinterpret_cast<ScriptComponent*>(components[i]);
+		ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(components[i]);
 		if (scriptComponent->mScript)
 		{
 			scriptComponent->mScript->Awake();
@@ -131,7 +131,7 @@ void ModuleScriptManager::StartGameObjectScripts(GameObject* gameobject)
 
 	for (unsigned int i = 0; i < components.size(); ++i)
 	{
-		ScriptComponent* scriptComponent = reinterpret_cast<ScriptComponent*>(components[i]);
+		ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(components[i]);
 		if (scriptComponent->mScript)
 		{
 			scriptComponent->mScript->Start();
