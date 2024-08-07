@@ -156,9 +156,13 @@ public:
 	float GetBloomIntensity() const { return mBloomIntensity; };
 	
 	void SetFogColor(float fogColor[3]);
+	void GetFogColor(float fogColor[3]) const { memcpy(fogColor, mFogColor, sizeof(mFogColor)); }
 	void SetFogDensity(float density);
+	float GetFogDensity() const { return mFogDensity; }
 	void SetFogHeightFallof(float heightFallof);
+	float GetFogHeightFallof() const { return mHeightFallof; }
 	void SetMaxFog(float maxFog);
+	float GetMaxFog() const { return mMaxFog; }
 
 private:
 	void* context = nullptr;
@@ -254,10 +258,10 @@ private:
 
 	//Fog
 	float mFogColor[3] = { 1.0f, 1.0f, 1.0f };
-	float mMaxFog = 0.73f;
-	float mDensity = 0.009f;
+	float mMaxFog = 0.0f;
+	float mFogDensity = 0.009f;
 	//A medida que se aleja de 0 la niebla baja respecto la vista de la camera
-	float mHeightFallof = 0.035f;
+	float mHeightFallof = 0.0f;
 
 	//Lighting uniforms
 	unsigned int mPLightListImgTex;

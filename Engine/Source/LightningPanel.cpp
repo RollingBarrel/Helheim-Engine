@@ -95,10 +95,10 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1f(2, openGl->mMaxFog);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("Density", &openGl->mDensity, 0.0001f, 0.0001f, 0.04f))
+	if (ImGui::DragFloat("Density", &openGl->mFogDensity, 0.0001f, 0.0001f, 0.04f))
 	{
 		glUseProgram(openGl->mFogProgramId);
-		glUniform1f(3, openGl->mDensity);
+		glUniform1f(3, openGl->mFogDensity);
 		glUseProgram(0);
 	}
 	if (ImGui::DragFloat("Height Fallof", &openGl->mHeightFallof, 0.005f, 0.0001f, 1.0f))
