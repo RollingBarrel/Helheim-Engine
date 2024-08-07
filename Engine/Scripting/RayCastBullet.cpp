@@ -3,6 +3,7 @@
 
 #include "GameObject.h"
 #include "TrailComponent.h"
+#include "Trail.h"
 #include "ParticleSystemComponent.h"
 #include "ScriptComponent.h"
 
@@ -57,7 +58,7 @@ void RayCastBullet::Update()
 			mHitParticles->SetEnable(true);
 		}
 
-		if (mHitTimer.Delay(mBulletTrail->GetLifeTime()))
+		if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime()))
 		{
 			mGameObject->SetEnabled(false);
 		}
@@ -89,7 +90,7 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 		mBulletTrail->SetEnable(true);
 		if (gradient)
 		{
-			mBulletTrail->SetColorGradient(*gradient);
+			mBulletTrail->GetTrail()->SetColorGradient(*gradient);
 		}
 	}
 	if (mHitParticles)

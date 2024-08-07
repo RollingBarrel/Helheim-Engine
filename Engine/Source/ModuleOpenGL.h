@@ -29,7 +29,7 @@ typedef struct DirectionalLight
 class PointLightComponent;
 class SpotLightComponent;
 class ParticleSystemComponent;
-class TrailComponent;
+class Trail;
 class CameraComponent;
 class DecalComponent;
 struct PointLight;
@@ -134,8 +134,8 @@ public:
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
-	void AddTrail(const TrailComponent* trail) { mTrails.push_back(trail); }
-	void RemoveTrail(const TrailComponent* trail);
+	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
+	void RemoveTrail(const Trail* trail);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
@@ -259,7 +259,7 @@ private:
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
-	std::vector<const TrailComponent*> mTrails;
+	std::vector<const Trail*> mTrails;
 
 	//void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
 	//std::vector<const GameObject*> mHighlightedObjects;
