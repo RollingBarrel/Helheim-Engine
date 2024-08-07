@@ -6135,16 +6135,16 @@
                         "IsEnabled": true,
                         "Audios": [
                             {
-                                "Name": "event:/Music/Level 01",
-                                "PreviewPlayID": -1
-                            },
-                            {
                                 "Name": "event:/UI/Okay",
                                 "PreviewPlayID": -1
                             },
                             {
                                 "Name": "event:/UI/Cancel",
                                 "PreviewPlayID": 1
+                            },
+                            {
+                                "Name": "event:/MC/main/Theme",
+                                "PreviewPlayID": -1
                             }
                         ]
                     }
@@ -6603,7 +6603,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 6025561,
+        "NavMeshResource": 0,
         "SkyBoxResource": 0,
         "BloomIntensity": 0.5,
         "DirectionalLight": [
