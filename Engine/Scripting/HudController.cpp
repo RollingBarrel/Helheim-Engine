@@ -64,6 +64,8 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mCollectibleScreen);
     MEMBER(MemberType::GAMEOBJECT, mCollectibleTextGO);
     MEMBER(MemberType::GAMEOBJECT, mCollectibleContinueBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mInteractGO);
+
     END_CREATE;
 }
 
@@ -180,6 +182,7 @@ void HudController::Start()
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
+    if (mInteractGO) mInteractGO->SetEnabled(false);
 
     if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -518,6 +521,11 @@ void HudController::SetScreen(SCREEN name, bool active)
         default:
             break;
     }
+}
+
+void HudController::SetInteract(bool active)
+{
+    if (mInteractGO) mInteractGO->SetEnabled(active);
 }
 
 #pragma region Click Events

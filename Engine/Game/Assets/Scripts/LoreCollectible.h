@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 GENERATE_BODY(LoreCollectible);
 
@@ -23,13 +24,16 @@ public:
     void Start() override;
     void Update() override;
     void OnCollisionEnter(CollisionData* collisionData);
+    void OnCollisionExit(CollisionData* collisionData);
 
 private:
 
+    bool mInteractUsed = false;
     BoxColliderComponent* mCollider = nullptr;
     std::string* mLoreText = nullptr;
     //In case we want to use image
     ResourceTexture* mImageComp = nullptr;
+    TimerScript* mInteractTimer;
 
 };
 

@@ -30,6 +30,7 @@ void LoreCollectible::Start()
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&LoreCollectible::OnCollisionEnter, this, std::placeholders::_1)));
+		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_EXIT, new std::function<void(CollisionData*)>(std::bind(&LoreCollectible::OnCollisionExit, this, std::placeholders::_1)));
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
 	if (mGameObject->GetComponent(ComponentType::TEXT))
@@ -41,7 +42,9 @@ void LoreCollectible::Start()
 
 void LoreCollectible::Update()
 {
-
+	if (!GameManager::GetInstance()->IsPaused() && mInteractUsed) {
+		mInteractUsed = false;
+	}
 }
 
 void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
@@ -50,6 +53,11 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 	GameObject* collisionGO = collisionData->collidedWith;
 
 	//Make prompt appear 
+	if (!mInteractUsed)
+	{
+		GameManager::GetInstance()->GetHud()->SetInteract(true);
+	}
+	
 
 	if (collisionGO->GetTag() == "Player" && App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
 		App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) {
@@ -59,12 +67,18 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 			GameManager::GetInstance()->SetPaused(true, false);
 			if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
 			GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
+			GameManager::GetInstance()->GetHud()->SetInteract(false);
+			mInteractUsed = true;
 		}
 
-		//show text 
-
-		LOG("Item interact");
 	}
 
 
+}
+
+void LoreCollectible::OnCollisionExit(CollisionData* collisionData)
+{
+	
+	GameManager::GetInstance()->GetHud()->SetInteract(false);
+	
 }

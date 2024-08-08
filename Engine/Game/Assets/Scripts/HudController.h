@@ -41,6 +41,7 @@ public:
     void SetUltimateCooldown(float cooldown);
     void SetCollectibleText(std::string text);
     void SetScreen(SCREEN menu, bool active);
+    void SetInteract(bool active);
 
     SliderComponent* mHealthGradualSlider = nullptr;
 
@@ -110,6 +111,7 @@ private:
     GameObject* mCollectibleTextGO = nullptr;
     GameObject* mCollectibleImageGO = nullptr;
     GameObject* mCollectibleContinueBtnGO = nullptr;
+    GameObject* mInteractGO = nullptr;
 
     GameObject* mTryAgainBtnGO = nullptr;
     GameObject* mLoseMenuBtnGO = nullptr;
