@@ -20,9 +20,12 @@ private:
 
     void RotateLaser();
 
+    const float MIN_ROTATION = -45.0f;
+    const float MAX_ROTATION = 45.0f;
+
     float mDamage = 3.0f;
     float mDistance = 10.0f;
-    float mDuration = 50.0f;
+    float mDuration = 20.0f;
     float mRotationSpeed = 2.0f;
     float mCurrentRotation = 0.0f;
     bool mRotatingRight = true;

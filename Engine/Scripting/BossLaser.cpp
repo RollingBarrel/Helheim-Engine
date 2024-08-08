@@ -25,9 +25,19 @@ BossLaser::BossLaser(GameObject* owner) : Script(owner)
 
 void BossLaser::Start()
 {
-	mCurrentState = LaserState::IDLE;
-}
+    mCurrentState = LaserState::IDLE;
 
+    // Initialize the pool
+    for (size_t i = 0; i < mPoolSize; ++i)
+    {
+        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb", nullptr);
+        if (eyeBall)
+        {
+            eyeBall->SetEnabled(false);
+            mEyeBallPool.push_back(eyeBall);
+        }
+    }
+}
 
 void BossLaser::Update()
 {
@@ -90,6 +100,9 @@ void BossLaser::Cooldown()
         eyeBall->SetEnabled(false); // or Destroy(eyeBall)
     }
     mEyeBalls.clear();
+
+    ReturnEyeBallsToPool();
+
 }
 
 void BossLaser::SpawnEyeBalls()
@@ -102,18 +115,32 @@ void BossLaser::SpawnEyeBalls()
         float3(0, -2, 4)
     };
 
+    size_t index = 0;
     for (const auto& pos : positions)
     {
-        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb", mGameObject);
-        if (eyeBall)
+        if (index >= mEyeBallPool.size())
+            break;
+
+        GameObject* eyeBall = mEyeBallPool[index++];
+        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + pos);
+        eyeBall->SetEnabled(true);
+
+        BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        if (eyeBallScript)
         {
-            eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + pos);
-            BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-            if (eyeBallScript)
-            {
-                eyeBallScript->Init(mDamage, mDistance, mLaserDuration, mEyeRotationSpeed);
-            }
-            mEyeBalls.push_back(eyeBall);
+            eyeBallScript->Init(mDamage, mDistance, mLaserDuration, mEyeRotationSpeed);
         }
+
+        mEyeBalls.push_back(eyeBall);
     }
+}
+
+void BossLaser::ReturnEyeBallsToPool()
+{
+    for (GameObject* eyeBall : mEyeBalls)
+    {
+        eyeBall->SetEnabled(false);
+        // Optionally reset any other properties if needed
+    }
+    mEyeBalls.clear();
 }

@@ -41,7 +41,7 @@ void BossLaserEyeBall::Update()
 
     if (mElapsedTime >= mDuration)
     {
-        mGameObject->SetEnabled(false); 
+        mGameObject->SetEnabled(false);
         return;
     }
     else
@@ -65,34 +65,36 @@ void BossLaserEyeBall::Init(float damage, float distance, float duration, float 
     if (mLaserEnd) mLaserEnd->SetEnabled(true);
 
 }
-
 void BossLaserEyeBall::RotateLaser()
 {
     float deltaTime = App->GetDt();
     float rotationAmount = mRotationSpeed * deltaTime;
 
+    // Update current rotation with respect to rotation direction
     if (mRotatingRight)
     {
         mCurrentRotation += rotationAmount;
-        if (mCurrentRotation >= 45.0f)
+        if (mCurrentRotation >= MAX_ROTATION)
         {
-            mRotatingRight = false;
+            mCurrentRotation = MAX_ROTATION;
+            mRotatingRight = false; // Change direction
         }
     }
     else
     {
         mCurrentRotation -= rotationAmount;
-        if (mCurrentRotation <= -45.0f)
+        if (mCurrentRotation <= MIN_ROTATION)
         {
-            mRotatingRight = true;
+            mCurrentRotation = MIN_ROTATION;
+            mRotatingRight = true; // Change direction
         }
     }
 
+    // Apply rotation to the laser
     float3 currentEulerAngles = mGameObject->GetLocalEulerAngles();
     currentEulerAngles.y = mCurrentRotation;
     mGameObject->SetLocalRotation(currentEulerAngles);
 
-    // Ensure laser origin and end are set
     if (mLaserOrigin && mLaserEnd)
     {
         Hit hit;
@@ -102,20 +104,17 @@ void BossLaserEyeBall::RotateLaser()
 
         Physics::Raycast(hit, ray, mDistance);
 
-        // Perform raycast to detect hits
         if (hit.IsValid())
         {
             if (hit.mGameObject->GetTag().compare("Player") == 0)
             {
                 ScriptComponent* playerScript = static_cast<ScriptComponent*>(hit.mGameObject->GetComponent(ComponentType::SCRIPT));
                 PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-                player->TakeDamage(mDamage); // Apply damage to the player
+                player->TakeDamage(mDamage);
             }
 
-            // Set the laser end position to the hit point
             mLaserEnd->SetWorldPosition(hit.mHitPoint);
 
-            // Workaround for laser trail movement
             if (mMoveTrail)
             {
                 mLaserTrail->SetWorldPosition(hit.mHitPoint);
@@ -129,11 +128,9 @@ void BossLaserEyeBall::RotateLaser()
         }
         else
         {
-            // If no hit, set the laser end to max distance along the ray direction
             float3 originPosition = mLaserOrigin->GetLocalPosition();
             mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
 
-            // Workaround for laser trail movement
             if (mMoveTrail)
             {
                 mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
