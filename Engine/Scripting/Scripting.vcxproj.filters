@@ -189,6 +189,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BossLaserEyeBall.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -336,5 +339,8 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="RayCastBullet.cpp" />
+    <ClCompile Include="BossLaserEyeBall.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
