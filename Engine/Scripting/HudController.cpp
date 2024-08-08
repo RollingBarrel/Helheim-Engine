@@ -621,6 +621,7 @@ void HudController::OnCollectibleContinueBtnClick()
     if (mCollectibleScreen->IsActive()) {
         SetScreen(SCREEN::COLLECTIBLE, false);
     }
+    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void HudController::OnCollectibleContinueBtnHoverOn()
