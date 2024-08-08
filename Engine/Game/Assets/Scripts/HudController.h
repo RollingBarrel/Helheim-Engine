@@ -18,7 +18,8 @@ enum class SCREEN {
     LOAD,
     LOSE,
     WIN,
-    PAUSE
+    PAUSE,
+    COLLECTIBLE
 };
 
 GENERATE_BODY(HudController);
@@ -38,6 +39,7 @@ public:
     void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetUltimateCooldown(float cooldown);
+    void SetCollectibleText(std::string text);
     void SetScreen(SCREEN menu, bool active);
 
     SliderComponent* mHealthGradualSlider = nullptr;
@@ -74,6 +76,10 @@ private:
     void OnMainMenuBtnHoverOn();
     void OnMainMenuBtnHoverOff();
 
+    void OnCollectibleContinueBtnClick();
+    void OnCollectibleContinueBtnHoverOn();
+    void OnCollectibleContinueBtnHoverOff();
+
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
@@ -100,6 +106,10 @@ private:
     GameObject* mEnergyGO = nullptr;
     GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
+    GameObject* mCollectibleScreen = nullptr;
+    GameObject* mCollectibleTextGO = nullptr;
+    GameObject* mCollectibleImageGO = nullptr;
+    GameObject* mCollectibleContinueBtnGO = nullptr;
 
     GameObject* mTryAgainBtnGO = nullptr;
     GameObject* mLoseMenuBtnGO = nullptr;
@@ -115,6 +125,9 @@ private:
     SliderComponent* mGrenadeSlider = nullptr;
     SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
+    TextComponent* mLoreText = nullptr;
+    ButtonComponent* mCollectibleContinueBtn = nullptr;
+
 
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;

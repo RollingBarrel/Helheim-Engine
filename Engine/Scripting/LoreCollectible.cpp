@@ -3,14 +3,18 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "GameObject.h"
+#include "GameManager.h"
+#include "HudController.h"
 
 
 #include "ScriptComponent.h"
 #include "BoxColliderComponent.h"
+#include "TextComponent.h"
 
 CREATE(LoreCollectible)
 {
 	CLASS(owner);
+
 	END_CREATE;
 }
 
@@ -18,24 +22,25 @@ LoreCollectible::LoreCollectible(GameObject* owner) : Script(owner) {}
 
 void LoreCollectible::Init()
 {
-}
+};
 
 void LoreCollectible::Start()
 {
-
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&LoreCollectible::OnCollisionEnter, this, std::placeholders::_1)));
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
+	if (mGameObject->GetComponent(ComponentType::TEXT))
+	{
+		mLoreText = static_cast<TextComponent*>(mGameObject->GetComponent(ComponentType::TEXT))->GetText();
+	}
 
 }
 
 void LoreCollectible::Update()
 {
-
-
 
 }
 
@@ -48,6 +53,13 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 
 	if (collisionGO->GetTag() == "Player" && App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
 		App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) {
+
+		if (GameManager::GetInstance()->GetHud())
+		{
+			GameManager::GetInstance()->SetPaused(true, false);
+			if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
+			GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
+		}
 
 		//show text 
 

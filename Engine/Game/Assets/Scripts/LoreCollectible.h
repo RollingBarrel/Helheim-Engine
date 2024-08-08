@@ -8,6 +8,8 @@ class GameObject;
 class BoxColliderComponent;
 class CollisionData;
 class TextComponent;
+class ImageComponent;
+class ResourceTexture;
 
 class LoreCollectible : public Script
 {
@@ -25,7 +27,9 @@ public:
 private:
 
     BoxColliderComponent* mCollider = nullptr;
-    GameObject* mDescriptionGO = nullptr;
-    TextComponent* mLoreText = nullptr;
+    std::string* mLoreText = nullptr;
+    //In case we want to use image
+    ResourceTexture* mImageComp = nullptr;
+
 };
 
