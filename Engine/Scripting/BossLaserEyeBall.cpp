@@ -1,14 +1,12 @@
 #include "BossLaserEyeBall.h"
 #include "Application.h"
-#include "ModuleScene.h"
 #include "GameObject.h"
+
 #include "PlayerController.h"
 #include "ScriptComponent.h"
-
 #include "Physics.h"
 #include "Geometry/Ray.h"
 #include <MathFunc.h>
-
 
 CREATE(BossLaserEyeBall)
 {
@@ -43,7 +41,8 @@ void BossLaserEyeBall::Update()
 
     if (mElapsedTime >= mDuration)
     {
-        mGameObject->SetEnabled(false); // or Destroy(mGameObject)
+        mGameObject->SetEnabled(false); 
+        return;
     }
     else
     {
@@ -64,6 +63,7 @@ void BossLaserEyeBall::Init(float damage, float distance, float duration, float 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
     if (mLaserTrail) mLaserTrail->SetEnabled(true);
     if (mLaserEnd) mLaserEnd->SetEnabled(true);
+
 }
 
 void BossLaserEyeBall::RotateLaser()
@@ -92,6 +92,7 @@ void BossLaserEyeBall::RotateLaser()
     currentEulerAngles.y = mCurrentRotation;
     mGameObject->SetLocalRotation(currentEulerAngles);
 
+    // Ensure laser origin and end are set
     if (mLaserOrigin && mLaserEnd)
     {
         Hit hit;
@@ -99,12 +100,50 @@ void BossLaserEyeBall::RotateLaser()
         ray.dir = float3(std::sin(DegToRad(mCurrentRotation)), 0.0f, std::cos(DegToRad(mCurrentRotation)));
         ray.pos = mLaserOrigin->GetWorldPosition();
 
-        if (hit.mGameObject->GetTag().compare("Player") == 0)
+        Physics::Raycast(hit, ray, mDistance);
+
+        // Perform raycast to detect hits
+        if (hit.IsValid())
         {
-            ScriptComponent* playerScript = static_cast<ScriptComponent*>(hit.mGameObject->GetComponent(ComponentType::SCRIPT));
-            PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-            player->TakeDamage(mDamage);
-        }
+            if (hit.mGameObject->GetTag().compare("Player") == 0)
+            {
+                ScriptComponent* playerScript = static_cast<ScriptComponent*>(hit.mGameObject->GetComponent(ComponentType::SCRIPT));
+                PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
+                player->TakeDamage(mDamage); // Apply damage to the player
+            }
+
+            // Set the laser end position to the hit point
             mLaserEnd->SetWorldPosition(hit.mHitPoint);
+
+            // Workaround for laser trail movement
+            if (mMoveTrail)
+            {
+                mLaserTrail->SetWorldPosition(hit.mHitPoint);
+                mMoveTrail = false;
+            }
+            else
+            {
+                mMoveTrail = true;
+                mLaserTrail->SetWorldPosition(mLaserOrigin->GetWorldPosition());
+            }
+        }
+        else
+        {
+            // If no hit, set the laser end to max distance along the ray direction
+            float3 originPosition = mLaserOrigin->GetLocalPosition();
+            mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
+
+            // Workaround for laser trail movement
+            if (mMoveTrail)
+            {
+                mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
+                mMoveTrail = false;
+            }
+            else
+            {
+                mMoveTrail = true;
+                mLaserTrail->SetLocalPosition(originPosition);
+            }
+        }
     }
 }

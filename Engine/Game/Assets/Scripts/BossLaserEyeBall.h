@@ -5,7 +5,7 @@ class GameObject;
 
 GENERATE_BODY(BossLaserEyeBall);
 
-class BossLaserEyeBall : public Script 
+class BossLaserEyeBall : public Script
 {
     FRIEND(BossLaserEyeBall)
 
@@ -22,7 +22,7 @@ private:
 
     float mDamage = 3.0f;
     float mDistance = 10.0f;
-    float mDuration = 5.0f;
+    float mDuration = 50.0f;
     float mRotationSpeed = 2.0f;
     float mCurrentRotation = 0.0f;
     bool mRotatingRight = true;
@@ -33,7 +33,6 @@ private:
     GameObject* mLaserTrail = nullptr;
     GameObject* mLaserEnd = nullptr;
 
-    //Laser Trail WorkAround
+    // Laser Trail WorkAround
     bool mMoveTrail = false;
 };
-

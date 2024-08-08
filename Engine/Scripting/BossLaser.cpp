@@ -95,16 +95,16 @@ void BossLaser::Cooldown()
 void BossLaser::SpawnEyeBalls()
 {
     std::vector<float3> positions = {
-        float3(1, 0, 1),
-        float3(-1, 0, 1),
-        float3(1, 0, -1),
-        float3(-1, 0, -1),
-        float3(0, 0, 2)
+        float3(4, -2, 4),
+        float3(-4, -2, 4),
+        float3(4, -2, -4),
+        float3(-4, -2, -4),
+        float3(0, -2, 4)
     };
 
     for (const auto& pos : positions)
     {
-        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prefab", mGameObject);
+        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb", mGameObject);
         if (eyeBall)
         {
             eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + pos);

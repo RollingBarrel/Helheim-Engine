@@ -104,11 +104,11 @@ void EnemyBoss::SelectAttack()
         break;
     case 2:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-        BombAttack();
+       // LaserAttack();
         break;
     case 0:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
-        BulletAttack();
+      //  LaserAttack();
         break;
     }
 }
@@ -131,7 +131,9 @@ void EnemyBoss::LaserAttack()
     if (mLaserGO)
     {
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) {
+
+        if (laserScript)
+        {
             laserScript->Init(mAttackDamage, mAttackDistance);
         }
     }

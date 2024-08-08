@@ -7,10 +7,12 @@ class GameObject;
 
 GENERATE_BODY(BossLaser);
 
-enum class LaserState {
-	CHARGING,
-	FIRING,
-	COOLDOWN
+enum class LaserState
+{
+    IDLE,
+    CHARGING,
+    FIRING,
+    COOLDOWN
 };
 
 
@@ -32,21 +34,15 @@ private:
     void Cooldown();
     void SpawnEyeBalls();
 
-    enum class LaserState
-    {
-        IDLE,
-        CHARGING,
-        FIRING,
-        COOLDOWN
-    };
-
     LaserState mCurrentState = LaserState::IDLE;
 
     float mDamage = 3.0f;
     float mDistance = 10.0f;
-    float mLaserDuration = 5.0f;
+
     float mCooldownDuration = 2.0f;
     float mChargeTime = 1.0f;
+    float mLaserDuration = 50.0f;
+
     float mEyeRotationSpeed = 2.0f;
 
     float mStateTime = 0.0f;
