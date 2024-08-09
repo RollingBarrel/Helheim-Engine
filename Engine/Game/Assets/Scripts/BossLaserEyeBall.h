@@ -1,3 +1,4 @@
+#pragma once
 #include <Script.h>
 #include "Macros.h"
 
@@ -14,28 +15,23 @@ public:
 
     void Start() override;
     void Update() override;
-    void Init(float damage, float distance, float duration, float rotationSpeed);
+
+    void Init(float damage, float distance, float duration, float rotationSpeed, float initialRotation);
 
 private:
-
     void RotateLaser();
-
-    const float MIN_ROTATION = -45.0f;
-    const float MAX_ROTATION = 45.0f;
 
     float mDamage = 3.0f;
     float mDistance = 10.0f;
     float mDuration = 20.0f;
-    float mRotationSpeed = 2.0f;
+    float mRotationSpeed = 0.5f;
     float mCurrentRotation = 0.0f;
-    bool mRotatingRight = true;
+    float mInitialRotation = 0.0f;
 
     float mElapsedTime = 0.0f;
-
     GameObject* mLaserOrigin = nullptr;
     GameObject* mLaserTrail = nullptr;
     GameObject* mLaserEnd = nullptr;
 
-    // Laser Trail WorkAround
     bool mMoveTrail = false;
 };

@@ -13,10 +13,9 @@
 
 CREATE(BossLaser)
 {
-	CLASS(owner);
-	MEMBER(MemberType::FLOAT, mDamage);
-
-	END_CREATE;
+    CLASS(owner);
+    MEMBER(MemberType::FLOAT, mDamage);
+    END_CREATE;
 }
 
 BossLaser::BossLaser(GameObject* owner) : Script(owner)
@@ -67,14 +66,13 @@ void BossLaser::Update()
         }
         break;
     }
-
 }
 
 void BossLaser::Init(float damage, float distance)
 {
-	mDamage = damage;
-	mDistance = distance;
-	Charge();
+    mDamage = damage;
+    mDistance = distance;
+    Charge();
 }
 
 void BossLaser::Charge()
@@ -94,53 +92,53 @@ void BossLaser::Cooldown()
 {
     mCurrentState = LaserState::COOLDOWN;
     mStateTime = 0.0f;
-    // Destroy or disable the eyeballs
+
     for (GameObject* eyeBall : mEyeBalls)
     {
-        eyeBall->SetEnabled(false); // or Destroy(eyeBall)
+        eyeBall->SetEnabled(false);
     }
     mEyeBalls.clear();
 
     ReturnEyeBallsToPool();
-
 }
 
 void BossLaser::SpawnEyeBalls()
 {
-    std::vector<float3> positions = {
-        float3(4, -2, 4),
-        float3(-4, -2, 4),
-        float3(4, -2, -4),
-        float3(-4, -2, -4),
-        float3(0, -2, 4)
-    };
+    float baseAngle = -90.0f;
+    float angleIncrement = 45.0f;
 
-    size_t index = 0;
-    for (const auto& pos : positions)
+    for (size_t i = 0; i < 4; ++i)
     {
-        if (index >= mEyeBallPool.size())
+        if (i >= mEyeBallPool.size())
             break;
 
-        GameObject* eyeBall = mEyeBallPool[index++];
-        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + pos);
+        GameObject* eyeBall = mEyeBallPool[i];
+        float angle = baseAngle + i * angleIncrement;
+
+        float radians = DegToRad(angle);
+        float x = std::cos(radians) * mDistance;
+        float z = std::sin(radians) * mDistance;
+        float3 positionOffset = float3(x, -2, z);
+
+        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + positionOffset);
         eyeBall->SetEnabled(true);
 
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-            eyeBallScript->Init(mDamage, mDistance, mLaserDuration, mEyeRotationSpeed);
+            eyeBallScript->Init(mDamage, mDistance, mLaserDuration, mEyeRotationSpeed, angle);
         }
 
         mEyeBalls.push_back(eyeBall);
     }
 }
 
+
 void BossLaser::ReturnEyeBallsToPool()
 {
     for (GameObject* eyeBall : mEyeBalls)
     {
         eyeBall->SetEnabled(false);
-        // Optionally reset any other properties if needed
     }
     mEyeBalls.clear();
 }

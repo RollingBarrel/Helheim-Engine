@@ -1,7 +1,6 @@
 #include "BossLaserEyeBall.h"
 #include "Application.h"
 #include "GameObject.h"
-
 #include "PlayerController.h"
 #include "ScriptComponent.h"
 #include "Physics.h"
@@ -25,14 +24,12 @@ BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner)
 void BossLaserEyeBall::Start()
 {
     mElapsedTime = 0.0f;
-    mCurrentRotation = 0.0f;
-    mRotatingRight = true;
+    mCurrentRotation = mInitialRotation;
 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
     if (mLaserTrail) mLaserTrail->SetEnabled(false);
     if (mLaserEnd) mLaserEnd->SetEnabled(false);
 }
-
 
 void BossLaserEyeBall::Update()
 {
@@ -50,50 +47,50 @@ void BossLaserEyeBall::Update()
     }
 }
 
-void BossLaserEyeBall::Init(float damage, float distance, float duration, float rotationSpeed)
+void BossLaserEyeBall::Init(float damage, float distance, float duration, float rotationSpeed, float initialRotation)
 {
     mDamage = damage;
     mDistance = distance;
     mDuration = duration;
-    mRotationSpeed = rotationSpeed;
-    mCurrentRotation = 0.0f;
-    mRotatingRight = true;
+    mRotationSpeed = rotationSpeed; // Rotation speed to be constant
+    mInitialRotation = initialRotation;
+    mCurrentRotation = mInitialRotation;
     mElapsedTime = 0.0f;
 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
     if (mLaserTrail) mLaserTrail->SetEnabled(true);
     if (mLaserEnd) mLaserEnd->SetEnabled(true);
-
 }
+
 void BossLaserEyeBall::RotateLaser()
 {
     float deltaTime = App->GetDt();
     float rotationAmount = mRotationSpeed * deltaTime;
 
-    // Update current rotation with respect to rotation direction
-    if (mRotatingRight)
+    mCurrentRotation += rotationAmount;
+
+    const float rotationRange = 45.0f; 
+    float maxRotation = mInitialRotation + rotationRange;
+    float minRotation = mInitialRotation - rotationRange;
+
+    if (mRotationSpeed > 0) 
     {
-        mCurrentRotation += rotationAmount;
-        if (mCurrentRotation >= MAX_ROTATION)
+        if (mCurrentRotation >= maxRotation)
         {
-            mCurrentRotation = MAX_ROTATION;
-            mRotatingRight = false; // Change direction
+            mCurrentRotation = maxRotation;
+            mRotationSpeed = -std::abs(mRotationSpeed); 
         }
     }
-    else
+    else 
     {
-        mCurrentRotation -= rotationAmount;
-        if (mCurrentRotation <= MIN_ROTATION)
+        if (mCurrentRotation <= minRotation)
         {
-            mCurrentRotation = MIN_ROTATION;
-            mRotatingRight = true; // Change direction
+            mCurrentRotation = minRotation;
+            mRotationSpeed = std::abs(mRotationSpeed);
         }
     }
 
-    // Apply rotation to the laser
-    float3 currentEulerAngles = mGameObject->GetLocalEulerAngles();
-    currentEulerAngles.y = mCurrentRotation;
-    mGameObject->SetLocalRotation(currentEulerAngles);
+    mGameObject->SetLocalRotation(float3(0, mCurrentRotation, 0));
 
     if (mLaserOrigin && mLaserEnd)
     {

@@ -39,7 +39,7 @@ private:
     LaserState mCurrentState = LaserState::IDLE;
 
     float mDamage = 3.0f;
-    float mDistance = 10.0f;
+    float mDistance = 5.0f;
 
     float mCooldownDuration = 2.0f;
     float mChargeTime = 1.0f;
@@ -52,5 +52,5 @@ private:
     GameObject* mEyeBallPrefab = nullptr;
     std::vector<GameObject*> mEyeBalls;
     std::vector<GameObject*> mEyeBallPool;
-    size_t mPoolSize = 4; // Size of the pool
+    size_t mPoolSize = 4; 
 };

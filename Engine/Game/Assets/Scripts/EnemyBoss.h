@@ -1,7 +1,5 @@
 #pragma once
 #include "Enemy.h"
-#include "Geometry/Ray.h"
-#include "TimerScript.h"
 
 struct CollisionData;
 class BoxColliderComponent;
