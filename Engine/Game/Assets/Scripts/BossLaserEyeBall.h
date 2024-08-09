@@ -11,20 +11,22 @@ class BossLaserEyeBall : public Script
     FRIEND(BossLaserEyeBall)
 
 public:
+
     BossLaserEyeBall(GameObject* owner);
 
     void Start() override;
     void Update() override;
 
-    void Init(float damage, float distance, float duration, float rotationSpeed, float initialRotation);
+    void Init( float distance, float duration, float initialRotation);
 
 private:
+
     void RotateLaser();
 
     float mDamage = 3.0f;
     float mDistance = 10.0f;
-    float mDuration = 20.0f;
-    float mRotationSpeed = 0.5f;
+    float mDuration = 3.0f;
+    float mRotationSpeed = 2.0f;
     float mCurrentRotation = 0.0f;
     float mInitialRotation = 0.0f;
 

@@ -4,17 +4,18 @@
 #include "BoxColliderComponent.h"
 #include "ModuleScene.h"
 #include "ScriptComponent.h"
-#include "PlayerController.h"
-#include "GameManager.h"
+
 #include "MathFunc.h"
-#include "State.h"
-#include "Geometry/Ray.h"
 #include "BossLaserEyeBall.h"
 
 CREATE(BossLaser)
 {
     CLASS(owner);
-    MEMBER(MemberType::FLOAT, mDamage);
+    MEMBER(MemberType::FLOAT, mDistance);
+    MEMBER(MemberType::FLOAT, mCooldownDuration);
+    MEMBER(MemberType::FLOAT, mChargeTime);
+    MEMBER(MemberType::FLOAT, mLaserDuration);
+    MEMBER(MemberType::FLOAT, mEyeRotationSpeed);
     END_CREATE;
 }
 
@@ -26,7 +27,6 @@ void BossLaser::Start()
 {
     mCurrentState = LaserState::IDLE;
 
-    // Initialize the pool
     for (size_t i = 0; i < mPoolSize; ++i)
     {
         GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb", nullptr);
@@ -70,7 +70,6 @@ void BossLaser::Update()
 
 void BossLaser::Init(float damage, float distance)
 {
-    mDamage = damage;
     mDistance = distance;
     Charge();
 }
@@ -107,7 +106,7 @@ void BossLaser::SpawnEyeBalls()
     float baseAngle = -90.0f;
     float angleIncrement = 45.0f;
 
-    for (size_t i = 0; i < 4; ++i)
+    for (size_t i = 0; i < 5; ++i)
     {
         if (i >= mEyeBallPool.size())
             break;
@@ -126,13 +125,12 @@ void BossLaser::SpawnEyeBalls()
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-            eyeBallScript->Init(mDamage, mDistance, mLaserDuration, mEyeRotationSpeed, angle);
+            eyeBallScript->Init(mDistance, mLaserDuration, angle);
         }
 
         mEyeBalls.push_back(eyeBall);
     }
 }
-
 
 void BossLaser::ReturnEyeBallsToPool()
 {

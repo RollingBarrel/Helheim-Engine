@@ -29,28 +29,26 @@ public:
     void Init(float damage, float distance);
 
 private:
+
     void Charge();
     void Fire();
     void Cooldown();
-    void SpawnEyeBalls();
 
+    void SpawnEyeBalls();
     void ReturnEyeBallsToPool();
 
     LaserState mCurrentState = LaserState::IDLE;
 
-    float mDamage = 3.0f;
-    float mDistance = 5.0f;
-
-    float mCooldownDuration = 2.0f;
-    float mChargeTime = 1.0f;
-    float mLaserDuration = 25.0f;
-
+    float mDistance = 10.0f;
     float mEyeRotationSpeed = 2.0f;
 
     float mStateTime = 0.0f;
+    float mChargeTime = 1.0f;
+    float mLaserDuration = 5.0f;
+    float mCooldownDuration = 2.0f;
 
-    GameObject* mEyeBallPrefab = nullptr;
+
     std::vector<GameObject*> mEyeBalls;
     std::vector<GameObject*> mEyeBallPool;
-    size_t mPoolSize = 4; 
+    size_t mPoolSize = 5;
 };

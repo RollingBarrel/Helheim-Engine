@@ -38,23 +38,20 @@ void BossLaserEyeBall::Update()
 
     if (mElapsedTime >= mDuration)
     {
+        if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
+        if (mLaserTrail) mLaserTrail->SetEnabled(false);
+        if (mLaserEnd) mLaserEnd->SetEnabled(false);
         mGameObject->SetEnabled(false);
         return;
     }
-    else
-    {
         RotateLaser();
-    }
 }
 
-void BossLaserEyeBall::Init(float damage, float distance, float duration, float rotationSpeed, float initialRotation)
+void BossLaserEyeBall::Init(float distance, float duration, float initialRotation)
 {
-    mDamage = damage;
     mDistance = distance;
     mDuration = duration;
-    mRotationSpeed = rotationSpeed; // Rotation speed to be constant
     mInitialRotation = initialRotation;
-    mCurrentRotation = mInitialRotation;
     mElapsedTime = 0.0f;
 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
@@ -78,7 +75,7 @@ void BossLaserEyeBall::RotateLaser()
         if (mCurrentRotation >= maxRotation)
         {
             mCurrentRotation = maxRotation;
-            mRotationSpeed = -std::abs(mRotationSpeed); 
+            mRotationSpeed = -std::abs(mRotationSpeed);
         }
     }
     else 
@@ -103,13 +100,6 @@ void BossLaserEyeBall::RotateLaser()
 
         if (hit.IsValid())
         {
-            if (hit.mGameObject->GetTag().compare("Player") == 0)
-            {
-                ScriptComponent* playerScript = static_cast<ScriptComponent*>(hit.mGameObject->GetComponent(ComponentType::SCRIPT));
-                PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-                player->TakeDamage(mDamage);
-            }
-
             mLaserEnd->SetWorldPosition(hit.mHitPoint);
 
             if (mMoveTrail)
