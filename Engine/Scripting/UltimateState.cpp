@@ -6,8 +6,8 @@
 #include "PlayerController.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
-
-
+#include "GameManager.h"
+#include "HudController.h"
 
 UltimateState::UltimateState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
@@ -15,7 +15,7 @@ UltimateState::UltimateState(PlayerController* player, float cooldown, float dur
 	GameObject* ultimateGO = mPlayerController->GetUltimateGO();
 	if (ultimateGO)
 	{
-		mUltimateScript =  reinterpret_cast<UltimateAttack*>(reinterpret_cast<ScriptComponent*>(ultimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mUltimateScript = static_cast<UltimateAttack*>(static_cast<ScriptComponent*>(ultimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 	}
 }
 
@@ -51,6 +51,11 @@ void UltimateState::Exit()
 	mPlayerController->EnableUltimate(false);
 	mPlayerController->SetMovementSpeed(1.0f/ mPlayerController->GetUltimateSlow());
 	SetCooldown(mPlayerController->GetUltimateCooldown());
+
+	if (GameManager::GetInstance()->GetHud())
+	{
+		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mPlayerController->GetUltimateCooldown());
+	}
 }
 
 StateType UltimateState::GetType()
@@ -60,8 +65,7 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	mStateTimer += App->GetDt();
-	if (mPlayerController->GetUltimateGO() && mStateTimer >= mStateCooldown ) return true;
+	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
 	return false;
 }
 

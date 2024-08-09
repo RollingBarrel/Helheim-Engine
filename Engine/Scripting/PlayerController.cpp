@@ -3,24 +3,26 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
+#include "ModuleScene.h"
 #include "ModuleDetourNavigation.h"
-#include "ModuleResource.h"
+
 #include "GameObject.h"
 #include "Physics.h"
+#include "PlayerStats.h"
 
 #include "AudioSourceComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+
 #include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
+
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
-#include <functional>
 
 #include "GameManager.h"
 #include "HudController.h"
@@ -52,14 +54,17 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxShield);
-    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    //SEPARATOR("STATS");
+    //MEMBER(MemberType::FLOAT, mMaxShield);
+    //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
+
+    SEPARATOR("RANGE");
+    MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
@@ -123,6 +128,14 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    //Player Stats
+    mPlayerStats = App->GetScene()->GetPlayerStats();
+
+    mMaxShield = mPlayerStats->GetMaxHealth();
+    mShield = mMaxShield;
+
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -145,7 +158,7 @@ void PlayerController::Start()
     BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
     {
-        weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        weaponCollider = static_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
     }
     TrailComponent* batTrail = nullptr;
     if (mBatTrail)
@@ -191,7 +204,7 @@ void PlayerController::Start()
         mUltimateGO->SetEnabled(false);
 
     // COLLIDER
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&PlayerController::OnCollisionEnter, this, std::placeholders::_1)));
@@ -210,17 +223,10 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-    }
-    //Hit Effect
-    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
-    mMaterialIds.reserve(mMeshComponents.size());
-    for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    {
-        mMaterialIds.push_back(reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial()->GetUID());
     }
     // Add Audio Listener
     if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
@@ -228,8 +234,26 @@ void PlayerController::Start()
         mGameObject->CreateComponent(ComponentType::AUDIOLISTENER);
     }
 
+    //Hit Effect
+    mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
+
+    for (Component* mesh : mMeshComponents)
+    {
+        const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mesh)->GetResourceMaterial();
+        mPlayerOgColor.push_back(material->GetBaseColorFactor());
+    }
+
     mUpperState->Enter();
     mLowerState->Enter();
+
+    if (App->GetScene()->GetName().compare("Level1Scene") == 0)
+    {
+        mGameObject->SetWorldPosition(float3(82.27f, 0.0f, -4.15f));
+    }
+    else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
+    {
+        mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
+    }
 }
 
 void PlayerController::Update()
@@ -245,43 +269,18 @@ void PlayerController::Update()
     // Rotate the player to mouse
     HandleRotation();
 
+    //Check HitEffect
+    CheckHitEffect();
+
     // Buff, Debuff timers...
     CheckOtherTimers();
 
     CheckDebugOptions();
-
-    //Hit Effect
-    //if (mHit)
-    //{
-    //    if (Delay(0.1f)) 
-    //    {
-    //        mHit = false;
-    //
-    //        for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //        {
-    //            reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(mMaterialIds[i]);
-    //            App->GetResource()->ReleaseResource(mMaterialIds[i]);
-    //        }
-    //    }
-    //}
     mCollisionDirection = float3::zero;
-}
-
-bool PlayerController::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
-    {
-        mTimePassed = 0;
-        return true;
-    }
-    else return false;
 }
 
 void PlayerController::StateMachine()
 {
-    // Check if dead
     mLowerState->Update();
     mUpperState->Update();
 }
@@ -402,9 +401,8 @@ void PlayerController::HandleRotation()
         if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
 
         float3 position = mGameObject->GetWorldPosition();
-        mAimPosition.x = position.x - rightX;
-        mAimPosition.y = position.y;
-        mAimPosition.z = position.z - rightY;
+        float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
+        mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
     }
     else
     {
@@ -562,14 +560,22 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
+void PlayerController::SetMovementSpeed(float percentage) 
+{
+    mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+    mPlayerStats->SetDamageModifier(mPlayerStats->GetDamageModifier() * percentage);
+    mDamageModifier = mPlayerStats->GetDamageModifier();
 }
 
 void PlayerController::SetMaxShield(float percentage)
 {
-    mMaxShield *= percentage; 
+    mPlayerStats->SetMaxHealth(mPlayerStats->GetMaxHealth() * percentage);
+    mMaxShield = mPlayerStats->GetMaxHealth();
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
@@ -643,8 +649,7 @@ bool PlayerController::CanReload() const
 
 void PlayerController::Reload() const
 {
-    mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
-    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
+    static_cast<Pistol*>(mPistol)->Reload();
 }
 
 void PlayerController::CheckDebugOptions()
@@ -690,7 +695,7 @@ void PlayerController::RechargeShield(float shield)
 
 void PlayerController::RechargeBattery(EnergyType batteryType)
 {
-    mCurrentEnergy = 100.0f;
+    mCurrentEnergy = 100;
     mEnergyType = batteryType;
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
@@ -783,12 +788,40 @@ void PlayerController::TakeDamage(float damage)
 
 
     ////Hit Effect
-    //mHit = true;
-    //for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
-    //{
-    //    reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(mMaterialIds[i], Resource::Type::Material));
-    //    reinterpret_cast<MeshRendererComponent*>(mMeshComponents[i])->SetMaterial(999999999);
-    //}
+    if (!mHit)
+    {
+        ActivateHitEffect();
+    }
+
+
+}
+void PlayerController::ActivateHitEffect()
+{
+    for (Component* mesh: mMeshComponents)
+    {
+        MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mesh);
+        meshComponent->SetEnableBaseColorTexture(false);
+        meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
+    }   
+        mHit = true;    
+}
+
+void PlayerController::CheckHitEffect()
+{
+    if (mHit)
+    {
+        if (mHitEffectTimer.Delay(mHitEffectTime))
+        {
+            for (size_t i = 0; i < mMeshComponents.size(); i++)
+            {
+                MeshRendererComponent* meshComponent = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+                meshComponent->SetEnableBaseColorTexture(true);
+                meshComponent->SetBaseColorFactor(mPlayerOgColor[i]);
+            }
+            mHit = false;
+        }
+    }
+
 }
 
 void PlayerController::OnCollisionEnter(CollisionData* collisionData)
@@ -801,6 +834,6 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
     if (collisionData->collidedWith->GetTag() == "Door")
     {
         mCollisionDirection = collisionData->collisionNormal;
-        LOG("HOLA")
+        //LOG("HOLA")
     }
 }
