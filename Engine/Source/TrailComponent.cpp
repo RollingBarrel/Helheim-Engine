@@ -28,14 +28,12 @@
 TrailComponent::TrailComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::TRAIL)
 {
     mTrail = new Trail();
-    Init();
 }
 
 TrailComponent::TrailComponent(const TrailComponent& original, GameObject* owner) : Component(owner, ComponentType::TRAIL), 
 
 mTrail(new Trail(*original.mTrail))
 {
-    Init();
 }
 
 TrailComponent::~TrailComponent()
@@ -46,11 +44,6 @@ TrailComponent::~TrailComponent()
 Component* TrailComponent::Clone(GameObject* owner) const
 {
     return new TrailComponent(*this, owner);
-}
-
-void TrailComponent::Init()
-{
-    mTrail->Init();
 }
 
 void TrailComponent::Draw() const
@@ -74,7 +67,7 @@ void TrailComponent::Reset()
 
 void TrailComponent::Enable()
 {
-    Init();
+    mTrail->Enable();
 }
 
 void TrailComponent::Disable()
@@ -93,9 +86,4 @@ void TrailComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 {
     Component::Load(data, uidPointerMap);
     mTrail->Load(data);
-}
-
-TrailComponent::TrailPoint::TrailPoint(float3 pos, float3 dir, float time, float distUV) : 
-    mPosition(pos), mDirection(dir), mCreationTime(time), mDistanceUV(distUV)
-{
 }

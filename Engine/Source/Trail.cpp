@@ -22,7 +22,6 @@
 
 #define VBO_FLOAT_SIZE 9 // number of floats for every vertex 3 (position) + 2 (texcoord) + 1 (colorPos) + 3 (direction)
 
-
 Trail::Trail()
 {
     Init();
@@ -208,7 +207,6 @@ void Trail::AddFirstTrailPoint(GameObject* mOwner)
     float3 direction;
     mWidth.GetValue().CalculateInitialValue();
 
-    float deltaPos = (distUV - mMinDist) / (mMaxDist - mMinDist);
     direction = CalculateDirection(position, norm);
 
     float3 topPointPos = position + direction * (mWidth.GetValue().GetMinValue() * 0.5f);
@@ -217,18 +215,8 @@ void Trail::AddFirstTrailPoint(GameObject* mOwner)
     float2 topPointTexCoord = float2(mPoints.front().mDistanceUV, 1);
     float2 botPointTexCoord = float2(mPoints.front().mDistanceUV, 0);
 
-    //if (mPoints.size() == 2)
-    //{
-    //    float3 topPos = mPoints[0].mPosition + direction * (mWidth.GetValue().GetMinValue() * 0.5f);;
-    //    float3 botPos = mPoints[0].mPosition - direction * (mWidth.GetValue().GetMinValue() * 0.5f);;
-    //    mBuffer.push_back({ botPos, botPointTexCoord, distUV, direction });
-    //    mBuffer.push_back({ topPos, topPointTexCoord, distUV, direction });
-    //}
-    //if (mPoints.size() >= 2)
-    //{
-        mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
-        mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
-    //}
+    mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
+    mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
 
     mLastPointPosition = position;
     mMinDist = distUV;
@@ -251,7 +239,6 @@ void Trail::Update()
 void Trail::UpdateTrailComponent(GameObject* owner)
 {
     float3 position = owner->GetWorldPosition();
-    Quat rotationQ = owner->GetWorldRotation();
 
     const float dposition = position.DistanceSq(mLastPointPosition);
     if (dposition >= mMinDistance && mPoints.size() < mMaxPoints)
@@ -263,6 +250,39 @@ void Trail::UpdateTrailComponent(GameObject* owner)
     if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().mCreationTime) >= mMaxLifeTime)
     {
         RemoveLastTrailPoint();
+    }
+}
+void Trail::UpdateLineComponent(GameObject* origin, GameObject* final)
+{
+    float3 originPos = origin->GetWorldPosition();
+    float3 finalPos = final->GetWorldPosition();
+
+    if (!finalPos.Equals(mLastPointPosition))
+    {
+        float3 lineDirection = (finalPos - originPos).Normalized();
+        float distance = finalPos.Distance(originPos);
+        float sumOfDist = 0;
+        mPoints.clear();
+        mBuffer.clear();
+        while (distance > sumOfDist)
+        {
+            float3 position = originPos + lineDirection * sumOfDist;
+            mPoints.push_front(TrailPoint({ position, float3(1,1,1), 0.0f, sumOfDist }));
+            const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
+            float3 norm = cam->GetFrustum().front;
+            float3 direction;
+            if (mFixedDirection) direction = mDirection.Normalized();
+            else direction = lineDirection.Cross(norm).Normalized();
+            float3 topPointPos = position + direction * (mWidth.GetValue().GetMinValue() * 0.5f);
+            float3 botPointPos = position - direction * (mWidth.GetValue().GetMinValue() * 0.5f);
+            float2 topPointTexCoord = float2(mPoints.front().mDistanceUV, 1);
+            float2 botPointTexCoord = float2(mPoints.front().mDistanceUV, 0);
+            mBuffer.push_back({ botPointPos, botPointTexCoord, sumOfDist, direction });
+            mBuffer.push_back({ topPointPos, topPointTexCoord, sumOfDist, direction });
+            sumOfDist += mMinDistance ? mMinDistance : 0.01;
+        }
+        mMinDist = distance;
+        mMaxDist = 0.0f;
     }
 }
 void Trail::SetImage(unsigned int resourceId)

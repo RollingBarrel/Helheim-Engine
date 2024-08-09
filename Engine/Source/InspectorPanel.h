@@ -28,6 +28,7 @@ class ParticleSystemComponent;
 class TextComponent;
 class BoxColliderComponent;
 class TrailComponent;
+class LineComponent;
 class BezierCurve;
 class DecalComponent;
 class RandomFloat;
@@ -75,6 +76,7 @@ private:
 	void DrawBoxColliderComponent(BoxColliderComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
+	void DrawLineComponent(LineComponent* component) const;
 	void DrawDecalComponent(DecalComponent* component);
 
 	//void DragAndDropSource(Component* component);

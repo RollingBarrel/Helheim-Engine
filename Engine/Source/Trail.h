@@ -38,6 +38,7 @@ public:
 	void Init();
 	void Update();
 	void UpdateTrailComponent(GameObject* owner);
+	void UpdateLineComponent(GameObject* origin, GameObject* final);
 	void Draw() const;
 	void Enable();
 	void Disable();

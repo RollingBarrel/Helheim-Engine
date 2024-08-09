@@ -471,6 +471,9 @@
     <ClCompile Include="Trail.cpp">
       <Filter>Utils\Particles</Filter>
     </ClCompile>
+    <ClCompile Include="LineComponent.cpp">
+      <Filter>GameObjects\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1981,6 +1984,9 @@
     </ClInclude>
     <ClInclude Include="Trail.h">
       <Filter>Utils\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="LineComponent.h">
+      <Filter>GameObjects\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -25,6 +25,7 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "LineComponent.h"
 #include "DecalComponent.h"
 #include "TextComponent.h"
 
@@ -489,6 +490,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::TRAIL:
 		newComponent = new TrailComponent(this);
+		break;
+	case ComponentType::LINE:
+		newComponent = new LineComponent(this);
 		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);

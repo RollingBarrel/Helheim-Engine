@@ -4,7 +4,6 @@
 NavMeshObstacleComponent::NavMeshObstacleComponent(GameObject* ownerGameObject)
 	:Component(ownerGameObject, ComponentType::NAVMESHOBSTACLE)
 {
-	
 }
 
 NavMeshObstacleComponent::~NavMeshObstacleComponent()
