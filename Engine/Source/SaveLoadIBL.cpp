@@ -49,20 +49,18 @@ static unsigned char* GetOpenglTextureData(unsigned int texId, unsigned int widt
 void Importer::IBL::Save(const ResourceIBL* resource)
 {
     unsigned int environmentTextureDataSize = 0;
-    unsigned int numMips = log2(std::max(resource->GetEnvironmentTexSize(), resource->GetEnvironmentTexSize())) + 1;
+    unsigned int numMips = numMips = log2(std::max(resource->GetEnvironmentTexSize(), resource->GetEnvironmentTexSize())) + 1;
+    //unsigned int numMips = 1;
     unsigned char* environmentTextureData = GetOpenglTextureData(resource->GetEnvironmentTextureId(), resource->GetEnvironmentTexSize(), resource->GetEnvironmentTexSize(), numMips, 6, GL_TEXTURE_CUBE_MAP, GL_RGB, GL_HALF_FLOAT, environmentTextureDataSize);
 
     unsigned int irradianceTextureDataSize = 0;
-    //numMips = log2(std::max(resource->GetIrradianceTexSize(), resource->GetIrradianceTexSize())) + 1;
     numMips = 1;
     unsigned char* irradianceTextureData = GetOpenglTextureData(resource->GetIrradianceTextureId(), resource->GetIrradianceTexSize(), resource->GetIrradianceTexSize(), numMips, 6, GL_TEXTURE_CUBE_MAP, GL_RGB, GL_HALF_FLOAT, irradianceTextureDataSize);
 
     unsigned int specPrefilteredTextureDataSize = 0;
     numMips = log2(std::max(resource->GetSpecPrefilteredTexSize(), resource->GetSpecPrefilteredTexSize())) + 1;
     unsigned char* specPrefilteredTextureData = GetOpenglTextureData(resource->GetSpecPrefilteredTexId(), resource->GetSpecPrefilteredTexSize(), resource->GetSpecPrefilteredTexSize(), numMips, 6, GL_TEXTURE_CUBE_MAP, GL_RGB, GL_HALF_FLOAT, specPrefilteredTextureDataSize);
-    //unsigned int envBRDFTexId = 0;
     unsigned int envBRDFTextureDataSize = 0;
-    //numMips = log2(std::max(resource->GetEnvBRDFTexSize(), resource->GetEnvBRDFTexSize())) + 1;
     numMips = 1;
     unsigned char* envBRDFTextureData = GetOpenglTextureData(resource->GetEnvBRDFTexId(), resource->GetEnvBRDFTexSize(), resource->GetEnvBRDFTexSize(), numMips, 4, GL_TEXTURE_2D, GL_RG, GL_HALF_FLOAT, envBRDFTextureDataSize);
 
@@ -109,14 +107,15 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         unsigned int environmentSize = *reinterpret_cast<unsigned int*>(cursor);
         cursor += sizeof(unsigned int);
         numMips = log2(std::max(environmentSize, environmentSize)) + 1;
+        //numMips = 1;
         unsigned int environmentTextureId;
         glGenTextures(1, &environmentTextureId);
         glBindTexture(GL_TEXTURE_CUBE_MAP, environmentTextureId);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips - 1);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         w = environmentSize;
         h = environmentSize;
@@ -137,7 +136,6 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
 
         unsigned int irradianceSize = *reinterpret_cast<unsigned int*>(cursor);
         cursor += sizeof(unsigned int);
-        //numMips = log2(std::max(irradianceSize, irradianceSize)) + 1;
         numMips = 1;
         unsigned int irradianceTextureId;
         glGenTextures(1, &irradianceTextureId);
@@ -145,7 +143,7 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips - 1);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         w = irradianceSize;
@@ -173,8 +171,8 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips);
-        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAX_LEVEL, numMips - 1);
+        glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         w = specPrefilteredSize;
         h = specPrefilteredSize;
@@ -195,7 +193,6 @@ ResourceIBL* Importer::IBL::Load(const char* filePath, unsigned int uid)
 
         unsigned int specEnvBRDFSize = *reinterpret_cast<unsigned int*>(cursor);
         cursor += sizeof(unsigned int);
-        //numMips = log2(std::max(specEnvBRDFSize, specEnvBRDFSize)) + 1;
         numMips = 1;
         unsigned int envBRDFTexId;
         glGenTextures(1, &envBRDFTexId);

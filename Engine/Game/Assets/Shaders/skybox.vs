@@ -1,7 +1,9 @@
 #version 460 core
-layout(std140, binding = 0) uniform CameraMatrices{
+layout(std140, binding = 0) uniform CameraMatrices
+{
 	mat4 view;
 	mat4 proj;
+	mat4 invView;
 };
 layout (location = 0) in vec3 pos;
 out vec3 texcoords;

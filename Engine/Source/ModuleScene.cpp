@@ -189,6 +189,12 @@ void ModuleScene::Save(const char* sceneName) const
 	scene.AddInt("SkyBoxResource", App->GetOpenGL()->GetSkyboxID());
 	scene.AddFloat("BloomIntensity", App->GetOpenGL()->GetBloomIntensity());
 	scene.AddFloats("DirectionalLight", reinterpret_cast<const float*>(&App->GetOpenGL()->GetDirectionalLight()), sizeof(DirectionalLight) / sizeof(float));
+	JsonObject fogObj = scene.AddNewJsonObject("Fog");
+	float fogCol[3]; App->GetOpenGL()->GetFogColor(fogCol);
+	fogObj.AddFloats("Color", fogCol, 3);
+	fogObj.AddFloat("Density", App->GetOpenGL()->GetFogDensity());
+	fogObj.AddFloat("HeightFallof", App->GetOpenGL()->GetFogHeightFallof());
+	fogObj.AddFloat("MaxFog", App->GetOpenGL()->GetMaxFog());
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -276,6 +282,24 @@ void ModuleScene::Load(const char* sceneName)
 		if (scene.HasMember("DirectionalLight"))
 			scene.GetFloats("DirectionalLight", directionalLight);
 		App->GetOpenGL()->SetDirectionalLight(*reinterpret_cast<DirectionalLight*>(directionalLight));
+
+		if (scene.HasMember("Fog"))
+		{
+			JsonObject fogObj = scene.GetJsonObject("Fog");
+			float fogCol[3]; fogObj.GetFloats("Color", fogCol);
+			App->GetOpenGL()->SetFogColor(fogCol);
+			App->GetOpenGL()->SetFogDensity(fogObj.GetFloat("Density"));
+			App->GetOpenGL()->SetFogHeightFallof(fogObj.GetFloat("HeightFallof"));
+			App->GetOpenGL()->SetMaxFog(fogObj.GetFloat("MaxFog"));
+		}
+		else
+		{
+			float fogCol[3] = { 1.0f,1.0f,1.0f };
+			App->GetOpenGL()->SetFogColor(fogCol);
+			App->GetOpenGL()->SetFogDensity(0.009f);
+			App->GetOpenGL()->SetFogHeightFallof(0.0f);
+			App->GetOpenGL()->SetMaxFog(0.0f);
+		}
 
 		App->GetScriptManager()->AwakeScripts();
 		

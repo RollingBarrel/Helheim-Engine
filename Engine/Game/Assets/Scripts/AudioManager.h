@@ -8,7 +8,8 @@
 enum class BGM 
 {
 	MAINMENU,
-	LEVEL1
+	LEVEL1,
+	LEVEL2,
 };
 
 enum class SFX 
@@ -86,8 +87,9 @@ private:
 	// Audio - Name
 	const std::unordered_map<BGM, std::string> mBGMToString
 	{
-		{BGM::MAINMENU, "event:/Music/Level 01"},
-		{BGM::LEVEL1, "event:/Music/Level 02"}
+		{BGM::MAINMENU, "event:/MC/main/Theme"},
+		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
+		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"}
 	};
 
 	const std::unordered_map<SFX, std::string> mSFXToString

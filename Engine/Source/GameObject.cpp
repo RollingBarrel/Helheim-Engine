@@ -397,13 +397,8 @@ void GameObject::LookAt(const float3& target)
 	rotationMatrix[1][2] = -forward.y;
 	rotationMatrix[2][2] = -forward.z;
 
-
-	mLocalRotation = Quat(rotationMatrix);
-	mWorldEulerAngles = mLocalRotation.ToEulerXYZ();
-
-
-	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
-	SetTransformsDirtyFlag();
+	//SetLocalRotation(rotationMatrix.ToEulerXYZ());
+	SetLocalRotation(Quat(rotationMatrix));
 }
 
 void GameObject::ResetTransform()

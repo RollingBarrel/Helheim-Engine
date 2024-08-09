@@ -213,11 +213,11 @@ void AudioTester::BGM1ParameterChange()
     {
         if (input->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
         {
-            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "Area", 80);
+            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "States", 0);
         }
         else if(input->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) 
         {
-            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "Area", 1);
+            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "States", 2);
         }
     }
 }

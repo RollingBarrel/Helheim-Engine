@@ -29,8 +29,8 @@ void main()
     {
        InVertex vertex = animVertices[skinOffset + index];
 
-       mat4 skinTransform = palette[vertex.joints[0]]*vertex.weights[0]+ palette[vertex.joints[1]]*vertex.weights[1]+
-        palette[vertex.joints[2]]*vertex.weights[2]+palette[vertex.joints[3]]*vertex.weights[3];
+       mat4 skinTransform = palette[vertex.joints[0]]*vertex.weights[0] + palette[vertex.joints[1]]*vertex.weights[1] +
+        palette[vertex.joints[2]]*vertex.weights[2] + palette[vertex.joints[3]]*vertex.weights[3];
 
        outVertices[index].pos.xyz = (skinTransform*vec4(vertex.pos.xyz,1.0)).xyz;
        outVertices[index].norm.yzw = (skinTransform*vec4(vertex.norm.yzw,0.0)).xyz;

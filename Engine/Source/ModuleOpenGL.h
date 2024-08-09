@@ -74,7 +74,7 @@ public:
 	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
-	unsigned int GetFramebufferTexture() const { return sceneTexture; }
+	unsigned int GetFramebufferTexture() const { return mSceneTexture; }
 	void BindSceneFramebuffer();
 	//void BindGFramebuffer();
 	void UnbindFramebuffer();
@@ -154,6 +154,16 @@ public:
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };
+	
+	void SetFogColor(float fogColor[3]);
+	void GetFogColor(float fogColor[3]) const { memcpy(fogColor, mFogColor, sizeof(mFogColor)); }
+	void SetFogDensity(float density);
+	float GetFogDensity() const { return mFogDensity; }
+	void SetFogHeightFallof(float heightFallof);
+	float GetFogHeightFallof() const { return mHeightFallof; }
+	void SetMaxFog(float maxFog);
+	float GetMaxFog() const { return mMaxFog; }
+
 private:
 	void* context = nullptr;
 
@@ -161,7 +171,7 @@ private:
 
 	//scene Framebuffer
 	unsigned int sFbo;
-	unsigned int sceneTexture;
+	unsigned int mSceneTexture;
 	//unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
@@ -219,8 +229,11 @@ private:
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
-	unsigned int mSsaoBlurProgramId = 0;
+	//unsigned int mSsaoBlurProgramId = 0;
+	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
+	unsigned int mNoiseProgramId = 0;
+	unsigned int mVolLightProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
@@ -243,12 +256,18 @@ private:
 	void InitDecals();
 	std::vector<const DecalComponent*> mDecalComponents;
 
-	//Ambient Occlusion
-
+	//Fog
+	float mFogColor[3] = { 1.0f, 1.0f, 1.0f };
+	float mMaxFog = 0.0f;
+	float mFogDensity = 0.009f;
+	//A medida que se aleja de 0 la niebla baja respecto la vista de la camera
+	float mHeightFallof = 0.0f;
 
 	//Lighting uniforms
 	unsigned int mPLightListImgTex;
 	unsigned int mPLightListImgBuffer;
+	unsigned int mSLightListImgTex;
+	unsigned int mSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;
@@ -256,6 +275,7 @@ private:
 	OpenGLBuffer* mPointsBuffer = nullptr;
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
+	OpenGLBuffer* mSpotsBoundingSpheres = nullptr;
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
@@ -266,6 +286,8 @@ private:
 
 	unsigned int mSceneWidth = 1;
 	unsigned int mSceneHeight = 1;
+
+	unsigned int mNoiseTexId = 0;
 };
 
 #endif /* _MODULEOPENGL_H_ */
