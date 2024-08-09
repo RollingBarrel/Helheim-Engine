@@ -20,10 +20,17 @@ CREATE(EnemyRobotRange)
     MEMBER(MemberType::FLOAT, mRangeDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
 
     END_CREATE;
+}
+
+void EnemyRobotRange::Start()
+{
+    Enemy::Start();
+    mDisengageTime = 0.5f;
 }
 
 void EnemyRobotRange::Attack()
@@ -42,10 +49,8 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        //mAnimationComponent->SendTrigger("tAttack", 0.2f);
         mAnimationComponent->OnRestart();
         RangeAttack();
-
     }
 }
 

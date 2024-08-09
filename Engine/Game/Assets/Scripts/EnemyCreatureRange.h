@@ -28,6 +28,10 @@ private:
 	GameObject* mLaserEnd = nullptr;
 	GameObject* mLaserCharge = nullptr;
 
+
+	float mAimTime = 0.0f;
+	TimerScript mAimTimer;
+
 	//Laser Trail WorkAround
 	bool mMoveTrail = false;
 

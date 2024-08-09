@@ -51,8 +51,8 @@ void EnemyCreatureRange::Start()
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
 
-	mDeathTime = 1.0f;
-
+	mDeathTime = 2.20f;
+	mAimTime = mChargeDuration * 0.8f;
 }
 
 void EnemyCreatureRange::Update()
@@ -74,8 +74,12 @@ void EnemyCreatureRange::Update()
 void EnemyCreatureRange::Charge()
 {
 	Enemy::Charge();
-	Rotate();
 
+	if (!mAimTimer.DelayWithoutReset(mAimTime))
+	{
+		mGameObject->LookAt(mPlayer->GetWorldPosition());
+	}
+	
 	if (mLaserCharge)	mLaserCharge->SetEnabled(true);
 }
 
@@ -83,6 +87,7 @@ void EnemyCreatureRange::Attack()
 {
 	Enemy::Attack();
 	Rotate();
+	mAimTimer.Reset();
 
 	mAnimationComponent->SendTrigger("tAttack", 0.2f);
 	
@@ -143,45 +148,24 @@ void EnemyCreatureRange::Attack()
 	}
 }
 
-void EnemyCreatureRange::Rotate() //TODO IMPROVE ROTATE BEHAVIOUR
+void EnemyCreatureRange::Rotate()
 {
 	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
 	direction.y = 0.0f;
 	direction.Normalize();
-
 	float targetRadianAngle = std::atan2(direction.x, direction.z);
-	float targetEulerAngle = RadToDeg(targetRadianAngle);
-	if (targetEulerAngle < 0)
-	{
-		targetEulerAngle = 360.0f + targetEulerAngle;
-	}
-
+	
 	float3 currentDirection = mGameObject->GetFront();
 	currentDirection.y = 0.0f;
 	currentDirection.Normalize();
-
 	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
-	float currentEulerAngle = RadToDeg(currentRadianAngle);
-	if (currentEulerAngle < 0)
-	{
-		currentEulerAngle = 360.0f + currentEulerAngle;
-	}
+	
+	float angleDifference = targetRadianAngle - currentRadianAngle;
 
-	//if (abs(targetEulerAngle - currentEulerAngle) > 180.0f)
-	//{
-	//	float rotation = (mGameObject->GetLocalEulerAngles().y + DegToRad(mAttackRotationSpeed)) * App->GetDt();
-	//	mGameObject->SetLocalRotation(float3(0.0f, rotation, 0.0f));
-	//}
-	//else
-	//{
-	//	float rotation = -1 * (mGameObject->GetLocalEulerAngles().y + DegToRad(mAttackRotationSpeed)) * App->GetDt();
-	//	mGameObject->SetLocalRotation(float3(0.0f, rotation, 0.0f));
-	//}
+	float rotationSpeed = mAttackRotationSpeed * App->GetDt();
+	float newAngle = currentRadianAngle + Clamp(angleDifference, -rotationSpeed, rotationSpeed);
 
-
-
-	float attackRotaionSpeed = (targetEulerAngle - currentEulerAngle > 0.0f) ? mAttackRotationSpeed : mAttackRotationSpeed * -1.0f;
-	mGameObject->SetLocalRotation(float3(0.0f, currentRadianAngle + DegToRad(attackRotaionSpeed) * App->GetDt(), 0.0f));
+	mGameObject->SetLocalRotation(float3(0.0f, newAngle, 0.0f));
 }
 
 

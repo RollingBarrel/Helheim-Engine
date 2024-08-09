@@ -118,10 +118,12 @@ void ScenePanel::Draw(int windowFlags)
 		if (ImGui::Begin("Game", &mOpen, windowFlags))
 		{
 			MenuGBuffer();
-			if (ImGui::IsWindowAppearing())
+			if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
 			{
 				EngineApp->GetEngineCamera()->ActivateGameCamera();
 			}
+				
+			
 
 			DrawScene();
 		}
@@ -132,7 +134,8 @@ void ScenePanel::Draw(int windowFlags)
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		MenuGBuffer();
-		if (ImGui::IsWindowAppearing())
+
+		if (!EngineApp->GetEngineCamera()->IsEditorCameraActive())
 		{
 			EngineApp->GetEngineCamera()->ActivateEditorCamera();
 		}

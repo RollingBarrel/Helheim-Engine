@@ -6,6 +6,7 @@
 
 #include "float4.h"
 #include "float3.h"
+#include "MathFunc.h"
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
@@ -16,10 +17,10 @@
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
 {
-	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
-	mAABB = AABB();
-
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	//mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
+	//mAABB = AABB();
+	//
+	//mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -28,8 +29,9 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMesh(other.mMesh->GetUID());
 	}
-	mOBB = other.mOBB;
-	mAABB = other.mAABB;
+	//mOBB = other.mOBB;
+	//mAABB = other.mAABB;
+	mOriginalAABB = other.mOriginalAABB;
 	if (other.mMaterial)
 	{
 		if (other.mUniqueMaterial)
@@ -96,9 +98,11 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mMesh = tmpMesh;
 
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-		mOriginalAABB = mAABB;
-		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+		mOriginalAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		//mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		//mOriginalAABB = mAABB;
+		//mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+
 		if (mMaterial)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);
@@ -173,10 +177,10 @@ void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const
 
 void MeshRendererComponent::Update() 
 {
-	if (mOwner->HasUpdatedTransform())
-	{
-		RefreshBoundingBoxes();
-	}
+	//if (mOwner->HasUpdatedTransform())
+	//{
+	//	RefreshBoundingBoxes();
+	//}
 
 	UpdatePalette();
 }
@@ -215,13 +219,54 @@ Component* MeshRendererComponent::Clone(GameObject* owner) const
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::RefreshBoundingBoxes()
-{	
-	mOBB = OBB(mOriginalAABB);
-	mOBB.Transform(mOwner->GetWorldTransform());
-
-	mAABB.SetFrom(mOBB);
+AABB MeshRendererComponent::GetAABB() const
+{
+	return GetOBB().MinimalEnclosingAABB();
 }
+
+OBB MeshRendererComponent::GetOBB() const
+{
+	math::OBB obb;
+	if (mHasSkinning)
+	{
+		float4x4 world = GetPalette()[0].Transposed();
+		obb.pos = world.MulPos(mOriginalAABB.CenterPoint());
+		float3 size = mOriginalAABB.HalfSize();
+		obb.axis[0] = world.Col(0).xyz();
+		obb.axis[1] = world.Col(1).xyz();
+		obb.axis[2] = world.Col(2).xyz();
+		obb.r.x = size.x;
+		obb.r.y = size.y;
+		obb.r.z = size.z;
+	}
+	else
+	{
+		const float4x4& world = mOwner->GetWorldTransform();
+		obb.pos = world.MulPos(mOriginalAABB.CenterPoint());
+		float3 size = mOriginalAABB.HalfSize();
+		obb.axis[0] = world.Col(0).xyz();
+		obb.axis[1] = world.Col(1).xyz();
+		obb.axis[2] = world.Col(2).xyz();
+		obb.r.x = size.x;
+		obb.r.y = size.y;
+		obb.r.z = size.z;
+	}
+	return obb;
+}
+
+void MeshRendererComponent::GetAABBOBB(AABB& aabb, OBB& obb) const
+{
+	obb = GetOBB();
+	aabb = obb.MinimalEnclosingAABB();
+}
+
+//void MeshRendererComponent::RefreshBoundingBoxes()
+//{	
+//	mOBB = OBB(mOriginalAABB);
+//	mOBB.Transform(mOwner->GetWorldTransform());
+//
+//	mAABB.SetFrom(mOBB);
+//}
 
 void MeshRendererComponent::Save(JsonObject& obj) const 
 {

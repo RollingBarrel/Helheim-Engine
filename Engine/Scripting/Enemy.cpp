@@ -10,15 +10,15 @@
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
+#include "Physics.h"
+#include "Geometry/Ray.h"
+
 #include "GameManager.h"
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
 
 #include "Math/MathFunc.h"
-
-
-Enemy::Enemy(GameObject* owner) : Script(owner) {}
 
 void Enemy::Start()
 {
@@ -97,9 +97,6 @@ void Enemy::Update()
     CheckHitEffect();
 }
 
-
-
-
 void Enemy::CheckHitEffect()
 {
     if (mHit)
@@ -111,6 +108,7 @@ void Enemy::CheckHitEffect()
         }
     }
 }
+
 void Enemy::ResetEnemyColor()
 {
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
@@ -120,6 +118,7 @@ void Enemy::ResetEnemyColor()
 		meshComponent->SetBaseColorFactor(mOgColors[i]);
 	}
 }
+
 void Enemy::ActivateEnemy()
 {
 	if (!mBeAttracted)
@@ -170,17 +169,10 @@ void Enemy::Chase()
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-			float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-			direction.y = 0;
-			direction.Normalize();
-			float angle = std::atan2(direction.x, direction.z);
-
-			if (mGameObject->GetWorldRotation().y != angle)
-			{
-				mGameObject->SetWorldRotation(float3(0, angle, 0));
-			}
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
-		if (IsPlayerInRange(mAttackDistance))
+		
+		if (IsPlayerReachable())
 		{
 			mCurrentState = EnemyState::CHARGE;
 		}
@@ -201,8 +193,8 @@ void Enemy::Charge()
 
 void Enemy::Attack()
 {
-	bool playerInRange = IsPlayerInRange(mAttackDistance);
-	if (!playerInRange && mDisengageTimer.Delay(mDisengageTime))
+	bool playerReachable = IsPlayerReachable();
+	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
 		mCurrentState = EnemyState::CHASE;
 		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
@@ -219,6 +211,34 @@ bool Enemy::IsPlayerInRange(float range)
 	distance = (mPlayer) ? mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition()) : inf;
 
 	return (distance <= range);
+}
+
+bool Enemy::IsPlayerReachable()
+{
+	bool reachable = false;
+
+	if (IsPlayerInRange(mAttackDistance))
+	{
+		Hit hit;
+		Ray ray;
+
+		float3 enemyPosition = mGameObject->GetWorldPosition();
+		float3 playerPosition = mPlayer->GetWorldPosition();
+
+		ray.pos = enemyPosition;
+		ray.dir = (playerPosition - enemyPosition).Normalized();
+
+		float distance = enemyPosition.Distance(playerPosition);
+
+		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
+		Physics::Raycast(hit, ray, distance, &ignoreTags);
+
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
+		{
+			reachable = true;
+		}
+	}
+	return reachable;
 }
 
 void Enemy::TakeDamage(float damage)
@@ -253,6 +273,7 @@ void Enemy::ActivateHitEffect()
     }
     mHit = true;
 }
+
 void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
@@ -309,7 +330,6 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 		mParalysisSeverityLevel = 1.0f;
 	}
 }
-
 
 void Enemy::DropItem()
 {
