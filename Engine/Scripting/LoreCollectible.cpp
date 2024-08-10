@@ -38,13 +38,21 @@ void LoreCollectible::Start()
 		mLoreText = static_cast<TextComponent*>(mGameObject->GetComponent(ComponentType::TEXT))->GetText();
 	}
 
+
 }
 
 void LoreCollectible::Update()
 {
-	if (!GameManager::GetInstance()->IsPaused() && mInteractUsed) {
-		mInteractUsed = false;
-	}
+	/*if (!isColliding)
+	{
+		GameManager::GetInstance()->GetHud()->SetInteract(false);
+	}*/
+
+	if (mUsed|| mInteractTimer.Delay(5.0f))
+		GameManager::GetInstance()->GetHud()->SetInteract(false);
+
+	if (mInteractTimer.Delay(10.0f))
+		mUsed = false;
 }
 
 void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
@@ -53,27 +61,25 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 	GameObject* collisionGO = collisionData->collidedWith;
 
 	//Make prompt appear 
-	if (!mInteractUsed)
+	if (!mUsed && collisionGO->GetTag() == "Player")
 	{
 		GameManager::GetInstance()->GetHud()->SetInteract(true);
-	}
 	
+		if ( App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
+			App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) {
 
-	if (collisionGO->GetTag() == "Player" && App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-		App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) {
+			if (GameManager::GetInstance()->GetHud())
+			{
+				GameManager::GetInstance()->SetPaused(true, false);
+				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
+				GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
+				GameManager::GetInstance()->GetHud()->SetInteract(false);
+				mUsed = true;
+			}
 
-		if (GameManager::GetInstance()->GetHud())
-		{
-			GameManager::GetInstance()->SetPaused(true, false);
-			if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
-			GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
-			GameManager::GetInstance()->GetHud()->SetInteract(false);
-			mInteractUsed = true;
 		}
-
+		
 	}
-
-
 }
 
 void LoreCollectible::OnCollisionExit(CollisionData* collisionData)

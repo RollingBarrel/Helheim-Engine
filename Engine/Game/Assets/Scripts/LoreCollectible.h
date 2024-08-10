@@ -28,12 +28,12 @@ public:
 
 private:
 
-    bool mInteractUsed = false;
+    bool mUsed = false;
     BoxColliderComponent* mCollider = nullptr;
     std::string* mLoreText = nullptr;
     //In case we want to use image
     ResourceTexture* mImageComp = nullptr;
-    TimerScript* mInteractTimer;
+    TimerScript mInteractTimer;
 
 };
 
