@@ -69,6 +69,7 @@ private:
     AudioManager* mAudioManager = nullptr;
     GameObject* mPoolManager = nullptr;
 
+
     bool mPaused = false;
 
     bool mController = false;

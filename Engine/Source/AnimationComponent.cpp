@@ -26,7 +26,7 @@ AnimationComponent::AnimationComponent(const AnimationComponent& other, GameObje
 	mStateMachine = nullptr;
 	mAnimationUID = other.mAnimationUID;
 
-	ResourceAnimation* res = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimationUID, Resource::Type::Animation));
+	ResourceAnimation* res = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.mAnimationUID, Resource::Type::Animation));
 	res->AddReferenceCount();
 
 	mController = new AnimationController(res);
@@ -68,7 +68,7 @@ void AnimationComponent::StartUp()
 	mStateMachine = new AnimationStateMachine(mAnimationUID);
 	mSpineStateMachine = new AnimationStateMachine(mAnimationUID);
 	
-	ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
+	ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
 	mController = new AnimationController(tmpAnimation);
 	mController->SetStartTime(mStateMachine->GetStateStartTime(0));
 	mController->SetEndTime(mStateMachine->GetStateEndTime(0));
@@ -238,7 +238,7 @@ void AnimationComponent::ChangeState(const std::string& stateName, float transit
 			}
 			else
 			{
-				ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+				ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
 				mController = new AnimationController(tmpAnimation);
 				mController->SetLoop(mStateMachine->GetStateLoop(stateIndex));
 				mController->SetStartTime(mStateMachine->GetStateStartTime(stateIndex));
@@ -327,7 +327,7 @@ void AnimationComponent::ChangeSpineState(const std::string& stateName, float tr
 			}
 			else
 			{
-				ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
+				ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(resourceAnimation, Resource::Type::Animation));
 				mSpineController = new AnimationController(tmpAnimation);
 				mSpineController->SetLoop(mSpineStateMachine->GetStateLoop(stateIndex));
 				mSpineController->SetStartTime(mSpineStateMachine->GetStateStartTime(stateIndex));
@@ -454,7 +454,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 		mAnimationUID = data.GetInt("AnimationUID");
 
 
-		ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
+		ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
 		mController = new AnimationController(tmpAnimation);
 		mSpineController = new AnimationController(tmpAnimation);
 
@@ -468,7 +468,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 			}
 			else
 			{
-				ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
+				ResourceStateMachine* resSM = static_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(lowerStateMachine, Resource::Type::StateMachine));
 				mStateMachine = resSM->GetStateMachine();
 				mStateMachine->SetUID(resSM->GetUID());
 				App->GetResource()->ReleaseResource(resSM->GetUID());
@@ -493,7 +493,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 			}
 			else
 			{
-				ResourceStateMachine* resSM = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
+				ResourceStateMachine* resSM = static_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(upperStateMachine, Resource::Type::StateMachine));
 				mSpineStateMachine = resSM->GetStateMachine();
 				mSpineStateMachine->SetUID(resSM->GetUID());
 				mSpineController = new AnimationController(tmpAnimation);
@@ -520,7 +520,7 @@ void AnimationComponent::Load(const JsonObject& data, const std::unordered_map<u
 
 			mAnimationUID = animationUids[0];
 		}
-		ResourceAnimation* tmpAnimation = reinterpret_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
+		ResourceAnimation* tmpAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(mAnimationUID, Resource::Type::Animation));
 		mController = new AnimationController(tmpAnimation);
 		mSpineController = new AnimationController(tmpAnimation);
 

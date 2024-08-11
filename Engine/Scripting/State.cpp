@@ -37,7 +37,6 @@ StateType State::GetType()
 
 bool State::IsReady()
 {
-	mStateTimer += App->GetDt();
-	if (mStateTimer >= mStateCooldown) return true;
+	if (mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
 	return false;
 }

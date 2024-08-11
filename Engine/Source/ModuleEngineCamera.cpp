@@ -21,7 +21,7 @@
 bool ModuleEngineCamera::Init()
 {
 	mEditorCameraGameObject = new GameObject("EditorCamera", nullptr);
-	mEditorCamera = reinterpret_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
+	mEditorCamera = static_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
 	mActiveCameras.clear();
 	if (App != nullptr)
 	{
@@ -120,7 +120,7 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 	bool intersects = false;
 	bool intersectsTriangle = false;
 
-	if (!reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
+	if (!static_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
 	{
 		std::map<float, Hit> hits;
 		//root->RayCast(ray, hits); //FIX MOUSE PICKING
@@ -135,14 +135,14 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 					parentGameObject = parentGameObject->GetParent();
 				}
 
-				const GameObject* focusedGameObject = reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+				const GameObject* focusedGameObject = static_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 				if (focusedGameObject->GetID() == parentGameObject->GetID())
 				{
-					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*intersectGameObjectPair.second.mGameObject);
+					static_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*intersectGameObjectPair.second.mGameObject);
 				}
 				else
 				{
-					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*parentGameObject);
+					static_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*parentGameObject);
 				}
 			}
 		}

@@ -16,7 +16,7 @@ CREATE(AudioManager)
 
 void AudioManager::Awake()
 {
-    mAudioSources = reinterpret_cast<AudioSourceComponent*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCE));
+    mAudioSources = static_cast<AudioSourceComponent*>(mGameObject->GetComponent(ComponentType::AUDIOSOURCE));
 }
 
 void AudioManager::Start()

@@ -24,7 +24,7 @@ UltimateAttack::~UltimateAttack()
 
 void UltimateAttack::Start()
 {
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&UltimateAttack::OnCollisionEnter, this, std::placeholders::_1)));
@@ -58,7 +58,7 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
     GameObject* collisionGO = collisionData->collidedWith;
     if (collisionGO->GetTag() == "Enemy")
     {
-        Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (enemyScript)
         {
             if (mDamageTimer.Delay(mInterval)) 

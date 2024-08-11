@@ -65,7 +65,7 @@ void ModuleDetourNavigation::ReleaseResource()
 
 void ModuleDetourNavigation::CreateQuery(unsigned int resourceId)
 {
-	ResourceNavMesh* newNavMesh = reinterpret_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
+	ResourceNavMesh* newNavMesh = static_cast<ResourceNavMesh*>(App->GetResource()->RequestResource(resourceId, Resource::Type::NavMesh));
 	assert(newNavMesh, "The saved scene navmesh resource id is incorrect");
 	if (newNavMesh)
 	{

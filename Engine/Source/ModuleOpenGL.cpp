@@ -75,7 +75,7 @@ static void __stdcall OpenGLErrorFunction(GLenum source, GLenum type, GLuint id,
 	case GL_DEBUG_SEVERITY_NOTIFICATION: tmp_severity = "notification"; break;
 	};
 	if(severity == GL_DEBUG_SEVERITY_HIGH || severity == GL_DEBUG_SEVERITY_MEDIUM)
-		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message);
+		LOG("<Source:%s> <Type:%s> <Severity:%s> <ID:%d> <Message:%s>\n", tmp_source, tmp_type, tmp_severity, id, message)
 }
 
 void ModuleOpenGL::BindSceneFramebuffer()
@@ -138,13 +138,13 @@ bool ModuleOpenGL::Init()
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_TEXTURE_2D, depthStencil, 0);
-	glGenTextures(1, &sceneTexture);
-	glBindTexture(GL_TEXTURE_2D, sceneTexture);
+	glGenTextures(1, &mSceneTexture);
+	glBindTexture(GL_TEXTURE_2D, mSceneTexture);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight(), 0, GL_RGBA, GL_FLOAT, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, sceneTexture, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mSceneTexture, 0);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		LOG("Error loading the framebuffer !!!");
@@ -302,6 +302,16 @@ bool ModuleOpenGL::Init()
 	mSelectSkinsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "TileLightCulling.comp";
 	mTileLightCullingProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "Fog.comp";
+	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "Noise.comp";
+	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	//sourcesPaths[0] = "Volumetric.comp";
+	//mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+
+	//sourcesPaths[0] = "GameVertex.glsl";
+	//sourcesPaths[1] = "Fog.glsl";
+	//mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
@@ -330,9 +340,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "GaussianBlur.glsl";
 	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	sourcesPaths[0] = "GameVertex.glsl";
-	sourcesPaths[1] = "SsaoBlur.glsl";
-	mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	//sourcesPaths[0] = "GameVertex.glsl";
+	//sourcesPaths[1] = "SsaoBlur.glsl";
+	//mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
@@ -341,12 +351,13 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterUpBlur.glsl";
 	mUpsampleProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "GameFragment.glsl";
 	mGameProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	//Initialize camera uniforms
-	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 2);
+	mCameraUniBuffer = new OpenGLBuffer(GL_UNIFORM_BUFFER, GL_STATIC_DRAW, 0, sizeof(float) * 16 * 3);
 	SetOpenGlCameraUniforms();
 
 	InitSkybox();
@@ -360,6 +371,7 @@ bool ModuleOpenGL::Init()
 
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
+	mSpotsBoundingSpheres = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 2, 16, &numSpotLights);
 
 	//SHADOWS
 	glGenFramebuffers(1, &mShadowsFrameBufferId);
@@ -385,8 +397,9 @@ bool ModuleOpenGL::Init()
 	//ListOfLights for the culling
 	glGenTextures(1, &mPLightListImgTex);
 	glGenBuffers(1, &mPLightListImgBuffer);
+	glGenTextures(1, &mSLightListImgTex);
+	glGenBuffers(1, &mSLightListImgBuffer);
 	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
-	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_READ_WRITE, GL_R32I);
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform1ui(0, CULL_LIST_LIGHTS_SIZE);
 	glUseProgram(mPbrLightingPassProgramId);
@@ -416,10 +429,10 @@ bool ModuleOpenGL::Init()
 			randomTangents[i][j] = dir;
 		}
 	}
+
+	//Generating kernels
 	const unsigned int kernelSize = 24;
 	float3 kernel[kernelSize];
-	//Generating kernels
-
 	for (unsigned int i = 0; i < kernelSize; ++i)
 	{
 
@@ -444,14 +457,32 @@ bool ModuleOpenGL::Init()
 	glUniform1f(2, mAoBias);
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1i(glGetUniformLocation(mPbrLightingPassProgramId, "activeAO"), mAoActive);
-	glUseProgram(0);
-
-	glUseProgram(mPbrLightingPassProgramId);
+	//glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
+
+	//fog
+	glUseProgram(mFogProgramId);
+	glUniform3fv(1, 1, mFogColor);
+	glUniform1f(2, mMaxFog);
+	glUniform1f(3, mFogDensity);
+	glUniform1f(4, mHeightFallof);
 	glUseProgram(0);
 
+	//bloom
 	SetBloomIntensity(0.5f);
 
+	//Generate Noise Texture
+	glGenTextures(1, &mNoiseTexId);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, 2048, 2048, 0, GL_RED, GL_FLOAT, nullptr);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glUseProgram(mNoiseProgramId);
+	glBindImageTexture(0, mNoiseTexId, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32F);
+	glDispatchCompute((2048 + 8) / 8, (2048 + 8) / 8, 1);
 	return true;
 }
 
@@ -485,6 +516,7 @@ bool ModuleOpenGL::CleanUp()
 
 	delete mPointsBuffer;
 	delete mSpotsBuffer;
+	delete mSpotsBoundingSpheres;
 	delete mDLightUniBuffer;
 
 	glDeleteVertexArrays(1, &mSkyVao);
@@ -507,7 +539,7 @@ bool ModuleOpenGL::CleanUp()
 	glDeleteProgram(mSpecEnvBRDFProgramId);
 	glDeleteProgram(mHighLightProgramId);
 	glDeleteProgram(DecalPassProgramId);
-	glDeleteTextures(1, &sceneTexture);
+	glDeleteTextures(1, &mSceneTexture);
 	//glDeleteTextures(1, &depthStencil);
 
 	//Destroy window
@@ -598,7 +630,7 @@ void ModuleOpenGL::SceneFramebufferResized(unsigned int width, unsigned int heig
 	glViewport(0, 0, width, height);
 	App->GetCamera()->SetAspectRatio((float)width / (float)height);
 	SetOpenGlCameraUniforms();
-	glBindTexture(GL_TEXTURE_2D, sceneTexture);
+	glBindTexture(GL_TEXTURE_2D, mSceneTexture);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, width, height, 0, GL_RGBA, GL_FLOAT, NULL);
 	//glBindTexture(GL_TEXTURE_2D, depthStencil);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH32F_STENCIL8, width, height, 0, GL_DEPTH_STENCIL, GL_FLOAT_32_UNSIGNED_INT_24_8_REV, NULL);
@@ -621,6 +653,10 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glBindBuffer(GL_TEXTURE_BUFFER, mPLightListImgBuffer);
 	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mPLightListImgBuffer);
+	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mSLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mSLightListImgBuffer);
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
@@ -670,22 +706,13 @@ void ModuleOpenGL::SetOpenGlCameraUniforms() const
 		{
 			mCameraUniBuffer->UpdateData(camera->GetViewMatrix().Transposed().ptr(), sizeof(float) * 16, 0);
 			mCameraUniBuffer->UpdateData(camera->GetProjectionMatrix().Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
-			glUseProgram(mPbrLightingPassProgramId);
-			//world transform is the invViewMatrix
-			//glUniformMatrix4fv(0, 1, GL_TRUE, camera->GetFrustum().WorldMatrix().ptr());
-			glUniform3fv(1, 1, camera->GetFrustum().pos.ptr());
-			glUseProgram(0);
+			mCameraUniBuffer->UpdateData(float4x4(camera->GetFrustum().WorldMatrix()).Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16 * 2);
 		}
 		else
 		{
-			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, 0);
-			mCameraUniBuffer->UpdateData(float4x4::identity.Transposed().ptr(), sizeof(float) * 16, sizeof(float) * 16);
-
-			glUseProgram(mPbrLightingPassProgramId);
-			//glUniformMatrix4fv(0, 1, GL_TRUE, float4x4::identity.ptr());
-			glUniform3fv(1, 1, float3::zero.ptr());
-			glUseProgram(0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.ptr(), sizeof(float) * 16, 0);
+			mCameraUniBuffer->UpdateData(float4x4::identity.ptr(), sizeof(float) * 16, sizeof(float) * 16);
+			mCameraUniBuffer->UpdateData(float4x4::identity.ptr(), sizeof(float) * 16, sizeof(float) * 16 * 2);
 		}
 		
 	}
@@ -850,7 +877,7 @@ void ModuleOpenGL::SetSkybox(unsigned int uid)
 	}
 	if (uid != 0)
 	{
-		mCurrSkyBox = reinterpret_cast<ResourceIBL*>(App->GetResource()->RequestResource(uid, Resource::Type::IBL));
+		mCurrSkyBox = static_cast<ResourceIBL*>(App->GetResource()->RequestResource(uid, Resource::Type::IBL));
 		assert(mCurrSkyBox);
 		glUseProgram(mPbrLightingPassProgramId);
 		glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), log2(std::max(mCurrSkyBox->GetSpecPrefilteredTexSize(), mCurrSkyBox->GetSpecPrefilteredTexSize())));
@@ -914,6 +941,38 @@ void ModuleOpenGL::SetBloomIntensity(float intensity)
 	mBloomIntensity = intensity;
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1f(glGetUniformLocation(mPbrLightingPassProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetFogColor(float fogColor[3])
+{
+	memcpy(mFogColor, fogColor, sizeof(float) * 3);
+	glUseProgram(mFogProgramId);
+	glUniform3fv(1, 1, fogColor);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetFogDensity(float density)
+{
+	mFogDensity = density;
+	glUseProgram(mFogProgramId);
+	glUniform1f(3, density);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetFogHeightFallof(float heightFallof)
+{
+	mHeightFallof = heightFallof;
+	glUseProgram(mFogProgramId);
+	glUniform1f(4, heightFallof);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetMaxFog(float maxFog)
+{
+	mMaxFog = maxFog;
+	glUseProgram(mFogProgramId);
+	glUniform1f(2, maxFog);
 	glUseProgram(0);
 }
 
@@ -1069,15 +1128,20 @@ void ModuleOpenGL::Draw()
 		{
 			break;
 		}
-		count++;
-	
-		chosenLights.push_back(it->second);
+		//if (App->GetCamera()->GetCurrentCamera()->GetFrustum().Intersects(it->second->GetFrustum()))
+		//{
+			count++;
+			chosenLights.push_back(it->second);
+		//}
 	}
 
 	std::vector<const math::Frustum*> mRenderFrustums;
 	for (int i = 0; i < chosenLights.size(); ++i)
 	{
-		mRenderFrustums.push_back(&chosenLights[i]->GetFrustum());
+		//if (App->GetCamera()->GetCurrentCamera()->GetFrustum().Intersects(chosenLights[i]->GetFrustum()))
+		//{
+			mRenderFrustums.push_back(&chosenLights[i]->GetFrustum());
+		//}
 	}
 	mRenderFrustums.push_back(&App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	mBatchManager.Update(mRenderFrustums);
@@ -1128,6 +1192,8 @@ void ModuleOpenGL::Draw()
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
 	//Light lists
 	glUseProgram(mTileLightCullingProgramId);
+	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
+	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
 	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
@@ -1148,8 +1214,8 @@ void ModuleOpenGL::Draw()
 	glUseProgram(DecalPassProgramId);
 	glBindVertexArray(mDecalsVao);
 
-	float4x4 invView = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
-	glUniformMatrix4fv(15, 1, GL_TRUE, invView.ptr());
+	//float4x4 invView = App->GetCamera()->GetCurrentCamera()->GetFrustum().WorldMatrix();
+	//glUniformMatrix4fv(15, 1, GL_TRUE, invView.ptr());
 
 	for (unsigned int i = 0; i < mDecalComponents.size(); ++i)
 	{
@@ -1266,7 +1332,6 @@ void ModuleOpenGL::Draw()
 	glDepthMask(0xFF);
 	//glEnable(GL_STENCIL_TEST);
 	glDisable(GL_BLEND);
-
 	glPopDebugGroup();
 
 	const GLenum att2[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3, GL_COLOR_ATTACHMENT4 };
@@ -1369,8 +1434,10 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, blurredTex);
 	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	glActiveTexture(GL_TEXTURE11);
+	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
+	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mPbrLightingPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
@@ -1397,7 +1464,43 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 	
-	////Particles
+	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
+	//glUseProgram(mVolLightProgramId);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, mGDepth);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	//glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	//glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	//glPopDebugGroup();
+
+
+	//Fog using render pipeline (NO COMPUTE)
+	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Fog");
+	//glBindVertexArray(mEmptyVAO);
+	//glUseProgram(mFogProgramId);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, mGDepth);
+	//glDepthMask(GL_FALSE);
+	//glDisable(GL_DEPTH_TEST);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glDrawArrays(GL_TRIANGLES, 0, 3);
+	//glEnable(GL_DEPTH_TEST);
+	//glDisable(GL_BLEND);
+	//glDepthMask(GL_TRUE);
+	//glPopDebugGroup();
+
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Fog");
+	glUseProgram(mFogProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glPopDebugGroup();
+
+	//Particles
 	glActiveTexture(GL_TEXTURE0);
 	for (size_t i = 0; i < mParticleSystems.size(); ++i)
 	{
@@ -1407,8 +1510,6 @@ void ModuleOpenGL::Draw()
 	{
 		mTrails[i]->Draw();
 	}
-	
-
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight
@@ -1457,8 +1558,12 @@ void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 {
 	mSpotLights.push_back(&component);
 	mSpotsBuffer->PushBackData(&component.GetData(), sizeof(SpotLight));
+	float boundingSphere[4];
+	component.GetBoundingSphere(boundingSphere);
+	mSpotsBoundingSpheres->PushBackData(boundingSphere, sizeof(boundingSphere));
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
+	mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
@@ -1468,6 +1573,9 @@ void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 		if (mSpotLights[i]->GetID() == cSpotLight.GetID())
 		{
 			mSpotsBuffer->UpdateData(&mSpotLights[i]->GetData(), sizeof(SpotLight), 16 + sizeof(SpotLight) * i);
+			float boundingSphere[4];
+			cSpotLight.GetBoundingSphere(boundingSphere);
+			mSpotsBoundingSpheres->UpdateData(boundingSphere, sizeof(boundingSphere), 16 + sizeof(boundingSphere) * i);
 			return;
 		}
 	}
@@ -1481,8 +1589,10 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 		{
 			mSpotLights.erase(mSpotLights.begin() + i);
 			mSpotsBuffer->RemoveData(sizeof(SpotLight), 16 + sizeof(SpotLight) * i);
+			mSpotsBoundingSpheres->RemoveData(sizeof(float[4]), 16 + sizeof(float[4]) * i);
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
+			mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
 			return;
 		}
 	}

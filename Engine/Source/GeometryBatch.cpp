@@ -540,6 +540,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 	if (mMeshComponents.size() == 0)
 		return;
 
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Batch Draw Call");
 	unsigned int ibo = GetCommandsSsbo();
 	ComputeCommands(ibo, frustum);
 
@@ -580,6 +581,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 	//CleanUp
 	glBindVertexArray(0);
 	glDeleteBuffers(1, &ibo);
+	glPopDebugGroup();
 }
 
 void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
@@ -619,29 +621,31 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 		const BatchMeshResource& bRes = mUniqueMeshes[bComp.bMeshIdx];
 		if (bComp.component->HasSkinning())
 		{
-			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, float4x4::identity.ptr(), sizeof(float) * 16);
-			//Transform the obb points as we set identity as the model matrix
-			math::OBB obb = bComp.component->GetOriginalAABB().Transform(bComp.component->GetOwner()->GetWorldTransform());
+			memcpy(&mSsboModelMatricesData[idx][16 * bComp.baseInstance], float4x4::identity.ptr(), sizeof(float) * 16);
+			//TODO: when artist fix the animation scales use this commented code instead of the line after the comented code
+			//math::OBB obb = abb.Transform(bComp.component->GetOwner()->GetWorldTransform());
+			math::OBB obb = bComp.component->GetOBB();
 			float3 points[8];
 			obb.GetCornerPoints(points);
 			for (int k = 0; k < 8; ++k)
 			{
-				memcpy(&mSsboObbsData[idx][i * 32 + k * 4], points[k].ptr(), sizeof(float3));
+				memcpy(&mSsboObbsData[idx][bComp.baseInstance * 32 + k * 4], points[k].ptr(), sizeof(float) * 3);
 			}
 			//obb.GetCornerPoints(reinterpret_cast<float3*>(&mSsboObbsData[idx][i * 32]));
-			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][i * 32], sizeof(float3) * 8);
-			mSkinDispatchIndirectBufferData[idx][currSkin*3] = (bComp.component->GetResourceMesh()->GetNumberVertices() + 63)/64;
-			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 1] = 1;
-			mSkinDispatchIndirectBufferData[idx][currSkin*3 + 2] = 1;
+			memcpy(&mSkinSsboObbsData[idx][currSkin * 32], &mSsboObbsData[idx][bComp.baseInstance * 32], sizeof(float) * 32);
+			mSkinDispatchIndirectBufferData[idx][currSkin* 3] = (bComp.component->GetResourceMesh()->GetNumberVertices() + 63)/64;
+			mSkinDispatchIndirectBufferData[idx][currSkin* 3 + 1] = 1;
+			mSkinDispatchIndirectBufferData[idx][currSkin* 3 + 2] = 1;
 			++currSkin;
 		}
 		else
 		{
-			memcpy(mSsboModelMatricesData[idx] + 16 * bComp.baseInstance, bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
+			memcpy(&mSsboModelMatricesData[idx][16 * bComp.baseInstance], bComp.component->GetOwner()->GetWorldTransform().ptr(), sizeof(float) * 16);
 		}
 	}
 	if (mNumSkins)
 	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skinning");
 		glUseProgram(App->GetOpenGL()->GetSelectSkinsProgramId());
 		glUniform1ui(0, mNumSkins);
 		glUniform1ui(1, frustums.size());
@@ -660,6 +664,7 @@ void GeometryBatch::Update(const std::vector<const math::Frustum*>& frustums)
 				ComputeSkinning(mMeshComponents[i]);
 			}
 		}
+		glPopDebugGroup();
 	}
 }
 
