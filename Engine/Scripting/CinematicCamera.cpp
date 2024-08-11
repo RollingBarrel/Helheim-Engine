@@ -15,6 +15,11 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT, mSpeedFactor);
     MEMBER(MemberType::FLOAT, mAnimationTime);
 
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera1);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera2);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera3);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera4);
+
     MEMBER(MemberType::GAMEOBJECT, mEnemy1);
     MEMBER(MemberType::GAMEOBJECT, mEnemy2);
     MEMBER(MemberType::GAMEOBJECT, mEnemy3);
@@ -62,7 +67,26 @@ void CinematicCamera::Update()
 {
     if (mBArea1->IsAreaActive())
     {
-        StartCinematic(mEnemy1, 67.35f, 1.50f, 5.65f, 0.00f, -45.50f, 0.00f);
+        //********************************************
+
+        if (mCinematicCamera2)
+        {
+            mCinematicCamera2->SetEnabled(false);
+        }
+
+        if (mCinematicCamera3)
+        {
+            mCinematicCamera3->SetEnabled(false);
+        }
+
+        if (mCinematicCamera4)
+        {
+            mCinematicCamera4->SetEnabled(false);
+        }
+
+        //********************************************
+
+        StartCinematic(mEnemy1, mCinematicCamera1);
     }
 
     if (mBArea2->IsAreaActive())
@@ -74,7 +98,31 @@ void CinematicCamera::Update()
             mPlayingCinematic = true;
         }
 
-        StartCinematic(mEnemy2, 6.57f, 1.50f, -22.66f, 0.00f, -45.50f, 0.00f);
+        //********************************************
+
+        if (mCinematicCamera1)
+        {
+            mCinematicCamera1->SetEnabled(false);
+        }
+
+        if (mCinematicCamera2)
+        {
+            mCinematicCamera2->SetEnabled(true);
+        }
+
+        if (mCinematicCamera3)
+        {
+            mCinematicCamera3->SetEnabled(false);
+        }
+
+        if (mCinematicCamera4)
+        {
+            mCinematicCamera4->SetEnabled(false);
+        }
+
+        //********************************************
+
+        StartCinematic(mEnemy2, mCinematicCamera2);
     }
 
     if (mBArea3->IsAreaActive())
@@ -86,20 +134,44 @@ void CinematicCamera::Update()
             mPlayingCinematic = true;
         }
 
-        StartCinematic(mEnemy3, -113.00f, 1.50f, 0.33f, 0.00f, 330.00f, 0.00f);
+        //********************************************
+
+        if (mCinematicCamera1)
+        {
+            mCinematicCamera1->SetEnabled(false);
+        }
+
+        if (mCinematicCamera2)
+        {
+            mCinematicCamera2->SetEnabled(false);
+        }
+
+        if (mCinematicCamera3)
+        {
+            mCinematicCamera3->SetEnabled(true);
+        }
+
+        if (mCinematicCamera4)
+        {
+            mCinematicCamera4->SetEnabled(false);
+        }
+
+        //********************************************
+
+        StartCinematic(mEnemy3, mCinematicCamera3);
     }
 }
 
-void CinematicCamera::StartCinematic(GameObject* target, float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
 {
     if (mStartParameters == false)
     {
         mStartParameters = true;
 
-        mTargetPosition = ((target->GetWorldPosition()) - ((mGameObject->GetFront()) * mDistanceToEnemy));
-        mGameObject->SetWorldPosition(float3(posX, posY, posZ));
-        mGameObject->SetWorldRotation(float3(rotX, rotY, rotZ));
-        mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToEnemy);
+        mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
+        //mGameObject->SetWorldPosition(float3(posX, posY, posZ));
+        //mGameObject->SetWorldRotation(float3(rotX, rotY, rotZ));
+        camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
     }
 
     if (mPlayingCinematic)
@@ -112,20 +184,23 @@ void CinematicCamera::StartCinematic(GameObject* target, float posX, float posY,
 
         if (!mCinematicCamera)
         {
-            mCurrentCamera = App->GetCamera()->GetCurrentCamera();
-            mCinematicCamera = const_cast<CameraComponent*>(mCurrentCamera);
+            //mCurrentCamera = App->GetCamera()->GetCurrentCamera();
+            //mCinematicCamera = const_cast<CameraComponent*>(mCurrentCamera);
+
+            mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+            //App->GetCamera()->AddEnabledCamera(mCinematicCamera);
         }
         else
         {
             App->GetCamera()->AddEnabledCamera(mCinematicCamera);
-            App->GetCamera()->ActivateFirstCamera();
+            //App->GetCamera()->ActivateFirstCamera();
         }
-
+        
         float deltaTime = App->GetDt();
 
         if (!mMoveCompleted)
         {
-            float3 currentPosition = mGameObject->GetWorldPosition();
+            float3 currentPosition = camera->GetWorldPosition();
             float3 direction = mTargetPosition - currentPosition;
             float distance = direction.Length();
             direction.Normalize();
@@ -137,7 +212,7 @@ void CinematicCamera::StartCinematic(GameObject* target, float posX, float posY,
 
             if (step >= distance)
             {
-                mGameObject->SetWorldPosition(mTargetPosition);
+                camera->SetWorldPosition(mTargetPosition);
                 mMoveCompleted = true;
 
                 //Restore the game
@@ -149,7 +224,7 @@ void CinematicCamera::StartCinematic(GameObject* target, float posX, float posY,
                 if (newPosition.y < 1.5f) { // Adjust the threshold as needed
                     newPosition.y = 1.5f; // Ensure the camera stays above a certain height
                 }
-                mGameObject->SetWorldPosition(newPosition);
+                camera->SetWorldPosition(newPosition);
             }
         }
 
@@ -158,7 +233,7 @@ void CinematicCamera::StartCinematic(GameObject* target, float posX, float posY,
             mPlayingCinematic = false;
             App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
             App->GetCamera()->AddEnabledCamera(mMainCamera);
-            App->GetCamera()->ActivateFirstCamera();
+            //App->GetCamera()->ActivateFirstCamera();
 
             GameManager::GetInstance()->SetPaused(false, false);
 

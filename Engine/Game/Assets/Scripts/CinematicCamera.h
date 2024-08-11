@@ -17,9 +17,14 @@ public:
     void Update() override;
 
 private:
-    void StartCinematic(GameObject* target, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void StartCinematic(GameObject* target, GameObject* camera);    
     float3 lerp(const float3& start, const float3& end, float t);
     bool Delay(float delay);
+
+    GameObject* mCinematicCamera1 = nullptr;
+    GameObject* mCinematicCamera2 = nullptr;
+    GameObject* mCinematicCamera3 = nullptr;
+    GameObject* mCinematicCamera4 = nullptr;
 
     GameObject* mEnemy1 = nullptr;
     GameObject* mEnemy2 = nullptr;
