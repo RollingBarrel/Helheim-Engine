@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 104950937,
+                "UID": 518177327,
                 "ParentUID": 1,
                 "Name": "Spawners",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1193197279,
-                "ParentUID": 104950937,
+                "UID": 1823919182,
+                "ParentUID": 518177327,
                 "Name": "SpawnerArea1",
                 "Enabled": true,
                 "Active": true,
@@ -59,29 +59,13 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
             {
-                "UID": 1771961610,
-                "ParentUID": 104950937,
+                "UID": 590976991,
+                "ParentUID": 518177327,
                 "Name": "SpawnerArea2-1",
                 "Enabled": true,
                 "Active": true,
@@ -109,29 +93,13 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
             {
-                "UID": 793847431,
-                "ParentUID": 104950937,
+                "UID": 1514290693,
+                "ParentUID": 518177327,
                 "Name": "SpawnerArea2-2",
                 "Enabled": true,
                 "Active": true,
@@ -159,29 +127,13 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 1
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 4.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
             {
-                "UID": 1895601030,
-                "ParentUID": 104950937,
+                "UID": 286082730,
+                "ParentUID": 518177327,
                 "Name": "SpawnArea3-1",
                 "Enabled": true,
                 "Active": true,
@@ -209,29 +161,13 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
             {
-                "UID": 85518370,
-                "ParentUID": 104950937,
+                "UID": 1213225587,
+                "ParentUID": 518177327,
                 "Name": "SpawnArea3-2",
                 "Enabled": true,
                 "Active": true,
@@ -259,29 +195,13 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 1
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
             {
-                "UID": 383106429,
-                "ParentUID": 104950937,
+                "UID": 39670109,
+                "ParentUID": 518177327,
                 "Name": "Spawner4-2",
                 "Enabled": true,
                 "Active": true,
@@ -309,29 +229,13 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 1
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             },
             {
-                "UID": 1554191314,
-                "ParentUID": 104950937,
+                "UID": 968275007,
+                "ParentUID": 518177327,
                 "Name": "Spawner4-1",
                 "Enabled": true,
                 "Active": true,
@@ -359,23 +263,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemySpawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "Enemy Spawner",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mEnemyType",
-                                "MemberType": 0,
-                                "VariableData": 0
-                            },
-                            {
-                                "VariableName": "mSpawnRate",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
+                        "ScriptName": "EnemySpawner"
                     }
                 ]
             }
