@@ -169,8 +169,6 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
         mStartParameters = true;
 
         mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
-        //mGameObject->SetWorldPosition(float3(posX, posY, posZ));
-        //mGameObject->SetWorldRotation(float3(rotX, rotY, rotZ));
         camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
     }
 
@@ -186,6 +184,8 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
         {
             //mCurrentCamera = App->GetCamera()->GetCurrentCamera();
             //mCinematicCamera = const_cast<CameraComponent*>(mCurrentCamera);
+
+            //****************************************************************
 
             mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
             //App->GetCamera()->AddEnabledCamera(mCinematicCamera);
