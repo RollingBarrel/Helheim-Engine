@@ -17,6 +17,7 @@ public:
     void Update() override;
 
 private:
+    void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* target, GameObject* camera);    
     float3 lerp(const float3& start, const float3& end, float t);
     bool Delay(float delay);
@@ -34,10 +35,12 @@ private:
     GameObject* mBattleArea1 = nullptr;
     GameObject* mBattleArea2 = nullptr;
     GameObject* mBattleArea3 = nullptr;
+    GameObject* mBattleArea4 = nullptr;
 
     BattleArea* mBArea1 = nullptr;
     BattleArea* mBArea2 = nullptr;
     BattleArea* mBArea3 = nullptr;
+    BattleArea* mBArea4 = nullptr;
 
     float mDistanceToEnemy = 4.0f;
     float mYawAngle = 45.0f;
