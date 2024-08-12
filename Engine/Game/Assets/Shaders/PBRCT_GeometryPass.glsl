@@ -91,8 +91,8 @@ void main()
 	}
 
 	outDiffuse = baseColor;
-	outMetalRough.b = metal;
 	outMetalRough.g = rough;
+	outMetalRough.b = metal;
 
 
 	//outDiffuse = baseColor * (1 - metal);

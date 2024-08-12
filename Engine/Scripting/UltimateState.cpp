@@ -29,11 +29,14 @@ StateType UltimateState::HandleInput()
 	if (!mTimer.Delay(mUltimateDuration))
 		return StateType::ULTIMATE;
 	else 
-		return StateType::AIM;
+		return StateType::AIM; 
+	//}
+	
 }
 
 void UltimateState::Update()
 {
+	//mPlayerController->UltimateRotation();
 }
 
 void UltimateState::Enter()

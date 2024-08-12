@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -793,6 +793,7 @@
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\Fog.comp" />
     <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
     <None Include="..\Game\Assets\Shaders\GaussianBlur.glsl" />
@@ -805,6 +806,7 @@
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl" />
+    <None Include="..\Game\Assets\Shaders\Noise.comp" />
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl" />
@@ -829,6 +831,7 @@
     <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="..\Game\Assets\Shaders\uiMask.fs" />
     <None Include="..\Game\Assets\Shaders\uiText.fs" />
+    <None Include="..\Game\Assets\Shaders\Volumetric.comp" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs" />

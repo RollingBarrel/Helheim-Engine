@@ -10,6 +10,7 @@ layout(std140, binding = 0) uniform CameraMatrices
 {
 	mat4 view;
 	mat4 proj;
+	mat4 invView;
 };
 
 readonly layout(std430, row_major, binding = 10) buffer Transforms 
