@@ -200,25 +200,9 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
                 App->GetCamera()->RemoveEnabledCamera(mMainCamera);
                 GameManager::GetInstance()->SetPaused(true, false);
             }
-
-            if (!mCinematicCamera)
-            {
-                /*
-                mCurrentCamera = App->GetCamera()->GetCurrentCamera();
-                mCinematicCamera = const_cast<CameraComponent*>(mCurrentCamera);
-                */
-                //****************************************************************
-
-                mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
-                
-                
-                //App->GetCamera()->AddEnabledCamera(mCinematicCamera);
-            }
-            else
-            {
-                App->GetCamera()->AddEnabledCamera(mCinematicCamera);
-                //App->GetCamera()->ActivateFirstCamera();
-            }
+            
+            mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+            App->GetCamera()->ActivateFirstCamera();
 
             float deltaTime = App->GetDt();
 
@@ -256,8 +240,8 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
             {
                 mPlayingCinematic = false;
                 App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-                App->GetCamera()->AddEnabledCamera(mMainCamera);
-                //App->GetCamera()->ActivateFirstCamera();
+                App->GetCamera()->AddEnabledCamera(mMainCamera);     
+                App->GetCamera()->ActivateFirstCamera();
 
                 GameManager::GetInstance()->SetPaused(false, false);
 
