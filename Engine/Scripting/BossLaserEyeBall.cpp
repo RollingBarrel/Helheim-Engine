@@ -55,14 +55,12 @@ void BossLaserEyeBall::Init(float distance, float duration, float initialRotatio
     mInitialRotation = initialRotation;
     mElapsedTime = 0.0f;
 
-    if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
-    if (mLaserTrail) mLaserTrail->SetEnabled(true);
-    if (mLaserEnd) mLaserEnd->SetEnabled(true);
 }
 
 
 void BossLaserEyeBall::RotateLaser()
 {
+
     float deltaTime = App->GetDt();
     float rotationAmount = mRotationSpeed * deltaTime;
 
@@ -84,11 +82,14 @@ void BossLaserEyeBall::RotateLaser()
         mRotationSpeed = -mRotationSpeed;  // Reverse direction
     }
 
-
     mGameObject->SetLocalRotation(float3(0, mCurrentRotation, 0));
 
     if (mCurrentRotation >= minRotation && mCurrentRotation <= maxRotation)
     {
+        if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
+        if (mLaserTrail) mLaserTrail->SetEnabled(true);
+        if (mLaserEnd) mLaserEnd->SetEnabled(true);
+
         // Handle laser end and trail positioning
         if (mLaserOrigin && mLaserEnd)
         {

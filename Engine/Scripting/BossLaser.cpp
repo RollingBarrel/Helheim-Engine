@@ -103,8 +103,8 @@ void BossLaser::Cooldown()
 
 void BossLaser::SpawnEyeBalls()
 {
-    float baseAngle = -90.0f; // Starting angle for the first eye ball
-    float angleIncrement = 180.0f / 5; // Divide the semi-circle into 5 parts
+    float baseAngle = -85.0f; 
+    float angleIncrement = 180.0f / 5; 
 
     for (size_t i = 0; i < mPoolSize; ++i)
     {
@@ -112,20 +112,20 @@ void BossLaser::SpawnEyeBalls()
             break;
 
         GameObject* eyeBall = mEyeBallPool[i];
-        float initialRotation = baseAngle + i * angleIncrement;
+        float initialRotation = baseAngle +  angleIncrement;
 
         float radians = DegToRad(initialRotation);
         float x = std::cos(radians) * mDistance;
         float z = std::sin(radians) * mDistance;
         float3 positionOffset = float3(x, -2, z);
 
-        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + positionOffset);
+        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + i * positionOffset);
         eyeBall->SetEnabled(true);
 
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-            eyeBallScript->Init(mDistance, mLaserEnemyDuration, angleIncrement);
+            eyeBallScript->Init(mDistance, mLaserEnemyDuration, initialRotation);
         }
 
         mEyeBalls.push_back(eyeBall);
