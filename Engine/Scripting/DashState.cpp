@@ -8,8 +8,18 @@
 #include "PlayerController.h"
 #include "GameManager.h"
 
+#include "ScriptComponent.h"
+#include "PoolManager.h"
+#include "TrailComponent.h"
+#include "GameObject.h"
+
 DashState::DashState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
+    mDashVFX = mPlayerController->GetDashGO();
+    if (mDashVFX)
+    {
+        mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponent(ComponentType::TRAIL));
+    }
 }
 
 DashState::~DashState()
@@ -45,6 +55,7 @@ StateType DashState::HandleInput()
 
 void DashState::Update()
 {
+
     float dashSpeed = mPlayerController->GetDashRange() / mPlayerController->GetDashDuration();
     float3 currentPos = mPlayerController->GetPlayerPosition();
     float3 direction;
@@ -63,19 +74,39 @@ void DashState::Update()
 
     mPlayerController->MoveToPosition(futurePos);
 
+    //Dash Effect
+    ColorGradient gradient;
+    gradient.AddColorGradientMark(0.1f, float4(1.0f, 1.0f, 1.0f, 1.0f));
 
+    DashFX(mInitialPos, mPlayerController->GetPlayerPosition(), 1, &gradient);
 }
 
 void DashState::Enter()
 {
     mDashTimer = 0.0f;
+
+    mDashVFX->SetEnabled(true);
+    mInitialPos = mPlayerController->GetPlayerPosition();
 }
 
 void DashState::Exit()
 {
+    mDashTrail->SetEnable(false);
 }
 
 StateType DashState::GetType()
 {
     return StateType::DASH;
+}
+
+void DashState::DashFX(const float3& startposition, const float3& endPosition, float size, const ColorGradient* gradient)
+{
+    if (mDashTrail) 
+    {
+        mDashTrail->SetEnable(true);
+        if (gradient)
+        {
+            mDashTrail->SetColorGradient(*gradient);
+        }
+    }
 }

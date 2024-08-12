@@ -63,6 +63,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
+    MEMBER(MemberType::GAMEOBJECT, mDashGO);
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::GAMEOBJECT, mShootOrigin);

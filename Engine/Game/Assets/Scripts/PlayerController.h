@@ -107,6 +107,7 @@ public:
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
+    GameObject* GetDashGO() { return mDashGO; }
 
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
@@ -201,6 +202,8 @@ private:
     float mDashCoolDown = 2.0f;
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
+    GameObject* mDashGO = nullptr;
+
     // Speed
     float mPlayerSpeed;
     // Shield
