@@ -20,8 +20,6 @@ public:
 
 	StateType GetType() override;
 
-	void DashFX(const float3& startposition, const float3& endPosition, float size, const ColorGradient* gradient);
-
 private:
 	
 	float mDashTimer = 0.0f;

@@ -15,7 +15,7 @@
 
 DashState::DashState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
-    mDashVFX = mPlayerController->GetDashGO();
+    mDashVFX = mPlayerController->GetDashVFX();
     if (mDashVFX)
     {
         mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponent(ComponentType::TRAIL));
@@ -74,11 +74,18 @@ void DashState::Update()
 
     mPlayerController->MoveToPosition(futurePos);
 
-    //Dash Effect
+    //Dash VFX
     ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(1.0f, 1.0f, 1.0f, 1.0f));
+    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.1f, 1.0f));
 
-    DashFX(mInitialPos, mPlayerController->GetPlayerPosition(), 1, &gradient);
+    if (mDashTrail)
+    {
+        mDashTrail->SetEnable(true);
+        if (&gradient)
+        {
+            mDashTrail->SetColorGradient(gradient);
+        }
+    }
 }
 
 void DashState::Enter()
@@ -97,16 +104,4 @@ void DashState::Exit()
 StateType DashState::GetType()
 {
     return StateType::DASH;
-}
-
-void DashState::DashFX(const float3& startposition, const float3& endPosition, float size, const ColorGradient* gradient)
-{
-    if (mDashTrail) 
-    {
-        mDashTrail->SetEnable(true);
-        if (gradient)
-        {
-            mDashTrail->SetColorGradient(*gradient);
-        }
-    }
 }
