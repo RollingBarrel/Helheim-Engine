@@ -44,11 +44,11 @@ private:
 
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;
-    float mLaserDuration = 5.0f;
+    float mLaserEnemyDuration = 15.0f;
     float mCooldownDuration = 2.0f;
 
 
     std::vector<GameObject*> mEyeBalls;
     std::vector<GameObject*> mEyeBallPool;
-    size_t mPoolSize = 5;
+    int mPoolSize = 5;
 };

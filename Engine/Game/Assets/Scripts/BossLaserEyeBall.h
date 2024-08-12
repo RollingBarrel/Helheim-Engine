@@ -17,23 +17,26 @@ public:
     void Start() override;
     void Update() override;
 
-    void Init( float distance, float duration, float initialRotation);
+    void Init(float distance, float duration, float initialRotation);
 
 private:
 
     void RotateLaser();
-
     float mDamage = 3.0f;
+
     float mDistance = 10.0f;
     float mDuration = 3.0f;
     float mRotationSpeed = 2.0f;
     float mCurrentRotation = 0.0f;
     float mInitialRotation = 0.0f;
+    float mRotationRange = 45.0f;
 
     float mElapsedTime = 0.0f;
+    bool mIsRotating = false;
+    bool mMoveTrail = false;
+
     GameObject* mLaserOrigin = nullptr;
     GameObject* mLaserTrail = nullptr;
     GameObject* mLaserEnd = nullptr;
 
-    bool mMoveTrail = false;
 };
