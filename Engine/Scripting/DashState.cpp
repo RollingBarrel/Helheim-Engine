@@ -92,7 +92,6 @@ void DashState::Update()
 
     if (mDashTrail)
     {
-        mDashTrail->SetEnable(true);
         if (&gradient)
         {
             mDashTrail->SetColorGradient(gradient);
