@@ -278,15 +278,14 @@ void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
-		ResetEnemyColor();
-		mGameObject->SetEnabled(false);
-		DropItem();
-
 		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
 		if (activeBattleArea)
 		{
-			activeBattleArea->EnemyDestroyed();
+			activeBattleArea->EnemyDestroyed(mGameObject);
 		}
+		ResetEnemyColor();
+		mGameObject->SetEnabled(false);
+		DropItem();
 	}
 }
 
