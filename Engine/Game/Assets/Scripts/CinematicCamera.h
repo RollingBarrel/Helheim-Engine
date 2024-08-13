@@ -5,6 +5,10 @@
 class CameraComponent;
 class BattleArea;
 
+//*********************
+class AnimationComponent;
+//*********************
+
 GENERATE_BODY(CinematicCamera);
 class CinematicCamera :public Script
 {
@@ -21,6 +25,10 @@ private:
     void StartCinematic(GameObject* target, GameObject* camera);    
     float3 lerp(const float3& start, const float3& end, float t);
     bool Delay(float delay);
+
+    //*************************************
+    void PlayAnimation(GameObject* character);
+    //*************************************
 
     GameObject* mCinematicCamera1 = nullptr;
     GameObject* mCinematicCamera2 = nullptr;
@@ -58,4 +66,17 @@ private:
     const CameraComponent* mCurrentCamera = nullptr;
     CameraComponent* mMainCamera = nullptr;
     CameraComponent* mCinematicCamera = nullptr;  
+
+    //**********************************************
+
+    AnimationComponent* mAnimationComponent = nullptr;
+
+    //Transition Times
+    float mIdleTransitionDuration = 0.2f;
+    float mChaseTransitionDuration = 0.2f;
+    float mChargeTransitionDuration = 0.2f;
+    float mAttackTransitionDuration = 0.2f;
+    float mDeathTransitionDuration = 0.2f;
+
+    //**********************************************
 };
