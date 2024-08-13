@@ -49,7 +49,7 @@ void LightningPanel::Draw(int windowFlags)
 	ImGui::SameLine();
 	if (ImGui::Button("RemoveSkybox"))
 	{
-		App->GetOpenGL()->SetSkybox(0);
+		openGl->SetSkybox(0);
 		//mSkyboxFileName = "";
 	}
 	//ImGui::InputInt("IrradianceSize", &mIrradianceSize);
@@ -81,30 +81,49 @@ void LightningPanel::Draw(int windowFlags)
 		openGl->SetBloomIntensity(bloomIntensity);
 	}
 
+
 	ImGui::Separator();
 	ImGui::Text("Fog");
-	if (ImGui::ColorPicker3("Fog Color", openGl->mFogColor))
+	float tmp[3] = { 1.0f, 1.0f, 1.0f };
+	openGl->GetFogColor(tmp);
+	if (ImGui::ColorPicker3("Fog Color", tmp))
 	{
-		glUseProgram(openGl->mFogProgramId);
-		glUniform3fv(1, 1, openGl->mFogColor);
+		openGl->SetFogColor(tmp);
+	}
+	tmp[0] = openGl->GetMaxFog();
+	if (ImGui::DragFloat("Max Fog", tmp, 0.01f, 0.0001f, 1.0f))
+	{
+		openGl->SetMaxFog(tmp[0]);
+	}
+	tmp[0] = openGl->GetFogDensity();
+	if (ImGui::DragFloat("Density", tmp, 0.0001f, 0.0001f, 0.04f))
+	{
+		openGl->SetFogDensity(tmp[0]);
+	}
+	tmp[0] = openGl->GetFogHeightFallof();
+	if (ImGui::DragFloat("Height Fallof", tmp, 0.005f, 0.0001f, 1.0f))
+	{
+		openGl->SetFogHeightFallof(tmp[0]);
+	}
+
+	ImGui::Separator();
+	ImGui::Text("Volumetric");
+	if (ImGui::DragFloat("baseExtCoeff", openGl->mBaseExtCoeff, 0.05f, 0.0f, 1.0f))
+	{
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1f(0, openGl->mBaseExtCoeff);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("Max Fog", &openGl->mMaxFog, 0.01f, 0.0001f, 1.0f))
+	if (ImGui::DragFloat("Noise Amount", openGl->mNoiseAmount, 0.05f, 0.0f, 1.0f))
 	{
-		glUseProgram(openGl->mFogProgramId);
-		glUniform1f(2, openGl->mMaxFog);
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1f(0, openGl->mNoiseAmount);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("Density", &openGl->mFogDensity, 0.0001f, 0.0001f, 0.04f))
+	if (ImGui::DragFloat("VolIntensity", openGl->mVolIntensity, 0.05f, 0.0f, 1.0f))
 	{
-		glUseProgram(openGl->mFogProgramId);
-		glUniform1f(3, openGl->mFogDensity);
-		glUseProgram(0);
-	}
-	if (ImGui::DragFloat("Height Fallof", &openGl->mHeightFallof, 0.005f, 0.0001f, 1.0f))
-	{
-		glUseProgram(openGl->mFogProgramId);
-		glUniform1f(4, openGl->mHeightFallof);
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1f(0, openGl->mVolIntensity);
 		glUseProgram(0);
 	}
 

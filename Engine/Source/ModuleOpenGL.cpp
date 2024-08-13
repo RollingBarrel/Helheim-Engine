@@ -306,8 +306,8 @@ bool ModuleOpenGL::Init()
 	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Noise.comp";
 	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	//sourcesPaths[0] = "Volumetric.comp";
-	//mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "Volumetric.comp";
+	mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	//sourcesPaths[0] = "GameVertex.glsl";
 	//sourcesPaths[1] = "Fog.glsl";
@@ -1464,15 +1464,21 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 	
-	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
-	//glUseProgram(mVolLightProgramId);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, mGDepth);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	//glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	//glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	//glPopDebugGroup();
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
+	glUseProgram(mVolLightProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	glUniform1f(0, 0.1f);
+	static float time = App->GetDt();
+	glUniform1f(1, time);
+	time += App->GetDt();
+	glUniform1f(2, 1.0f);
+	glUniform1f(3, 1.0f);
+	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glPopDebugGroup();
 
 
 	//Fog using render pipeline (NO COMPUTE)

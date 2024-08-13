@@ -15,6 +15,8 @@ layout(binding = 1) uniform sampler2D noiseTexture;
 
 layout(location = 0) uniform float baseExtCoeff;
 layout(location = 1) uniform float currTime;
+layout(location = 2) uniform float noiseAmount;
+layout(location = 3) uniform float fogIntensity;
 
 float GetLinearZ(float inputDepth)
 {
