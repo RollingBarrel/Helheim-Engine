@@ -86,17 +86,7 @@ void DashState::Update()
 
     mPlayerController->MoveToPosition(futurePos);
 
-    //Dash VFX
-    ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(1.0f, 0.0f, 0.1f, 1.0f));
-
-    if (mDashTrail)
-    {
-        if (&gradient)
-        {
-            mDashTrail->SetColorGradient(gradient);
-        }
-    }
+    
 }
 
 void DashState::Enter()
@@ -106,6 +96,14 @@ void DashState::Enter()
     if (mDashTrail)
     {
         mDashTrail->SetEnable(true);
+
+        ColorGradient gradient;
+        gradient.AddColorGradientMark(0.1f, float4(0.9f, 0.0f, 0.0f, 1.0f));
+
+        if (&gradient)
+        {
+            mDashTrail->SetColorGradient(gradient);
+        }
     }
     if (mDashParticles)
     {
