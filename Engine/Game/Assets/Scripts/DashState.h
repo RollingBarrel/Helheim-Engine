@@ -5,6 +5,7 @@
 class TrailComponent;
 class ColorGradient;
 class GameObject;
+class ParticleSystemComponent;
 
 class DashState : public State
 {
@@ -25,8 +26,7 @@ private:
 	float mDashTimer = 0.0f;
 	float mDashDuration = 0.5f;
 
-	float3 mInitialPos;
-
 	TrailComponent* mDashTrail = nullptr;
+	ParticleSystemComponent* mDashParticles = nullptr;
 	GameObject* mDashVFX;
 };

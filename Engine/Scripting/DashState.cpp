@@ -11,6 +11,7 @@
 #include "ScriptComponent.h"
 #include "PoolManager.h"
 #include "TrailComponent.h"
+#include "ParticleSystemComponent.h"
 #include "GameObject.h"
 
 DashState::DashState(PlayerController* player, float cooldown) : State(player, cooldown)
@@ -18,7 +19,18 @@ DashState::DashState(PlayerController* player, float cooldown) : State(player, c
     mDashVFX = mPlayerController->GetDashVFX();
     if (mDashVFX)
     {
-        mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponent(ComponentType::TRAIL));
+        mDashVFX->SetEnabled(true);
+
+        mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponentInChildren(ComponentType::TRAIL));
+        mDashParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+        if (mDashTrail)
+        {
+            mDashTrail->SetEnable(false);
+        }
+        if (mDashParticles)
+        {
+            mDashParticles->SetEnable(false);
+        }
     }
 }
 
@@ -92,13 +104,26 @@ void DashState::Enter()
 {
     mDashTimer = 0.0f;
 
-    mDashVFX->SetEnabled(true);
-    mInitialPos = mPlayerController->GetPlayerPosition();
+    if (mDashTrail)
+    {
+        mDashTrail->SetEnable(true);
+    }
+    if (mDashParticles)
+    {
+        mDashParticles->SetEnable(true);
+    }
 }
 
 void DashState::Exit()
 {
-    mDashTrail->SetEnable(false);
+    if (mDashTrail)
+    {
+        mDashTrail->SetEnable(false);
+    }
+    if (mDashParticles)
+    {
+        mDashParticles->SetEnable(false);
+    }
 }
 
 StateType DashState::GetType()
