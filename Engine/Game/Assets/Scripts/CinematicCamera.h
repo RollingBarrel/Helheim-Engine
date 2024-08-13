@@ -27,7 +27,10 @@ private:
     bool Delay(float delay);
 
     //*************************************
-    void PlayAnimation(GameObject* character);
+
+    void InitAnimation();
+    void PlayAnimation();
+
     //*************************************
 
     GameObject* mCinematicCamera1 = nullptr;
@@ -56,10 +59,10 @@ private:
     float3 mTargetPosition;
     float mSpeedFactor = 1.0f;
     float mTimePassed = 0.0f;
-
     float mAnimationTime = 8.0f;
+
     bool mMoveCompleted = false;
-    bool mPlayingCinematic = true;;
+    bool mPlayingCinematic = true;
     bool mCinematicStarted = false;
     bool mStartParameters = false;
 
