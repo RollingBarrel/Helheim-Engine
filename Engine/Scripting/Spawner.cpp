@@ -12,6 +12,7 @@ CREATE(Spawner)
 	MEMBER(MemberType::FLOAT, mParticlesTime);
 	MEMBER(MemberType::GAMEOBJECT, mParticlesGO);
 	MEMBER(MemberType::FLOAT, mSpawnDelay);
+	MEMBER(MemberType::BOOL, mOnlyOnce);
 	END_CREATE;
 }
 
@@ -48,6 +49,12 @@ void Spawner::Update()
 				if (mParticlesGO)
 				{
 					mParticlesGO->SetEnabled(false);
+				}
+				if(mOnlyOnce)
+				{
+					mIsActive = false;
+					mSpawnedCounter= 0;
+					return;
 				}
 				--mSpawnedCounter;
 			}

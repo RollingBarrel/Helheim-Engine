@@ -22,8 +22,7 @@ public:
 
 
 private:
-
-
+	bool mOnlyOnce = false;
 	bool mIsActive = false;
 	int mSpawnedCounter = 0;
 
