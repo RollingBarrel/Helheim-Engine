@@ -25,7 +25,7 @@ private:
 
     //*************************************
 
-    void InitAnimation();
+    //void InitAnimation();
 
     //*************************************
 
@@ -55,11 +55,7 @@ private:
     float3 mTargetPosition;
     float mSpeedFactor = 1.0f;
     float mTimePassed = 0.0f;
-
-
     float mAnimationTime = 7.3f;
-
-
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
     bool mCinematicStarted = false;
@@ -70,8 +66,4 @@ private:
     CameraComponent* mCinematicCamera = nullptr;  
 
     AnimationComponent* mAnimationComponent = nullptr;
-
-
-
-    bool mStartAnim = false;
 };

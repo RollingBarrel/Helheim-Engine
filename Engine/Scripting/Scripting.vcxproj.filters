@@ -196,9 +196,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
       <Filter>Cinematic</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\CinematicAnimation.h">
-      <Filter>Cinematic</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -348,9 +345,6 @@
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="UltimateChargeState.cpp" />
     <ClCompile Include="CinematicCamera.cpp">
-      <Filter>Cinematic</Filter>
-    </ClCompile>
-    <ClCompile Include="CinematicAnimation.cpp">
       <Filter>Cinematic</Filter>
     </ClCompile>
   </ItemGroup>

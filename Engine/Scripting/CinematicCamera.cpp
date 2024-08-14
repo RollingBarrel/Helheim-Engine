@@ -262,22 +262,6 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
                 }
             }
 
-            //*******************************************************************
-                        
-            /*
-            if (Delay(3.0f))
-            {
-                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
-                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
-                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
-                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
-                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", 0.2f);
-            }
-            */
-            
-            //******************************************************************* 
-
-
             if (Delay(mAnimationTime))
             {
                 mPlayingCinematic = false;
@@ -350,8 +334,7 @@ void CinematicCamera::InitAnimation()
     if (mAnimationComponent)
     {
         mAnimationComponent->OnReset();
-        //mAnimationComponent->SendTrigger("tIdle", 0.0f);
-        mAnimationComponent->SendTrigger("tAttack", 0.0f);
+        mAnimationComponent->SendTrigger("tIdle", 0.0f);
     }
 }
 */
