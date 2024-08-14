@@ -5,10 +5,7 @@
 #include "Gamemanager.h"
 #include "ScriptComponent.h"
 #include "BattleArea.h"
-
-//**************************
 #include "AnimationComponent.h"
-//**************************
 
 CREATE(CinematicCamera)
 {
@@ -199,15 +196,15 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
             //**************************************************************
 
             mAnimationComponent = static_cast<AnimationComponent*>(target->GetComponent(ComponentType::ANIMATION));
+            
             if (mAnimationComponent)
             {
                 mAnimationComponent->SetIsPlaying(true);
-
             }
 
             //************************************
 
-            InitAnimation();
+            //InitAnimation();
 
             //**************************************************************
         }
@@ -224,11 +221,15 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
             App->GetCamera()->ActivateFirstCamera();
 
             //***********************************************************
-            
-            //PLAY ANIMATION? o en el travelling?
-            PlayAnimation();
+           
+            if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
+            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
+            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
+            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
+            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", 0.2f);
 
             //***********************************************************
+
             float deltaTime = App->GetDt();
 
             if (!mMoveCompleted)
@@ -260,6 +261,22 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
                     camera->SetWorldPosition(newPosition);
                 }
             }
+
+            //*******************************************************************
+                        
+            /*
+            if (Delay(3.0f))
+            {
+                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
+                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
+                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
+                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
+                //if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", 0.2f);
+            }
+            */
+            
+            //******************************************************************* 
+
 
             if (Delay(mAnimationTime))
             {
@@ -327,28 +344,14 @@ bool CinematicCamera::Delay(float delay)
     else return false;
 }
 
-void CinematicCamera::PlayAnimation()
-{
-    //**************************************************************
-
-    //mAnimationComponent->OnRestart();
-
-    //**************************************************************
-
-    //if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
-
-    if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
-    //if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
-    //if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
-    //if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
-    //if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
-}
-
+/*
 void CinematicCamera::InitAnimation()
 {
     if (mAnimationComponent)
     {
         mAnimationComponent->OnReset();
-        mAnimationComponent->SendTrigger("tIdle", 0.0f);
+        //mAnimationComponent->SendTrigger("tIdle", 0.0f);
+        mAnimationComponent->SendTrigger("tAttack", 0.0f);
     }
 }
+*/

@@ -4,10 +4,7 @@
 
 class CameraComponent;
 class BattleArea;
-
-//*********************
 class AnimationComponent;
-//*********************
 
 GENERATE_BODY(CinematicCamera);
 class CinematicCamera :public Script
@@ -29,7 +26,6 @@ private:
     //*************************************
 
     void InitAnimation();
-    void PlayAnimation();
 
     //*************************************
 
@@ -55,11 +51,14 @@ private:
 
     float mDistanceToEnemy = 4.0f;
     float mYawAngle = 45.0f;
-    float mPitchAngle = -53.0f;
+    float mPitchAngle = -45.0f;
     float3 mTargetPosition;
     float mSpeedFactor = 1.0f;
     float mTimePassed = 0.0f;
-    float mAnimationTime = 8.0f;
+
+
+    float mAnimationTime = 7.3f;
+
 
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
@@ -70,16 +69,9 @@ private:
     CameraComponent* mMainCamera = nullptr;
     CameraComponent* mCinematicCamera = nullptr;  
 
-    //**********************************************
-
     AnimationComponent* mAnimationComponent = nullptr;
 
-    //Transition Times
-    float mIdleTransitionDuration = 0.2f;
-    float mChaseTransitionDuration = 0.2f;
-    float mChargeTransitionDuration = 0.2f;
-    float mAttackTransitionDuration = 0.2f;
-    float mDeathTransitionDuration = 0.2f;
 
-    //**********************************************
+
+    bool mStartAnim = false;
 };

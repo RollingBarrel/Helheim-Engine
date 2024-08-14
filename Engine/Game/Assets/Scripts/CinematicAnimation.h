@@ -17,6 +17,7 @@ public:
 
 private:
     AnimationComponent* mAnimationComponent = nullptr;
+    void InitAnimation();
     void PlayAnimation();
 
     //Transition Times
