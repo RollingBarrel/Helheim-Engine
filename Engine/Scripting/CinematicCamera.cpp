@@ -77,7 +77,6 @@ void CinematicCamera::Update()
     {
         if (mBArea1->IsAreaActive())
         {
-            ActivateCamera(mCinematicCamera1);
             StartCinematic(mEnemy1, mCinematicCamera1);
         }
     }
@@ -93,7 +92,6 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
-            ActivateCamera(mCinematicCamera2);
             StartCinematic(mEnemy2, mCinematicCamera2);
         }
     }
@@ -109,7 +107,6 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
-            ActivateCamera(mCinematicCamera3);
             StartCinematic(mEnemy3, mCinematicCamera3);
         }
     }
@@ -125,59 +122,7 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
-            ActivateCamera(mCinematicCamera4);
             StartCinematic(mEnemy4, mCinematicCamera4);
-        }
-    }
-}
-
-void CinematicCamera::ActivateCamera(GameObject* cinematicCamera)
-{
-    if (mCinematicCamera1)
-    {
-        if (cinematicCamera == mCinematicCamera1)
-        {
-            mCinematicCamera1->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera1->SetEnabled(false);
-        }
-    }
-    
-    if (mCinematicCamera2)
-    {
-        if (cinematicCamera == mCinematicCamera2)
-        {
-            mCinematicCamera2->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera2->SetEnabled(false);
-        }
-    }
-    
-    if (mCinematicCamera3)
-    {
-        if (cinematicCamera == mCinematicCamera3)
-        {
-            mCinematicCamera3->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera3->SetEnabled(false);
-        }
-    }
-    
-    if (mCinematicCamera4)
-    {
-        if (cinematicCamera == mCinematicCamera4)
-        {
-            mCinematicCamera4->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera4->SetEnabled(false);
         }
     }
 }
@@ -189,6 +134,8 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
         if (mStartParameters == false)
         {
             mStartParameters = true;
+
+            ActivateCamera(camera);
 
             mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
@@ -303,6 +250,57 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
                     }
                 }     
             }
+        }
+    }
+}
+
+void CinematicCamera::ActivateCamera(GameObject* cinematicCamera)
+{
+    if (mCinematicCamera1)
+    {
+        if (cinematicCamera == mCinematicCamera1)
+        {
+            mCinematicCamera1->SetEnabled(true);
+        }
+        else
+        {
+            mCinematicCamera1->SetEnabled(false);
+        }
+    }
+
+    if (mCinematicCamera2)
+    {
+        if (cinematicCamera == mCinematicCamera2)
+        {
+            mCinematicCamera2->SetEnabled(true);
+        }
+        else
+        {
+            mCinematicCamera2->SetEnabled(false);
+        }
+    }
+
+    if (mCinematicCamera3)
+    {
+        if (cinematicCamera == mCinematicCamera3)
+        {
+            mCinematicCamera3->SetEnabled(true);
+        }
+        else
+        {
+            mCinematicCamera3->SetEnabled(false);
+        }
+    }
+
+    if (mCinematicCamera4)
+    {
+        if (cinematicCamera == mCinematicCamera4)
+        {
+            mCinematicCamera4->SetEnabled(true);
+        }
+        else
+        {
+            mCinematicCamera4->SetEnabled(false);
         }
     }
 }
