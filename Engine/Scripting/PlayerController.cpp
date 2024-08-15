@@ -605,7 +605,7 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     if (mGrenade)
     {
-        mGrenade->SetDestination(mGrenadePosition);
+        mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
     }  
 }
 

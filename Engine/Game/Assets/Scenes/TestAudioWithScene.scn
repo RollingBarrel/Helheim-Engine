@@ -32,7 +32,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8978978395462037,
+                        "AspectRatio": 1.4572192430496216,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -257,12 +257,12 @@
                             {
                                 "VariableName": "mGrenadeGO",
                                 "MemberType": 3,
-                                "VariableData": 1261577094
+                                "VariableData": 1303710461
                             },
                             {
                                 "VariableName": "mGrenadeExplotionPreviewAreaGO",
                                 "MemberType": 3,
-                                "VariableData": 1887115199
+                                "VariableData": 1460134965
                             },
                             {
                                 "VariableName": "mGrenadeRange",
@@ -3766,222 +3766,6 @@
                 "Components": []
             },
             {
-                "UID": 1660522487,
-                "ParentUID": 1,
-                "Name": "Grenade",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1887115199,
-                "ParentUID": 1660522487,
-                "Name": "ExplosionPreview",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    0.4000000059604645,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 283441444,
-                "ParentUID": 1660522487,
-                "Name": "AimArea",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    0.009999999776482582,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 769952992,
-                "ParentUID": 283441444,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1182596659,
-                "ParentUID": 769952992,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 81892183,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
-                "UID": 481930654,
-                "ParentUID": 1887115199,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 941290012,
-                "ParentUID": 481930654,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 81892183,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
                 "UID": 727514179,
                 "ParentUID": 1,
                 "Name": "GameManager",
@@ -4123,6 +3907,11 @@
                                 "VariableData": 839955887
                             },
                             {
+                                "VariableName": "mUltimateSliderGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "mAmmoGO",
                                 "MemberType": 3,
                                 "VariableData": 1175651600
@@ -4141,6 +3930,16 @@
                                 "VariableName": "mFeedbackGO",
                                 "MemberType": 3,
                                 "VariableData": 344576355
+                            },
+                            {
+                                "VariableName": "mBossHealthGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBossHealthGradualGO",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "Pause Screen",
@@ -4191,132 +3990,35 @@
                                 "VariableData": 1429416876
                             },
                             {
-                                "VariableName": "Sanity",
+                                "VariableName": "mTryAgainBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mLoseMenuBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mWinMenuBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "Sanity & Dialog",
                                 "MemberType": 5
                             },
                             {
                                 "VariableName": "mSanityGO",
                                 "MemberType": 3,
                                 "VariableData": 948448226
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1261577094,
-                "ParentUID": 1660522487,
-                "Name": "GrenadeGO",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "Grenade",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mGrenadeDPS",
-                                "MemberType": 1,
-                                "VariableData": 1.0
                             },
                             {
-                                "VariableName": "mGrenadeDuration",
-                                "MemberType": 1,
-                                "VariableData": 4.0
-                            },
-                            {
-                                "VariableName": "mGrenadeRadius",
-                                "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableName": "mDialogGO",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
-                    }
-                ]
-            },
-            {
-                "UID": 1750386135,
-                "ParentUID": 1261577094,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 36084350,
-                "ParentUID": 1750386135,
-                "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 81892183,
-                        "MaterialID": 999999999,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
                     }
                 ]
             },
@@ -12679,9 +12381,251 @@
                         ]
                     }
                 ]
+            },
+            {
+                "UID": 256053641,
+                "ParentUID": 1,
+                "Name": "Light",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    7.1113104820251469,
+                    3.4327855110168459
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.0,
+                            7.1113104820251469,
+                            3.4327855110168459
+                        ],
+                        "Radius": 75.0,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Intensity": 300.0
+                    }
+                ]
+            },
+            {
+                "UID": 1153398722,
+                "ParentUID": 1,
+                "Name": "Grenade",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1303710461,
+                "ParentUID": 1153398722,
+                "Name": "GrenadeGO",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -2.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Grenade",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mGrenadeDPS",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mGrenadeDuration",
+                                "MemberType": 1,
+                                "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mGrenadeRadius",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1460134965,
+                "ParentUID": 1153398722,
+                "Name": "ExplosionPreviewDecals",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.374541163444519,
+                    0.18566273152828217,
+                    0.05145978182554245
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.0,
+                    3.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 680344108,
+                        "DiffuseName": "Decal_Level01.png",
+                        "DiffuseColor": [
+                            0.970588207244873,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1362400964,
+                "ParentUID": 1303710461,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1420395257,
+                "ParentUID": 1362400964,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 81892183,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
             }
         ],
-        "NavMeshResource": 0,
+        "NavMeshResource": 2091785736,
         "SkyBoxResource": 0,
         "BloomIntensity": 0.5,
         "DirectionalLight": [
