@@ -10,22 +10,28 @@
 CREATE(CinematicCamera)
 {
     CLASS(owner);
+    SEPARATOR("PARAMS");
     MEMBER(MemberType::FLOAT, mYawAngle);
     MEMBER(MemberType::FLOAT, mPitchAngle);
     MEMBER(MemberType::FLOAT, mDistanceToEnemy);
     MEMBER(MemberType::FLOAT, mSpeedFactor);
     MEMBER(MemberType::FLOAT, mAnimationTime);
-
+    SEPARATOR("CAMERAS");
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera1);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera2);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera3);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera4);
-
+    SEPARATOR("ENEMIES");
+    SEPARATOR("Idle = 1 | Chase = 2 | Charge = 3 | Attack = 4");
     MEMBER(MemberType::GAMEOBJECT, mEnemy1);
+    MEMBER(MemberType::INT, mEnemy1_AnimState);
     MEMBER(MemberType::GAMEOBJECT, mEnemy2);
+    MEMBER(MemberType::INT, mEnemy2_AnimState);
     MEMBER(MemberType::GAMEOBJECT, mEnemy3);
+    MEMBER(MemberType::INT, mEnemy3_AnimState);
     MEMBER(MemberType::GAMEOBJECT, mEnemy4);
-
+    MEMBER(MemberType::INT, mEnemy4_AnimState);
+    SEPARATOR("BATTLE AREAS");
     MEMBER(MemberType::GAMEOBJECT, mBattleArea1);
     MEMBER(MemberType::GAMEOBJECT, mBattleArea2);
     MEMBER(MemberType::GAMEOBJECT, mBattleArea3);
@@ -77,7 +83,8 @@ void CinematicCamera::Update()
     {
         if (mBArea1->IsAreaActive())
         {
-            StartCinematic(mEnemy1, mCinematicCamera1);
+            //StartCinematic(mCinematicCamera1, mEnemy1, mEnemy1_AnimState);
+            StartCinematic(mCinematicCamera3, mEnemy3, mEnemy3_AnimState);
         }
     }
     
@@ -92,7 +99,7 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
-            StartCinematic(mEnemy2, mCinematicCamera2);
+            StartCinematic(mCinematicCamera2, mEnemy2, mEnemy2_AnimState);
         }
     }
     
@@ -107,7 +114,7 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
-            StartCinematic(mEnemy3, mCinematicCamera3);
+            StartCinematic(mCinematicCamera3, mEnemy3, mEnemy3_AnimState);
         }
     }
     
@@ -122,12 +129,12 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
-            StartCinematic(mEnemy4, mCinematicCamera4);
+            StartCinematic(mCinematicCamera4, mEnemy4, mEnemy4_AnimState);
         }
     }
 }
 
-void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
+void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int animState)
 {
     if ((target) && (camera))
     {
@@ -140,20 +147,14 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
             mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
 
-            //**************************************************************
-
             mAnimationComponent = static_cast<AnimationComponent*>(target->GetComponent(ComponentType::ANIMATION));
-            
+
             if (mAnimationComponent)
             {
                 mAnimationComponent->SetIsPlaying(true);
             }
 
-            //************************************
-
-            //InitAnimation();
-
-            //**************************************************************
+            InitAnimation(animState);
         }
 
         if (mPlayingCinematic)
@@ -166,16 +167,6 @@ void CinematicCamera::StartCinematic(GameObject* target, GameObject* camera)
             
             mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
             App->GetCamera()->ActivateFirstCamera();
-
-            //***********************************************************
-           
-            if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", 0.2f);
-            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", 0.2f);
-            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", 0.2f);
-            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tAttack", 0.2f);
-            //if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", 0.2f);
-
-            //***********************************************************
 
             float deltaTime = App->GetDt();
 
@@ -326,13 +317,26 @@ bool CinematicCamera::Delay(float delay)
     else return false;
 }
 
-/*
-void CinematicCamera::InitAnimation()
+void CinematicCamera::InitAnimation(int animState)
 {
+    std::string trigger;
+
+    switch (animState)
+    {
+        case 1: trigger = "tIdle"; break;
+        case 2: trigger = "tChase"; break;
+        case 3: trigger = "tCharge"; break;
+        case 4: trigger = "tAttack"; break;
+        case 5: trigger = "tDeath"; break;
+
+        default: trigger = "tIdle"; break;
+    }
+
     if (mAnimationComponent)
     {
         mAnimationComponent->OnReset();
-        mAnimationComponent->SendTrigger("tIdle", 0.0f);
+        mAnimationComponent->SendTrigger(trigger, 0.0f);
     }
 }
-*/
+
+//if (!mTimer.Delay(mUltimateChargeDuration))

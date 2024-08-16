@@ -19,15 +19,10 @@ public:
 
 private:
     void ActivateCamera(GameObject* cinematicCamera);
-    void StartCinematic(GameObject* target, GameObject* camera);    
+    void StartCinematic(GameObject* camera, GameObject* target, int animState);
     float3 lerp(const float3& start, const float3& end, float t);
     bool Delay(float delay);
-
-    //*************************************
-
-    //void InitAnimation();
-
-    //*************************************
+    void InitAnimation(int animState);
 
     GameObject* mCinematicCamera1 = nullptr;
     GameObject* mCinematicCamera2 = nullptr;
@@ -49,6 +44,11 @@ private:
     BattleArea* mBArea3 = nullptr;
     BattleArea* mBArea4 = nullptr;
 
+    int mEnemy1_AnimState = 1;
+    int mEnemy2_AnimState = 1;
+    int mEnemy3_AnimState = 1;
+    int mEnemy4_AnimState = 1;
+
     float mDistanceToEnemy = 4.0f;
     float mYawAngle = 45.0f;
     float mPitchAngle = -45.0f;
@@ -56,6 +56,7 @@ private:
     float mSpeedFactor = 1.0f;
     float mTimePassed = 0.0f;
     float mAnimationTime = 7.3f;
+
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
     bool mCinematicStarted = false;
