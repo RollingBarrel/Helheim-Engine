@@ -43,9 +43,6 @@
     <Filter Include="Pools">
       <UniqueIdentifier>{475c614c-9d94-4dab-9927-3f6f3e127db0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Cinematic">
-      <UniqueIdentifier>{cf6a3245-8cc4-48a0-b61d-96f6a860dc38}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
@@ -178,7 +175,6 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -188,14 +184,20 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveSpawner.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
-      <Filter>Cinematic</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h">
+      <Filter>States\Attack</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -338,14 +340,19 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="UltimateAttack.cpp" />
-    <ClCompile Include="UltimateState.cpp" />
     <ClCompile Include="BossLaser.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="RayCastBullet.cpp" />
-    <ClCompile Include="UltimateChargeState.cpp" />
-    <ClCompile Include="CinematicCamera.cpp">
-      <Filter>Cinematic</Filter>
+    <ClCompile Include="EnemyExplosiveSpawner.cpp">
+      <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="RayCastBullet.cpp" />
+    <ClCompile Include="UltimateChargeState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="UltimateState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="LoreCollectible.cpp" />
   </ItemGroup>
 </Project>

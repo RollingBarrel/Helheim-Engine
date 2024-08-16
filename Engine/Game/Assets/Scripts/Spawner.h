@@ -23,6 +23,7 @@ public:
 
 private:
 	bool mIsActive = false;
+	bool mOnlyOnce = false;
 	float mSpawnRate = 0.0f;
 	float mLastSpawnTime = 0.0f;
 	PoolType mPoolType = PoolType::FIRST;
