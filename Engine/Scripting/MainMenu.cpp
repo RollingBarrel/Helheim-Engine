@@ -39,11 +39,12 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mSettingsButtonGO);
 
     SEPARATOR("SETTINGS");
-    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeButtonGO);
 	MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeFillGO);
-    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeButtonGO);
-    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeSliderGO);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeSliderGO);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeFillGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonGO);
 
@@ -100,12 +101,14 @@ void MainMenu::Start()
     mControlsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonHoverOff, this)));
 
     mTextTransform = static_cast<Transform2DComponent*>(mCreditsText->GetComponent(ComponentType::TRANSFORM2D));
-    mGeneralVolumeButton = static_cast<ButtonComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::BUTTON));
+
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mMusicVolumeSlider = static_cast<SliderComponent*>(mMusicVolumeSliderGO->GetComponent(ComponentType::SLIDER));
+    mMusicVolumeFill = static_cast<ImageComponent*>(mMusicVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mEffectsVolumeSlider = static_cast<SliderComponent*>(mEffectsVolumeSliderGO->GetComponent(ComponentType::SLIDER));
+    mEffectsVolumeFill = static_cast<ImageComponent*>(mEffectsVolumeFillGO->GetComponent(ComponentType::IMAGE));
 
-    mMusicVolumeButton = static_cast<ButtonComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::BUTTON));
-    mEffectsVolumeButton = static_cast<ButtonComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::BUTTON));
     mVSyncButton = static_cast<ButtonComponent*>(mVSyncButtonGO->GetComponent(ComponentType::BUTTON));
     mFullscreenButton = static_cast<ButtonComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::BUTTON));
     mVSyncImage = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
@@ -120,6 +123,10 @@ void MainMenu::Start()
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
         mBGMID = mAudioManager->Play(BGM::MAINMENU);
     }
+
+    // Init the volume setting sliders
+    mGeneralVolumeValue = App->GetAudio()->GetVolume("bus:/");
+    mGeneralVolumeSlider->SetValue(mGeneralVolumeValue);
 
     OpenMenu(MENU_TYPE::STUDIO);
 }
@@ -403,7 +410,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
             mSettingsGO->SetEnabled(true);
-            OnGeneralVolumeButtonHover(); // Hover the first button
+            OnGeneralVolumeHover(); // Hover the first button
             break;
     }
 }
@@ -522,31 +529,32 @@ void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
     switch (type)
     {
     case SETTING_TYPE::GENERAL_VOLUME:
-        float generalVolumeValue;
 		if (direction == DIRECTION::LEFT)
         {
-            generalVolumeValue = App->GetAudio()->GetVolume("bus:/");
-            if (generalVolumeValue - step < 0.0f)
+            mGeneralVolumeValue = App->GetAudio()->GetVolume("bus:/");
+            if (mGeneralVolumeValue - step < 0.0f)
             {
                 App->GetAudio()->SetVolume("bus:/", 0.f);
 				mGeneralVolumeSlider->SetValue(0.f);
             }
             else
 			{
-				App->GetAudio()->SetVolume("bus:/", generalVolumeValue - step);
-                mGeneralVolumeSlider->SetValue(generalVolumeValue - step);
+				App->GetAudio()->SetVolume("bus:/", mGeneralVolumeValue - step);
+                mGeneralVolumeSlider->SetValue(mGeneralVolumeValue - step);
             }
 		}
 		else // DIRECTION::RIGHT
         {
-            generalVolumeValue = App->GetAudio()->GetVolume("bus:/");
-            if (generalVolumeValue + step > 1.f)
+            mGeneralVolumeValue = App->GetAudio()->GetVolume("bus:/");
+            if (mGeneralVolumeValue + step > 1.f)
             {
                 App->GetAudio()->SetVolume("bus:/", 1.f);
+                mGeneralVolumeSlider->SetValue(1.f);
             }
             else
             {
-                App->GetAudio()->SetVolume("bus:/", generalVolumeValue + step);
+                App->GetAudio()->SetVolume("bus:/", mGeneralVolumeValue + step);
+                mGeneralVolumeSlider->SetValue(mGeneralVolumeValue + step);
             }
         }
 		LOG("General Volume: %f", App->GetAudio()->GetVolume("bus:/"));
@@ -554,21 +562,21 @@ void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
     case SETTING_TYPE::MUSIC_VOLUME:
         if (direction == DIRECTION::LEFT)
         {
-            // TODO: Implement the volume slider
+            // TODO: Implement the music volume slider decrement
         }
-        else
+        else // RIGHT
         {
-            // TODO: Implement the volume slider
+            // TODO: Implement the music volume slider increment
         }
         break;
     case SETTING_TYPE::EFFECTS_VOLUME:
         if (direction == DIRECTION::LEFT)
         {
-            // TODO: Implement the volume slider
+            // TODO: Implement the effects volume slider decrement
         }
-        else
+		else // RIGHT
         {
-            // TODO: Implement the volume slider
+            // TODO: Implement the effects volume slider increment
         }
         break;
     }
@@ -612,13 +620,13 @@ void MainMenu::HoverSubSubMenu(SETTING_TYPE type)
     switch (type)
     {
     case SETTING_TYPE::GENERAL_VOLUME:
-        OnGeneralVolumeButtonHover();
+        OnGeneralVolumeHover();
         break;
     case SETTING_TYPE::MUSIC_VOLUME:
-        OnMusicVolumeButtonHover();
+        OnMusicVolumeHover();
         break;
     case SETTING_TYPE::EFFECTS_VOLUME:
-        OnEffectsVolumeButtonHover();
+        OnEffectsVolumeHover();
         break;
     case SETTING_TYPE::VSYNC:
         OnVSyncButtonHover();
@@ -629,39 +637,39 @@ void MainMenu::HoverSubSubMenu(SETTING_TYPE type)
     }
 }
 
-void MainMenu::OnGeneralVolumeButtonHover()
+
+
+void MainMenu::OnGeneralVolumeHover()
 {
     //ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
     mGeneralVolumeFill->SetAlpha(1.f);
 	mCurrentSetting = SETTING_TYPE::GENERAL_VOLUME;
 
 	//TODO: Abstract this abomination (in all the hover functions)
-    OnMusicVolumeButtonHoverOff();
-    OnEffectsVolumeButtonHoverOff();
+    OnMusicVolumeHoverOff();
+    OnEffectsVolumeHoverOff();
     OnVSyncButtonHoverOff();
     OnFullscreenButtonHoverOff();
 }
 
-void MainMenu::OnMusicVolumeButtonHover()
+void MainMenu::OnMusicVolumeHover()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(1.f);
+    mMusicVolumeFill->SetAlpha(1.f);
     mCurrentSetting = SETTING_TYPE::MUSIC_VOLUME;
 
-    OnGeneralVolumeButtonHoverOff();
-    OnEffectsVolumeButtonHoverOff();
+    OnGeneralVolumeHoverOff();
+    OnEffectsVolumeHoverOff();
     OnVSyncButtonHoverOff();
     OnFullscreenButtonHoverOff();
 }
 
-void MainMenu::OnEffectsVolumeButtonHover()
+void MainMenu::OnEffectsVolumeHover()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(1.f);
+	mEffectsVolumeFill->SetAlpha(1.f);
     mCurrentSetting = SETTING_TYPE::EFFECTS_VOLUME;
 
-    OnGeneralVolumeButtonHoverOff();
-    OnMusicVolumeButtonHoverOff();
+    OnGeneralVolumeHoverOff();
+    OnMusicVolumeHoverOff();
     OnVSyncButtonHoverOff();
     OnFullscreenButtonHoverOff();
 }
@@ -672,9 +680,9 @@ void MainMenu::OnVSyncButtonHover()
     image->SetAlpha(1.f);
     mCurrentSetting = SETTING_TYPE::VSYNC;
 
-    OnGeneralVolumeButtonHoverOff();
-    OnMusicVolumeButtonHoverOff();
-    OnEffectsVolumeButtonHoverOff();
+    OnGeneralVolumeHoverOff();
+    OnMusicVolumeHoverOff();
+    OnEffectsVolumeHoverOff();
     OnFullscreenButtonHoverOff();
 }
 
@@ -684,9 +692,9 @@ void MainMenu::OnFullscreenButtonHover()
     image->SetAlpha(1.f);
     mCurrentSetting = SETTING_TYPE::FULL_SCREEN;
 
-    OnGeneralVolumeButtonHoverOff();
-    OnMusicVolumeButtonHoverOff();
-    OnEffectsVolumeButtonHoverOff();
+    OnGeneralVolumeHoverOff();
+    OnMusicVolumeHoverOff();
+    OnEffectsVolumeHoverOff();
     OnVSyncButtonHoverOff();
 }
 
@@ -832,22 +840,19 @@ void MainMenu::OnBackButtonHoverOff()
     image->SetAlpha(0.0f);
 }
 
-void MainMenu::OnGeneralVolumeButtonHoverOff()
+void MainMenu::OnGeneralVolumeHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+    mGeneralVolumeFill->SetAlpha(0.8f);
 }
 
-void MainMenu::OnMusicVolumeButtonHoverOff()
+void MainMenu::OnMusicVolumeHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mMusicVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+    mMusicVolumeFill->SetAlpha(0.8f);
 }
 
-void MainMenu::OnEffectsVolumeButtonHoverOff()
+void MainMenu::OnEffectsVolumeHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mEffectsVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+    mEffectsVolumeFill->SetAlpha(0.8f);
 }
 
 void MainMenu::OnVSyncButtonHoverOff()
