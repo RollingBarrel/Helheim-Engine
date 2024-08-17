@@ -83,8 +83,7 @@ void CinematicCamera::Update()
     {
         if (mBArea1->IsAreaActive())
         {
-            //StartCinematic(mCinematicCamera1, mEnemy1, mEnemy1_AnimState);
-            StartCinematic(mCinematicCamera3, mEnemy3, mEnemy3_AnimState);
+            StartCinematic(mCinematicCamera1, mEnemy1, mEnemy1_AnimState);
         }
     }
     
