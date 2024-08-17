@@ -20,10 +20,17 @@ CREATE(EnemyRobotRange)
     MEMBER(MemberType::FLOAT, mRangeDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::GAMEOBJECT, mBulletOrigin);
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
 
     END_CREATE;
+}
+
+void EnemyRobotRange::Start()
+{
+    Enemy::Start();
+    mDisengageTime = 0.5f;
 }
 
 void EnemyRobotRange::Attack()
@@ -42,10 +49,8 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        //mAnimationComponent->SendTrigger("tAttack", 0.2f);
         mAnimationComponent->OnRestart();
         RangeAttack();
-
     }
 }
 
@@ -55,7 +60,7 @@ void EnemyRobotRange::RangeAttack()
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
-    Bullet* bulletScript=reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    Bullet* bulletScript= static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);

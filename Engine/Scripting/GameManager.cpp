@@ -99,7 +99,7 @@ void GameManager::Clean()
 
 PoolManager* GameManager::GetPoolManager() const 
 { 
-    return reinterpret_cast<PoolManager*>(reinterpret_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    return reinterpret_cast<PoolManager*>(static_cast<ScriptComponent*>(mPoolManager->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 bool GameManager::UsingController() const
@@ -161,6 +161,17 @@ void GameManager::PrepareAudio()
         mAudioManager->AddAudioToASComponent(SFX::MACHINE_GUN);
         mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
     }
+
+    if (sceneName == "Level2Scene")
+    {
+        mAudioManager->AddAudioToASComponent(BGM::LEVEL2);
+
+        mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
+        mAudioManager->AddAudioToASComponent(SFX::GUNFIRE);
+        mAudioManager->AddAudioToASComponent(SFX::MEELEE);
+        mAudioManager->AddAudioToASComponent(SFX::MACHINE_GUN);
+        mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    }
 }
 
 void GameManager::StartAudio()
@@ -168,13 +179,13 @@ void GameManager::StartAudio()
     PrepareAudio();
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" ||  sceneName == "TestAudioWithScene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL1);
     }
     else if (sceneName == "Level2Scene")
     {
-        // TODO
+        mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL2);
     }
 }
 
@@ -206,32 +217,33 @@ void GameManager::EndAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "Level2Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
     {
         mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
     }
     else if (sceneName == "Level2Scene")
     {
+        mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
         // TODO
     }
 }
 
 void GameManager::HandleLevel1Audio()
 {
-    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 80)
+    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 2)
     {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "Area", 80);
-        mLastAudioID = 80;
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 2);
+        mLastAudioID = 2;
     }
-    else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 40)
+    else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
     {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "Area", 40);
-        mLastAudioID = 40;
-    }
-    else if (mActiveBattleArea == nullptr && mLastAudioID != 1)
-    {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "Area", 1);
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 1);
         mLastAudioID = 1;
+    }
+    else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
+    {
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States",0);
+        mLastAudioID = 0;
     }
 }
 

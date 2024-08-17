@@ -14,7 +14,6 @@ public:
 	~MeleeWeapon();
 
 	float GetAttackDuration() override;
-
 	void IncreaseComboStep();
 
 	void Enter() override;
@@ -24,8 +23,7 @@ public:
 	void OnCollisionEnter(CollisionData* collisionData);
 
 protected:
-	//Methods
-	virtual void PlayHitSound() = 0;  
+	//Methods 
 	virtual void HitEffect(GameObject* enemy) = 0;  
 
 	//Common

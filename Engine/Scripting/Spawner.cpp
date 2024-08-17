@@ -10,6 +10,7 @@ CREATE(Spawner)
 	CLASS(owner);
 	MEMBER(MemberType::INT, mPoolType);
 	MEMBER(MemberType::FLOAT, mSpawnRate);
+	MEMBER(MemberType::BOOL, mOnlyOnce);
 	END_CREATE;
 }
 
@@ -37,13 +38,17 @@ bool Spawner::Spawn()
 			GameObject* enemy = mPoolManager->Spawn(mPoolType);
 			if (enemy)
 			{
-				ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
-				Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
+				ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
+				Enemy* enemyScript = static_cast<Enemy*>(script->GetScriptInstance());
 				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
 				enemy->SetEnabled(true);
  				enemyScript->Init();
 
 				mLastSpawnTime = 0.0f;
+				if(mOnlyOnce)
+				{
+					mIsActive = false;
+				}
 				return true;
 			}
 		}

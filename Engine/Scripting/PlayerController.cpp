@@ -5,23 +5,24 @@
 #include "ModuleCamera.h"
 #include "ModuleScene.h"
 #include "ModuleDetourNavigation.h"
-#include "ModuleResource.h"
+
 #include "GameObject.h"
 #include "Physics.h"
+#include "PlayerStats.h"
 
 #include "AudioSourceComponent.h"
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+
 #include "AnimationComponent.h"
-#include "AnimationStateMachine.h"
+
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
 
 #include "Keys.h"
 #include "Math/MathFunc.h"
 #include "Geometry/Plane.h"
-#include <functional>
 
 #include "GameManager.h"
 #include "HudController.h"
@@ -37,6 +38,7 @@
 #include "SpecialState.h"
 #include "ReloadState.h"
 #include "UltimateState.h"
+#include "UltimateChargeState.h"
 
 #include "Weapon.h"
 #include "MeleeWeapon.h"
@@ -53,14 +55,17 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mMaxShield);
-    MEMBER(MemberType::FLOAT, mPlayerSpeed);
+    //SEPARATOR("STATS");
+    //MEMBER(MemberType::FLOAT, mMaxShield);
+    //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
     MEMBER(MemberType::FLOAT, mDashDuration);
+
+    SEPARATOR("RANGE");
+    MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
@@ -82,11 +87,14 @@ CREATE(PlayerController)
 
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltimateChargeGO);
     MEMBER(MemberType::FLOAT, mUltimateCooldown);
     MEMBER(MemberType::FLOAT, mUltimateDuration);
+    MEMBER(MemberType::FLOAT, mUltimateChargeDuration);
     MEMBER(MemberType::FLOAT, mUltimatePlayerSlow);
     MEMBER(MemberType::FLOAT, mUltimateDamageTick);
     MEMBER(MemberType::FLOAT, mUltimateDamageInterval);
+    MEMBER(MemberType::FLOAT, mUltimateAimSpeed);
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
@@ -124,6 +132,14 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    //Player Stats
+    mPlayerStats = App->GetScene()->GetPlayerStats();
+
+    mMaxShield = mPlayerStats->GetMaxHealth();
+    mShield = mMaxShield;
+
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -135,6 +151,7 @@ void PlayerController::Start()
     mSpecialState = new SpecialState(this, 0.0f); // Is later changed when having a weapon
     mReloadState = new ReloadState(this, 0.0f);
     mUltimateState = new UltimateState(this, mUltimateCooldown, mUltimateDuration);
+    mUltimateChargeState = new UltimateChargeState(this, 0.0f, mUltimateChargeDuration);
 
     mLowerStateType = StateType::IDLE;
     mUpperStateType = StateType::AIM;
@@ -146,7 +163,7 @@ void PlayerController::Start()
     BoxColliderComponent* weaponCollider = nullptr;
     if (mMeleeCollider) 
     {
-        weaponCollider = reinterpret_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
+        weaponCollider = static_cast<BoxColliderComponent*>(mMeleeCollider->GetComponent(ComponentType::BOXCOLLIDER));
     }
     TrailComponent* batTrail = nullptr;
     if (mBatTrail)
@@ -188,11 +205,15 @@ void PlayerController::Start()
         mUnEquippedSpecialGO->SetEnabled(false);
     }
     
+    //ULTIMATE
     if (mUltimateGO)
         mUltimateGO->SetEnabled(false);
 
+    if (mUltimateChargeGO)
+        mUltimateChargeGO->SetEnabled(false);
+
     // COLLIDER
-    mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&PlayerController::OnCollisionEnter, this, std::placeholders::_1)));
@@ -211,7 +232,7 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -234,15 +255,14 @@ void PlayerController::Start()
     mUpperState->Enter();
     mLowerState->Enter();
 
-    if (App->GetScene()->GetName().compare("Level1Scene") == 0)
-    {
-        mGameObject->SetWorldPosition(float3(82.27f, 0.0f, -4.15f));
-    }
-    else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
-    {
-        mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
-    }
-
+    //if (App->GetScene()->GetName().compare("Level1Scene") == 0)
+    //{
+    //    mGameObject->SetWorldPosition(float3(82.27f, 0.0f, -4.15f));
+    //}
+    //else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
+    //{
+    //    mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
+    //}
 }
 
 void PlayerController::Update()
@@ -255,11 +275,12 @@ void PlayerController::Update()
     // Check state
     StateMachine();
 
-    // Rotate the player to mouse
+    // Rotate the player to mouse 
     HandleRotation();
 
     //Check HitEffect
     CheckHitEffect();
+
     // Buff, Debuff timers...
     CheckOtherTimers();
 
@@ -269,10 +290,10 @@ void PlayerController::Update()
 
 void PlayerController::StateMachine()
 {
-    // Check if dead
     mLowerState->Update();
     mUpperState->Update();
 }
+
 
 void PlayerController::Paralyzed(float percentage, bool paralysis)
 {
@@ -297,7 +318,6 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 
 void PlayerController::CheckInput()
 {
-
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
     if (mLowerStateType != type) 
@@ -365,6 +385,9 @@ void PlayerController::CheckInput()
             case StateType::ULTIMATE:
                 mUpperState = mUltimateState;
                 break;
+            case StateType::ULTIMATE_CHARGE:
+                mUpperState = mUltimateChargeState;
+                break;
             case StateType::NONE:
                 break;
             default:
@@ -405,8 +428,10 @@ void PlayerController::HandleRotation()
             mAimPosition = ray.GetPoint(distance);
         }
     }
-    
-    mGameObject->LookAt(mAimPosition);
+    if (mUpperStateType != StateType::ULTIMATE)
+        mGameObject->LookAt(mAimPosition);
+    else
+        UltimateInterpolateLookAt(mAimPosition);
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
@@ -550,14 +575,22 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
+void PlayerController::SetMovementSpeed(float percentage) 
+{
+    mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
+    mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mWeapon->SetDamage(mWeapon->GetDamage() * percentage);
+    mPlayerStats->SetDamageModifier(mPlayerStats->GetDamageModifier() * percentage);
+    mDamageModifier = mPlayerStats->GetDamageModifier();
 }
 
 void PlayerController::SetMaxShield(float percentage)
 {
-    mMaxShield *= percentage; 
+    mPlayerStats->SetMaxHealth(mPlayerStats->GetMaxHealth() * percentage);
+    mMaxShield = mPlayerStats->GetMaxHealth();
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
@@ -631,8 +664,7 @@ bool PlayerController::CanReload() const
 
 void PlayerController::Reload() const
 {
-    mWeapon->SetCurrentAmmo(mWeapon->GetMaxAmmo());
-    GameManager::GetInstance()->GetHud()->SetAmmo(mWeapon->GetCurrentAmmo());
+    static_cast<Pistol*>(mPistol)->Reload();
 }
 
 void PlayerController::CheckDebugOptions()
@@ -744,6 +776,49 @@ void PlayerController::EnableUltimate(bool enable)
     {
         mUltimateGO->SetEnabled(enable);
     }
+}
+
+void PlayerController::EnableChargeUltimate(bool enable)
+{
+    if (mUltimateChargeGO)
+    {
+        mUltimateChargeGO->SetEnabled(enable);
+    }
+}
+
+
+void PlayerController::UltimateInterpolateLookAt(const float3& target)
+{
+    float3 currentForward = mGameObject->GetFront().Normalized();
+
+    float3 currZ = currentForward.Normalized();
+    float3 currX = Cross(float3::unitY, currZ).Normalized();
+    float3 currY = Cross(currZ, currX);
+
+    float4x4 currentRotationMatrix = float4x4::identity;
+    currentRotationMatrix[0][0] = currX.x; currentRotationMatrix[0][1] = currY.x; currentRotationMatrix[0][2] = currZ.x;
+    currentRotationMatrix[1][0] = currX.y; currentRotationMatrix[1][1] = currY.y; currentRotationMatrix[1][2] = currZ.y;
+    currentRotationMatrix[2][0] = currX.z; currentRotationMatrix[2][1] = currY.z; currentRotationMatrix[2][2] = currZ.z;
+
+    Quat currentRotation = Quat(currentRotationMatrix);
+
+    float3 targetForward = (target - mGameObject->GetWorldPosition()).Normalized();
+
+    float3 targZ = targetForward.Normalized();
+    float3 targX = Cross(float3::unitY, targZ).Normalized();
+    float3 targY = Cross(targZ, targX);
+
+    float4x4 targetRotationMatrix = float4x4::identity;
+    targetRotationMatrix[0][0] = targX.x; targetRotationMatrix[0][1] = targY.x; targetRotationMatrix[0][2] = targZ.x;
+    targetRotationMatrix[1][0] = targX.y; targetRotationMatrix[1][1] = targY.y; targetRotationMatrix[1][2] = targZ.y;
+    targetRotationMatrix[2][0] = targX.z; targetRotationMatrix[2][1] = targY.z; targetRotationMatrix[2][2] = targZ.z;
+
+    Quat targetRotation = Quat(targetRotationMatrix);
+
+    Quat interpolatedRotation = Quat::Slerp(currentRotation, targetRotation, App->GetDt()*mUltimateAimSpeed);
+
+    // Apply the interpolated rotation to the game object
+    mGameObject->SetLocalRotation(interpolatedRotation);
 }
 
 void PlayerController::TakeDamage(float damage)

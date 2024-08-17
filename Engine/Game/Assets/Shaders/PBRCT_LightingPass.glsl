@@ -2,25 +2,12 @@
 #define PI 3.1415926535897932384626433832795
 #extension GL_ARB_bindless_texture : require
 
-//layout(location = 0)uniform mat4 invView;
-//layout(std140, binding = 0) uniform CameraMatrices
-//{
-//	mat4 view;
-//	mat4 proj;
-//};
-//float GetLinearZ(float inputDepth)
-//{
-//	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
-//}
-//
-//vec3 GetWorldPos(float inDepth, vec2 texCoords)
-//{
-//	float viewZ = GetLinearZ(inDepth);
-//	float viewX = (texCoords.x * 2.0 - 1.0) * (-viewZ) / proj[0][0];
-//	float viewY = (texCoords.y * 2.0 - 1.0) * (-viewZ) / proj[1][1];
-//	vec3 viewPos = vec3(viewX, viewY, viewZ);
-//	return (invView * vec4(viewPos, 1.0)).xyz;
-//}
+layout(std140, binding = 0) uniform CameraMatrices
+{
+	mat4 view;
+	mat4 proj;
+	mat4 invView;
+};
 
 //Light properties
 layout(std140, binding = 1) uniform DirLight
@@ -67,7 +54,6 @@ readonly layout(std430, binding = 4) buffer SpotLightShadows
 
 in vec2 uv;
 
-layout(location = 1)uniform vec3 cPos;
 //Gbuffer
 layout(binding = 0)uniform sampler2D diffuseTex;
 //layout(binding = 1)uniform sampler2D specularRoughTex;
@@ -82,6 +68,7 @@ layout(binding = 7)uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
 layout(binding = 8) uniform isamplerBuffer pointLightList;
+layout(binding = 11) uniform isamplerBuffer spotLightList;
 layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
@@ -153,14 +140,15 @@ void main()
 	//pos = GetWorldPos(depth, uv);
 	pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;
-	V = normalize(cPos - pos);
+	vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
+	V = normalize(cameraPos - pos);
 
 	vec3 baseColor = texture(diffuseTex, uv).rgb;
-	vec4 specColorTex = texture(metalRoughTex, uv);
-	float metal = specColorTex.b;
-	rough = max(specColorTex.g * specColorTex.g, 0.001f);
+	vec2 specColorTex = texture(metalRoughTex, uv).gb;
+	float metal = specColorTex.y;
+	rough = max(specColorTex.x * specColorTex.x, 0.001f);
 	
-	cDif = baseColor * (1- specColorTex.b);
+	cDif = baseColor * (1 - metal);
 	cSpec = mix(vec3(0.04), baseColor, metal);
 
 
@@ -168,9 +156,9 @@ void main()
 	//Directional light
 	pbrCol += GetPBRLightColor(dirDir.xyz, dirCol.xyz, dirCol.w, 1);
 	
-	//Point lights
 	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
+	//Point lights
 	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	{
@@ -184,16 +172,18 @@ void main()
 	}
 	
 	//Spot lights
-	for (int i = 0; i < numSLights; ++i)
+	idx = (texelFetch(spotLightList, int(tileIdx * lightListSize))).x;
+	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 	{
+		SpotLight sLight = sLights[idx];
 		//Shadows
 		float shadowValue = 1.0;
-		if (sLights[i].shadowIndex >= 0)
+		if (sLight.shadowIndex >= 0)
 		{
-			vec4 lightClipSpace = shadows[sLights[i].shadowIndex].viewProjMatrix * vec4(pos, 1);
+			vec4 lightClipSpace = shadows[sLight.shadowIndex].viewProjMatrix * vec4(pos, 1);
 			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
-			float shadowDepth = texture(shadows[sLights[i].shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLights[i].shadowIndex].bias;
+			float shadowDepth = texture(shadows[sLight.shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLight.shadowIndex].bias;
 			float fragmentDepth = lightNDC.z;
 
 			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
@@ -204,23 +194,23 @@ void main()
 				}
 		}
 
-			vec3 mVector = pos - sLights[i].pos.xyz;
-			vec3 sDir = normalize(mVector);
-			vec3 aimDir = normalize(sLights[i].aimD.xyz);
-			float dist = dot(mVector, aimDir);
-			//TODO: Check that the radius of spot light is correct
-			float r = sLights[i].radius;
-			float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
-			float c = dot(sDir, aimDir);
-			float cInner = sLights[i].aimD.w;
-			float cOuter = sLights[i].col.w;
-			//float cAtt = 1;
-			//if(cInner > c && c > cOuter)
-				//cAtt = (c - cOuter) / (cInner - cOuter);
-			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
-			att *= cAtt;
-			pbrCol += GetPBRLightColor(sDir, sLights[i].col.rgb, sLights[i].pos.w, att) * shadowValue;
-		
+		vec3 mVector = pos - sLight.pos.xyz;
+		vec3 sDir = normalize(mVector);
+		vec3 aimDir = normalize(sLight.aimD.xyz);
+		float dist = dot(mVector, aimDir);
+		//TODO: Check that the radius of spot light is correct
+		float r = sLight.radius;
+		float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
+		float c = dot(sDir, aimDir);
+		float cInner = sLight.aimD.w;
+		float cOuter = sLight.col.w;
+		//float cAtt = 1;
+		//if(cInner > c && c > cOuter)
+			//cAtt = (c - cOuter) / (cInner - cOuter);
+		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+		att *= cAtt;
+		pbrCol += GetPBRLightColor(sDir, sLight.col.rgb, sLight.pos.w, att) * shadowValue;
+		++i;
 	}
 
 	vec3 occlusionFactor = vec3(1.0);

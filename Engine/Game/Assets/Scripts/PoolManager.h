@@ -16,14 +16,14 @@ enum class PoolType
 	ENEMY_BULLET,
 
 	//ENEMIES
-	ROBOT_MELEE,	//6
-	ROBOT_RANGE,	//7
-	CREATURE_MELEE, //8
-	CREATURE_RANGE, //9
+	ROBOT_MELEE,		//6
+	ROBOT_RANGE,		//7
+	CREATURE_MELEE,		//8
+	CREATURE_RANGE,		//9
+	ROBOT_EXPLOSIVE,	//10
 
 	LAST
 };
-
 
 GENERATE_BODY(PoolManager);
 class PoolManager : public Script

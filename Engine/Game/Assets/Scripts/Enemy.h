@@ -22,22 +22,18 @@ enum class EnemyState
 class Enemy : public Script
 {
 public:
-	Enemy(GameObject* owner);
+	Enemy(GameObject* owner) : Script(owner) {}
 	~Enemy() {}
 	void Start() override;
 	void Update() override;
 
 	virtual void TakeDamage(float damage);
 	virtual void Death();
-	virtual void PushBack();
+	virtual void PushBack(); 
 	virtual void Init();
-	bool IsChasing();
 	
-	//Grenade
-
 	// DEBUFF
 	virtual void Paralyzed(float percentage, bool paralyzed);
-
 	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
 protected:
@@ -50,12 +46,14 @@ protected:
 	virtual void PlayAttackAudio() {};
 
 	bool IsPlayerInRange(float range);
+	bool IsPlayerReachable();
 	void DropItem();
 	void ActivateEnemy();
 	void ActivateHitEffect();
 	void CheckHitEffect();
 	void ResetEnemyColor();
 	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
+
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;

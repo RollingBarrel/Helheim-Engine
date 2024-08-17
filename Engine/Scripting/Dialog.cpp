@@ -42,7 +42,7 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
     Controls();
 }
 
