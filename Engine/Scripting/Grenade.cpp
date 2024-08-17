@@ -10,6 +10,7 @@
 #include "GameManager.h"
 #include "RayCastBullet.h"
 #include "ColorGradient.h"
+#include "TrailComponent.h"
 
 CREATE(Grenade)
 {
@@ -17,6 +18,7 @@ CREATE(Grenade)
     MEMBER(MemberType::FLOAT, mGrenadeDPS);
     MEMBER(MemberType::FLOAT, mGrenadeDuration);
     MEMBER(MemberType::FLOAT, mGrenadeRadius);
+    MEMBER(MemberType::GAMEOBJECT, mGrenade);
 	END_CREATE;
 }
 
@@ -30,8 +32,7 @@ Grenade::~Grenade()
 
 void Grenade::Start()
 {
-    mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
-    if (mFire)	mFire->SetEnabled(false);
+
 } 
 
 void Grenade::Update()
@@ -49,6 +50,28 @@ void Grenade::Update()
 
 void Grenade::MoveToTarget()
 {
+    mElapsedTime += App->GetDt();
+
+    // 确保时间不超过总飞行时间
+    if (mElapsedTime > mFlightTime)
+    {
+        mElapsedTime = mFlightTime;
+    }
+
+    // 计算当前位置
+    mCurrentPosition = CalculatePositionAtTime(mElapsedTime);
+
+    // 更新物体的位置 (在你的框架中实际更新对象的位置)
+    // mGameObject->SetPosition(mCurrentPosition);
+    mGrenade->SetWorldPosition(mCurrentPosition);
+
+    // 如果到达目标点，停止更新
+    if (mElapsedTime >= mFlightTime)
+    {
+        mState = GRENADE_STATE::EXPLOTION_START;
+        mGameObject->SetWorldPosition(mDestination);
+    }
+
     //if (mCurrentPosition.Distance(mDestination) < mThreshold)
     //{
     //    mState = GRENADE_STATE::EXPLOTION_START;
@@ -104,6 +127,38 @@ void Grenade::MoveToTarget()
     //    mState = GRENADE_STATE::EXPLOTION_START;
     //    mGameObject->SetWorldPosition(mDestination);
     //}
+}
+
+void Grenade::CalculateTrajectory()
+{
+    // 计算水平和竖直位移
+    float3 displacement = mDestination - mInitialPosition;
+    float verticalDistance = displacement.y;
+
+    // 计算竖直方向的初始速度（根据设定的最高点高度）
+    float vy = std::sqrt(2 * mGravity * mArcHeight);
+
+    // 计算到达最高点和总飞行时间
+    float timeToMaxHeight = vy / mGravity;
+    float totalFlightTime = timeToMaxHeight + std::sqrt(2 * (mArcHeight - verticalDistance) / mGravity);
+
+    // 水平方向的速度
+    float vx = displacement.x / totalFlightTime;
+    float vz = displacement.z / totalFlightTime;
+
+    // 设置初速度矢量
+    mVelocity = float3(vx, vy, vz);
+    mFlightTime = totalFlightTime;
+    mElapsedTime = 0.0f; // 重置时间
+}
+
+float3 Grenade::CalculatePositionAtTime(float t)
+{
+    float x = mVelocity.x * t;
+    float z = mVelocity.z * t;
+    float y = mInitialPosition.y + mVelocity.y * t - 0.5f * mGravity * t * t;
+
+    return float3(mInitialPosition.x + x, y, mInitialPosition.z + z);
 }
 
 void Grenade::Explotion()
@@ -178,30 +233,21 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     return AffectedEnemies;
 }
 
-void Grenade::SetPositionDestination(float3 initialPosition, float3 Destination)
+void Grenade::SetPositionDestination(float3 initialPosition, float3 destination)
 {
     mGameObject->SetEnabled(true);
 
-    GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
-
-    RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-
-    //bulletScript->Init
-    ColorGradient gradient;
-    gradient.AddColorGradientMark(0.1f, float4(0.0f, 1.0f, 0.0f, 1.0f));
-    bullet->SetEnabled(false);
-    bulletScript->Init(initialPosition, Destination, mSpeed, 10.0f, true, &gradient);
-
     mState = GRENADE_STATE::MOVEMENT;
+    mGrenade->SetWorldPosition(initialPosition);
     mFire->SetEnabled(true);
-    mDestination = Destination;
+    
     mInitialPosition = initialPosition;
+    mDestination = destination;
 
     mCurrentPosition = mInitialPosition;
     mTotalDistance = mInitialPosition.Distance(mDestination);
-    mCurrentDistance = 0;
 
-
+    CalculateTrajectory();
 }
 
 float Grenade::GetGrenadeRadius()

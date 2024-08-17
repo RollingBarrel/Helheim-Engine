@@ -32,7 +32,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.4572192430496216,
+                        "AspectRatio": 1.5882352590560914,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -12456,6 +12456,100 @@
                 "Components": []
             },
             {
+                "UID": 1288790180,
+                "ParentUID": 1153398722,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1394683721,
+                "ParentUID": 1288790180,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1442165243,
+                "ParentUID": 1394683721,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    10.939204216003418,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.20000000298023225,
+                    0.20000000298023225,
+                    0.20000000298023225
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 81892183,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
                 "UID": 1303710461,
                 "ParentUID": 1153398722,
                 "Name": "GrenadeGO",
@@ -12501,6 +12595,11 @@
                                 "VariableName": "mGrenadeRadius",
                                 "MemberType": 1,
                                 "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mGrenade",
+                                "MemberType": 3,
+                                "VariableData": 1288790180
                             }
                         ]
                     }

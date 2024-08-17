@@ -31,6 +31,8 @@ public:
 	float GetGrenadeRadius();
 private:
 	void MoveToTarget();
+	void CalculateTrajectory();
+	float3  CalculatePositionAtTime(float t);
 	void Explotion();
 	void BlackHole();
 	void PullCloser(std::vector<GameObject*> enemies);
@@ -45,18 +47,21 @@ private:
 	float mGrenadeCurrentTime = mGrenadeDuration;
 	float mGrenadeRadius = 3.0f; // Explotion area
 
-	float3 mInitialPosition = float3(0, 0, 0); // Init destination to 0,0,0
-	float3 mDestination = float3(0, 0, 0); // Init destination to 0,0,0
+	float3 mInitialPosition = float3(0, 0, 0); 
+	float3 mDestination = float3(0, 0, 0);
 	float3 mCurrentPosition;
-	float mTotalDistance;
-	float mCurrentDistance;
+	float mArcHeight = 2.0f;
 
-	float mSpeed = 10.0f; // Speed of movement
-	float mArcHeight = 2.0f; // Maximum height of the arc
-	float mThreshold = 0.3f; // Distance threshold
+	float mTotalDistance;
+	float mCurrentDistance = 0.0f;
+	float3 mVelocity;
+	float mSpeed = 10.0f;
+	float mGravity = 9.81f;
+	float mFlightTime = 0.0f;
+	float mElapsedTime = 0.0f;
 
 	float mTimeAccumulator = 0.0f;
 	const float mPullInterval = 0.3f;
 
-	GameObject* mFire = nullptr;
+	GameObject* mGrenade = nullptr;
 };
