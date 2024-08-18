@@ -10,6 +10,8 @@
 CREATE(CinematicCamera)
 {
     CLASS(owner);
+    SEPARATOR("LEVEL");
+    MEMBER(MemberType::BOOL, mLevel1);
     SEPARATOR("PARAMS");
     MEMBER(MemberType::FLOAT, mYawAngle);
     MEMBER(MemberType::FLOAT, mPitchAngle);
@@ -128,6 +130,11 @@ void CinematicCamera::Update()
                 mPlayingCinematic = true;
             }
 
+            if (!mLevel1)
+            {
+                mDistanceToEnemy = mDistanceToEnemy + 4.5f; //Boss enemy is bigger than other enemies and needs more distance for the camera
+            }
+
             StartCinematic(mCinematicCamera4, mEnemy4, mEnemy4_AnimState);
         }
     }
@@ -192,9 +199,11 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 else
                 {
                     float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
-                    if (newPosition.y < 1.5f) { // Adjust the threshold as needed
-                        newPosition.y = 1.5f; // Ensure the camera stays above a certain height
+
+                    if (newPosition.y < currentPosition.y) { // Adjust the threshold as needed
+                        newPosition.y = currentPosition.y; // Ensure the camera stays above a certain height
                     }
+
                     camera->SetWorldPosition(newPosition);
                 }
             }
@@ -235,8 +244,11 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 if (mBattleArea4)
                 {
                     if (mBArea4->IsAreaActive())
-                    {
-                        mEnemy4->SetEnabled(false);
+                    {                      
+                        if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
+                        {
+                            mEnemy4->SetEnabled(false);
+                        }
                     }
                 }     
             }
@@ -326,7 +338,7 @@ void CinematicCamera::InitAnimation(int animState)
         case 2: trigger = "tChase"; break;
         case 3: trigger = "tCharge"; break;
         case 4: trigger = "tAttack"; break;
-        case 5: trigger = "tDeath"; break;
+        //case 5: trigger = "tDeath"; break;
 
         default: trigger = "tIdle"; break;
     }

@@ -61,6 +61,7 @@ private:
     bool mPlayingCinematic = true;
     bool mCinematicStarted = false;
     bool mStartParameters = false;
+    bool mLevel1 = false;
 
     const CameraComponent* mCurrentCamera = nullptr;
     CameraComponent* mMainCamera = nullptr;

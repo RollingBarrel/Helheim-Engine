@@ -56,7 +56,19 @@ void PlayerCamera::Update()
         }
         else
         {
-            mGameObject->SetWorldPosition(lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime));
+            //mGameObject->SetWorldPosition(lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime));
+
+            //************************************************************************
+            
+            float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
+
+            if (newPosition.y < currentPosition.y) { // Adjust the threshold as needed
+                newPosition.y = currentPosition.y; // Ensure the camera stays above a certain height
+            }
+
+            mGameObject->SetWorldPosition(newPosition);
+
+            //************************************************************************
         }
     }
     else
