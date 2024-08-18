@@ -23,6 +23,7 @@ private:
     float mYawAngle = 45.0f;
     float mPitchAngle = -53.0f;
     float3 mTargetPosition;
+    float3 mCameraPosition;
     float mSpeedFactor = 1.0f;
     bool mMoveCompleted = false;
 };

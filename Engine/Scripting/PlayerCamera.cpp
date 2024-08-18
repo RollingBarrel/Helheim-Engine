@@ -9,6 +9,7 @@ CREATE(PlayerCamera)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mFollowTarget);
+    MEMBER(MemberType::FLOAT3, mCameraPosition);
     MEMBER(MemberType::FLOAT, mYawAngle);
     MEMBER(MemberType::FLOAT, mPitchAngle);
     MEMBER(MemberType::FLOAT, mDistanceToPlayer);
@@ -27,7 +28,7 @@ void PlayerCamera::Awake()
 void PlayerCamera::Start()
 {
     mTargetPosition = ((mFollowTarget->GetWorldPosition()) - ((mGameObject->GetFront()) * mDistanceToPlayer));
-    mGameObject->SetWorldPosition(float3(92.98f, 0.0f, 0.0f));
+    mGameObject->SetWorldPosition(mCameraPosition);
     mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
 }
@@ -56,19 +57,7 @@ void PlayerCamera::Update()
         }
         else
         {
-            //mGameObject->SetWorldPosition(lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime));
-
-            //************************************************************************
-            
-            float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
-
-            if (newPosition.y < currentPosition.y) { // Adjust the threshold as needed
-                newPosition.y = currentPosition.y; // Ensure the camera stays above a certain height
-            }
-
-            mGameObject->SetWorldPosition(newPosition);
-
-            //************************************************************************
+            mGameObject->SetWorldPosition(lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime));
         }
     }
     else
