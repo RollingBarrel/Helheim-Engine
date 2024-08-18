@@ -125,8 +125,13 @@ void MainMenu::Start()
     }
 
     // Init the volume setting sliders
-    mGeneralVolumeValue = App->GetAudio()->GetVolume("bus:/");
+    App->GetAudio()->SetVolume("bus:/", mGeneralVolumeValue);
     mGeneralVolumeSlider->SetValue(mGeneralVolumeValue);
+    App->GetAudio()->SetVolume("bus:/music", mMusicVolumeValue);
+    mMusicVolumeSlider->SetValue(mMusicVolumeValue);
+    App->GetAudio()->SetVolume("bus:/sfx", mEffectsVolumeValue);
+    mEffectsVolumeSlider->SetValue(mEffectsVolumeValue);
+
 
     OpenMenu(MENU_TYPE::STUDIO);
 }
@@ -532,10 +537,10 @@ void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
 		if (direction == DIRECTION::LEFT)
         {
             mGeneralVolumeValue = App->GetAudio()->GetVolume("bus:/");
-            if (mGeneralVolumeValue - step < 0.0f)
+            if (mGeneralVolumeValue - step <= 0.0f)
             {
                 App->GetAudio()->SetVolume("bus:/", 0.f);
-				mGeneralVolumeSlider->SetValue(0.f);
+				mGeneralVolumeSlider->SetValue(0.001f);
             }
             else
 			{
@@ -557,26 +562,65 @@ void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
                 mGeneralVolumeSlider->SetValue(mGeneralVolumeValue + step);
             }
         }
-		LOG("General Volume: %f", App->GetAudio()->GetVolume("bus:/"));
         break;
     case SETTING_TYPE::MUSIC_VOLUME:
         if (direction == DIRECTION::LEFT)
         {
-            // TODO: Implement the music volume slider decrement
+            mMusicVolumeValue = App->GetAudio()->GetVolume("bus:/music");
+            if (mMusicVolumeValue - step <= 0.0f)
+            {
+                App->GetAudio()->SetVolume("bus:/music", 0.f);
+                mMusicVolumeSlider->SetValue(0.001f);
+            }
+            else
+            {
+                App->GetAudio()->SetVolume("bus:/music", mMusicVolumeValue - step);
+                mMusicVolumeSlider->SetValue(mMusicVolumeValue - step);
+            }
         }
-        else // RIGHT
+        else // DIRECTION::RIGHT
         {
-            // TODO: Implement the music volume slider increment
+            mMusicVolumeValue = App->GetAudio()->GetVolume("bus:/music");
+            if (mMusicVolumeValue + step > 1.f)
+            {
+                App->GetAudio()->SetVolume("bus:/music", 1.f);
+                mMusicVolumeSlider->SetValue(1.f);
+            }
+            else
+            {
+                App->GetAudio()->SetVolume("bus:/music", mMusicVolumeValue + step);
+                mMusicVolumeSlider->SetValue(mMusicVolumeValue + step);
+            }
         }
         break;
     case SETTING_TYPE::EFFECTS_VOLUME:
         if (direction == DIRECTION::LEFT)
         {
-            // TODO: Implement the effects volume slider decrement
+            mEffectsVolumeValue = App->GetAudio()->GetVolume("bus:/sfx");
+            if (mEffectsVolumeValue - step <= 0.0f)
+            {
+                App->GetAudio()->SetVolume("bus:/sfx", 0.f);
+                mEffectsVolumeSlider->SetValue(0.001f);
+            }
+            else
+            {
+                App->GetAudio()->SetVolume("bus:/sfx", mEffectsVolumeValue - step);
+                mEffectsVolumeSlider->SetValue(mEffectsVolumeValue - step);
+            }
         }
-		else // RIGHT
+        else // DIRECTION::RIGHT
         {
-            // TODO: Implement the effects volume slider increment
+            mEffectsVolumeValue = App->GetAudio()->GetVolume("bus:/sfx");
+            if (mEffectsVolumeValue + step > 1.f)
+            {
+                App->GetAudio()->SetVolume("bus:/sfx", 1.f);
+                mEffectsVolumeSlider->SetValue(1.f);
+            }
+            else
+            {
+                App->GetAudio()->SetVolume("bus:/sfx", mEffectsVolumeValue + step);
+                mEffectsVolumeSlider->SetValue(mEffectsVolumeValue + step);
+            }
         }
         break;
     }
