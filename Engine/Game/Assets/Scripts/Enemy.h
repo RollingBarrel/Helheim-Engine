@@ -15,6 +15,7 @@ enum class EnemyState
 	CHASE,
 	CHARGE,
 	ATTACK,
+	FLEE,
 	DEATH
 };
 
@@ -41,7 +42,7 @@ protected:
 	virtual void Chase();
 	virtual void Charge();
 	virtual void Attack();
-
+	virtual void Flee();
 	virtual void PlayStepAudio() {};
 	virtual void PlayAttackAudio() {};
 

@@ -134,6 +134,10 @@ void Enemy::ActivateEnemy()
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
 			Chase();
 			break;
+		case EnemyState::FLEE:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
+			Flee();
+			break;
 		case EnemyState::CHARGE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
@@ -164,8 +168,7 @@ void Enemy::Idle()
 void Enemy::Chase()
 {
 	PlayStepAudio();
-	if (IsPlayerInRange(mChaseDistance))
-	{
+
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
@@ -176,11 +179,27 @@ void Enemy::Chase()
 		{
 			mCurrentState = EnemyState::CHARGE;
 		}
-	}
-	else
-	{
-		mCurrentState = EnemyState::IDLE;
-	}
+
+}
+
+void Enemy::Flee()
+{
+	PlayStepAudio();	
+		if (mAiAgentComponent)
+		{
+			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
+			float3 dirToPlayer = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
+			float3 newPos = mGameObject->GetWorldPosition() + dirToPlayer;
+			mAiAgentComponent->SetNavigationPath(newPos);
+			//mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			//float3 newPos = (mGameObject->GetWorldPosition() + mPlayerDirection * App->GetDt() * mPlayerSpeed);
+			//mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+		}
+
+		if (!IsPlayerInRange(mAttackDistance))
+		{
+			mCurrentState = EnemyState::IDLE;
+		}
 }
 
 void Enemy::Charge()

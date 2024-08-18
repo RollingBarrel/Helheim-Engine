@@ -50,7 +50,10 @@ Component* AIAgentComponent::Clone(GameObject* owner) const
 void AIAgentComponent::SetNavigationPath(const float3& destination) 
 {
 	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
-	App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions.back());
+	if (!mNavPositions.empty())
+	{
+		App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions.back());
+	}	
 }
 
 void AIAgentComponent::StartCrowdNavigation()
