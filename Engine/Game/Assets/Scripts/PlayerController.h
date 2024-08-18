@@ -206,6 +206,7 @@ private:
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
+    GameObject* mHealParticles = nullptr;
 
     // WEAPONS
     Weapon* mWeapon = nullptr;

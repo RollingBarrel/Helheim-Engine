@@ -59,6 +59,9 @@ CREATE(PlayerController)
     //MEMBER(MemberType::FLOAT, mMaxShield);
     //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
+    SEPARATOR("SHIELD");
+    MEMBER(MemberType::GAMEOBJECT, mHealParticles);
+
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
@@ -191,7 +194,7 @@ void PlayerController::Start()
 
     mWeapon = mPistol;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
-    mSpecialWeapon = nullptr;
+    mSpecialWeapon = nullptr; 
 
     if (mEquippedMeleeGO && mUnEquippedMeleeGO)
         mEquippedMeleeGO->SetEnabled(false);
@@ -204,6 +207,8 @@ void PlayerController::Start()
         mEquippedSpecialGO->SetEnabled(false);
         mUnEquippedSpecialGO->SetEnabled(false);
     }
+    //HEAL VFX
+    if (mHealParticles) mHealParticles->SetEnabled(false);
     
     //ULTIMATE
     if (mUltimateGO)
@@ -705,6 +710,10 @@ void PlayerController::RechargeShield(float shield)
 
         float healthRatio = mShield / mMaxShield;
         GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
+        if (mHealParticles) {
+            mHealParticles->SetEnabled(false);
+            mHealParticles->SetEnabled(true);
+        } 
     }
 }
 
