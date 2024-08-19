@@ -89,7 +89,7 @@ protected:
 	TimerScript  mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
-	float mFleeToAttackTime = 0.5f;
+	float mFleeToAttackTime = 1.0f;
 
 
 	//Transition Times
