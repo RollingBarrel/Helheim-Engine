@@ -51,6 +51,7 @@ GameObject* LineComponent::SearchLineFinal(GameObject* owner)
             return child;
         }
     }
+    return nullptr;
 }
 
 Component* LineComponent::Clone(GameObject* owner) const
