@@ -32,7 +32,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.5882352590560914,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -164,20 +164,6 @@
                         "ScriptName": "PlayerController",
                         "ScriptVariables": [
                             {
-                                "VariableName": "STATS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mMaxShield",
-                                "MemberType": 1,
-                                "VariableData": 100.0
-                            },
-                            {
-                                "VariableName": "mPlayerSpeed",
-                                "MemberType": 1,
-                                "VariableData": 2.0
-                            },
-                            {
                                 "VariableName": "DASH",
                                 "MemberType": 5
                             },
@@ -195,6 +181,15 @@
                                 "VariableName": "mDashDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "RANGE",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mShootOrigin",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "MELEE",
@@ -284,6 +279,11 @@
                                 "VariableData": -1
                             },
                             {
+                                "VariableName": "mUltimateChargeGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "mUltimateCooldown",
                                 "MemberType": 1,
                                 "VariableData": 0.0
@@ -292,6 +292,11 @@
                                 "VariableName": "mUltimateDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mUltimateChargeDuration",
+                                "MemberType": 1,
+                                "VariableData": 1.0
                             },
                             {
                                 "VariableName": "mUltimatePlayerSlow",
@@ -307,6 +312,11 @@
                                 "VariableName": "mUltimateDamageInterval",
                                 "MemberType": 1,
                                 "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mUltimateAimSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
                             },
                             {
                                 "VariableName": "DEBUG MODE",
@@ -4015,6 +4025,30 @@
                             },
                             {
                                 "VariableName": "mDialogGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "Collectible",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCollectibleScreen",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCollectibleTextGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCollectibleContinueBtnGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mInteractGO",
                                 "MemberType": 3,
                                 "VariableData": -1
                             }
@@ -9420,6 +9454,30 @@
                                 "VariableName": "mDoor2",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TRAPS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mTrap1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mTrap2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mTrap3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mTrap4",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -12292,6 +12350,30 @@
                                 "VariableName": "mDoor2",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TRAPS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mTrap1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mTrap2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mTrap3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mTrap4",
+                                "MemberType": 3,
+                                "VariableData": -1
                             }
                         ]
                     }
@@ -12518,8 +12600,8 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    10.939204216003418,
                     0.0,
+                    1.0559978485107422,
                     0.0
                 ],
                 "Rotation": [
@@ -12724,7 +12806,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 2091785736,
+        "NavMeshResource": 0,
         "SkyBoxResource": 0,
         "BloomIntensity": 0.5,
         "DirectionalLight": [
@@ -12736,6 +12818,16 @@
             1.0,
             1.0,
             0.05000000074505806
-        ]
+        ],
+        "Fog": {
+            "Color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Density": 0.008999999612569809,
+            "HeightFallof": 0.0,
+            "MaxFog": 0.0
+        }
     }
 }

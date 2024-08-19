@@ -46,6 +46,7 @@ private:
 	float mGrenadeDuration = 4.0f;
 	float mGrenadeCurrentTime = mGrenadeDuration;
 	float mGrenadeRadius = 3.0f; // Explotion area
+	float mGrenadeRange = 5.0f;
 
 	float3 mInitialPosition = float3(0, 0, 0); 
 	float3 mDestination = float3(0, 0, 0);
@@ -57,6 +58,7 @@ private:
 	float3 mVelocity;
 	float mSpeed = 10.0f;
 	float mGravity = 9.81f;
+
 	float mFlightTime = 0.0f;
 	float mElapsedTime = 0.0f;
 

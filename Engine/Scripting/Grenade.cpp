@@ -68,79 +68,29 @@ void Grenade::MoveToTarget()
     // 如果到达目标点，停止更新
     if (mElapsedTime >= mFlightTime)
     {
+        mGrenade->SetEnabled(false);
+
         mState = GRENADE_STATE::EXPLOTION_START;
         mGameObject->SetWorldPosition(mDestination);
     }
-
-    //if (mCurrentPosition.Distance(mDestination) < mThreshold)
-    //{
-    //    mState = GRENADE_STATE::EXPLOTION_START;
-    //    mGameObject->SetWorldPosition(mDestination);
-    //    return;
-    //}
-
-    //float step = mSpeed * App->GetDt();
-    //mCurrentDistance += step;
-
-    //float3 direction = (mDestination - mInitialPosition).Normalized();
-    //float3 horizontalPosition = mInitialPosition + direction * mCurrentDistance;
-
-    //// Calculate the height of the arc at the current distance
-    //float t = mCurrentDistance / mTotalDistance;
-    //float height = 4 * mArcHeight * t * (1 - t);
-
-    //// Update current position
-    //mCurrentPosition = float3(horizontalPosition.x, mInitialPosition.y + height, horizontalPosition.z);
-
-    //// Move the object in the scene
-    //mFire->SetWorldPosition(mCurrentPosition);
-    //transform.position = mCurrentPosition;
-
-    //// Calculate the total distance
-    //float3 direction = mDestination - mInitialPosition;
-    //float totalDistance = mInitialPosition.Distance(mDestination);
-
-    //// Normalize the direction
-    ////float3 normalizedDirection = direction * (1.0f / totalDistance);(
-    //float3 normalizedDirection = direction.Normalized();
-
-    //// Calculate the time step based on total speed
-    //float distanceTraveled = mSpeed * (1.0f / totalDistance); // Fraction of total distance traveled per frame
-
-    //// Calculate the new position
-    //float3 newPosition = mCurrentPosition + (normalizedDirection * distanceTraveled * totalDistance) * App->GetDt();
-
-    //// Calculate the height of the arc at this point
-    //float t = mCurrentPosition.Distance(mInitialPosition) / totalDistance;
-    //float height = 4 * mArcHeight * t * (1 - t); // Parabolic arc
-
-    //newPosition.y = mInitialPosition.y + (mDestination.y - mInitialPosition.y) * t + height;
-
-    //// Update the current position
-    //mCurrentPosition = newPosition;
-
-    //// Set the new world position
-    //mFire->SetWorldPosition(mCurrentPosition);
-
-    //// Check if we are within the threshold
-    //if (mCurrentPosition.Distance(mDestination) < mThreshold) {
-    //    mState = GRENADE_STATE::EXPLOTION_START;
-    //    mGameObject->SetWorldPosition(mDestination);
-    //}
 }
 
 void Grenade::CalculateTrajectory()
 {
     // 计算水平和竖直位移
     float3 displacement = mDestination - mInitialPosition;
+    float horizontalDistance = float3(displacement.x, 0, displacement.z).Length();
     float verticalDistance = displacement.y;
 
-    // 计算竖直方向的初始速度（根据设定的最高点高度）
-    float vy = std::sqrt(2 * mGravity * mArcHeight);
+    // 计算抛物线的最高点高度（随着水平距离变化）
+    float dynamicHeight = mArcHeight * (horizontalDistance / mGrenadeRange);
 
-    // 计算到达最高点和总飞行时间
+    // 计算竖直方向的初始速度（根据动态高度）
+    float vy = std::sqrt(2 * mGravity * dynamicHeight);
+
+    // 计算到达最高点的时间和总飞行时间
     float timeToMaxHeight = vy / mGravity;
-    float totalFlightTime = timeToMaxHeight + std::sqrt(2 * (mArcHeight - verticalDistance) / mGravity);
+    float totalFlightTime = timeToMaxHeight + std::sqrt(2 * (dynamicHeight - verticalDistance) / mGravity);
 
     // 水平方向的速度
     float vx = displacement.x / totalFlightTime;
@@ -236,10 +186,10 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
 void Grenade::SetPositionDestination(float3 initialPosition, float3 destination)
 {
     mGameObject->SetEnabled(true);
+    mGrenade->SetEnabled(true);
 
     mState = GRENADE_STATE::MOVEMENT;
     mGrenade->SetWorldPosition(initialPosition);
-    mFire->SetEnabled(true);
     
     mInitialPosition = initialPosition;
     mDestination = destination;
