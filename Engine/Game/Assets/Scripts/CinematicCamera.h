@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 class CameraComponent;
 class BattleArea;
@@ -21,7 +22,6 @@ private:
     void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
     float3 lerp(const float3& start, const float3& end, float t);
-    bool Delay(float delay);
     void InitAnimation(int animState);
 
     GameObject* mCinematicCamera1 = nullptr;
@@ -43,6 +43,8 @@ private:
     BattleArea* mBArea2 = nullptr;
     BattleArea* mBArea3 = nullptr;
     BattleArea* mBArea4 = nullptr;
+
+    TimerScript mTimer;
 
     int mEnemy1_AnimState = 1;
     int mEnemy2_AnimState = 1;

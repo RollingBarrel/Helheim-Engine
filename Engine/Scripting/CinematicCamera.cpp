@@ -208,7 +208,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 }
             }
 
-            if (Delay(mAnimationTime))
+            if (mTimer.Delay(mAnimationTime))
             {
                 mPlayingCinematic = false;
                 App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
@@ -316,18 +316,6 @@ float3 CinematicCamera::lerp(const float3& start, const float3& end, float t)
     };
 }
 
-bool CinematicCamera::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
-    {
-        mTimePassed = 0;
-        return true;
-    }
-    else return false;
-}
-
 void CinematicCamera::InitAnimation(int animState)
 {
     std::string trigger;
@@ -349,5 +337,3 @@ void CinematicCamera::InitAnimation(int animState)
         mAnimationComponent->SendTrigger(trigger, 0.0f);
     }
 }
-
-//if (!mTimer.Delay(mUltimateChargeDuration))
