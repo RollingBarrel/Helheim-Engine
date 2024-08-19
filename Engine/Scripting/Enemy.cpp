@@ -9,6 +9,7 @@
 #include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
+#include "ModuleDetourNavigation.h"
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
@@ -95,6 +96,7 @@ void Enemy::Update()
 
     //Hit Effect
     CheckHitEffect();
+	mEnemyCollisionDirection = float3::zero;
 }
 
 void Enemy::CheckHitEffect()
@@ -184,16 +186,25 @@ void Enemy::Chase()
 
 void Enemy::Flee()
 {
+	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
+	{
+		mCurrentState = EnemyState::ATTACK;
+		return;
+	}
 	PlayStepAudio();	
 		if (mAiAgentComponent)
 		{
 			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-			float3 dirToPlayer = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
-			float3 newPos = mGameObject->GetWorldPosition() + dirToPlayer;
-			mAiAgentComponent->SetNavigationPath(newPos);
-			//mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
-			//float3 newPos = (mGameObject->GetWorldPosition() + mPlayerDirection * App->GetDt() * mPlayerSpeed);
-			//mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
+			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
+			if (collisionDotProduct < 0.0f)
+			{
+				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
+			}
+			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
+			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+		
 		}
 
 		if (!IsPlayerInRange(mAttackDistance))
