@@ -2055,6 +2055,11 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 			ImGui::Text("Height:%dpx", image->GetHeight());
 
 		}
+		if (ImGui::Button(ICON_FA_TRASH_CAN))
+		{
+			App->GetResource()->ReleaseResource(image->GetUID());
+			image = nullptr;
+		}
 		ImGui::Columns(1);
 
 		ImGui::Text("Tilling");
@@ -2134,12 +2139,16 @@ void InspectorPanel::DrawLineComponent(LineComponent* component) const
 		{
 			ImGui::Text(component->mTrail->GetFileName());
 		}
-
 		if (image)
 		{
 			ImGui::Text("Width:%dpx", image->GetWidth());
 			ImGui::Text("Height:%dpx", image->GetHeight());
-
+		}
+		ImGui::NextColumn();
+		if (ImGui::Button(ICON_FA_TRASH_CAN))
+		{
+			App->GetResource()->ReleaseResource(image->GetUID());
+			image = nullptr;
 		}
 		ImGui::Columns(1);
 

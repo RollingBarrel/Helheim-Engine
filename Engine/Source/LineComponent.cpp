@@ -31,11 +31,6 @@ LineComponent::LineComponent(const LineComponent& original, GameObject* owner) :
 mTrail(new Trail(*original.mTrail))
 {
     mFinalPoint = SearchLineFinal(owner);
-    if (mFinalPoint == nullptr)
-    {
-        mFinalPoint = new GameObject("FinalPoint", owner);
-        mFinalPoint->SetTag("LineFinal");
-    }
 }
 
 LineComponent::~LineComponent()
@@ -69,6 +64,12 @@ void LineComponent::Update()
 {
     if (IsEnabled())
     {
+        if (mFinalPoint == nullptr) mFinalPoint = SearchLineFinal(mOwner);
+        if (mFinalPoint == nullptr)
+        {
+            mFinalPoint = new GameObject("FinalPoint", mOwner);
+            mFinalPoint->SetTag("LineFinal");
+        }
         mTrail->UpdateLineComponent(mOwner, mFinalPoint);
     }
 }
