@@ -14,6 +14,7 @@
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+#include "ImageComponent.h"
 
 #include "AnimationComponent.h"
 
@@ -61,6 +62,7 @@ CREATE(PlayerController)
 
     SEPARATOR("SHIELD");
     MEMBER(MemberType::GAMEOBJECT, mHealParticles);
+    MEMBER(MemberType::GAMEOBJECT, mShieldSpriteSheet);
 
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
@@ -209,6 +211,7 @@ void PlayerController::Start()
     }
     //HEAL VFX
     if (mHealParticles) mHealParticles->SetEnabled(false);
+    if (mShieldSpriteSheet) mShieldSpriteSheet->SetEnabled(false);
     
     //ULTIMATE
     if (mUltimateGO)
@@ -714,6 +717,10 @@ void PlayerController::RechargeShield(float shield)
             mHealParticles->SetEnabled(false);
             mHealParticles->SetEnabled(true);
         } 
+        if (mShieldSpriteSheet) {
+            mShieldSpriteSheet->SetEnabled(true);
+            reinterpret_cast<ImageComponent*>(mShieldSpriteSheet->GetComponent(ComponentType::IMAGE))->PlayAnimation();
+        }
     }
 }
 
