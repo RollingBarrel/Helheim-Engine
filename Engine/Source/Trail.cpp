@@ -108,16 +108,8 @@ void Trail::Draw() const
     }
     // Vincular el buffer SSBO
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSSBOColor);
-    size_t ssboSize = colors.size() * sizeof(ColorPoint);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, ssboSize, nullptr, GL_DYNAMIC_DRAW);
-    float* ptrColor = reinterpret_cast<float*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY));
-    if (ptrColor) {
-        std::memcpy(ptrColor, colors.data(), colors.size() * sizeof(ColorPoint));
-        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-    }
-    else {
-        std::cerr << "Error: no se pudo mapear el buffer SSBOColor." << std::endl;
-    }
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, COLOR_BUFFER_BINDING, mSSBOColor);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, colors.size() * sizeof(ColorPoint), colors.data(), GL_DYNAMIC_DRAW);
 
     struct WidthPoint
     {
@@ -133,16 +125,8 @@ void Trail::Draw() const
     }
     // Vincular el buffer SSBO
     glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSSBOWidth);
-    ssboSize = widths.size() * sizeof(WidthPoint);
-    glBufferData(GL_SHADER_STORAGE_BUFFER, ssboSize, nullptr, GL_DYNAMIC_DRAW);
-    float* ptrWidth = reinterpret_cast<float*>(glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_WRITE_ONLY));
-    if (ptrWidth) {
-        std::memcpy(ptrWidth, widths.data(), widths.size() * sizeof(WidthPoint));
-        glUnmapBuffer(GL_SHADER_STORAGE_BUFFER);
-    }
-    else {
-        std::cerr << "Error: no se pudo mapear el buffer SSBOWidth." << std::endl;
-    }
+    glBindBufferBase(GL_SHADER_STORAGE_BUFFER, WIDTH_BUFFER_BINDING, mSSBOWidth);
+    glBufferData(GL_SHADER_STORAGE_BUFFER, widths.size() * sizeof(WidthPoint), widths.data(), GL_DYNAMIC_DRAW);
 
     glUseProgram(programId);
     glBindBuffer(GL_ARRAY_BUFFER, mVBO);
@@ -163,7 +147,7 @@ void Trail::Draw() const
     glUniform1f(glGetUniformLocation(programId, "time"), App->GetCurrentClock()->GetTotalTime());
 
     glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, mPoints.size() * 2);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, mBuffer.size());
     glBindTexture(GL_TEXTURE_2D, 0);
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
