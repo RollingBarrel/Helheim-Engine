@@ -59,6 +59,13 @@ CREATE(HudController)
     SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     MEMBER(MemberType::GAMEOBJECT, mDialogGO);
+
+    SEPARATOR("Collectible");
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleScreen);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleTextGO);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleContinueBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mInteractGO);
+
     END_CREATE;
 }
 
@@ -120,6 +127,18 @@ void HudController::Start()
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
 
+    if (mCollectibleScreen)
+    {
+        mCollectibleScreen->SetEnabled(false);
+        if (mCollectibleTextGO) mLoreText = static_cast<TextComponent*>(mCollectibleTextGO->GetComponent(ComponentType::TEXT));
+        if (mCollectibleContinueBtnGO) 
+        {
+            mCollectibleContinueBtn = static_cast<ButtonComponent*>(mCollectibleContinueBtnGO->GetComponent(ComponentType::BUTTON));
+            mCollectibleContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnCollectibleContinueBtnClick, this)));
+        }
+
+    }
+
     if (mHealthGO)
     {
         mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
@@ -163,6 +182,7 @@ void HudController::Start()
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
+    if (mInteractGO) mInteractGO->SetEnabled(false);
 
     if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -475,6 +495,11 @@ void HudController::SetUltimateCooldown(float cooldown)
     mUltimateTimer = 0.001f;
 }
 
+void HudController::SetCollectibleText(std::string text)
+{
+    if (mLoreText) mLoreText->SetText(text);
+}
+
 void HudController::SetScreen(SCREEN name, bool active)
 {
     switch (name) {
@@ -490,9 +515,17 @@ void HudController::SetScreen(SCREEN name, bool active)
         case SCREEN::PAUSE:
             if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
+        case SCREEN::COLLECTIBLE:
+            if (mCollectibleScreen) mCollectibleScreen->SetEnabled(active);
+            break;
         default:
             break;
     }
+}
+
+void HudController::SetInteract(bool active)
+{
+    if (mInteractGO) mInteractGO->SetEnabled(active);
 }
 
 #pragma region Click Events
@@ -589,6 +622,22 @@ void HudController::OnMainMenuBtnHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.0f);
+}
+
+void HudController::OnCollectibleContinueBtnClick()
+{
+    if (mCollectibleScreen->IsActive()) {
+        SetScreen(SCREEN::COLLECTIBLE, false);
+    }
+    GameManager::GetInstance()->SetPaused(false, false);
+}
+
+void HudController::OnCollectibleContinueBtnHoverOn()
+{
+}
+
+void HudController::OnCollectibleContinueBtnHoverOff()
+{
 }
 
 void HudController::SetBossHealthBarEnabled(bool enabled)
