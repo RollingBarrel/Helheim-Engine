@@ -17,7 +17,7 @@ public:
     void Start() override;
     void Update() override;
 
-    void Init(float distance, float duration, float initialRotation);
+    void Init(float distance, float duration, float minRotation, float maxRotation);
 
 private:
 

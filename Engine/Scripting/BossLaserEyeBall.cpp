@@ -48,38 +48,36 @@ void BossLaserEyeBall::Update()
         RotateLaser();
 }
 
-void BossLaserEyeBall::Init(float distance, float duration, float initialRotation)
+void BossLaserEyeBall::Init(float distance, float duration, float minRotation, float maxRotation)
 {
     mDistance = distance;
     mDuration = duration;
-    mInitialRotation = initialRotation;
-    mElapsedTime = 0.0f;
-
+    mInitialRotation = minRotation;
+    mRotationRange = maxRotation - minRotation;
+    mCurrentRotation = minRotation;
+    mRotationSpeed = 1.0f; 
 }
 
 
 void BossLaserEyeBall::RotateLaser()
 {
-
     float deltaTime = App->GetDt();
     float rotationAmount = mRotationSpeed * deltaTime;
 
     mCurrentRotation += rotationAmount;
 
-    // Ensure rotation bounds are correctly set
     float maxRotation = mInitialRotation + mRotationRange / 2.0f;
     float minRotation = mInitialRotation - mRotationRange / 2.0f;
 
-    // Constrain rotation to the segment
     if (mCurrentRotation > maxRotation)
     {
         mCurrentRotation = maxRotation;
-        mRotationSpeed = -mRotationSpeed;  // Reverse direction
+        mRotationSpeed = -std::abs(mRotationSpeed);
     }
     else if (mCurrentRotation < minRotation)
     {
         mCurrentRotation = minRotation;
-        mRotationSpeed = -mRotationSpeed;  // Reverse direction
+        mRotationSpeed = std::abs(mRotationSpeed);
     }
 
     mGameObject->SetLocalRotation(float3(0, mCurrentRotation, 0));
@@ -129,7 +127,6 @@ void BossLaserEyeBall::RotateLaser()
     }
     else
     {
-        // Deactivate laser components if outside the range
         if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
         if (mLaserTrail) mLaserTrail->SetEnabled(false);
         if (mLaserEnd) mLaserEnd->SetEnabled(false);

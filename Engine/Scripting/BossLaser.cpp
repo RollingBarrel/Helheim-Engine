@@ -103,8 +103,8 @@ void BossLaser::Cooldown()
 
 void BossLaser::SpawnEyeBalls()
 {
-    float baseAngle = -85.0f; 
-    float angleIncrement = 180.0f / 5; 
+    float baseAngle = -85.0f;
+    float angleIncrement = 180.0f / static_cast<float>(mPoolSize);
 
     for (size_t i = 0; i < mPoolSize; ++i)
     {
@@ -112,20 +112,26 @@ void BossLaser::SpawnEyeBalls()
             break;
 
         GameObject* eyeBall = mEyeBallPool[i];
-        float initialRotation = baseAngle +  angleIncrement;
 
-        float radians = DegToRad(initialRotation);
+        float angle = baseAngle + angleIncrement * i;
+        float radians = DegToRad(angle);
+
         float x = std::cos(radians) * mDistance;
         float z = std::sin(radians) * mDistance;
-        float3 positionOffset = float3(x, -2, z);
 
-        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + i * positionOffset);
+        float3 positionOffset(x, -2, z);
+
+        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + positionOffset);
         eyeBall->SetEnabled(true);
 
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-            eyeBallScript->Init(mDistance, mLaserEnemyDuration, initialRotation);
+            // Calculate the min and max rotation for the eye ball based on its sector
+            float minRotation = angle;
+            float maxRotation = angle + angleIncrement;
+
+            eyeBallScript->Init(mDistance, mLaserEnemyDuration, minRotation, maxRotation);
         }
 
         mEyeBalls.push_back(eyeBall);
