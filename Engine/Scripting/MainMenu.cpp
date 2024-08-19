@@ -146,8 +146,10 @@ void MainMenu::Update()
         {
             OpenMenu(MENU_TYPE::SPLASH);
         }
+        OnPlayButtonHover(); // Hover first option when the menu is first laoded
+        OnControlsButtonHover(); // Pre-hover the first option
         return;
-    }
+    } 
 
     if (mIsScrolling)
     {
@@ -344,13 +346,15 @@ void MainMenu::Controls()
 			if (mCurrentMenu == MENU_TYPE::SETTINGS)
             {
                 mSubsettingOption = 0;
-			}
-			mSettingOption = 7; // Reset the setting option
+                OnSettingsButtonHover();
+            }
+            else {
+                OnControlsButtonHover();
+            }
             OpenMenu(MENU_TYPE::OPTIONS);
         }
 		else
         {
-            mOption = 0; // Reset the option
 			OpenMenu(MENU_TYPE::MAIN);
 		}
     }
@@ -382,12 +386,10 @@ void MainMenu::OpenMenu(MENU_TYPE type)
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
             mIsInitial = false;
-			OnPlayButtonHover(); // Hover the first button
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
-			OnControlsButtonHover();
             break;
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
