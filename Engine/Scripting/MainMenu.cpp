@@ -290,7 +290,7 @@ void MainMenu::Controls()
             {
                 OnVSyncButtonClick();
             }
-            else if (mCurrentSetting == SETTING_TYPE::VSYNC)
+            else if (mCurrentSetting == SETTING_TYPE::FULL_SCREEN)
             {
 				OnFullscreenButtonClick();
             }
@@ -516,16 +516,7 @@ void MainMenu::OnVSyncButtonClick()
 //TODO: Investige why this is not working.
 void MainMenu::OnFullscreenButtonClick()
 {
-    if (*mFullscreenImage->GetAlpha() == 1.0f)
-    {
-        mFullscreenImage->SetAlpha(0.5f);
-        App->GetWindow()->WindowFullscreen(false);
-    }
-    else
-    {
-        mFullscreenImage->SetAlpha(1.0f);
-        App->GetWindow()->WindowFullscreen(true);
-    }
+    App->GetWindow()->WindowFullscreen(!App->GetWindow()->IsWindowFullscreen());
 }
 
 void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
