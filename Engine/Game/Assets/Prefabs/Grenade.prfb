@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1660522487,
+                "UID": 383665186,
                 "ParentUID": 1,
                 "Name": "Grenade",
                 "Enabled": true,
@@ -30,21 +30,21 @@
                 "Components": []
             },
             {
-                "UID": 1887115199,
-                "ParentUID": 1660522487,
-                "Name": "ExplosionPreview",
+                "UID": 464077441,
+                "ParentUID": 383665186,
+                "Name": "Grenade",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    -4.127056740799162e-8
+                    0.0
                 ],
                 "Rotation": [
-                    0.7071068286895752,
                     0.0,
                     0.0,
-                    0.7071067094802856
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
@@ -53,42 +53,80 @@
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
-                "OverridePrefab": true,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 524090743,
+                "ParentUID": 464077441,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 592388944,
+                "ParentUID": 524090743,
+                "Name": "Sphere",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    1.0559978485107422,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.20000000298023225,
+                    0.20000000298023225,
+                    0.20000000298023225
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ComponentType": 7,
+                        "ComponentType": 0,
                         "IsEnabled": true,
-                        "Size": [
-                            100.0,
-                            100.0
-                        ],
-                        "Render": 0
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 1250048034,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
+                        "MeshID": 81892183,
+                        "MaterialID": 999999999,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
                     }
                 ]
             },
             {
-                "UID": 1261577094,
-                "ParentUID": 1660522487,
-                "Name": "GrenadeGO",
+                "UID": 653864287,
+                "ParentUID": 383665186,
+                "Name": "ExplosionSFX",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -131,14 +169,19 @@
                                 "VariableName": "mGrenadeRadius",
                                 "MemberType": 1,
                                 "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mGrenade",
+                                "MemberType": 3,
+                                "VariableData": 464077441
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1750386135,
-                "ParentUID": 1261577094,
+                "UID": 714364936,
+                "ParentUID": 653864287,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
@@ -165,8 +208,8 @@
                 "Components": []
             },
             {
-                "UID": 36084350,
-                "ParentUID": 1750386135,
+                "UID": 774795964,
+                "ParentUID": 714364936,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
@@ -199,6 +242,58 @@
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 853606936,
+                "ParentUID": 383665186,
+                "Name": "ExplosionPreviewDecals",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.374541163444519,
+                    0.18566273152828217,
+                    0.05145978182554245
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.0,
+                    3.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 680344108,
+                        "DiffuseName": "Decal_Level01.png",
+                        "DiffuseColor": [
+                            0.970588207244873,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
                     }
                 ]
             }

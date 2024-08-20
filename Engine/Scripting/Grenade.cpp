@@ -18,6 +18,7 @@ CREATE(Grenade)
     MEMBER(MemberType::FLOAT, mGrenadeDPS);
     MEMBER(MemberType::FLOAT, mGrenadeDuration);
     MEMBER(MemberType::FLOAT, mGrenadeRadius);
+    MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::GAMEOBJECT, mGrenade);
 	END_CREATE;
 }
@@ -42,9 +43,9 @@ void Grenade::Update()
         MoveToTarget();
     }
 
-    if (mState == GRENADE_STATE::EXPLOTION_START)
+    if (mState == GRENADE_STATE::EXPLOSION_START)
     {
-        Explotion();
+        Explosion();
     }
 }
 
@@ -52,75 +53,65 @@ void Grenade::MoveToTarget()
 {
     mElapsedTime += App->GetDt();
 
-    // 确保时间不超过总飞行时间
+    // Ensure the time does not exceed the total flight time
     if (mElapsedTime > mFlightTime)
     {
         mElapsedTime = mFlightTime;
     }
 
-    // 计算当前位置
     mCurrentPosition = CalculatePositionAtTime(mElapsedTime);
-
-    // 更新物体的位置 (在你的框架中实际更新对象的位置)
-    // mGameObject->SetPosition(mCurrentPosition);
     mGrenade->SetWorldPosition(mCurrentPosition);
 
-    // 如果到达目标点，停止更新
     if (mElapsedTime >= mFlightTime)
     {
         mGrenade->SetEnabled(false);
 
-        mState = GRENADE_STATE::EXPLOTION_START;
+        mState = GRENADE_STATE::EXPLOSION_START;
         mGameObject->SetWorldPosition(mDestination);
     }
 }
 
 void Grenade::CalculateTrajectory()
 {
-    // 计算水平和竖直位移
     float3 displacement = mDestination - mInitialPosition;
     float horizontalDistance = float3(displacement.x, 0, displacement.z).Length();
     float verticalDistance = displacement.y;
 
-    // 计算抛物线的最高点高度（随着水平距离变化）
-    float dynamicHeight = mArcHeight * (horizontalDistance / mGrenadeRange);
+    float initialHorizontalSpeed = horizontalDistance / mSpeed;
 
-    // 计算竖直方向的初始速度（根据动态高度）
-    float vy = std::sqrt(2 * mGravity * dynamicHeight);
+    mFlightTime = 2 * initialHorizontalSpeed / 9.81;
 
-    // 计算到达最高点的时间和总飞行时间
-    float timeToMaxHeight = vy / mGravity;
-    float totalFlightTime = timeToMaxHeight + std::sqrt(2 * (dynamicHeight - verticalDistance) / mGravity);
+    float vy = (verticalDistance + 9.81 * mFlightTime * mFlightTime / 2) / mFlightTime;
 
-    // 水平方向的速度
-    float vx = displacement.x / totalFlightTime;
-    float vz = displacement.z / totalFlightTime;
+    float dynamicHeight = mInitialPosition.y + (vy * vy) / (2 * 9.81);
 
-    // 设置初速度矢量
+    float vx = displacement.x / mFlightTime;
+    float vz = displacement.z / mFlightTime;
+
     mVelocity = float3(vx, vy, vz);
-    mFlightTime = totalFlightTime;
-    mElapsedTime = 0.0f; // 重置时间
+
+    mElapsedTime = 0;
 }
+
 
 float3 Grenade::CalculatePositionAtTime(float t)
 {
     float x = mVelocity.x * t;
     float z = mVelocity.z * t;
-    float y = mInitialPosition.y + mVelocity.y * t - 0.5f * mGravity * t * t;
+    float y = mInitialPosition.y + mVelocity.y * t - 0.5f * 9.81 * t * t;
 
     return float3(mInitialPosition.x + x, y, mInitialPosition.z + z);
 }
 
-void Grenade::Explotion()
+void Grenade::Explosion()
 {
-    if (mGrenadeCurrentTime > 0)
+    if (!mExplosionTimer.Delay(mGrenadeDuration))
     {
-        mGrenadeCurrentTime -= App->GetDt();
         BlackHole();
-        if (mGrenadeCurrentTime <= 0)
-        {
-            EndExplotion();  
-        }
+    }
+    else 
+    {
+        EndExplosion();
     }
 }
 
@@ -146,17 +137,19 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
             ScriptComponent* script = (ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT);
             Enemy* target = (Enemy*)script->GetScriptInstance();
 
-            target->TakeDamage(mGrenadeDPS * App->GetDt());
-            target->SetAttracted(true);
+            if (target != nullptr)
+            {
+                target->TakeDamage(mGrenadeDPS * App->GetDt());
+                target->SetAttracted(true);
+            }
         }
     }
 }
 
-void Grenade::EndExplotion()
+void Grenade::EndExplosion()
 {
     mGameObject->SetEnabled(false);
-    mGrenadeCurrentTime = mGrenadeDuration;
-    mState = GRENADE_STATE::EXPLOTION_END;
+    mState = GRENADE_STATE::INACTIVE;
 }
 
 std::vector<GameObject*> Grenade::GetAffectedEnemies()
@@ -168,7 +161,6 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     
 
     // Check if enemies are inside circle
-    // TODO: Check hit with physic
     for (const auto& e : AllEnemies)
     {
         float3 diff = e->GetWorldPosition() - mGameObject->GetWorldPosition();
