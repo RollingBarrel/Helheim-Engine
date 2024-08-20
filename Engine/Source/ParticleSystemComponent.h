@@ -85,7 +85,7 @@ private:
 	int mBlendMode = 0;
 
 	ColorGradient mColorGradient;
-	std::vector<Particle*> mParticles;
+	std::vector<Particle*> mParticles; // un vector es ineficiente aqui
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;
 	unsigned int mVBO = 0;

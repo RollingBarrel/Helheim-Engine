@@ -1,20 +1,17 @@
 #pragma once
 
 #include "Component.h"
-#include "float3.h"
-#include "float2.h"
-
 
 class ResourceTexture;
 class Trail;
 
-class ENGINE_API TrailComponent : public Component
+class ENGINE_API LineComponent : public Component
 {
 	friend class InspectorPanel;
 public:
-	explicit TrailComponent(GameObject* ownerGameObject);
-	TrailComponent(const TrailComponent& original, GameObject* owner);
-	~TrailComponent() final;
+	explicit LineComponent(GameObject* ownerGameObject);
+	LineComponent(const LineComponent& original, GameObject* owner);
+	~LineComponent() final;
 	void Reset() override;
 
 	Trail* GetTrail() const { return mTrail; }
@@ -29,5 +26,8 @@ public:
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 private:
+	GameObject* SearchLineFinal(GameObject* owner);
+
 	Trail* mTrail = nullptr;
+	GameObject* mFinalPoint = nullptr;
 };

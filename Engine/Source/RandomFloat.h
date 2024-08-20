@@ -12,6 +12,9 @@ public:
 	~RandomFloat();
 
 	float GetInitialValue() const { return mInitialValue; }
+	float GetMaxValue() const { return mMax; }
+	float GetMinValue() const { return mMin; }
+	bool IsRand() const { return mIsRand; }
 	void CalculateInitialValue();
 	float CalculateRandom() const;
 
