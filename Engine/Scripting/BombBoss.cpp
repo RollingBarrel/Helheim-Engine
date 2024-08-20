@@ -9,6 +9,7 @@
 #include "DecalComponent.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+
 CREATE(BombBoss)
 {
 	CLASS(owner);
@@ -38,7 +39,6 @@ void BombBoss::Start()
 		}
 	}
 }
-
 
 void BombBoss::Update()
 {
@@ -84,5 +84,4 @@ void BombBoss::Init(float3 bombOrigin)
 		particlecomponent->GetOwner()->SetEnabled(false);
 	}
 	mGameObject->SetWorldScale(float3(mRadius*2));
-	
 }

@@ -36,6 +36,8 @@ EnemyBoss::EnemyBoss(GameObject* owner) : Enemy(owner)
 
 void EnemyBoss::Start()
 {
+    srand(static_cast<unsigned int>(time(0)));
+
     Enemy::Start();
     mCurrentState = EnemyState::IDLE;
 
@@ -104,7 +106,7 @@ void EnemyBoss::SelectAttack()
         break;
     case 2:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-        BombAttack();
+        EruptionAttack();
         break;
     case 0:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
@@ -133,14 +135,14 @@ void EnemyBoss::LaserAttack()
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (laserScript) laserScript->Init(mAttackDamage, mAttackDistance);
     }
-
 }
 
-void EnemyBoss::BombAttack()
+void EnemyBoss::EruptionAttack()
 {
     float3 target = mPlayer->GetWorldPosition();
     int index = rand() % mTemplates.size();
     GameObject* bombGO = mTemplates[index];
+	LOG("Bomb index: %d", index);
     bombGO->SetWorldPosition(target);
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
@@ -159,5 +161,4 @@ void EnemyBoss::Death()
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->Victory();
     }
-
 }

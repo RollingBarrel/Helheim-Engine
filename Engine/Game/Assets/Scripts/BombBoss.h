@@ -29,6 +29,4 @@ private:
 	float3 mBombOrigin = float3::zero;
 	bool mHasExploded = false;
 	std::vector<Component*> mExplosionParticles;
-
-
 };

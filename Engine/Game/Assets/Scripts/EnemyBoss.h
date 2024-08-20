@@ -6,8 +6,6 @@
 struct CollisionData;
 class BoxColliderComponent;
 
-
-
 GENERATE_BODY(EnemyBoss);
 class EnemyBoss : public Enemy
 {
@@ -24,7 +22,7 @@ private:
 	void SelectAttack();
 	void BulletAttack();
 	void LaserAttack();
-	void BombAttack();
+	void EruptionAttack();
 
 	void  Death() override;
 
