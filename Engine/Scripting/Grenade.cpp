@@ -6,12 +6,6 @@
 #include <vector>
 #include "Application.h"
 
-#include "PoolManager.h"
-#include "GameManager.h"
-#include "RayCastBullet.h"
-#include "ColorGradient.h"
-#include "TrailComponent.h"
-
 CREATE(Grenade)
 {
 	CLASS(owner);
