@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -231,6 +231,7 @@
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
+    <ClCompile Include="LineComponent.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="MaskComponent.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
@@ -252,6 +253,7 @@
     <ClCompile Include="Particle.cpp" />
     <ClCompile Include="ParticleSystemComponent.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="PlayerStats.cpp" />
     <ClCompile Include="PointLightComponent.cpp" />
     <ClCompile Include="PreciseTimer.cpp" />
     <ClCompile Include="RandomFloat.cpp" />
@@ -284,6 +286,7 @@
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Trail.cpp" />
     <ClCompile Include="TrailComponent.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
@@ -734,6 +737,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="LineComponent.h" />
     <ClInclude Include="MaskComponent.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
@@ -755,6 +759,7 @@
     <ClInclude Include="Particle.h" />
     <ClInclude Include="ParticleSystemComponent.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="PlayerStats.h" />
     <ClInclude Include="PointLightComponent.h" />
     <ClInclude Include="PreciseTimer.h" />
     <ClInclude Include="RandomFloat.h" />
@@ -787,10 +792,12 @@
     <ClInclude Include="SpotLightComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Trail.h" />
     <ClInclude Include="TrailComponent.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\Game\Assets\Shaders\Fog.comp" />
     <None Include="..\Game\Assets\Shaders\GameFragment.glsl" />
     <None Include="..\Game\Assets\Shaders\GameVertex.glsl" />
     <None Include="..\Game\Assets\Shaders\GaussianBlur.glsl" />
@@ -803,6 +810,7 @@
     <None Include="..\Game\Assets\Shaders\Irradiance_FragmentShader.glsl" />
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterDownBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\KawaseDualFilterUpBlur.glsl" />
+    <None Include="..\Game\Assets\Shaders\Noise.comp" />
     <None Include="..\Game\Assets\Shaders\particle_fragment.glsl" />
     <None Include="..\Game\Assets\Shaders\particle_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\PassThroughPixel.glsl" />
@@ -827,6 +835,7 @@
     <None Include="..\Game\Assets\Shaders\ui.vs" />
     <None Include="..\Game\Assets\Shaders\uiMask.fs" />
     <None Include="..\Game\Assets\Shaders\uiText.fs" />
+    <None Include="..\Game\Assets\Shaders\Volumetric.comp" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_dsp.cs" />
     <None Include="Dependencies\FMOD\api\core\inc\fmod_errors.cs" />

@@ -37,6 +37,7 @@
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
 #include "TrailComponent.h"
+#include "LineComponent.h"
 #include "BoxColliderComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
@@ -49,7 +50,7 @@
 #include "AnimationController.h"
 #include "BezierCurve.h"
 #include "AudioUnit.h"
-#include "TrailComponent.h"
+#include "Trail.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -69,7 +70,7 @@ InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 void InspectorPanel::Draw(int windowFlags)
 {
 	HierarchyPanel* hierarchyPanel = (HierarchyPanel*)EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL);
-	SettingsPanel* settingsPanel =  reinterpret_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
+	SettingsPanel* settingsPanel = static_cast<SettingsPanel*>(EngineApp->GetEditor()->GetPanel(SETTINGSPANEL));
 	
 	GameObject* focusedObject = hierarchyPanel->GetFocusedObject();
 
@@ -145,7 +146,7 @@ void InspectorPanel::Draw(int windowFlags)
 				{
 					focusedObject->SetTag(settingsPanel->GetTags()[i]);
 
-					AnimationComponent* animComp = reinterpret_cast<AnimationComponent*>(focusedObject->GetComponent(ComponentType::ANIMATION));
+					AnimationComponent* animComp = static_cast<AnimationComponent*>(focusedObject->GetComponent(ComponentType::ANIMATION));
 					if (animComp)
 					{
 						animComp->ReloadGameObjects();
@@ -462,64 +463,67 @@ void InspectorPanel::DrawComponents(GameObject* object)
 			switch (component->GetType()) 
 			{
 				case ComponentType::MESHRENDERER:
-					DrawMeshRendererComponent(*reinterpret_cast<MeshRendererComponent*>(component));
+					DrawMeshRendererComponent(*static_cast<MeshRendererComponent*>(component));
 					break;
 				case ComponentType::AIAGENT:
-					DrawAIAgentComponent(reinterpret_cast<AIAgentComponent*>(component));
+					DrawAIAgentComponent(static_cast<AIAgentComponent*>(component));
 					break;
 				case ComponentType::POINTLIGHT:
-					DrawPointLightComponent(reinterpret_cast<PointLightComponent*>(component));
+					DrawPointLightComponent(static_cast<PointLightComponent*>(component));
 					break;
 				case ComponentType::SPOTLIGHT:
-					DrawSpotLightComponent(reinterpret_cast<SpotLightComponent*>(component));
+					DrawSpotLightComponent(static_cast<SpotLightComponent*>(component));
 					break;
 				case ComponentType::CAMERA:
-					DrawCameraComponent(reinterpret_cast<CameraComponent*>(component));
+					DrawCameraComponent(static_cast<CameraComponent*>(component));
 					break;
 				case ComponentType::SCRIPT:
-					DrawScriptComponent(reinterpret_cast<ScriptComponent*>(component));
+					DrawScriptComponent(static_cast<ScriptComponent*>(component));
 					break;
 				case ComponentType::NAVMESHOBSTACLE: 
-					DrawNavMeshObstacleComponent(reinterpret_cast<NavMeshObstacleComponent*>(component));
+					DrawNavMeshObstacleComponent(static_cast<NavMeshObstacleComponent*>(component));
 					break;
 				case ComponentType::ANIMATION: 
-					DrawAnimationComponent(reinterpret_cast<AnimationComponent*>(component));
+					DrawAnimationComponent(static_cast<AnimationComponent*>(component));
 					break;
 				case ComponentType::IMAGE:
-					DrawImageComponent(reinterpret_cast<ImageComponent*>(component));
+					DrawImageComponent(static_cast<ImageComponent*>(component));
 					break;
 				case ComponentType::MASK:
-					DrawMaskComponent(reinterpret_cast<MaskComponent*>(component));
+					DrawMaskComponent(static_cast<MaskComponent*>(component));
 					break;
 				case ComponentType::CANVAS:
-					DrawCanvasComponent(reinterpret_cast<CanvasComponent*>(component));
+					DrawCanvasComponent(static_cast<CanvasComponent*>(component));
 					break;
 				case ComponentType::SLIDER:
-					DrawSliderComponent(reinterpret_cast<SliderComponent*>(component));
+					DrawSliderComponent(static_cast<SliderComponent*>(component));
 					break;
 				case ComponentType::BUTTON:
-					DrawButtonComponent(reinterpret_cast<ButtonComponent*>(component));
+					DrawButtonComponent(static_cast<ButtonComponent*>(component));
 					break;
 				case ComponentType::AUDIOSOURCE: 
-					DrawAudioSourceComponent(reinterpret_cast<AudioSourceComponent*>(component));
+					DrawAudioSourceComponent(static_cast<AudioSourceComponent*>(component));
 					break;
 				case ComponentType::TRANSFORM2D:
-					DrawTransform2DComponent(reinterpret_cast<Transform2DComponent*>(component));
+					DrawTransform2DComponent(static_cast<Transform2DComponent*>(component));
 					break;
 				case ComponentType::PARTICLESYSTEM:
-					DrawParticleSystemComponent(reinterpret_cast<ParticleSystemComponent*>(component));
+					DrawParticleSystemComponent(static_cast<ParticleSystemComponent*>(component));
 					break;
 				case ComponentType::TEXT:
-					DrawTextComponent(reinterpret_cast<TextComponent*>(component));
+					DrawTextComponent(static_cast<TextComponent*>(component));
 					break;
 				case ComponentType::BOXCOLLIDER:
-					DrawBoxColliderComponent(reinterpret_cast<BoxColliderComponent*>(component));
+					DrawBoxColliderComponent(static_cast<BoxColliderComponent*>(component));
 					break;
 				case ComponentType::TRAIL:
-					DrawTrailComponent(reinterpret_cast<TrailComponent*>(component));
+					DrawTrailComponent(static_cast<TrailComponent*>(component));
 					break;
+				case ComponentType::LINE:
+						DrawLineComponent(static_cast<LineComponent*>(component));
+						break;
 				case ComponentType::DECAL:
-					DrawDecalComponent(reinterpret_cast<DecalComponent*>(component));
+					DrawDecalComponent(static_cast<DecalComponent*>(component));
 					break;
 			}
 		}
@@ -599,6 +603,16 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 	if (!castShadow)
 	{
 		ImGui::EndDisabled();
+	}
+
+	static bool seeSphere = false;
+	ImGui::Checkbox("See Bounding Sphere", &seeSphere);
+	if (seeSphere)
+	{
+		float sphere[4]; component->GetBoundingSphere(sphere);
+		EngineApp->GetOpenGL()->BindSceneFramebuffer();
+		EngineApp->GetDebugDraw()->DrawSphere(sphere, col, sphere[3]);
+		EngineApp->GetOpenGL()->UnbindFramebuffer();
 	}
 
 }
@@ -1031,7 +1045,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 
 		if (ImGui::Button("Open state machine panel"))
 		{
-			AnimationSMPanel* panel = reinterpret_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			AnimationSMPanel* panel = static_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
 			panel->SetStateMachine(component->GetStateMachine());
 			panel->Open();
 		}
@@ -1051,7 +1065,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 				{
 					smName = assets[n].c_str();
 					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
-					ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+					ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
 					component->SetStateMachine(newSM->GetStateMachine());
 					component->SetSMUID(newSM->GetUID());
 				}
@@ -1077,7 +1091,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 					{
 						spineSMName = assets[n].c_str();
 						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
-						ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+						ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
 						component->SetSpineStateMachine(newSM->GetStateMachine());
 						component->SetSpineSMUID(newSM->GetUID());
 
@@ -1976,26 +1990,26 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
 	ImGui::Text("Fixed Direction");
 	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mFixedDirection));
+	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
 
-	if (component->mFixedDirection) 
+	if (component->mTrail->mFixedDirection)
 	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
-		ImGui::DragFloat3("##TrailDirection", component->mDirection.ptr());
+		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
 	}
 
 	ImGui::Text("Minimum distance");
 	ImGui::SameLine();
-	ImGui::DragFloat("##MinDistance", &(component->mMinDistance), 1.0f, 0.0f);
+	ImGui::DragFloat("##MinDistance", &(component->mTrail->mMinDistance), 1.0f, 0.0f);
 
 	ImGui::Text("Lifetime");
 	ImGui::SameLine();
-	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
+	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
 
 	ImGui::Separator();
-	DrawBezierCurve(&(component->mWidth), "Width");
-	
+	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint"))
 	{
@@ -2003,7 +2017,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->mImage;
+		ResourceTexture* image = component->mTrail->mImage;
 
 		if (image)
 		{
@@ -2023,16 +2037,16 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
 				if (resource && (resource->GetType() == Resource::Type::Texture))
 				{
-					component->SetImage(resource->GetUID());
-					component->SetFileName(asset->mName);
+					component->mTrail->SetImage(resource->GetUID());
+					component->mTrail->SetFileName(asset->mName);
 				}
 			}
 			ImGui::EndDragDropTarget();
 		}
 		ImGui::NextColumn();
-		if (component->GetFileName() != nullptr)
+		if (component->mTrail->GetFileName() != nullptr)
 		{
-			ImGui::Text(component->GetFileName());
+			ImGui::Text(component->mTrail->GetFileName());
 		}
 
 		if (image)
@@ -2041,20 +2055,113 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 			ImGui::Text("Height:%dpx", image->GetHeight());
 
 		}
+		if (ImGui::Button(ICON_FA_TRASH_CAN))
+		{
+			component->mTrail->SetImage(148626881);
+		}
 		ImGui::Columns(1);
 
-		ImGui::Text("UV Scroll");
+		ImGui::Text("Tilling");
 		ImGui::SameLine();
-		ImGui::Checkbox("##IsUVScrolling", &(component->mIsUVScrolling));
-		if (component->mIsUVScrolling) 
+		ImGui::Checkbox("##IsTilled", &(component->mTrail->mIsTilled));
+		if (component->mTrail->mIsTilled)
 		{
 			ImGui::SameLine();
-			ImGui::DragFloat("##UVScroll", &(component->mUVScroll), 1.0f, 0.0f);
+			ImGui::DragFloat("##Tilling", &(component->mTrail->mTilling), 0.01f, 0.0f);
 		}
 
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
-		bool updated = ImGui::GradientEditor(component->mGradient, draggingMark, selectedMark);
+		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
+	}
+}
+
+void InspectorPanel::DrawLineComponent(LineComponent* component) const
+{
+	ImGui::Text("Fixed Direction");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+
+	if (component->mTrail->mFixedDirection)
+	{
+		ImGui::Text("Line Direction");
+		ImGui::SameLine();
+		ImGui::DragFloat3("##LineDirection", component->mTrail->mDirection.ptr());
+	}
+
+	ImGui::Text("Minimum distance");
+	ImGui::SameLine();
+	ImGui::DragFloat("##MinDistance", &(component->mTrail->mMinDistance), 1.0f, 0.0f);
+
+	ImGui::Text("Lifetime");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+
+	ImGui::Separator();
+	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Texture & Tint"))
+	{
+		// Drag and drop	
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+
+		ResourceTexture* image = component->mTrail->mImage;
+
+		if (image)
+		{
+			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+			ImGui::Image(imageID, ImVec2(50, 50));
+		}
+		else
+		{
+			ImGui::Text("Drop Image");
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			{
+				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+				if (resource && (resource->GetType() == Resource::Type::Texture))
+				{
+					component->mTrail->SetImage(resource->GetUID());
+					component->mTrail->SetFileName(asset->mName);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::NextColumn();
+		if (component->mTrail->GetFileName() != nullptr)
+		{
+			ImGui::Text(component->mTrail->GetFileName());
+		}
+		if (image)
+		{
+			ImGui::Text("Width:%dpx", image->GetWidth());
+			ImGui::Text("Height:%dpx", image->GetHeight());
+		}
+		ImGui::NextColumn();
+		if (ImGui::Button(ICON_FA_TRASH_CAN))
+		{
+			component->mTrail->SetImage(148626881);
+		}
+		ImGui::Columns(1);
+
+		ImGui::Text("Tilling");
+		ImGui::SameLine();
+		ImGui::Checkbox("##IsTilled", &(component->mTrail->mIsTilled));
+		if (component->mTrail->mIsTilled)
+		{
+			ImGui::SameLine();
+			ImGui::DragFloat("##Tilling", &(component->mTrail->mTilling), 0.01f, 0.0f);
+		}
+
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 	}
 }
 

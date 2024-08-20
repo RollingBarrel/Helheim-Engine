@@ -6,17 +6,21 @@
 
 #include "float4.h"
 #include "float3.h"
+#include "MathFunc.h"
 
 #include "ResourceMesh.h"
 #include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+
+#include "Algorithm/Random/LCG.h"
 
 
 MeshRendererComponent::MeshRendererComponent(GameObject* owner) : Component(owner, ComponentType::MESHRENDERER), mMesh(nullptr), mMaterial(nullptr)
 {
-	mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
-	mAABB = AABB();
-
-	mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+	//mOBB = OBB(AABB(float3(0.0f), float3(1.0f)));
+	//mAABB = AABB();
+	//
+	//mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
 }
 
 MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other, GameObject* owner) : Component(owner, ComponentType::MESHRENDERER)
@@ -25,11 +29,23 @@ MeshRendererComponent::MeshRendererComponent(const MeshRendererComponent& other,
 	{
 		SetMesh(other.mMesh->GetUID());
 	}
-	mOBB = other.mOBB;
-	mAABB = other.mAABB;
+	//mOBB = other.mOBB;
+	//mAABB = other.mAABB;
+	mOriginalAABB = other.mOriginalAABB;
 	if (other.mMaterial)
 	{
-		SetMaterial(other.mMaterial->GetUID());
+		if (other.mUniqueMaterial)
+		{
+			mMaterial = new ResourceMaterial(LCG().Int(), nullptr,
+				other.mMaterial->GetBaseColorFactor().ptr(), other.mMaterial->GetMetallicFactor(), other.mMaterial->GetRoughnessFactor(), other.mMaterial->GetEmissiveFactor().ptr(),
+				other.mMaterial->GetBaseColorTexture()->GetUID(), other.mMaterial->GetMetallicRoughnessTexture()->GetUID(), other.mMaterial->GetNormalTexture()->GetUID(), other.mMaterial->GetEmissiveTexture()->GetUID(),
+				other.mMaterial->IsBaseColorEnabled(), other.mMaterial->IsMetallicRoughnessEnabled(), other.mMaterial->IsNormalMapEnabled(), other.mMaterial->IsEmissiveEnabled());
+			mUniqueMaterial = true;
+		}
+		else
+		{
+			SetMaterial(other.mMaterial->GetUID());
+		}
 	}
 	mHasSkinning = other.mHasSkinning;
 	mPaletteOwner = other.mPaletteOwner;
@@ -49,7 +65,15 @@ MeshRendererComponent::~MeshRendererComponent()
 	}
 	if (mMaterial)
 	{
-		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		if (mUniqueMaterial)
+		{
+			delete mMaterial;
+		}
+		else 
+		{
+			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		}
+
 		mMaterial = nullptr;
 	}
 
@@ -59,7 +83,7 @@ MeshRendererComponent::~MeshRendererComponent()
 
 void MeshRendererComponent::SetMesh(unsigned int uid)
 {
-	ResourceMesh* tmpMesh = reinterpret_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
+	ResourceMesh* tmpMesh = static_cast<ResourceMesh*>(App->GetResource()->RequestResource(uid, Resource::Type::Mesh));
 	if (tmpMesh)
 	{
 		if (mMesh)
@@ -74,9 +98,11 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 		mMesh = tmpMesh;
 
 		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
-		mAABB.SetFrom(positions, mMesh->GetNumberVertices());
-		mOriginalAABB = mAABB;
-		mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+		mOriginalAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		//mAABB.SetFrom(positions, mMesh->GetNumberVertices());
+		//mOriginalAABB = mAABB;
+		//mOBB.SetFrom(mAABB, mOwner->GetWorldTransform());
+
 		if (mMaterial)
 		{
 			App->GetOpenGL()->BatchAddMesh(*this);
@@ -88,7 +114,7 @@ void MeshRendererComponent::SetMesh(unsigned int uid)
 
 void MeshRendererComponent::SetMaterial(unsigned int uid)
 {
-	ResourceMaterial* tmpMaterial = reinterpret_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
+	ResourceMaterial* tmpMaterial = static_cast<ResourceMaterial*>(App->GetResource()->RequestResource(uid, Resource::Type::Material));
 	if (tmpMaterial)
 	{
 		if (mMaterial)
@@ -97,7 +123,10 @@ void MeshRendererComponent::SetMaterial(unsigned int uid)
 			{
 				App->GetOpenGL()->BatchRemoveMesh(*this);
 			}
-			App->GetResource()->ReleaseResource(mMaterial->GetUID());
+			if (mUniqueMaterial)
+				delete mMaterial;
+			else
+				App->GetResource()->ReleaseResource(mMaterial->GetUID());
 			mMaterial = nullptr;
 		}
 
@@ -133,7 +162,7 @@ void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const
 	if (mPaletteOwner != nullptr)
 	{
 		assert(originalToNew.find(mPaletteOwner->GetOwner()) != originalToNew.end() && originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER) != nullptr);
-		mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
+		mPaletteOwner = static_cast<MeshRendererComponent*>(originalToNew.at(mPaletteOwner->GetOwner())->GetComponent(ComponentType::MESHRENDERER));
 	}
 	else
 	{
@@ -148,10 +177,10 @@ void MeshRendererComponent::UpdateSkeletonObjects(const std::unordered_map<const
 
 void MeshRendererComponent::Update() 
 {
-	if (mOwner->HasUpdatedTransform())
-	{
-		RefreshBoundingBoxes();
-	}
+	//if (mOwner->HasUpdatedTransform())
+	//{
+	//	RefreshBoundingBoxes();
+	//}
 
 	UpdatePalette();
 }
@@ -168,18 +197,76 @@ void MeshRendererComponent::Disable()
 		App->GetOpenGL()->BatchRemoveMesh(*this);
 }
 
+void MeshRendererComponent::CreateUiqueMaterial()
+{
+	assert(mMaterial && mMesh);
+	if (!mUniqueMaterial)
+	{
+		App->GetOpenGL()->BatchRemoveMesh(*this);
+		ResourceMaterial* rMat = new ResourceMaterial(LCG().Int(), nullptr,
+			mMaterial->GetBaseColorFactor().ptr(), mMaterial->GetMetallicFactor(), mMaterial->GetRoughnessFactor(), mMaterial->GetEmissiveFactor().ptr(),
+			mMaterial->GetBaseColorTexture()->GetUID(), mMaterial->GetMetallicRoughnessTexture()->GetUID(), mMaterial->GetNormalTexture()->GetUID(), mMaterial->GetEmissiveTexture()->GetUID(),
+			mMaterial->IsBaseColorEnabled(), mMaterial->IsMetallicRoughnessEnabled(), mMaterial->IsNormalMapEnabled(), mMaterial->IsEmissiveEnabled());
+		App->GetResource()->ReleaseResource(mMaterial->GetUID());
+		mMaterial = rMat;
+		App->GetOpenGL()->BatchAddMesh(*this);
+		mUniqueMaterial = true;
+	}
+}
+
 Component* MeshRendererComponent::Clone(GameObject* owner) const
 {
 	return new MeshRendererComponent(*this, owner);
 }
 
-void MeshRendererComponent::RefreshBoundingBoxes()
-{	
-	mOBB = OBB(mOriginalAABB);
-	mOBB.Transform(mOwner->GetWorldTransform());
-
-	mAABB.SetFrom(mOBB);
+AABB MeshRendererComponent::GetAABB() const
+{
+	return GetOBB().MinimalEnclosingAABB();
 }
+
+OBB MeshRendererComponent::GetOBB() const
+{
+	math::OBB obb;
+	if (mHasSkinning)
+	{
+		float4x4 world = GetPalette()[0].Transposed();
+		obb.pos = world.MulPos(mOriginalAABB.CenterPoint());
+		float3 size = mOriginalAABB.HalfSize();
+		obb.axis[0] = world.Col(0).xyz();
+		obb.axis[1] = world.Col(1).xyz();
+		obb.axis[2] = world.Col(2).xyz();
+		obb.r.x = size.x;
+		obb.r.y = size.y;
+		obb.r.z = size.z;
+	}
+	else
+	{
+		const float4x4& world = mOwner->GetWorldTransform();
+		obb.pos = world.MulPos(mOriginalAABB.CenterPoint());
+		float3 size = mOriginalAABB.HalfSize();
+		obb.axis[0] = world.Col(0).xyz();
+		obb.axis[1] = world.Col(1).xyz();
+		obb.axis[2] = world.Col(2).xyz();
+		obb.r.x = size.x;
+		obb.r.y = size.y;
+		obb.r.z = size.z;
+	}
+	return obb;
+}
+
+void MeshRendererComponent::GetAABBOBB(AABB& aabb, OBB& obb) const
+{
+	obb = GetOBB();
+	aabb = obb.MinimalEnclosingAABB();
+}
+
+//void MeshRendererComponent::RefreshBoundingBoxes()
+//{	
+//	mOBB = OBB(mOriginalAABB);
+//	mOBB.Transform(mOwner->GetWorldTransform());
+//
+//	mAABB.SetFrom(mOBB);
+//}
 
 void MeshRendererComponent::Save(JsonObject& obj) const 
 {
@@ -222,7 +309,7 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(id));
 			if (got != uidPointerMap.end())
 			{
-				mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(uids.at(id))->GetComponent(ComponentType::MESHRENDERER));
+				mPaletteOwner = static_cast<MeshRendererComponent*>(uidPointerMap.at(uids.at(id))->GetComponent(ComponentType::MESHRENDERER));
 			}
 		}
 		else
@@ -230,7 +317,7 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(id);
 			if (got != uidPointerMap.end())
 			{
-				mPaletteOwner = reinterpret_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
+				mPaletteOwner = static_cast<MeshRendererComponent*>(uidPointerMap.at(id)->GetComponent(ComponentType::MESHRENDERER));
 			}
 		}
 
@@ -239,7 +326,7 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 	if (data.HasMember("InverseBindMatrices"))
 	{
 		JsonArray arr = data.GetJsonArray("InverseBindMatrices");
-		for (int i = 0; i < arr.Size(); ++i)
+		for (unsigned int i = 0; i < arr.Size(); ++i)
 		{
 			JsonObject obj = arr.GetJsonObject(i);
 			if (obj.HasMember("GoId"))
@@ -293,3 +380,16 @@ void MeshRendererComponent::UpdatePalette()
 
 }
 
+void MeshRendererComponent::SetEnableBaseColorTexture(bool baseColorTex)
+{
+	assert(mMaterial);
+	mMaterial->SetEnableBaseColorTexture(baseColorTex);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}
+
+void MeshRendererComponent::SetBaseColorFactor(const float4& baseColor)
+{ 
+	assert(mMaterial);
+	mMaterial->SetBaseColorFactor(baseColor);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}

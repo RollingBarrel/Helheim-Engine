@@ -28,15 +28,13 @@ private:
 
 	void  Death() override;
 
-	EnemyState mCurrentState = EnemyState::IDLE;
-
-	float mBulletSpeed = 0.65f;
+	float mBulletSpeed = 15.0f;
 	int mLastAttack = -1;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
 
-	const const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
+	const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
 };

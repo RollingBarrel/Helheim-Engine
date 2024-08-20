@@ -7,7 +7,18 @@ bool TimerScript::Delay(float time)
 
 	if (mTimePassed >= time)
 	{
-		mTimePassed = 0;
+		Reset();
+		return true;
+	}
+	else return false;
+}
+
+bool TimerScript::DelayWithoutReset(float time)
+{
+	mTimePassed += App->GetDt();
+
+	if (mTimePassed >= time)
+	{
 		return true;
 	}
 	else return false;

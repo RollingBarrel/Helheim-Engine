@@ -3,8 +3,10 @@
 #include "Macros.h"
 
 class ButtonComponent;
+class SliderComponent;
 class Transform2DComponent;
 class ImageComponent;
+class AudioManager;
 
 enum MENU_TYPE {
     MAIN,
@@ -16,6 +18,19 @@ enum MENU_TYPE {
     STUDIO,
     CONTROLS,
     SETTINGS
+};
+
+enum SETTING_TYPE {
+	GENERAL_VOLUME,
+	MUSIC_VOLUME,
+	EFFECTS_VOLUME,
+	VSYNC,
+	FULL_SCREEN // Using underscore to avoid conflict with fullscreen macro
+};
+
+enum DIRECTION {
+	LEFT,
+	RIGHT
 };
 
 GENERATE_BODY(MainMenu);
@@ -35,8 +50,11 @@ private:
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
+    void HoverSubMenu(MENU_TYPE type);
+	void HoverSubSubMenu(SETTING_TYPE type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
+
 
     void OnMainButtonClick();
     void OnQuitButtonClick();
@@ -48,24 +66,51 @@ private:
     void OnSettingsButtonClick();
     void OnVSyncButtonClick();
     void OnFullscreenButtonClick();
+	void OnSlide(SETTING_TYPE type, DIRECTION direction, float step); // step is the increment/decrement amount, usually 0.01f (1%) or 0.1f (10%)
+
 
     void OnQuitButtonHover();
     void OnOptionsButtonHover();
     void OnCreditsButtonHover();
     void OnPlayButtonHover();
     void OnBackCreditsButtonHover();
+    void OnControlsButtonHover();
+    void OnSettingsButtonHover();
+    void OnBackButtonHover();
+	void OnGeneralVolumeHover();
+    void OnMusicVolumeHover();
+    void OnEffectsVolumeHover();
+    void OnVSyncButtonHover();
+    void OnFullscreenButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
     void OnPlayButtonHoverOff();
     void OnBackCreditsButtonHoverOff();
+    void OnControlsButtonHoverOff();
+    void OnSettingsButtonHoverOff();
+    void OnBackButtonHoverOff();
+    void OnGeneralVolumeHoverOff();
+    void OnMusicVolumeHoverOff();
+    void OnEffectsVolumeHoverOff();
+    void OnVSyncButtonHoverOff();
+    void OnFullscreenButtonHoverOff();
     
-    int mOption = 0;  
+    int mOption = 0;
+    int mSettingOption = 7;
+    int mSubsettingOption = 0;
+
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;
+
     MENU_TYPE mCurrentMenu;
+	SETTING_TYPE mCurrentSetting;
+
+    float mGeneralVolumeValue = .75f;
+    float mMusicVolumeValue = .75f;
+    float mEffectsVolumeValue = .75f;
 
     // Screens
     GameObject* mSplashScreen = nullptr;
@@ -91,6 +136,7 @@ private:
     GameObject* mBackCreditGO = nullptr;
     ButtonComponent* mBackCreditButton = nullptr;
 
+    // Options
     GameObject* mOptionsContainerGO = nullptr;
     GameObject* mSettingsButtonGO = nullptr;
     GameObject* mSettingsGO = nullptr;
@@ -99,18 +145,34 @@ private:
     GameObject* mControlsButtonGO = nullptr;
     ButtonComponent* mControlsButton = nullptr;
 
-    GameObject* mGeneralVolumeButtonGO = nullptr;
-    ButtonComponent* mGeneralVolumeButton = nullptr;
-    GameObject* mMusicVolumeButtonGO = nullptr;
-    ButtonComponent* mMusicVolumeButton = nullptr;
-    GameObject* mEffectsVolumeButtonGO = nullptr;
-    ButtonComponent* mEffectsVolumeButton = nullptr;
+    // Settings
+    // General Volume
+    GameObject* mGeneralVolumeSliderGO = nullptr;
+    SliderComponent* mGeneralVolumeSlider = nullptr;
+    GameObject* mGeneralVolumeFillGO = nullptr;
+    ImageComponent* mGeneralVolumeFill = nullptr;
+    // Music Volume
+    GameObject* mMusicVolumeSliderGO = nullptr;
+    SliderComponent* mMusicVolumeSlider = nullptr;
+    GameObject* mMusicVolumeFillGO = nullptr;
+    ImageComponent* mMusicVolumeFill = nullptr;
+	// Effects Volume
+    GameObject* mEffectsVolumeSliderGO = nullptr;
+    SliderComponent* mEffectsVolumeSlider = nullptr;
+    GameObject* mEffectsVolumeFillGO = nullptr;
+    ImageComponent* mEffectsVolumeFill = nullptr;
+    // VSync
     GameObject* mVSyncButtonGO = nullptr;
     ButtonComponent* mVSyncButton = nullptr;
     ImageComponent* mVSyncImage = nullptr;
+	// Fullscreen
     GameObject* mFullscreenButtonGO = nullptr;
     ImageComponent* mFullscreenImage = nullptr;
     ButtonComponent* mFullscreenButton = nullptr;
+
+    GameObject* mAudioManagerGO = nullptr;
+    AudioManager* mAudioManager = nullptr;
+    int mBGMID = -1;
 
     bool mIsScrolling = false;
     bool mIsInitial = true;

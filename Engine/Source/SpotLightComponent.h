@@ -14,7 +14,7 @@ typedef struct SpotLight {
 	
 }SpotLight;
 
-class ENGINE_API SpotLightComponent : public Component 
+class ENGINE_API SpotLightComponent : public Component
 {
 public:
 	explicit SpotLightComponent(GameObject* owner);
@@ -42,7 +42,7 @@ public:
 	void SetIntensity(float intensity);
 	float GetRange() const { return mData.range; }
 	void SetRange(float range);
-	float GetOuterAngle() const; 
+	float GetOuterAngle() const;
 	void SetOuterAngle(float angle);
 	float GetInnerAngle() const;
 	void SetInnerAngle(float angle);
@@ -55,6 +55,7 @@ public:
 
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
 
+	void GetBoundingSphere(float boundingSphere[4]) const;
 
 private:
 	SpotLightComponent(const SpotLightComponent* original, GameObject* owner);

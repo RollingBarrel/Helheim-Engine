@@ -68,7 +68,7 @@ private:
 	float mStretchedRatio = 0.0f;
 
 	float mEmissionRate = 10.0f;
-	int mMaxParticles = 1000.0f;
+	int mMaxParticles = 1000;
 	bool mLooping = true;
 
 	//EmitterShape* mShape;
@@ -85,7 +85,7 @@ private:
 	int mBlendMode = 0;
 
 	ColorGradient mColorGradient;
-	std::vector<Particle*> mParticles;
+	std::vector<Particle*> mParticles; // un vector es ineficiente aqui
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;
 	unsigned int mVBO = 0;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "float4.h"
 #include "TimerScript.h"
 
 class GameObject;
@@ -21,19 +22,18 @@ enum class EnemyState
 class Enemy : public Script
 {
 public:
-	Enemy(GameObject* owner);
+	Enemy(GameObject* owner) : Script(owner) {}
 	~Enemy() {}
 	void Start() override;
 	void Update() override;
 
 	virtual void TakeDamage(float damage);
 	virtual void Death();
-	virtual void PushBack();
+	virtual void PushBack(); 
 	virtual void Init();
-
+	
 	// DEBUFF
 	virtual void Paralyzed(float percentage, bool paralyzed);
-
 	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
 
 protected:
@@ -46,7 +46,13 @@ protected:
 	virtual void PlayAttackAudio() {};
 
 	bool IsPlayerInRange(float range);
+	bool IsPlayerReachable();
 	void DropItem();
+	void ActivateEnemy();
+	void ActivateHitEffect();
+	void CheckHitEffect();
+	void ResetEnemyColor();
+	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
 
 	//Stats
 	float mHealth = 10.0f;
@@ -78,6 +84,8 @@ protected:
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
+	TimerScript  mHitEffectTimer;
+	float mHitEffectTime = 0.15f;
 
 	//Transition Times
 	float mIdleTransitionDuration = 0.2f;
@@ -86,6 +94,11 @@ protected:
 	float mAttackTransitionDuration = 0.2f;
 	float mDeathTransitionDuration = 0.2f;
 
+
+	//Hit Effect
+	bool mHit = false;
+	std::vector<Component*> mMeshComponents;
+	std::vector <float4> mOgColors;
 	// DEBUFF
 	bool mBeAttracted = false;
 

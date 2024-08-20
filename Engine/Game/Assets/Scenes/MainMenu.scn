@@ -155,19 +155,34 @@
                                 "MemberType": 5
                             },
                             {
-                                "VariableName": "mGeneralVolumeButtonGO",
+                                "VariableName": "mGeneralVolumeSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 1519662256
+                                "VariableData": 1603273687
                             },
                             {
-                                "VariableName": "mMusicVolumeButtonGO",
+                                "VariableName": "mGeneralVolumeFillGO",
                                 "MemberType": 3,
-                                "VariableData": 1894694441
+                                "VariableData": 1643257206
                             },
                             {
-                                "VariableName": "mEffectsVolumeButtonGO",
+                                "VariableName": "mMusicVolumeSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 896442468
+                                "VariableData": 1552416303
+                            },
+                            {
+                                "VariableName": "mMusicVolumeFillGO",
+                                "MemberType": 3,
+                                "VariableData": 104302619
+                            },
+                            {
+                                "VariableName": "mEffectsVolumeSliderGO",
+                                "MemberType": 3,
+                                "VariableData": 1652551155
+                            },
+                            {
+                                "VariableName": "mEffectsVolumeFillGO",
+                                "MemberType": 3,
+                                "VariableData": 1236365584
                             },
                             {
                                 "VariableName": "mVSyncButtonGO",
@@ -207,6 +222,15 @@
                                 "VariableName": "mBackCreditGO",
                                 "MemberType": 3,
                                 "VariableData": 1216033341
+                            },
+                            {
+                                "VariableName": "OTHERS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAudioManagerGO",
+                                "MemberType": 3,
+                                "VariableData": 1044790463
                             }
                         ]
                     }
@@ -1066,7 +1090,7 @@
                         "IsEnabled": false,
                         "Position": [
                             125.0,
-                            0.0,
+                            70.0,
                             0.0
                         ],
                         "Rotation": [
@@ -1137,7 +1161,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            100.0
+                            99.99999237060547
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1215,7 +1239,7 @@
                         ],
                         "Size": [
                             1.0,
-                            1.0
+                            1.0000001192092896
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1289,7 +1313,7 @@
                         ],
                         "Size": [
                             1.0,
-                            1.0
+                            1.0000001192092896
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1363,7 +1387,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1441,7 +1465,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1515,7 +1539,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1533,7 +1557,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "W A S D",
+                        "Text": "W A S D --- Right Joystick",
                         "Color": [
                             1.0,
                             1.0,
@@ -1589,7 +1613,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1667,7 +1691,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1741,7 +1765,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1759,7 +1783,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "SPACE",
+                        "Text": "SPACE --- A",
                         "Color": [
                             1.0,
                             1.0,
@@ -1815,7 +1839,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1893,7 +1917,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1967,7 +1991,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1985,7 +2009,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "LMB",
+                        "Text": "LMB --- Right Trigger",
                         "Color": [
                             1.0,
                             1.0,
@@ -2041,7 +2065,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2119,7 +2143,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2193,7 +2217,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2211,7 +2235,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "RMB",
+                        "Text": "RMB --- Left Tigger",
                         "Color": [
                             1.0,
                             1.0,
@@ -2267,7 +2291,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2345,7 +2369,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2419,7 +2443,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2437,7 +2461,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "E",
+                        "Text": "E --- Right Shoulder",
                         "Color": [
                             1.0,
                             1.0,
@@ -2493,7 +2517,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2571,7 +2595,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2645,7 +2669,7 @@
                         ],
                         "Size": [
                             0.800000011920929,
-                            0.800000011920929
+                            0.7999999523162842
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2663,7 +2687,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "Q",
+                        "Text": "Q --- X",
                         "Color": [
                             1.0,
                             1.0,
@@ -2719,7 +2743,7 @@
                         ],
                         "Size": [
                             1050.0,
-                            75.0
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2889,7 +2913,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "ESC",
+                        "Text": "ESC --- Start",
                         "Color": [
                             1.0,
                             1.0,
@@ -3041,7 +3065,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "Producer\nOscar Pellice\nDavid Bardina\n\nLead Engine\nAdrian Mirabel\n\nLead Gameplay\nCarlos García\n\nLead Artist\nLaia Ruiz\n\nLead Game Design\nDavid Longaron\nCarlos Nunez\n\nLead Audio\nJaime Coronado",
+                        "Text": "Producer\nOscar Pellice\n\nLead Engine\nAdrian Mirabel\n\nLead Gameplay\nCarlos Garcia\n\nLead Artist\nLaia Ruiz\n\nLead Game Design\nDavid Longaron\nCarlos Nunez\n\nLead Audio\nJaime Coronado",
                         "Color": [
                             1.0,
                             1.0,
@@ -3419,7 +3443,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "To Skip",
+                        "Text": "B To Skip",
                         "Color": [
                             1.0,
                             1.0,
@@ -3840,7 +3864,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -575.0,
-                            150.0,
+                            25.0,
                             0.0
                         ],
                         "Rotation": [
@@ -3996,7 +4020,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -575.0,
-                            25.0,
+                            150.0,
                             0.0
                         ],
                         "Rotation": [
@@ -5355,7 +5379,7 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.8029999732971191,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -5511,7 +5535,7 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.8019999861717224,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -5667,7 +5691,7 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.8019999861717224,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -5843,9 +5867,9 @@
                 ]
             },
             {
-                "UID": 896442468,
-                "ParentUID": 1652551155,
-                "Name": "Button",
+                "UID": 1044790463,
+                "ParentUID": 1,
+                "Name": "AudioManager",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -5870,66 +5894,37 @@
                 "Dynamic": false,
                 "Components": [
                     {
-                        "ComponentType": 9,
+                        "ComponentType": 3,
                         "IsEnabled": true,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            25.0,
-                            40.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
+                        "ScriptName": "AudioManager",
+                        "ScriptVariables": []
+                    },
+                    {
+                        "ComponentType": 13,
+                        "IsEnabled": true,
+                        "Audios": [
+                            {
+                                "Name": "event:/UI/Okay",
+                                "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/UI/Cancel",
+                                "PreviewPlayID": 1
+                            },
+                            {
+                                "Name": "event:/MC/main/Theme",
+                                "PreviewPlayID": -1
+                            }
                         ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.7843137383460999,
-                            0.7843137383460999,
-                            0.7843137383460999
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": true
                     }
                 ]
             },
             {
-                "UID": 1519662256,
-                "ParentUID": 1603273687,
-                "Name": "Button",
+                "UID": 1566125426,
+                "ParentUID": 1852538699,
+                "Name": "VerticalItem (8)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -5948,15 +5943,15 @@
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
-                "OverridePrefab": false,
+                "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
-                            0.0,
+                            -340.0,
                             0.0
                         ],
                         "Rotation": [
@@ -5966,8 +5961,8 @@
                             1.0
                         ],
                         "Size": [
-                            25.0,
-                            40.0
+                            1050.0,
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -5984,14 +5979,14 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
-                            0.7843137383460999,
-                            0.7843137383460999,
-                            0.7843137383460999
+                            1.0,
+                            1.0,
+                            1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.20100000500679017,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -5999,19 +5994,15 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": true
                     }
                 ]
             },
             {
-                "UID": 1894694441,
-                "ParentUID": 1552416303,
-                "Name": "Button",
+                "UID": 1599056159,
+                "ParentUID": 1566125426,
+                "Name": "Text",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6030,15 +6021,15 @@
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
-                "OverridePrefab": false,
+                "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
-                            0.0,
-                            0.0,
+                            -450.0,
+                            -15.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6048,8 +6039,156 @@
                             1.0
                         ],
                         "Size": [
-                            25.0,
-                            40.0
+                            0.800000011920929,
+                            0.7999999523162842
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Aim",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1922328279,
+                "ParentUID": 1566125426,
+                "Name": "Text (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -15.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            0.7999999523162842
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Mouse --- Left Joystick",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1368196248,
+                "ParentUID": 1852538699,
+                "Name": "VerticalItem (9)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -420.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1050.0,
+                            75.00001525878906
                         ],
                         "AnchorMin": [
                             0.5,
@@ -6066,14 +6205,14 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
-                            0.7843137383460999,
-                            0.7843137383460999,
-                            0.7843137383460999
+                            1.0,
+                            1.0,
+                            1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.0,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -6081,15 +6220,159 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1398342141,
+                "ParentUID": 1368196248,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -15.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            0.7999997138977051
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
                     },
                     {
-                        "ComponentType": 11,
-                        "IsEnabled": true
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Ultimate",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1786570654,
+                "ParentUID": 1368196248,
+                "Name": "Text (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -15.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            0.7999997138977051
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "C --- Left Shoulder",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0
                     }
                 ]
             }
         ],
-        "NavMeshResource": 6025561,
+        "NavMeshResource": 0,
         "SkyBoxResource": 0,
         "BloomIntensity": 0.5,
         "DirectionalLight": [

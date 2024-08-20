@@ -235,7 +235,7 @@ bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
 {
     PHYSFS_Stat stat;
     if (!PHYSFS_stat(directoryPath, &stat))
-        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()))
     return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
 

@@ -24,11 +24,14 @@ public:
 	void Update() override;
 	Component* Clone(GameObject* owner) const override;
 
-	void RefreshBoundingBoxes();
-	const OBB& GetOBB() const { return mOBB; }
-	const AABB& GetAABB() const { return mAABB; }
+	//void RefreshBoundingBoxes();
+	//const OBB& GetOBB() const { return mOBB; }
+	//const AABB& GetAABB() const { return mAABB; }
+	AABB GetAABB() const;
+	OBB GetOBB() const;
+	void GetAABBOBB(AABB& aabb, OBB& obb) const;
 	const AABB& GetOriginalAABB() const { return mOriginalAABB; }
-	const AABB& GetAABBWorld() const { return mAABBWorld; }
+	//const AABB& GetAABBWorld() const { return mAABBWorld; }
 
 	const ResourceMesh* GetResourceMesh() const { return mMesh; }
 	const ResourceMaterial* GetResourceMaterial() const { return mMaterial; }
@@ -36,13 +39,17 @@ public:
 	void SetMaterial(unsigned int uid);
 	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
 	void UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
-
+	void SetEnableBaseColorTexture(bool baseColorTex);
+	void SetBaseColorFactor(const float4& baseColor);
 	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
 	bool HasSkinning() const { return mHasSkinning; };
 
 	void Enable() override;
 	void Disable() override;
-	
+
+	void CreateUiqueMaterial();
+	bool HasUniqueMaterial() const { return mUniqueMaterial; }
+
 
 private:
 	void Save(JsonObject& obj) const override;
@@ -50,15 +57,17 @@ private:
 
 	void UpdatePalette();
 
+	
+
 
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;
 
-	OBB mLocalOBB;
-	OBB mOBB;
-	AABB mAABB;
+	//OBB mLocalOBB;
+	//OBB mOBB;
+	//AABB mAABB;
 	AABB mOriginalAABB;
-	AABB mAABBWorld;
+	//AABB mAABBWorld;
 	int mTemporalID = -1;
 
 
@@ -67,5 +76,5 @@ private:
 	std::vector<float4x4> mPalette;
 	const MeshRendererComponent* mPaletteOwner = nullptr;
 	bool mHasSkinning = false;
-
+	bool mUniqueMaterial = false;
 };

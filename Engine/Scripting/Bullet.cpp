@@ -7,6 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "TrailComponent.h"
+#include "Trail.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
 
@@ -27,7 +28,7 @@ Bullet::~Bullet()
 
 void Bullet::Start()
 {
-	mCollider = reinterpret_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Bullet::OnCollisionEnter, this, std::placeholders::_1)));
@@ -81,8 +82,8 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	GameObject* firstChild = *(mGameObject->GetChildren().begin());
 	if (firstChild)
 	{
-		mHitParticles = reinterpret_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
-		mBulletTrail = reinterpret_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
+		mHitParticles = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
+		mBulletTrail = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
 		if (mBulletTrail)
 		{
 			mBulletTrail->SetEnable(true);
@@ -93,7 +94,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 		}
 		if (gradient)
 		{
-			mBulletTrail->SetColorGradient(*gradient);
+			mBulletTrail->GetTrail()->SetColorGradient(*gradient);
 		}
 	}
 
@@ -122,8 +123,8 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			if (collisionData->collidedWith->GetTag().compare("Player") == 0)
 			{
 				//LOG("Collided with player");
-				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
+				ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+				PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
 				player->TakeDamage(mDamage);
 				mDamage = 0.0f;
 				if (mHitParticles)
