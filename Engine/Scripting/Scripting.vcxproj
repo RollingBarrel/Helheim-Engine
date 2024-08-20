@@ -183,6 +183,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveSpawner.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="EnemyCreatureRange.cpp" />
     <ClCompile Include="EnemyBoss.cpp" />
     <ClCompile Include="EnemyExplosive.cpp" />
+    <ClCompile Include="EnemyExplosiveSpawner.cpp" />
     <ClCompile Include="EnemyRobotMelee.cpp" />
     <ClCompile Include="EnemyRobotRange.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />

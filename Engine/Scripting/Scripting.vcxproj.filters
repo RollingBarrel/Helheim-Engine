@@ -184,6 +184,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveSpawner.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Managers</Filter>
@@ -338,6 +341,9 @@
     </ClCompile>
     <ClCompile Include="UltimateAttack.cpp" />
     <ClCompile Include="BossLaser.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="EnemyExplosiveSpawner.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="RayCastBullet.cpp" />
