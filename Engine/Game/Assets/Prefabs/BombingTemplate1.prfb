@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 467237237,
+                "UID": 1812506685,
                 "ParentUID": 1,
                 "Name": "BombingTemplate1",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 2003076497,
-                "ParentUID": 467237237,
+                "UID": 1359667799,
+                "ParentUID": 1812506685,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -81,8 +81,8 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 2137144483,
-                        "DiffuseName": "Exclamation_mark_inside_a_circle.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -99,13 +99,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 1273076410,
-                "ParentUID": 2003076497,
+                "UID": 753732334,
+                "ParentUID": 1359667799,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -191,8 +191,8 @@
                 ]
             },
             {
-                "UID": 580114695,
-                "ParentUID": 467237237,
+                "UID": 119321880,
+                "ParentUID": 1812506685,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -242,8 +242,8 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 2137144483,
-                        "DiffuseName": "Exclamation_mark_inside_a_circle.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -260,13 +260,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 2014028811,
-                "ParentUID": 580114695,
+                "UID": 1644230643,
+                "ParentUID": 119321880,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -352,8 +352,8 @@
                 ]
             },
             {
-                "UID": 1276997003,
-                "ParentUID": 467237237,
+                "UID": 1022143106,
+                "ParentUID": 1812506685,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -403,8 +403,8 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 2137144483,
-                        "DiffuseName": "Exclamation_mark_inside_a_circle.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -421,13 +421,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 548528578,
-                "ParentUID": 1276997003,
+                "UID": 416068399,
+                "ParentUID": 1022143106,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -513,8 +513,8 @@
                 ]
             },
             {
-                "UID": 1938859948,
-                "ParentUID": 467237237,
+                "UID": 2041092160,
+                "ParentUID": 1812506685,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -564,8 +564,8 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 2137144483,
-                        "DiffuseName": "Exclamation_mark_inside_a_circle.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -582,13 +582,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 1216378929,
-                "ParentUID": 1938859948,
+                "UID": 1481872386,
+                "ParentUID": 2041092160,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -674,8 +674,8 @@
                 ]
             },
             {
-                "UID": 484568696,
-                "ParentUID": 467237237,
+                "UID": 871759661,
+                "ParentUID": 1812506685,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -725,8 +725,8 @@
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 2137144483,
-                        "DiffuseName": "Exclamation_mark_inside_a_circle.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -743,13 +743,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 49970512,
-                "ParentUID": 484568696,
+                "UID": 201215908,
+                "ParentUID": 871759661,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
