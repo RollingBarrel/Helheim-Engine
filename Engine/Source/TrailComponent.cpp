@@ -1,18 +1,8 @@
 #include "TrailComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleResource.h"
-#include "Application.h"
-#include "ModuleOpenGL.h"
-#include "ModuleCamera.h"
-#include "CameraComponent.h"
-#include "ResourceTexture.h"
-#include "ModuleResource.h"
-#include "glew.h"
-#include "MathGeoLib.h"
 #include "Timer.h"
 #include "Trail.h"
-
 
 #define POSITION_LOCATION 0
 #define TEXCOORD_LOCATION 1

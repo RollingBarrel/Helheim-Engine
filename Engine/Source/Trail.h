@@ -3,7 +3,6 @@
 #include <deque>
 #include "ColorGradient.h"
 #include "BezierCurve.h"
-#include "Archive.h"
 #include "float3.h"
 
 class ResourceTexture;

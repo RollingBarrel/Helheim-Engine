@@ -1,15 +1,6 @@
 #include "LineComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleResource.h"
-#include "Application.h"
-#include "ModuleOpenGL.h"
-#include "ModuleCamera.h"
-#include "CameraComponent.h"
-#include "ResourceTexture.h"
-#include "ModuleResource.h"
-#include "glew.h"
-#include "MathGeoLib.h"
 #include "Timer.h"
 #include "Trail.h"
 
@@ -42,7 +33,8 @@ GameObject* LineComponent::SearchLineFinal(GameObject* owner)
 {
     for (GameObject* child : owner->GetChildren())
     {
-        if (child->GetTag()=="LineFinal") {
+        if (child->GetTag()=="LineFinal") 
+        {
             return child;
         }
     }

@@ -1,9 +1,6 @@
 #pragma once
 
 #include "Component.h"
-#include "float3.h"
-#include "float2.h"
-
 
 class ResourceTexture;
 class Trail;
