@@ -22,7 +22,10 @@ DashState::DashState(PlayerController* player, float cooldown) : State(player, c
         mDashVFX->SetEnabled(true);
 
         mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponentInChildren(ComponentType::TRAIL));
-        mDashParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+        mDashParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[1]->GetComponent(ComponentType::PARTICLESYSTEM));
+        mBegginingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[2]->GetComponent(ComponentType::PARTICLESYSTEM));
+        mEndingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[3]->GetComponent(ComponentType::PARTICLESYSTEM));
+
         if (mDashTrail)
         {
             mDashTrail->SetEnable(false);
@@ -32,6 +35,18 @@ DashState::DashState(PlayerController* player, float cooldown) : State(player, c
             mDashParticles->SetEnable(false);
             mDashParticles->SetLoop(false);
             mDashParticles->SetDuration(mPlayerController->GetDashDuration());
+        }
+        if (mBegginingParticles)
+        {
+            mBegginingParticles->SetEnable(false);
+            mBegginingParticles->SetLoop(false);
+            //Duration set from the inspector (the time should be low)
+        }
+        if (mEndingParticles)
+        {
+            mEndingParticles->SetEnable(false);
+            mEndingParticles->SetLoop(false);
+            //Duration set from the inspector
         }
     }
 }
@@ -95,7 +110,10 @@ void DashState::Enter()
 
     if (mDashTrail)
     {
+        mDashTrail->SetEnable(false);
         mDashTrail->SetEnable(true);
+
+        mDashTrail->SetTrailLifeTime(0.3f); //The value is changed manually here
 
         ColorGradient gradient;
         gradient.AddColorGradientMark(0.1f, float4(0.9f, 0.0f, 0.0f, 1.0f));
@@ -110,13 +128,24 @@ void DashState::Enter()
         mDashParticles->SetEnable(false);
         mDashParticles->SetEnable(true);
     }
+    if (mBegginingParticles) 
+    {
+        mBegginingParticles->SetEnable(false);
+        mBegginingParticles->SetEnable(true);
+    }
 }
 
 void DashState::Exit()
 {
     if (mDashTrail)
     {
-        mDashTrail->SetEnable(false);
+        mDashTrail->SetTrailLifeTime(0.01f); //The lifetime is changed so something very small so it doesn't appear
+    }
+
+    if (mEndingParticles)
+    {
+        mEndingParticles->SetEnable(false);
+        mEndingParticles->SetEnable(true);
     }
 }
 

@@ -27,6 +27,10 @@ private:
 	float mDashDuration = 0.5f;
 
 	TrailComponent* mDashTrail = nullptr;
-	ParticleSystemComponent* mDashParticles = nullptr;
+
+	ParticleSystemComponent* mDashParticles = nullptr;		//Active during the whole dash
+	ParticleSystemComponent* mBegginingParticles = nullptr;	//Only active at the beggining of the dash (for responsiveness)
+	ParticleSystemComponent* mEndingParticles = nullptr;	//Only active at the end of the dash
+
 	GameObject* mDashVFX;
 };
