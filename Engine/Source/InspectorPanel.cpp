@@ -2057,8 +2057,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		}
 		if (ImGui::Button(ICON_FA_TRASH_CAN))
 		{
-			App->GetResource()->ReleaseResource(image->GetUID());
-			image = nullptr;
+			component->mTrail->SetImage(148626881);
 		}
 		ImGui::Columns(1);
 
@@ -2147,8 +2146,7 @@ void InspectorPanel::DrawLineComponent(LineComponent* component) const
 		ImGui::NextColumn();
 		if (ImGui::Button(ICON_FA_TRASH_CAN))
 		{
-			App->GetResource()->ReleaseResource(image->GetUID());
-			image = nullptr;
+			component->mTrail->SetImage(148626881);
 		}
 		ImGui::Columns(1);
 
