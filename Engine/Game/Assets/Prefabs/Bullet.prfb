@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 836458136,
+                "UID": 597250906,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.6870781779289246,
-                    0.9011889696121216,
-                    0.11055183410644531
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -37,8 +37,8 @@
                 ]
             },
             {
-                "UID": 239573401,
-                "ParentUID": 836458136,
+                "UID": 338236884,
+                "ParentUID": 597250906,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -66,9 +66,9 @@
                     {
                         "ComponentType": 18,
                         "IsEnabled": true,
-                        "Image": 1138568728,
+                        "Image": 148626881,
                         "MaxPoints": 1000,
-                        "MinDistance": 0.10000000149011612,
+                        "MinDistance": 0.20000000298023225,
                         "MaxLifeTime": 0.25,
                         "UVScroll": 1.0,
                         "IsFixedDirection": false,
@@ -81,7 +81,7 @@
                         "Width": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.5,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -90,6 +90,12 @@
                                     "Point": [
                                         0.0,
                                         1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7724999785423279,
+                                        0.004999995231628418
                                     ]
                                 },
                                 {
@@ -107,8 +113,8 @@
                 ]
             },
             {
-                "UID": 1415750575,
-                "ParentUID": 836458136,
+                "UID": 1991178666,
+                "ParentUID": 597250906,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
