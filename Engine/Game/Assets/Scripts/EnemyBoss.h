@@ -22,6 +22,7 @@ public:
 private:
 	//void Idle();
 	void SelectAttack();
+	void StartBulletAttack();
 	void BulletAttack();
 	void LaserAttack();
 	void BombAttack();
@@ -30,9 +31,16 @@ private:
 
 	float mBulletSpeed = 15.0f;
 	int mLastAttack = -1;
+	unsigned int mStage = 0;
+	bool mBulletHell = false;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
+
+	TimerScript mPhaseShiftTimer;
+	float mPhaseShiftTime = 5.0f;
+	TimerScript mBulletHellTimer;
+	float mBulletHellCooldown = 0.2f;
 
 	const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
 	std::vector<GameObject*> mTemplates;
