@@ -6,6 +6,7 @@
 #include "ScriptComponent.h"
 #include "BattleArea.h"
 #include "AnimationComponent.h"
+#include "ImageComponent.h"
 
 CREATE(CinematicCamera)
 {
@@ -38,6 +39,8 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mBattleArea2);
     MEMBER(MemberType::GAMEOBJECT, mBattleArea3);
     MEMBER(MemberType::GAMEOBJECT, mBattleArea4);
+    SEPARATOR("FADE SCREEN");
+    MEMBER(MemberType::GAMEOBJECT, mFade);
     END_CREATE;
 }
 
@@ -53,6 +56,11 @@ void CinematicCamera::Start()
 {
     mCurrentCamera = App->GetCamera()->GetCurrentCamera();
     mMainCamera = const_cast<CameraComponent*>(mCurrentCamera);
+
+    if (mFade)
+    {
+        mImage = static_cast<ImageComponent*>(mFade->GetComponent(ComponentType::IMAGE));
+    }
 
     if (mBattleArea1)
     {
@@ -207,15 +215,27 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                     camera->SetWorldPosition(newPosition);
                 }
             }
-
+            
             if (mTimer.Delay(mAnimationTime))
             {
+                if (mAnimationComponent)
+                {
+                    mAnimationComponent->SetIsPlaying(false);
+                }
+
                 mPlayingCinematic = false;
+            }
+        }    
+        else
+        {
+            if(Fade())
+            {
                 App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-                App->GetCamera()->AddEnabledCamera(mMainCamera);     
+                App->GetCamera()->AddEnabledCamera(mMainCamera);
                 App->GetCamera()->ActivateFirstCamera();
 
                 GameManager::GetInstance()->SetPaused(false, false);
+
 
                 if (mBattleArea1)
                 {
@@ -224,7 +244,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                         mEnemy1->SetEnabled(false);
                     }
                 }
-                
+
                 if (mBattleArea2)
                 {
                     if (mBArea2->IsAreaActive())
@@ -232,7 +252,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                         mEnemy2->SetEnabled(false);
                     }
                 }
-                
+
                 if (mBattleArea3)
                 {
                     if (mBArea3->IsAreaActive())
@@ -240,17 +260,17 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                         mEnemy3->SetEnabled(false);
                     }
                 }
-                
+
                 if (mBattleArea4)
                 {
                     if (mBArea4->IsAreaActive())
-                    {                      
+                    {
                         if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
                         {
                             mEnemy4->SetEnabled(false);
                         }
                     }
-                }     
+                }
             }
         }
     }
@@ -335,5 +355,44 @@ void CinematicCamera::InitAnimation(int animState)
     {
         mAnimationComponent->OnReset();
         mAnimationComponent->SendTrigger(trigger, 0.0f);
+    }
+}
+
+//Fade (float3 color, bool fadeOut)
+bool CinematicCamera::Fade()
+{
+    if (mFade)
+    {
+        if (mCounter < 1.0f)
+        {
+            mFade->SetEnabled(true);
+
+            mCounter += 0.02f;
+            mImage->SetAlpha(mCounter);
+            //mImage->SetColor(float3(1.0f, 1.0f, 1.0f));
+
+            return false;
+        }
+        else
+        {
+            mFade->SetEnabled(false);
+            return true;
+            /*
+            if (!mTimer.Delay(2.0f))
+            {
+                mFade->SetEnabled(false);
+            } 
+            */
+
+            /*
+            if (mCounter > 0.0f)
+            {
+                mCounter -= 0.02f;
+                mImage->SetAlpha(mCounter);
+
+                //mFade->SetEnabled(false);
+            }
+            */
+        }
     }
 }

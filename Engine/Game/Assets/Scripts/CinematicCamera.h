@@ -6,6 +6,7 @@
 class CameraComponent;
 class BattleArea;
 class AnimationComponent;
+class ImageComponent;
 
 GENERATE_BODY(CinematicCamera);
 class CinematicCamera :public Script
@@ -23,6 +24,7 @@ private:
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
     float3 lerp(const float3& start, const float3& end, float t);
     void InitAnimation(int animState);
+    bool Fade();
 
     GameObject* mCinematicCamera1 = nullptr;
     GameObject* mCinematicCamera2 = nullptr;
@@ -39,6 +41,8 @@ private:
     GameObject* mBattleArea3 = nullptr;
     GameObject* mBattleArea4 = nullptr;
 
+    GameObject* mFade = nullptr;
+
     BattleArea* mBArea1 = nullptr;
     BattleArea* mBArea2 = nullptr;
     BattleArea* mBArea3 = nullptr;
@@ -50,7 +54,7 @@ private:
     int mEnemy2_AnimState = 1;
     int mEnemy3_AnimState = 1;
     int mEnemy4_AnimState = 1;
-
+    
     float mDistanceToEnemy = 4.0f;
     float mYawAngle = 45.0f;
     float mPitchAngle = -45.0f;
@@ -58,6 +62,8 @@ private:
     float mSpeedFactor = 1.0f;
     float mTimePassed = 0.0f;
     float mAnimationTime = 7.3f;
+
+    float mCounter = 0.0f;
 
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
@@ -70,4 +76,5 @@ private:
     CameraComponent* mCinematicCamera = nullptr;  
 
     AnimationComponent* mAnimationComponent = nullptr;
+    ImageComponent* mImage = nullptr;
 };
