@@ -6,6 +6,7 @@
 #include "Physics.h"
 #include "Geometry/Ray.h"
 #include "GameManager.h"
+#include "State.h"
 #include <MathFunc.h>
 
 CREATE(BossLaserEyeBall)
@@ -25,7 +26,7 @@ BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner)
 void BossLaserEyeBall::Start()
 {
     mElapsedTime = 0.0f;
-    mCurrentRotation = mInitialRotation;
+    mCurrentRotation = 89.5;
 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
     if (mLaserTrail) mLaserTrail->SetEnabled(false);
@@ -45,18 +46,17 @@ void BossLaserEyeBall::Update()
         mGameObject->SetEnabled(false);
         return;
     }
-        RotateLaser();
+
+    RotateLaser();
 }
 
-void BossLaserEyeBall::Init(float distance, float duration, float minRotation, float maxRotation)
+void BossLaserEyeBall::Init(float distance, float duration)
 {
     mDistance = distance;
     mDuration = duration;
-    mInitialRotation = minRotation;
-    mRotationRange = maxRotation - minRotation;
-    mCurrentRotation = minRotation;
-    mRotationSpeed = 1.0f; 
+    mRotationSpeed = 1.0f;
 }
+
 
 
 void BossLaserEyeBall::RotateLaser()
@@ -65,14 +65,16 @@ void BossLaserEyeBall::RotateLaser()
     float rotationAmount = mRotationSpeed * deltaTime;
 
     mCurrentRotation += rotationAmount;
+    LOG("Current Rotation: %f", mCurrentRotation);
 
-    float maxRotation = mInitialRotation + mRotationRange / 2.0f;
-    float minRotation = mInitialRotation - mRotationRange / 2.0f;
+    float maxRotation = 90.f;
+    float minRotation = 89.f;
 
     if (mCurrentRotation > maxRotation)
     {
         mCurrentRotation = maxRotation;
         mRotationSpeed = -std::abs(mRotationSpeed);
+
     }
     else if (mCurrentRotation < minRotation)
     {
@@ -80,7 +82,7 @@ void BossLaserEyeBall::RotateLaser()
         mRotationSpeed = std::abs(mRotationSpeed);
     }
 
-    mGameObject->SetLocalRotation(float3(0, mCurrentRotation, 0));
+    mGameObject->SetLocalRotation((float3(0, mCurrentRotation, 0)));
 
     if (mCurrentRotation >= minRotation && mCurrentRotation <= maxRotation)
     {
@@ -88,42 +90,46 @@ void BossLaserEyeBall::RotateLaser()
         if (mLaserTrail) mLaserTrail->SetEnabled(true);
         if (mLaserEnd) mLaserEnd->SetEnabled(true);
 
-        // Handle laser end and trail positioning
-        if (mLaserOrigin && mLaserEnd)
+        Hit hit;
+        Ray ray;
+        ray.dir = float3(std::sin(DegToRad(mCurrentRotation)), 0.0f, std::cos(DegToRad(mCurrentRotation)));
+        ray.pos = mLaserOrigin->GetWorldPosition();
+
+        Physics::Raycast(hit, ray, mDistance);
+
+        if (hit.IsValid())
         {
-            Hit hit;
-            Ray ray;
-            ray.dir = float3(std::sin(DegToRad(mCurrentRotation)), 0.0f, std::cos(DegToRad(mCurrentRotation)));
-            ray.pos = mLaserOrigin->GetWorldPosition();
-
-            Physics::Raycast(hit, ray, mDistance);
-
-            if (hit.IsValid())
+            if (hit.mGameObject->GetTag().compare("Player") == 0)
             {
-                if (hit.mGameObject->GetTag().compare("Player") == 0)
+                ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+                PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
+
+                if (!player->GetPlayerLowerState()->GetType() == StateType::DASH) 
                 {
-                    ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-                    PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
                     player->TakeDamage(mDamage);
                 }
             }
+        }
+        else
+        {
+            float3 originPosition = mLaserOrigin->GetLocalPosition();
+            mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
+
+            if (mMoveTrail)
+            {
+                mMoveTrail = false;
+                mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
+
+            }
             else
             {
-                float3 originPosition = mLaserOrigin->GetLocalPosition();
-                mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
+                    
+                mMoveTrail = true;
+                mLaserTrail->SetLocalPosition(originPosition);
 
-                if (mMoveTrail)
-                {
-                    mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
-                    mMoveTrail = false;
-                }
-                else
-                {
-                    mMoveTrail = true;
-                    mLaserTrail->SetLocalPosition(originPosition);
-                }
             }
         }
+        
     }
     else
     {

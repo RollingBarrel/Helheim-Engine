@@ -17,7 +17,7 @@ public:
     void Start() override;
     void Update() override;
 
-    void Init(float distance, float duration, float minRotation, float maxRotation);
+    void Init(float distance, float duration);
 
 private:
 
@@ -25,8 +25,8 @@ private:
     float mDamage = 3.0f;
 
     float mDistance = 10.0f;
-    float mDuration = 3.0f;
-    float mRotationSpeed = 2.0f;
+    float mDuration = 5.0f;
+    float mRotationSpeed = 1.0f;
     float mCurrentRotation = 0.0f;
     float mInitialRotation = 0.0f;
     float mRotationRange = 45.0f;

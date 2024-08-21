@@ -15,10 +15,9 @@ enum class LaserState
     COOLDOWN
 };
 
-
 class BossLaser : public Script
 {
-	FRIEND(BossLaser)
+    FRIEND(BossLaser)
 
 public:
     BossLaser(GameObject* owner);
@@ -40,13 +39,11 @@ private:
     LaserState mCurrentState = LaserState::IDLE;
 
     float mDistance = 10.0f;
-    float mEyeRotationSpeed = 2.0f;
 
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;
     float mLaserEnemyDuration = 15.0f;
     float mCooldownDuration = 2.0f;
-
 
     std::vector<GameObject*> mEyeBalls;
     std::vector<GameObject*> mEyeBallPool;
