@@ -28,8 +28,8 @@ private:
 	BoxColliderComponent* mCollider = nullptr;
 
 	GameObject* mLaserGO;
-	GameObject* mLaserOrigin;
-	GameObject* mLaserEnd;
+	//GameObject* mLaserOrigin;
+	//GameObject* mLaserEnd;
 	TimerScript mDamageTimer;
 
 };
