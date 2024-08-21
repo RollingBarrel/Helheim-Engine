@@ -93,7 +93,8 @@ void EnemyBoss::Update()
 
 void EnemyBoss::SelectAttack()
 {
-    int attack = rand() % 3;
+    //int attack = rand() % 3;
+	int attack = 2;
     if (attack == mLastAttack)
     {
         ++attack;

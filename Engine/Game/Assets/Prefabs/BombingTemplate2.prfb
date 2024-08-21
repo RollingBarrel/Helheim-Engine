@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 549348664,
+                "UID": 2087506339,
                 "ParentUID": 1,
                 "Name": "BombingTemplate2",
                 "Enabled": true,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 2108093233,
-                "ParentUID": 549348664,
+                "UID": 1616914098,
+                "ParentUID": 2087506339,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    3.0,
+                    1.0,
                     0.0,
-                    3.0
+                    1.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -104,8 +104,8 @@
                 ]
             },
             {
-                "UID": 1517335146,
-                "ParentUID": 2108093233,
+                "UID": 1149663665,
+                "ParentUID": 1616914098,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -191,15 +191,15 @@
                 ]
             },
             {
-                "UID": 954634322,
-                "ParentUID": 549348664,
+                "UID": 498265687,
+                "ParentUID": 2087506339,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    3.0,
+                    1.0,
                     0.0,
-                    -3.0
+                    -1.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -265,8 +265,8 @@
                 ]
             },
             {
-                "UID": 335262004,
-                "ParentUID": 954634322,
+                "UID": 2014123720,
+                "ParentUID": 498265687,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -352,15 +352,15 @@
                 ]
             },
             {
-                "UID": 1868594908,
-                "ParentUID": 549348664,
+                "UID": 1476068730,
+                "ParentUID": 2087506339,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -3.0,
+                    -1.0,
                     0.0,
-                    3.0
+                    1.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -426,8 +426,8 @@
                 ]
             },
             {
-                "UID": 1265513904,
-                "ParentUID": 1868594908,
+                "UID": 924646508,
+                "ParentUID": 1476068730,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -513,15 +513,15 @@
                 ]
             },
             {
-                "UID": 587659946,
-                "ParentUID": 549348664,
+                "UID": 290096812,
+                "ParentUID": 2087506339,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -3.0,
+                    -1.0,
                     0.0,
-                    -3.0
+                    -1.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -587,8 +587,8 @@
                 ]
             },
             {
-                "UID": 2051371850,
-                "ParentUID": 587659946,
+                "UID": 1841252692,
+                "ParentUID": 290096812,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
