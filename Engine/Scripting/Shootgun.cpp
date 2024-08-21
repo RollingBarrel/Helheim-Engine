@@ -5,7 +5,7 @@
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
-#include "TrailComponent.h"
+#include "Trail.h"
 #include "Physics.h"
 
 #include "Geometry/Ray.h"

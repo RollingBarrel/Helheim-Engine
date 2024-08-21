@@ -231,6 +231,7 @@
     <ClCompile Include="GeometryBatch.cpp" />
     <ClCompile Include="HelheimEvent.cpp" />
     <ClCompile Include="ImageComponent.cpp" />
+    <ClCompile Include="LineComponent.cpp" />
     <ClCompile Include="log.cpp" />
     <ClCompile Include="MaskComponent.cpp" />
     <ClCompile Include="MeshRendererComponent.cpp" />
@@ -285,6 +286,7 @@
     <ClCompile Include="SpotLightComponent.cpp" />
     <ClCompile Include="TextComponent.cpp" />
     <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="Trail.cpp" />
     <ClCompile Include="TrailComponent.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
   </ItemGroup>
@@ -735,6 +737,7 @@
     <ClInclude Include="Globals.h" />
     <ClInclude Include="HelheimEvent.h" />
     <ClInclude Include="ImageComponent.h" />
+    <ClInclude Include="LineComponent.h" />
     <ClInclude Include="MaskComponent.h" />
     <ClInclude Include="MeshRendererComponent.h" />
     <ClInclude Include="Module.h" />
@@ -789,6 +792,7 @@
     <ClInclude Include="SpotLightComponent.h" />
     <ClInclude Include="TextComponent.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="Trail.h" />
     <ClInclude Include="TrailComponent.h" />
     <ClInclude Include="Transform2DComponent.h" />
   </ItemGroup>
