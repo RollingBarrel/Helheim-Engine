@@ -13,6 +13,7 @@
 #include "TrailComponent.h"
 #include "ParticleSystemComponent.h"
 #include "GameObject.h"
+#include "Trail.h"
 
 DashState::DashState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -21,11 +22,14 @@ DashState::DashState(PlayerController* player, float cooldown) : State(player, c
     {
         mDashVFX->SetEnabled(true);
 
-        mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponentInChildren(ComponentType::TRAIL));
-        mDashParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[1]->GetComponent(ComponentType::PARTICLESYSTEM));
-        mBegginingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[2]->GetComponent(ComponentType::PARTICLESYSTEM));
-        mEndingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[3]->GetComponent(ComponentType::PARTICLESYSTEM));
-
+        if (mDashVFX->GetChildren().size() == 4) 
+        {
+            mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponentInChildren(ComponentType::TRAIL));
+            mDashParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[1]->GetComponent(ComponentType::PARTICLESYSTEM));
+            mBegginingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[2]->GetComponent(ComponentType::PARTICLESYSTEM));
+            mEndingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[3]->GetComponent(ComponentType::PARTICLESYSTEM));
+        }
+        
         if (mDashTrail)
         {
             mDashTrail->SetEnable(false);
@@ -113,15 +117,7 @@ void DashState::Enter()
         mDashTrail->SetEnable(false);
         mDashTrail->SetEnable(true);
 
-        mDashTrail->SetTrailLifeTime(0.3f); //The value is changed manually here
-
-        ColorGradient gradient;
-        gradient.AddColorGradientMark(0.1f, float4(0.9f, 0.0f, 0.0f, 1.0f));
-
-        if (&gradient)
-        {
-            mDashTrail->SetColorGradient(gradient);
-        }
+        mDashTrail->GetTrail()->SetLifeTime(0.3f); //The value is changed manually here
     }
     if (mDashParticles)
     {
@@ -139,7 +135,7 @@ void DashState::Exit()
 {
     if (mDashTrail)
     {
-        mDashTrail->SetTrailLifeTime(0.01f); //The lifetime is changed so something very small so it doesn't appear
+        mDashTrail->GetTrail()->SetLifeTime(0.01f); //The lifetime is changed so something very small so it doesn't appear
     }
 
     if (mEndingParticles)
