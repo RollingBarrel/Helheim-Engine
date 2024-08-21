@@ -48,6 +48,11 @@ void LoreCollectible::Update()
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
 	}*/
 
+	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+	{
+		GameManager::GetInstance()->GetHud()->DisableCollectible();
+	}
+
 	if (mUsed|| mInteractTimer.Delay(5.0f))
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
 
@@ -66,7 +71,7 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 		GameManager::GetInstance()->GetHud()->SetInteract(true);
 	
 		if ( App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-			App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN) {
+			App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN) {
 
 			if (GameManager::GetInstance()->GetHud())
 			{
@@ -76,9 +81,7 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 				GameManager::GetInstance()->GetHud()->SetInteract(false);
 				mUsed = true;
 			}
-
 		}
-		
 	}
 }
 

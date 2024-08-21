@@ -354,7 +354,7 @@
     <ClCompile Include="UltimateState.cpp">
       <Filter>States\Attack</Filter>
     </ClCompile>
-    <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="HealVFX.cpp" />
+    <ClCompile Include="LoreCollectible.cpp" />
   </ItemGroup>
 </Project>
