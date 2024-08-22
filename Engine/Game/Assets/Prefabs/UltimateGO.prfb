@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 452136263,
+                "UID": 1827432312,
                 "ParentUID": 1,
                 "Name": "UltimateGO",
                 "Enabled": true,
@@ -59,8 +59,8 @@
                 ]
             },
             {
-                "UID": 445985713,
-                "ParentUID": 452136263,
+                "UID": 1578791819,
+                "ParentUID": 1827432312,
                 "Name": "Ultimte_Laser_Line",
                 "Enabled": true,
                 "Active": true,
@@ -126,8 +126,8 @@
                 ]
             },
             {
-                "UID": 234035487,
-                "ParentUID": 445985713,
+                "UID": 1179421861,
+                "ParentUID": 1578791819,
                 "Name": "Ultimate_laser_Origin_V1",
                 "Enabled": true,
                 "Active": true,
@@ -258,8 +258,8 @@
                 ]
             },
             {
-                "UID": 159934841,
-                "ParentUID": 445985713,
+                "UID": 950414490,
+                "ParentUID": 1578791819,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
@@ -286,8 +286,8 @@
                 "Components": []
             },
             {
-                "UID": 107973673,
-                "ParentUID": 159934841,
+                "UID": 1266609170,
+                "ParentUID": 950414490,
                 "Name": "Ultimate_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -418,8 +418,8 @@
                 ]
             },
             {
-                "UID": 210571125,
-                "ParentUID": 107973673,
+                "UID": 1014278764,
+                "ParentUID": 1266609170,
                 "Name": "Laser_End_Trail",
                 "Enabled": true,
                 "Active": true,
@@ -546,8 +546,8 @@
                 ]
             },
             {
-                "UID": 99432107,
-                "ParentUID": 107973673,
+                "UID": 549465066,
+                "ParentUID": 1266609170,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
