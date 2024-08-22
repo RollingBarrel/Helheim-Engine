@@ -41,6 +41,7 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mBattleArea4);
     SEPARATOR("FADE SCREEN");
     MEMBER(MemberType::GAMEOBJECT, mFade);
+    MEMBER(MemberType::FLOAT3, mColor);
     END_CREATE;
 }
 
@@ -103,9 +104,12 @@ void CinematicCamera::Update()
         {
             if (!mCinematicStarted)
             {
+                ResetParameters(true);
+                /*
                 mCinematicStarted = true;
                 mStartParameters = false;
                 mPlayingCinematic = true;
+                */
             }
 
             StartCinematic(mCinematicCamera2, mEnemy2, mEnemy2_AnimState);
@@ -118,9 +122,12 @@ void CinematicCamera::Update()
         {
             if (mCinematicStarted)
             {
+                ResetParameters(false);
+                /*
                 mCinematicStarted = false;
                 mStartParameters = false;
                 mPlayingCinematic = true;
+                */
             }
 
             StartCinematic(mCinematicCamera3, mEnemy3, mEnemy3_AnimState);
@@ -133,9 +140,12 @@ void CinematicCamera::Update()
         {
             if (!mCinematicStarted)
             {
+                ResetParameters(true);
+                /*
                 mCinematicStarted = true;
                 mStartParameters = false;
                 mPlayingCinematic = true;
+                */
             }
 
             if (!mLevel1)
@@ -152,9 +162,13 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
 {
     if ((target) && (camera))
     {
-        if (mStartParameters == false)
+        if (!mStartParameters)
         {
             mStartParameters = true;
+
+            //**************************
+            mFadeStart = false;
+            //**************************
 
             ActivateCamera(camera);
 
@@ -215,7 +229,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                     camera->SetWorldPosition(newPosition);
                 }
             }
-            
+
             if (mTimer.Delay(mAnimationTime))
             {
                 if (mAnimationComponent)
@@ -224,11 +238,11 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 }
 
                 mPlayingCinematic = false;
-            }
-        }    
+            }       
+        }   
         else
         {
-            if(Fade())
+            if(Fade(true))
             {
                 App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
                 App->GetCamera()->AddEnabledCamera(mMainCamera);
@@ -358,41 +372,73 @@ void CinematicCamera::InitAnimation(int animState)
     }
 }
 
-//Fade (float3 color, bool fadeOut)
-bool CinematicCamera::Fade()
+bool CinematicCamera::Fade(bool fadeOut)
 {
     if (mFade)
     {
-        if (mCounter < 1.0f)
+        mImage->SetColor(mColor);
+
+        if (fadeOut)
         {
-            mFade->SetEnabled(true);
+            if (!mFadeStart)
+            {
+                mCounter = 0.0f;
+                mFadeStart = true;
+            }
 
-            mCounter += 0.02f;
-            mImage->SetAlpha(mCounter);
-            //mImage->SetColor(float3(1.0f, 1.0f, 1.0f));
 
-            return false;
+            if (mCounter < 1.0f)
+            {
+                mFade->SetEnabled(true);
+
+                mCounter += 0.02f;
+                mImage->SetAlpha(mCounter);
+
+                return false;
+            }
+            else
+            {
+                //if (mFadeStart)
+                //{
+                    mFade->SetEnabled(false);
+                    //mFadeStart = false;
+                    return true;
+                //}    
+            }
         }
         else
         {
-            mFade->SetEnabled(false);
-            return true;
-            /*
-            if (!mTimer.Delay(2.0f))
+            if (!mFadeStart)
             {
-                mFade->SetEnabled(false);
-            } 
-            */
+                mCounter = 1.0f;
+                mFadeStart = true;
+            }
 
-            /*
             if (mCounter > 0.0f)
             {
+                mFade->SetEnabled(true);
+
                 mCounter -= 0.02f;
                 mImage->SetAlpha(mCounter);
 
-                //mFade->SetEnabled(false);
+                return false;
             }
-            */
+            else
+            {
+                //if (mFadeStart)
+                //{
+                    mFade->SetEnabled(false);
+                    //mFadeStart = false;
+                    return true;
+                //}
+            }
         }
     }
+}
+
+void CinematicCamera::ResetParameters(bool CinematicStarted)
+{
+    mCinematicStarted = CinematicStarted;
+    mStartParameters = false;
+    mPlayingCinematic = true;
 }

@@ -24,7 +24,8 @@ private:
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
     float3 lerp(const float3& start, const float3& end, float t);
     void InitAnimation(int animState);
-    bool Fade();
+    bool Fade(bool fadeOut);
+    void ResetParameters(bool CinematicStarted);
 
     GameObject* mCinematicCamera1 = nullptr;
     GameObject* mCinematicCamera2 = nullptr;
@@ -64,12 +65,14 @@ private:
     float mAnimationTime = 7.3f;
 
     float mCounter = 0.0f;
+    float3 mColor = float3(0.0f, 0.0f, 0.0f);
 
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
     bool mCinematicStarted = false;
     bool mStartParameters = false;
     bool mLevel1 = false;
+    bool mFadeStart = false;
 
     const CameraComponent* mCurrentCamera = nullptr;
     CameraComponent* mMainCamera = nullptr;

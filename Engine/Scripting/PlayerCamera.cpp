@@ -35,6 +35,7 @@ void PlayerCamera::Start()
 
 void PlayerCamera::Update()
 {
+    /*
     float deltaTime = App->GetDt();
 
     if (!mMoveCompleted)
@@ -62,10 +63,11 @@ void PlayerCamera::Update()
     }
     else
     {
+    */
         mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
         mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
         mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
-    }
+    //}
 }
 
 float3 PlayerCamera::lerp(const float3& start, const float3& end, float t)
