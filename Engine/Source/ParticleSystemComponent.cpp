@@ -28,7 +28,7 @@ mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(ori
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode)
 {
     if (original.mImage)
-        App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
+        mImage = (ResourceTexture*)App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
     Init();
     mShapeType = original.mShapeType;
 }

@@ -32,8 +32,7 @@ mFixedDirection(original.mFixedDirection), mDirection(original.mDirection),
 mMaxLifeTime(original.mMaxLifeTime), mIsTilled(original.mIsTilled), mTilling(original.mTilling)
 {
     if (original.mImage)
-        App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
-
+        mImage = (ResourceTexture*)App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
     Init();
 }
 
