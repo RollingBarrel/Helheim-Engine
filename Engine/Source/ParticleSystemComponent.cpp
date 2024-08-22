@@ -16,18 +16,19 @@
 
 ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : Component(ownerGameObject, ComponentType::PARTICLESYSTEM)
 {
-    SetImage(mResourceId);
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(148626881, Resource::Type::Texture);
     mColorGradient.AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
-Component(owner, ComponentType::PARTICLESYSTEM), mFileName(original.mFileName), mDuration(original.mDuration), mLifetime(original.mLifetime),
+Component(owner, ComponentType::PARTICLESYSTEM), mImageName(original.mImageName), mDuration(original.mDuration), mLifetime(original.mLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode)
 {
-    SetImage(original.mResourceId);
+    if (original.mImage)
+        App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
     Init();
     mShapeType = original.mShapeType;
 }
@@ -35,7 +36,7 @@ mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSi
 ParticleSystemComponent::~ParticleSystemComponent() 
 {
     App->GetOpenGL()->RemoveParticleSystem(this);
-    App->GetResource()->ReleaseResource(mResourceId);
+    App->GetResource()->ReleaseResource(mImage->GetUID());
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
     for (auto particle : mParticles)
@@ -220,8 +221,7 @@ void ParticleSystemComponent::Update()
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)
 {
-    App->GetResource()->ReleaseResource(mResourceId);
-    mResourceId = resourceId;
+    App->GetResource()->ReleaseResource(mImage->GetUID());
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
@@ -238,7 +238,7 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
 {
     //TODO: REDOOO
     Component::Save(obj);
-    obj.AddInt("Image", mResourceId);
+    obj.AddInt("Image", mImage->GetUID());
     obj.AddFloat("Delay", mDelay);
     obj.AddFloat("Duration", mDuration);
     obj.AddFloat("EmissionRate", mEmissionRate);
@@ -274,8 +274,7 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     Component::Load(data, uidPointerMap);
     if (data.HasMember("Image")) 
     {
-        mResourceId = data.GetInt("Image");
-        SetImage(mResourceId);
+        SetImage(data.GetInt("Image"));
     }
     if (data.HasMember("Delay")) mDelay = data.GetFloat("Delay");
     if (data.HasMember("Duration")) mDuration = data.GetFloat("Duration");

@@ -21,29 +21,31 @@
 Trail::Trail()
 {
     Init();
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(148626881, Resource::Type::Texture);
+
 }
 
-Trail::Trail(const Trail& original) : mResourceId(original.mResourceId), mFileName(original.mFileName),
+Trail::Trail(const Trail& original) : mImageName(original.mImageName),
 mMaxPoints(original.mMaxPoints), mMinDistance(original.mMinDistance),
 mPoints(original.mPoints), mGradient(ColorGradient(original.mGradient)), mWidth(original.mWidth),
 mFixedDirection(original.mFixedDirection), mDirection(original.mDirection),
 mMaxLifeTime(original.mMaxLifeTime), mIsTilled(original.mIsTilled), mTilling(original.mTilling)
 {
+    if (original.mImage)
+        App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
+
     Init();
 }
 
 Trail::~Trail()
 {
     App->GetOpenGL()->RemoveTrail(this);
-    App->GetResource()->ReleaseResource(mResourceId);
+    App->GetResource()->ReleaseResource(mImage->GetUID());
 
 }
 
 void Trail::Init()
 {
-    mPoints.clear();
-    SetImage(mResourceId);
-
     glGenVertexArrays(1, &mVAO);
     glGenBuffers(1, &mVBO);
     glGenBuffers(1, &mSSBOColor);
@@ -267,10 +269,8 @@ void Trail::UpdateLineComponent(GameObject* origin, GameObject* final)
 }
 void Trail::SetImage(unsigned int resourceId)
 {
-    App->GetResource()->ReleaseResource(mResourceId);
-    mResourceId = resourceId;
-    auto image = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
-    mImage = image;
+    App->GetResource()->ReleaseResource(mImage->GetUID());
+    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
 }
 
 void Trail::Enable()
@@ -289,7 +289,7 @@ void Trail::Disable()
 
 void Trail::Save(JsonObject& obj) const
 {
-    obj.AddInt("Image", mResourceId);
+    obj.AddInt("Image", mImage->GetUID());
     obj.AddInt("MaxPoints", mMaxPoints);
     obj.AddFloat("MinDistance", mMinDistance);
     obj.AddFloat("MaxLifeTime", mMaxLifeTime);
@@ -307,8 +307,7 @@ void Trail::Load(const JsonObject& data)
 {
     if (data.HasMember("Image"))
     {
-        mResourceId = data.GetInt("Image");
-        SetImage(mResourceId);
+        SetImage(data.GetInt("Image"));
     }
     if (data.HasMember("MaxPoints")) mMaxPoints = data.GetInt("MaxPoints");
     if (data.HasMember("MinDistance")) mMinDistance = data.GetFloat("MinDistance");
