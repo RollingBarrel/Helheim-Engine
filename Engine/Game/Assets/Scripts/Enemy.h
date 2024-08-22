@@ -34,7 +34,7 @@ public:
 	
 	// DEBUFF
 	virtual void Paralyzed(float percentage, bool paralyzed);
-	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
+	virtual void SetAttracted(bool attracted);
 
 protected:
 	virtual void Idle();

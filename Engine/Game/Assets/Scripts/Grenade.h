@@ -44,7 +44,7 @@ private:
 	float mGrenadeDPS = 1.0f;
 	float mGrenadeDuration = 4.0f;
 	TimerScript mExplosionTimer;
-	float mGrenadeRadius = 3.0f; // Explosion area
+	float mGrenadeRadius = 5.0f; // Explosion area
 
 	// Before explotion
 	float3 mInitialPosition = float3(0, 0, 0); 
@@ -63,4 +63,5 @@ private:
 
 
 	GameObject* mGrenade = nullptr;
+	GameObject* mExplosionSFX = nullptr;
 };

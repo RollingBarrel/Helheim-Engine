@@ -227,7 +227,6 @@ void PlayerController::Start()
     {
         ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
-        mGrenadeGO->SetEnabled(false);
         if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
