@@ -49,6 +49,7 @@ public:
 	void Load(const JsonObject& data);
 
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
+	void SetLifeTime(float time) { mMaxLifeTime = time; }
 
 private:
 	float3 CalculateDirection(const float3& position, const float3& norm) const;
