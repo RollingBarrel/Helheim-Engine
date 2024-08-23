@@ -12,7 +12,7 @@ CREATE(Grenade)
     MEMBER(MemberType::FLOAT, mGrenadeDPS);
     MEMBER(MemberType::FLOAT, mGrenadeDuration);
     MEMBER(MemberType::FLOAT, mGrenadeRadius);
-    MEMBER(MemberType::FLOAT, mSpeed);
+    MEMBER(MemberType::FLOAT, mTrajectorySpeedFactor);
     MEMBER(MemberType::GAMEOBJECT, mGrenade);
     MEMBER(MemberType::GAMEOBJECT, mExplosionSFX);
 	END_CREATE;
@@ -47,7 +47,8 @@ void Grenade::Update()
 
 void Grenade::MoveToTarget()
 {
-    mElapsedTime += App->GetDt();
+    // Increment elapsed time, scaled by the trajectory speed factor
+    mElapsedTime += App->GetDt() * mTrajectorySpeedFactor;
 
     // Ensure the time does not exceed the total flight time
     if (mElapsedTime > mFlightTime)
@@ -62,6 +63,7 @@ void Grenade::MoveToTarget()
     {
         mGrenade->SetEnabled(false);
         mExplosionSFX->SetEnabled(true);
+
         mState = GRENADE_STATE::EXPLOSION_START;
         mExplosionSFX->SetWorldPosition(mDestination);
     }
@@ -70,31 +72,28 @@ void Grenade::MoveToTarget()
 void Grenade::CalculateTrajectory()
 {
     float3 displacement = mDestination - mInitialPosition;
+
     float horizontalDistance = float3(displacement.x, 0, displacement.z).Length();
     float verticalDistance = displacement.y;
 
-    float initialHorizontalSpeed = horizontalDistance / mSpeed;
+    mFlightTime = 2 * horizontalDistance / 9.81f;
 
-    mFlightTime = 2 * initialHorizontalSpeed / 9.81;
-
-    float vy = (verticalDistance + 9.81 * mFlightTime * mFlightTime / 2) / mFlightTime;
-
-    float dynamicHeight = mInitialPosition.y + (vy * vy) / (2 * 9.81);
+    float vy = (verticalDistance + 9.81f * mFlightTime * mFlightTime / 2) / mFlightTime;
 
     float vx = displacement.x / mFlightTime;
     float vz = displacement.z / mFlightTime;
 
     mVelocity = float3(vx, vy, vz);
 
+    // Reset elapsed time
     mElapsedTime = 0;
 }
-
 
 float3 Grenade::CalculatePositionAtTime(float t)
 {
     float x = mVelocity.x * t;
     float z = mVelocity.z * t;
-    float y = mInitialPosition.y + mVelocity.y * t - 0.5f * 9.81 * t * t;
+    float y = mInitialPosition.y + mVelocity.y * t - 0.5f * 9.81f * t * t;
 
     return float3(mInitialPosition.x + x, y, mInitialPosition.z + z);
 }
