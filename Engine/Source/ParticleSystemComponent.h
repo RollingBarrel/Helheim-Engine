@@ -37,6 +37,9 @@ public:
 
 	bool HasEnded() const;
 
+	const void SetDuration(float duration) { mDuration = duration; }
+	const void SetLoop(bool looping) { mLooping = looping; }
+
 	float3 ShapeInitPosition() const;
 
 	float3 ShapeInitDirection(const float3& pos) const;
