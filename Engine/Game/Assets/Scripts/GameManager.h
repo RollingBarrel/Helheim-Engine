@@ -1,6 +1,7 @@
 #pragma once
 #include <Script.h>
 #include "Macros.h"
+#include "TimerScript.h"
 
 class ButtonComponent;
 class HudController;
@@ -9,6 +10,7 @@ class AudioManager;
 class BattleArea;
 class EnemyPool;
 class PoolManager;
+class Timer;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -41,6 +43,8 @@ public:
 
     void Victory();
     void GameOver();
+    void HitStopTime(float time);
+    void HitStop();
 
 private:
     void PrepareAudio();
@@ -61,9 +65,15 @@ private:
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
     GameObject* mPoolManager = nullptr;
-
+    TimerScript mHitStopTimer;
+    Timer* mGameTimer = nullptr;
 
     bool mPaused = false;
+
+    bool mHitStopActive = false;
+    float mHitStopTime = 0.0f;
+    float mStopStart = 0.0f;
+    float mCurrentStopTime = 0.0f;
 
     bool mController = false;
 
