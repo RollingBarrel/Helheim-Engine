@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1721280165,
+                "UID": 1845143271,
                 "ParentUID": 1,
                 "Name": "Grenade",
                 "Enabled": true,
@@ -56,21 +56,21 @@
                             {
                                 "VariableName": "mGrenade",
                                 "MemberType": 3,
-                                "VariableData": 1727615676
+                                "VariableData": 1867073886
                             },
                             {
                                 "VariableName": "mExplosionSFX",
                                 "MemberType": 3,
-                                "VariableData": 1732280283
+                                "VariableData": 1897707126
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1727615676,
-                "ParentUID": 1721280165,
-                "Name": "GrenadeGO",
+                "UID": 1867073886,
+                "ParentUID": 1845143271,
+                "Name": "GrenadeTrail",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -96,8 +96,8 @@
                 "Components": []
             },
             {
-                "UID": 1729565064,
-                "ParentUID": 1727615676,
+                "UID": 1878143625,
+                "ParentUID": 1867073886,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": true,
@@ -124,8 +124,8 @@
                 "Components": []
             },
             {
-                "UID": 1731027105,
-                "ParentUID": 1729565064,
+                "UID": 1888308291,
+                "ParentUID": 1878143625,
                 "Name": "Electricity_V1",
                 "Enabled": true,
                 "Active": true,
@@ -261,8 +261,8 @@
                 ]
             },
             {
-                "UID": 1732280283,
-                "ParentUID": 1721280165,
+                "UID": 1897707126,
+                "ParentUID": 1845143271,
                 "Name": "Explosion",
                 "Enabled": false,
                 "Active": false,
@@ -289,8 +289,8 @@
                 "Components": []
             },
             {
-                "UID": 1733533461,
-                "ParentUID": 1732280283,
+                "UID": 1907105961,
+                "ParentUID": 1897707126,
                 "Name": "Sphere",
                 "Enabled": true,
                 "Active": false,
@@ -317,8 +317,8 @@
                 "Components": []
             },
             {
-                "UID": 1734925881,
-                "ParentUID": 1733533461,
+                "UID": 1916504796,
+                "ParentUID": 1907105961,
                 "Name": "CreatureRange_laser_End_V1",
                 "Enabled": true,
                 "Active": false,
@@ -449,8 +449,8 @@
                 ]
             },
             {
-                "UID": 1736387922,
-                "ParentUID": 1734925881,
+                "UID": 1926112494,
+                "ParentUID": 1916504796,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": false,
@@ -581,8 +581,8 @@
                 ]
             },
             {
-                "UID": 1737501858,
-                "ParentUID": 1721280165,
+                "UID": 1935372087,
+                "ParentUID": 1845143271,
                 "Name": "ExplosionPreviewDecals",
                 "Enabled": false,
                 "Active": false,
