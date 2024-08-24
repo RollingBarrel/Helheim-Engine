@@ -159,7 +159,7 @@ void main()
 	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//Point lights
-	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
+	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	{
 		PointLight pLight = pLights[idx];
@@ -172,7 +172,7 @@ void main()
 	}
 	
 	//Spot lights
-	idx = (texelFetch(spotLightList, int(tileIdx * lightListSize))).x;
+	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
 	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 	{
 		SpotLight sLight = sLights[idx];

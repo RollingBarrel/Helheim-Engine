@@ -288,6 +288,10 @@ private:
 	unsigned int mSceneHeight = 1;
 
 	unsigned int mNoiseTexId = 0;
+
+	float mBaseExtCoeff = 0.1f;
+	float mNoiseAmount = 1.0f;
+	float mVolIntensity = 1.0f;
 };
 
 #endif /* _MODULEOPENGL_H_ */
