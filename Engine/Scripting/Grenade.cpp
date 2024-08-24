@@ -61,7 +61,6 @@ void Grenade::MoveToTarget()
 
     if (mElapsedTime >= mFlightTime)
     {
-        mGrenade->SetEnabled(false);
         mExplosionSFX->SetEnabled(true);
 
         mState = GRENADE_STATE::EXPLOSION_START;

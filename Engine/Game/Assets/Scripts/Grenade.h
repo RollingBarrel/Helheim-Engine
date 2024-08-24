@@ -56,7 +56,7 @@ private:
 	float3 mVelocity;
 
 	// Very slow <0.5 -- 1 -- 2.5> Very fast
-	float mSpeed = 1.5f;
+	float mTrajectorySpeedFactor = 1.5f;
 
 	float mFlightTime = 0.0f;
 	float mElapsedTime = 0.0f;
