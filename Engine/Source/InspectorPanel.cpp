@@ -1759,6 +1759,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
 	DrawRandomFloat(component->mLifetime, "Lifetime");
+	ImGui::Text("Follow Emitter");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");

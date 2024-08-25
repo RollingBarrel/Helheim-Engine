@@ -25,7 +25,8 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 Component(owner, ComponentType::PARTICLESYSTEM), mImageName(original.mImageName), mDuration(original.mDuration), mLifetime(original.mLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
-mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode)
+mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode), 
+mFollowEmitter(original.mFollowEmitter)
 {
     if (original.mImage)
         mImage = (ResourceTexture*)App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
@@ -125,7 +126,15 @@ void ParticleSystemComponent::Draw() const
             for (int i = 0; i < mParticles.size(); ++i)
             {
                 float scale = mParticles[i]->GetSize();
-                float3 pos = mParticles[i]->GetPosition();
+                float3 pos;
+                if (mFollowEmitter)
+                {
+                    pos = mOwner->GetWorldPosition() + mParticles[i]->GetPosition();
+                }
+                else
+                {
+                    pos = mParticles[i]->GetPosition();
+                }
                 float3x3 scaleMatrix = float3x3::identity * scale;
                 float4x4 transform;
                 if (mStretchedBillboard) 
@@ -152,7 +161,6 @@ void ParticleSystemComponent::Draw() const
             glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
-
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -199,8 +207,11 @@ void ParticleSystemComponent::Update()
 
                 float3 emitionPosition = ShapeInitPosition();
                 float3 emitionDirection = ShapeInitDirection(emitionPosition);
-                float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
-                emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+                if (!mFollowEmitter)
+                {
+                    float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
+                    emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+                }
                 float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
                 emitionDirection = auxDirection.Normalized();
 
@@ -244,6 +255,7 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddFloat("EmissionRate", mEmissionRate);
     obj.AddInt("MaxParticles", mMaxParticles);
     obj.AddBool("Looping", mLooping);
+    obj.AddBool("FollowEmitter", mFollowEmitter);
     obj.AddBool("StretchedBillboard", mStretchedBillboard);
     obj.AddFloat("StretchedRatio", mStretchedRatio);
     JsonObject lifetime = obj.AddNewJsonObject("Lifetime");
@@ -281,6 +293,7 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     if (data.HasMember("EmissionRate")) mEmissionRate = data.GetFloat("EmissionRate");
     if (data.HasMember("MaxParticles")) mMaxParticles = data.GetInt("MaxParticles");
     if (data.HasMember("Looping")) mLooping = data.GetBool("Looping");
+    if (data.HasMember("FollowEmitter")) mFollowEmitter = data.GetBool("FollowEmitter");
     if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
     if (data.HasMember("StretchedRatio")) mStretchedRatio = data.GetFloat("StretchedRatio");
     if (data.HasMember("Lifetime")) 

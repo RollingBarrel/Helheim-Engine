@@ -62,6 +62,7 @@ private:
 
 	float mDelay = 0.0f;
 	float mDuration = 5.0f;
+	bool mFollowEmitter = false;
 
 	RandomFloat mLifetime;
 
