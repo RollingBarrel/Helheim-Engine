@@ -39,6 +39,8 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mBattleArea2);
     MEMBER(MemberType::GAMEOBJECT, mBattleArea3);
     MEMBER(MemberType::GAMEOBJECT, mBattleArea4);
+    SEPARATOR("PLAYER");
+    MEMBER(MemberType::GAMEOBJECT, mPlayer);
     SEPARATOR("FADE SCREEN");
     MEMBER(MemberType::GAMEOBJECT, mFade);
     MEMBER(MemberType::FLOAT3, mColor);
@@ -273,6 +275,17 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                             }
                         }
                     }
+                    
+                    if (mLevel1)
+                    {
+                        if (mPlayer)
+                        {
+                            //Locates the player in a correct position behind the doors
+                            float3 position = mPlayer->GetWorldPosition();
+                            position.x -= 2.6f;
+                            mPlayer->SetWorldPosition(position);
+                        }
+                    }         
 
                     mFadeStart = false;
                     mFadeOn = false;

@@ -42,6 +42,7 @@ private:
     GameObject* mBattleArea3 = nullptr;
     GameObject* mBattleArea4 = nullptr;
 
+    GameObject* mPlayer = nullptr;
     GameObject* mFade = nullptr;
 
     BattleArea* mBArea1 = nullptr;
