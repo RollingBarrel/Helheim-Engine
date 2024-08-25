@@ -42,6 +42,7 @@ CREATE(CinematicCamera)
     SEPARATOR("FADE SCREEN");
     MEMBER(MemberType::GAMEOBJECT, mFade);
     MEMBER(MemberType::FLOAT3, mColor);
+    MEMBER(MemberType::FLOAT, mFadeSpeed);
     END_CREATE;
 }
 
@@ -105,11 +106,6 @@ void CinematicCamera::Update()
             if (!mCinematicStarted)
             {
                 ResetParameters(true);
-                /*
-                mCinematicStarted = true;
-                mStartParameters = false;
-                mPlayingCinematic = true;
-                */
             }
 
             StartCinematic(mCinematicCamera2, mEnemy2, mEnemy2_AnimState);
@@ -123,11 +119,6 @@ void CinematicCamera::Update()
             if (mCinematicStarted)
             {
                 ResetParameters(false);
-                /*
-                mCinematicStarted = false;
-                mStartParameters = false;
-                mPlayingCinematic = true;
-                */
             }
 
             StartCinematic(mCinematicCamera3, mEnemy3, mEnemy3_AnimState);
@@ -141,11 +132,6 @@ void CinematicCamera::Update()
             if (!mCinematicStarted)
             {
                 ResetParameters(true);
-                /*
-                mCinematicStarted = true;
-                mStartParameters = false;
-                mPlayingCinematic = true;
-                */
             }
 
             if (!mLevel1)
@@ -165,10 +151,6 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
         if (!mStartParameters)
         {
             mStartParameters = true;
-
-            //**************************
-            mFadeStart = false;
-            //**************************
 
             ActivateCamera(camera);
 
@@ -192,7 +174,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 App->GetCamera()->RemoveEnabledCamera(mMainCamera);
                 GameManager::GetInstance()->SetPaused(true, false);
             }
-            
+
             mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
             App->GetCamera()->ActivateFirstCamera();
 
@@ -238,53 +220,67 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 }
 
                 mPlayingCinematic = false;
-            }       
-        }   
+                mFadeOn = true;
+            }
+        }
         else
         {
-            if(Fade(true))
+            if (mFadeOn)
             {
-                App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-                App->GetCamera()->AddEnabledCamera(mMainCamera);
-                App->GetCamera()->ActivateFirstCamera();
-
-                GameManager::GetInstance()->SetPaused(false, false);
-
-
-                if (mBattleArea1)
+                if (Fade(true))
                 {
-                    if (mBArea1->IsAreaActive())
-                    {
-                        mEnemy1->SetEnabled(false);
-                    }
-                }
+                    App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
+                    App->GetCamera()->AddEnabledCamera(mMainCamera);
+                    App->GetCamera()->ActivateFirstCamera();
 
-                if (mBattleArea2)
-                {
-                    if (mBArea2->IsAreaActive())
-                    {
-                        mEnemy2->SetEnabled(false);
-                    }
-                }
+                    GameManager::GetInstance()->SetPaused(false, false);
 
-                if (mBattleArea3)
-                {
-                    if (mBArea3->IsAreaActive())
+                    if (mBattleArea1)
                     {
-                        mEnemy3->SetEnabled(false);
-                    }
-                }
-
-                if (mBattleArea4)
-                {
-                    if (mBArea4->IsAreaActive())
-                    {
-                        if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
+                        if (mBArea1->IsAreaActive())
                         {
-                            mEnemy4->SetEnabled(false);
+                            mEnemy1->SetEnabled(false);
                         }
                     }
+
+                    if (mBattleArea2)
+                    {
+                        if (mBArea2->IsAreaActive())
+                        {
+                            mEnemy2->SetEnabled(false);
+                        }
+                    }
+
+                    if (mBattleArea3)
+                    {
+                        if (mBArea3->IsAreaActive())
+                        {
+                            mEnemy3->SetEnabled(false);
+                        }
+                    }
+
+                    if (mBattleArea4)
+                    {
+                        if (mBArea4->IsAreaActive())
+                        {
+                            if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
+                            {
+                                mEnemy4->SetEnabled(false);
+                            }
+                            else
+                            {
+                                mAnimationComponent->SetIsPlaying(true);
+                            }
+                        }
+                    }
+
+                    mFadeStart = false;
+                    mFadeOn = false;
                 }
+            }
+            else
+            {
+                Fade(false);
             }
         }
     }
@@ -386,25 +382,16 @@ bool CinematicCamera::Fade(bool fadeOut)
                 mFadeStart = true;
             }
 
-
             if (mCounter < 1.0f)
             {
                 mFade->SetEnabled(true);
 
-                mCounter += 0.02f;
+                mCounter += mFadeSpeed;
                 mImage->SetAlpha(mCounter);
 
                 return false;
             }
-            else
-            {
-                //if (mFadeStart)
-                //{
-                    mFade->SetEnabled(false);
-                    //mFadeStart = false;
-                    return true;
-                //}    
-            }
+            else return true;
         }
         else
         {
@@ -418,20 +405,12 @@ bool CinematicCamera::Fade(bool fadeOut)
             {
                 mFade->SetEnabled(true);
 
-                mCounter -= 0.02f;
+                mCounter -= mFadeSpeed;
                 mImage->SetAlpha(mCounter);
 
                 return false;
             }
-            else
-            {
-                //if (mFadeStart)
-                //{
-                    mFade->SetEnabled(false);
-                    //mFadeStart = false;
-                    return true;
-                //}
-            }
+            else return true;
         }
     }
 }

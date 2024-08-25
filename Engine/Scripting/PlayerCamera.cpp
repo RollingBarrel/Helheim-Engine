@@ -64,6 +64,17 @@ void PlayerCamera::Update()
     else
     {
     */
+        //*****************************************************************
+        /*
+        float3 position = mFollowTarget->GetWorldPosition();
+        float deltaX = 50.0f;
+
+        position.x += deltaX;
+
+        mGameObject->SetWorldPosition(position);
+        */
+        //*****************************************************************
+
         mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
         mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
         mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
