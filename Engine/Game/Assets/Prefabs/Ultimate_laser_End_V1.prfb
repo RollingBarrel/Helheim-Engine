@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1850912151,
+                "UID": 1960443966,
                 "ParentUID": 1,
                 "Name": "Ultimate_laser_End_V1",
                 "Enabled": true,
@@ -134,8 +134,8 @@
                 ]
             },
             {
-                "UID": 1904311458,
-                "ParentUID": 1850912151,
+                "UID": 1638283697,
+                "ParentUID": 1960443966,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,

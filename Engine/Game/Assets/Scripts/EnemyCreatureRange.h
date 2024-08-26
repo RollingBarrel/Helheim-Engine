@@ -25,7 +25,6 @@ private:
 	bool mDoDamage = false;
 
 	GameObject* mLaserOrigin = nullptr;
-	GameObject* mLaserTrail = nullptr;
 	GameObject* mLaserEnd = nullptr;
 	GameObject* mLaserCharge = nullptr;
 

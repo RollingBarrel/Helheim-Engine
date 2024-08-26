@@ -30,7 +30,7 @@ public:
 	Trail();
 	Trail(const Trail& original);
 	~Trail();
-	const char* GetFileName() const { return mFileName; }
+	const char* GetFileName() const { return mImageName; }
 	float GetLifeTime() const { return mMaxLifeTime; }
 	size_t GetTrailSize() const { return mPoints.size(); }
 
@@ -49,15 +49,15 @@ public:
 	void Load(const JsonObject& data);
 
 	void SetColorGradient(const ColorGradient& gradient) { mGradient = gradient; }
+	void SetLifeTime(float time) { mMaxLifeTime = time; }
 
 private:
 	float3 CalculateDirection(const float3& position, const float3& norm) const;
 	void SetImage(unsigned int resourceId);
-	void SetFileName(const char* fileName) { mFileName = fileName; }
+	void SetFileName(const char* fileName) { mImageName = fileName; }
 
 	ResourceTexture* mImage = nullptr;
-	unsigned int mResourceId = 148626881; // Default particle texture
-	const char* mFileName = nullptr;
+	const char* mImageName = nullptr;
 
 	float mMinDistance = 0.1f;
 	int mMaxPoints = 1000;
