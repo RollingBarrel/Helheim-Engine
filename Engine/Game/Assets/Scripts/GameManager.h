@@ -45,6 +45,7 @@ public:
     void GameOver();
     void HitStopTime(float time);
     void HitStop();
+    void HitStop(float duration);
 
 private:
     void PrepareAudio();
@@ -71,6 +72,7 @@ private:
     bool mPaused = false;
 
     bool mHitStopActive = false;
+    float mDefaultHitStopTime = 0.0f;
     float mHitStopTime = 0.0f;
     float mStopStart = 0.0f;
     float mCurrentStopTime = 0.0f;

@@ -19,7 +19,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
-    MEMBER(MemberType::FLOAT, mHitStopTime);
+    MEMBER(MemberType::FLOAT, mDefaultHitStopTime);
     END_CREATE;
 }
 
@@ -170,6 +170,15 @@ void GameManager::HitStopTime(float time)
 
 void GameManager::HitStop()
 {
+    mHitStopTime = mDefaultHitStopTime;
+    mStopStart = mGameTimer->GetRealTime();
+    mGameTimer->SetTimeScale(0.0f);
+    mHitStopActive = true;
+}
+
+void GameManager::HitStop(float duration)
+{
+    mHitStopTime = duration;
     mStopStart = mGameTimer->GetRealTime();
     mGameTimer->SetTimeScale(0.0f);
     mHitStopActive = true;
