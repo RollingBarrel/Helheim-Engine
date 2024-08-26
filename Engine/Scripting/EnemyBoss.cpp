@@ -23,7 +23,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mAttackDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
-    MEMBER(MemberType::INT, mBulletAmmount);
+    MEMBER(MemberType::FLOAT, mBulletHellCooldown);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::FLOAT, mAttackDuration);
     MEMBER(MemberType::FLOAT, mDeathTime);
@@ -64,19 +64,21 @@ void EnemyBoss::Update()
     if (GameManager::GetInstance()->IsPaused()) return;
     if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
 
-    if ((mStage == 1 && mHealth / mMaxHealth < 0.2) || (mStage == 0 && mHealth / mMaxHealth < 0.6))
-    {
-        ++mStage;
-        mCurrentState = EnemyState::CHARGE;
-        if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
-    }
+    
 
     if (!mBeAttracted)
     {
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-            if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
+            if ((mStage == 1 && mHealth / mMaxHealth < 0.2) || (mStage == 0 && mHealth / mMaxHealth < 0.6))
+            {
+                //Phase change
+                ++mStage;
+                mCurrentState = EnemyState::CHARGE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
+            }
+            else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 mCurrentState = EnemyState::ATTACK;
@@ -180,14 +182,17 @@ void EnemyBoss::BulletAttack()
     float3 rotation = mGameObject->GetWorldEulerAngles();
 
     // Give bullet random directon
-    rotation.y += randFloat() * pi / 2 - pi / 4;
+    float angle = randFloat() * pi / 2 - pi / 4;
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->SetWorldRotation(rotation);
+    //bulletGO->SetWorldRotation(rotation);
+    
+    float3 front = mGameObject->GetFront();
+    float3 direction = float3(front.x * cos(angle) - front.z * sin(angle), front.y, front.x * sin(angle) + front.z * cos(angle));
     Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
+    bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mAttackDamage);
 }
 
 void EnemyBoss::LaserAttack()
