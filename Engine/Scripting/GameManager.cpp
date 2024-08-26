@@ -1,20 +1,24 @@
-#include "pch.h"
 #include "GameManager.h"
-#include "AudioManager.h"
-#include "GameObject.h"
+#include "pch.h"
+#include "Keys.h"
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
-#include "Keys.h"
+
+#include "GameObject.h"
 #include "ScriptComponent.h"
+
+#include "AudioManager.h"
 #include "HudController.h"
 #include "PlayerController.h"
+#include "PlayerCamera.h"
 
 CREATE(GameManager)
 {
     CLASS(owner);
     MEMBER(MemberType::BOOL, mController);
     MEMBER(MemberType::GAMEOBJECT, mPlayer);
+    MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
@@ -59,6 +63,12 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT));
         mPlayerController = static_cast<PlayerController*>(script->GetScriptInstance());
+    }
+
+    if (mPlayerCameraGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mPlayerCameraGO->GetComponent(ComponentType::SCRIPT));
+        mPlayerCamera = static_cast<PlayerCamera*>(script->GetScriptInstance());
     }
     
     if (mAudioManagerGO)

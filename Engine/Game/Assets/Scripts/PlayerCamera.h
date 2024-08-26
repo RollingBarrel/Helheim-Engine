@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 class CameraComponent;
 
@@ -10,22 +11,24 @@ class PlayerCamera :public Script
     FRIEND(PlayerCamera)
 
 public:
-    PlayerCamera(GameObject* owner);
-    void Awake() override;
+    PlayerCamera(GameObject* owner) : Script(owner) {}
     void Start() override;
     void Update() override;
-
-    //// Funzione per ottenere la direzione della telecamera
-    //float3 GetCameraDirection() const;
-
+    void ActivateShake(float duration, float positionOffsetStrength);
 
 private:
-
+    void Shake();
+    
+    
     GameObject* mFollowTarget = nullptr;
-    float mDistanceToPlayer = 18.0f;
     float mYawAngle = 45.0f;
-    float mPitchAngle = -53.0f;
+    float mPitchAngle = -45.0f;
+    float mDistanceToPlayer = 11.0f;
 
+    GameObject* mCameraObject = nullptr;
 
+    TimerScript mShakeTimer;
+    float mShakeDuration = 0.0f;
+    float mShakePositionOffsetStrength = 0.0f;
 };
 

@@ -34,6 +34,9 @@ Shootgun::Shootgun()
     {
         mFire->SetEnabled(false);
     }
+
+    mCameraShakeDuration = 0.2f;
+    mCameraShakeStrengh = 0.1f;
 }
 
 void Shootgun::Enter()
