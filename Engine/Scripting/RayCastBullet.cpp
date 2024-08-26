@@ -26,7 +26,7 @@ void RayCastBullet::Update()
 	}
 
 
-	if ((mBulletTrail->GetOwner()->GetWorldPosition() - mHitPoint).Dot(mDirection) < 0)
+	if ((mBulletTrail->GetOwner()->GetWorldPosition() - mHitPoint).Dot(mDirection) < 0.0f)
 	{
 		float3 newPosition = mBulletTrail->GetOwner()->GetWorldPosition() + mDirection * mSpeed * App->GetDt();
 
@@ -36,7 +36,7 @@ void RayCastBullet::Update()
 		}
 		else
 		{
-			mBulletTrail->GetOwner()->SetWorldPosition(mHitPoint + mDirection * 1.01f);
+			mBulletTrail->GetOwner()->SetWorldPosition(mHitPoint + mDirection * 0.00001f);
 
 			if (mHit.IsValid())
 			{
@@ -60,6 +60,7 @@ void RayCastBullet::Update()
 
 		if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime()))
 		{
+			mHit = Hit();
 			mGameObject->SetEnabled(false);
 		}
 	}
@@ -74,7 +75,6 @@ void RayCastBullet::Init(const float3& startposition, Hit& hit, float damage, fl
 void RayCastBullet::Init(const float3& startposition, const float3& endPosition, float damage, float speed, float size, const ColorGradient* gradient)
 {
 	mFirstFrame = true;
-
 	mHitPoint = endPosition;
 	mDirection = (endPosition - startposition).Normalized();
 	mSpeed = speed;
