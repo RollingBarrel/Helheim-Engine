@@ -37,6 +37,7 @@
 #include "ParticleSystemComponent.h"
 #include "TextComponent.h"
 #include "TrailComponent.h"
+#include "LineComponent.h"
 #include "BoxColliderComponent.h"
 #include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
@@ -49,7 +50,7 @@
 #include "AnimationController.h"
 #include "BezierCurve.h"
 #include "AudioUnit.h"
-#include "TrailComponent.h"
+#include "Trail.h"
 
 #include "ResourceMaterial.h"
 #include "ResourceTexture.h"
@@ -518,6 +519,9 @@ void InspectorPanel::DrawComponents(GameObject* object)
 				case ComponentType::TRAIL:
 					DrawTrailComponent(static_cast<TrailComponent*>(component));
 					break;
+				case ComponentType::LINE:
+						DrawLineComponent(static_cast<LineComponent*>(component));
+						break;
 				case ComponentType::DECAL:
 					DrawDecalComponent(static_cast<DecalComponent*>(component));
 					break;
@@ -1986,26 +1990,26 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 {
 	ImGui::Text("Fixed Direction");
 	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mFixedDirection));
+	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
 
-	if (component->mFixedDirection) 
+	if (component->mTrail->mFixedDirection)
 	{
 		ImGui::Text("Trail Direction");
 		ImGui::SameLine();
-		ImGui::DragFloat3("##TrailDirection", component->mDirection.ptr());
+		ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
 	}
 
 	ImGui::Text("Minimum distance");
 	ImGui::SameLine();
-	ImGui::DragFloat("##MinDistance", &(component->mMinDistance), 1.0f, 0.0f);
+	ImGui::DragFloat("##MinDistance", &(component->mTrail->mMinDistance), 1.0f, 0.0f);
 
 	ImGui::Text("Lifetime");
 	ImGui::SameLine();
-	ImGui::DragFloat("##Lifetime", &(component->mMaxLifeTime), 1.0f, 0.0f);
+	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
 
 	ImGui::Separator();
-	DrawBezierCurve(&(component->mWidth), "Width");
-	
+	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+
 	ImGui::Separator();
 	if (ImGui::CollapsingHeader("Texture & Tint"))
 	{
@@ -2013,7 +2017,7 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 		ImGui::Columns(2);
 		ImGui::SetColumnWidth(0, 70.0);
 
-		ResourceTexture* image = component->mImage;
+		ResourceTexture* image = component->mTrail->mImage;
 
 		if (image)
 		{
@@ -2033,16 +2037,16 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
 				if (resource && (resource->GetType() == Resource::Type::Texture))
 				{
-					component->SetImage(resource->GetUID());
-					component->SetFileName(asset->mName);
+					component->mTrail->SetImage(resource->GetUID());
+					component->mTrail->SetFileName(asset->mName);
 				}
 			}
 			ImGui::EndDragDropTarget();
 		}
 		ImGui::NextColumn();
-		if (component->GetFileName() != nullptr)
+		if (component->mTrail->GetFileName() != nullptr)
 		{
-			ImGui::Text(component->GetFileName());
+			ImGui::Text(component->mTrail->GetFileName());
 		}
 
 		if (image)
@@ -2051,20 +2055,113 @@ void InspectorPanel::DrawTrailComponent(TrailComponent* component) const
 			ImGui::Text("Height:%dpx", image->GetHeight());
 
 		}
+		if (ImGui::Button(ICON_FA_TRASH_CAN))
+		{
+			component->mTrail->SetImage(148626881);
+		}
 		ImGui::Columns(1);
 
-		ImGui::Text("UV Scroll");
+		ImGui::Text("Tilling");
 		ImGui::SameLine();
-		ImGui::Checkbox("##IsUVScrolling", &(component->mIsUVScrolling));
-		if (component->mIsUVScrolling) 
+		ImGui::Checkbox("##IsTilled", &(component->mTrail->mIsTilled));
+		if (component->mTrail->mIsTilled)
 		{
 			ImGui::SameLine();
-			ImGui::DragFloat("##UVScroll", &(component->mUVScroll), 1.0f, 0.0f);
+			ImGui::DragFloat("##Tilling", &(component->mTrail->mTilling), 0.01f, 0.0f);
 		}
 
 		static float draggingMark = -1.0f;
 		static float selectedMark = -1.0f;
-		bool updated = ImGui::GradientEditor(component->mGradient, draggingMark, selectedMark);
+		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
+	}
+}
+
+void InspectorPanel::DrawLineComponent(LineComponent* component) const
+{
+	ImGui::Text("Fixed Direction");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+
+	if (component->mTrail->mFixedDirection)
+	{
+		ImGui::Text("Line Direction");
+		ImGui::SameLine();
+		ImGui::DragFloat3("##LineDirection", component->mTrail->mDirection.ptr());
+	}
+
+	ImGui::Text("Minimum distance");
+	ImGui::SameLine();
+	ImGui::DragFloat("##MinDistance", &(component->mTrail->mMinDistance), 1.0f, 0.0f);
+
+	ImGui::Text("Lifetime");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+
+	ImGui::Separator();
+	DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+
+	ImGui::Separator();
+	if (ImGui::CollapsingHeader("Texture & Tint"))
+	{
+		// Drag and drop	
+		ImGui::Columns(2);
+		ImGui::SetColumnWidth(0, 70.0);
+
+		ResourceTexture* image = component->mTrail->mImage;
+
+		if (image)
+		{
+			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+			ImGui::Image(imageID, ImVec2(50, 50));
+		}
+		else
+		{
+			ImGui::Text("Drop Image");
+		}
+
+		if (ImGui::BeginDragDropTarget())
+		{
+			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			{
+				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+				if (resource && (resource->GetType() == Resource::Type::Texture))
+				{
+					component->mTrail->SetImage(resource->GetUID());
+					component->mTrail->SetFileName(asset->mName);
+				}
+			}
+			ImGui::EndDragDropTarget();
+		}
+		ImGui::NextColumn();
+		if (component->mTrail->GetFileName() != nullptr)
+		{
+			ImGui::Text(component->mTrail->GetFileName());
+		}
+		if (image)
+		{
+			ImGui::Text("Width:%dpx", image->GetWidth());
+			ImGui::Text("Height:%dpx", image->GetHeight());
+		}
+		ImGui::NextColumn();
+		if (ImGui::Button(ICON_FA_TRASH_CAN))
+		{
+			component->mTrail->SetImage(148626881);
+		}
+		ImGui::Columns(1);
+
+		ImGui::Text("Tilling");
+		ImGui::SameLine();
+		ImGui::Checkbox("##IsTilled", &(component->mTrail->mIsTilled));
+		if (component->mTrail->mIsTilled)
+		{
+			ImGui::SameLine();
+			ImGui::DragFloat("##Tilling", &(component->mTrail->mTilling), 0.01f, 0.0f);
+		}
+
+		static float draggingMark = -1.0f;
+		static float selectedMark = -1.0f;
+		bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 	}
 }
 
