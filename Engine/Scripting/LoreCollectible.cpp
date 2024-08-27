@@ -100,17 +100,17 @@ void LoreCollectible::ColorChange()
 {
 	Clamp01(mColor);
 
-		if (!mChange) 
-		{
-			mColor = Lerp(mColor, 0.0f, App->GetDt()*1.4);
-			mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-			if (mColor < 0.1f) mChange = true;
-		}
-		else
-		{
-			mColor = Lerp(mColor, 1.0f, App->GetDt() * 1.4);
-			mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-			if (mColor > 0.9f)  mChange = false;
-		}
+	if (!mChange) 
+	{
+		mColor = Lerp(mColor, 0.0f, App->GetDt()*1.4);
+		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
+		if (mColor < 0.1f) mChange = true;
+	}
+	else
+	{
+		mColor = Lerp(mColor, 1.0f, App->GetDt() * 1.4);
+		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
+		if (mColor > 0.9f)  mChange = false;
+	}
 
 }
