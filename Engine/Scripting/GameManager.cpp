@@ -85,7 +85,7 @@ void GameManager::Update()
 
     HandleAudio();
 
-    if (mHitStopActive)
+    if (mStopActive)
     {
         HitStopTime(mHitStopTime);
     }
@@ -162,9 +162,10 @@ void GameManager::HitStopTime(float time)
     time = time * 1000;
     mCurrentStopTime = mGameTimer->GetRealTime();
     float delta = mCurrentStopTime - mStopStart;
-    if (delta>time) {
+    if (delta>time) 
+    {
         mGameTimer->SetTimeScale(1.0f);
-        mHitStopActive = false;
+        mStopActive = false;
     }
 }
 
@@ -173,7 +174,7 @@ void GameManager::HitStop()
     mHitStopTime = mDefaultHitStopTime;
     mStopStart = mGameTimer->GetRealTime();
     mGameTimer->SetTimeScale(0.0f);
-    mHitStopActive = true;
+    mStopActive = true;
 }
 
 void GameManager::HitStop(float duration)
@@ -181,7 +182,8 @@ void GameManager::HitStop(float duration)
     mHitStopTime = duration;
     mStopStart = mGameTimer->GetRealTime();
     mGameTimer->SetTimeScale(0.0f);
-    mHitStopActive = true;
+    mStopActive = true;
+    
 }
 
 void GameManager::PrepareAudio()
