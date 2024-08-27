@@ -98,8 +98,6 @@ void LoreCollectible::OnCollisionExit(CollisionData* collisionData)
 
 void LoreCollectible::ColorChange()
 {
-	/*if (mColorTimer.Delay(1.5f)) 
-	{*/
 	Clamp01(mColor);
 
 		if (!mChange) 
@@ -114,5 +112,5 @@ void LoreCollectible::ColorChange()
 			mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
 			if (mColor > 0.9f)  mChange = false;
 		}
-	/*}*/
+
 }

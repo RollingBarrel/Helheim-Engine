@@ -56,11 +56,8 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
     }
     else if (collisionGO->GetTag() != "Player" && collisionGO->GetTag() != "Drop" && collisionGO->GetTag() != "Trap")
     {
-         //float distance = Distance(float2(collisionGO->GetWorldPosition().x, collisionGO->GetWorldPosition().z), float2(mGameObject->GetWorldPosition().x, mGameObject->GetWorldPosition().z)) / 10;
-         //Clamp01(distance);
-         float3 currentScale = mGameObject->GetLocalScale();
-         ////if (distance < currentScale.z)
-         //   mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y, distance));
+        float3 currentScale = mGameObject->GetLocalScale();
+         
         Hit hit;
         Ray ray;
         ray.dir = mGameObject->GetFront();
