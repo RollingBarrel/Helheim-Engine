@@ -43,10 +43,9 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 
 	GameObject* gameObject = new GameObject(name, parent);
 
-	gameObject->SetPosition(node.mTranslation);
-	gameObject->SetRotation(node.mRotation);
-	gameObject->SetScale(node.mScale);
-	gameObject->RecalculateMatrices();
+	gameObject->SetLocalPosition(node.mTranslation);
+	gameObject->SetLocalRotation(node.mRotation);
+	gameObject->SetLocalScale(node.mScale);
 
 	if (isRoot && nodeNumber == 0)
 	{
@@ -55,8 +54,8 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 			if (rModel.mAnimationUids[0] != 0)
 			{
 				//Defined once by parent after creating the animation component (the first time the function is called parent is gameobjectRoot)
-				cAnimation = reinterpret_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
-				cAnimation->SetAnimationsUids(rModel.mAnimationUids);
+				cAnimation = static_cast<AnimationComponent*>(gameObject->GetParent()->CreateComponent(ComponentType::ANIMATION));
+				cAnimation->SetAnimationUid(rModel.mAnimationUids[0]);
 				cAnimation->StartUp();
 
 			}
@@ -67,14 +66,14 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 	{
 		if (node.mLight.mType.compare("point") == 0)
 		{
-			PointLightComponent* cPoint = reinterpret_cast<PointLightComponent*>(gameObject->CreateComponent(ComponentType::POINTLIGHT));
+			PointLightComponent* cPoint = static_cast<PointLightComponent*>(gameObject->CreateComponent(ComponentType::POINTLIGHT));
 			cPoint->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
 			cPoint->SetIntensity(node.mLight.mIntensity);
 			cPoint->SetRadius(node.mLight.mRange);
 		}
 		else if (node.mLight.mType.compare("spot") == 0)
 		{
-			SpotLightComponent* cSpot = reinterpret_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
+			SpotLightComponent* cSpot = static_cast<SpotLightComponent*>(gameObject->CreateComponent(ComponentType::SPOTLIGHT));
 			cSpot->SetColor(const_cast<float*>(node.mLight.mColor.ptr()));
 			cSpot->SetIntensity(node.mLight.mIntensity);
 			cSpot->SetRange(node.mLight.mRange);
@@ -92,7 +91,7 @@ GameObject* DragToScene(const ModelNode& node, int nodeNumber, const ResourceMod
 				name = "MeshRenderer";
 			}
 			GameObject* gO = new GameObject(name, gameObject);
-			MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
+			MeshRendererComponent* cMesh = static_cast<MeshRendererComponent*>(gO->CreateComponent(ComponentType::MESHRENDERER));
 			//MeshRendererComponent* cMesh = reinterpret_cast<MeshRendererComponent*>(gameObject->CreateComponent(ComponentType::MESHRENDERER));
 			cMesh->SetMesh(it->first);
 			cMesh->SetMaterial(it->second);
@@ -119,10 +118,12 @@ void ScenePanel::Draw(int windowFlags)
 		if (ImGui::Begin("Game", &mOpen, windowFlags))
 		{
 			MenuGBuffer();
-			if (ImGui::IsWindowAppearing())
+			if (EngineApp->GetEngineCamera()->IsEditorCameraActive())
 			{
 				EngineApp->GetEngineCamera()->ActivateGameCamera();
 			}
+				
+			
 
 			DrawScene();
 		}
@@ -133,7 +134,8 @@ void ScenePanel::Draw(int windowFlags)
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags))
 	{
 		MenuGBuffer();
-		if (ImGui::IsWindowAppearing())
+
+		if (!EngineApp->GetEngineCamera()->IsEditorCameraActive())
 		{
 			EngineApp->GetEngineCamera()->ActivateEditorCamera();
 		}
@@ -179,11 +181,21 @@ void ScenePanel::MenuGBuffer()
 			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferNormals();
 				currentSceneName = "NORMALS";
+			}			
+			if (ImGui::Selectable("SSAO")) 
+			{
+				currentScene = EngineApp->GetOpenGL()->GetGBufferSSAO();
+				currentSceneName = "SSAO";
 			}
 			if (ImGui::Selectable("DEPTH")) 
 			{
 				currentScene = EngineApp->GetOpenGL()->GetGBufferDepth();
 				currentSceneName = "DEPTH";
+			}
+			if (ImGui::Selectable("BLUR"))
+			{
+				currentScene = EngineApp->GetOpenGL()->GetBluredTexture();
+				currentSceneName = "BLUR";
 			}
 			ImGui::EndCombo();
 		}
@@ -237,7 +249,7 @@ void ScenePanel::DrawScene()
 					GameObject* gameObjectRoot = new GameObject(name.c_str(), EngineApp->GetScene()->GetRoot());
 
 					std::vector<GameObject*> tempVec;
-					ResourceModel* rModel = reinterpret_cast<ResourceModel*>(resource);
+					ResourceModel* rModel = static_cast<ResourceModel*>(resource);
 					
 					std::unordered_map<unsigned int, GameObject*> gltfGoMap;
 					std::vector<GameObject*>skinGos;
@@ -269,6 +281,15 @@ void ScenePanel::DrawScene()
 						//	}
 						//}
 					}
+
+					//Load animation data
+
+					AnimationComponent* rootAnim = static_cast<AnimationComponent*>(gameObjectRoot->GetComponent(ComponentType::ANIMATION));
+					if (rootAnim)
+					{
+						rootAnim->ReloadGameObjects();
+					}
+					
 					//Load Skinning data
 					std::vector<std::pair<GameObject*, float4x4>> invBindVec;
 					for (int j = 0; j<skinGos.size(); ++j)
@@ -279,11 +300,11 @@ void ScenePanel::DrawScene()
 							invBindVec.emplace_back(gltfGoMap[rModel->mInvBindMatrices[j][i].first], rModel->mInvBindMatrices[j][i].second);
 						}
 						assert(skinGos[j]->GetChildren().size() != 0 && skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER) != nullptr);
-						MeshRendererComponent* paletteOwner = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER));
+						MeshRendererComponent* paletteOwner = static_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[0]->GetComponent(ComponentType::MESHRENDERER));
 						paletteOwner->SetInvBindMatrices(std::move(invBindVec));
 						for (int z = 1; z < skinGos[j]->GetChildren().size(); ++z)
 						{
-							MeshRendererComponent* meshRenderer = reinterpret_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[z]->GetComponent(ComponentType::MESHRENDERER));
+							MeshRendererComponent* meshRenderer = static_cast<MeshRendererComponent*>(skinGos[j]->GetChildren()[z]->GetComponent(ComponentType::MESHRENDERER));
 							if(meshRenderer != nullptr)
 								meshRenderer->SetInvBindMatrices(std::move(invBindVec), paletteOwner);
 						}
@@ -332,7 +353,6 @@ void ScenePanel::DrawScene()
 		//If there's a selected object in the hierarchy and it's not the root
 		if (selectedGameObject && (selectedGameObject != EngineApp->GetScene()->GetRoot()))
 		{
-			const float4x4* transform = &selectedGameObject->GetWorldTransform();
 			float4x4 modelMatrix = selectedGameObject->GetWorldTransform().Transposed();
 
 			//Draws the Guizmo axis
@@ -340,6 +360,7 @@ void ScenePanel::DrawScene()
 
 			if (ImGuizmo::IsUsing())
 			{
+				modelMatrix.Transpose();
 				mIsGuizmoUsing = true;
 				GameObject* parent = selectedGameObject->GetParent();
 				float4x4 inverseParentMatrix = float4x4::identity;
@@ -353,19 +374,19 @@ void ScenePanel::DrawScene()
 					inverseParentMatrix = parent->GetWorldTransform().Inverted();
 				}
 
-				float4x4 localMatrix = inverseParentMatrix * modelMatrix.Transposed();
+				float4x4 localMatrix = inverseParentMatrix * modelMatrix;
 				localMatrix.Decompose(translation, rotation, scale);
 
 				switch (currentGuizmoOperation)
 				{
 				case ImGuizmo::TRANSLATE:
-					selectedGameObject->SetPosition(translation);
+					selectedGameObject->SetWorldPosition(modelMatrix.TranslatePart());
 					break;
 				case ImGuizmo::ROTATE:
-					selectedGameObject->SetRotation(rotation);
+					selectedGameObject->SetWorldRotation(rotation);
 					break;
 				case ImGuizmo::SCALE:
-					selectedGameObject->SetScale(scale);
+					selectedGameObject->SetWorldScale(scale);
 					break;
 				}
 			}

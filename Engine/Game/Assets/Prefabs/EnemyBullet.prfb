@@ -1,0 +1,268 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 577699760,
+                "ParentUID": 1,
+                "Name": "EnemyBullet",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.067720890045166,
+                    2.055351734161377,
+                    0.11055183410644531
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Bullet",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mShooterIsPlayer",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.10000000149011612,
+                            0.10000000149011612,
+                            0.10000000149011612
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2110266833,
+                "ParentUID": 577699760,
+                "Name": "VFX",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 1138568728,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.10000000149011612,
+                        "MaxLifeTime": 0.25,
+                        "UVScroll": 1.0,
+                        "IsFixedDirection": false,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Gradient": {
+                            "Color Gradient": []
+                        }
+                    },
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 20,
+                        "Looping": false,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.4000000059604645,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 6.300000190734863,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.550000011920929,
+                                        0.8050000071525574
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7950000166893005,
+                                        0.5199999809265137
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 5.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3675000071525574,
+                                        0.7799999713897705
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6474999785423279,
+                                        0.16500002145767213
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.1407506763935089,
+                                "Color": [
+                                    0.055999755859375,
+                                    0.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.47184988856315615,
+                                "Color": [
+                                    0.027703432366251947,
+                                    0.5651134252548218,
+                                    0.9738479852676392,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7426286339759827,
+                                "Color": [
+                                    1.0,
+                                    0.9359999895095825,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.95174241065979,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

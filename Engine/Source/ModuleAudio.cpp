@@ -17,16 +17,21 @@ bool ModuleAudio::Init()
 {
 	// Instantiate Fmod studio
 	CheckError( FMOD::Studio::System::create(&mSystem) ); // Create the Studio System object.
+#if _DEBUG
+	CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_LIVEUPDATE, FMOD_INIT_NORMAL, 0));
+#else
 	CheckError(mSystem->initialize(1024, FMOD_STUDIO_INIT_NORMAL, FMOD_INIT_NORMAL, 0));
+#endif
 
 	CheckError( mSystem->getCoreSystem(&mCoreSystem));
 
 	// Load bank
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank));
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Vehicles.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mVehicleBank) );
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/sfx.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/amb.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mAmbBank));
+	CheckError(mSystem->loadBankFile(("Assets/FMOD/Desktop/ui.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mUiBank));
 
 	// Set volume lower by default
 	FMOD::Studio::Bus* masterBus = nullptr;
@@ -147,7 +152,7 @@ int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, co
 	AddIntoEventList(eventDescription);
 	// Returns: -1 Continue an audio | else: play new audio 
 	FMOD::Studio::EventInstance* eventInstance = nullptr;
-	// Continue audio
+	// Restart audio
 	if (id == -1)
 	{
 		// Play new audio
@@ -266,8 +271,9 @@ int ModuleAudio::GetMemoryUsage() const
 	return currentAllocated;
 }
 
-std::map<std::string, int>& ModuleAudio::GetInstances() const {
-	std::map<std::string, int> result;
+void ModuleAudio::GetInstances(std::map<std::string, int>& instances) const
+{
+	instances.clear();
 
 	for (const auto& eventDescription : mActiveEvent)
 	{
@@ -281,10 +287,8 @@ std::map<std::string, int>& ModuleAudio::GetInstances() const {
 		CheckError(eventDescription->getInstanceCount(&instanceCount));
 
 		// Store the path and instance count in the map
-		result[std::string(path)] = instanceCount - 1;
+		instances[std::string(path)] = instanceCount - 1;
 	}
-
-	return result;
 }
 
 float ModuleAudio::GetVolume(std::string busname) const

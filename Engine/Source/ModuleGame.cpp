@@ -11,13 +11,10 @@
 
 bool ModuleGame::Init()
 {
-	const char* shaderSource[2] = { "GameVertex.glsl", "GameFragment.glsl" };
-	int shaderType[2] = { GL_VERTEX_SHADER, GL_FRAGMENT_SHADER };
-	mGameProgramId = App->GetOpenGL()->CreateShaderProgramFromPaths(shaderSource, shaderType, 2);
 	glGenVertexArrays(1, &mVAO);
 
 	//TODO: read the name of the fitrst scene to load from somewhere
-	App->GetScene()->Load("AnimationOp");
+	App->GetScene()->Load("Assets/Scenes/MainMenu");
 	//App->GetScene()->Load("Level1");
 	//TODO:: This is bad for decoupling
 	//App->GetScriptManager()->AwakeScripts();
@@ -53,7 +50,7 @@ update_status ModuleGame::PreUpdate(float dt)
 
 update_status ModuleGame::Update(float dt)
 {
-	glUseProgram(mGameProgramId);
+	glUseProgram(App->GetOpenGL()->GetScreenTexProgramId());
 	glBindVertexArray(mVAO);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetFramebufferTexture());

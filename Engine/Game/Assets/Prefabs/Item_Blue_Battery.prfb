@@ -1,0 +1,162 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 466430549,
+                "ParentUID": 1,
+                "Name": "Item_Blue_Battery",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
+                ],
+                "Tag": "Drop",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ItemDrop",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mDropId",
+                                "MemberType": 0,
+                                "VariableData": 2
+                            },
+                            {
+                                "VariableName": "mHealthRecovered",
+                                "MemberType": 1,
+                                "VariableData": 15.0
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.20000000298023225,
+                            0.0
+                        ],
+                        "Size": [
+                            0.5,
+                            0.5,
+                            0.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 600102869,
+                "ParentUID": 466430549,
+                "Name": "OB_blue_battery_particle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 707528072,
+                "ParentUID": 600102869,
+                "Name": "OB_blue_battery_particle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 814674791,
+                "ParentUID": 707528072,
+                "Name": "OB_blue_battery_particle",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1248012558,
+                        "MaterialID": 1248012561,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}

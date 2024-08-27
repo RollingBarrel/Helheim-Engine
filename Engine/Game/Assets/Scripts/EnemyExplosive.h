@@ -1,44 +1,29 @@
 #pragma once
 #include "Enemy.h"
 
+class GameObject;
+class ParticleSystemComponent;
+class PlayerController;
+
 GENERATE_BODY(EnemyExplosive);
 class EnemyExplosive : public Enemy
 {
 	FRIEND(EnemyExplosive)
-	public:
-		EnemyExplosive(GameObject* owner);
-		~EnemyExplosive() {}
-		void Start() override;
-		void Update() override;
-		void TakeDamage(float damage) override;
+public:
+	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
+	~EnemyExplosive() {}
 
-	private:
-		enum class EnemyState {
-			Deploy,
-			Forward,
-			Backward,
-			Left,
-			Right,
-			Armed,
-			Explosion
-		};
+	void Start() override;
+	void Charge() override;
+	void Attack() override;
 
-		void ChangeState(EnemyState newState);
-		void StateMachine();
-		//void SearchPlayer() override;
-		void Armed();
-		void Explosion();
-		bool IsMoving();
+private:
+	void ChargeWarningArea();
 
-		//*****************************************************
-		//FOR TEST UNTIL AI WILL BE AVAILABLE
-		//void Test_Forward() override;
-		//void Test_Backward() override;
-		//void Test_Left() override;
-		//void Test_Right() override;
-		//*****************************************************
+	float mExplosionRadius = 5.0f;
+	GameObject* mExplosionWarningGO = nullptr;
+	GameObject* mExplosionParticle = nullptr;
+	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
+	PlayerController* playerScript = nullptr;
 
-		EnemyState mCurrentState;	
-
-		float mArmedDistance;
 };

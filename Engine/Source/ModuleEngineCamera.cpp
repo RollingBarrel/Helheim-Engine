@@ -3,7 +3,6 @@
 #include "GameObject.h"
 #include "CameraComponent.h"
 #include "Physics.h"
-#include "Quadtree.h"
 
 #include "Geometry/AABB.h"
 #include "Geometry/Sphere.h"
@@ -22,7 +21,7 @@
 bool ModuleEngineCamera::Init()
 {
 	mEditorCameraGameObject = new GameObject("EditorCamera", nullptr);
-	mEditorCamera = reinterpret_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
+	mEditorCamera = static_cast<CameraComponent*>(mEditorCameraGameObject->CreateComponent(ComponentType::CAMERA));
 	mActiveCameras.clear();
 	if (App != nullptr)
 	{
@@ -104,9 +103,10 @@ bool ModuleEngineCamera::AddEnabledCamera(CameraComponent* camera)
 bool ModuleEngineCamera::RemoveEnabledCamera(CameraComponent* camera)
 {
 	bool removed = ModuleCamera::RemoveEnabledCamera(camera);
-	if (mIsEditorCameraActive || mCurrentCamera == nullptr)
+	if (mIsEditorCameraActive || !mCurrentCamera )
 	{
 		mCurrentCamera = mEditorCamera;
+		mIsEditorCameraActive = true;
 		App->GetOpenGL()->SetOpenGlCameraUniforms();
 	}
 
@@ -120,9 +120,7 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 	bool intersects = false;
 	bool intersectsTriangle = false;
 
-	Quadtree* root = App->GetScene()->GetQuadtreeRoot();
-
-	if (!reinterpret_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
+	if (!static_cast<ScenePanel*>(EngineApp->GetEditor()->GetPanel(SCENEPANEL))->IsGuizmoUsing())
 	{
 		std::map<float, Hit> hits;
 		//root->RayCast(ray, hits); //FIX MOUSE PICKING
@@ -137,14 +135,14 @@ void ModuleEngineCamera::MousePicking(Ray& ray)
 					parentGameObject = parentGameObject->GetParent();
 				}
 
-				const GameObject* focusedGameObject = reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
+				const GameObject* focusedGameObject = static_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->GetFocusedObject();
 				if (focusedGameObject->GetID() == parentGameObject->GetID())
 				{
-					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*intersectGameObjectPair.second.mGameObject);
+					static_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*intersectGameObjectPair.second.mGameObject);
 				}
 				else
 				{
-					reinterpret_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*parentGameObject);
+					static_cast<HierarchyPanel*>(EngineApp->GetEditor()->GetPanel(HIERARCHYPANEL))->SetFocus(*parentGameObject);
 				}
 			}
 		}
@@ -226,11 +224,11 @@ void ModuleEngineCamera::CameraControls(float dt)
 			float3x3 rotationY = float3x3::RotateAxisAngle(float3::unitY, DegToRad(-mX));
 			float3x3 rotation = rotationY.Mul(rotationX);
 
-			Quat quatOriginal = mEditorCameraGameObject->GetRotation();
+			Quat quatOriginal = mEditorCameraGameObject->GetWorldRotation();
 			Quat newQuat = Quat(rotation);
 			newQuat =  newQuat * quatOriginal;
-			float3 eulerRotation = newQuat.ToEulerXYZ();
-			mEditorCameraGameObject->SetRotation(newQuat);
+			//float3 eulerRotation = newQuat.ToEulerXYZ();
+			mEditorCameraGameObject->SetWorldRotation(newQuat);
 
 			MouseFix();
 
@@ -293,7 +291,7 @@ void ModuleEngineCamera::CameraControls(float dt)
 			{
 				active = true;
 
-				float3 focus = mEditorCameraGameObject->GetPosition();
+				float3 focus = mEditorCameraGameObject->GetWorldPosition();
 				int mX, mY;
 				EngineApp->GetInput()->GetMouseMotion(mX, mY);
 
@@ -308,8 +306,8 @@ void ModuleEngineCamera::CameraControls(float dt)
 					focus = rotationMatrixY.Mul(focus);
 				}
 
-				mEditorCameraGameObject->SetPosition(focus);
-				mEditorCameraGameObject->LookAt(focusedObject->GetPosition());
+				mEditorCameraGameObject->SetWorldPosition(focus);
+				mEditorCameraGameObject->LookAt(focusedObject->GetWorldPosition());
 				
 				MouseFix();
 			}	
@@ -334,9 +332,9 @@ void ModuleEngineCamera::CameraControls(float dt)
 						distance *= objectSphere.r;
 					}
 
-					float3 selectedObjectPosition = selectedGameObject->GetPosition();
+					float3 selectedObjectPosition = selectedGameObject->GetWorldPosition();
 					float3 finalCameraPosition = selectedObjectPosition - (mEditorCameraGameObject->GetFront()).Normalized() * distance;
-					mEditorCameraGameObject->SetPosition(finalCameraPosition);
+					mEditorCameraGameObject->SetWorldPosition(finalCameraPosition);
 				}
 
 			}

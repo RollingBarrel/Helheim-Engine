@@ -29,7 +29,6 @@ void SettingsPanel::Draw(int windowFlags)
 	if (ImGui::Begin(GetName(), &mOpen, windowFlags)) 
 	{
 		//Config settings update
-		mCulling = EngineApp->GetScene()->GetApplyFrustumCulling();
 		mEngineVsyncEnabled = EngineApp->GetEngineClock()->GetVsyncStatus();
 		mGameVsyncEnabled = EngineApp->GetGameClock()->GetVsyncStatus();
 		mEngineFpsLimitEnabled = EngineApp->GetEngineClock()->IsFpsLimitEnabled();
@@ -48,10 +47,6 @@ void SettingsPanel::Draw(int windowFlags)
 		if(ImGui::CollapsingHeader("Graphics"))
 		{
 			ImGui::SeparatorText("Graphic settings");
-			if (ImGui::Checkbox("EngineApply frustum culling", &mCulling))
-			{
-				EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
-			}
 			ImGui::Indent();
 			ImGui::SeparatorText("Engine");
 			ImGui::Checkbox("Engine Vsync enabled", &mEngineVsyncEnabled);
@@ -137,7 +132,6 @@ void SettingsPanel::SaveUserSettings() const
 	JsonObject root = doc.GetRootObject();
 	JsonObject engine = root.AddNewJsonObject("Engine Settings");
 	engine.AddBool("Draw Grid", mGrid);
-	engine.AddBool("Frustum Culling", mCulling);
 	engine.AddBool("Vsync", mEngineVsyncEnabled);
 	engine.AddBool("Enable FPS Limit", mEngineFpsLimitEnabled);
 	engine.AddFloat("FPS Limit", mEngineFpsLimit);
@@ -148,8 +142,8 @@ void SettingsPanel::SaveUserSettings() const
 	game.AddFloat("FPS Limit", mGameFpsLimit);
 
 	JsonObject camera = root.AddNewJsonObject("Camera Settings");
-	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetPosition().ptr(), 3);
-	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetRotation().ptr(), 4);
+	camera.AddFloats("Position", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldPosition().ptr(), 3);
+	camera.AddFloats("Rotation", EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetWorldRotation().ptr(), 4);
 
 	JsonObject scene = root.AddNewJsonObject("Scene Settings");
 	scene.AddString("Name", EngineApp->GetScene()->GetName().c_str());
@@ -160,7 +154,7 @@ void SettingsPanel::SaveUserSettings() const
 
 void SettingsPanel::LoadUserSettings()
 {
-	char* fileBuffer;
+	char* fileBuffer = nullptr;
 	
 	if (App->GetFileSystem()->Load("userSettings.json", &fileBuffer))
 	{
@@ -171,8 +165,6 @@ void SettingsPanel::LoadUserSettings()
 		JsonObject engine = root.GetJsonObject("Engine Settings");
 		mGrid = engine.GetBool("Draw Grid");
 		EngineApp->GetDebugDraw()->SetRenderGrid(mGrid);
-		mCulling = engine.GetBool("Frustum Culling");
-		EngineApp->GetScene()->SetApplyFrustumCulling(mCulling);
 		mEngineVsyncEnabled = engine.GetBool("Vsync");
 		EngineApp->GetEngineClock()->SetVsyncStatus(mEngineVsyncEnabled);
 		mEngineFpsLimitEnabled = engine.GetBool("Enable FPS Limit");
@@ -191,20 +183,24 @@ void SettingsPanel::LoadUserSettings()
 		JsonObject camera = root.GetJsonObject("Camera Settings");
 		float position[3];
 		camera.GetFloats("Position", position);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetPosition(float3(position));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldPosition(float3(position));
 
 		float rotation[4];
 		camera.GetFloats("Rotation", rotation);
-		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetRotation(Quat(rotation));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->SetWorldRotation(Quat(rotation));
+		EngineApp->GetEngineCamera()->mEditorCameraGameObject->GetFront(); // Force RecaulculateMatrices
 
 		JsonObject scene = root.GetJsonObject("Scene Settings");
 		std::string name = scene.GetString("Name");
 		std::string str = ASSETS_SCENES_PATH;
 		name += ".scn";
 		str += name;
-		if(App->GetFileSystem()->Exists(str.c_str()))
-			App->GetScene()->Load(name.c_str());	//TODO: Request Resource id and load 
+		if (App->GetFileSystem()->Exists(str.c_str()))
+		{
+			App->GetScene()->Load(str.c_str());	//TODO: Request Resource id and load 
+		}
 	}	
+	delete[] fileBuffer;
 }
 
 void SettingsPanel::AddTag(const char* newTag)
@@ -276,7 +272,7 @@ const void SettingsPanel::ShowDeleteTagsPopup()
 
 void SettingsPanel::LoadProjectSettings()
 {
-	char* fileBuffer;
+	char* fileBuffer = nullptr;
 
 	if (App->GetFileSystem()->Load("projectSettings.json", &fileBuffer))
 	{
@@ -290,6 +286,7 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
+		mTags.push_back("Enemy");
 
 		for (unsigned int i = 0; i < tags.Size(); ++i)
 		{
@@ -303,8 +300,10 @@ void SettingsPanel::LoadProjectSettings()
 		mTags.push_back("Untagged");
 		mTags.push_back("MainCamera");
 		mTags.push_back("Player");
+		mTags.push_back("Enemy");
 	}
 
+	delete[] fileBuffer;
 }
 
 void SettingsPanel::SaveEditorLayout() const
@@ -328,6 +327,16 @@ void SettingsPanel::LoadEditorLayout()
 		std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
 		ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
 		in_file.close();
+	}
+	else
+	{
+		in_file = std::ifstream("./InternalAssets/default_imgui.ini");
+		if (in_file.is_open())
+		{
+			std::string settings_str((std::istreambuf_iterator<char>(in_file)), std::istreambuf_iterator<char>());
+			ImGui::LoadIniSettingsFromMemory(settings_str.c_str(), settings_str.size());
+			in_file.close();
+		}
 	}
 }
 

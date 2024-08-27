@@ -9,7 +9,6 @@ public:
     ~ResourceNavMesh();
     dtNavMesh* GetDtNavMesh() { return mDtNavMesh; }
 
-
 private:
 
     dtNavMesh* mDtNavMesh = nullptr;

@@ -126,7 +126,7 @@ ResourceAnimation* Importer::Animation::Load(const char* filePath, unsigned int 
 
         ourAnimation = new ResourceAnimation(uid, animName);
         ourAnimation->mDuration = header[1];
-
+        delete animName;
 
 
         // Load Channels

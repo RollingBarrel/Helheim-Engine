@@ -8,7 +8,8 @@
 enum class BGM 
 {
 	MAINMENU,
-	LEVEL1
+	LEVEL1,
+	LEVEL2,
 };
 
 enum class SFX 
@@ -20,6 +21,8 @@ enum class SFX
 	// PLAYER
 	PLAYER_FOOTSTEP,
 	GUNFIRE,
+	MACHINE_GUN,
+	MEELEE,
 
 	// ENEMY
 	ENEMY_ROBOT_FOOTSTEP,
@@ -27,7 +30,8 @@ enum class SFX
 
 namespace FMOD 
 {
-	namespace Studio {
+	namespace Studio 
+	{
 		class EventInstance;
 		class EventDescription;
 	}
@@ -46,6 +50,7 @@ public:
 	AudioManager(GameObject* owner);
 	~AudioManager();
 
+	void Awake();
 	void Start();
 	void Update();
 
@@ -53,7 +58,7 @@ public:
 	// Use Play(SFX) only if you want to ajust SFX later (like manually pause shot sound)
 	// Other wise, call `PlayOneShot(SFX sfx)`
 	int Play(SFX sfx, int id = -1, float3 position = { 0.0f, 0.0f, 0.0f });
-	void PlayOneShot(SFX sfx, float3 position = { 0.0f, 0.0f, 0.0f });
+	void PlayOneShot(SFX sfx, float3 position = { 0.0f, 0.0f, 0.0f }, const std::unordered_map <const char*, float>& parameters = {});
 
 	void Pause(BGM bgm, int id, bool pause);
 	void Pause(SFX sfx, int id, bool pause);
@@ -66,6 +71,8 @@ public:
 
 	void SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position);
 
+	void AddAudioToASComponent(BGM bgm);
+	void AddAudioToASComponent(SFX sfx);
 
 private:
 	std::string GetBGMName(BGM bgm);
@@ -80,8 +87,9 @@ private:
 	// Audio - Name
 	const std::unordered_map<BGM, std::string> mBGMToString
 	{
-		{BGM::MAINMENU, "event:/Music/Level 01"},
-		{BGM::LEVEL1, "event:/Music/Level 02"}
+		{BGM::MAINMENU, "event:/MC/main/Theme"},
+		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
+		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"}
 	};
 
 	const std::unordered_map<SFX, std::string> mSFXToString
@@ -93,6 +101,8 @@ private:
 		// PLAYER
 		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},
 		{SFX::GUNFIRE, "event:/Weapons/Pistol"},
+		{SFX::MACHINE_GUN, "event:/Weapons/Machine Gun"},
+		{SFX::MEELEE, "event:/Interactables/Wooden Collision"},
 
 		// ENEMY
 		{SFX::ENEMY_ROBOT_FOOTSTEP, "event:/Character/Enemy Footsteps"},

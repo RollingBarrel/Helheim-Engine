@@ -5,7 +5,7 @@
 
 PointLightComponent::PointLightComponent(GameObject* owner) : Component(owner, ComponentType::POINTLIGHT) 
 {
-	const float3& pos = owner->GetPosition();
+	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -39,15 +39,7 @@ PointLightComponent::~PointLightComponent()
 
 const float* PointLightComponent::GetPosition() const 
 { 
-	return mOwner->GetPosition().ptr(); 
-}
-
-void PointLightComponent::SetPosition(const float pos[3])
-{
-	mData.pos[0] = pos[0];
-	mData.pos[1] = pos[1];
-	mData.pos[2] = pos[2];
-	App->GetOpenGL()->UpdatePointLightInfo(*this);
+	return mData.pos; 
 }
 
 void PointLightComponent::SetColor(float col[3])
@@ -72,20 +64,14 @@ void PointLightComponent::SetRadius(float radius)
 
 void PointLightComponent::Update()
 {
-	//TODO: No mirarlo cada frame ??
-	const float* pos = mOwner->GetPosition().ptr();
-	for (int i = 0; i < 3; ++i)
+	if (mOwner->HasUpdatedTransform())
 	{
-		if (pos[i] != mData.pos[i])
-		{
-			SetPosition(pos);
-		}
+		float3 newPos = mOwner->GetWorldPosition();
+		mData.pos[0] = newPos.x;
+		mData.pos[1] = newPos.y;
+		mData.pos[2] = newPos.z;
+		App->GetOpenGL()->UpdatePointLightInfo(*this);
 	}
-	//TODO: SEPARATE ENGINE
-	//if (debugDraw)
-	//{
-	//	App->GetDebugDraw()->DrawSphere(mData.pos, mData.col, mData.pos[3]);
-	//}
 }
 
 inline Component* PointLightComponent::Clone(GameObject* owner) const 
@@ -141,7 +127,7 @@ void PointLightComponent::Load(const JsonObject& data, const std::unordered_map<
 
 void PointLightComponent::Reset()
 {
-	const float3& pos = mOwner->GetPosition();
+	const float3& pos = mOwner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;

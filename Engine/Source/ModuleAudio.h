@@ -57,7 +57,7 @@ public:
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
 
 	int GetMemoryUsage() const;
-	std::map<std::string, int>& GetInstances() const;
+	void GetInstances(std::map<std::string, int>& instances) const;
 
 	float GetVolume(std::string busname) const;
 	void SetVolume(std::string busname, float value) const;
@@ -75,7 +75,8 @@ private:
 	FMOD::Studio::Bank* mMasterBank = nullptr;
 	FMOD::Studio::Bank* mSFXBank = nullptr;
 	FMOD::Studio::Bank* mMusicBank = nullptr;
-	FMOD::Studio::Bank* mVehicleBank = nullptr;
+	FMOD::Studio::Bank* mAmbBank = nullptr;
+	FMOD::Studio::Bank* mUiBank = nullptr;
 
 	bool mPaused = false;
 	bool mStopped = false;

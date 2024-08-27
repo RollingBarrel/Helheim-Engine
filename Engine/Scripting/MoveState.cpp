@@ -6,10 +6,13 @@
 #include "CameraComponent.h"
 #include "GameObject.h"
 #include "Keys.h"
+#include "Weapon.h"
 #include "PlayerController.h"
 #include "GameManager.h"
+#include "AudioManager.h"
+#include "DashState.h"
 
-MoveState::MoveState(PlayerController* player) : State(player)
+MoveState::MoveState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
     mMoveDirection = float3::zero;
     mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
@@ -21,26 +24,30 @@ MoveState::~MoveState()
 
 StateType MoveState::HandleInput()
 {
-    // Check dash cooldown
-    mDashTimer += App->GetDt();
-    if (mDashTimer > mPlayerController->GetDashCoolDown() &&
-        App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+    if (GameManager::GetInstance()->UsingController())
     {
-        mDashTimer = 0.0f;
-        return StateType::DASH;
-    }
-    else if (GameManager::GetInstance()->UsingController())
-    {
+        if (mPlayerController->GetDashState()->IsReady() && 
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+        {
+            mPlayerController->GetDashState()->ResetCooldown();
+            return StateType::DASH;
+        }
+
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY) != 0)
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
         {
             return StateType::MOVE;
         }
     }
     else
     {
+        if (mPlayerController->GetDashState()->IsReady() &&
+            App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
+        {
+            mPlayerController->GetDashState()->ResetCooldown();
+            return StateType::DASH;
+        }
+
         if (App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT ||
             App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_A) == KeyState::KEY_REPEAT ||
             App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
@@ -56,7 +63,7 @@ StateType MoveState::HandleInput()
 void MoveState::Update()
 {
     mMoveDirection = float3::zero;
-
+    mCameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized(); //TODO: Let this only in start when transforms fixed
     if (GameManager::GetInstance()->UsingController())
     {
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
@@ -91,10 +98,15 @@ void MoveState::Update()
             mMoveDirection -= float3::unitY.Cross(mCameraFront);
         }
     }
+
+    // Early return if there's no move direction vector
+    if (mMoveDirection.Equals(float3::zero)) return;
+
+    mMoveDirection.Normalize();
     mPlayerController->MoveInDirection(mMoveDirection);
 
     DoAnimation();
-    DoAudio();
+    PlayAudio();
 }
 
 void MoveState::Enter()
@@ -148,8 +160,14 @@ void MoveState::DoAnimation()
         { // Looking RIGHT
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
-        LOG("x:%f ", animation);
+        //LOG("x:%f ", animation);
         mPlayerController->SetAnimation(animation, 0.3f);
+        if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+        {
+            mPlayerController->SetSpineAnimation(animation, 0.3f);
+        }
+        
+        
     }
 }
 
@@ -198,13 +216,13 @@ float2 MoveState::SetMovingDirection()
     }
 }
 
-void MoveState::DoAudio()
+void MoveState::PlayAudio()
 {
     // TODO: play sound according the animation
     mStepTimer += App->GetDt();
     if (mStepTimer >= mStepCooldown) 
     {
         mStepTimer = 0;
-        mPlayerController->PlayOneShot("Step");
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mPlayerController->GetPlayerPosition());
     }
 }

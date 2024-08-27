@@ -154,11 +154,6 @@ update_status ModuleEngineInput::PreUpdate(float dt)
 			EngineApp->GetFileSystem()->NormalizePath(sdlEvent.drop.file);
 			EngineApp->GetEngineResource()->ImportFile(sdlEvent.drop.file);
 
-			for (int i = 0; i < EngineApp->GetFileSystem()->GetRootNode()->mChildren.size(); ++i)
-			{
-				EngineApp->GetFileSystem()->CleanNode(EngineApp->GetFileSystem()->GetRootNode()->mChildren[i]);
-			}
-			EngineApp->GetFileSystem()->SetIsClean(true);
 			EngineApp->GetFileSystem()->GetRootNode()->CleanUp();
 			EngineApp->GetFileSystem()->DiscoverFiles("Assets", EngineApp->GetFileSystem()->GetRootNode());
 			SDL_free(sdlEvent.drop.file);

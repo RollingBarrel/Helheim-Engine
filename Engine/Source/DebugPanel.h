@@ -19,16 +19,18 @@ public:
 	~DebugPanel();
 
 	void Draw(int windowFlags) override;
-	bool ShouldDrawBoundingBoxes() const { return mDrawBoundingBoxes; }
+	bool ShouldDrawColliders() const { return mDrawColliders; }
+	bool ShouldDrawBoundingBoxes() const { return mBoundingBoxes; }
 	RenderMode GetRenderMode() const { return mRenderMode; }
 
 private:
 	bool mDrawRaycast = false;
-	bool mDrawBoundingBoxes = true;
+	bool mDrawColliders = false;
+	bool mBoundingBoxes = false;
 	bool mShowFpsOnEditor = false;
 	RenderMode mRenderMode = RenderMode::Shaded;
 
 	void SetShouldDrawForAll(GameObject* root, bool shouldDraw);
-	int GetTotalTriangleCount(GameObject* root);
+	void GetCountInfo(const GameObject& root, unsigned int* vertices = nullptr, unsigned int* indices = nullptr, unsigned int* tris = nullptr);
 };
 

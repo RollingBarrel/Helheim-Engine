@@ -165,17 +165,7 @@ void HierarchyPanel::OnRightClickNode(GameObject* node)
 				std::unordered_set<GameObject*> selectAfter;
 				for (GameObject* object : FilterMarked()) 
 				{
-					std::unordered_map<const GameObject*, GameObject*> originalToNew;
-					std::vector<MeshRendererComponent*>mRenderers;
-					GameObject* gameObject = new GameObject(*object, object->GetParent(), &originalToNew, &mRenderers);
-					for (MeshRendererComponent* mRend : mRenderers)
-					{
-						if (mRend->HasSkinning())
-						{
-							mRend->UpdateSkeletonObjects(originalToNew);
-						}
-					}
-					EngineApp->GetScene()->AddGameObjectToDuplicate(gameObject);
+					GameObject* gameObject = App->GetScene()->DuplicateGameObject(object);
 					AddSuffix(*gameObject);
 					mLastClickedObject = gameObject->GetID();
 					InternalSetFocus(gameObject);
@@ -333,6 +323,7 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						if (targetParent->mUid == movedObject->mUid)
 						{
 							isParent = true;
+							break;
 						}
 						targetParent = targetParent->mParent;
 					}
@@ -343,22 +334,27 @@ void HierarchyPanel::DragAndDropTarget(GameObject* target, bool reorder)
 						if (reorder) 
 						{ 
 							movedObject->mParent->RemoveChild(movedObject->mUid);
-							movedObject->mParent = target->mParent;
-							for (std::vector<GameObject*>::const_iterator it = target->mParent->mChildren.cbegin(); it != target->mParent->mChildren.cend(); ++it)
+							GameObject* parent = target->mParent;
+							if (parent != nullptr) 
 							{
-								if ((*it)->mUid == target->mUid)
+								for (std::vector<GameObject*>::const_iterator it = parent->mChildren.cbegin(); it != parent->mChildren.cend(); ++it)
 								{
-									target->mParent->mChildren.insert(it, movedObject);
+									if ((*it)->mUid == target->mUid)
+									{
+										parent->mChildren.insert(it, movedObject);
+										movedObject->mParent = parent;
 
-									// Reorder in scene vector
-									App->GetScene()->SwitchGameObjectsFromScene(target, movedObject);
+										// Reorder in scene vector
+										App->GetScene()->SwitchGameObjectsFromScene(target, movedObject);
 
-									break;
+										break;
+									}
 								}
 							}
 						}
 						else 
 						{ 
+							App->GetScene()->SwitchGameObjectsFromScene(target, movedObject);
 							movedObject->SetParent(target);
 						}
 					}

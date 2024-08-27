@@ -6,7 +6,7 @@
 
 SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, ComponentType::SPOTLIGHT)
 {
-	const float3& pos = owner->GetPosition();
+	const float3& pos = owner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -27,7 +27,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 	mBias = 0.00001f;
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
-	mShadowFrustum.pos = owner->GetPosition();
+	mShadowFrustum.pos = owner->GetWorldPosition();
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.1f;
@@ -51,6 +51,31 @@ SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameO
 	}
 }
 
+void SpotLightComponent::GetBoundingSphere(float boundingSphere[4]) const
+{
+	float angle = GetOuterAngle();
+	float size = mData.range;
+
+	if (angle > (pi / 4.0f))
+	{
+		float cosine = cos(angle);
+		for (unsigned int i = 0; i < 3; ++i)
+		{
+			boundingSphere[i] = mData.pos[i] + cosine * size * mData.aimD[i];
+		}
+		boundingSphere[3] = sin(angle) * size;
+	}
+	else
+	{
+		float cosine = cos(angle);
+		for (unsigned int i = 0; i < 3; ++i)
+		{
+			boundingSphere[i] = mData.pos[i] + size / (2.0f * cosine) * mData.aimD[i];
+		}
+		boundingSphere[3] = size / (2.0f * cos(angle));
+	}
+}
+
 SpotLightComponent::~SpotLightComponent()
 {
 	App->GetOpenGL()->RemoveSpotLight(*this);
@@ -58,7 +83,7 @@ SpotLightComponent::~SpotLightComponent()
 
 const float* SpotLightComponent::GetPosition() const
 {
-	return mOwner->GetPosition().ptr();
+	return mOwner->GetWorldPosition().ptr();
 }
 
 void SpotLightComponent::SetColor(float color[3])
@@ -82,7 +107,8 @@ void SpotLightComponent::SetRange(float range)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-float SpotLightComponent::GetOuterAngle() const {
+float SpotLightComponent::GetOuterAngle() const 
+{
 	return acos(mData.color[3]);
 }
 
@@ -94,7 +120,8 @@ void SpotLightComponent::SetOuterAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-float SpotLightComponent::GetInnerAngle() const {
+float SpotLightComponent::GetInnerAngle() const 
+{
 	return acos(mData.aimD[3]);
 }
 
@@ -120,7 +147,7 @@ void SpotLightComponent::Update()
 {
 	if (mOwner->HasUpdatedTransform())
 	{
-		float3 newPosition = mOwner->GetPosition();
+		float3 newPosition = mOwner->GetWorldPosition();
 		mData.pos[0] = newPosition[0];
 		mData.pos[1] = newPosition[1];
 		mData.pos[2] = newPosition[2];
@@ -196,14 +223,13 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 	if (data.HasMember("Bias")) mBias = data.GetFloat("Bias");
 	
 	GameObject* owner = this->GetOwner();
-	mShadowFrustum.pos = owner->GetPosition();
+	mShadowFrustum.pos = owner->GetWorldPosition();
 	mShadowFrustum.front = owner->GetFront();
 	mShadowFrustum.up = owner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.01f;
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
-
 
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	
@@ -212,7 +238,7 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 
 void SpotLightComponent::Reset()
 {
-	const float3& pos = mOwner->GetPosition();
+	const float3& pos = mOwner->GetWorldPosition();
 	mData.pos[0] = pos.x;
 	mData.pos[1] = pos.y;
 	mData.pos[2] = pos.z;
@@ -233,7 +259,7 @@ void SpotLightComponent::Reset()
 	mBias = 0.00001f;
 
 	mShadowFrustum.type = FrustumType::PerspectiveFrustum;
-	mShadowFrustum.pos = mOwner->GetPosition();
+	mShadowFrustum.pos = mOwner->GetWorldPosition();
 	mShadowFrustum.front = mOwner->GetFront();
 	mShadowFrustum.up = mOwner->GetUp();
 	mShadowFrustum.nearPlaneDistance = 0.1f;

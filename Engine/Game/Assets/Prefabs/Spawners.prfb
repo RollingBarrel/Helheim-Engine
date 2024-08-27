@@ -1,0 +1,272 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 518177327,
+                "ParentUID": 1,
+                "Name": "Spawners",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1823919182,
+                "ParentUID": 518177327,
+                "Name": "SpawnerArea1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    63.9105224609375,
+                    0.0,
+                    -23.693565368652345
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            },
+            {
+                "UID": 590976991,
+                "ParentUID": 518177327,
+                "Name": "SpawnerArea2-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    6.03981876373291,
+                    -0.6296677589416504,
+                    11.679037094116211
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            },
+            {
+                "UID": 1514290693,
+                "ParentUID": 518177327,
+                "Name": "SpawnerArea2-2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.05228328704834,
+                    0.0,
+                    -21.780776977539064
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            },
+            {
+                "UID": 286082730,
+                "ParentUID": 518177327,
+                "Name": "SpawnArea3-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -34.69306564331055,
+                    0.014410614967346192,
+                    11.129279136657715
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            },
+            {
+                "UID": 1213225587,
+                "ParentUID": 518177327,
+                "Name": "SpawnArea3-2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -58.480865478515628,
+                    0.0,
+                    -21.410846710205079
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            },
+            {
+                "UID": 39670109,
+                "ParentUID": 518177327,
+                "Name": "Spawner4-2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -131.49346923828126,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            },
+            {
+                "UID": 968275007,
+                "ParentUID": 518177327,
+                "Name": "Spawner4-1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -112.80963134765625,
+                    0.0,
+                    13.595608711242676
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemySpawner"
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -15,6 +15,12 @@
 #define ASSETS_PREFABS_PATH "Assets/Prefabs/"
 #define ASSETS_NAVMESH_PATH "Assets/NavMeshes/"
 #define ASSETS_SCRIPT_PATH "Assets/Scripts/"
+#define ASSETS_STATEMACHINE_PATH "Assets/StateMachines/"
+#define ASSETS_IBL_PATH "Assets/IBL/"
+
+#define INTERNAL_ASSETS_PATH "InternalAssets/"
+#define INTERNAL_ASSETS_SCENES_PATH "InternalAssets/Scenes/"
+#define INTERNAL_ASSETS_FONTS_PATH "InternalAssets/Fonts/"
 
 
 
@@ -26,7 +32,13 @@ struct PathNode;
 struct AssetDisplay
 {
 	AssetDisplay(const char* name, const char* mPath, PathNode* parent);
-	~AssetDisplay();
+	~AssetDisplay() 
+	{
+		delete[] mName;
+		mName = nullptr;
+		delete[] mPath;
+		mPath = nullptr;
+	}
 	const char* mName;
 	const char* mPath;
 	std::vector<unsigned int> mUid;
@@ -37,6 +49,15 @@ struct AssetDisplay
 struct PathNode
 {
 	PathNode(const char* name, PathNode* parent = nullptr);
+	~PathNode() 
+	{
+		delete[] mName;
+		mParent = nullptr;
+		for (unsigned int i = 0; i < mChildren.size(); ++i)
+			delete mChildren[i];
+		for (unsigned int i = 0; i < assets.size(); ++i)
+			delete assets[i];
+	}
 	const char* mName;
 	PathNode* mParent;
 	std::vector<PathNode*> mChildren;
@@ -44,6 +65,10 @@ struct PathNode
 
 	void CleanUp()
 	{
+		for (unsigned int i = 0; i < mChildren.size(); ++i)
+			delete mChildren[i];
+		for (unsigned int i = 0; i < assets.size(); ++i)
+			delete assets[i];
 		mChildren.clear();
 		assets.clear();
 	}
@@ -55,6 +80,7 @@ public:
 	ModuleFileSystem();
 	~ModuleFileSystem();
 
+	bool Init() override;
 	bool CleanUp() override;
 
 	unsigned int Load(const char* filePath, char** buffer) const;
@@ -71,8 +97,6 @@ public:
 	const char* GetLibraryFile(unsigned int id, bool createDir = false) const;
 	int64_t GetLastModTime(const char* file) const;
 	int64_t GetCreationTime(const char* file) const;
-	bool IsClean()	{ return mIsClean; }
-	void SetIsClean(bool clean) { mIsClean = clean; }
 
 
 	bool AddToSearchPath(const char* path);
@@ -92,11 +116,9 @@ public:
 	void GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const;
 
 	PathNode* GetRootNode() { return mRoot; }
-	void CleanNode(PathNode* node);
 
 private:
 
-	bool mIsClean = false;
 	PathNode* mRoot = nullptr;
 };
 

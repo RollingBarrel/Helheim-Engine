@@ -7,9 +7,6 @@
     <Filter Include="Modules">
       <UniqueIdentifier>{475318fa-3408-4d57-9b6f-d10d44d0cea3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shaders">
-      <UniqueIdentifier>{ad15405b-9eb4-4f7c-b6e7-ce60d2d7f276}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ModuleGame.cpp">
@@ -29,13 +26,5 @@
     <ClInclude Include="GameApp.h">
       <Filter>Core</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Game\Assets\Shaders\GameFragment.glsl">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="..\Game\Assets\Shaders\GameVertex.glsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

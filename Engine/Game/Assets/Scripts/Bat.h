@@ -1,20 +1,20 @@
 #pragma once
 #include "MeleeWeapon.h"
+#include "Macros.h"
 
+class TrailComponent;
+class BoxColliderComponent;
 class GameObject;
+struct CollisionData;
 
 class Bat : public MeleeWeapon
 {
 public:
-	Bat();
+	Bat(BoxColliderComponent* collider, TrailComponent* trail);
 	~Bat();
 
-	void Enter() override;
-	void BasicAttack() override;
-	void SpecialAttack() override;
-	void Exit() override;
-
 private:
+	void PlayHitSound() override;
+	void HitEffect(GameObject* enemy) override;
 
-	GameObject* mTrail = nullptr;
 };

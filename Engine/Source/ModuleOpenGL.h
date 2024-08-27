@@ -7,8 +7,8 @@
 #include "BatchManager.h"
 #include <vector>
 
-#define NUM_SHADOW_MAPS 4
-#define SHADOW_MAPS_SIZE 512
+#define NUM_SHADOW_MAPS 16
+#define SHADOW_MAPS_SIZE 1024
 
 
 typedef struct Shadow
@@ -23,13 +23,13 @@ typedef struct Shadow
 typedef struct DirectionalLight 
 {
 	float mDir[4] = { 0.0f, -1.0f, -1.0f, 0.0f }; //w is padding
-	float mCol[4] = { 1.f, 1.f, 1.f, 1.2f }; //w is the intensity  1.2f
+	float mCol[4] = { 1.f, 1.f, 1.f, 0.05f }; //w is the intensity  1.2f
 }DirectionalLight;
 
 class PointLightComponent;
 class SpotLightComponent;
 class ParticleSystemComponent;
-class TrailComponent;
+class Trail;
 class CameraComponent;
 class DecalComponent;
 struct PointLight;
@@ -37,6 +37,7 @@ struct SpotLight;
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+class ResourceIBL;
 typedef unsigned int GLenum;
 
 class ENGINE_API OpenGLBuffer {
@@ -72,10 +73,10 @@ public:
 
 	void* GetOpenGlContext() { return context; }
 	void WindowResized(unsigned width, unsigned height);
-	void SceneFramebufferResized(unsigned width, unsigned height);
-	unsigned int GetFramebufferTexture() const { return sceneTexture; }
+	void SceneFramebufferResized(unsigned int width, unsigned int height);
+	unsigned int GetFramebufferTexture() const { return mSceneTexture; }
 	void BindSceneFramebuffer();
-	void BindGFramebuffer();
+	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
 	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
@@ -83,6 +84,8 @@ public:
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferDepth() const { return mGDepth; }
 	unsigned int GetGBufferPos() const { return mGPosition; }
+	unsigned int GetGBufferSSAO() const { return mSSAO; }
+	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -91,11 +94,27 @@ public:
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
+	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
+	unsigned int GetTileLightCUllingProgramId() const { return mTileLightCullingProgramId; }
 	unsigned int GetHighLightProgramId() const { return mHighLightProgramId; }
 	unsigned int GetPbrGeoPassProgramId() const { return mPbrGeoPassProgramId; }
 	unsigned int GetPbrLightingPassProgramId() const { return mPbrLightingPassProgramId; }
+	unsigned int GetUIMaskProgramId() const { return mUIMaskProgramId; }
+	unsigned int GetSelectCommandsProgramId() const { return mSelectCommandsProgramId; }
+	unsigned int GetSSAOProgramId() const { return mSSAOPassProgramId; }
+	unsigned int GetEnvironmentProgramId() const { return mEnvironmentProgramId; }
+	unsigned int GetIrradianceProgramId() const { return mIrradianceProgramId; }
+	unsigned int GetSpecPrefilteredProgramId() const { return mSpecPrefilteredProgramId; }
+	unsigned int GetSpecEnvBRDFProgramId() const { return mSpecEnvBRDFProgramId; }
+	unsigned int GetScreenTexProgramId() const { return mGameProgramId; }
 
+	float GetAoRange() const { return mAoRange; };
+	float GetAoBias() const { return mAoBias; };
+	void SetAoRange(float range) { mAoRange = range; };
+	void SetAoBias(float bias) { mAoBias = bias; };
 	//TODO: put all this calls into one without separating for light type??
+	const DirectionalLight& GetDirectionalLight() const { return mDirLight; }
+	void SetDirectionalLight(const DirectionalLight& dirLight);
 	void AddPointLight(const PointLightComponent& component);
 	void UpdatePointLightInfo(const PointLightComponent& ptrPointLight);
 	void RemovePointLight(const PointLightComponent& cPointLight);
@@ -106,11 +125,8 @@ public:
 	void BatchAddMesh(const MeshRendererComponent& mesh);
 	void BatchRemoveMesh(const MeshRendererComponent& mesh);
 	void BatchEditMaterial(const MeshRendererComponent& mesh);
-	void Draw(const std::vector<const MeshRendererComponent*>& sceneMeshes);
+	void Draw();
 	void SetWireframe(bool wireframe);
-
-	void AddHighLight(const GameObject& gameObject);
-	void RemoveHighLight(const GameObject& gameObject);
 
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
@@ -118,12 +134,35 @@ public:
 	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
-	void AddTrail(const TrailComponent* trail) { mTrails.push_back(trail); }
-	void RemoveTrail(const TrailComponent* trail);
+	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
+	void RemoveTrail(const Trail* trail);
 
 	unsigned int CreateShaderProgramFromPaths(const char** shaderNames, int* type, unsigned int numShaderSources) const;
 
-	void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	//void BakeIBL(const char* hdrTexPath, unsigned int irradianceSize = 256, unsigned int specEnvBRDFSize = 512, unsigned int specPrefilteredSize = 256);
+	void SetSkybox(unsigned int uid);
+	inline unsigned int GetSkyboxID() const;
+	unsigned int GetSkyboxVAO() const { return mSkyVao; }
+	unsigned int GetSceneWidth() const { return mSceneWidth; }
+	unsigned int GetSceneHeight() const { return mSceneHeight; }
+
+	bool mAoActive{ true };
+	float mAoRange = 1.0f;
+	float mAoBias = 0.0001f;
+	
+	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
+	//Set the intensity between 0 and 1
+	void SetBloomIntensity(float intensity);
+	float GetBloomIntensity() const { return mBloomIntensity; };
+	
+	void SetFogColor(float fogColor[3]);
+	void GetFogColor(float fogColor[3]) const { memcpy(fogColor, mFogColor, sizeof(mFogColor)); }
+	void SetFogDensity(float density);
+	float GetFogDensity() const { return mFogDensity; }
+	void SetFogHeightFallof(float heightFallof);
+	float GetFogHeightFallof() const { return mHeightFallof; }
+	void SetMaxFog(float maxFog);
+	float GetMaxFog() const { return mMaxFog; }
 
 private:
 	void* context = nullptr;
@@ -132,8 +171,8 @@ private:
 
 	//scene Framebuffer
 	unsigned int sFbo;
-	unsigned int sceneTexture;
-	unsigned int depthStencil;
+	unsigned int mSceneTexture;
+	//unsigned int depthStencil;
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
@@ -143,8 +182,16 @@ private:
 	unsigned int mGEmissive;
 	unsigned int mGColDepth;
 	unsigned int mGDepth;
+	//AO
+	unsigned int mSSAO;
+	//bloom bramebuffer
+	static const unsigned int mBlurPasses = 3;
+	unsigned int mBlurTex[mBlurPasses + 1];
+	unsigned int mBlurFBO;
+	float mBloomIntensity = 0.5f;
 
 	void ResizeGBuffer(unsigned int width, unsigned int height);
+	void InitBloomTextures(unsigned int width, unsigned int height);
 	//void Draw();
 
 	//Camera
@@ -167,29 +214,38 @@ private:
 	unsigned int mUIImageProgramId = 0;
 	unsigned int mTextProgramId = 0;
 	unsigned int mSkinningProgramId = 0;
+	unsigned int mSelectSkinsProgramId = 0;
+	unsigned int mTileLightCullingProgramId = 0;
+	unsigned int mSelectCommandsProgramId = 0;
 	unsigned int mEnvironmentProgramId = 0;
 	unsigned int mIrradianceProgramId = 0;
 	unsigned int mSpecPrefilteredProgramId = 0;
 	unsigned int mSpecEnvBRDFProgramId = 0;
 	unsigned int mHighLightProgramId = 0;
-	unsigned int mDepthPassProgramId = 0;
 	unsigned int DecalPassProgramId = 0;
+	unsigned int mSSAOPassProgramId = 0;
+	unsigned int mUIMaskProgramId = 0;
+	//unsigned int mBlurProgramId = 0;
+	unsigned int mDownsampleProgramId = 0;
+	unsigned int mUpsampleProgramId = 0;
+	unsigned int mGaussianBlurProgramId = 0;
+	//unsigned int mSsaoBlurProgramId = 0;
+	unsigned int mFogProgramId = 0;
+	unsigned int mGameProgramId = 0;
+	unsigned int mNoiseProgramId = 0;
+	unsigned int mVolLightProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
 
 
 	//IBL
-	unsigned int mHDRTextureId = 0;
-	unsigned int mEnvironmentTextureId = 0;
-	unsigned int mIrradianceTextureId = 0;
-	unsigned int mSpecPrefilteredTexId = 0;
-	unsigned int mEnvBRDFTexId = 0;
+	ResourceIBL* mCurrSkyBox = nullptr;
 
 	unsigned int mEmptyVAO = 0;
 	
 	//Shadows
-	unsigned int mShadowsFrameBuffersId[NUM_SHADOW_MAPS] = {0};
+	unsigned int mShadowsFrameBufferId = 0;
 	unsigned int mShadowMaps[NUM_SHADOW_MAPS] = { 0 };
 	unsigned int mShadowMapsHandle[NUM_SHADOW_MAPS] = { 0 };
 	OpenGLBuffer* mShadowsBuffer = nullptr;
@@ -200,21 +256,38 @@ private:
 	void InitDecals();
 	std::vector<const DecalComponent*> mDecalComponents;
 
+	//Fog
+	float mFogColor[3] = { 1.0f, 1.0f, 1.0f };
+	float mMaxFog = 0.0f;
+	float mFogDensity = 0.009f;
+	//A medida que se aleja de 0 la niebla baja respecto la vista de la camera
+	float mHeightFallof = 0.0f;
 
 	//Lighting uniforms
+	unsigned int mPLightListImgTex;
+	unsigned int mPLightListImgBuffer;
+	unsigned int mSLightListImgTex;
+	unsigned int mSLightListImgBuffer;
+	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;
 	std::vector<const PointLightComponent*>mPointLights;
 	OpenGLBuffer* mPointsBuffer = nullptr;
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
+	OpenGLBuffer* mSpotsBoundingSpheres = nullptr;
 	friend class LightningPanel;
 
 	std::vector<const ParticleSystemComponent*> mParticleSystems;
-	std::vector<const TrailComponent*> mTrails;
+	std::vector<const Trail*> mTrails;
 
-	void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
-	std::vector<const GameObject*> mHighlightedObjects;
+	//void BakeEnvironmentBRDF(unsigned int width, unsigned int height);
+	//std::vector<const GameObject*> mHighlightedObjects;
+
+	unsigned int mSceneWidth = 1;
+	unsigned int mSceneHeight = 1;
+
+	unsigned int mNoiseTexId = 0;
 };
 
 #endif /* _MODULEOPENGL_H_ */

@@ -57,19 +57,21 @@ ScriptComponent::~ScriptComponent()
 		mResourceScript = nullptr;
 	}
 
-	const std::vector<Member*>& members = mScript->GetMembers();
-
-	for (unsigned int i = 0; i < members.size(); ++i)
+	if (mScript)
 	{
-		if (members[i]->mType == MemberType::GAMEOBJECT)
+		const std::vector<Member*>& members = mScript->GetMembers();
+
+		for (unsigned int i = 0; i < members.size(); ++i)
 		{
-			GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)mScript) + members[i]->mOffset));
-			App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
+			if (members[i]->mType == MemberType::GAMEOBJECT)
+			{
+				GameObject** gameObject = reinterpret_cast<GameObject**>((((char*)mScript) + members[i]->mOffset));
+				App->GetScriptManager()->RemoveGameObjectFromMap(gameObject);
+			}
 		}
+		delete mScript;
 	}
 
-
-	delete mScript;
 }
 
 void ScriptComponent::Update()
@@ -194,15 +196,30 @@ void::ScriptComponent::Load(const JsonObject& data, const std::unordered_map<uns
 								{
 									if (data.HasMember("VariableData"))
 									{
-										int  UID = data.GetInt("VariableData");
+										int UID = data.GetInt("VariableData");
 										if (UID != -1)
-										{
-											std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(UID);
-											if (got != uidPointerMap.end())
+										{		
+											const std::unordered_map<unsigned int, unsigned int>& uids = App->GetScene()->GetPrefabUIDMap();
+											std::unordered_map<unsigned int, unsigned int>::const_iterator has = uids.find(UID);
+											if (has != uids.end())
 											{
-												*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
-												App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
+												std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(uids.at(UID));
+												if (got != uidPointerMap.end())
+												{
+													*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(uids.at(UID));
+													App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
+												}
 											}
+											else
+											{
+												std::unordered_map<unsigned int, GameObject*>::const_iterator got = uidPointerMap.find(UID);
+												if (got != uidPointerMap.end())
+												{
+													*reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)) = uidPointerMap.at(UID);
+													App->GetScriptManager()->AddGameObjectToMap(reinterpret_cast<GameObject**>((((char*)mScript) + member->mOffset)));
+												}
+											}
+											
 										}
 									}
 									break;
@@ -270,8 +287,9 @@ void ScriptComponent::Enable()
 {
 	App->GetScriptManager()->AddScript(this);
 	
-	if (mHasStarted)
+	if (!mHasStarted && App->IsPlayMode())
 	{
+		mHasStarted = true;
 		mScript->Start();
 	}
 }

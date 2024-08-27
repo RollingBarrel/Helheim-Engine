@@ -25,6 +25,8 @@ EngineApplication::EngineApplication()
 {
 	EngineApp = this;
 
+	mIsPlayMode = false;
+
 	mEngineTimer = new Timer();
 	mGameTimer = new Timer();
 	
@@ -41,8 +43,8 @@ EngineApplication::EngineApplication()
 	modules[7] = physics = new ModulePhysics();
 	modules[8] = engineScriptManager = new ModuleEngineScriptManager();
 	scriptManager = engineScriptManager;
-	modules[9] = debugDraw = new ModuleDebugDraw();
-	modules[10] = scene = new ModuleScene();
+	modules[9] = scene = new ModuleScene();
+	modules[10] = debugDraw = new ModuleDebugDraw();
 	modules[11] = navigation = new ModuleDetourNavigation();
 	modules[12] = ui = new ModuleUI();
 	modules[13] = editor = new ModuleEditor();
@@ -56,6 +58,7 @@ EngineApplication::~EngineApplication()
 	for (int i = NUM_MODULES - 1; i >= 0; --i) 
 	{
 		delete modules[i];
+		modules[i] = nullptr;
 	}
 	delete mEngineTimer;
 	delete mGameTimer;
@@ -106,10 +109,13 @@ update_status EngineApplication::Update(float dt)
 
 bool EngineApplication::CleanUp()
 {
-	editor->SaveSettings();
+	if (!IsPlayMode() && !App->GetScene()->IsPrefabScene())
+	{
+		editor->SaveSettings();
+	}
 	bool ret = true;
 
-	for (int i = 0; i < NUM_MODULES; ++i)
+	for (int i = NUM_MODULES - 1; i != 0 ; --i)
 		ret = modules[i]->CleanUp();
 
 	return ret;
@@ -120,7 +126,7 @@ void EngineApplication::Start()
 	mIsPlayMode = true;
 
 	SetCurrentClock(EngineApp->GetGameClock());
-	scene->Save(std::string(ASSETS_SCENES_PATH + std::string("TemporalScene")).c_str());	//TODO: Change to Importfile
+	scene->Save(std::string("InternalAssets/Scenes/" + std::string("TemporalScene")).c_str());	//TODO: Change to Importfile
 	engineScriptManager->StartScripts();
 	mGameTimer->Start();			
 }
@@ -134,7 +140,7 @@ void EngineApplication::Stop()
 	SetCurrentClock(EngineApp->GetEngineClock());
 	mEngineTimer->Resume();
 	EngineApp->GetAudio()->EngineStop();
-	scene->Load(std::string(ASSETS_SCENES_PATH + std::string("TemporalScene")).c_str());	//TODO: Change to Request Resource
+	scene->Load(std::string("InternalAssets/Scenes/" + std::string("TemporalScene")).c_str());	//TODO: Change to Request Resource
 
 }
 

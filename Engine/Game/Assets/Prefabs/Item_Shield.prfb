@@ -1,0 +1,394 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 358277716,
+                "ParentUID": 1,
+                "Name": "Item_Shield",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.15000000596046449,
+                    0.15000000596046449,
+                    0.15000000596046449
+                ],
+                "Tag": "Drop",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ItemDrop",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mDropId",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mHealthRecovered",
+                                "MemberType": 1,
+                                "VariableData": 15.0
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.4000000059604645,
+                            0.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            0.800000011920929,
+                            0.800000011920929
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 484500589,
+                "ParentUID": 358277716,
+                "Name": "OB_collecteable_shield",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 463091395,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 629660374,
+                "ParentUID": 484500589,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 737851408,
+                "ParentUID": 629660374,
+                "Name": "OB_collecteable_shield.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 845276611,
+                "ParentUID": 737851408,
+                "Name": "OB_collecteable_shield.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 463091389,
+                        "MaterialID": 463091394,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 952423330,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    0.000016292065993184225,
+                                    0.0,
+                                    0.0,
+                                    -0.000016292065993184225,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1059570049,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    0.000016292065993184225,
+                                    -29.253768920898439,
+                                    0.0,
+                                    -0.000016292065993184225,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1168457293,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    0.000016292065993184225,
+                                    -83.64676666259766,
+                                    0.0,
+                                    -0.000016292065993184225,
+                                    100.0,
+                                    -1.1102230246251565e-12,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1275952117,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    0.000016292065993184225,
+                                    -349.03021240234377,
+                                    0.0,
+                                    -0.000016292065993184225,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 952423330,
+                "ParentUID": 629660374,
+                "Name": "root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1059570049,
+                "ParentUID": 952423330,
+                "Name": "circle_1_skn",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    29.253768920898439,
+                    4.547473508864641e-13
+                ],
+                "Rotation": [
+                    7.105427357601002e-15,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1168457293,
+                "ParentUID": 952423330,
+                "Name": "circle_2_skn",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    83.64675903320313,
+                    1.8189894035458565e-12
+                ],
+                "Rotation": [
+                    7.105427357601002e-15,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1275952117,
+                "ParentUID": 952423330,
+                "Name": "shield_skn",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    349.0302429199219,
+                    7.275957614183426e-12
+                ],
+                "Rotation": [
+                    7.105427357601002e-15,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            }
+        ]
+    }
+}

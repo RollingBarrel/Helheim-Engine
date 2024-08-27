@@ -1,31 +1,20 @@
 #include "ModuleScene.h"
-#include "GameObject.h"
-#include "Quadtree.h"
 #include "Application.h"
-#include "ModuleCamera.h"
-#include "glew.h"
-#include "MeshRendererComponent.h"
-#include "CameraComponent.h"
-#include "Component.h"
-#include "ModuleUI.h"
+#include "Globals.h"
 
+#include "ModuleCamera.h"
+#include "ModuleUI.h"
 #include "ModuleOpenGL.h"
 #include "ModuleFileSystem.h"
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
-#include "HierarchyPanel.h"
-#include "ModuleEditor.h"
-#include "ModuleResource.h"
-#include "Globals.h"
+#include "MeshRendererComponent.h"
 
-#include "ResourceScene.h"
+#include "glew.h"
 
-#include <algorithm>
-#include <iterator>
-#include "Algorithm/Random/LCG.h"
+#include "PlayerStats.h"
 
-#include "GeometryBatch.h"
-#include "ImporterMesh.h"
+const std::vector<GameObject*> ModuleScene::mEmptyVector = std::vector<GameObject*>();
 
 ModuleScene::ModuleScene() 
 {
@@ -33,18 +22,7 @@ ModuleScene::ModuleScene()
 
 ModuleScene::~ModuleScene()
 {
-	if (mRoot)
-	{
-		delete mRoot;
-	}
-	if (mBackgroundScene)
-	{
-		delete mBackgroundScene;
-	}
-	if (mQuadtreeRoot)
-	{
-		delete mQuadtreeRoot;
-	}
+	
 }
 
 #pragma region Basic Functions
@@ -52,7 +30,7 @@ ModuleScene::~ModuleScene()
 bool ModuleScene::Init()
 {
 	mRoot = new GameObject("EmptyScene", nullptr);
-	mQuadtreeRoot = new Quadtree(AABB(float3(-5000 , -500 , -5000), float3(5000, 500, 5000)));
+	mPlayerStats = new PlayerStats();
 	return true;
 }
 
@@ -63,18 +41,11 @@ update_status ModuleScene::PreUpdate(float dt)
 
 update_status ModuleScene::Update(float dt)
 {
-	mShouldUpdateQuadtree = false;
 	mRoot->Update();
-
-	//TODO: temporally removed the quadtree
-	//if (mShouldUpdateQuadtree)
-	//{
-	//	mQuadtreeRoot->UpdateTree();
-	//}
-	//mQuadtreeRoot->GetRenderComponentsInFrustum(App->GetCamera()->GetCurrentCamera()->GetFrustum(), mCurrRenderComponents);
-	mRoot->GetMeshesInChildren(mCurrRenderComponents);
-	App->GetOpenGL()->Draw(mCurrRenderComponents);
-	mCurrRenderComponents.clear();
+	if (App->GetCamera()->GetCurrentCamera())
+	{
+		App->GetOpenGL()->Draw();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -92,11 +63,11 @@ update_status ModuleScene::PostUpdate(float dt)
 	if (mClosePrefab)
 	{
 		SavePrefab(*mRoot->GetChildren()[0], mPrefabPath);
-		delete mRoot;
+		AddGameObjectToDelete(mRoot->GetChildren()[0]);
 		mRoot = mBackgroundScene;
 		mBackgroundScene = nullptr;
 		mRoot->SetEnabled(true);
-		LoadPrefab(mPrefabPath, nullptr, true);
+		//LoadPrefab(mPrefabPath, nullptr, true);
 		mPrefabPath = "";
 		mClosePrefab = false;
 	}
@@ -108,6 +79,22 @@ update_status ModuleScene::PostUpdate(float dt)
 		LoadPrefab(mPrefabPath);
 	}
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleScene::CleanUp()
+{
+	if (mRoot)
+	{
+		delete mRoot;
+	}
+	if (mBackgroundScene)
+	{
+		delete mBackgroundScene;
+	}
+
+	delete mPlayerStats;
+
+	return true;
 }
 
 #pragma endregion
@@ -131,13 +118,10 @@ const std::vector<GameObject*>& ModuleScene::FindGameObjectsWithTag(const std::s
 {
 	if (mGameObjectsByTags.find(tag) != mGameObjectsByTags.end())
 	{
-		if (!mGameObjectsByTags[tag].empty())
-		{
-			return mGameObjectsByTags[tag];
-		}
+		return mGameObjectsByTags[tag];
 	}
 
-	return std::vector<GameObject*>();
+	return ModuleScene::mEmptyVector;
 }
 
 void ModuleScene::AddToTagMap(const std::string& tag, GameObject* gameObject)
@@ -194,10 +178,23 @@ void ModuleScene::Save(const char* sceneName) const
 	JsonArray objArray = scene.AddNewJsonArray("GameObjects");
 	for (const GameObject* go : mSceneGO) 
 	{
+		if (go->GetName() == "Teleport1" || go->GetName() == "Teleport2")
+		{
+			LOG("Juan");
+		}
 		JsonObject gameObjectData = objArray.PushBackNewObject();
 		go->Save(gameObjectData);
 	}
-
+	scene.AddInt("NavMeshResource", App->GetNavigation()->GetResourceId());
+	scene.AddInt("SkyBoxResource", App->GetOpenGL()->GetSkyboxID());
+	scene.AddFloat("BloomIntensity", App->GetOpenGL()->GetBloomIntensity());
+	scene.AddFloats("DirectionalLight", reinterpret_cast<const float*>(&App->GetOpenGL()->GetDirectionalLight()), sizeof(DirectionalLight) / sizeof(float));
+	JsonObject fogObj = scene.AddNewJsonObject("Fog");
+	float fogCol[3]; App->GetOpenGL()->GetFogColor(fogCol);
+	fogObj.AddFloats("Color", fogCol, 3);
+	fogObj.AddFloat("Density", App->GetOpenGL()->GetFogDensity());
+	fogObj.AddFloat("HeightFallof", App->GetOpenGL()->GetFogHeightFallof());
+	fogObj.AddFloat("MaxFog", App->GetOpenGL()->GetMaxFog());
 	std::string out = doc.Serialize();
 	App->GetFileSystem()->Save(saveFilePath.c_str(), out.c_str(), static_cast<unsigned int>(out.length()));
 }
@@ -227,21 +224,21 @@ void ModuleScene::Load(const char* sceneName)
 
 	char* fileBuffer = nullptr;
 
-	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0);
+	if (App->GetFileSystem()->Load(loadFilePath.c_str(), &fileBuffer) > 0)
 	{
 		//App->GetScene()->Load(fileBuffer);
 	}
 
 	if(fileBuffer != nullptr)
 	{
-		mQuadtreeRoot->CleanUp();
+		mPrefabOldNewUid.clear();
 		App->GetUI()->CleanUp();
 		mSceneGO.clear();
 		delete mRoot;
 		mGameObjectsByTags.clear();
 		mRoot = new GameObject("EmptyScene", nullptr);
 		Archive doc(fileBuffer);
-		delete fileBuffer;
+		delete[] fileBuffer;
 		JsonObject root = doc.GetRootObject();
 
 		JsonObject scene = root.GetJsonObject("Scene");
@@ -250,12 +247,14 @@ void ModuleScene::Load(const char* sceneName)
 		JsonArray gameObjects = scene.GetJsonArray("GameObjects");
 		std::unordered_map<unsigned int, GameObject*> loadMap;
 		//Load GameObjects		//TODO: REDOO Look if prefab has been overrided
+
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
 			JsonObject gameObjectData = gameObjects.GetJsonObject(i);
 			GameObject* gO = new GameObject(gameObjectData.GetInt("UID"), gameObjectData.GetString("Name").c_str(), Find(gameObjectData.GetInt("ParentUID")));
 			gO->LoadGameObject(gameObjectData, loadMap);
 		}
+		
 		//Load Components
 		for (unsigned int i = 0; i < gameObjects.Size(); ++i)
 		{
@@ -263,12 +262,52 @@ void ModuleScene::Load(const char* sceneName)
 			mSceneGO[i]->LoadComponents(gameObjectData, loadMap);
 		}
 
-		mRoot->RecalculateMatrices();
-		mQuadtreeRoot->UpdateTree();
-		App->GetNavigation()->LoadResourceData();
+		unsigned int resourceNavMesh = scene.GetInt("NavMeshResource");
+		if(resourceNavMesh != 0)
+			App->GetNavigation()->CreateQuery(resourceNavMesh);
+		else
+			App->GetNavigation()->ReleaseResource();
+
+		if(scene.HasMember("SkyBoxResource"))
+			App->GetOpenGL()->SetSkybox(scene.GetInt("SkyBoxResource"));
+		else
+			App->GetOpenGL()->SetSkybox(0);
+
+		if (scene.HasMember("BloomIntensity"))
+			App->GetOpenGL()->SetBloomIntensity(scene.GetFloat("BloomIntensity"));
+		else
+			App->GetOpenGL()->SetBloomIntensity(0.5f);
+
+		float directionalLight[]{ 0.0f, -1.0f, -1.0f, 0.0f, 1.f, 1.f, 1.f, 0.05f };
+		if (scene.HasMember("DirectionalLight"))
+			scene.GetFloats("DirectionalLight", directionalLight);
+		App->GetOpenGL()->SetDirectionalLight(*reinterpret_cast<DirectionalLight*>(directionalLight));
+
+		if (scene.HasMember("Fog"))
+		{
+			JsonObject fogObj = scene.GetJsonObject("Fog");
+			float fogCol[3]; fogObj.GetFloats("Color", fogCol);
+			App->GetOpenGL()->SetFogColor(fogCol);
+			App->GetOpenGL()->SetFogDensity(fogObj.GetFloat("Density"));
+			App->GetOpenGL()->SetFogHeightFallof(fogObj.GetFloat("HeightFallof"));
+			App->GetOpenGL()->SetMaxFog(fogObj.GetFloat("MaxFog"));
+		}
+		else
+		{
+			float fogCol[3] = { 1.0f,1.0f,1.0f };
+			App->GetOpenGL()->SetFogColor(fogCol);
+			App->GetOpenGL()->SetFogDensity(0.009f);
+			App->GetOpenGL()->SetFogHeightFallof(0.0f);
+			App->GetOpenGL()->SetMaxFog(0.0f);
+		}
 
 		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartScripts();
+		}
+		
 	}
 }
 #pragma endregion
@@ -286,12 +325,11 @@ GameObject* ModuleScene::InstantiatePrefab(const char* name, GameObject* parent)
 	return gameObject;
 }
 
-void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath) const
+void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFilePath)
 {
 	GameObject* gameObject = new GameObject(objectToSave, mRoot); //Make a copy to change IDs
-	gameObject->SetRotation(float3::zero);
-	gameObject->SetPosition(float3::zero);
-	gameObject->RecalculateMatrices();
+	gameObject->SetWorldRotation(float3::zero);
+	gameObject->SetWorldPosition(float3::zero);
 	
 	Archive doc;
 	JsonObject root = doc.GetRootObject();
@@ -306,6 +344,7 @@ void ModuleScene::SavePrefab(const GameObject& objectToSave, const char* saveFil
 	App->GetFileSystem()->DiscoverFiles("Assets", rootNode);
 
 	gameObject->GetParent()->RemoveChild(gameObject->GetID());		//TODO: Why delete yourself?
+	AddGameObjectToDelete(gameObject);
 }
 
 void ModuleScene::SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const
@@ -371,9 +410,13 @@ GameObject* ModuleScene::LoadPrefab(const char* saveFilePath, GameObject* parent
 	
 		ret = mSceneGO[currSize];
 
-		mRoot->RecalculateMatrices();
-		App->GetScriptManager()->AwakeScripts();
-		App->GetScriptManager()->StartScripts();
+		App->GetScriptManager()->AwakeGameObjectScripts(ret);
+		
+		if (App->IsPlayMode())
+		{
+			App->GetScriptManager()->StartGameObjectScripts(ret);
+		}
+		
 	}
 	
 	return ret;
@@ -540,6 +583,23 @@ void ModuleScene::RemoveGameObjectFromScene(const std::string& name)
 	}
 }
 
+GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
+{
+	std::unordered_map<const GameObject*, GameObject*> originalToNew;
+	std::vector<MeshRendererComponent*>mRenderers;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	for (MeshRendererComponent* mRend : mRenderers)
+	{
+		if (mRend->HasSkinning())
+		{
+			mRend->UpdateSkeletonObjects(originalToNew);
+		}
+	}
+	AddGameObjectToDuplicate(duplicatedGameObject);
+
+	return duplicatedGameObject;
+}
+
 void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* second)
 {
 	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
@@ -551,16 +611,34 @@ void ModuleScene::SwitchGameObjectsFromScene(GameObject* first, GameObject* seco
 		}
 	}
 
-	for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
+	if (!first->IsRoot())
 	{
-		if ((*it)->GetID() == first->GetID())
+		for (std::vector<GameObject*>::const_iterator it = mSceneGO.cbegin(); it != mSceneGO.cend(); ++it)
 		{
-			mSceneGO.insert(it, second);
-			break;
+			if ((*it)->GetID() == first->GetID())
+			{
+				if (it+1 != mSceneGO.cend())
+				{
+					mSceneGO.insert(it+1, second);
+				}
+				else
+				{
+					mSceneGO.push_back(second);
+				}
+
+				break;
+			}
 		}
 	}
+	else 
+	{
+		mSceneGO.push_back(second);
+	}
 
-	
+	for (int i = second->GetChildren().size() - 1; i >= 0; --i)
+	{
+		SwitchGameObjectsFromScene(second, second->GetChildren()[i]);
+	}
 }
 
 void ModuleScene::DeleteGameObjects()
@@ -568,7 +646,6 @@ void ModuleScene::DeleteGameObjects()
 	for (GameObject* gameObject : mGameObjectsToDelete)
 	{
 		gameObject->GetParent()->RemoveChild(gameObject->GetID());
-		RemoveGameObjectFromScene(gameObject->GetName());
 		delete gameObject;
 	}
 
@@ -589,17 +666,14 @@ void ModuleScene::DuplicateGameObjects()
 
 #pragma region Others
 
-void ModuleScene::AddMeshToRender(const MeshRendererComponent& meshRendererComponent)
-{
-	mCurrRenderComponents.push_back(&meshRendererComponent);
-}
-
 void ModuleScene::NewScene()
 {
-	mQuadtreeRoot->CleanUp();
 	App->GetUI()->CleanUp();
 	mGameObjectsByTags.clear();
 	mSceneGO.clear();
+
+	App->GetNavigation()->ReleaseResource();
+	App->GetOpenGL()->SetSkybox(0);
 
 	delete mRoot;
 	mRoot = new GameObject("EmptyScene", nullptr);

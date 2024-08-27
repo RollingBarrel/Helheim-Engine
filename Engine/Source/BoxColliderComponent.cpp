@@ -1,8 +1,12 @@
 #include "BoxColliderComponent.h"
+#include "BoxColliderComponent.h"
 #include "ScriptComponent.h"
 #include "GameObject.h"
 #include "Application.h"
 #include "ModulePhysics.h"
+#include "MotionState.h"
+#include "btBulletDynamicsCommon.h"
+#include "Geometry/OBB.h"
 
 BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER)
 {
@@ -13,6 +17,7 @@ BoxColliderComponent::BoxColliderComponent(GameObject* owner) : Component(owner,
 BoxColliderComponent::BoxColliderComponent(const BoxColliderComponent& original, GameObject* owner) : Component(owner, ComponentType::BOXCOLLIDER),
 	mCenter(original.mCenter), mSize(original.mSize)
 {
+	mCollider = new Collider(this, ComponentType::BOXCOLLIDER);
 	Init();
 }
 
@@ -21,17 +26,15 @@ BoxColliderComponent::~BoxColliderComponent()
 	if (mRigidBody)
 	{
 		App->GetPhysics()->RemoveBoxRigidbody(this);
+		mRigidBody = nullptr;
 	}
+	delete mCollider;
 }
 
 void BoxColliderComponent::Init()
 {
-	if (!mRigidBody && IsEnabled() && mOwner->IsActive())
-	{
-		App->GetPhysics()->CreateBoxRigidbody(this);
-	}
-
-	ComputeBoundingBox();
+	App->GetPhysics()->CreateBoxRigidbody(this);
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::Reset()
@@ -44,8 +47,7 @@ void BoxColliderComponent::Update()
 {
 	if (mOwner->HasUpdatedTransform())
 	{
-		ComputeBoundingBox();
-		//App->GetPhysics()->UpdateBoxRigidbody(this);
+		App->GetPhysics()->UpdateBoxRigidbody(this);
 	}
 }
 
@@ -67,24 +69,38 @@ void BoxColliderComponent::OnCollision(CollisionData* collisionData)
 	}
 }
 
-void BoxColliderComponent::ComputeBoundingBox()
+void BoxColliderComponent::GetColliderOBB(OBB& obb) const
 {
-	float3 sizeIncrement = mSize * 0.5f;
-	mLocalAABB = AABB(mCenter - sizeIncrement, mCenter + sizeIncrement);
-	mWorldOBB = OBB(mLocalAABB);
-	mWorldOBB.Transform(float4x4(mOwner->GetRotation(), mOwner->GetPosition()));
+	btVector3 aabbMinBullet;
+	btVector3 aabbMaxBullet;
+	mRigidBody->getAabb(aabbMinBullet, aabbMaxBullet);
+	float3 aabbMin(aabbMinBullet.x(), aabbMinBullet.y(), aabbMinBullet.z());
+	float3 aabbMax(aabbMaxBullet.x(), aabbMaxBullet.y(), aabbMaxBullet.z());
+
+	obb.pos = (aabbMin + aabbMax) / 2.0f;
+	obb.axis[0] = mOwner->GetRight();
+	obb.axis[1] = mOwner->GetUp();
+	obb.axis[2] = mOwner->GetFront();
+	obb.r = mSize;
 }
 
 void BoxColliderComponent::SetCenter(const float3& center)
 {
 	mCenter = center;
-	ComputeBoundingBox();
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetSize(const float3& size)
 {
 	mSize = size;
-	ComputeBoundingBox();
+	for (int i = 0; i < 3; ++i)
+	{
+		if (mSize[i] <= 0.001f && mSize[i] >= -0.001f)
+		{
+			mSize[i] = 0.001f;
+		}
+	}
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::SetColliderType(ColliderType colliderType)
@@ -130,19 +146,18 @@ void BoxColliderComponent::Load(const JsonObject& data, const std::unordered_map
 	mSize = float3(size);
 
 	mColliderType = (ColliderType)data.GetInt("ColliderType");
-
 	mFreezeRotation = data.GetBool("FreezeRotation");
 
-	ComputeBoundingBox();
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::Enable()
 {
-	App->GetPhysics()->CreateBoxRigidbody(this);
-	ComputeBoundingBox();
+	App->GetPhysics()->EnableRigidbody(this);
+	App->GetPhysics()->UpdateBoxRigidbody(this);
 }
 
 void BoxColliderComponent::Disable()
 {
-	App->GetPhysics()->RemoveBoxRigidbody(this);
+	App->GetPhysics()->DisableRigidbody(this);
 }

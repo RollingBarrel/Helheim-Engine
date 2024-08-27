@@ -24,7 +24,10 @@ public:
 	void RemoveScript(ScriptComponent* script);
 	void* GetDLLHandle() { return mHandle; }
 	void AwakeScripts();
-	virtual void StartScripts();
+	void StartScripts();
+	void AwakeGameObjectScripts(GameObject* gameobject);
+	void StartGameObjectScripts(GameObject* gameobject);
+	
 
 	void AddGameObjectToMap(GameObject** gameObject);
 	void RemoveGameObjectFromMap(GameObject** gameObject);
@@ -34,5 +37,7 @@ protected:
 	std::unordered_map<unsigned int, std::vector<GameObject**>> mGameObjectsPointersMap;
 
 	void* mHandle = nullptr;
+	bool mFirstFrame = true;
+
 };
 

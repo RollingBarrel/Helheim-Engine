@@ -1,0 +1,129 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 237490866,
+                "ParentUID": 1,
+                "Name": "Healing_particle_V1",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 21,
+                        "Looping": false,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 5.199999809265137,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 4.0,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.010723858140408993,
+                                "Color": [
+                                    1.0,
+                                    1.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.21983914077281953,
+                                "Color": [
+                                    0.4520000219345093,
+                                    0.9868480563163757,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4892761707305908,
+                                "Color": [
+                                    0.322704017162323,
+                                    0.8005857467651367,
+                                    0.972000002861023,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6648795008659363,
+                                "Color": [
+                                    0.09672725945711136,
+                                    0.2827557921409607,
+                                    0.42424237728118899,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9839141368865967,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

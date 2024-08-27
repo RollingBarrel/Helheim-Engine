@@ -17,6 +17,7 @@ class AIAgentComponent;
 class NavMeshObstacleComponent;
 class AnimationComponent;
 class ImageComponent;
+class MaskComponent;
 class CanvasComponent;
 class ButtonComponent;
 class AudioSourceComponent;
@@ -27,6 +28,7 @@ class ParticleSystemComponent;
 class TextComponent;
 class BoxColliderComponent;
 class TrailComponent;
+class LineComponent;
 class BezierCurve;
 class DecalComponent;
 class RandomFloat;
@@ -60,9 +62,10 @@ private:
 	void DrawScriptComponent(ScriptComponent* component);
 	void DrawPointLightComponent(PointLightComponent* component);
 	void DrawSpotLightComponent(SpotLightComponent* component);
-	void DrawMeshRendererComponent(const MeshRendererComponent& component);
+	void DrawMeshRendererComponent(MeshRendererComponent& component);
 	void DrawAIAgentComponent(AIAgentComponent* component);
 	void DrawImageComponent(ImageComponent* component);
+	void DrawMaskComponent(MaskComponent* component);
 	void DrawCanvasComponent(CanvasComponent* component);
 	void DrawButtonComponent(ButtonComponent* component);
 	void DrawSliderComponent(SliderComponent* component);
@@ -73,6 +76,7 @@ private:
 	void DrawBoxColliderComponent(BoxColliderComponent* component);
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
+	void DrawLineComponent(LineComponent* component) const;
 	void DrawDecalComponent(DecalComponent* component);
 
 	//void DragAndDropSource(Component* component);

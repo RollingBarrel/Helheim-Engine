@@ -12,6 +12,9 @@ public:
 	~RandomFloat();
 
 	float GetInitialValue() const { return mInitialValue; }
+	float GetMaxValue() const { return mMax; }
+	float GetMinValue() const { return mMin; }
+	bool IsRand() const { return mIsRand; }
 	void CalculateInitialValue();
 	float CalculateRandom() const;
 
@@ -19,7 +22,7 @@ public:
 	void Load(const JsonObject& data);
 private:
 	bool mIsRand = false;
-	float mMin = 0.0f;
+	float mMin = 1.0f;
 	float mMax = 1.0f;
 	float mInitialValue = 0.0f;
 };

@@ -30,9 +30,11 @@ public:
 
 	void GameWindowsResized(float2 gameWindowsSize) { mGameWindowsSize = gameWindowsSize; }
 	void WindowResized(unsigned width, unsigned height);
+	void WindowFullscreen(bool value);
+	bool IsWindowFullscreen();
 
-	SDL_Window* window = nullptr;
-	SDL_Surface* screen_surface = nullptr;
+	SDL_Window* mWindow = nullptr;
+	SDL_Surface* mScreenSurface = nullptr;
 
 private:
 	int width = 0;

@@ -13,6 +13,7 @@ class GameObject;
 class MeshRendererComponent;
 class Archive;
 class Tag;
+class PlayerStats;
 
 class ENGINE_API ModuleScene : public Module
 {
@@ -24,6 +25,7 @@ public:
 	update_status PreUpdate(float dt) override;
 	update_status Update(float dt) override;
 	update_status PostUpdate(float dt) override;
+	bool CleanUp() override;
 
 	// Getters
 	GameObject* GetRoot() const { return mRoot; }
@@ -40,19 +42,8 @@ public:
 	void RemoveGameObjectFromScene(int id); 
 	void RemoveGameObjectFromScene(const std::string& name);
 	void AddGameObjectToDelete(GameObject* gameObject) { mGameObjectsToDelete.push_back(gameObject); }
-	void AddGameObjectToDuplicate(GameObject* gameObject) {	mGameObjectsToDuplicate.push_back(gameObject); }
+	GameObject* DuplicateGameObject(GameObject* gameObject);
 	void SwitchGameObjectsFromScene(GameObject* first, GameObject* second);
-
-	void AddMeshToRender(const MeshRendererComponent& meshRendererComponent);
-
-	// Quadtree
-	Quadtree* GetQuadtreeRoot() const { return mQuadtreeRoot; }
-	bool GetShouldUpdateQuadtree() const { return mShouldUpdateQuadtree; }
-	void SetShouldUpdateQuadtree(bool updateQuadtree) { mShouldUpdateQuadtree = updateQuadtree; }
-
-	// Frustum Culling
-	bool GetApplyFrustumCulling() const { return mApplyculling; }
-	void SetApplyFrustumCulling(bool applyFrustumCulling) { mApplyculling = applyFrustumCulling; }
 
 	// Save / Load Scene
 	void NewScene();
@@ -65,7 +56,7 @@ public:
 
 	// Prefabs
 	GameObject* InstantiatePrefab(const char* name, GameObject* parent = nullptr);
-	void SavePrefab(const GameObject& gameObject, const char* saveFilePath) const;
+	void SavePrefab(const GameObject& gameObject, const char* saveFilePath);
 	void SavePrefabRecursive(const GameObject& objectToSave, JsonArray& gameObjects) const;
 	GameObject* LoadPrefab(const char* saveFilePath, GameObject* parent = nullptr, bool update = false);
 	void OverridePrefab(const JsonObject& gameObject, unsigned int id);
@@ -76,9 +67,13 @@ public:
 
 	const std::unordered_map<unsigned int, unsigned int>& GetPrefabUIDMap() { return mPrefabOldNewUid; }
 
+	//Player Stats
+	PlayerStats* GetPlayerStats() const { return mPlayerStats; }
+
 private:
-	void DeleteGameObjects();
+	void AddGameObjectToDuplicate(GameObject* gameObject) { mGameObjectsToDuplicate.push_back(gameObject); }
 	void DuplicateGameObjects();
+	void DeleteGameObjects();
 
 	GameObject* mRoot = nullptr;
 	GameObject* mBackgroundScene = nullptr;
@@ -89,19 +84,15 @@ private:
 	std::vector<GameObject*> mGameObjectsToDuplicate;
 	std::unordered_map<std::string, std::vector<GameObject*>> mGameObjectsByTags;
 
-	// Quadtree
-	Quadtree* mQuadtreeRoot = nullptr;
-	bool mShouldUpdateQuadtree = false;
-	bool mApplyculling = false;
-
 	// Prefabs
 	const char* mPrefabPath = "";
 	bool mClosePrefab = false;
-
 	std::unordered_map<unsigned int, unsigned int> mPrefabOldNewUid;
 
-	// Others
-	std::vector<const MeshRendererComponent*> mCurrRenderComponents;
+	//Player Stats
+	PlayerStats* mPlayerStats = nullptr;
+
+	static const std::vector<GameObject*> mEmptyVector; //This is used to avoid creating objects in methods and returning them as reference.
 };
 
 #endif //_MODULE_SCENE_H_

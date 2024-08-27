@@ -219,6 +219,7 @@
     <ClCompile Include="ImBezier.cpp" />
     <ClCompile Include="ImColorGradient.cpp" />
     <ClCompile Include="ImporterAnimation.cpp" />
+    <ClCompile Include="ImporterIBL.cpp" />
     <ClCompile Include="ImporterModel.cpp" />
     <ClCompile Include="ImporterMesh.cpp" />
     <ClCompile Include="ImporterNavMesh.cpp" />
@@ -307,6 +308,7 @@
     <ClInclude Include="ImBezier.h" />
     <ClInclude Include="ImColorGradient.h" />
     <ClInclude Include="ImporterAnimation.h" />
+    <ClInclude Include="ImporterIBL.h" />
     <ClInclude Include="ImporterNavMesh.h" />
     <ClInclude Include="ImporterScene.h" />
     <ClInclude Include="ImporterScript.h" />

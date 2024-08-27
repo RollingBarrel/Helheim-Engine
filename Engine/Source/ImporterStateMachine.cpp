@@ -4,24 +4,23 @@
 #include "EngineApp.h"
 #include "ModuleEngineResource.h"
 #include "ModuleFileSystem.h"
-
+#include <cassert>
 
 ResourceStateMachine* Importer::StateMachine::Import(const char* assetsPath, unsigned int uid)
 {
     // Copy assets path into correct library path
-    AnimationStateMachine* newSM = new AnimationStateMachine();
+    AnimationStateMachine* newSM = new AnimationStateMachine(uid);
     newSM->LoadResource(assetsPath);
     ResourceStateMachine* newResource = new ResourceStateMachine(uid, newSM);
 
-
-	const char* libraryFile = EngineApp->GetFileSystem()->GetLibraryFile(uid);
-
+	assert(newSM->GetNumStates() > 0);
 
 	char* fileBuffer = nullptr;
 	int size = App->GetFileSystem()->Load(assetsPath, &fileBuffer);
-	std::string path = App->GetFileSystem()->GetLibraryFile(uid, true);
-	App->GetFileSystem()->Save(path.c_str(), fileBuffer, size);
-	
+	const char* path = App->GetFileSystem()->GetLibraryFile(uid, true);
+	App->GetFileSystem()->Save(path, fileBuffer, size);
+	delete[] fileBuffer;
+	delete[] path;
 
     EngineApp->GetEngineResource()->CreateAssetsMeta(*newResource, assetsPath);
 

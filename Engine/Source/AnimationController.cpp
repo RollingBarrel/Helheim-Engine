@@ -12,26 +12,21 @@
 
 #include "Globals.h"
 
-AnimationController::AnimationController(ResourceAnimation* animation,  bool loop) {
+AnimationController::AnimationController(ResourceAnimation* animation) {
 	mCurrentAnimation = animation;
-	mLoop = loop;
+	mAnimationUID = animation->GetUID();
+	mLoop = false;
 
-	mCurrentTime = 0;
-	mStartTime = 0.0f;
+	mCurrentTime = 0.1f;
+	mStartTime = 0.1f;
 	mEndTime = animation->GetDuration();
-}
-
-AnimationController::AnimationController(ResourceAnimation* animation,  bool loop, float startTime, float endTime) : AnimationController(animation, loop)
-{
-	mStartTime = startTime;
-	mEndTime = endTime;
 }
 
 AnimationController::~AnimationController()
 {
-	if (mCurrentAnimation)
+	if (mAnimationUID != 0)
 	{
-		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
+		App->GetResource()->ReleaseResource(mAnimationUID);
 	}
 }
 
@@ -63,7 +58,9 @@ void AnimationController::Update()
 
 void AnimationController::Restart()
 {
-	mCurrentTime = mStartTime;
+	
+	mCurrentTime = 0.1f;
+	//mCurrentTime = mStartTime;
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda)
@@ -95,7 +92,7 @@ Quat AnimationController::Interpolate(const Quat& first, const Quat& second, flo
 
 void AnimationController::SetStartTime(float time)
 {
-	mStartTime = std::max(time, 0.0f);
+	mStartTime = std::max(time, 0.1f);
 
 }
 
@@ -110,6 +107,11 @@ void AnimationController::EndBlending()
 	mCurrentTime = mClipStartTime;
 	mCurrentTransitionTime = 0.0f;
 
+}
+
+unsigned int AnimationController::GetAnimationUID() const
+{
+	return mAnimationUID;
 }
 
 void AnimationController::GetTransform(GameObject* model)
@@ -136,18 +138,16 @@ void AnimationController::GetTransform(GameObject* model)
 		{
 			CalculateIndexAndLambda(channel, "Translation", mCurrentTime, keyIndex, lambda);
 
-			model->SetPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
+			model->SetLocalPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
 		}
 		if (channel->hasRotation)
 		{
 			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-			model->SetRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+			model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
-
-		else { return; }
-
-		model->RecalculateMatrices();
+		//if (channel->hasTranslation || channel->hasRotation)
+		//	model->SetLocalScale(model->GetLocalScale());
 	}
 
 }
@@ -190,7 +190,7 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
+				model->SetLocalPosition(Interpolate(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda), channel->positions[newClipIndex], weight));
 			}
 			if (channel->hasRotation)
 			{
@@ -208,12 +208,10 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 					newClipIndex = channel->numPositions - 1;
 				}
 
-				model->SetRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
+				model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
-
-			else { return; }
-
-			model->RecalculateMatrices();
+			//if(channel->hasTranslation || channel->hasRotation)
+			//	model->SetLocalScale(model->GetLocalScale());
 		}
 
 	}

@@ -11,18 +11,20 @@ void Importer::Scene::Save(const ResourceScene* ourScene, const char* assetsFile
 
     const char* libraryPath = App->GetFileSystem()->GetLibraryFile(ourScene->GetUID(), true);
     App->GetFileSystem()->Save(libraryPath, fileBuffer, size);
+    delete[] fileBuffer;
+    delete[] libraryPath;
 }
 
 ResourceScene* Importer::Scene::Load(const char* fileName, unsigned int uid)
 {
     char* fileBuffer = nullptr;
 
-    if (App->GetFileSystem()->Load(fileName, &fileBuffer) > 0);
+    if (App->GetFileSystem()->Load(fileName, &fileBuffer) > 0)
     {
         App->GetScene()->Load(fileBuffer);
     }
 
-    delete fileBuffer;
+    delete[] fileBuffer;
 
     return nullptr;
 }

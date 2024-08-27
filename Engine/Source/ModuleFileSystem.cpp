@@ -13,6 +13,16 @@
 
 ModuleFileSystem::ModuleFileSystem() 
 {
+}
+
+// Destructor
+ModuleFileSystem::~ModuleFileSystem()
+{
+    PHYSFS_deinit();
+}
+
+bool ModuleFileSystem::Init()
+{
     PHYSFS_init(nullptr);
 
     if (PHYSFS_setWriteDir(".") == 0)
@@ -24,30 +34,31 @@ ModuleFileSystem::ModuleFileSystem()
     AddToSearchPath(".");
     //AddToSearchPath(LIBRARY_PATH);
     //AddToSearchPath(ASSETS_PATH);
-    
+
     CreateDirectory(ASSETS_PATH);
     CreateDirectory(ASSETS_MODEL_PATH);
     CreateDirectory(ASSETS_TEXTURE_PATH);
+    CreateDirectory(ASSETS_MATERIAL_PATH);
     CreateDirectory(ASSETS_SCENES_PATH);
     CreateDirectory(ASSETS_PREFABS_PATH);
     CreateDirectory(ASSETS_SCRIPT_PATH);
     CreateDirectory(ASSETS_NAVMESH_PATH);
+    CreateDirectory(ASSETS_IBL_PATH);
     CreateDirectory(LIBRARY_PATH);
+
+    CreateDirectory(INTERNAL_ASSETS_PATH);
+    CreateDirectory(INTERNAL_ASSETS_SCENES_PATH);
+    CreateDirectory(INTERNAL_ASSETS_FONTS_PATH);
 
     mRoot = new PathNode("Assets");
     DiscoverFiles("Assets", mRoot);
-}
-
-// Destructor
-ModuleFileSystem::~ModuleFileSystem()
-{
-    PHYSFS_deinit();
+    return true;
 }
 
 // Called before quitting
 bool ModuleFileSystem::CleanUp()
 {
-    CleanNode(mRoot);
+    delete mRoot;
     return true;
 }
 
@@ -224,7 +235,7 @@ bool ModuleFileSystem::IsDirectory(const char* directoryPath) const
 {
     PHYSFS_Stat stat;
     if (!PHYSFS_stat(directoryPath, &stat))
-        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()));
+        LOG("Error obtaining file/dir stat: %s", PHYSFS_getErrorByCode(PHYSFS_getLastErrorCode()))
     return(stat.filetype == PHYSFS_FileType::PHYSFS_FILETYPE_DIRECTORY);
 }
 
@@ -384,14 +395,14 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
 {
     std::string tempPath = path;
 
-    unsigned int lastSlashPos = tempPath.find_last_of('/');
-    unsigned int dotPos = tempPath.find_last_of('.');
+    unsigned long long lastSlashPos = tempPath.find_last_of("/\\");
+    unsigned long long dotPos = tempPath.find_last_of('.');
 
-    if(file != nullptr)
-        *file = (lastSlashPos < tempPath.length()) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
+    if (file != nullptr)
+        *file = (lastSlashPos != std::string::npos) ? tempPath.substr(lastSlashPos + 1, dotPos - lastSlashPos - 1) : tempPath.substr(0, dotPos);
 
-    if(extension != nullptr)
-        *extension = (dotPos < tempPath.length()) ? tempPath.substr(dotPos) : tempPath;
+    if (extension != nullptr && dotPos != std::string::npos)
+        *extension = tempPath.substr(dotPos);
 }
 
 void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const
@@ -405,23 +416,23 @@ void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std:
     PHYSFS_freeList(dirFiles);
 }
 
-void ModuleFileSystem::CleanNode(PathNode* node)
-{
-
-    for (int i = 0; i < node->assets.size(); ++i) 
-    {
-        delete node->assets[i];
-    }
-
-    for (int i = 0; i < node->mChildren.size(); ++i) 
-    {
-        CleanNode(node->mChildren[i]);
-    }
-
-    delete node->mName;
-    delete node;
-    node = nullptr;
-}
+//void ModuleFileSystem::CleanNode(PathNode* node)
+//{
+//
+//    for (int i = 0; i < node->assets.size(); ++i) 
+//    {
+//        delete node->assets[i];
+//    }
+//
+//    for (int i = 0; i < node->mChildren.size(); ++i) 
+//    {
+//        CleanNode(node->mChildren[i]);
+//    }
+//
+//    delete node->mName;
+//    delete node;
+//    node = nullptr;
+//}
 
 PathNode::PathNode(const char* name, PathNode* parent) : mParent(parent)
 {
@@ -440,10 +451,4 @@ AssetDisplay::AssetDisplay(const char* name, const char* path, PathNode* parent)
     unsigned int sizePath = strlen(path) + 1;
     mPath = new char[sizePath];
     strcpy_s(const_cast<char*>(mPath), sizePath, path);
-}
-
-AssetDisplay::~AssetDisplay()
-{
-    delete mName;
-    delete mPath;
 }

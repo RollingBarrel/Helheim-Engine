@@ -162,11 +162,11 @@ void AudioTester::ControlSFX()
         {
             if (mSFX4sID == -1)
             {
-                mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetPosition());
+                mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetWorldPosition());
             }
             else 
             {
-                GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetPosition());
+                GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetWorldPosition());
             }
             mSFX4Play = true;
         }
@@ -200,7 +200,7 @@ void AudioTester::WalkingSimulation()
         mStepTimePassed += App->GetDt();
         if (mStepTimePassed >= mStepCoolDown)
         {
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mGameObject->GetPosition());
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mGameObject->GetWorldPosition());
             mStepTimePassed = 0.0f;
         }
     }
@@ -213,11 +213,11 @@ void AudioTester::BGM1ParameterChange()
     {
         if (input->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
         {
-            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "Area", 80);
+            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "States", 0);
         }
         else if(input->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) 
         {
-            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "Area", 1);
+            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "States", 2);
         }
     }
 }

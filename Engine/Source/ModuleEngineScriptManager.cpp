@@ -33,20 +33,26 @@ bool ModuleEngineScriptManager::Init()
 	int b = GetLastError();
 	mLastModificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
 
-	UpdateScripts();
+	//UpdateScripts();
 
 	return true;
 }
 
 update_status ModuleEngineScriptManager::PreUpdate(float dt)
 {
-	UpdateScripts();
-
-	int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
-	if (mLastModificationTime != modificationTime && !EngineApp->IsPlayMode())
+	mUpdateScriptsTimer += dt;
+	if (mUpdateScriptsTimer > 1.5f)
 	{
-		mLastModificationTime = modificationTime;
-		HotReload();
+		//UpdateScripts();
+
+		int64_t modificationTime = EngineApp->GetFileSystem()->GetLastModTime("Scripting.dll");
+		if (mLastModificationTime != modificationTime && !EngineApp->IsPlayMode())
+		{
+			mLastModificationTime = modificationTime;
+			HotReload();
+		}
+
+		mUpdateScriptsTimer = 0.0f;
 	}
 
 	return update_status::UPDATE_CONTINUE;
@@ -54,12 +60,19 @@ update_status ModuleEngineScriptManager::PreUpdate(float dt)
 
 update_status ModuleEngineScriptManager::Update(float dt)
 {
-	if (EngineApp->IsPlayMode() && !mPause)
+	if (!mFirstFrame) //Solution to high delta times in the first frame after loading a scene
 	{
-		for (unsigned int i = 0; i < mScripts.size(); ++i) 
+		if (EngineApp->IsPlayMode() && !mPause)
 		{
-			mScripts[i]->mScript->Update();
+			for (unsigned int i = 0; i < mScripts.size(); ++i)
+			{
+				mScripts[i]->mScript->Update();
+			}
 		}
+	}
+	else
+	{
+		mFirstFrame = false;
 	}
 
 	return update_status::UPDATE_CONTINUE;
@@ -181,13 +194,8 @@ void ModuleEngineScriptManager::Pause(bool pause)
 	mPause = pause;
 }
 
-void ModuleEngineScriptManager::StartScripts()
-{
-	if (EngineApp->IsPlayMode())
-	{
-		ModuleScriptManager::StartScripts();
-	}
-}
+
+
 
 
 void ModuleEngineScriptManager::UpdateScripts()

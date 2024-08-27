@@ -36,11 +36,18 @@ bool ModuleScriptManager::Init()
 
 update_status ModuleScriptManager::Update(float dt)
 {
-
-	for (unsigned int i = 0; i < mScripts.size(); ++i) 
+	if (!mFirstFrame) //Solution to high delta times in the first frame after loading a scene
 	{
-		mScripts[i]->mScript->Update();
+		for (unsigned int i = 0; i < mScripts.size(); ++i)
+		{
+			mScripts[i]->mScript->Update();
+		}
 	}
+	else
+	{
+		mFirstFrame = false;
+	}
+	
 
 	return update_status::UPDATE_CONTINUE;
 }
@@ -102,8 +109,39 @@ void ModuleScriptManager::AwakeScripts()
 	}
 }
 
+void ModuleScriptManager::AwakeGameObjectScripts(GameObject* gameobject)
+{
+	std::vector<Component*> components;
+	gameobject->GetComponentsInChildren(ComponentType::SCRIPT, components);
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(components[i]);
+		if (scriptComponent->mScript)
+		{
+			scriptComponent->mScript->Awake();
+		}
+	}
+}
+
+void ModuleScriptManager::StartGameObjectScripts(GameObject* gameobject)
+{
+	std::vector<Component*> components;
+	gameobject->GetComponentsInChildren(ComponentType::SCRIPT, components);
+
+	for (unsigned int i = 0; i < components.size(); ++i)
+	{
+		ScriptComponent* scriptComponent = static_cast<ScriptComponent*>(components[i]);
+		if (scriptComponent->mScript)
+		{
+			scriptComponent->mScript->Start();
+		}
+	}
+}
+
 void ModuleScriptManager::StartScripts()
 {
+	mFirstFrame = true;
 	for (unsigned int i = 0; i < mScripts.size(); ++i)
 	{
 		if (!mScripts[i]->mHasStarted)

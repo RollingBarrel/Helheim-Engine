@@ -91,14 +91,14 @@ void main()
 	}
 
 	outDiffuse = baseColor;
-	outMetalRough.b = metal;
 	outMetalRough.g = rough;
+	outMetalRough.b = metal;
 
 
 	//outDiffuse = baseColor * (1 - metal);
 	//outSpecularRough.rgb = mix(vec3(0.04), baseColor, metal);
 	//outSpecularRough.a = rough;
-	outNormal = (N * 0.5) + 0.5;
+	outNormal = N * 0.5 + 0.5;
 	outPosition = sPos;
 	
 	//outDepth = gl_FragCoord.z;
