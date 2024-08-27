@@ -608,10 +608,37 @@ void PlayerController::UpdateGrenadeVisuals()
     if (mGrenadeExplotionPreviewAreaGO)
     {
         float3 diff;
+
         if (GameManager::GetInstance()->UsingController())
         {
-            mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition - mGameObject->GetWorldPosition()) * mGrenadeRange;
+            float rightX = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+            float rightY = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+
+            if (!(std::abs(rightX) < 0.1f && std::abs(rightY) < 0.1f))
+            {
+                float3 position = mGameObject->GetWorldPosition();
+
+                float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
+                float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
+
+                float3 throwDirection = (cameraFront * rightY + cameraRight * rightX).Normalized();
+
+                float moveSpeed = 6.0f; 
+                float3 movement = throwDirection * moveSpeed * App->GetDt();
+                mGrenadePosition += movement;
+            }
+
+            float3 diff = mGrenadePosition - mGameObject->GetWorldPosition();
+
+            float distanceSquared = diff.LengthSq();
+            float radiusSquared = mGrenadeRange * mGrenadeRange;
+            if (distanceSquared > radiusSquared)
+            {
+                diff.Normalize();
+                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+            }
         }
+
         else
         {
             diff = mAimPosition - mGameObject->GetWorldPosition();
