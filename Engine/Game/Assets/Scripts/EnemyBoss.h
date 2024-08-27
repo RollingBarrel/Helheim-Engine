@@ -45,5 +45,6 @@ private:
 	const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
+	float mBulletHellAngleSpread = 120;
 };
 

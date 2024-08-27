@@ -24,6 +24,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mAttackDamage);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mBulletHellCooldown);
+    MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::FLOAT, mAttackDuration);
     MEMBER(MemberType::FLOAT, mDeathTime);
@@ -182,7 +183,8 @@ void EnemyBoss::BulletAttack()
     float3 rotation = mGameObject->GetWorldEulerAngles();
 
     // Give bullet random directon
-    float angle = randFloat() * pi / 2 - pi / 4;
+    float angle = randFloat() * mBulletHellAngleSpread - mBulletHellAngleSpread / 2;
+    angle = DegToRad(angle);
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
     //bulletGO->SetWorldRotation(rotation);
