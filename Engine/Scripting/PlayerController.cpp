@@ -64,6 +64,10 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mHealParticles);
     MEMBER(MemberType::GAMEOBJECT, mShieldSpriteSheet);
 
+    SEPARATOR("PICKUPS");
+    MEMBER(MemberType::GAMEOBJECT, mRedBaterryParticles);
+    MEMBER(MemberType::GAMEOBJECT, mBlueBaterryParticles);
+
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
@@ -213,6 +217,10 @@ void PlayerController::Start()
     //HEAL VFX
     if (mHealParticles) mHealParticles->SetEnabled(false);
     if (mShieldSpriteSheet) mShieldSpriteSheet->SetEnabled(false);
+
+    //PICKUP VFX
+    if (mRedBaterryParticles) mRedBaterryParticles->SetEnabled(false);
+    if (mBlueBaterryParticles) mBlueBaterryParticles->SetEnabled(false);
     
     //ULTIMATE
     if (mUltimateGO)
@@ -739,22 +747,38 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
         case EnergyType::BLUE:
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
+                if (mBlueBaterryParticles) {
+                    mBlueBaterryParticles->SetEnabled(false);
+                    mBlueBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mMachinegun;
                 mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
+                if (mBlueBaterryParticles) {
+                    mBlueBaterryParticles->SetEnabled(false);
+                    mBlueBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mKatana;
             }
             break;
         case EnergyType::RED:
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
+                if (mRedBaterryParticles) {
+                    mRedBaterryParticles->SetEnabled(false);
+                    mRedBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mShootgun;
                 mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
+                if (mRedBaterryParticles) {
+                    mRedBaterryParticles->SetEnabled(false);
+                    mRedBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mHammer;
             }
             break;

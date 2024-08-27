@@ -226,6 +226,8 @@ private:
     RangeWeapon* mMachinegun = nullptr;
     RangeWeapon* mShootgun = nullptr;
     GameObject* mShootOrigin = nullptr;
+    GameObject* mRedBaterryParticles = nullptr;
+    GameObject* mBlueBaterryParticles = nullptr;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;

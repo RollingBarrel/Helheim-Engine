@@ -55,6 +55,20 @@
                                 "VariableData": 1171358626
                             },
                             {
+                                "VariableName": "PICKUPS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mRedBaterryParticles",
+                                "MemberType": 3,
+                                "VariableData": 240592145
+                            },
+                            {
+                                "VariableName": "mBlueBaterryParticles",
+                                "MemberType": 3,
+                                "VariableData": 1228800416
+                            },
+                            {
                                 "VariableName": "DASH",
                                 "MemberType": 5
                             },
@@ -4407,6 +4421,252 @@
                         "IsEnabled": false,
                         "ScriptName": "HealVFX",
                         "ScriptVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 240592145,
+                "ParentUID": 265972669,
+                "Name": "Pickup_Particle_Shotgun",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.2223123013973236,
+                    -0.7026286721229553,
+                    -0.6442700028419495,
+                    0.20446623861789704
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 21,
+                        "Looping": false,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.4000000953674318,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.4000000059604645,
+                            "MaxValue": 0.5
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.4000000059604645,
+                                "MaxValue": 0.5
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 4.0,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.010723858140408993,
+                                "Color": [
+                                    0.9559999704360962,
+                                    0.6806719899177551,
+                                    0.6806719899177551,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.21983914077281953,
+                                "Color": [
+                                    1.0,
+                                    0.35600000619888308,
+                                    0.35600000619888308,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4892761707305908,
+                                "Color": [
+                                    0.972000002861023,
+                                    0.12830403447151185,
+                                    0.12830403447151185,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6648795008659363,
+                                "Color": [
+                                    0.42424237728118899,
+                                    0.09672725945711136,
+                                    0.09672725945711136,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9839141368865967,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1228800416,
+                "ParentUID": 265972669,
+                "Name": "Pickup_Particle_MGun",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.2223123013973236,
+                    -0.7026286721229553,
+                    -0.6442700028419495,
+                    0.20446623861789704
+                ],
+                "Scale": [
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 1.0,
+                        "EmissionRate": 10.0,
+                        "MaxParticles": 21,
+                        "Looping": false,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.4000000953674318,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.4000000059604645,
+                            "MaxValue": 0.5
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.0,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.4000000059604645,
+                                "MaxValue": 0.5
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 4.0,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.010723858140408993,
+                                "Color": [
+                                    0.7366693019866943,
+                                    0.7300799489021301,
+                                    0.9359999895095825,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.21983914077281953,
+                                "Color": [
+                                    0.508992075920105,
+                                    0.4520000219345093,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4892761707305908,
+                                "Color": [
+                                    0.43697988986968996,
+                                    0.322704017162323,
+                                    0.972000002861023,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6648795008659363,
+                                "Color": [
+                                    0.17009063065052033,
+                                    0.09672725945711136,
+                                    0.42424237728118899,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9839141368865967,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
                     }
                 ]
             }
