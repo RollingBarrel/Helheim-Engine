@@ -46,6 +46,7 @@ void RayCastBullet::Update()
 					if (enemy)
 					{
 						enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
+						GameManager::GetInstance()->HitStop();
 					}
 				}
 			}
