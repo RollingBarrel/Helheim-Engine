@@ -112,3 +112,9 @@ void ModuleWindow::WindowFullscreen(bool value)
 	}
 }
 
+bool ModuleWindow::IsWindowFullscreen()
+{
+	Uint32 windowFlags = SDL_GetWindowFlags(mWindow);
+	return (windowFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
+}
+

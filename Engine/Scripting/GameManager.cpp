@@ -9,6 +9,7 @@
 #include "ScriptComponent.h"
 #include "HudController.h"
 #include "PlayerController.h"
+#include "Timer.h"
 
 CREATE(GameManager)
 {
@@ -18,6 +19,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
+    MEMBER(MemberType::FLOAT, mDefaultHitStopTime);
     END_CREATE;
 }
 
@@ -67,6 +69,8 @@ void GameManager::Start()
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
     }
 
+    mGameTimer = App->GetCurrentClock();
+
     StartAudio();
 }
 
@@ -80,6 +84,11 @@ void GameManager::Update()
     }
 
     HandleAudio();
+
+    if (mHitStopActive)
+    {
+        HitStopTime(mHitStopTime);
+    }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
@@ -95,6 +104,7 @@ void GameManager::Clean()
     mHudController = nullptr;
     mAudioManager = nullptr;
     mPoolManager = nullptr;
+    mGameTimer = nullptr;
 }
 
 PoolManager* GameManager::GetPoolManager() const 
@@ -145,6 +155,33 @@ void GameManager::GameOver()
 
     EndAudio();
     // Loading activated from HUD controller on Btn Click.
+}
+
+void GameManager::HitStopTime(float time)
+{
+    time = time * 1000;
+    mCurrentStopTime = mGameTimer->GetRealTime();
+    float delta = mCurrentStopTime - mStopStart;
+    if (delta>time) {
+        mGameTimer->SetTimeScale(1.0f);
+        mHitStopActive = false;
+    }
+}
+
+void GameManager::HitStop()
+{
+    mHitStopTime = mDefaultHitStopTime;
+    mStopStart = mGameTimer->GetRealTime();
+    mGameTimer->SetTimeScale(0.0f);
+    mHitStopActive = true;
+}
+
+void GameManager::HitStop(float duration)
+{
+    mHitStopTime = duration;
+    mStopStart = mGameTimer->GetRealTime();
+    mGameTimer->SetTimeScale(0.0f);
+    mHitStopActive = true;
 }
 
 void GameManager::PrepareAudio()
