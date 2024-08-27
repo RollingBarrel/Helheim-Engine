@@ -722,11 +722,13 @@ void PlayerController::RechargeShield(float shield)
 
         float healthRatio = mShield / mMaxShield;
         GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
-        if (mHealParticles) {
+        if (mHealParticles) 
+        {
             mHealParticles->SetEnabled(false);
             mHealParticles->SetEnabled(true);
         } 
-        if (mShieldSpriteSheet) {
+        if (mShieldSpriteSheet) 
+        {
             mShieldSpriteSheet->SetEnabled(true);
             reinterpret_cast<ImageComponent*>(mShieldSpriteSheet->GetComponent(ComponentType::IMAGE))->PlayAnimation();
         }
@@ -747,7 +749,8 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
         case EnergyType::BLUE:
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
-                if (mBlueBaterryParticles) {
+                if (mBlueBaterryParticles) 
+                {
                     mBlueBaterryParticles->SetEnabled(false);
                     mBlueBaterryParticles->SetEnabled(true);
                 }
@@ -756,7 +759,8 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
             }
             else
             {
-                if (mBlueBaterryParticles) {
+                if (mBlueBaterryParticles) 
+                {
                     mBlueBaterryParticles->SetEnabled(false);
                     mBlueBaterryParticles->SetEnabled(true);
                 }
@@ -766,7 +770,8 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
         case EnergyType::RED:
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
-                if (mRedBaterryParticles) {
+                if (mRedBaterryParticles) 
+                {
                     mRedBaterryParticles->SetEnabled(false);
                     mRedBaterryParticles->SetEnabled(true);
                 }
@@ -775,7 +780,8 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
             }
             else
             {
-                if (mRedBaterryParticles) {
+                if (mRedBaterryParticles) 
+                {
                     mRedBaterryParticles->SetEnabled(false);
                     mRedBaterryParticles->SetEnabled(true);
                 }
