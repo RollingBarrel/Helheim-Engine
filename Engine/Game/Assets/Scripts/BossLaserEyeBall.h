@@ -1,6 +1,7 @@
 #pragma once
 #include <Script.h>
 #include "Macros.h"
+#include "TimerScript.h"
 
 class GameObject;
 
@@ -22,7 +23,14 @@ public:
 private:
 
     void RotateLaser();
+    void ManageAttack();
+    void ActivateLaserVFX();
+    void DisableLaserVFX();
+    void UpdateLaser();
     float mDamage = 3.0f;
+
+    float mAimTime = 0.0f;
+    TimerScript mAimTimer;
 
     float mDistance = 10.0f;
     float mDuration = 5.0f;
@@ -34,9 +42,10 @@ private:
     float mElapsedTime = 0.0f;
     bool mIsRotating = false;
     bool mMoveTrail = false;
+    bool mDoDamage = false; 
 
     GameObject* mLaserOrigin = nullptr;
-    GameObject* mLaserTrail = nullptr;
+    GameObject* mLaserCharge = nullptr;
     GameObject* mLaserEnd = nullptr;
 
 };

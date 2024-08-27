@@ -14,12 +14,14 @@ CREATE(BossLaserEyeBall)
     CLASS(owner);
     SEPARATOR("GAME OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
-    MEMBER(MemberType::GAMEOBJECT, mLaserTrail);
+    MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
     MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
+    SEPARATOR("STATS");
+    MEMBER(MemberType::FLOAT, mDamage);
     END_CREATE;
 }
 
-BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner)
+BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner), mMoveTrail(false)
 {
 }
 
@@ -29,7 +31,11 @@ void BossLaserEyeBall::Start()
     mCurrentRotation = 89.5;
 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
-    if (mLaserTrail) mLaserTrail->SetEnabled(false);
+    if (mLaserCharge)
+    {
+        mLaserCharge->SetEnabled(false);
+        if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
+    }
     if (mLaserEnd) mLaserEnd->SetEnabled(false);
 }
 
@@ -40,14 +46,12 @@ void BossLaserEyeBall::Update()
 
     if (mElapsedTime >= mDuration)
     {
-        if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
-        if (mLaserTrail) mLaserTrail->SetEnabled(false);
-        if (mLaserEnd) mLaserEnd->SetEnabled(false);
+        DisableLaserVFX();
         mGameObject->SetEnabled(false);
         return;
     }
 
-    RotateLaser();
+    RotateLaser();  
 }
 
 void BossLaserEyeBall::Init(float distance, float duration)
@@ -57,15 +61,12 @@ void BossLaserEyeBall::Init(float distance, float duration)
     mRotationSpeed = 1.0f;
 }
 
-
-
 void BossLaserEyeBall::RotateLaser()
 {
     float deltaTime = App->GetDt();
     float rotationAmount = mRotationSpeed * deltaTime;
 
     mCurrentRotation += rotationAmount;
-    LOG("Current Rotation: %f", mCurrentRotation);
 
     float maxRotation = 90.f;
     float minRotation = 89.f;
@@ -74,7 +75,6 @@ void BossLaserEyeBall::RotateLaser()
     {
         mCurrentRotation = maxRotation;
         mRotationSpeed = -std::abs(mRotationSpeed);
-
     }
     else if (mCurrentRotation < minRotation)
     {
@@ -86,55 +86,55 @@ void BossLaserEyeBall::RotateLaser()
 
     if (mCurrentRotation >= minRotation && mCurrentRotation <= maxRotation)
     {
-        if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
-        if (mLaserTrail) mLaserTrail->SetEnabled(true);
-        if (mLaserEnd) mLaserEnd->SetEnabled(true);
-
-        Hit hit;
-        Ray ray;
-        ray.dir = float3(std::sin(DegToRad(mCurrentRotation)), 0.0f, std::cos(DegToRad(mCurrentRotation)));
-        ray.pos = mLaserOrigin->GetWorldPosition();
-
-        Physics::Raycast(hit, ray, mDistance);
-
-        if (hit.IsValid())
-        {
-            if (hit.mGameObject->GetTag().compare("Player") == 0)
-            {
-                ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-                PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-
-                if (!player->GetPlayerLowerState()->GetType() == StateType::DASH) 
-                {
-                    player->TakeDamage(mDamage);
-                }
-            }
-        }
-        else
-        {
-            float3 originPosition = mLaserOrigin->GetLocalPosition();
-            mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
-
-            if (mMoveTrail)
-            {
-                mMoveTrail = false;
-                mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
-
-            }
-            else
-            {
-                    
-                mMoveTrail = true;
-                mLaserTrail->SetLocalPosition(originPosition);
-
-            }
-        }
-        
+        ActivateLaserVFX();
+        UpdateLaser();
     }
     else
     {
-        if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
-        if (mLaserTrail) mLaserTrail->SetEnabled(false);
-        if (mLaserEnd) mLaserEnd->SetEnabled(false);
+        DisableLaserVFX();
+    }
+}
+
+void BossLaserEyeBall::ActivateLaserVFX()
+{
+    if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
+    if (mLaserCharge) mLaserCharge->SetEnabled(true);
+    if (mLaserEnd) mLaserEnd->SetEnabled(true);
+}
+
+void BossLaserEyeBall::DisableLaserVFX()
+{
+    if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
+    if (mLaserCharge) mLaserCharge->SetEnabled(false);
+    if (mLaserEnd) mLaserEnd->SetEnabled(false);
+}
+
+void BossLaserEyeBall::UpdateLaser()
+{
+    Hit hit;
+    Ray ray;
+    ray.dir = mGameObject->GetFront(); 
+    ray.pos = mLaserOrigin->GetWorldPosition();
+
+    Physics::Raycast(hit, ray, mDistance);
+
+    if (hit.IsValid())
+    {
+        if (hit.mGameObject->GetTag().compare("Player") == 0)
+        {
+            ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
+            PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
+
+            if (!player->GetPlayerLowerState()->GetType() == StateType::DASH)
+            {
+                player->TakeDamage(mDamage);
+            }
+        }
+        mLaserEnd->SetWorldPosition(hit.mHitPoint);
+    }
+    else
+    {
+        float3 originPosition = mLaserOrigin->GetLocalPosition();
+        mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
     }
 }

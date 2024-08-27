@@ -124,12 +124,12 @@ void BossLaser::SpawnEyeBalls()
 
         eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + positionOffset);
         eyeBall->SetEnabled(true);
+        eyeBall->SetWorldRotation(float3(0.0f, radians, 0.0f));
 
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-
-            eyeBallScript->Init(mDistance, mLaserEnemyDuration);
+            eyeBallScript->Init(mDistance, mLaserEnemyDuration, );
         }
 
         mEyeBalls.push_back(eyeBall);
