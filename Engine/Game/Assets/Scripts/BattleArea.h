@@ -18,6 +18,7 @@ public:
 	void EnemyDestroyed(GameObject* Enemy);
 	void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
+	bool IsAreaActive() { return mHasBeenActivated; }
 	int GetCurrentEnemies() { return mCurrentEnemies; }
 	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
 	void AddExplosiveEnemy();
