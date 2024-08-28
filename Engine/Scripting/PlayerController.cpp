@@ -85,6 +85,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
+    MEMBER(MemberType::FLOAT, mGrenadeCursorSpeed);
 
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
@@ -614,7 +615,7 @@ void PlayerController::UpdateGrenadeVisuals()
             float rightX = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
             float rightY = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
 
-            if (!(std::abs(rightX) < 0.1f && std::abs(rightY) < 0.1f))
+            if (!(std::abs(rightX) < 0.2f && std::abs(rightY) < 0.2f))
             {
                 float3 position = mGameObject->GetWorldPosition();
 
@@ -623,8 +624,7 @@ void PlayerController::UpdateGrenadeVisuals()
 
                 float3 throwDirection = (cameraFront * rightY + cameraRight * rightX).Normalized();
 
-                float moveSpeed = 6.0f; 
-                float3 movement = throwDirection * moveSpeed * App->GetDt();
+                float3 movement = throwDirection * mGrenadeCursorSpeed * App->GetDt();
                 mGrenadePosition += movement;
             }
 
