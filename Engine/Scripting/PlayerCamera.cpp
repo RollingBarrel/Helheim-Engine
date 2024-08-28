@@ -30,17 +30,9 @@ void PlayerCamera::Start()
 
 void PlayerCamera::Update()
 {
-    // TODO: Change to offset when camera values are defined.
     mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront())*mDistanceToPlayer);
-
-
-    //if (App->GetInput()->GetKey(KeyboardKeys_T) == KeyState::KEY_DOWN)
-    //{
-    //    ActivateShake(2.0f, 0.2f);
-    //}
-
 
     if (!mShakeTimer.Delay(mShakeDuration))
     {
@@ -51,7 +43,6 @@ void PlayerCamera::Update()
         mCameraObject->SetLocalPosition(float3::zero);
         mShakeDuration = 0.0f;
     }
-
 }
 
 void PlayerCamera::ActivateShake(float duration, float positionOffsetStrength)
