@@ -14,6 +14,15 @@
 #include "HudController.h"
 #include "MathFunc.h"
 
+#define LASER_ANIMATION 78.0f / 20
+#define LASER_WIND_UP 38.0f / 20
+#define BULLETS_ANIMATION 146.0f / 20
+#define BULLETS_WIND_UP 92.0f / 20
+#define ERUPTION_ANIMATION 144.0f / 20
+#define IDLE_ANIMATION 40.0f / 20
+#define PHASE_ANIMATION 120.0f / 20
+#define DEATH_ANIMATION 107.0f / 20
+
 CREATE(EnemyBoss) {
     CLASS(owner);
     SEPARATOR("STATS");
@@ -21,7 +30,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
-    MEMBER(MemberType::FLOAT, mAttackCooldown);
+    MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::FLOAT, mDeathTime);
     SEPARATOR("BULLET HELL");
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
@@ -136,6 +145,7 @@ void EnemyBoss::SelectAttack()
     {
     case 1:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
+        if (mAnimationComponent) mAnimationComponent->SetAnimSpeed(LASER_ANIMATION / mAttackDuration);
         LaserAttack();
         mAttackDuration = mLaserDuration;
         break;
