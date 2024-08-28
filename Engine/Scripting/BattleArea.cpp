@@ -175,7 +175,7 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mHasBeenActivated)
 	{
-		mHasBeenActivated = true;
+ 		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");

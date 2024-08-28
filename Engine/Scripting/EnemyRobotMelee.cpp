@@ -57,6 +57,7 @@ void EnemyRobotMelee::Attack()
             if (playerScript != nullptr)
             {
                 playerScript->TakeDamage(mMeeleDamage);
+                GameManager::GetInstance()->HitStop();
             }
         }
     }

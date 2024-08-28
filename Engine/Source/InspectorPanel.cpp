@@ -1190,12 +1190,11 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Image Info.
 	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 
-	if (ImGui::Checkbox("Mantain Ratio", imageComponent->GetMantainRatio()))
+	bool maintainRatio = imageComponent->GetMantainRatio();
+	if (ImGui::Checkbox("Mantain Ratio", &maintainRatio))
 	{
-		if (imageComponent->GetMantainRatio())
-		{
-			imageComponent->ResizeByRatio();
-		}
+		imageComponent->SetMantainRatio(maintainRatio);
+		if (maintainRatio) imageComponent->ResizeByRatio();
 	}
 
 	// Display options based on the type of the image
