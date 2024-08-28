@@ -21,13 +21,20 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
-    MEMBER(MemberType::FLOAT, mAttackDamage);
-    MEMBER(MemberType::FLOAT, mBulletSpeed);
-    MEMBER(MemberType::FLOAT, mBulletHellCooldown);
-    MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
-    MEMBER(MemberType::FLOAT, mAttackCoolDown);
-    MEMBER(MemberType::FLOAT, mAttackDuration);
+    MEMBER(MemberType::FLOAT, mAttackCooldown);
     MEMBER(MemberType::FLOAT, mDeathTime);
+    SEPARATOR("BULLET HELL");
+    MEMBER(MemberType::FLOAT, mBulletHellDuration);
+    MEMBER(MemberType::FLOAT, mBulletHellCooldown);
+    MEMBER(MemberType::FLOAT, mBulletSpeed);
+    MEMBER(MemberType::FLOAT, mBulletsDamage);    
+    MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
+    SEPARATOR("BOMBS");
+    MEMBER(MemberType::FLOAT, mBombsDuration);
+    MEMBER(MemberType::FLOAT, mBombDamage);
+    SEPARATOR("LASER");
+    MEMBER(MemberType::FLOAT, mLaserDuration);
+    MEMBER(MemberType::FLOAT, mLaserDamage);
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
 
     END_CREATE;
@@ -130,29 +137,35 @@ void EnemyBoss::SelectAttack()
     case 1:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
         LaserAttack();
+        mAttackDuration = mLaserDuration;
         break;
     case 2:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
         BombAttack();
+        mAttackDuration = mBombsDuration;
         break;
     case 0:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
         StartBulletAttack();
+        mAttackDuration = mBulletHellDuration;
         break;
     case 10:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
         LaserAttack();
         StartBulletAttack();
+        mAttackDuration = Max(mLaserDuration, mBulletHellDuration);
         break;
     case 11:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
         StartBulletAttack();
         BombAttack();
+        mAttackDuration = Max(mBombsDuration, mBulletHellDuration);
         break;
     case 12:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
         LaserAttack();
         BombAttack();
+        mAttackDuration = Max(mLaserDuration, mBombsDuration);
         break;
     case 20:
     case 21:
@@ -161,6 +174,7 @@ void EnemyBoss::SelectAttack()
         LaserAttack();
         BombAttack();
         StartBulletAttack();
+        mAttackDuration = Max(mLaserDuration, mBulletHellDuration, mBombsDuration);
         break;
     }
     
@@ -194,7 +208,7 @@ void EnemyBoss::BulletAttack()
     Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-    bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mAttackDamage);
+    bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage);
 }
 
 void EnemyBoss::LaserAttack()
@@ -202,7 +216,7 @@ void EnemyBoss::LaserAttack()
     if (mLaserGO)
     {
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) laserScript->Init(mAttackDamage, mAttackDistance);
+        if (laserScript) laserScript->Init(mLaserDamage, mAttackDistance);
     }
 
 }
@@ -219,7 +233,7 @@ void EnemyBoss::BombAttack()
     for (Component* scriptComponent : scriptComponents)
     {
         BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-        bombScript->Init(mGameObject->GetWorldPosition());
+        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
     }
 }
 

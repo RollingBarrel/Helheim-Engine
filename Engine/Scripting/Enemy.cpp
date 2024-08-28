@@ -28,7 +28,7 @@ void Enemy::Start()
 
     //Hit Effect
 
-	if (!(mGameObject->GetName() == "FinalBoss")) 
+	if (mGameObject->GetName() != "FinalBoss") 
 		/*
 		⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀
 		⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀
