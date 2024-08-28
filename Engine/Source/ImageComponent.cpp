@@ -1,29 +1,21 @@
 #include "ImageComponent.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
-#include "ModuleScene.h"
 #include "ModuleCamera.h"
+
 #include "ModuleResource.h"
-#include "ModuleWindow.h"
-#include "ModuleUI.h"
-#include "ModuleEditor.h"
-#include "Timer.h"
-
-#include "ScenePanel.h"
-
-#include "glew.h"
 #include "ResourceTexture.h"
-#include "ImporterTexture.h"
 
-#include "GameObject.h"
-#include "ImageComponent.h"
 #include "CanvasComponent.h"
 #include "Transform2DComponent.h"
-#include "CameraComponent.h"
-#include "ButtonComponent.h"
 #include "MaskComponent.h"
+#include "CameraComponent.h"
 
+#include "Timer.h"
+
+#include "glew.h"
 #include "Math/TransformOps.h"
+
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
@@ -55,7 +47,7 @@ mFPS(original.mFPS), mIsPlaying(original.mIsPlaying)
 
 	if (original.mImage) SetImage(original.mImage->GetUID());
 
-	//TODO: REVIEW THIS
+	//TODO: REVIEW THIS, MAYBE CAUSES CRASHES
 	mMask = original.mMask;
 	mMaskComponent = original.mMaskComponent;
 
@@ -191,7 +183,7 @@ void ImageComponent::Draw()
 			float3 norm = camera->GetFrustum().front;
 			float3 up = camera->GetFrustum().up;
 			float3 right = -up.Cross(norm).Normalized();
-			model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
+			model = { float4(right, 0.0f), float4(up, 0.0f),float4(norm, 0.0f),float4(pos, 1.0f) };
 			model = model * scaleMatrix;
 			//model.Transpose();
 
@@ -301,47 +293,20 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 {
 	Component::Load(data, uidPointerMap);
 
-	if (data.HasMember("ImageID"))
-	{
-		SetImage(data.GetInt("ImageID"));
-	}
-	float col[3];
+	if (data.HasMember("ImageID")) SetImage(data.GetInt("ImageID"));
+	if (data.HasMember("Alpha")) mAlpha = data.GetFloat("Alpha");
+	if (data.HasMember("ShouldDraw")) mShouldDraw = data.GetBool("ShouldDraw");
+	if (data.HasMember("IsMaskable")) mIsMaskable = data.GetBool("IsMaskable");
+	if (data.HasMember("IsSpritesheet")) mIsSpritesheet = data.GetBool("IsSpritesheet");
+	if (data.HasMember("Columns")) mColumns = data.GetInt("Columns");
+	if (data.HasMember("Rows")) mRows = data.GetInt("Rows");
+	if (data.HasMember("Speed")) mFPS = data.GetInt("Speed");
+	if (data.HasMember("IsPlaying")) mIsPlaying = data.GetBool("IsPlaying");
 	if (data.HasMember("Color"))
 	{
+		float col[3];
 		data.GetFloats("Color", col);
 		mColor = float3(col[0], col[1], col[2]);
-	}
-	if (data.HasMember("Alpha"))
-	{
-		mAlpha = data.GetFloat("Alpha");
-	}
-	if (data.HasMember("ShouldDraw"))
-	{
-		mShouldDraw = data.GetBool("ShouldDraw");
-	}
-	if (data.HasMember("IsMaskable"))
-	{
-		mIsMaskable = data.GetBool("IsMaskable");
-	}
-	if (data.HasMember("IsSpritesheet"))
-	{
-		mIsSpritesheet = data.GetBool("IsSpritesheet");
-	}
-	if (data.HasMember("Columns"))
-	{
-		mColumns = data.GetInt("Columns");
-	}
-	if (data.HasMember("Rows"))
-	{
-		mRows = data.GetInt("Rows");
-	}
-	if (data.HasMember("Speed"))
-	{
-		mFPS = data.GetInt("Speed");
-	}
-	if (data.HasMember("IsPlaying"))
-	{
-		mIsPlaying = data.GetBool("IsPlaying");
 	}
 }
 
@@ -458,7 +423,7 @@ void ImageComponent::RenderMask()
 		float4x4 view = float4x4::identity;
 
 		float2 canvasSize = mCanvas->GetSize();
-		model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+		model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
 
 		glBindVertexArray(mQuadVAO);
 		glUniform4fv(glGetUniformLocation(UIMaskProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
@@ -489,15 +454,13 @@ void ImageComponent::Update()
 		if (mElapsedTime > frameDuration)
 		{
 			mCurrentFrame = (mCurrentFrame + 1) % (mColumns * mRows);
-			mElapsedTime = 0;
+			mElapsedTime = 0.0;
 		}
 	}
 }
 
 std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture)
 {
-	int numPixels = texture->GetWidth() * texture->GetHeight();
-
 	std::vector<unsigned char> pixels(texture->GetPixelsSize() * 4); // Assuming RGBA format
 
 	glBindTexture(GL_TEXTURE_2D, texture->GetOpenGLId());
