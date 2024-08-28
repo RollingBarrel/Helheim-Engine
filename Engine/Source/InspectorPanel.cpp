@@ -1755,6 +1755,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Max Particles");
 	ImGui::SameLine();
 	ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0,200);
+	ImGui::Text("Burst");
+	ImGui::SameLine();
+	ImGui::DragInt("##Burst", &(component->mBurst), 0.1f, 0, 200);
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
@@ -1762,6 +1765,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Follow Emitter");
 	ImGui::SameLine();
 	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
+	ImGui::Text("Gravity");
+	ImGui::SameLine();
+	ImGui::Checkbox("##Gravity", &(component->mGravity));
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");

@@ -63,6 +63,7 @@ private:
 	float mDelay = 0.0f;
 	float mDuration = 5.0f;
 	bool mFollowEmitter = false;
+	bool mGravity = false;
 
 	RandomFloat mLifetime;
 
@@ -73,6 +74,8 @@ private:
 
 	float mEmissionRate = 10.0f;
 	int mMaxParticles = 1000;
+	int mBurst = 0;
+	bool mIsInBurst = false;
 	bool mLooping = true;
 
 	//EmitterShape* mShape;
