@@ -8,7 +8,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    82.27299499511719,
+                    83.7481918334961,
                     0.7844780683517456,
                     4.545426368713379
                 ],
@@ -32,7 +32,13 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "LoreCollectible",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mMeshGO",
+                                "MemberType": 3,
+                                "VariableData": 1729472682
+                            }
+                        ]
                     },
                     {
                         "ComponentType": 17,
@@ -49,6 +55,100 @@
                         ],
                         "ColliderType": 1,
                         "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 685460068,
+                "ParentUID": 1977033949,
+                "Name": "OB_PDA",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.5250701904296875,
+                    2.12593412399292,
+                    0.937687873840332
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.2941175699234009,
+                    1.2941175699234009,
+                    1.2941175699234009
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 289083813,
+                "ParentUID": 685460068,
+                "Name": "OB_PDA",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    -0.0000029670397907466396,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1729472682,
+                "ParentUID": 289083813,
+                "Name": "OB_PDA",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1745339911,
+                        "MaterialID": 1745339916,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
                     }
                 ]
             }

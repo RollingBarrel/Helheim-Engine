@@ -36,6 +36,10 @@ Machinegun::Machinegun()
     {
         mFire->SetEnabled(false);
     }
+
+    mCameraShakeDuration = 0.15f;
+    mCameraShakeStrengh = 0.03f;
+
 }
 
 void Machinegun::Enter()
