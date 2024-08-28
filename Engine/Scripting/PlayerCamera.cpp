@@ -40,7 +40,7 @@ void PlayerCamera::Update()
     }
     else
     {
-        mCameraObject->SetLocalPosition(float3::zero);
+        if (mCameraObject) mCameraObject->SetLocalPosition(float3::zero);
         mShakeDuration = 0.0f;
     }
 }
