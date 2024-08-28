@@ -1,82 +1,65 @@
-#include "GameObject.h"
 #include "PlayerCamera.h"
-#include "Application.h"
+#include "GameObject.h"
+
 #include <MathFunc.h>
-#include "Gamemanager.h"
-#include "CinematicCamera.h"
+
+#include "Application.h"
+
+#include "ModuleInput.h"
+
 
 CREATE(PlayerCamera)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mFollowTarget);
-    MEMBER(MemberType::FLOAT3, mCameraPosition);
     MEMBER(MemberType::FLOAT, mYawAngle);
     MEMBER(MemberType::FLOAT, mPitchAngle);
     MEMBER(MemberType::FLOAT, mDistanceToPlayer);
-    //MEMBER(MemberType::FLOAT, mSpeedFactor);
     END_CREATE;
-}
-
-PlayerCamera::PlayerCamera(GameObject* owner) : Script(owner)
-{
-}
-
-void PlayerCamera::Awake()
-{
 }
 
 void PlayerCamera::Start()
 {
-    mTargetPosition = ((mFollowTarget->GetWorldPosition()) - ((mGameObject->GetFront()) * mDistanceToPlayer));
-    mGameObject->SetWorldPosition(mCameraPosition);
+    const std::vector<GameObject*> children = mGameObject->GetChildren();
+    if (!children.empty()) mCameraObject = mGameObject->GetChildren()[0];
+
+    mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
 }
 
 void PlayerCamera::Update()
 {
-    /*
-    float deltaTime = App->GetDt();
+    mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
+    mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
+    mGameObject->Translate(-(mGameObject->GetFront())*mDistanceToPlayer);
 
-    if (!mMoveCompleted)
+    if (!mShakeTimer.Delay(mShakeDuration))
     {
-        float3 currentPosition = mGameObject->GetWorldPosition();
-        float3 direction = mTargetPosition - currentPosition;
-        float distance = direction.Length();
-        direction.Normalize();
-
-        float step = mSpeedFactor * deltaTime;
-
-        GameManager::GetInstance()->SetPaused(true, false);
-
-        if (step >= distance)
-        {
-            mGameObject->SetWorldPosition(mTargetPosition);
-            mMoveCompleted = true;
-
-            GameManager::GetInstance()->SetPaused(false, false);
-        }
-        else
-        {
-            mGameObject->SetWorldPosition(lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime));
-        }
+        Shake();
     }
     else
     {
-    */
-        mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
-        mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
-        mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
-    //}
+        mCameraObject->SetLocalPosition(float3::zero);
+        mShakeDuration = 0.0f;
+    }
 }
 
-/*
-float3 PlayerCamera::lerp(const float3& start, const float3& end, float t)
+void PlayerCamera::ActivateShake(float duration, float positionOffsetStrength)
 {
-    return float3{
-        start.x + t * (end.x - start.x),
-        start.y + t * (end.y - start.y),
-        start.z + t * (end.z - start.z)
-    };
+    mShakeDuration = duration;
+    mShakePositionOffsetStrength = positionOffsetStrength;
+    mShakeTimer.Reset();
 }
-*/
+
+void PlayerCamera::Shake()
+{
+    if (mCameraObject)
+    {
+        float randomX = ((float)rand()) / (float)RAND_MAX * mShakePositionOffsetStrength;
+        float randomY = ((float)rand()) / (float)RAND_MAX * mShakePositionOffsetStrength;
+
+        mCameraObject->SetLocalPosition(float3(randomX,randomY,0.0f));
+    }
+}
+

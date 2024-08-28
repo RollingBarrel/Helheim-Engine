@@ -7,6 +7,7 @@
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "TrailComponent.h"
+#include "Trail.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
 
@@ -93,7 +94,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 		}
 		if (gradient)
 		{
-			mBulletTrail->SetColorGradient(*gradient);
+			mBulletTrail->GetTrail()->SetColorGradient(*gradient);
 		}
 	}
 
@@ -130,6 +131,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 				{
 					mHitParticles->SetEnable(true);
 				}
+				GameManager::GetInstance()->HitStop();
 				mHasCollided = true;
 			}
 		}

@@ -107,6 +107,7 @@ public:
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
     void SetDashDuration(float value) { mDashDuration = value; }
     void SetDashRange(float value) { mDashRange = value; }
+    GameObject* GetDashVFX() const { return mDashVFX; }
 
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
@@ -197,15 +198,20 @@ private:
 
     // STATS
     PlayerStats* mPlayerStats = nullptr;
+
     // Dash
     float mDashCoolDown = 2.0f;
     float mDashDuration = 0.5f;
     float mDashRange = 5.0f;
+
     // Speed
     float mPlayerSpeed;
+
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
+    GameObject* mHealParticles = nullptr;
+    GameObject* mShieldSpriteSheet = nullptr;
 
     // WEAPONS
     Weapon* mWeapon = nullptr;
@@ -220,6 +226,8 @@ private:
     RangeWeapon* mMachinegun = nullptr;
     RangeWeapon* mShootgun = nullptr;
     GameObject* mShootOrigin = nullptr;
+    GameObject* mRedBaterryParticles = nullptr;
+    GameObject* mBlueBaterryParticles = nullptr;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;
@@ -285,4 +293,7 @@ private:
     const float mParalyzedDuration = 5.0f;
     TimerScript mParalyzedTimerScript;
     float mParalysisSpeedReductionFactor = 1.0f;
+
+    //Dash VFX
+    GameObject* mDashVFX = nullptr;
 };
