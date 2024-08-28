@@ -210,6 +210,8 @@ private:
     // Shield
     float mShield = 100.0f;
     float mMaxShield = 100.0f;
+    GameObject* mHealParticles = nullptr;
+    GameObject* mShieldSpriteSheet = nullptr;
 
     // WEAPONS
     Weapon* mWeapon = nullptr;
@@ -224,6 +226,8 @@ private:
     RangeWeapon* mMachinegun = nullptr;
     RangeWeapon* mShootgun = nullptr;
     GameObject* mShootOrigin = nullptr;
+    GameObject* mRedBaterryParticles = nullptr;
+    GameObject* mBlueBaterryParticles = nullptr;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;

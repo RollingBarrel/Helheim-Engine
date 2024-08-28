@@ -125,14 +125,14 @@ void EnemyCreatureRange::Rotate()
 	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
 	direction.y = 0.0f;
 	direction.Normalize();
-	float targetRadianAngle = std::atan2(direction.x, direction.z);
 	
 	float3 currentDirection = mGameObject->GetFront();
 	currentDirection.y = 0.0f;
 	currentDirection.Normalize();
 	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
-	
-	float angleDifference = targetRadianAngle - currentRadianAngle;
+
+	float angleDifference = currentDirection.AngleBetween(direction);
+	angleDifference = (currentDirection.Cross(direction).y > 0) ? angleDifference : angleDifference * -1;
 
 	float rotationSpeed = mAttackRotationSpeed * App->GetDt();
 	float newAngle = currentRadianAngle + Clamp(angleDifference, -rotationSpeed, rotationSpeed);

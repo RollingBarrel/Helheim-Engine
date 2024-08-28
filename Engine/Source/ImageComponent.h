@@ -14,12 +14,10 @@ class ENGINE_API ImageComponent : public Component
 public:
     ImageComponent(GameObject* owner);
     ImageComponent(const ImageComponent& original, GameObject* owner);
-    ImageComponent(GameObject* owner, bool active);
     ~ImageComponent();
 
     void Reset() override {}
     void Update();
-    bool CleanUp();
     Component* Clone(GameObject* owner) const override;
 
     void Draw();
@@ -31,12 +29,11 @@ public:
     void ResizeByRatio();
     void RenderMask();
 
-    unsigned int GetResourceId() const { return mResourceId; }
     ResourceTexture* GetImage() const { return mImage; }
     float3* GetColor() { return &mColor; }
     float* GetAlpha() { return &mAlpha; }
     const char* GetFileName() const { return mFileName; }
-    bool* GetMantainRatio() { return &mMantainRatio; }
+    bool GetMantainRatio() { return mMantainRatio; }
     bool GetIsMaskable() { return mIsMaskable; }
     bool GetShouldDraw() { return mShouldDraw; }
 
@@ -71,7 +68,6 @@ private:
     ResourceTexture* mImage = nullptr;
     ImageComponent* mMask = nullptr;
     MaskComponent* mMaskComponent = nullptr;
-    unsigned int mResourceId = 148626881; // Default white texture
 
     //TODO: Handle filename when setting the image
     const char* mFileName = nullptr;
