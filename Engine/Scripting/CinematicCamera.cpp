@@ -154,8 +154,6 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
         {
             mStartParameters = true;
 
-            ActivateCamera(camera);
-
             mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
 
@@ -167,50 +165,61 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
             }
 
             InitAnimation(animState);
+
+            GameManager::GetInstance()->SetPaused(true, false);
+
+            mFadeOn = true;
         }
 
         if (mPlayingCinematic)
         {
-            if (mMainCamera)
+            if (mFadeOn)
             {
-                App->GetCamera()->RemoveEnabledCamera(mMainCamera);
-                GameManager::GetInstance()->SetPaused(true, false);
-            }
-
-            mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
-            App->GetCamera()->ActivateFirstCamera();
-
-            float deltaTime = App->GetDt();
-
-            if (!mMoveCompleted)
-            {
-                float3 currentPosition = camera->GetWorldPosition();
-                float3 direction = mTargetPosition - currentPosition;
-                float distance = direction.Length();
-                direction.Normalize();
-
-                float step = mSpeedFactor * deltaTime;
-
-                //Pause the game
-                GameManager::GetInstance()->SetPaused(true, false);
-
-                if (step >= distance)
-                {
-                    camera->SetWorldPosition(mTargetPosition);
-                    mMoveCompleted = true;
-
-                    //Restore the game
-                    GameManager::GetInstance()->SetPaused(false, false);
-                }
-                else
-                {
-                    float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
-
-                    if (newPosition.y < currentPosition.y) { // Adjust the threshold as needed
-                        newPosition.y = currentPosition.y; // Ensure the camera stays above a certain height
+                if (Fade(true))
+                {         
+                    if (mMainCamera)
+                    {
+                        ActivateCamera(camera);
+                        App->GetCamera()->RemoveEnabledCamera(mMainCamera);
                     }
 
-                    camera->SetWorldPosition(newPosition);
+                    mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+                    App->GetCamera()->ActivateFirstCamera();
+
+                    mFadeOn = false;
+                }
+            }
+            else
+            {
+                Fade(false);
+
+                float deltaTime = App->GetDt();
+
+                if (!mMoveCompleted)
+                {
+                    float3 currentPosition = camera->GetWorldPosition();
+                    float3 direction = mTargetPosition - currentPosition;
+                    float distance = direction.Length();
+                    direction.Normalize();
+
+                    float step = mSpeedFactor * deltaTime;
+
+                    if (step >= distance)
+                    {
+                        camera->SetWorldPosition(mTargetPosition);
+                        mMoveCompleted = true;
+                    }
+                    else
+                    {
+                        float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
+
+                        if (newPosition.y < currentPosition.y) 
+                        {
+                            newPosition.y = currentPosition.y;
+                        }
+
+                        camera->SetWorldPosition(newPosition);
+                    }
                 }
             }
 
@@ -275,7 +284,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                             }
                         }
                     }
-                    
+
                     if (mLevel1)
                     {
                         if (mPlayer)
@@ -285,9 +294,8 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                             position.x -= 2.6f;
                             mPlayer->SetWorldPosition(position);
                         }
-                    }         
+                    }
 
-                    mFadeStart = false;
                     mFadeOn = false;
                 }
             }
