@@ -16,7 +16,7 @@ public:
     void Update() override;
 
 private:
-    float3 lerp(const float3& start, const float3& end, float t);
+    //float3 lerp(const float3& start, const float3& end, float t);
 
     GameObject* mFollowTarget = nullptr;
     float mDistanceToPlayer = 18.0f;
