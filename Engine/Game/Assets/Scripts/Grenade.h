@@ -9,7 +9,8 @@ GENERATE_BODY(Grenade);
 
 class GameObject;
 
-enum class GRENADE_STATE {
+enum class GRENADE_STATE
+{
 	INACTIVE,
 	MOVEMENT,
 	EXPLOSION_START,
