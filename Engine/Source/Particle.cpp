@@ -17,12 +17,11 @@ Particle::~Particle()
 {
 }
 
-float Particle::Update(float DeltaTime, bool gravity)
+float Particle::Update(float DeltaTime, float gravity)
 {
     mLifeTime += DeltaTime;
     float dt01 = mLifeTime / mMaxLifeTime;
-    float3 fall = float3(0,0,0);
-    if (gravity) fall = float3(0, 1, 0) * mLifeTime * -9.81 * DeltaTime;
-    mPosition = mPosition + mDirection * mSpeed * DeltaTime + fall;
+    mDirection = mDirection + float3(0, 1, 0) * DeltaTime * -9.81 * gravity;
+    mPosition = mPosition + mDirection * mSpeed * DeltaTime;
     return dt01;
 }

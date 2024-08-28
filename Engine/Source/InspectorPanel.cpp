@@ -1767,7 +1767,8 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
 	ImGui::Text("Gravity");
 	ImGui::SameLine();
-	ImGui::Checkbox("##Gravity", &(component->mGravity));
+	ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
+
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
