@@ -101,7 +101,7 @@ ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner
 	mMask = original.mMask;
 	mMaskComponent = original.mMaskComponent;
 	mResourceId = original.mResourceId;
-	SetImage(mResourceId);
+	//SetImage(mResourceId);
 	mFileName = original.mFileName;
 
 	mColor = original.mColor;
@@ -142,14 +142,7 @@ ImageComponent:: ~ImageComponent()
 {
 	CleanUp();
 	mCanvas = nullptr;
-
-	if (mImage)
-	{
-		App->GetResource()->ReleaseResource(mImage->GetUID());
-	}
 	mTransform = nullptr;
-
-	App->GetResource()->ReleaseResource(mResourceId);
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
@@ -603,6 +596,7 @@ bool ImageComponent::CleanUp()
 	if (mImage != nullptr)
 	{
 		App->GetResource()->ReleaseResource(mImage->GetUID());
+		mImage = nullptr;
 	}
 	return true;
 }
