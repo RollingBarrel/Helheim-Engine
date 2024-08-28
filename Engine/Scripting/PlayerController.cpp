@@ -672,7 +672,7 @@ void PlayerController::UpdateGrenadeVisuals()
             }
         }
 
-        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, mGrenadePosition.y, mGrenadePosition.z));
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, mGameObject->GetWorldPosition().y, mGrenadePosition.z));
     }
 }
 
