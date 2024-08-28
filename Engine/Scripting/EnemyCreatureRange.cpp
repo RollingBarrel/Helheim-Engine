@@ -31,7 +31,6 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::FLOAT, mAttackDistance);
 	SEPARATOR("GAME OBJECTS");
 	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
-	MEMBER(MemberType::GAMEOBJECT, mLaserTrail);
 	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
 	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
 	END_CREATE;
@@ -43,7 +42,6 @@ void EnemyCreatureRange::Start()
 	Init();
 
 	if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
-	if (mLaserTrail) mLaserTrail->SetEnabled(false);
 	if (mLaserEnd) mLaserEnd->SetEnabled(false);
 	if (mLaserCharge)
 	{
@@ -62,7 +60,6 @@ void EnemyCreatureRange::Update()
 	if (mCurrentState != EnemyState::ATTACK)
 	{
 		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
-		if (mLaserTrail)	mLaserTrail->SetEnabled(false);
 		if (mLaserEnd) mLaserEnd->SetEnabled(false);
 	}
 	if (mCurrentState != EnemyState::CHARGE)
@@ -92,7 +89,6 @@ void EnemyCreatureRange::Attack()
 	mAnimationComponent->SendTrigger("tAttack", 0.2f);
 	
 	if (mLaserOrigin)	mLaserOrigin->SetEnabled(true);
-	if (mLaserTrail)	mLaserTrail->SetEnabled(true);
 	if (mLaserEnd)		mLaserEnd->SetEnabled(true);
 	
 	if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
@@ -116,35 +112,11 @@ void EnemyCreatureRange::Attack()
 			mDoDamage = false;
 		}
 		mLaserEnd->SetWorldPosition(hit.mHitPoint);
-
-		//Trails WorkAround
-		if (mMoveTrail)
-		{
-			mLaserTrail->SetWorldPosition(hit.mHitPoint);
-			mMoveTrail = false;
-		}
-		else
-		{
-			mMoveTrail = true;
-			mLaserTrail->SetWorldPosition(mLaserOrigin->GetWorldPosition());
-		}
 	}
 	else
 	{
 		float3 originPosition = mLaserOrigin->GetLocalPosition();
 		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
-
-		//Trails WorkAround
-		if (mMoveTrail)
-		{
-			mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
-			mMoveTrail = false;
-		}
-		else
-		{
-			mLaserTrail->SetLocalPosition(originPosition);
-			mMoveTrail = true;
-		}
 	}
 }
 
