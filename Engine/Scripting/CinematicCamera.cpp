@@ -7,6 +7,8 @@
 #include "BattleArea.h"
 #include "AnimationComponent.h"
 #include "ImageComponent.h"
+#include "ModuleInput.h"
+#include "Keys.h"
 
 CREATE(CinematicCamera)
 {
@@ -170,141 +172,166 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
 
             GameManager::GetInstance()->SetPaused(true, false);
 
+            mMoveCompleted = false;
             mFadeOn = true;
         }
 
         if (mPlayingCinematic)
         {
-            if (mFadeOn)
+            if (mTravelling)
             {
-                if (Fade(true))
-                {         
-                    if (mMainCamera)
+                if (mFadeOn)
+                {
+                    if (Fade(true))
                     {
-                        ActivateCamera(camera);
-                        App->GetCamera()->RemoveEnabledCamera(mMainCamera);
+                        if (mMainCamera)
+                        {
+                            ActivateCamera(camera);
+                            App->GetCamera()->RemoveEnabledCamera(mMainCamera);
+                        }
+
+                        mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+                        App->GetCamera()->ActivateFirstCamera();
+
+                        mFadeOn = false;
+                    }
+                }
+                else
+                {
+                    Fade(false);
+
+                    float deltaTime = App->GetDt();
+
+                    if (!mMoveCompleted)
+                    {
+                        float3 currentPosition = camera->GetWorldPosition();
+                        float3 direction = mTargetPosition - currentPosition;
+                        float distance = direction.Length();
+                        direction.Normalize();
+
+                        float step = mSpeedFactor * deltaTime;
+
+                        if (step >= distance)
+                        {
+                            camera->SetWorldPosition(mTargetPosition);
+                            mMoveCompleted = true;
+                        }
+                        else
+                        {
+                            float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
+
+                            if (newPosition.y < currentPosition.y)
+                            {
+                                newPosition.y = currentPosition.y;
+                            }
+
+                            camera->SetWorldPosition(newPosition);
+                        }
+                    }
+                }
+
+                if (mTimer.Delay(mAnimationTime))
+                {
+                    if (mAnimationComponent)
+                    {
+                        mAnimationComponent->SetIsPlaying(false);
                     }
 
-                    mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
-                    App->GetCamera()->ActivateFirstCamera();
-
-                    mFadeOn = false;
+                    mTravelling = false;
+                    mFadeOn = true;
                 }
             }
             else
             {
-                Fade(false);
-
-                float deltaTime = App->GetDt();
-
-                if (!mMoveCompleted)
+                if (mFadeOn)
                 {
-                    float3 currentPosition = camera->GetWorldPosition();
-                    float3 direction = mTargetPosition - currentPosition;
-                    float distance = direction.Length();
-                    direction.Normalize();
-
-                    float step = mSpeedFactor * deltaTime;
-
-                    if (step >= distance)
+                    if (Fade(true))
                     {
-                        camera->SetWorldPosition(mTargetPosition);
-                        mMoveCompleted = true;
-                    }
-                    else
-                    {
-                        float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
-
-                        if (newPosition.y < currentPosition.y) 
-                        {
-                            newPosition.y = currentPosition.y;
-                        }
-
-                        camera->SetWorldPosition(newPosition);
+                        EndCinematic();
+                        mFadeOn = false;
                     }
                 }
-            }
+                else
+                {
+                    if (Fade(false))
+                    {
+                        mTravelling = true;
+                        mPlayingCinematic = false;
+                    }                   
+                }
+            }  
 
-            if (mTimer.Delay(mAnimationTime))
+            if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT)
             {
-                if (mAnimationComponent)
+                EndCinematic();
+                
+                if (mFade)
                 {
-                    mAnimationComponent->SetIsPlaying(false);
+                    mFade->SetEnabled(false);
                 }
 
+                mTravelling = true;
                 mPlayingCinematic = false;
-                mFadeOn = true;
             }
         }
-        else
+    }
+}
+
+void CinematicCamera::EndCinematic()
+{
+    App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
+    App->GetCamera()->AddEnabledCamera(mMainCamera);
+    App->GetCamera()->ActivateFirstCamera();
+
+    GameManager::GetInstance()->SetPaused(false, false);
+
+    if (mBattleArea1)
+    {
+        if (mBArea1->IsAreaActive())
         {
-            if (mFadeOn)
+            mEnemy1->SetEnabled(false);
+        }
+    }
+
+    if (mBattleArea2)
+    {
+        if (mBArea2->IsAreaActive())
+        {
+            mEnemy2->SetEnabled(false);
+        }
+    }
+
+    if (mBattleArea3)
+    {
+        if (mBArea3->IsAreaActive())
+        {
+            mEnemy3->SetEnabled(false);
+        }
+    }
+
+    if (mBattleArea4)
+    {
+        if (mBArea4->IsAreaActive())
+        {
+            if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
             {
-                if (Fade(true))
-                {
-                    App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-                    App->GetCamera()->AddEnabledCamera(mMainCamera);
-                    App->GetCamera()->ActivateFirstCamera();
-
-                    GameManager::GetInstance()->SetPaused(false, false);
-
-                    if (mBattleArea1)
-                    {
-                        if (mBArea1->IsAreaActive())
-                        {
-                            mEnemy1->SetEnabled(false);
-                        }
-                    }
-
-                    if (mBattleArea2)
-                    {
-                        if (mBArea2->IsAreaActive())
-                        {
-                            mEnemy2->SetEnabled(false);
-                        }
-                    }
-
-                    if (mBattleArea3)
-                    {
-                        if (mBArea3->IsAreaActive())
-                        {
-                            mEnemy3->SetEnabled(false);
-                        }
-                    }
-
-                    if (mBattleArea4)
-                    {
-                        if (mBArea4->IsAreaActive())
-                        {
-                            if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
-                            {
-                                mEnemy4->SetEnabled(false);
-                            }
-                            else
-                            {
-                                mAnimationComponent->SetIsPlaying(true);
-                            }
-                        }
-                    }
-
-                    if (mLevel1)
-                    {
-                        if (mPlayer)
-                        {
-                            //Locates the player in a correct position behind the doors
-                            float3 position = mPlayer->GetWorldPosition();
-                            position.x -= 2.6f;
-                            mPlayer->SetWorldPosition(position);
-                        }
-                    }
-
-                    mFadeOn = false;
-                }
+                mEnemy4->SetEnabled(false);
             }
             else
             {
-                Fade(false);
+                mAnimationComponent->SetIsPlaying(true);
             }
+        }
+    }
+
+    if (mLevel1)
+    {
+        if (mPlayer)
+        {
+            //Locates the player in a correct position behind the doors
+            float3 position = mPlayer->GetWorldPosition();
+            position.x -= 2.6f;
+            mPlayer->SetWorldPosition(position);
         }
     }
 }

@@ -23,6 +23,7 @@ private:
     void DeActivateCameras();
     void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
+    void EndCinematic();
     float3 lerp(const float3& start, const float3& end, float t);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
@@ -71,6 +72,7 @@ private:
 
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
+    bool mTravelling = true;
     bool mCinematicStarted = false;
     bool mStartParameters = false;
     bool mLevel1 = false;
