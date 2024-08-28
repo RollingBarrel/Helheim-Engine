@@ -70,7 +70,6 @@ void PlayerCamera::Update()
     //}
 }
 
-/*
 float3 PlayerCamera::lerp(const float3& start, const float3& end, float t)
 {
     return float3{
@@ -79,4 +78,3 @@ float3 PlayerCamera::lerp(const float3& start, const float3& end, float t)
         start.z + t * (end.z - start.z)
     };
 }
-*/
