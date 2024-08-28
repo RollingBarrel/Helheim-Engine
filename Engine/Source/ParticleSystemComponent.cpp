@@ -197,13 +197,14 @@ void ParticleSystemComponent::Draw()
                 delete particle;
             }
             mParticles.clear();
+            mDisabling = false;
         }
     }
 }
 
 void ParticleSystemComponent::Update()
 {
-    if (IsEnabled() or mDisabling)
+    if (IsEnabled())
     {
         mEmitterTime += App->GetDt();
         mEmitterDeltaTime += App->GetDt();
@@ -226,7 +227,7 @@ void ParticleSystemComponent::Update()
             }
         }
 
-        if ((!mLooping and mEmitterTime - mDelay > mDuration) or mDisabling) return;
+        if (!mLooping and mEmitterTime - mDelay > mDuration) return;
         
         if (mIsInBurst)
         {
@@ -378,16 +379,17 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
 
 void ParticleSystemComponent::Enable()
 {
-    App->GetOpenGL()->AddParticleSystem(this);
+    if (!mDisabling) App->GetOpenGL()->AddParticleSystem(this);
+    mDisabling = false;
     mEmitterTime = 0.0f;
     mEmitterDeltaTime = 0.0f;
     mIsInBurst = mBurst;
-    mDisabling = false;
 }
 
 void ParticleSystemComponent::Disable()
 {
     mDisabling = true;
+    //App->GetOpenGL()->RemoveParticleSystem(this);
 
 }
 
