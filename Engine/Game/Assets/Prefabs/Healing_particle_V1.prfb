@@ -2,26 +2,26 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 237490866,
-                "ParentUID": 1,
+                "UID": 1480969662,
+                "ParentUID": 265972669,
                 "Name": "Healing_particle_V1",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
                     0.0
                 ],
                 "Rotation": [
-                    -0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071068286895752
+                    -0.2223123461008072,
+                    -0.7026288509368897,
+                    -0.6464785933494568,
+                    0.19737133383750916
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.30000001192092898,
+                    0.30000001192092898,
+                    0.30000001192092898
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -30,19 +30,19 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 2.0,
+                        "Duration": 1.0,
                         "EmissionRate": 10.0,
                         "MaxParticles": 21,
                         "Looping": false,
                         "StretchedBillboard": true,
-                        "StretchedRatio": 5.199999809265137,
+                        "StretchedRatio": 2.4000000953674318,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 0.5,
-                            "MaxValue": 1.0
+                            "MinValue": 0.4000000059604645,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 1.0,
@@ -59,8 +59,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.5,
-                                "MaxValue": 1.0
+                                "MinValue": 0.4000000059604645,
+                                "MaxValue": 0.5
                             },
                             "IsCurve": false,
                             "CurvePoints": []

@@ -5,7 +5,7 @@
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
-#include "TrailComponent.h"
+#include "Trail.h"
 #include "Physics.h"
 
 #include "Geometry/Ray.h"
@@ -34,6 +34,9 @@ Shootgun::Shootgun()
     {
         mFire->SetEnabled(false);
     }
+
+    mCameraShakeDuration = 0.2f;
+    mCameraShakeStrengh = 0.1f;
 }
 
 void Shootgun::Enter()

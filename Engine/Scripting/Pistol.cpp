@@ -6,7 +6,7 @@
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
-#include "TrailComponent.h"
+#include "Trail.h"
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
@@ -34,6 +34,10 @@ Pistol::Pistol() : RangeWeapon()
 
 	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
 	if (mFire)	mFire->SetEnabled(false);
+
+	mCameraShakeDuration = 0.15f;
+	mCameraShakeStrengh = 0.03f;
+
 }
 
 void Pistol::Enter()

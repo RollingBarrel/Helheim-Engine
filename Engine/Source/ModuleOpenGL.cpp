@@ -21,7 +21,7 @@
 #include "SpotLightComponent.h"
 #include "ParticleSystemComponent.h"
 #include "DecalComponent.h"
-#include "TrailComponent.h"
+#include "Trail.h"
 
 #include "GeometryBatch.h"
 #include "BatchManager.h"
@@ -1732,17 +1732,19 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 		if (mParticleSystems[i] == component)
 		{
 			mParticleSystems.erase(mParticleSystems.begin() + i);
+			break;
 		}
 	}
 }
 
-void ModuleOpenGL::RemoveTrail(const TrailComponent* trail)
+void ModuleOpenGL::RemoveTrail(const Trail* trail)
 {
 	for (int i = 0; i < mTrails.size(); ++i)
 	{
 		if (mTrails[i] == trail)
 		{
 			mTrails.erase(mTrails.begin() + i);
+			break;
 		}
 	}
 }

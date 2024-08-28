@@ -26,7 +26,7 @@ public:
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
 	~ParticleSystemComponent();
 	const ResourceTexture* GetImage() const { return mImage; }
-	const char* GetFileName() const { return mFileName; }
+	const char* GetFileName() const { return mImageName; }
 	void Reset();
 
 	void Init();
@@ -36,6 +36,9 @@ public:
 	void Disable() override;
 
 	bool HasEnded() const;
+
+	const void SetDuration(float duration) { mDuration = duration; }
+	const void SetLoop(bool looping) { mLooping = looping; }
 
 	float3 ShapeInitPosition() const;
 
@@ -48,11 +51,11 @@ public:
 
 private:
 	void SetImage(unsigned int resourceId);
-	void SetFileName(const char* fileName) { mFileName = fileName; }
+	void SetFileName(const char* fileName) { mImageName = fileName; }
 
 	ResourceTexture* mImage = nullptr;
-	unsigned int mResourceId = 148626881; // Default particle texture
-	const char* mFileName = nullptr;
+	//unsigned int mResourceId = 148626881; // Default particle texture
+	const char* mImageName = nullptr;
 
 	float mEmitterTime = 0.0f;
 	float mEmitterDeltaTime = 0.0f;
@@ -85,7 +88,7 @@ private:
 	int mBlendMode = 0;
 
 	ColorGradient mColorGradient;
-	std::vector<Particle*> mParticles;
+	std::vector<Particle*> mParticles; // un vector es ineficiente aqui
 	unsigned int mVAO = 0;
 	unsigned int mInstanceBuffer = 0;
 	unsigned int mVBO = 0;

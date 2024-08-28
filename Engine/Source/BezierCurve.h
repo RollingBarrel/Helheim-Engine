@@ -11,10 +11,11 @@ public:
 
 	float CalculateValue(const float dt, const float initialValue) const;
 	RandomFloat GetValue() const { return mValue; }
+	const std::vector<float2>& GetPoints() const { return mPoints; }
+	const bool IsCurve() const { return mIsCurve; }
 
 	void Save(JsonObject& archive) const;
 	void Load(const JsonObject& data);
-
 
 private:
 	void spline(const float* key, int num, int dim, float t, float* v) const;

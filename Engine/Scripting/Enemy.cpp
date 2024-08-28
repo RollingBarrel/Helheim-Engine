@@ -174,7 +174,8 @@ void Enemy::Chase()
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			float3 dir = mAiAgentComponent->GetDirection();
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
 		
 		if (IsPlayerReachable())
