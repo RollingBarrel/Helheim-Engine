@@ -25,149 +25,80 @@
 
 #include "Math/TransformOps.h"
 
-ImageComponent::ImageComponent(GameObject* owner, bool active) : Component(owner, ComponentType::IMAGE) 
+ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
 	FillVBO();
 	CreateVAO();
-	SetImage(mResourceId);
-
-	mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
+	SetImage(148626881);
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 
-	GameObject* parent = GetOwner()->GetParent();
-	if (parent != nullptr)
-	{
-		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
-	}
-	if (mMaskComponent != nullptr)
-	{
-		mMask = mMaskComponent->GetMask();
-	}
-
-	//If the object has a mask component, set this image as the mask
-	Component* mask = owner->GetComponent(ComponentType::MASK);
-	if (mask != nullptr)
-	{
-		static_cast<MaskComponent*>(mask)->SetMask(this);
-	}
-}
-
-ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE) 
-{
-	FillVBO();
-	CreateVAO();
-
-	SetImage(mResourceId);
 	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
-	if (canvas != nullptr)
-	{
-		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
-	}
+	if (canvas) mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
 
-	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-
-	GameObject* parent = GetOwner()->GetParent();
-	if (parent != nullptr)
-	{
-		mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
-	}
-	if (mMaskComponent != nullptr)
-	{
-		mMask = mMaskComponent->GetMask();
-	}
+	GameObject* parent = owner->GetParent();
+	if (parent) mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+	if (mMaskComponent) mMask = mMaskComponent->GetMask();
 
 	//If the object has a mask component, set this image as the mask
 	Component* mask = owner->GetComponent(ComponentType::MASK);
-	if (mask != nullptr)
-	{
-		static_cast<MaskComponent*>(mask)->SetMask(this);
-	}
-
-	/*ButtonComponent* component = static_cast<ButtonComponent*>(owner->GetComponent(ComponentType::BUTTON));
-	if (component != nullptr)
-	{
-		component->AddEventHandler(EventType::PRESS, std::bind(&ImageComponent::OnPress, this));
-		component->AddEventHandler(EventType::HOVER, std::bind(&ImageComponent::OnHover, this));
-		component->AddEventHandler(EventType::CLICK, std::bind(&ImageComponent::OnClick, this));
-	}*/
+	if (mask) static_cast<MaskComponent*>(mask)->SetMask(this);
 }
 
-ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE)
+ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE),
+mMask(original.mMask), mFileName(original.mFileName), mColor(original.mColor), mAlpha(original.mAlpha), mTexOffset(original.mTexOffset),
+mHasDiffuse(original.mHasDiffuse), mMantainRatio(original.mMantainRatio), mShouldDraw(original.mShouldDraw), mIsMaskable(original.mIsMaskable),
+mIsSpritesheet(original.mIsSpritesheet), mColumns(original.mColumns), mRows(original.mRows), mCurrentFrame(original.mCurrentFrame), mElapsedTime(original.mElapsedTime),
+mFPS(original.mFPS), mIsPlaying(original.mIsPlaying)
 {
 	FillVBO();
 	CreateVAO();
 
-	SetImage(original.mResourceId);
+	if (original.mImage) SetImage(original.mImage->GetUID());
+
+	//TODO: REVIEW THIS
 	mMask = original.mMask;
 	mMaskComponent = original.mMaskComponent;
-	mResourceId = original.mResourceId;
-	//SetImage(mResourceId);
-	mFileName = original.mFileName;
 
-	mColor = original.mColor;
-	mAlpha = original.mAlpha;
 
-	mTexOffset = original.mTexOffset;
-	mHasDiffuse = original.mHasDiffuse;
-	mMantainRatio = original.mMantainRatio;
-
-	mShouldDraw = original.mShouldDraw;
-	mIsMaskable = original.mIsMaskable;
-
-	//mQuadVBO = original.mQuadVBO;
-	//mQuadVAO = original.mQuadVAO;
-
-	mIsSpritesheet = original.mIsSpritesheet;
-	mColumns = original.mColumns;
-	mRows = original.mRows;
-	mCurrentFrame = original.mCurrentFrame;
-	mElapsedTime = original.mElapsedTime;
-	mFPS = original.mFPS;
-	mIsPlaying = original.mIsPlaying;
-
-	mTransform = original.mTransform;
-	//mCanvas = original.mCanvas;
+	mTransform = original.mTransform; ;
 	GameObject* canvas = FindCanvasOnParents(GetOwner());
-	if (canvas != nullptr)
-	{
-		mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
-	}
-	else
-	{
-		canvas = nullptr;
-	}
+	if (canvas) mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
 }
 
-ImageComponent:: ~ImageComponent() 
+ImageComponent:: ~ImageComponent()
 {
-	CleanUp();
+	if (mQuadVBO != 0) glDeleteBuffers(1, &mQuadVBO);
+	if (mQuadVAO != 0) glDeleteVertexArrays(1, &mQuadVAO);
+	if (mImage)
+	{
+		App->GetResource()->ReleaseResource(mImage->GetUID());
+		mImage = nullptr;
+	}
+
 	mCanvas = nullptr;
 	mTransform = nullptr;
 }
 
 GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 {
-	if (gameObject == nullptr) 
-	{
-		return nullptr;
-	}
+	if (!gameObject) return nullptr;
 
 	GameObject* currentObject = gameObject;
 
-	while (currentObject != nullptr) 
+	while (currentObject)
 	{
-		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr) 
+		if (currentObject->GetComponent(ComponentType::CANVAS) != nullptr)
 		{
 			return currentObject;
 		}
 		currentObject = currentObject->GetParent();
 	}
 
-	return nullptr; // No canvas found on parents
-} 
+	return nullptr;
+}
 
 void ImageComponent::Draw()
-{ 
+{
 	if (mIsMaskable)
 	{
 		glEnable(GL_STENCIL_TEST);
@@ -228,7 +159,7 @@ void ImageComponent::Draw()
 				//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
 				float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
-				model = float4x4::Scale(1 / canvasSize.x * 2, 1 / canvasSize.y * 2, 0) * model;
+				model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
 
 			}
 			glEnable(GL_CULL_FACE);
@@ -372,8 +303,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 
 	if (data.HasMember("ImageID"))
 	{
-		mResourceId = data.GetInt("ImageID");
-		SetImage(mResourceId);
+		SetImage(data.GetInt("ImageID"));
 	}
 	float col[3];
 	if (data.HasMember("Color"))
@@ -415,14 +345,10 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 	}
 }
 
-void ImageComponent::SetImage(unsigned int resourceId) 
+void ImageComponent::SetImage(unsigned int resourceId)
 {
-	if (mImage)
-	{
-		App->GetResource()->ReleaseResource(mImage->GetUID());
-	}
-
-    mImage = (ResourceTexture*)App->GetResource()->RequestResource(resourceId, Resource::Type::Texture);
+	if (mImage) App->GetResource()->ReleaseResource(mImage->GetUID());
+	mImage = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(resourceId, Resource::Type::Texture));
 }
 
 void ImageComponent::FillVBO()
@@ -437,13 +363,13 @@ void ImageComponent::FillVBO()
 		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
 	};
 
-	if (mQuadVBO == 0) 
+	if (mQuadVBO == 0)
 	{
 		glGenBuffers(1, &mQuadVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 	}
-	else 
+	else
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
@@ -469,13 +395,13 @@ void ImageComponent::FillSpriteSheetVBO()
 		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
 	};
 
-	if (mQuadVBO == 0) 
+	if (mQuadVBO == 0)
 	{
 		glGenBuffers(1, &mQuadVBO);
 		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 	}
-	else 
+	else
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
@@ -498,7 +424,7 @@ void ImageComponent::CreateVAO()
 
 void ImageComponent::ResizeByRatio()
 {
-	float originalRatio = mImage->GetWidth() / mImage->GetHeight() ;
+	float originalRatio = mImage->GetWidth() / mImage->GetHeight();
 	if (mCanvas->GetRenderSpace() == RenderSpace::Screen) //Ortographic Mode
 	{
 		Transform2DComponent* component = ((Transform2DComponent*)GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
@@ -507,7 +433,7 @@ void ImageComponent::ResizeByRatio()
 		float2 newSize = float2(component->GetSize().x, component->GetSize().y * ratio);
 		component->SetSize(newSize);
 	}
-	else 
+	else
 	{
 		float currentRatio = GetOwner()->GetWorldScale().x / GetOwner()->GetWorldScale().y;
 		float ratio = currentRatio / originalRatio;
@@ -525,7 +451,7 @@ void ImageComponent::RenderMask()
 
 	// Orthographic mode is used for stencil mask rendering
 	Transform2DComponent* component = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-	if (component != nullptr)
+	if (component)
 	{
 		float4x4 proj = float4x4::identity;
 		float4x4 model = component->GetGlobalMatrix();
@@ -582,21 +508,3 @@ std::vector<unsigned char> ImageComponent::GetPixelData(ResourceTexture* texture
 	return pixels;
 }
 
-bool ImageComponent::CleanUp()
-{
-	if (mQuadVBO != 0)
-	{
-		glDeleteBuffers(1, &mQuadVBO);
-	}
-
-	if (mQuadVAO != 0)
-	{
-		glDeleteVertexArrays(1, &mQuadVAO);
-	}
-	if (mImage != nullptr)
-	{
-		App->GetResource()->ReleaseResource(mImage->GetUID());
-		mImage = nullptr;
-	}
-	return true;
-}

@@ -37,9 +37,11 @@ ParticleSystemComponent::~ParticleSystemComponent()
 {
     App->GetOpenGL()->RemoveParticleSystem(this);
     App->GetResource()->ReleaseResource(mImage->GetUID());
+    mImage = nullptr;
+
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    for (auto particle : mParticles)
+    for (Particle* particle : mParticles)
     {
         delete particle;
     }
@@ -50,8 +52,6 @@ Component* ParticleSystemComponent::Clone(GameObject* owner) const
 {
     return new ParticleSystemComponent(*this, owner);
 }
-
-
 
 void ParticleSystemComponent::Init()
 {
