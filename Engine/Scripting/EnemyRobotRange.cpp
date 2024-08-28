@@ -59,7 +59,7 @@ void EnemyRobotRange::Attack()
     {
         mAnimationComponent->OnRestart();
         RangeAttack();
-        if (IsPlayerInRange(mAttackDistance / 2))
+        if (IsPlayerInRange(mAttackDistance / 2.0f))
         {
             mCurrentState = EnemyState::FLEE;
         }
