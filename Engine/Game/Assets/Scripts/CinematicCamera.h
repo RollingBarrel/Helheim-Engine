@@ -20,6 +20,7 @@ public:
     void Update() override;
 
 private:
+    void DeActivateCameras();
     void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
     float3 lerp(const float3& start, const float3& end, float t);

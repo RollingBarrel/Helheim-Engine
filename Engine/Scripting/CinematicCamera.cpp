@@ -58,6 +58,8 @@ void CinematicCamera::Awake()
 
 void CinematicCamera::Start()
 {
+    DeActivateCameras();
+
     mCurrentCamera = App->GetCamera()->GetCurrentCamera();
     mMainCamera = const_cast<CameraComponent*>(mCurrentCamera);
 
@@ -304,6 +306,29 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 Fade(false);
             }
         }
+    }
+}
+
+void CinematicCamera::DeActivateCameras()
+{
+    if (mCinematicCamera1)
+    {
+        mCinematicCamera1->SetEnabled(false);
+    }
+
+    if (mCinematicCamera2)
+    {
+        mCinematicCamera2->SetEnabled(false);
+    }
+
+    if (mCinematicCamera3)
+    {
+        mCinematicCamera3->SetEnabled(false);
+    }
+
+    if (mCinematicCamera4)
+    {
+        mCinematicCamera4->SetEnabled(false);
     }
 }
 

@@ -1,0 +1,128 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1397068648,
+                "ParentUID": 1,
+                "Name": "CameraMG",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 372390867,
+                "ParentUID": 1397068648,
+                "Name": "CameraParent",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    86.48628234863281,
+                    7.778175354003906,
+                    -5.499999523162842
+                ],
+                "Rotation": [
+                    0.3535534143447876,
+                    -0.3535534143447876,
+                    0.14644663035869599,
+                    0.8535533547401428
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "MainCamera",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayerCamera",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mFollowTarget",
+                                "MemberType": 3,
+                                "VariableData": 265972669
+                            },
+                            {
+                                "VariableName": "mYawAngle",
+                                "MemberType": 1,
+                                "VariableData": 45.0
+                            },
+                            {
+                                "VariableName": "mPitchAngle",
+                                "MemberType": 1,
+                                "VariableData": -45.0
+                            },
+                            {
+                                "VariableName": "mDistanceToPlayer",
+                                "MemberType": 1,
+                                "VariableData": 11.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 241585371,
+                "ParentUID": 372390867,
+                "Name": "Camera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "IsEnabled": true,
+                        "AspectRatio": 1.8978978395462037,
+                        "FieldOfView": 75.19759368896485,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            }
+        ]
+    }
+}
