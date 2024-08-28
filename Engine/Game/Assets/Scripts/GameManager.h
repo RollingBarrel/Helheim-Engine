@@ -10,6 +10,7 @@ class AudioManager;
 class BattleArea;
 class EnemyPool;
 class PoolManager;
+class PlayerCamera;
 class Timer;
 
 GENERATE_BODY(GameManager);
@@ -29,6 +30,7 @@ public:
 
     GameObject* GetPlayer() const { return mPlayer; }
     PlayerController* GetPlayerController() const { return mPlayerController; }
+    PlayerCamera* GetPlayerCamera() const { return mPlayerCamera; }
     AudioManager* GetAudio() const { return mAudioManager;}
     HudController* GetHud() const { return mHudController; }
     bool UsingController() const;
@@ -59,10 +61,12 @@ private:
     static GameManager* mInstance;
     
     GameObject* mPlayer = nullptr;
+    GameObject* mPlayerCameraGO = nullptr;
     GameObject* mHudControllerGO = nullptr;
     GameObject* mAudioManagerGO = nullptr;
 
     PlayerController* mPlayerController = nullptr;
+    PlayerCamera* mPlayerCamera = nullptr;
     BattleArea* mActiveBattleArea = nullptr;
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
