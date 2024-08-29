@@ -78,5 +78,5 @@ void Pistol::Reload()
 
 void Pistol::PlayHitSound()
 {
-	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }
