@@ -9,6 +9,7 @@
 #include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
+#include "ModuleDetourNavigation.h"
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
@@ -28,7 +29,7 @@ void Enemy::Start()
 
     //Hit Effect
 
-	if (!(mGameObject->GetName() == "FinalBoss")) 
+	if (mGameObject->GetName() != "FinalBoss") 
 		/*
 		⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀
 		⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀
@@ -95,6 +96,7 @@ void Enemy::Update()
 
     //Hit Effect
     CheckHitEffect();
+	mEnemyCollisionDirection = float3::zero;
 }
 
 void Enemy::CheckHitEffect()
@@ -134,6 +136,10 @@ void Enemy::ActivateEnemy()
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
 			Chase();
 			break;
+		case EnemyState::FLEE:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
+			Flee();
+			break;
 		case EnemyState::CHARGE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
@@ -149,8 +155,11 @@ void Enemy::ActivateEnemy()
 			break;
 		}
 	}
-
-	mBeAttracted = false;
+	else 
+	{
+		mBeAttracted = false;
+		mAiAgentComponent->SetEnable(true);
+	}
 }
 
 void Enemy::Idle()
@@ -164,23 +173,48 @@ void Enemy::Idle()
 void Enemy::Chase()
 {
 	PlayStepAudio();
-	if (IsPlayerInRange(mChaseDistance))
-	{
+
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
-			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			float3 dir = mAiAgentComponent->GetDirection();
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
 		
 		if (IsPlayerReachable())
 		{
 			mCurrentState = EnemyState::CHARGE;
 		}
-	}
-	else
+
+}
+
+void Enemy::Flee()
+{
+	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
-		mCurrentState = EnemyState::IDLE;
+		mCurrentState = EnemyState::ATTACK;
+		return;
 	}
+	PlayStepAudio();	
+		if (mAiAgentComponent)
+		{
+			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
+			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
+			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
+			if (collisionDotProduct < 0.0f)
+			{
+				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
+			}
+			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
+			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+		
+		}
+
+		if (!IsPlayerInRange(mAttackDistance))
+		{
+			mCurrentState = EnemyState::IDLE;
+		}
 }
 
 void Enemy::Charge()
@@ -329,6 +363,14 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 		mParalysisSeverityLevel = 1.0f;
 	}
 }
+
+void Enemy::SetAttracted(bool attracted)
+{ 
+	mBeAttracted = attracted;
+	// Sometime, AI component is over everything, I need to set it disable to make blackhole works
+	mAiAgentComponent->SetEnable(!attracted);
+}
+
 
 void Enemy::DropItem()
 {

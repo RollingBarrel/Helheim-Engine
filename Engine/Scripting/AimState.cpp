@@ -22,7 +22,7 @@ AimState::~AimState()
 
 StateType AimState::HandleInput()
 {
-    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::DASH;
 
     if (mPlayerController->GetGrenadeState()->IsReady() &&
        (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN || 

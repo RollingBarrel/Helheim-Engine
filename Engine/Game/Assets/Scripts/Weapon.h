@@ -36,6 +36,9 @@ protected:
 	float mAttackCooldown = 0.0f;
 	float mAttackDuration = 0.0f;
 
+	float mCameraShakeDuration = 0.0f;
+	float mCameraShakeStrengh = 0.0f;
+
 	int mCurrentAmmo = 0;
 	int mMaxAmmo = 0;
 };
