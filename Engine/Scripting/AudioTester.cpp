@@ -162,17 +162,17 @@ void AudioTester::ControlSFX()
         {
             if (mSFX4sID == -1)
             {
-                mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetWorldPosition());
+                mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_PISTOL, mSFX4sID, mGameObject->GetWorldPosition());
             }
             else 
             {
-                GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetWorldPosition());
+                GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_PISTOL, mSFX4sID, mGameObject->GetWorldPosition());
             }
             mSFX4Play = true;
         }
         else
         {
-            mSFX4sID = GameManager::GetInstance()->GetAudio()->Release(SFX::GUNFIRE, mSFX4sID);
+            mSFX4sID = GameManager::GetInstance()->GetAudio()->Release(SFX::PLAYER_PISTOL, mSFX4sID);
             mSFX4Play = false;
         }
     }
