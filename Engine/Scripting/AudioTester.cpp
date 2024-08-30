@@ -162,17 +162,17 @@ void AudioTester::ControlSFX()
         {
             if (mSFX4sID == -1)
             {
-                mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetWorldPosition());
+                mSFX4sID = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_PISTOL, mSFX4sID, mGameObject->GetWorldPosition());
             }
             else 
             {
-                GameManager::GetInstance()->GetAudio()->Play(SFX::GUNFIRE, mSFX4sID, mGameObject->GetWorldPosition());
+                GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_PISTOL, mSFX4sID, mGameObject->GetWorldPosition());
             }
             mSFX4Play = true;
         }
         else
         {
-            mSFX4sID = GameManager::GetInstance()->GetAudio()->Release(SFX::GUNFIRE, mSFX4sID);
+            mSFX4sID = GameManager::GetInstance()->GetAudio()->Release(SFX::PLAYER_PISTOL, mSFX4sID);
             mSFX4Play = false;
         }
     }
@@ -213,11 +213,11 @@ void AudioTester::BGM1ParameterChange()
     {
         if (input->GetKey(Keys::Keys_W) == KeyState::KEY_REPEAT)
         {
-            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "Area", 80);
+            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1,mBGM1ID, "States", 0);
         }
         else if(input->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT) 
         {
-            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "Area", 1);
+            GameManager::GetInstance()->GetAudio()->UpdateParameterValueByName(BGM::LEVEL1, mBGM1ID, "States", 2);
         }
     }
 }

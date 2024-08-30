@@ -25,6 +25,7 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "LineComponent.h"
 #include "DecalComponent.h"
 #include "TextComponent.h"
 
@@ -396,13 +397,8 @@ void GameObject::LookAt(const float3& target)
 	rotationMatrix[1][2] = -forward.y;
 	rotationMatrix[2][2] = -forward.z;
 
-
-	mLocalRotation = Quat(rotationMatrix);
-	mWorldEulerAngles = mLocalRotation.ToEulerXYZ();
-
-
-	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
-	SetTransformsDirtyFlag();
+	//SetLocalRotation(rotationMatrix.ToEulerXYZ());
+	SetLocalRotation(Quat(rotationMatrix));
 }
 
 void GameObject::ResetTransform()
@@ -489,6 +485,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::TRAIL:
 		newComponent = new TrailComponent(this);
+		break;
+	case ComponentType::LINE:
+		newComponent = new LineComponent(this);
 		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);

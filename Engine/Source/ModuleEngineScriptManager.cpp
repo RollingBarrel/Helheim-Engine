@@ -60,12 +60,19 @@ update_status ModuleEngineScriptManager::PreUpdate(float dt)
 
 update_status ModuleEngineScriptManager::Update(float dt)
 {
-	if (EngineApp->IsPlayMode() && !mPause)
+	if (!mFirstFrame) //Solution to high delta times in the first frame after loading a scene
 	{
-		for (unsigned int i = 0; i < mScripts.size(); ++i) 
+		if (EngineApp->IsPlayMode() && !mPause)
 		{
-			mScripts[i]->mScript->Update();
+			for (unsigned int i = 0; i < mScripts.size(); ++i)
+			{
+				mScripts[i]->mScript->Update();
+			}
 		}
+	}
+	else
+	{
+		mFirstFrame = false;
 	}
 
 	return update_status::UPDATE_CONTINUE;

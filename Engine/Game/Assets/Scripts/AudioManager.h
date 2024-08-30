@@ -8,7 +8,8 @@
 enum class BGM 
 {
 	MAINMENU,
-	LEVEL1
+	LEVEL1,
+	LEVEL2,
 };
 
 enum class SFX 
@@ -19,12 +20,18 @@ enum class SFX
 
 	// PLAYER
 	PLAYER_FOOTSTEP,
-	GUNFIRE,
-	MACHINE_GUN,
-	MEELEE,
+
+	PLAYER_PISTOL,
+	PLAYER_MACHINEGUN,
+	PLAYER_SHOTGUN,
+
+	PLAYER_MEELEE,
+
+	PLAYER_ULTIMATE,
 
 	// ENEMY
 	ENEMY_ROBOT_FOOTSTEP,
+	ENEMY_ROBOT_GUNFIRE,
 };
 
 namespace FMOD 
@@ -86,8 +93,9 @@ private:
 	// Audio - Name
 	const std::unordered_map<BGM, std::string> mBGMToString
 	{
-		{BGM::MAINMENU, "event:/Music/Level 01"},
-		{BGM::LEVEL1, "event:/Music/Level 02"}
+		{BGM::MAINMENU, "event:/MC/main/Theme"},
+		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
+		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"}
 	};
 
 	const std::unordered_map<SFX, std::string> mSFXToString
@@ -98,11 +106,16 @@ private:
 
 		// PLAYER
 		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},
-		{SFX::GUNFIRE, "event:/Weapons/Pistol"},
-		{SFX::MACHINE_GUN, "event:/Weapons/Machine Gun"},
-		{SFX::MEELEE, "event:/Interactables/Wooden Collision"},
+
+		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
+		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
+		{SFX::PLAYER_SHOTGUN, "event:/SFX/CHAR/main_shotgun"},
+
+		{SFX::PLAYER_ULTIMATE, "event:/SFX/CHAR/main_ultimate"}, // Draft audio
+
 
 		// ENEMY
 		{SFX::ENEMY_ROBOT_FOOTSTEP, "event:/Character/Enemy Footsteps"},
+		{SFX::ENEMY_ROBOT_GUNFIRE, "event:/SFX/NPC/robot_distance"},
 	};
 };

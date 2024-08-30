@@ -10,6 +10,7 @@
 #include "GameManager.h"
 #include "PoolManager.h"
 #include "PlayerController.h"
+#include "PlayerCamera.h"
 #include "RayCastBullet.h"
 
 #include <vector>
@@ -28,10 +29,12 @@ RangeWeapon::~RangeWeapon()
 void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGradient& trailGradient)
 {
 
+	GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(mCameraShakeDuration, mCameraShakeStrengh);
+
 	float3 front = GameManager::GetInstance()->GetPlayer()->GetFront();
 	float3 up = GameManager::GetInstance()->GetPlayer()->GetUp();
 	float3 right = GameManager::GetInstance()->GetPlayer()->GetRight();
-	float3 bulletDirection = Spread(front, up, right, 0.3f);
+	float3 bulletDirection = Spread(front, up, right, maxSpread);
 
 	Hit hit;
 

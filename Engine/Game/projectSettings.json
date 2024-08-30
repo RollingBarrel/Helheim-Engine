@@ -6,6 +6,7 @@
         "Bullet",
         "BattleArea",
         "Trap",
-        "Drop"
+        "Drop",
+        "LineFinal"
     ]
 }
