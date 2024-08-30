@@ -201,9 +201,9 @@ void GameManager::PrepareAudio()
 
     // Commun Audio
     // Player
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_GUNFIRE);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINE_GUN);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOT_GUN);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
 
     // Enemy

@@ -90,5 +90,5 @@ void Machinegun::Exit()
 
 void Machinegun::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_MACHINE_GUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_MACHINEGUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }

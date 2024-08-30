@@ -78,5 +78,5 @@ void Shootgun::Attack(float time)
 
 void Shootgun::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_SHOT_GUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_SHOTGUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }

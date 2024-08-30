@@ -21,9 +21,9 @@ enum class SFX
 	// PLAYER
 	PLAYER_FOOTSTEP,
 
-	PLAYER_GUNFIRE,
-	PLAYER_MACHINE_GUN,
-	PLAYER_SHOT_GUN,
+	PLAYER_PISTOL,
+	PLAYER_MACHINEGUN,
+	PLAYER_SHOTGUN,
 
 	PLAYER_MEELEE,
 
@@ -107,9 +107,9 @@ private:
 		// PLAYER
 		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},
 
-		{SFX::PLAYER_GUNFIRE, "event:/SFX/CHAR/main_normal"},
-		{SFX::PLAYER_MACHINE_GUN, "event:/SFX/CHAR/main_machinegun"},
-		{SFX::PLAYER_SHOT_GUN, "event:/SFX/CHAR/main_shotgun"},
+		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
+		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
+		{SFX::PLAYER_SHOTGUN, "event:/SFX/CHAR/main_shotgun"},
 
 		{SFX::PLAYER_ULTIMATE, "event:/SFX/CHAR/main_ultimate"}, // Draft audio
 
