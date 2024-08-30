@@ -16,9 +16,12 @@
 #include "glew.h"
 #include "Math/TransformOps.h"
 
+#include "libavcodec/avcodec.h"
+#include "libavformat/avformat.h"
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
+	AVFormatContext* pFormatContext = avformat_alloc_context();
 	FillVBO();
 	CreateVAO();
 	SetImage(148626881);
