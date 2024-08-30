@@ -6,6 +6,7 @@
 #include "BoxColliderComponent.h"
 #include "GameManager.h"
 #include "PoolManager.h"
+#include "AudioManager.h"
 #include "Bullet.h"
 
 #include "ColorGradient.h"
@@ -68,6 +69,8 @@ void EnemyRobotRange::Attack()
 
 void EnemyRobotRange::RangeAttack()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, mGameObject->GetWorldPosition());
+
     float3 bulletOriginPosition = mBulletOrigin->GetWorldPosition();
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);

@@ -254,6 +254,7 @@ private:
     // Grenade
     float mGrenadeCoolDown = 5.0f;
     float mGrenadeRange = 5.0f;
+    float mGrenadeCursorSpeed = 6.0f;
     float3 mGrenadePosition;
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;

@@ -29,7 +29,7 @@ void Enemy::Start()
 
     //Hit Effect
 
-	if (!(mGameObject->GetName() == "FinalBoss")) 
+	if (mGameObject->GetName() != "FinalBoss") 
 		/*
 		⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀
 		⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀
@@ -155,8 +155,11 @@ void Enemy::ActivateEnemy()
 			break;
 		}
 	}
-
-	mBeAttracted = false;
+	else 
+	{
+		mBeAttracted = false;
+		mAiAgentComponent->SetEnable(true);
+	}
 }
 
 void Enemy::Idle()
@@ -360,6 +363,14 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 		mParalysisSeverityLevel = 1.0f;
 	}
 }
+
+void Enemy::SetAttracted(bool attracted)
+{ 
+	mBeAttracted = attracted;
+	// Sometime, AI component is over everything, I need to set it disable to make blackhole works
+	mAiAgentComponent->SetEnable(!attracted);
+}
+
 
 void Enemy::DropItem()
 {

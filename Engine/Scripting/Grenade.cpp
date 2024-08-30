@@ -12,6 +12,9 @@ CREATE(Grenade)
     MEMBER(MemberType::FLOAT, mGrenadeDPS);
     MEMBER(MemberType::FLOAT, mGrenadeDuration);
     MEMBER(MemberType::FLOAT, mGrenadeRadius);
+    MEMBER(MemberType::FLOAT, mTrajectorySpeedFactor);
+    MEMBER(MemberType::GAMEOBJECT, mGrenade);
+    MEMBER(MemberType::GAMEOBJECT, mExplosionSFX);
 	END_CREATE;
 }
 
@@ -25,27 +28,84 @@ Grenade::~Grenade()
 
 void Grenade::Start()
 {
-	
+    mExplosionSFX->SetEnabled(false);
+    mGrenade->SetEnabled(false);
 } 
 
 void Grenade::Update()
 {
-	Explotion();
+    if (mState == GRENADE_STATE::MOVEMENT)
+    {
+        MoveToTarget();
+    }
+
+    if (mState == GRENADE_STATE::EXPLOSION_START)
+    {
+        Explosion();
+    }
 }
 
-void Grenade::Explotion()
+void Grenade::MoveToTarget()
 {
-    if (mExplotionStart)
+    // Increment elapsed time, scaled by the trajectory speed factor
+    mElapsedTime += App->GetDt() * mTrajectorySpeedFactor;
+
+    // Ensure the time does not exceed the total flight time
+    if (mElapsedTime > mFlightTime)
     {
-        if (mGrenadeCurrentTime > 0)
-        {
-            mGrenadeCurrentTime -= App->GetDt();
-            BlackHole();
-            if (mGrenadeCurrentTime <= 0)
-            {
-                EndExplotion();  
-            }
-        }
+        mElapsedTime = mFlightTime;
+    }
+
+    mCurrentPosition = CalculatePositionAtTime(mElapsedTime);
+    mGrenade->SetWorldPosition(mCurrentPosition);
+
+    if (mElapsedTime >= mFlightTime)
+    {
+        mExplosionSFX->SetEnabled(true);
+
+        mState = GRENADE_STATE::EXPLOSION_START;
+        mExplosionSFX->SetWorldPosition(mDestination);
+    }
+}
+
+void Grenade::CalculateTrajectory()
+{
+    float3 displacement = mDestination - mInitialPosition;
+
+    float horizontalDistance = float3(displacement.x, 0, displacement.z).Length();
+    float verticalDistance = displacement.y;
+
+    mFlightTime = 2 * horizontalDistance / 9.81f;
+
+    float vy = (verticalDistance + 9.81f * mFlightTime * mFlightTime / 2) / mFlightTime;
+
+    float vx = displacement.x / mFlightTime;
+    float vz = displacement.z / mFlightTime;
+
+    mVelocity = float3(vx, vy, vz);
+
+    // Reset elapsed time
+    mElapsedTime = 0;
+}
+
+float3 Grenade::CalculatePositionAtTime(float t)
+{
+    float x = mVelocity.x * t;
+    float z = mVelocity.z * t;
+    float y = mInitialPosition.y + mVelocity.y * t - 0.5f * 9.81f * t * t;
+
+    return float3(mInitialPosition.x + x, y, mInitialPosition.z + z);
+}
+
+void Grenade::Explosion()
+{
+    if (!mExplosionTimer.Delay(mGrenadeDuration))
+    {
+        BlackHole();
+    }
+    else 
+    {
+        EndExplosion();
     }
 }
 
@@ -60,28 +120,30 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
 {
     for (auto& enemy : enemies)
     {
-        float3 direction = mGameObject->GetWorldPosition() - enemy->GetWorldPosition();
+        float3 direction = mExplosionSFX->GetWorldPosition() - enemy->GetWorldPosition();
         float distance = direction.Length();
         if (distance > 0)
         {
             float3 normalizedDirection = float3(direction.x / distance, direction.y / distance, direction.z / distance);
-            float pullStrength = 1.0f * App->GetDt();
+            float pullStrength = 3.0f * App->GetDt();
             enemy->SetWorldPosition(enemy->GetWorldPosition() + normalizedDirection * pullStrength);
 
             ScriptComponent* script = (ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT);
             Enemy* target = (Enemy*)script->GetScriptInstance();
 
-            target->TakeDamage(mGrenadeDPS * App->GetDt());
-            target->SetAttracted(true);
+            if (target != nullptr)
+            {
+                target->TakeDamage(mGrenadeDPS * App->GetDt());
+                target->SetAttracted(true);
+            }
         }
     }
 }
 
-void Grenade::EndExplotion()
+void Grenade::EndExplosion()
 {
-    mGameObject->SetEnabled(false);
-    mGrenadeCurrentTime = mGrenadeDuration;
-    mExplotionStart = false;
+    mExplosionSFX->SetEnabled(false);
+    mState = GRENADE_STATE::INACTIVE;
 }
 
 std::vector<GameObject*> Grenade::GetAffectedEnemies()
@@ -93,10 +155,9 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     
 
     // Check if enemies are inside circle
-    // TODO: Check hit with physic
     for (const auto& e : AllEnemies)
     {
-        float3 diff = e->GetWorldPosition() - mGameObject->GetWorldPosition();
+        float3 diff = e->GetWorldPosition() - mExplosionSFX->GetWorldPosition();
         float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
 
         if (distanceSquared <= (mGrenadeRadius * mGrenadeRadius))
@@ -108,11 +169,20 @@ std::vector<GameObject*> Grenade::GetAffectedEnemies()
     return AffectedEnemies;
 }
 
-void Grenade::SetDestination(float3 destination)
+void Grenade::SetPositionDestination(float3 initialPosition, float3 destination)
 {
-	mGameObject->SetWorldPosition(destination);
-    mGameObject->SetEnabled(true);
-	mExplotionStart = true;
+    mGrenade->SetEnabled(true);
+
+    mState = GRENADE_STATE::MOVEMENT;
+    mGrenade->SetWorldPosition(initialPosition);
+    
+    mInitialPosition = initialPosition;
+    mDestination = destination;
+
+    mCurrentPosition = mInitialPosition;
+    mTotalDistance = mInitialPosition.Distance(mDestination);
+
+    CalculateTrajectory();
 }
 
 float Grenade::GetGrenadeRadius()

@@ -18,7 +18,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init(float3 bombOrigin);
+	void Init(float3 bombOrigin, float damage);
 
 private:
 	GameObject* mBombGO = nullptr;
