@@ -20,12 +20,18 @@ enum class SFX
 
 	// PLAYER
 	PLAYER_FOOTSTEP,
-	GUNFIRE,
-	MACHINE_GUN,
-	MEELEE,
+
+	PLAYER_GUNFIRE,
+	PLAYER_MACHINE_GUN,
+	PLAYER_SHOT_GUN,
+
+	PLAYER_MEELEE,
+
+	PLAYER_ULTIMATE,
 
 	// ENEMY
 	ENEMY_ROBOT_FOOTSTEP,
+	ENEMY_ROBOT_GUNFIRE,
 };
 
 namespace FMOD 
@@ -100,11 +106,16 @@ private:
 
 		// PLAYER
 		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},
-		{SFX::GUNFIRE, "event:/Weapons/Pistol"},
-		{SFX::MACHINE_GUN, "event:/Weapons/Machine Gun"},
-		{SFX::MEELEE, "event:/Interactables/Wooden Collision"},
+
+		{SFX::PLAYER_GUNFIRE, "event:/SFX/CHAR/main_normal"},
+		{SFX::PLAYER_MACHINE_GUN, "event:/SFX/CHAR/main_machinegun"},
+		{SFX::PLAYER_SHOT_GUN, "event:/SFX/CHAR/main_shotgun"},
+
+		{SFX::PLAYER_ULTIMATE, "event:/SFX/CHAR/main_ultimate"}, // Draft audio
+
 
 		// ENEMY
 		{SFX::ENEMY_ROBOT_FOOTSTEP, "event:/Character/Enemy Footsteps"},
+		{SFX::ENEMY_ROBOT_GUNFIRE, "event:/SFX/NPC/robot_distance"},
 	};
 };
