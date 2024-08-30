@@ -199,6 +199,8 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
+    <ClInclude Include="ExplosiveTrap.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ExplosiveTrap.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -356,5 +358,6 @@
     </ClCompile>
     <ClCompile Include="HealVFX.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
+    <ClCompile Include="ExplosiveTrap.cpp" />
   </ItemGroup>
 </Project>
