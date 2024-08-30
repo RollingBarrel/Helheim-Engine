@@ -16,8 +16,12 @@
 #include "glew.h"
 #include "Math/TransformOps.h"
 
-#include "libavcodec/avcodec.h"
-#include "libavformat/avformat.h"
+extern "C"
+{
+	#include "libavcodec/avcodec.h"
+	#include "libavformat/avformat.h"
+}
+
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
