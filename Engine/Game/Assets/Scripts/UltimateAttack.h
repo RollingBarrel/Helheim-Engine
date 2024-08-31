@@ -27,8 +27,10 @@ private:
 	void OnCollisionEnter(CollisionData* collisionData);
 	BoxColliderComponent* mCollider = nullptr;
 
-	GameObject* mLaserGO;
+	GameObject* mLaserGO = nullptr;
+	GameObject* mEnemyCollisionParticle = nullptr;
 	TimerScript mDamageTimer;
+	TimerScript mDamageEffectTimer;
 
 };
 
