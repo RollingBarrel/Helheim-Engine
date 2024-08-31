@@ -94,7 +94,7 @@ GameObject* ImageComponent::FindCanvasOnParents(GameObject* gameObject)
 
 void ImageComponent::Draw()
 {
-	if (mIsMaskable)
+	if (mIsMaskable && mMask)
 	{
 		glEnable(GL_STENCIL_TEST);
 
