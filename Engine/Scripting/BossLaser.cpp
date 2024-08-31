@@ -69,7 +69,6 @@ void BossLaser::Update()
 
 void BossLaser::Init(float damage, float distance)
 {
-    mDistance = distance;
     Charge();
 }
 
@@ -103,9 +102,13 @@ void BossLaser::Cooldown()
 }
 void BossLaser::SpawnEyeBalls()
 {
-    float posAngles[] = { -45.0f, -90.0f, -0.0f, -270.0f, -315.0f };
-    float attackAngles[] = { 90.f, 90.f,  90.f, 45.f, 45.f };
-    float rotationDirections[] = { 1.0f, 1.0f, 0.f, -1.0f, -1.0f };  
+    float angles[] = { -75.0f, -45.0f, -15.0f, 15.0f, 45.0f, 75.0f };
+    float attackAngles[] = { 45.f, 45.f, 45.f, 90.f, 90.f, 90.f };
+    float rotationDirections[] = { 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f };
+
+    float3 bossPosition = mGameObject->GetWorldPosition();
+    float3 bossFront = mGameObject->GetFront();
+    float3 bossRight = mGameObject->GetRight();
 
     for (size_t i = 0; i < mPoolSize; ++i)
     {
@@ -114,18 +117,14 @@ void BossLaser::SpawnEyeBalls()
 
         GameObject* eyeBall = mEyeBallPool[i];
 
-        float posAngle = posAngles[i];
+        float angle = DegToRad(angles[i]);
         float attackAngle = attackAngles[i];
-        float rotationDirection = rotationDirections[i];  
+        float rotationDirection = rotationDirections[i];
 
-        float radians = DegToRad(posAngle);
+        float3 positionOffset = bossFront * std::cos(angle) * mDistance + bossRight * std::sin(angle) * mDistance;
+        positionOffset.y = -2.0f;
 
-        float x = std::cos(radians) * mDistance;
-        float z = std::sin(radians) * mDistance;
-
-        float3 positionOffset(x, -2, z);
-
-        eyeBall->SetWorldPosition(mGameObject->GetWorldPosition() + positionOffset);
+        eyeBall->SetWorldPosition(bossPosition + positionOffset);
         eyeBall->SetEnabled(true);
 
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -137,6 +136,7 @@ void BossLaser::SpawnEyeBalls()
         mEyeBalls.push_back(eyeBall);
     }
 }
+
 
 
 void BossLaser::ReturnEyeBallsToPool()
