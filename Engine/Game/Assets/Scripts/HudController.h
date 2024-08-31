@@ -47,6 +47,7 @@ public:
 
     void SetSanity();
     void SetDialog();
+    void DisableCollectible();
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -128,6 +129,7 @@ private:
     SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
     TextComponent* mLoreText = nullptr;
+    TextComponent* mInteractText = nullptr;
     ButtonComponent* mCollectibleContinueBtn = nullptr;
 
 

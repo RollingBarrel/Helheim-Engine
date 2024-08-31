@@ -34,6 +34,9 @@ Shootgun::Shootgun()
     {
         mFire->SetEnabled(false);
     }
+
+    mCameraShakeDuration = 0.2f;
+    mCameraShakeStrengh = 0.1f;
 }
 
 void Shootgun::Enter()
@@ -75,5 +78,5 @@ void Shootgun::Attack(float time)
 
 void Shootgun::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_SHOTGUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }

@@ -57,6 +57,7 @@ void EnemyRobotMelee::Attack()
             if (playerScript != nullptr)
             {
                 playerScript->TakeDamage(mMeeleDamage);
+                GameManager::GetInstance()->HitStop();
             }
         }
     }
@@ -76,9 +77,9 @@ void EnemyRobotMelee::PlayStepAudio()
 void EnemyRobotMelee::PlayMeleeAudio()
 {
     const char* parameterName = "Speed";
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(
-        SFX::MEELEE,
-        mGameObject->GetWorldPosition(),
-        { { parameterName, 0.0f } }
-    );
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot(
+    //    SFX::MEELEE,
+    //    mGameObject->GetWorldPosition(),
+    //    { { parameterName, 0.0f } }
+    //);
 }
