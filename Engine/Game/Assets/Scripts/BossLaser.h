@@ -25,7 +25,7 @@ public:
 
     void Start() override;
     void Update() override;
-    void Init(float damage, float distance);
+    void Init(float damage,float duration);
 
 private:
 
@@ -38,8 +38,8 @@ private:
 
     LaserState mCurrentState = LaserState::IDLE;
 
-    float mDistance = 0.50f;
-
+    float mDistance = 7.0f;
+    float mDamage = 0.0f;
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;
     float mLaserEnemyDuration = 15.0f;
@@ -47,5 +47,5 @@ private:
 
     std::vector<GameObject*> mEyeBalls;
     std::vector<GameObject*> mEyeBallPool;
-    int mPoolSize = 6;
+    int mPoolSize = 4;
 };

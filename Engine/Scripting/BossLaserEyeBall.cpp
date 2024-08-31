@@ -54,14 +54,17 @@ void BossLaserEyeBall::Update()
     RotateLaser();  
 }
 
-void BossLaserEyeBall::Init(float distance, float duration, float rotation, float rotationDirection)
+void BossLaserEyeBall::Init(float damage, float duration, float rotation, float rotationDirection)
 {
-    mDistance = distance;
+    mDamage = damage;
     mDuration = duration;
     mRotationSpeed = 1.0f * rotationDirection;
     mInitRotation = rotation;
     mCurrentRotation = mInitRotation;
     mRotationDirection = rotationDirection;
+
+    ActivateLaserVFX();
+    mElapsedTime = 0.0f;
 }
 
 void BossLaserEyeBall::RotateLaser()

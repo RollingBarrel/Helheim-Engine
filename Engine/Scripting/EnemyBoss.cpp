@@ -226,14 +226,9 @@ void EnemyBoss::LaserAttack()
     if (mLaserGO)
     {
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) laserScript->Init(mLaserDamage, mAttackDistance);
+        if (laserScript) laserScript->Init(mLaserDamage,mLaserDuration);
     }
-
-        if (laserScript)
-        {
-            laserScript->Init(mAttackDamage, mAttackDistance);
-        }
-    }
+    
 }
 
 void EnemyBoss::BombAttack()

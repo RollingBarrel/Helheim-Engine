@@ -67,8 +67,10 @@ void BossLaser::Update()
     }
 }
 
-void BossLaser::Init(float damage, float distance)
+void BossLaser::Init(float damage, float duartion)
 {
+    mDamage = damage;
+    mLaserEnemyDuration = duartion;
     Charge();
 }
 
@@ -102,9 +104,14 @@ void BossLaser::Cooldown()
 }
 void BossLaser::SpawnEyeBalls()
 {
-    float angles[] = { -75.0f, -45.0f, -15.0f, 15.0f, 45.0f, 75.0f };
-    float attackAngles[] = { 45.f, 45.f, 45.f, 90.f, 90.f, 90.f };
-    float rotationDirections[] = { 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f };
+    //Por si queremos mas eyeBalls
+    //float angles[] = { -75.0f, -45.0f, -15.0f, 15.0f, 45.0f, 75.0f };
+    //float attackAngles[] = { 45.f, 45.f, 45.f, 90.f, 90.f, 90.f };
+    //float rotationDirections[] = { 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f };
+
+    float angles[] = { -75.0f, -15.0f, 15.0f, 75.0f };
+    float attackAngles[] = { 45.f, 45.f, 90.f, 90.f };
+    float rotationDirections[] = { 1.0f, 1.0f, -1.0f, -1.0f };
 
     float3 bossPosition = mGameObject->GetWorldPosition();
     float3 bossFront = mGameObject->GetFront();
@@ -130,7 +137,7 @@ void BossLaser::SpawnEyeBalls()
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-            eyeBallScript->Init(mDistance, mLaserEnemyDuration, attackAngle, rotationDirection);
+            eyeBallScript->Init(mDamage, mLaserEnemyDuration, attackAngle, rotationDirection);
         }
 
         mEyeBalls.push_back(eyeBall);

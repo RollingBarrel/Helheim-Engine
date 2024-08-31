@@ -18,7 +18,7 @@ public:
     void Start() override;
     void Update() override;
 
-    void Init(float distance, float duration, float rotation, float rotationDirection);
+    void Init(float damage, float duration, float rotation, float rotationDirection);
 
 private:
 
@@ -26,7 +26,7 @@ private:
     void ActivateLaserVFX();
     void DisableLaserVFX();
     void UpdateLaser();
-    float mDamage = 3.0f;
+    float mDamage = 0.0f;
     float mInitRotation = 0.0f;
 
     float mAimTime = 0.0f;
