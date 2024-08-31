@@ -171,8 +171,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
             InitAnimation(animState);
 
             GameManager::GetInstance()->SetPaused(true, false);
-
-            mMoveCompleted = false;
+                    
             mFadeOn = true;
         }
 
@@ -247,7 +246,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 {
                     if (Fade(true))
                     {
-                        EndCinematic();
+                        EndCinematic(camera);
                         mFadeOn = false;
                     }
                 }
@@ -259,25 +258,32 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                         mPlayingCinematic = false;
                     }                   
                 }
-            }  
-
-            if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT)
+            }   
+           
+            if (!mEscape)
             {
-                EndCinematic();
-                
-                if (mFade)
-                {
-                    mFade->SetEnabled(false);
+                if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT)
+                {     
+                        mEscape = true;
+                        mFadeStart = false;
+                        EndCinematic(camera);
                 }
-
-                mTravelling = true;
-                mPlayingCinematic = false;
+            }
+            
+            if (mEscape)
+            {
+                if (Fade(false))
+                {
+                    mEscape = false;
+                    mTravelling = true;
+                    mPlayingCinematic = false;
+                }
             }
         }
     }
 }
 
-void CinematicCamera::EndCinematic()
+void CinematicCamera::EndCinematic(GameObject* camera)
 {
     App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
     App->GetCamera()->AddEnabledCamera(mMainCamera);
@@ -451,14 +457,13 @@ bool CinematicCamera::Fade(bool fadeOut)
         {
             if (!mFadeStart)
             {
-                mCounter = 0.0f;
                 mFadeStart = true;
+                mFade->SetEnabled(true);
+                mCounter = 0.0f;
             }
 
             if (mCounter < 1.0f)
             {
-                mFade->SetEnabled(true);
-
                 mCounter += mFadeSpeed;
                 mImage->SetAlpha(mCounter);
 
@@ -470,20 +475,19 @@ bool CinematicCamera::Fade(bool fadeOut)
         {
             if (!mFadeStart)
             {
-                mCounter = 1.0f;
                 mFadeStart = true;
+                mFade->SetEnabled(true);
+                mCounter = 1.0f;
             }
 
             if (mCounter > 0.0f)
             {
-                mFade->SetEnabled(true);
-
                 mCounter -= mFadeSpeed;
                 mImage->SetAlpha(mCounter);
 
                 return false;
             }
-            else return true;
+            else return true;       
         }
     }
 }
