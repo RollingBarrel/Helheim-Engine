@@ -289,6 +289,7 @@
     <ClCompile Include="Trail.cpp" />
     <ClCompile Include="TrailComponent.cpp" />
     <ClCompile Include="Transform2DComponent.cpp" />
+    <ClCompile Include="VideoComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AIAgentComponent.h" />
@@ -795,6 +796,7 @@
     <ClInclude Include="Trail.h" />
     <ClInclude Include="TrailComponent.h" />
     <ClInclude Include="Transform2DComponent.h" />
+    <ClInclude Include="VideoComponent.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\Fog.comp" />
