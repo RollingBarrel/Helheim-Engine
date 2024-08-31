@@ -18,16 +18,16 @@ public:
     void Start() override;
     void Update() override;
 
-    void Init(float distance, float duration);
+    void Init(float distance, float duration, float rotation, float rotationDirection);
 
 private:
 
     void RotateLaser();
-    void ManageAttack();
     void ActivateLaserVFX();
     void DisableLaserVFX();
     void UpdateLaser();
     float mDamage = 3.0f;
+    float mInitRotation = 0.0f;
 
     float mAimTime = 0.0f;
     TimerScript mAimTimer;
@@ -38,6 +38,7 @@ private:
     float mCurrentRotation = 0.0f;
     float mInitialRotation = 0.0f;
     float mRotationRange = 45.0f;
+    float mRotationDirection = 0.0f;
 
     float mElapsedTime = 0.0f;
     bool mIsRotating = false;

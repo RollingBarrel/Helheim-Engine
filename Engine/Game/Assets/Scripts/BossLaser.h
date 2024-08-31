@@ -38,7 +38,7 @@ private:
 
     LaserState mCurrentState = LaserState::IDLE;
 
-    float mDistance = 10.0f;
+    float mDistance = 5.0f;
 
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;

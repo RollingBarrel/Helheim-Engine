@@ -28,7 +28,7 @@ BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner), mMoveTrai
 void BossLaserEyeBall::Start()
 {
     mElapsedTime = 0.0f;
-    mCurrentRotation = 89.5;
+    mCurrentRotation = 90.0f;
 
     if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
     if (mLaserCharge)
@@ -54,11 +54,14 @@ void BossLaserEyeBall::Update()
     RotateLaser();  
 }
 
-void BossLaserEyeBall::Init(float distance, float duration)
+void BossLaserEyeBall::Init(float distance, float duration, float rotation, float rotationDirection)
 {
     mDistance = distance;
     mDuration = duration;
-    mRotationSpeed = 1.0f;
+    mRotationSpeed = 1.0f * rotationDirection;
+    mInitRotation = rotation;
+    mCurrentRotation = mInitRotation;
+    mRotationDirection = rotationDirection;
 }
 
 void BossLaserEyeBall::RotateLaser()
@@ -68,8 +71,8 @@ void BossLaserEyeBall::RotateLaser()
 
     mCurrentRotation += rotationAmount;
 
-    float maxRotation = 90.f;
-    float minRotation = 89.f;
+    float maxRotation = mInitRotation + 1.f;
+    float minRotation = mInitRotation - 1.f;
 
     if (mCurrentRotation > maxRotation)
     {
