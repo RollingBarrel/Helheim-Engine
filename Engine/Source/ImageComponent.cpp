@@ -37,7 +37,7 @@ ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentTy
 }
 
 ImageComponent::ImageComponent(const ImageComponent& original, GameObject* owner) : Component(owner, ComponentType::IMAGE),
-mMask(original.mMask), mFileName(original.mFileName), mColor(original.mColor), mAlpha(original.mAlpha), mTexOffset(original.mTexOffset),
+mFileName(original.mFileName), mColor(original.mColor), mAlpha(original.mAlpha), mTexOffset(original.mTexOffset),
 mHasDiffuse(original.mHasDiffuse), mMantainRatio(original.mMantainRatio), mShouldDraw(original.mShouldDraw), mIsMaskable(original.mIsMaskable),
 mIsSpritesheet(original.mIsSpritesheet), mColumns(original.mColumns), mRows(original.mRows), mCurrentFrame(original.mCurrentFrame), mElapsedTime(original.mElapsedTime),
 mFPS(original.mFPS), mIsPlaying(original.mIsPlaying)
@@ -47,14 +47,17 @@ mFPS(original.mFPS), mIsPlaying(original.mIsPlaying)
 
 	if (original.mImage) SetImage(original.mImage->GetUID());
 
-	//TODO: REVIEW THIS, MAYBE CAUSES CRASHES
-	mMask = original.mMask;
-	mMaskComponent = original.mMaskComponent;
+	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 
+	GameObject* canvas = FindCanvasOnParents(this->GetOwner());
+	if (canvas) mCanvas = static_cast<CanvasComponent*>(canvas->GetComponent(ComponentType::CANVAS));
 
-	mTransform = original.mTransform; ;
-	GameObject* canvas = FindCanvasOnParents(GetOwner());
-	if (canvas) mCanvas = (CanvasComponent*)(canvas->GetComponent(ComponentType::CANVAS));
+	GameObject* parent = owner->GetParent();
+	if (parent) mMaskComponent = static_cast<MaskComponent*>(parent->GetComponent(ComponentType::MASK));
+	if (mMaskComponent) mMask = mMaskComponent->GetMask();
+
+	Component* mask = owner->GetComponent(ComponentType::MASK);
+	if (mask) static_cast<MaskComponent*>(mask)->SetMask(this);
 }
 
 ImageComponent:: ~ImageComponent()
