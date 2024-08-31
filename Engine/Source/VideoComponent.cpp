@@ -1,6 +1,5 @@
 #include "VideoComponent.h"
 
-
 extern "C"
 {
 	#include "libavcodec/avcodec.h"

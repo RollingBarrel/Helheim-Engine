@@ -1161,6 +1161,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) const
 				imageComponent->SetImage(resource->GetUID());
 				imageComponent->SetFileName(asset->mName);
 			}
+			EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 		}
 		ImGui::EndDragDropTarget();
 	}
