@@ -22,14 +22,13 @@ void HealVFX::Init()
 void HealVFX::Start()
 {
     mSpriteSheet = reinterpret_cast<ImageComponent*>(mGameObject->GetComponent(ComponentType::IMAGE));
-    if (mSpriteSheet) mSpriteSheet->PlayAnimation();
 }
 
 void HealVFX::Update()
 {
     if (mTimer.Delay(2.0f)) {
-        mGameObject->SetEnabled(false);
         mSpriteSheet->StopAnimation();
+        mGameObject->SetEnabled(false);
     }
 		
 }
