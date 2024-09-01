@@ -70,7 +70,7 @@ void ElectricTrapController::Update()
 
 
 
-bool ElectricTrapController::CheckIfCaptured(const GameObject* target)
+bool ElectricTrapController::IsInTrap(const GameObject* target)
 {
     for (auto captured : mInTrap)
     {
@@ -109,7 +109,7 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
 {
     GameObject* collision = collisionData->collidedWith;
 
-    if (!CheckIfCaptured(collision) && mIsActive)
+    if (!IsInTrap(collision) && mIsActive)
     {
         mInTrap.push_back(collision);
 

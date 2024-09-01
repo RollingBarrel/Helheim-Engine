@@ -184,6 +184,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosive.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveSpawner.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ExplosiveTrap.h" />
@@ -223,7 +224,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="ExplosiveTrap.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
@@ -248,6 +248,7 @@
     <ClCompile Include="EnemyRobotMelee.cpp" />
     <ClCompile Include="EnemyRobotRange.cpp" />
     <ClCompile Include="ExplosiveTrap.cpp" />
+    <ClCompile Include="EnemyExplosiveTrap.cpp" />
     <ClCompile Include="HealVFX.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
