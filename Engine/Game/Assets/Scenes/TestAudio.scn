@@ -15381,14 +15381,14 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mMaxSimulNumEnemies",
+                                "VariableName": "mWavesRounds",
                                 "MemberType": 0,
-                                "VariableData": 2
+                                "VariableData": 0
                             },
                             {
-                                "VariableName": "mTotalNumEnemies",
+                                "VariableName": "mSpawnerCycles",
                                 "MemberType": 0,
-                                "VariableData": 4
+                                "VariableData": 0
                             },
                             {
                                 "VariableName": "DOORS",
@@ -15530,14 +15530,14 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mMaxSimulNumEnemies",
+                                "VariableName": "mWavesRounds",
                                 "MemberType": 0,
-                                "VariableData": 4
+                                "VariableData": 0
                             },
                             {
-                                "VariableName": "mTotalNumEnemies",
+                                "VariableName": "mSpawnerCycles",
                                 "MemberType": 0,
-                                "VariableData": 8
+                                "VariableData": 0
                             },
                             {
                                 "VariableName": "DOORS",
@@ -15666,14 +15666,14 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mMaxSimulNumEnemies",
+                                "VariableName": "mWavesRounds",
                                 "MemberType": 0,
-                                "VariableData": 4
+                                "VariableData": 0
                             },
                             {
-                                "VariableName": "mTotalNumEnemies",
+                                "VariableName": "mSpawnerCycles",
                                 "MemberType": 0,
-                                "VariableData": 9
+                                "VariableData": 0
                             },
                             {
                                 "VariableName": "DOORS",
@@ -15786,14 +15786,14 @@
                                 "VariableData": -1
                             },
                             {
-                                "VariableName": "mMaxSimulNumEnemies",
+                                "VariableName": "mWavesRounds",
                                 "MemberType": 0,
-                                "VariableData": 5
+                                "VariableData": 0
                             },
                             {
-                                "VariableName": "mTotalNumEnemies",
+                                "VariableName": "mSpawnerCycles",
                                 "MemberType": 0,
-                                "VariableData": 12
+                                "VariableData": 0
                             },
                             {
                                 "VariableName": "DOORS",
@@ -15885,14 +15885,14 @@
                                 "VariableData": 1212849456
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16035,14 +16035,14 @@
                                 "VariableData": 185891902
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16185,14 +16185,14 @@
                                 "VariableData": 1267708719
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16335,14 +16335,14 @@
                                 "VariableData": 193896232
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16485,14 +16485,14 @@
                                 "VariableData": 1290751185
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16635,14 +16635,14 @@
                                 "VariableData": 222717241
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16785,14 +16785,14 @@
                                 "VariableData": 1296458022
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -16935,14 +16935,14 @@
                                 "VariableData": 342463276
                             },
                             {
-                                "VariableName": "mSpawnDelay",
-                                "MemberType": 1,
-                                "VariableData": 0.25
-                            },
-                            {
                                 "VariableName": "mOnlyOnce",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
                             }
                         ]
                     }
@@ -18025,7 +18025,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8591140508651734,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 75.19759368896485,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -18964,6 +18964,707 @@
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 303333437,
+                "ParentUID": 1,
+                "Name": "ExplosiveTrap",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    8.334051132202149,
+                    -0.0021152787376195194,
+                    -0.003418385051190853
+                ],
+                "Rotation": [
+                    1.1533848010003567e-7,
+                    -0.7072290182113648,
+                    0.00017956802912522107,
+                    -0.7069845199584961
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.0,
+                            2.0,
+                            2.0
+                        ],
+                        "ColliderType": 3,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ExplosiveTrap",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "SIZE",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mTriggerArea",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mExplosionArea",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "ACTIVATION PARAMETER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosionWait",
+                                "MemberType": 1,
+                                "VariableData": 1.5
+                            },
+                            {
+                                "VariableName": "mExplosionDuration",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "SIDE EFFECT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDamageAmount",
+                                "MemberType": 1,
+                                "VariableData": 20.0
+                            },
+                            {
+                                "VariableName": "GAME OBJECT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mExplosionPrestartSFX",
+                                "MemberType": 3,
+                                "VariableData": 1093114061
+                            },
+                            {
+                                "VariableName": "mExplosionSFX",
+                                "MemberType": 3,
+                                "VariableData": 401429426
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 401429426,
+                "ParentUID": 303333437,
+                "Name": "TrapSFX",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    -1.695007085800171e-7,
+                    1.9305088520050049,
+                    9.5367431640625e-7
+                ],
+                "Rotation": [
+                    -1.0683010032153107e-11,
+                    -0.70722895860672,
+                    -6.181723222198343e-8,
+                    -0.7069845795631409
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    3.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 801896237,
+                        "Delay": 0.0,
+                        "Duration": 0.10000000149011612,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 1100,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.699999988079071,
+                        "ShapeSize": [
+                            5.0,
+                            5.0,
+                            5.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 2.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3725000023841858,
+                                        0.6800000071525574
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5699999928474426,
+                                        0.48500001430511477
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8774999976158142,
+                                        0.06499999761581421
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.004999995231628418
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5924999713897705,
+                                        0.4449999928474426
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7875000238418579,
+                                        0.04500001668930054
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.48484861850738528,
+                                "Color": [
+                                    1.0,
+                                    0.671999990940094,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 485113868,
+                "ParentUID": 303333437,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    1.1641523856020797e-10,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.009999998845160008,
+                    0.019999999552965165,
+                    0.010000000707805157
+                ],
+                "Tag": "Enemy",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.25,
+                            3.299999952316284,
+                            1.25
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "EnemyExplosiveTrap",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mOuterTrap",
+                                "MemberType": 3,
+                                "VariableData": 303333437
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 561836210,
+                "ParentUID": 485113868,
+                "Name": "OB_exploding_ball_lower_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 635007881,
+                "ParentUID": 561836210,
+                "Name": "OB_exploding_ball_lower_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 285479940,
+                        "MaterialID": 285479945,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 859953332,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 934030076,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -210.64471435546876,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916602849960328,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1017714518,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -93.33578491210938,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916604042053223,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 711590981,
+                "ParentUID": 485113868,
+                "Name": "OB_exploding_ball_upper_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 786085451,
+                "ParentUID": 711590981,
+                "Name": "OB_exploding_ball_upper_part",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 285479946,
+                        "MaterialID": 285479945,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 859953332,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 934030076,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -210.64471435546876,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916602849960328,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1017714518,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -2.5706655979156496,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    -93.33578491210938,
+                                    -0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    1.1916604042053223,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 859953332,
+                "ParentUID": 485113868,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 934030076,
+                "ParentUID": 859953332,
+                "Name": "UpperPart",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.5706655979156496,
+                    235.04681396484376,
+                    -1.1916604042053223
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1017714518,
+                "ParentUID": 859953332,
+                "Name": "LowerPart",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.5706655979156496,
+                    117.73786926269531,
+                    -1.1916604042053223
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1093114061,
+                "ParentUID": 303333437,
+                "Name": "Warining Area",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    7.50809647342976e-7
+                ],
+                "Rotation": [
+                    -0.49737295508384707,
+                    0.5026060938835144,
+                    0.5026134252548218,
+                    0.49738019704818728
+                ],
+                "Scale": [
+                    4.0,
+                    4.0,
+                    4.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": false,
+                        "EmisiveID": 985945546,
+                        "EmisiveName": "Warning_Icon.png",
+                        "EmisiveColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
                     }
                 ]
             }
