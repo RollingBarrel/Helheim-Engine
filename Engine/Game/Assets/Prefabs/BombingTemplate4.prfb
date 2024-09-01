@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 820818704,
+                "UID": 1515756095,
                 "ParentUID": 1,
                 "Name": "BombingTemplate4",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1581915476,
-                "ParentUID": 820818704,
+                "UID": 1383521914,
+                "ParentUID": 1515756095,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -99,8 +99,8 @@
                 ]
             },
             {
-                "UID": 567861709,
-                "ParentUID": 1581915476,
+                "UID": 900676377,
+                "ParentUID": 1383521914,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -131,7 +131,7 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": false,
@@ -140,12 +140,12 @@
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -157,8 +157,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -166,19 +166,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.005361932795494795,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9718496799468994,
+                                "Color": [
+                                    1.0,
+                                    0.48000001907348635,
                                     0.0,
                                     1.0
                                 ]
@@ -188,8 +197,8 @@
                 ]
             },
             {
-                "UID": 108951214,
-                "ParentUID": 820818704,
+                "UID": 444634925,
+                "ParentUID": 1515756095,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -257,8 +266,8 @@
                 ]
             },
             {
-                "UID": 1363312771,
-                "ParentUID": 108951214,
+                "UID": 2096323529,
+                "ParentUID": 444634925,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -289,7 +298,7 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": false,
@@ -298,12 +307,12 @@
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -315,8 +324,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -324,19 +333,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.016085803508758546,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9825736880302429,
+                                "Color": [
+                                    1.0,
+                                    0.5999999642372131,
                                     0.0,
                                     1.0
                                 ]
@@ -346,8 +364,8 @@
                 ]
             },
             {
-                "UID": 1271151308,
-                "ParentUID": 820818704,
+                "UID": 1483982932,
+                "ParentUID": 1515756095,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -415,8 +433,8 @@
                 ]
             },
             {
-                "UID": 428504443,
-                "ParentUID": 1271151308,
+                "UID": 1013808417,
+                "ParentUID": 1483982932,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -447,7 +465,7 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": false,
@@ -456,12 +474,12 @@
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -473,8 +491,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -482,19 +500,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": -0.013404825702309609,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9906164407730103,
+                                "Color": [
+                                    1.0,
+                                    0.527999997138977,
                                     0.0,
                                     1.0
                                 ]
@@ -504,8 +531,8 @@
                 ]
             },
             {
-                "UID": 1160029696,
-                "ParentUID": 820818704,
+                "UID": 531241364,
+                "ParentUID": 1515756095,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -573,8 +600,8 @@
                 ]
             },
             {
-                "UID": 318984114,
-                "ParentUID": 1160029696,
+                "UID": 2111429201,
+                "ParentUID": 531241364,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -605,7 +632,7 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": false,
@@ -614,12 +641,12 @@
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -631,8 +658,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -640,19 +667,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.01608579233288765,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9959783554077148,
+                                "Color": [
+                                    1.0,
+                                    0.5999999642372131,
                                     0.0,
                                     1.0
                                 ]

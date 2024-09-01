@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1473908926,
+                "UID": 313650178,
                 "ParentUID": 1,
                 "Name": "BombingArea",
                 "Enabled": true,
@@ -71,8 +71,8 @@
                 ]
             },
             {
-                "UID": 1124457225,
-                "ParentUID": 1473908926,
+                "UID": 2127903817,
+                "ParentUID": 313650178,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -103,7 +103,7 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": false,
@@ -112,12 +112,12 @@
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -129,8 +129,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -138,19 +138,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.013404825702309609,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9879351258277893,
+                                "Color": [
+                                    1.0,
+                                    0.6240000128746033,
                                     0.0,
                                     1.0
                                 ]
