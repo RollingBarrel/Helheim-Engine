@@ -133,7 +133,7 @@ void EnemyBoss::Update()
 void EnemyBoss::SelectAttack()
 {
     short attack = rand() % 3;
-    //attack = 2;
+    attack = 2;
     /*if (attack == mLastAttack)
     {
         ++attack;
@@ -235,9 +235,13 @@ void EnemyBoss::BombAttack()
 {
     float3 target = mPlayer->GetWorldPosition();
     int index = rand() % mTemplates.size();
+	//index = 1;
     GameObject* bombGO = mTemplates[index];
 	LOG("Bomb index: %d", index);
     bombGO->SetWorldPosition(target);
+	float randRotation = static_cast<float>(rand() % 180);
+	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
+	bombGO->SetWorldRotation(bombRotation);
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
     bombGO->SetEnabled(true);
