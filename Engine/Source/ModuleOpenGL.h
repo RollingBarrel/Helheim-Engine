@@ -131,7 +131,7 @@ public:
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
 
-	void AddParticleSystem(const ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void AddParticleSystem(ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
 	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
@@ -278,7 +278,7 @@ private:
 	OpenGLBuffer* mSpotsBoundingSpheres = nullptr;
 	friend class LightningPanel;
 
-	std::vector<const ParticleSystemComponent*> mParticleSystems;
+	std::vector<ParticleSystemComponent*> mParticleSystems;
 	std::vector<const Trail*> mTrails;
 
 	//void BakeEnvironmentBRDF(unsigned int width, unsigned int height);

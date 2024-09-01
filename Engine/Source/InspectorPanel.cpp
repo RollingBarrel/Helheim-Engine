@@ -1190,12 +1190,11 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	// Image Info.
 	//ImGui::Text("Width:%dpx", imageComponent->GImetImage()->GetWidth()); ImGui::SameLine(); ImGui::Text("Height:%dpx", imageComponent->GetImage()->GetHeight());
 
-	if (ImGui::Checkbox("Mantain Ratio", imageComponent->GetMantainRatio()))
+	bool maintainRatio = imageComponent->GetMantainRatio();
+	if (ImGui::Checkbox("Mantain Ratio", &maintainRatio))
 	{
-		if (imageComponent->GetMantainRatio())
-		{
-			imageComponent->ResizeByRatio();
-		}
+		imageComponent->SetMantainRatio(maintainRatio);
+		if (maintainRatio) imageComponent->ResizeByRatio();
 	}
 
 	// Display options based on the type of the image
@@ -1755,10 +1754,20 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Max Particles");
 	ImGui::SameLine();
 	ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0,200);
+	ImGui::Text("Burst");
+	ImGui::SameLine();
+	ImGui::DragInt("##Burst", &(component->mBurst), 0.1f, 0, 200);
 	ImGui::Text("Emision Rate");
 	ImGui::SameLine(); 
 	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
 	DrawRandomFloat(component->mLifetime, "Lifetime");
+	ImGui::Text("Follow Emitter");
+	ImGui::SameLine();
+	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
+	ImGui::Text("Gravity");
+	ImGui::SameLine();
+	ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
+
 
 	ImGui::Separator();
 	DrawBezierCurve(&(component->mSpeedCurve), "Speed");

@@ -1,4 +1,5 @@
 #include "ParticleSystemComponent.h"
+#include "ParticleSystemComponent.h"
 #include "Particle.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
@@ -25,7 +26,8 @@ ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& 
 Component(owner, ComponentType::PARTICLESYSTEM), mImageName(original.mImageName), mDuration(original.mDuration), mLifetime(original.mLifetime),
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
-mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode)
+mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode), 
+mFollowEmitter(original.mFollowEmitter), mBurst(original.mBurst), mGravity(original.mGravity)
 {
     if (original.mImage)
         mImage = (ResourceTexture*)App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
@@ -37,9 +39,11 @@ ParticleSystemComponent::~ParticleSystemComponent()
 {
     App->GetOpenGL()->RemoveParticleSystem(this);
     App->GetResource()->ReleaseResource(mImage->GetUID());
+    mImage = nullptr;
+
     glDeleteBuffers(1, &mInstanceBuffer);
     glDeleteBuffers(1, &mVBO);
-    for (auto particle : mParticles)
+    for (Particle* particle : mParticles)
     {
         delete particle;
     }
@@ -50,8 +54,6 @@ Component* ParticleSystemComponent::Clone(GameObject* owner) const
 {
     return new ParticleSystemComponent(*this, owner);
 }
-
-
 
 void ParticleSystemComponent::Init()
 {
@@ -96,9 +98,9 @@ void ParticleSystemComponent::Init()
     App->GetOpenGL()->AddParticleSystem(this);
 }
 
-void ParticleSystemComponent::Draw() const
+void ParticleSystemComponent::Draw()
 {
-    if (IsEnabled()) 
+    if (IsEnabled() or mDisabling) 
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
         glDepthMask(GL_FALSE);
@@ -125,7 +127,15 @@ void ParticleSystemComponent::Draw() const
             for (int i = 0; i < mParticles.size(); ++i)
             {
                 float scale = mParticles[i]->GetSize();
-                float3 pos = mParticles[i]->GetPosition();
+                float3 pos;
+                if (mFollowEmitter)
+                {
+                    pos = mOwner->GetWorldPosition() + mParticles[i]->GetPosition();
+                }
+                else
+                {
+                    pos = mParticles[i]->GetPosition();
+                }
                 float3x3 scaleMatrix = float3x3::identity * scale;
                 float4x4 transform;
                 if (mStretchedBillboard) 
@@ -152,7 +162,6 @@ void ParticleSystemComponent::Draw() const
             glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
             glDrawArraysInstanced(GL_TRIANGLES, 0, 6, mParticles.size());
-
         }
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -161,19 +170,12 @@ void ParticleSystemComponent::Draw() const
         glDisable(GL_BLEND);
         glDepthMask(GL_TRUE);
     }
-}
 
-void ParticleSystemComponent::Update()
-{
-    if (IsEnabled())
+    if (mDisabling)
     {
-        mEmitterTime += App->GetDt();
-        mEmitterDeltaTime += App->GetDt();
-        if (mEmitterTime < mDelay) return;
-
         for (int i = 0; i < mParticles.size(); i++)
         {
-            float dt = mParticles[i]->Update(App->GetDt());
+            float dt = mParticles[i]->Update(App->GetDt(), mGravity);
             if (dt >= 1)
             {
                 delete mParticles[i];
@@ -187,36 +189,93 @@ void ParticleSystemComponent::Update()
                 mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
             }
         }
+        if (mParticles.empty())
+        {
+            App->GetOpenGL()->RemoveParticleSystem(this);
+            for (Particle* particle : mParticles)
+            {
+                delete particle;
+            }
+            mParticles.clear();
+            mDisabling = false;
+        }
+    }
+}
+
+void ParticleSystemComponent::Update()
+{
+    if (IsEnabled())
+    {
+        mEmitterTime += App->GetDt();
+        mEmitterDeltaTime += App->GetDt();
+        if (mEmitterTime < mDelay) return;
+
+        for (int i = 0; i < mParticles.size(); i++)
+        {
+            float dt = mParticles[i]->Update(App->GetDt(), mGravity);
+            if (dt >= 1)
+            {
+                delete mParticles[i];
+                mParticles.erase(mParticles.begin() + i);
+                i--;
+            }
+            else
+            {
+                mParticles[i]->SetSpeed(mSpeedCurve.CalculateValue(dt, mParticles[i]->GetInitialSpeed()));
+                mParticles[i]->SetSize(mSizeCurve.CalculateValue(dt, mParticles[i]->GetInitialSize()));
+                mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
+            }
+        }
+
         if (!mLooping and mEmitterTime - mDelay > mDuration) return;
+        
+        if (mIsInBurst)
+        {
+            for (size_t i = 0; i < mBurst; ++i)
+            {
+                if (mParticles.size() < mMaxParticles)
+                {
+                    CreateNewParticle();
+                }
+            }
+            mIsInBurst = false;
+        }
 
         while (mEmitterDeltaTime > 1 / mEmissionRate)
         {
             mEmitterDeltaTime = mEmitterDeltaTime - 1 / mEmissionRate;
+
             if (mParticles.size() < mMaxParticles)
             {
-                // Initializes a particle with a random position, direction and rotation
-                // relative to the shape of emission
-
-                float3 emitionPosition = ShapeInitPosition();
-                float3 emitionDirection = ShapeInitDirection(emitionPosition);
-                float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
-                emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
-                float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
-                emitionDirection = auxDirection.Normalized();
-
-                float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-                float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
-
-                // Create the particle and sets its speed and size 
-                // considering if they are linear or curve
-                Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom());
-                particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
-                particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
-
-                mParticles.push_back(particle);
+                CreateNewParticle();
             }
         }
     }
+}
+
+void ParticleSystemComponent::CreateNewParticle()
+{
+    // Initializes a particle with a random position, direction and rotation
+    // relative to the shape of emission
+    float3 emitionPosition = ShapeInitPosition();
+    float3 emitionDirection = ShapeInitDirection(emitionPosition);
+    if (!mFollowEmitter)
+    {
+        float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
+        emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+    }
+    float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
+    emitionDirection = auxDirection.Normalized();
+
+    float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+    float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
+
+    // Create the particle and sets its speed and size considering if they are linear or curve
+    Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom());
+    particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
+    particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
+
+    mParticles.push_back(particle);
 }
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)
@@ -243,7 +302,9 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddFloat("Duration", mDuration);
     obj.AddFloat("EmissionRate", mEmissionRate);
     obj.AddInt("MaxParticles", mMaxParticles);
+    obj.AddInt("Burst", mBurst);
     obj.AddBool("Looping", mLooping);
+    obj.AddBool("FollowEmitter", mFollowEmitter);
     obj.AddBool("StretchedBillboard", mStretchedBillboard);
     obj.AddFloat("StretchedRatio", mStretchedRatio);
     JsonObject lifetime = obj.AddNewJsonObject("Lifetime");
@@ -267,7 +328,6 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
 
 }
 
-
 void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
     //TODO REDOOO
@@ -280,7 +340,9 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     if (data.HasMember("Duration")) mDuration = data.GetFloat("Duration");
     if (data.HasMember("EmissionRate")) mEmissionRate = data.GetFloat("EmissionRate");
     if (data.HasMember("MaxParticles")) mMaxParticles = data.GetInt("MaxParticles");
+    if (data.HasMember("Burst")) mBurst = data.GetInt("Burst");
     if (data.HasMember("Looping")) mLooping = data.GetBool("Looping");
+    if (data.HasMember("FollowEmitter")) mFollowEmitter = data.GetBool("FollowEmitter");
     if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
     if (data.HasMember("StretchedRatio")) mStretchedRatio = data.GetFloat("StretchedRatio");
     if (data.HasMember("Lifetime")) 
@@ -317,18 +379,18 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
 
 void ParticleSystemComponent::Enable()
 {
-    App->GetOpenGL()->AddParticleSystem(this);
+    if (!mDisabling) App->GetOpenGL()->AddParticleSystem(this);
+    mDisabling = false;
     mEmitterTime = 0.0f;
+    mEmitterDeltaTime = 0.0f;
+    mIsInBurst = mBurst;
 }
 
 void ParticleSystemComponent::Disable()
 {
-    App->GetOpenGL()->RemoveParticleSystem(this);
-    for (Particle* particle : mParticles)
-    {
-        delete particle;
-    }
-    mParticles.clear();
+    mDisabling = true;
+    //App->GetOpenGL()->RemoveParticleSystem(this);
+
 }
 
 float3 ParticleSystemComponent::ShapeInitPosition() const
@@ -375,7 +437,6 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
         return float3(1.0f, 1.0f, 1.0f);
     }
 }
-
 
 float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
 {

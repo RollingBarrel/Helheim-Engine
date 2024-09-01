@@ -14,6 +14,7 @@
 #include "BoxColliderComponent.h"
 #include "CameraComponent.h"
 #include "ScriptComponent.h"
+#include "ImageComponent.h"
 
 #include "AnimationComponent.h"
 
@@ -25,6 +26,7 @@
 #include "Geometry/Plane.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "HudController.h"
 
 #include "State.h"
@@ -59,6 +61,14 @@ CREATE(PlayerController)
     //MEMBER(MemberType::FLOAT, mMaxShield);
     //MEMBER(MemberType::FLOAT, mPlayerSpeed);
 
+    SEPARATOR("SHIELD");
+    MEMBER(MemberType::GAMEOBJECT, mHealParticles);
+    MEMBER(MemberType::GAMEOBJECT, mShieldSpriteSheet);
+
+    SEPARATOR("PICKUPS");
+    MEMBER(MemberType::GAMEOBJECT, mRedBaterryParticles);
+    MEMBER(MemberType::GAMEOBJECT, mBlueBaterryParticles);
+
     SEPARATOR("DASH");
     MEMBER(MemberType::FLOAT, mDashRange);
     MEMBER(MemberType::FLOAT, mDashCoolDown);
@@ -85,6 +95,7 @@ CREATE(PlayerController)
     MEMBER(MemberType::GAMEOBJECT, mGrenadeExplotionPreviewAreaGO);
     MEMBER(MemberType::FLOAT, mGrenadeRange);
     MEMBER(MemberType::FLOAT, mGrenadeCoolDown);
+    MEMBER(MemberType::FLOAT, mGrenadeCursorSpeed);
 
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
@@ -192,7 +203,7 @@ void PlayerController::Start()
 
     mWeapon = mPistol;
     mAttackState->SetCooldown(mWeapon->GetAttackCooldown());
-    mSpecialWeapon = nullptr;
+    mSpecialWeapon = nullptr; 
 
     if (mEquippedMeleeGO && mUnEquippedMeleeGO)
         mEquippedMeleeGO->SetEnabled(false);
@@ -205,6 +216,13 @@ void PlayerController::Start()
         mEquippedSpecialGO->SetEnabled(false);
         mUnEquippedSpecialGO->SetEnabled(false);
     }
+    //HEAL VFX
+    if (mHealParticles) mHealParticles->SetEnabled(false);
+    if (mShieldSpriteSheet) mShieldSpriteSheet->SetEnabled(false);
+
+    //PICKUP VFX
+    if (mRedBaterryParticles) mRedBaterryParticles->SetEnabled(false);
+    if (mBlueBaterryParticles) mBlueBaterryParticles->SetEnabled(false);
     
     //ULTIMATE
     if (mUltimateGO)
@@ -228,7 +246,6 @@ void PlayerController::Start()
     {
         ScriptComponent* script = (ScriptComponent*)mGrenadeGO->GetComponent(ComponentType::SCRIPT);
         mGrenade = (Grenade*)script->GetScriptInstance();
-        mGrenadeGO->SetEnabled(false);
         if (mGrenadeExplotionPreviewAreaGO) mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
     }
 
@@ -609,10 +626,36 @@ void PlayerController::UpdateGrenadeVisuals()
     if (mGrenadeExplotionPreviewAreaGO)
     {
         float3 diff;
+
         if (GameManager::GetInstance()->UsingController())
         {
-            mGrenadePosition = mGameObject->GetWorldPosition() + (mAimPosition - mGameObject->GetWorldPosition()) * mGrenadeRange;
+            float rightX = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+            float rightY = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+
+            if (!(std::abs(rightX) < 0.2f && std::abs(rightY) < 0.2f))
+            {
+                float3 position = mGameObject->GetWorldPosition();
+
+                float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
+                float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
+
+                float3 throwDirection = (cameraFront * rightY + cameraRight * rightX).Normalized();
+
+                float3 movement = throwDirection * mGrenadeCursorSpeed * App->GetDt();
+                mGrenadePosition += movement;
+            }
+
+            float3 diff = mGrenadePosition - mGameObject->GetWorldPosition();
+
+            float distanceSquared = diff.LengthSq();
+            float radiusSquared = mGrenadeRange * mGrenadeRange;
+            if (distanceSquared > radiusSquared)
+            {
+                diff.Normalize();
+                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+            }
         }
+
         else
         {
             diff = mAimPosition - mGameObject->GetWorldPosition();
@@ -630,7 +673,7 @@ void PlayerController::UpdateGrenadeVisuals()
             }
         }
 
-        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, 0.1f, mGrenadePosition.z));
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, mGameObject->GetWorldPosition().y, mGrenadePosition.z));
     }
 }
 
@@ -639,7 +682,7 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     if (mGrenade)
     {
-        mGrenade->SetDestination(mGrenadePosition);
+        mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
     }  
 }
 
@@ -706,6 +749,16 @@ void PlayerController::RechargeShield(float shield)
 
         float healthRatio = mShield / mMaxShield;
         GameManager::GetInstance()->GetHud()->SetHealth(healthRatio);
+        if (mHealParticles) 
+        {
+            mHealParticles->SetEnabled(false);
+            mHealParticles->SetEnabled(true);
+        } 
+        if (mShieldSpriteSheet) 
+        {
+            mShieldSpriteSheet->SetEnabled(true);
+            reinterpret_cast<ImageComponent*>(mShieldSpriteSheet->GetComponent(ComponentType::IMAGE))->PlayAnimation();
+        }
     }
 }
 
@@ -723,22 +776,42 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
         case EnergyType::BLUE:
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
+                if (mBlueBaterryParticles) 
+                {
+                    mBlueBaterryParticles->SetEnabled(false);
+                    mBlueBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mMachinegun;
                 mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
+                if (mBlueBaterryParticles) 
+                {
+                    mBlueBaterryParticles->SetEnabled(false);
+                    mBlueBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mKatana;
             }
             break;
         case EnergyType::RED:
             if (mWeapon->GetType() == Weapon::WeaponType::RANGE)
             {
+                if (mRedBaterryParticles) 
+                {
+                    mRedBaterryParticles->SetEnabled(false);
+                    mRedBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mShootgun;
                 mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
+                if (mRedBaterryParticles) 
+                {
+                    mRedBaterryParticles->SetEnabled(false);
+                    mRedBaterryParticles->SetEnabled(true);
+                }
                 mSpecialWeapon = mHammer;
             }
             break;
@@ -775,6 +848,7 @@ void PlayerController::EnableUltimate(bool enable)
 {
     if (mUltimateGO)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
         mUltimateGO->SetEnabled(enable);
     }
 }

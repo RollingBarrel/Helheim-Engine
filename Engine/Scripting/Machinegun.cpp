@@ -36,6 +36,10 @@ Machinegun::Machinegun()
     {
         mFire->SetEnabled(false);
     }
+
+    mCameraShakeDuration = 0.15f;
+    mCameraShakeStrengh = 0.03f;
+
 }
 
 void Machinegun::Enter()
@@ -86,5 +90,5 @@ void Machinegun::Exit()
 
 void Machinegun::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_MACHINEGUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }

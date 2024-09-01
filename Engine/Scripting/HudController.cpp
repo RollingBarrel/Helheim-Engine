@@ -182,7 +182,12 @@ void HudController::Start()
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
-    if (mInteractGO) mInteractGO->SetEnabled(false);
+    if (mInteractGO) 
+    {
+        mInteractGO->SetEnabled(false);
+        const std::vector<GameObject*> children = mInteractGO->GetChildren();
+        mInteractText = static_cast<TextComponent*>(children[0]->GetComponent(ComponentType::TEXT));
+    }
 
     if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -373,6 +378,11 @@ void HudController::SetDialog()
     mDialog->StartDialog();
 }
 
+void HudController::DisableCollectible()
+{
+    OnCollectibleContinueBtnClick();
+}
+
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
@@ -525,7 +535,16 @@ void HudController::SetScreen(SCREEN name, bool active)
 
 void HudController::SetInteract(bool active)
 {
-    if (mInteractGO) mInteractGO->SetEnabled(active);
+    if (mInteractGO)
+    {
+        if (mInteractText) 
+        {
+           if(GameManager::GetInstance()->UsingController()) mInteractText->SetText("Y to Interact");
+           else mInteractText->SetText("F to Interact");
+        }
+        mInteractGO->SetEnabled(active);
+    }
+        
 }
 
 #pragma region Click Events
@@ -628,8 +647,8 @@ void HudController::OnCollectibleContinueBtnClick()
 {
     if (mCollectibleScreen->IsActive()) {
         SetScreen(SCREEN::COLLECTIBLE, false);
+        GameManager::GetInstance()->SetPaused(false, false);
     }
-    GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void HudController::OnCollectibleContinueBtnHoverOn()

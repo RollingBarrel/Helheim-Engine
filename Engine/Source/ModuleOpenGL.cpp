@@ -1744,6 +1744,7 @@ void ModuleOpenGL::RemoveParticleSystem(const ParticleSystemComponent* component
 		if (mParticleSystems[i] == component)
 		{
 			mParticleSystems.erase(mParticleSystems.begin() + i);
+			break;
 		}
 	}
 }
@@ -1755,6 +1756,7 @@ void ModuleOpenGL::RemoveTrail(const Trail* trail)
 		if (mTrails[i] == trail)
 		{
 			mTrails.erase(mTrails.begin() + i);
+			break;
 		}
 	}
 }
