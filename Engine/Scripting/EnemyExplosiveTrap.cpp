@@ -12,12 +12,12 @@ CREATE(EnemyExplosiveTrap)
 
 void EnemyExplosiveTrap::Update()
 {
-	// DO NOTHING
+	// Do nothing as it is just a trap, but CAN BE HIT as enemies
 }
 
 void EnemyExplosiveTrap::TakeDamage(float damage)
 {
-	// Don not receive damage
+	// Do not receive damages
 	if (!mIsActive)
 	{
 		const ScriptComponent* script = static_cast<ScriptComponent*>(mOuterTrap->GetComponent(ComponentType::SCRIPT));
