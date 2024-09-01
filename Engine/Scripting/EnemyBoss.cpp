@@ -40,6 +40,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
     SEPARATOR("BOMBS");
     MEMBER(MemberType::FLOAT, mBombsDuration);
+    MEMBER(MemberType::FLOAT, mBombsDelay);
     MEMBER(MemberType::FLOAT, mBombDamage);
     SEPARATOR("LASER");
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
@@ -57,6 +58,8 @@ EnemyBoss::EnemyBoss(GameObject* owner) : Enemy(owner)
 
 void EnemyBoss::Start()
 {
+    srand(static_cast<unsigned int>(time(0)));
+
     Enemy::Start();
     mCurrentState = EnemyState::IDLE;
 
@@ -82,8 +85,6 @@ void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
     if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
-
-    
 
     if (!mBeAttracted)
     {
@@ -230,7 +231,6 @@ void EnemyBoss::LaserAttack()
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (laserScript) laserScript->Init(mLaserDamage,mLaserDuration,mLaserDistance,mLaserSpeed);
     }
-    
 }
 
 void EnemyBoss::BombAttack()
@@ -238,7 +238,11 @@ void EnemyBoss::BombAttack()
     float3 target = mPlayer->GetWorldPosition();
     int index = rand() % mTemplates.size();
     GameObject* bombGO = mTemplates[index];
+	//LOG("Bomb index: %d", index);
     bombGO->SetWorldPosition(target);
+	float randRotation = static_cast<float>(rand() % 180);
+	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
+	bombGO->SetWorldRotation(bombRotation);
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
     bombGO->SetEnabled(true);
@@ -256,5 +260,4 @@ void EnemyBoss::Death()
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->Victory();
     }
-
 }
