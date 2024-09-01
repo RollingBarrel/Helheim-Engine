@@ -3,42 +3,50 @@
 #include "Macros.h"
 #include "float3.h"
 
-class BoxColliderComponent;
 class GameObject;
-struct CollisionData;
 
 GENERATE_BODY(BossLaser);
+
+enum class LaserState
+{
+    IDLE,
+    CHARGING,
+    FIRING,
+    COOLDOWN
+};
+
 class BossLaser : public Script
 {
-	FRIEND(BossLaser)
+    FRIEND(BossLaser)
+
 public:
-	BossLaser(GameObject* owner);
-	~BossLaser();
+    BossLaser(GameObject* owner);
+    ~BossLaser() {}
 
-	void Start() override;
-	void Update() override;
-
-	void Init(float damage, float range);
-
-	void OnCollisionEnter(CollisionData* collisionData);
+    void Start() override;
+    void Update() override;
+    void Init(float damage, float duration, float distance, float speed);
 
 private:
-	BoxColliderComponent* mCollider = nullptr;
-	float mDamage = 5.0f;
-	float mAngle = 90.0f;
-	float mSpeed = 25.0f;
-	float mRange = 10.0f;
-	unsigned int mIframes = 0;
-	float mSwipeProgress = 0.0f;
 
-	//Gameobject
-	GameObject* mLaserOrigin = nullptr;
-	GameObject* mLaserTrail = nullptr;
-	GameObject* mLaserEnd = nullptr;
-	GameObject* mLaserCharge = nullptr;
+    void Charge();
+    void Fire();
+    void Cooldown();
+    void SpawnEyeBalls();
+    void ReturnEyeBallsToPool();
 
+    LaserState mCurrentState = LaserState::IDLE;
 
-	//Laser WorkAround
-	bool mMoveTrail = false;
+    float mDamage = 0.0f;
+    float mLaserDistance = 0.0f;
+    float mLaserSpeed = 0.0f;
+    float mBossDistance = 5.0f;
+    float mStateTime = 0.0f;
+    float mChargeTime = 1.0f;
+    float mLaserEnemyDuration = 0.0f;
+    float mCooldownDuration = 2.0f;
 
+    int mPoolSize = 6; 
+    std::vector<GameObject*> mActiveEyeBalls;      
+    std::vector<GameObject*> mInactiveEyeBall;   
 };

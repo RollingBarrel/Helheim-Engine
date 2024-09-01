@@ -86,7 +86,6 @@ void ElectricTrapController::ActiveTrap(bool active)
 {
     if (active)
     {
-        LOG("Trap active");
         if (mSfx)
         {
             mSfx->SetEnabled(true);
@@ -96,7 +95,6 @@ void ElectricTrapController::ActiveTrap(bool active)
     else
     {
         mInTrap.clear();
-        LOG("Trap not active");
         if (mSfx)
         {
             mSfx->SetEnabled(false);
