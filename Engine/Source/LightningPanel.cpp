@@ -126,6 +126,12 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1f(0, openGl->mVolIntensity);
 		glUseProgram(0);
 	}
+	if (ImGui::DragFloat("Anisotropy (Mie scattering)", &openGl->mVolAnisotropy, 0.05f, 0.0f, 1.0f))
+	{
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1f(0, openGl->mVolAnisotropy);
+		glUseProgram(0);
+	}
 
 	ImGui::Separator();
 	ImGui::Text("Ambient Occlusion");

@@ -405,6 +405,9 @@ bool ModuleOpenGL::Init()
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform1ui(2, CULL_LIST_LIGHTS_SIZE);
 	glUniform2ui(4, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
+	glUseProgram(mVolLightProgramId);
+	glUniform1ui(5, CULL_LIST_LIGHTS_SIZE);
+	glUniform2ui(7, CULL_LIGHT_TILE_SIZEX, CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 
 
@@ -488,6 +491,7 @@ bool ModuleOpenGL::Init()
 	glUniform1f(0, mBaseExtCoeff);
 	glUniform1f(2, mNoiseAmount);
 	glUniform1f(3, mVolIntensity);
+	glUniform1f(4, mVolAnisotropy);
 	glUseProgram(0);
 
 	return true;
@@ -668,6 +672,8 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
 	glUniform2ui(3, (screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
+	glUseProgram(mVolLightProgramId);
+	glUniform2ui(6, (screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX, (screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
 	glUseProgram(0);
 }
 
@@ -1472,18 +1478,18 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 	
-	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
-	//glUseProgram(mVolLightProgramId);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, mGDepth);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	//static float time = App->GetDt();
-	//glUniform1f(1, time);
-	//time += App->GetDt();
-	//glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	//glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	//glPopDebugGroup();
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
+	glUseProgram(mVolLightProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	static float time = App->GetDt();
+	glUniform1f(1, time);
+	time += App->GetDt();
+	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glPopDebugGroup();
 
 
 

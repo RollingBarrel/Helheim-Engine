@@ -292,6 +292,7 @@ private:
 	float mBaseExtCoeff = 0.1f;
 	float mNoiseAmount = 1.0f;
 	float mVolIntensity = 1.0f;
+	float mVolAnisotropy = 0.35f;
 };
 
 #endif /* _MODULEOPENGL_H_ */
