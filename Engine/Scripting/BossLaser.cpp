@@ -11,10 +11,8 @@
 CREATE(BossLaser)
 {
     CLASS(owner);
-    MEMBER(MemberType::FLOAT, mDistance);
-    MEMBER(MemberType::FLOAT, mCooldownDuration);
-    MEMBER(MemberType::FLOAT, mChargeTime);
-    MEMBER(MemberType::FLOAT, mLaserEnemyDuration);
+    MEMBER(MemberType::FLOAT, mBossDistance);
+    MEMBER(MemberType::INT, mPoolSize);
     END_CREATE;
 }
 
@@ -28,11 +26,12 @@ void BossLaser::Start()
 
     for (size_t i = 0; i < mPoolSize; ++i)
     {
-        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb", nullptr);
+        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb",mGameObject);
         if (eyeBall)
         {
             eyeBall->SetEnabled(false);
-            mEyeBallPool.push_back(eyeBall);
+            eyeBall->SetLocalScale(float3::one * 0.5f);
+            mInactiveEyeBall.push_back(eyeBall);
         }
     }
 }
@@ -67,10 +66,12 @@ void BossLaser::Update()
     }
 }
 
-void BossLaser::Init(float damage, float duartion)
+void BossLaser::Init(float damage, float duration, float distance,float speed)
 {
     mDamage = damage;
-    mLaserEnemyDuration = duartion;
+    mLaserEnemyDuration = duration;
+    mLaserDistance = distance;
+    mLaserSpeed = speed;    
     Charge();
 }
 
@@ -78,8 +79,7 @@ void BossLaser::Charge()
 {
     mCurrentState = LaserState::CHARGING;
     mStateTime = 0.0f;
-
-    // Play VFX energy coming from the ground to the torso.
+    //TODO: Play charging animation
 }
 
 void BossLaser::Fire()
@@ -94,42 +94,35 @@ void BossLaser::Cooldown()
     mCurrentState = LaserState::COOLDOWN;
     mStateTime = 0.0f;
 
-    for (GameObject* eyeBall : mEyeBalls)
+    for (GameObject* eyeBall : mActiveEyeBalls)
     {
         eyeBall->SetEnabled(false);
     }
-    mEyeBalls.clear();
+    mActiveEyeBalls.clear();
 
     ReturnEyeBallsToPool();
 }
+
 void BossLaser::SpawnEyeBalls()
 {
-    //Por si queremos mas eyeBalls
-    //float angles[] = { -75.0f, -45.0f, -15.0f, 15.0f, 45.0f, 75.0f };
-    //float attackAngles[] = { 45.f, 45.f, 45.f, 90.f, 90.f, 90.f };
-    //float rotationDirections[] = { 1.0f, 1.0f, 1.0f, -1.0f, -1.0f, -1.0f };
+    float totalArc = 180.0f;
 
-    float angles[] = { -75.0f, -15.0f, 15.0f, 75.0f };
-    float attackAngles[] = { 45.f, 45.f, 90.f, 90.f };
-    float rotationDirections[] = { 1.0f, 1.0f, -1.0f, -1.0f };
+    float angleStep = totalArc / (mPoolSize - 1);
 
     float3 bossPosition = mGameObject->GetWorldPosition();
     float3 bossFront = mGameObject->GetFront();
     float3 bossRight = mGameObject->GetRight();
 
-    for (size_t i = 0; i < mPoolSize; ++i)
+    for (int i = 0; i < mPoolSize; ++i)
     {
-        if (i >= mEyeBallPool.size())
+        if (i >= mInactiveEyeBall.size())
             break;
 
-        GameObject* eyeBall = mEyeBallPool[i];
+        GameObject* eyeBall = mInactiveEyeBall[i];
 
-        float angle = DegToRad(angles[i]);
-        float attackAngle = attackAngles[i];
-        float rotationDirection = rotationDirections[i];
-
-        float3 positionOffset = bossFront * std::cos(angle) * mDistance + bossRight * std::sin(angle) * mDistance;
-        positionOffset.y = -2.0f;
+        float angle = DegToRad(-90.0f + i * angleStep); 
+        float3 positionOffset = bossFront * std::cos(angle) * mBossDistance + bossRight * std::sin(angle) * mBossDistance;
+        positionOffset.y = -1.0f;
 
         eyeBall->SetWorldPosition(bossPosition + positionOffset);
         eyeBall->SetEnabled(true);
@@ -137,20 +130,20 @@ void BossLaser::SpawnEyeBalls()
         BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (eyeBallScript)
         {
-            eyeBallScript->Init(mDamage, mLaserEnemyDuration, attackAngle, rotationDirection);
+            eyeBallScript->Init(mDamage, mLaserEnemyDuration, mLaserDistance, mLaserSpeed, angle);
         }
 
-        mEyeBalls.push_back(eyeBall);
+        mActiveEyeBalls.push_back(eyeBall);
     }
 }
 
 
-
 void BossLaser::ReturnEyeBallsToPool()
 {
-    for (GameObject* eyeBall : mEyeBalls)
+    for (GameObject* eyeBall : mActiveEyeBalls)
     {
         eyeBall->SetEnabled(false);
+        mInactiveEyeBall.push_back(eyeBall);  
     }
-    mEyeBalls.clear();
+    mActiveEyeBalls.clear();
 }

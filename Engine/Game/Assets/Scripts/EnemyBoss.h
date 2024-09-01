@@ -29,7 +29,7 @@ private:
 
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
-	float mLaserDamage = 2.0f;
+	float mBombsDuration = 6.0f;
 	float mBombDamage = 5.0f;
 	int mLastAttack = -1;
 	unsigned int mStage = 0;
@@ -43,8 +43,12 @@ private:
 	TimerScript mBulletHellTimer;
 	float mBulletHellCooldown = 0.2f;
 	float mBulletHellDuration = 6.0f;
-	float mLaserDuration = 3.25f;
-	float mBombsDuration = 6.0f;
+
+	//Laser
+	float mLaserDuration = 5.0f;
+	float mLaserDamage = 3.0f;
+	float mLaserSpeed = 2.0f;
+	float mLaserDistance = 10.0f;
 
 	const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
 	std::vector<GameObject*> mTemplates;

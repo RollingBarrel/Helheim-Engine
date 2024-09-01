@@ -25,7 +25,7 @@ public:
 
     void Start() override;
     void Update() override;
-    void Init(float damage,float duration);
+    void Init(float damage, float duration, float distance, float speed);
 
 private:
 
@@ -38,14 +38,17 @@ private:
 
     LaserState mCurrentState = LaserState::IDLE;
 
-    float mDistance = 7.0f;
     float mDamage = 0.0f;
+    float mLaserDistance = 0.0f;
+    float mLaserSpeed = 0.0f;
+
+    float mBossDistance = 5.0f;
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;
-    float mLaserEnemyDuration = 15.0f;
+    float mLaserEnemyDuration = 0.0f;
     float mCooldownDuration = 2.0f;
 
-    std::vector<GameObject*> mEyeBalls;
-    std::vector<GameObject*> mEyeBallPool;
-    int mPoolSize = 4;
+    int mPoolSize = 6; 
+    std::vector<GameObject*> mActiveEyeBalls;      
+    std::vector<GameObject*> mInactiveEyeBall;   
 };

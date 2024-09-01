@@ -18,7 +18,7 @@ public:
     void Start() override;
     void Update() override;
 
-    void Init(float damage, float duration, float rotation, float rotationDirection);
+    void Init(float damage, float duration,float distance,float speed, float rotation);
 
 private:
 
@@ -26,24 +26,21 @@ private:
     void ActivateLaserVFX();
     void DisableLaserVFX();
     void UpdateLaser();
-    float mDamage = 0.0f;
-    float mInitRotation = 0.0f;
+
 
     float mAimTime = 0.0f;
     TimerScript mAimTimer;
 
-    float mDistance = 10.0f;
-    float mDuration = 5.0f;
-    float mRotationSpeed = 1.0f;
+    float mDamage = 0.0f;
+    float mInitRotation = 0.0f;
+    float mDistance = 0.0f;
+    float mDuration = 0.0f;
+    float mRotationSpeed = 0.0f;
+
     float mCurrentRotation = 0.0f;
     float mInitialRotation = 0.0f;
-    float mRotationRange = 45.0f;
-    float mRotationDirection = 0.0f;
 
     float mElapsedTime = 0.0f;
-    bool mIsRotating = false;
-    bool mMoveTrail = false;
-    bool mDoDamage = false; 
 
     GameObject* mLaserOrigin = nullptr;
     GameObject* mLaserCharge = nullptr;

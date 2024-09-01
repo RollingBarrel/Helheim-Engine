@@ -42,9 +42,11 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mBombsDuration);
     MEMBER(MemberType::FLOAT, mBombDamage);
     SEPARATOR("LASER");
+    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
     MEMBER(MemberType::FLOAT, mLaserDuration);
     MEMBER(MemberType::FLOAT, mLaserDamage);
-    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
+    MEMBER(MemberType::FLOAT, mLaserDistance);
+    MEMBER(MemberType::FLOAT, mLaserSpeed);
 
     END_CREATE;
 }
@@ -146,6 +148,7 @@ void EnemyBoss::SelectAttack()
     case 1:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
         if (mAnimationComponent) mAnimationComponent->SetAnimSpeed(LASER_ANIMATION / mAttackDuration);
+        LOG("Laser attack");
         LaserAttack();
         mAttackDuration = mLaserDuration;
         break;
@@ -156,23 +159,25 @@ void EnemyBoss::SelectAttack()
         break;
     case 0:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
-        StartBulletAttack();
+        //StartBulletAttack();
         mAttackDuration = mBulletHellDuration;
         break;
     case 10:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
+        LOG("Laser attack");
         LaserAttack();
-        StartBulletAttack();
+        //StartBulletAttack();
         mAttackDuration = Max(mLaserDuration, mBulletHellDuration);
         break;
     case 11:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
-        StartBulletAttack();
+        //StartBulletAttack();
         BombAttack();
         mAttackDuration = Max(mBombsDuration, mBulletHellDuration);
         break;
     case 12:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
+        LOG("Laser attack");
         LaserAttack();
         BombAttack();
         mAttackDuration = Max(mLaserDuration, mBombsDuration);
@@ -181,9 +186,10 @@ void EnemyBoss::SelectAttack()
     case 21:
     case 22:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
+        LOG("Laser attack");
         LaserAttack();
         BombAttack();
-        StartBulletAttack();
+        //StartBulletAttack();
         mAttackDuration = Max(mLaserDuration, mBulletHellDuration, mBombsDuration);
         break;
     }
@@ -226,7 +232,7 @@ void EnemyBoss::LaserAttack()
     if (mLaserGO)
     {
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) laserScript->Init(mLaserDamage,mLaserDuration);
+        if (laserScript) laserScript->Init(mLaserDamage,mLaserDuration,mLaserDistance,mLaserSpeed);
     }
     
 }

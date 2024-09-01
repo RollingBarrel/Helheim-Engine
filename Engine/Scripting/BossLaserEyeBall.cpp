@@ -16,12 +16,10 @@ CREATE(BossLaserEyeBall)
     MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
     MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
     MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
-    SEPARATOR("STATS");
-    MEMBER(MemberType::FLOAT, mDamage);
     END_CREATE;
 }
 
-BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner), mMoveTrail(false)
+BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner)
 {
 }
 
@@ -54,14 +52,14 @@ void BossLaserEyeBall::Update()
     RotateLaser();  
 }
 
-void BossLaserEyeBall::Init(float damage, float duration, float rotation, float rotationDirection)
+void BossLaserEyeBall::Init(float damage, float duration, float distance, float speed, float rotation)
 {
     mDamage = damage;
     mDuration = duration;
-    mRotationSpeed = 1.0f * rotationDirection;
+    mDistance = distance;
+    mRotationSpeed = speed;
     mInitRotation = rotation;
     mCurrentRotation = mInitRotation;
-    mRotationDirection = rotationDirection;
 
     ActivateLaserVFX();
     mElapsedTime = 0.0f;
