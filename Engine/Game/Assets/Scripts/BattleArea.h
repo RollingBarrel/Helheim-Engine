@@ -9,7 +9,8 @@ class BoxColliderComponent;
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
 {
-	FRIEND(BattleArea)
+ FRIEND(BattleArea)
+
 public:
 	BattleArea(GameObject* owner);
 	~BattleArea();
@@ -28,9 +29,10 @@ private:
 	void UpdateTrapNumber();
 	void CloseDoors(bool close);
 
-	int mMaxSimulNumEnemies = 0;
 	int mCurrentEnemies = 0;
-	int mTotalNumEnemies = 0;
+	int mWavesRounds = 0;
+	int mCurrentSpawnerCycles = 0;
+	int mSpawnerCycles = 0;
 	int mCurrentExplosiveEnemies = 0;
 	int mCurrentTraps = 0;
 	bool mHasBeenActivated = false;
