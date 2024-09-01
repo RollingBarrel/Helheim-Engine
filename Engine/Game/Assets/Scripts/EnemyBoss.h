@@ -47,7 +47,7 @@ private:
 	float mLaserDuration = 3.25f;
 	float mBombsDuration = 6.0f;
 
-	const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
+	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
 	float mBulletHellAngleSpread = 180;

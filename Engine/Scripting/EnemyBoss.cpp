@@ -133,7 +133,6 @@ void EnemyBoss::Update()
 void EnemyBoss::SelectAttack()
 {
     short attack = rand() % 3;
-	attack = 2;
     /*if (attack == mLastAttack)
     {
         ++attack;
