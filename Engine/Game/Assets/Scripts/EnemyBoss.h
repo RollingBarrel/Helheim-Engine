@@ -28,7 +28,6 @@ private:
 
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
-	float mLaserDamage = 2.0f;
 	float mBombDamage = 8.0f;
 	EnemyState mCurrentState = EnemyState::IDLE;
 	int mLastAttack = -1;
