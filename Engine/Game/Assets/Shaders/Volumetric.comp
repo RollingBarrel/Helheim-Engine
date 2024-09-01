@@ -176,18 +176,26 @@ float sampleIGN(vec2 pixelXY, float frameTime)
 
 bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 {
+	bool ret = false;
 	//Point Lights
 	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	{
-		PointLight pLight = pLights[idx];
-		vec3 oc = pLight.pos.xyz - o;
-		float t1 = dot(oc, rayDir);
-		vec3 k = o + t1*ray;
-
+		vec4 pLight = pLights[idx].pos;
+		vec3 L = pLight.xyz - o;
+		float tca = dot(L, rayDir);
+		float r2 = pLight.w * pLight.w;
+		float d2 =  dot(L, L) - tca * tca;
+		if(d2 > r2)
+			break;
+		float thc = sqrt(r2 - d2);
+		t0 = tca - thc;
+		t1 = tca + thc;
+		ret = true;
 		++i;
 	}
-	return false;
+
+	return ret;
 }
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
