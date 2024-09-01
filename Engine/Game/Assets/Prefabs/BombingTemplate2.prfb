@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2087506339,
+                "UID": 1757801653,
                 "ParentUID": 1,
                 "Name": "BombingTemplate2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1616914098,
-                "ParentUID": 2087506339,
+                "UID": 1362400092,
+                "ParentUID": 1757801653,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -67,14 +67,9 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -104,8 +99,8 @@
                 ]
             },
             {
-                "UID": 1149663665,
-                "ParentUID": 1616914098,
+                "UID": 816547550,
+                "ParentUID": 1362400092,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -138,7 +133,9 @@
                         "Duration": 1.5,
                         "EmissionRate": 10.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
@@ -191,8 +188,8 @@
                 ]
             },
             {
-                "UID": 498265687,
-                "ParentUID": 2087506339,
+                "UID": 270346903,
+                "ParentUID": 1757801653,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -228,14 +225,9 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -265,8 +257,8 @@
                 ]
             },
             {
-                "UID": 2014123720,
-                "ParentUID": 498265687,
+                "UID": 1853528443,
+                "ParentUID": 270346903,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -299,7 +291,9 @@
                         "Duration": 1.5,
                         "EmissionRate": 10.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
@@ -352,8 +346,8 @@
                 ]
             },
             {
-                "UID": 1476068730,
-                "ParentUID": 2087506339,
+                "UID": 1306144239,
+                "ParentUID": 1757801653,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -389,14 +383,9 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -426,8 +415,8 @@
                 ]
             },
             {
-                "UID": 924646508,
-                "ParentUID": 1476068730,
+                "UID": 775677938,
+                "ParentUID": 1306144239,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -460,7 +449,9 @@
                         "Duration": 1.5,
                         "EmissionRate": 10.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
@@ -513,8 +504,8 @@
                 ]
             },
             {
-                "UID": 290096812,
-                "ParentUID": 2087506339,
+                "UID": 220844287,
+                "ParentUID": 1757801653,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -550,14 +541,9 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -587,8 +573,8 @@
                 ]
             },
             {
-                "UID": 1841252692,
-                "ParentUID": 290096812,
+                "UID": 1822614634,
+                "ParentUID": 220844287,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -621,7 +607,9 @@
                         "Duration": 1.5,
                         "EmissionRate": 10.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {

@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 106400762,
+                "UID": 1473908926,
                 "ParentUID": 1,
                 "Name": "BombingArea",
                 "Enabled": true,
@@ -34,19 +34,14 @@
                         "ScriptName": "BombBoss",
                         "ScriptVariables": [
                             {
-                                "VariableName": "mArea",
+                                "VariableName": "mRadius",
                                 "MemberType": 1,
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
@@ -76,8 +71,8 @@
                 ]
             },
             {
-                "UID": 189737099,
-                "ParentUID": 106400762,
+                "UID": 1124457225,
+                "ParentUID": 1473908926,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -110,7 +105,9 @@
                         "Duration": 1.5,
                         "EmissionRate": 10.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
