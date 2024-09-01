@@ -5,9 +5,11 @@ layout(location = 1) out vec4 outSpecularRough;
 layout(location = 2) out vec4 outNormal;
 layout(location = 3) out vec4 outEmissive;
 
-layout(std140, binding = 0) uniform CameraMatrices{
+layout(std140, binding = 0) uniform CameraMatrices
+{
 	mat4 view;
 	mat4 proj;
+	mat4 invView;
 };
 
 
@@ -25,7 +27,7 @@ layout(location = 12) uniform bool hasSpecular;
 layout(location = 13) uniform bool hasNormal;
 layout(location = 14) uniform bool hasEmisive;
 
-layout(location = 15) uniform mat4 invView;
+//layout(location = 15) uniform mat4 invView;
 layout(location = 16) uniform mat4 invModel;
 
 

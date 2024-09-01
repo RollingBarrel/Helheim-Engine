@@ -4,6 +4,8 @@
 
 class AnimationStateMachine;
 class GameObject;
+class BoxColliderComponent;
+struct CollisionData;
 
 GENERATE_BODY(EnemyRobotRange);
 class EnemyRobotRange : public Enemy
@@ -15,9 +17,12 @@ public:
 	~EnemyRobotRange() {}
 
 private:
+	void Start() override;
 	void Attack() override;
 	void RangeAttack();
+	void OnCollisionEnter(CollisionData* collisionData);
 
+	BoxColliderComponent* mCollider = nullptr;
 	float mRangeDamage = 15.0f;
 	float mBulletSpeed = 15.0f;
 	float mTimerDisengage = 0.0f;

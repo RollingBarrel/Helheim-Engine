@@ -26,11 +26,12 @@ bool ModuleAudio::Init()
 	CheckError( mSystem->getCoreSystem(&mCoreSystem));
 
 	// Load bank
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/SFX.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank));
-	CheckError( mSystem->loadBankFile(("Assets/FMOD/Vehicles.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mVehicleBank) );
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/Master.strings.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mStringBank) );
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/Master.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMasterBank) );
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/sfx.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mSFXBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/music.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mMusicBank));
+	CheckError( mSystem->loadBankFile(("Assets/FMOD/Desktop/amb.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mAmbBank));
+	CheckError(mSystem->loadBankFile(("Assets/FMOD/Desktop/ui.bank"), FMOD_STUDIO_LOAD_BANK_NORMAL, &mUiBank));
 
 	// Set volume lower by default
 	FMOD::Studio::Bus* masterBus = nullptr;

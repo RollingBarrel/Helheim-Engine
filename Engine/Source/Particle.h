@@ -8,7 +8,7 @@ public:
     Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime);
     ~Particle();
 
-    float Update(float deltaTime);
+    float Update(float deltaTime, float gravity);
 
     const float3& GetPosition() const { return mPosition; }
     const float3& GetDirection() const { return mDirection; }

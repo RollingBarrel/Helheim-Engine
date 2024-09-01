@@ -14,7 +14,6 @@ CREATE(BombBoss)
 {
 	CLASS(owner);
 	MEMBER(MemberType::FLOAT, mRadius);
-	MEMBER(MemberType::FLOAT, mDamage);
 	MEMBER(MemberType::FLOAT, mTimeDelay);
 	END_CREATE;
 }
@@ -73,12 +72,13 @@ void BombBoss::Update()
 	}
 }
 
-void BombBoss::Init(float3 bombOrigin)
+void BombBoss::Init(float3 bombOrigin, float damage)
 {
 	mGameObject->SetEnabled(true);
 	mHasExploded = false;
 	mTimePassed = 0.0f;
 	mBombOrigin = bombOrigin;
+	mDamage = damage;
 	for (Component* particlecomponent : mExplosionParticles)
 	{
 		particlecomponent->GetOwner()->SetEnabled(false);

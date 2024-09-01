@@ -20,11 +20,9 @@ public:
 
 	bool IsReady() override;
 
-	TimerScript mTimer;
-
-	float mUltimateDuration;
-
 private:
 	UltimateAttack* mUltimateScript = nullptr;
+	TimerScript mTimer;
+	float mUltimateDuration;
 };
 
