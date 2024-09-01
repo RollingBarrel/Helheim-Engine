@@ -1,9 +1,9 @@
 #include "BossLaser.h"
 #include "Application.h"
 #include "GameObject.h"
-#include "BoxColliderComponent.h"
 #include "ModuleScene.h"
 #include "ScriptComponent.h"
+#include "GameManager.h"
 
 #include "MathFunc.h"
 #include "BossLaserEyeBall.h"
@@ -38,6 +38,8 @@ void BossLaser::Start()
 
 void BossLaser::Update()
 {
+    if (GameManager::GetInstance()->IsPaused()) return;
+
     float deltaTime = App->GetDt();
     mStateTime += deltaTime;
 
@@ -79,7 +81,6 @@ void BossLaser::Charge()
 {
     mCurrentState = LaserState::CHARGING;
     mStateTime = 0.0f;
-    //TODO: Play charging animation
 }
 
 void BossLaser::Fire()
@@ -106,7 +107,6 @@ void BossLaser::Cooldown()
 void BossLaser::SpawnEyeBalls()
 {
     float totalArc = 180.0f;
-
     float angleStep = totalArc / (mPoolSize - 1);
 
     float3 bossPosition = mGameObject->GetWorldPosition();

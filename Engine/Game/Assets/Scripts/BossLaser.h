@@ -32,7 +32,6 @@ private:
     void Charge();
     void Fire();
     void Cooldown();
-
     void SpawnEyeBalls();
     void ReturnEyeBallsToPool();
 
@@ -41,7 +40,6 @@ private:
     float mDamage = 0.0f;
     float mLaserDistance = 0.0f;
     float mLaserSpeed = 0.0f;
-
     float mBossDistance = 5.0f;
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;

@@ -26,31 +26,57 @@ BossLaserEyeBall::BossLaserEyeBall(GameObject* owner) : Script(owner)
 void BossLaserEyeBall::Start()
 {
     mElapsedTime = 0.0f;
-    mCurrentRotation = 90.0f;
+    mCanDamage = false;
 
-    if (mLaserOrigin) mLaserOrigin->SetEnabled(false);
-    if (mLaserCharge)
-    {
-        mLaserCharge->SetEnabled(false);
-        if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
-    }
-    if (mLaserEnd) mLaserEnd->SetEnabled(false);
 }
 
 void BossLaserEyeBall::Update()
 {
+    if (GameManager::GetInstance()->IsPaused()) return;
+
     float deltaTime = App->GetDt();
     mElapsedTime += deltaTime;
 
-    if (mElapsedTime >= mDuration)
+    switch (mCurrentState)
     {
-        DisableLaserVFX();
-        mGameObject->SetEnabled(false);
-        return;
-    }
+    case LaserEyeBallState::IDLE:
 
-    RotateLaser();  
+        break;
+
+    case LaserEyeBallState::CHARGING:
+
+        Charge();
+
+        if (mElapsedTime >= mAimTime) 
+        {
+            mCurrentState = LaserEyeBallState::FIRING;
+            mElapsedTime = 0.0f; 
+        }
+        break;
+
+    case LaserEyeBallState::FIRING:
+        ActivateLaserVFX();
+        RotateLaser();
+        UpdateLaser(); 
+
+        if (mElapsedTime >= mDuration) 
+        {
+            mCurrentState = LaserEyeBallState::COOLDOWN;
+            mElapsedTime = 0.0f; 
+            DisableLaserVFX();   
+        }
+        break;
+
+    case LaserEyeBallState::COOLDOWN:
+        if (mElapsedTime >= mAttackCoolDown) 
+        {
+            mCurrentState = LaserEyeBallState::IDLE;
+            mGameObject->SetEnabled(false); 
+        }
+        break;
+    }
 }
+
 
 void BossLaserEyeBall::Init(float damage, float duration, float distance, float speed, float rotation)
 {
@@ -61,8 +87,14 @@ void BossLaserEyeBall::Init(float damage, float duration, float distance, float 
     mInitRotation = rotation;
     mCurrentRotation = mInitRotation;
 
-    ActivateLaserVFX();
+    mAttackCoolDownTimer.Reset(); 
+
+    mCurrentState = LaserEyeBallState::CHARGING;
     mElapsedTime = 0.0f;
+    mCanDamage = true;
+    DisableLaserVFX();
+
+
 }
 
 void BossLaserEyeBall::RotateLaser()
@@ -87,22 +119,11 @@ void BossLaserEyeBall::RotateLaser()
     }
 
     mGameObject->SetLocalRotation((float3(0, mCurrentRotation, 0)));
-
-    if (mCurrentRotation >= minRotation && mCurrentRotation <= maxRotation)
-    {
-        ActivateLaserVFX();
-        UpdateLaser();
-    }
-    else
-    {
-        DisableLaserVFX();
-    }
 }
 
 void BossLaserEyeBall::ActivateLaserVFX()
 {
     if (mLaserOrigin) mLaserOrigin->SetEnabled(true);
-    if (mLaserCharge) mLaserCharge->SetEnabled(true);
     if (mLaserEnd) mLaserEnd->SetEnabled(true);
 }
 
@@ -115,14 +136,19 @@ void BossLaserEyeBall::DisableLaserVFX()
 
 void BossLaserEyeBall::UpdateLaser()
 {
+    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
+    {
+        mCanDamage = true; 
+    }
+
     Hit hit;
     Ray ray;
-    ray.dir = mGameObject->GetFront(); 
+    ray.dir = mGameObject->GetFront();
     ray.pos = mLaserOrigin->GetWorldPosition();
 
     Physics::Raycast(hit, ray, mDistance);
 
-    if (hit.IsValid())
+    if (mCanDamage && (hit.IsValid()))
     {
         if (hit.mGameObject->GetTag().compare("Player") == 0)
         {
@@ -132,6 +158,8 @@ void BossLaserEyeBall::UpdateLaser()
             if (!(player->GetPlayerLowerState()->GetType() == StateType::DASH))
             {
                 player->TakeDamage(mDamage);
+                mCanDamage = false;
+                mAttackCoolDownTimer.Reset();
             }
         }
         mLaserEnd->SetWorldPosition(hit.mHitPoint);
@@ -141,4 +169,10 @@ void BossLaserEyeBall::UpdateLaser()
         float3 originPosition = mLaserOrigin->GetLocalPosition();
         mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mDistance));
     }
+    
+}
+
+void BossLaserEyeBall::Charge()
+{
+  if (mLaserCharge) mLaserCharge->SetEnabled(true); 
 }

@@ -153,30 +153,36 @@ void EnemyBoss::SelectAttack()
         break;
     case 2:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-        BombAttack();
+        //BombAttack();
+        LaserAttack();
+
         mAttackDuration = mBombsDuration;
         break;
     case 0:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
-        StartBulletAttack();
+        //StartBulletAttack();
+        LaserAttack();
+
         mAttackDuration = mBulletHellDuration;
         break;
     case 10:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
         LaserAttack();
-        StartBulletAttack();
+        //StartBulletAttack();
         mAttackDuration = Max(mLaserDuration, mBulletHellDuration);
         break;
     case 11:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
-        StartBulletAttack();
-        BombAttack();
+      //  StartBulletAttack();
+       // BombAttack();
+        LaserAttack();
+
         mAttackDuration = Max(mBombsDuration, mBulletHellDuration);
         break;
     case 12:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
         LaserAttack();
-        BombAttack();
+      //  BombAttack();
         mAttackDuration = Max(mLaserDuration, mBombsDuration);
         break;
     case 20:
@@ -185,7 +191,7 @@ void EnemyBoss::SelectAttack()
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
         LOG("Laser attack");
         LaserAttack();
-        BombAttack();
+     //  BombAttack();
         //StartBulletAttack();
         mAttackDuration = Max(mLaserDuration, mBulletHellDuration, mBombsDuration);
         break;

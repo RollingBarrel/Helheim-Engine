@@ -4,8 +4,17 @@
 #include "TimerScript.h"
 
 class GameObject;
+class AnimationComponent;
 
 GENERATE_BODY(BossLaserEyeBall);
+
+enum class LaserEyeBallState
+{
+    IDLE,
+    CHARGING,
+    FIRING,
+    COOLDOWN
+};
 
 class BossLaserEyeBall : public Script
 {
@@ -26,9 +35,12 @@ private:
     void ActivateLaserVFX();
     void DisableLaserVFX();
     void UpdateLaser();
+    void Charge();
+
+    LaserEyeBallState mCurrentState = LaserEyeBallState::IDLE;
 
 
-    float mAimTime = 0.0f;
+    float mAimTime = 2.0f;
     TimerScript mAimTimer;
 
     float mDamage = 0.0f;
@@ -37,13 +49,19 @@ private:
     float mDuration = 0.0f;
     float mRotationSpeed = 0.0f;
 
+    float mAttackCoolDown = 0.2f; 
+    TimerScript mAttackCoolDownTimer;
+
     float mCurrentRotation = 0.0f;
     float mInitialRotation = 0.0f;
 
     float mElapsedTime = 0.0f;
+    bool mCanDamage = true; 
 
     GameObject* mLaserOrigin = nullptr;
     GameObject* mLaserCharge = nullptr;
     GameObject* mLaserEnd = nullptr;
+
+    AnimationComponent* mAnimationComponent = nullptr;
 
 };
