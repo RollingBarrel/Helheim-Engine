@@ -9,6 +9,8 @@
 #include "DecalComponent.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+#include "EnemyBoss.h"
+
 CREATE(BombBoss)
 {
 	CLASS(owner);
@@ -36,11 +38,22 @@ void BombBoss::Start()
 			break;
 		}
 	}
-}
 
+	std::vector<GameObject*> rootChildren = App->GetScene()->GetRoot()->GetChildren();
+	for (GameObject* go : rootChildren)
+	{
+		if (go->GetName() == "FinalBoss")
+		{
+			mTimeDelay = static_cast<EnemyBoss*>(static_cast<ScriptComponent*>(go->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->GetBombsDelay();
+			break;
+		}
+	}
+}
 
 void BombBoss::Update()
 {
+	if (GameManager::GetInstance()->IsPaused()) return;
+	
 	mTimePassed += App->GetDt();
 	if (mHasExploded)
 	{
@@ -84,5 +97,4 @@ void BombBoss::Init(float3 bombOrigin, float damage)
 		particlecomponent->GetOwner()->SetEnabled(false);
 	}
 	mGameObject->SetWorldScale(float3(mRadius*2));
-	
 }
