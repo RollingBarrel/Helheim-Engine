@@ -31,7 +31,7 @@ private:
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
 	float mLaserDamage = 2.0f;
-	float mBombDamage = 5.0f;
+	float mBombDamage = 8.0f;
 	EnemyState mCurrentState = EnemyState::IDLE;
 	int mLastAttack = -1;
 	unsigned int mStage = 0;
@@ -47,7 +47,7 @@ private:
 	float mBulletHellDuration = 6.0f;
 	float mLaserDuration = 3.25f;
 	float mBombsDelay = 1.f;
-	float mBombsDuration = 6.0f;
+	float mBombsDuration = 2.0f;
 
 	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };
 	std::vector<GameObject*> mTemplates;
