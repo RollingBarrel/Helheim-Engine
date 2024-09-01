@@ -43,9 +43,11 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mBombsDelay);
     MEMBER(MemberType::FLOAT, mBombDamage);
     SEPARATOR("LASER");
+    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
     MEMBER(MemberType::FLOAT, mLaserDuration);
     MEMBER(MemberType::FLOAT, mLaserDamage);
-    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
+    MEMBER(MemberType::FLOAT, mLaserDistance);
+    MEMBER(MemberType::FLOAT, mLaserSpeed);
 
     END_CREATE;
 }
@@ -227,7 +229,7 @@ void EnemyBoss::LaserAttack()
     if (mLaserGO)
     {
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) laserScript->Init(mLaserDamage, mAttackDistance);
+        if (laserScript) laserScript->Init(mLaserDamage,mLaserDuration,mLaserDistance,mLaserSpeed);
     }
 }
 

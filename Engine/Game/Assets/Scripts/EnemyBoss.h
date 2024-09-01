@@ -1,7 +1,5 @@
 #pragma once
 #include "Enemy.h"
-#include "Geometry/Ray.h"
-#include "TimerScript.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -30,7 +28,6 @@ private:
 
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
-	float mLaserDamage = 2.0f;
 	float mBombDamage = 8.0f;
 	EnemyState mCurrentState = EnemyState::IDLE;
 	int mLastAttack = -1;
@@ -45,7 +42,12 @@ private:
 	TimerScript mBulletHellTimer;
 	float mBulletHellCooldown = 0.2f;
 	float mBulletHellDuration = 6.0f;
-	float mLaserDuration = 3.25f;
+
+	//Laser
+	float mLaserDuration = 5.0f;
+	float mLaserDamage = 3.0f;
+	float mLaserSpeed = 2.0f;
+	float mLaserDistance = 10.0f;
 	float mBombsDelay = 1.f;
 	float mBombsDuration = 2.0f;
 

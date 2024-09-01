@@ -191,6 +191,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
       <Filter>Managers</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BossLaserEyeBall.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h">
       <Filter>States\Attack</Filter>
     </ClInclude>
@@ -348,6 +351,9 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="RayCastBullet.cpp" />
+    <ClCompile Include="BossLaserEyeBall.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
     <ClCompile Include="UltimateChargeState.cpp">
       <Filter>States\Attack</Filter>
     </ClCompile>
