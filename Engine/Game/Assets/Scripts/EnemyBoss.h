@@ -16,6 +16,7 @@ public:
 	~EnemyBoss() {}
 	void Update() override;
 	void Start() override;
+	float GetBombsDelay() const { return mBombsDelay; }
 
 private:
 	//void Idle();
@@ -45,6 +46,7 @@ private:
 	float mBulletHellCooldown = 0.2f;
 	float mBulletHellDuration = 6.0f;
 	float mLaserDuration = 3.25f;
+	float mBombsDelay = 1.f;
 	float mBombsDuration = 6.0f;
 
 	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };

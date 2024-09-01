@@ -9,6 +9,7 @@
 #include "DecalComponent.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+#include "EnemyBoss.h"
 
 CREATE(BombBoss)
 {
@@ -79,6 +80,16 @@ void BombBoss::Init(float3 bombOrigin, float damage)
 	mGameObject->SetEnabled(true);
 	mHasExploded = false;
 	mTimePassed = 0.0f;
+	//Takes the value mTimeDelay from the object called FinalBoss in the root's children
+	std::vector<GameObject*> rootChildren = App->GetScene()->GetRoot()->GetChildren();
+	for (GameObject* go : rootChildren)
+	{
+		if (go->GetName() == "FinalBoss")
+		{
+			mTimeDelay = static_cast<EnemyBoss*>(static_cast<ScriptComponent*>(go->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->GetBombsDelay();
+			break;
+		}
+	}
 	mBombOrigin = bombOrigin;
 	mDamage = damage;
 	for (Component* particlecomponent : mExplosionParticles)

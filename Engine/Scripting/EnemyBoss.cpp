@@ -40,6 +40,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
     SEPARATOR("BOMBS");
     MEMBER(MemberType::FLOAT, mBombsDuration);
+    MEMBER(MemberType::FLOAT, mBombsDelay);
     MEMBER(MemberType::FLOAT, mBombDamage);
     SEPARATOR("LASER");
     MEMBER(MemberType::FLOAT, mLaserDuration);
