@@ -41,6 +41,8 @@ void BombBoss::Start()
 
 void BombBoss::Update()
 {
+	if (GameManager::GetInstance()->IsPaused()) return;
+	
 	mTimePassed += App->GetDt();
 	if (mHasExploded)
 	{
