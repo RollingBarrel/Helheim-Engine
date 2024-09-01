@@ -11,8 +11,8 @@ CREATE(Spawner)
 	MEMBER(MemberType::INT, mPoolType);
 	MEMBER(MemberType::FLOAT, mParticlesTime);
 	MEMBER(MemberType::GAMEOBJECT, mParticlesGO);
-	MEMBER(MemberType::FLOAT, mSpawnDelay);
 	MEMBER(MemberType::BOOL, mOnlyOnce);
+	MEMBER(MemberType::INT, mWaveRounds);
 	END_CREATE;
 }
 
