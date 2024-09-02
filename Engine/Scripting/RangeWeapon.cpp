@@ -22,13 +22,8 @@ RangeWeapon::RangeWeapon() : Weapon()
 	mType = WeaponType::RANGE;
 }
 
-RangeWeapon::~RangeWeapon()
-{
-}
-
 void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGradient& trailGradient)
 {
-
 	GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(mCameraShakeDuration, mCameraShakeStrengh);
 
 	float3 front = GameManager::GetInstance()->GetPlayer()->GetFront();
