@@ -1,6 +1,14 @@
 #pragma once
 #include "Component.h"
 
+class CanvasComponent;
+class Transform2DComponent;
+
+struct AVFormatContext;
+struct AVPacket;
+struct AVFrame;
+struct AVCodecContext;
+struct AVCodecParameters;
 
 class VideoComponent : public Component
 {
@@ -12,6 +20,7 @@ public:
 
 
 	void Update() override;
+	void Draw();
 	Component* Clone(GameObject* owner) const override;
 
 	void Save(JsonObject& obj) const override;
@@ -22,7 +31,34 @@ protected:
 	void Reset() override;
 
 private:
+
+	void InitVBO();
+
+
+	void OpenVideo();
+	void CloseVideo();
+
+	void ReadNextFrame();
+	int DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame);
 	void Enable() override;
 	void Disable() override;
+
+
+	AVFormatContext* pFormatContext = nullptr;
+	AVPacket* pPacket = nullptr;
+	AVFrame* pFrame = nullptr;
+	AVCodecContext* pCodecContext = nullptr;
+	AVCodecParameters* pCodecParameters = nullptr;
+
+	int mVideoStreamIndex = -1;
+
+
+	unsigned int mTextureID = 0;
+	unsigned int mQuadVBO = 0;
+
+	CanvasComponent* mCanvas = nullptr;
+
+	unsigned int mUIProgramID = 0;
+
 };
 
