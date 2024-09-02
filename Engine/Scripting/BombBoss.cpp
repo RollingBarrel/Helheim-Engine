@@ -87,6 +87,7 @@ void BombBoss::Update()
 
 void BombBoss::Init(float3 bombOrigin, float damage)
 {
+	// Check with a raycast if there's floor under the bomb
 	mGameObject->SetEnabled(true);
 	mHasExploded = false;
 	mTimePassed = 0.0f;
