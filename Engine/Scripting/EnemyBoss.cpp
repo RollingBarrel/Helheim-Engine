@@ -38,6 +38,7 @@ CREATE(EnemyBoss) {
     SEPARATOR("BULLET HELL");
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
+    MEMBER(MemberType::FLOAT, mBulletRange);
     MEMBER(MemberType::FLOAT, mBulletsDamage);    
     MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
     SEPARATOR("BOMBS");
@@ -276,7 +277,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-            bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage);
+            bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         }
         wave++;
     }
@@ -304,7 +305,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-            bulletScript->Init(position, front, mBulletSpeed, 1.0f, &gradient, mBulletsDamage);
+            bulletScript->Init(position, front, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         }
         wave++;
     }
