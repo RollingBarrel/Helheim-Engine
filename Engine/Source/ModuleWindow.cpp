@@ -38,8 +38,8 @@ bool ModuleWindow::Init()
 #endif // _DEBUG
 
 		//Create window
-		width = SCREEN_WIDTH;
-		height = SCREEN_HEIGHT;
+		mWidth = SCREEN_WIDTH;
+		mHeight = SCREEN_HEIGHT;
 		Uint32 flags = SDL_WINDOW_SHOWN |  SDL_WINDOW_OPENGL;
 
 		if (FULLSCREEN == true)
@@ -51,7 +51,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		mWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		mWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, flags);
 
 		if(mWindow == NULL)
 		{
@@ -68,7 +68,7 @@ bool ModuleWindow::Init()
 
 	int windowPositionX, windowPositionY;
 	SDL_GetWindowPosition(mWindow, &windowPositionX, &windowPositionY);
-	mGameWindowsSize = float2(width, height);
+	mGameWindowsSize = float2(mWidth, mHeight);
 	mGameWindowsPosition = float2(windowPositionX, windowPositionY);
 	return ret;
 }
@@ -96,8 +96,15 @@ void ModuleWindow::SetMousePositionInWindow(float2 position)
 
 void ModuleWindow::WindowResized(unsigned width, unsigned height)
 {
-	this->width = width;
-	this->height = height;
+	this->mWidth = width;
+	this->mHeight = height;
+	mGameWindowsSize = float2(mWidth, mHeight);
+}
+
+void ModuleWindow::WindowMoved(unsigned x, unsigned y)
+{
+	mGameWindowsPosition.x = x;
+	mGameWindowsPosition.y = y;
 }
 
 void ModuleWindow::WindowFullscreen(bool value)
