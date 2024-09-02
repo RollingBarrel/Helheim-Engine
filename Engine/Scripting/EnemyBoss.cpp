@@ -285,15 +285,18 @@ void EnemyBoss::BulletHellPattern1() //Circular
 
 void EnemyBoss::BulletHellPattern2() //Arrow
 {
-    if (mBulletHellTimer.Delay(1/BPS)) //Each pattern will need different rythm
+    if (mBulletHellTimer.Delay(0.5f/BPS)) //Each pattern will need different rythm
     {
         static int wave = 0;
         float space = 0.5f;
         
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
-        bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
+        float3 target = mPlayer->GetWorldPosition();
+        target.y += 2.0f;
+        bulletOriginPosition.y = target.y;
         float3 front = mGameObject->GetFront();
         float3 right = mGameObject->GetRight();
+        
         for (int i = 0; i < 2; ++i)
         {
             // Give bullet random directon
@@ -301,6 +304,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             float3 offset = right * space * (wave % 4);
             float3 position = bulletOriginPosition + right * space * (wave % 4);
             if (i == 1) position = bulletOriginPosition - right * space * (wave % 4);
+            float3 direction = target - bulletOriginPosition;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
