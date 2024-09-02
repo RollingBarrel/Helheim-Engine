@@ -438,12 +438,14 @@ void PlayerController::HandleRotation()
     else
     {
         Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-        Plane plane(mGameObject->GetWorldPosition(), float3::unitY);
+        float3 planePoint = float3(mGameObject->GetWorldPosition().x ,mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
+        Plane plane(planePoint, float3::unitY);
 
         float distance;
         if (plane.Intersects(ray, &distance))
         {
             mAimPosition = ray.GetPoint(distance);
+            mAimPosition.y = mGameObject->GetWorldPosition().y;
         }
     }
     if (mUpperStateType != StateType::ULTIMATE)
