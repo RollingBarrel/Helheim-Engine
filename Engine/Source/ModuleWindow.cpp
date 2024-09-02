@@ -51,7 +51,7 @@ bool ModuleWindow::Init()
 			flags |= SDL_WINDOW_RESIZABLE;
 		}
 
-		mWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, mWidth, mHeight, flags);
+		mWindow = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, mWidth, mHeight, flags);
 
 		if(mWindow == NULL)
 		{
@@ -65,7 +65,7 @@ bool ModuleWindow::Init()
 			mScreenSurface = SDL_GetWindowSurface(mWindow);
 		}
 	}
-
+	
 	int windowPositionX, windowPositionY;
 	SDL_GetWindowPosition(mWindow, &windowPositionX, &windowPositionY);
 	mGameWindowsSize = float2(mWidth, mHeight);
