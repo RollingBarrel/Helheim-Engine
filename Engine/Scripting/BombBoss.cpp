@@ -10,6 +10,8 @@
 #include "ScriptComponent.h"
 #include "PlayerController.h"
 #include "EnemyBoss.h"
+#include "Physics.h"
+#include "Geometry/Ray.h"
 
 CREATE(BombBoss)
 {
@@ -88,14 +90,24 @@ void BombBoss::Update()
 void BombBoss::Init(float3 bombOrigin, float damage)
 {
 	// Check with a raycast if there's floor under the bomb
-	mGameObject->SetEnabled(true);
-	mHasExploded = false;
-	mTimePassed = 0.0f;
-	mBombOrigin = bombOrigin;
-	mDamage = damage;
-	for (Component* particlecomponent : mExplosionParticles)
+	Ray ray;
+	ray.pos = bombOrigin + float3(0,5,0);
+	ray.dir = float3(0, -1, 0);
+	Hit hit;
+
+	Physics::Raycast(hit, ray, 100);
+
+	if (hit.IsValid())
 	{
-		particlecomponent->GetOwner()->SetEnabled(false);
+		mGameObject->SetEnabled(true);
+		mHasExploded = false;
+		mTimePassed = 0.0f;
+		mBombOrigin = bombOrigin;
+		mDamage = damage;
+		for (Component* particlecomponent : mExplosionParticles)
+		{
+			particlecomponent->GetOwner()->SetEnabled(false);
+		}
+		mGameObject->SetWorldScale(float3(mRadius * 2));
 	}
-	mGameObject->SetWorldScale(float3(mRadius*2));
 }
