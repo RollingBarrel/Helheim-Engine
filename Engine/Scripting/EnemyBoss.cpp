@@ -31,6 +31,8 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
+    MEMBER(MemberType::FLOAT, mPhase1Hp);
+    MEMBER(MemberType::FLOAT, mPhase2Hp);
     MEMBER(MemberType::FLOAT, mDeathTime);
     SEPARATOR("BULLET HELL");
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
@@ -93,7 +95,7 @@ void EnemyBoss::Update()
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-            if ((mStage == 1 && mHealth / mMaxHealth < 0.2) || (mStage == 0 && mHealth / mMaxHealth < 0.6))
+            if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
             {
                 //Phase change
                 ++mStage;
