@@ -71,6 +71,8 @@ void ExplosiveTrap::Update()
             mExplosionPrestartSFX->SetEnabled(false);
             mExplosionSFX->SetEnabled(true);
 
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_MACHINEGUN, mGameObject->GetWorldPosition());
+
             // Change box size to hit farther 
             float3 area(mExplosionArea, 1, mExplosionArea);
             mCollider->SetSize(area);
