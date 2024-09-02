@@ -138,18 +138,45 @@ void MainMenu::Start()
 
 void MainMenu::Update()
 {
-    Controls();
-    if (mIsInitial) 
+    if (mStudioBool) 
     {
-        if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::STUDIO) OpenMenu(MENU_TYPE::ENGINE);
-        else if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::ENGINE)
+        if (mStudioTimer.DelayWithoutReset(2.0f))
+        {
+            OpenMenu(MENU_TYPE::ENGINE);
+            mStudioBool = false;
+            return;
+        }
+        else return;
+    }
+        
+    if (mEngineBool) 
+    {
+        if (mEngineTimer.DelayWithoutReset(2.0f))
         {
             OpenMenu(MENU_TYPE::SPLASH);
+            mEngineBool = false;
+            return;
         }
-        OnPlayButtonHover(); // Hover first option when the menu is first laoded
-        OnControlsButtonHover(); // Pre-hover the first option
-        return;
-    } 
+        else return;
+    }
+        
+    if (mIsInitial) 
+    {
+        if (App->GetInput()->GetKeyboardReciveInputs() ||
+            App->GetInput()->GetGameControllerReceivedInputs() ||
+            App->GetInput()->GetMouseRecieveInputs()) 
+        {
+            mIsInitial = false;
+            OpenMenu(MENU_TYPE::MAIN);
+            OnPlayButtonHover(); // Hover first option when the menu is first laoded    
+            OnControlsButtonHover(); // Pre-hover the first option
+            return;
+        }
+        else return;
+    }
+
+    Controls();
+        
 
     if (mIsScrolling)
     {
@@ -158,25 +185,12 @@ void MainMenu::Update()
         else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
     }
 
-    if (mLoadlevel == true && Delay(1.0f)) 
+    if (mLoadlevel == true && mTimer.Delay(1.0f))
     {
         mAudioManager->Release(BGM::MAINMENU, mBGMID);
         App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
 
-}
-
-
-bool MainMenu::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
-    {
-        mTimePassed = 0;
-        return true;
-    }
-    else return false;
 }
 
 void MainMenu::Controls()
@@ -270,12 +284,6 @@ void MainMenu::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
-        if (mIsInitial) 
-        {
-            OpenMenu(MENU_TYPE::MAIN);
-            mIsInitial = false;
-            return;
-        }
         if (mCurrentMenu == MENU_TYPE::MAIN)
         {
             ClickMenu(static_cast<MENU_TYPE>(mOption));
@@ -385,7 +393,6 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     {
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
-            mIsInitial = false;
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
