@@ -102,13 +102,6 @@ void EnemyBoss::Update()
             }
             else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
             {
-                //Phase change
-                ++mStage;
-                mCurrentState = EnemyState::CHARGE;
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
-            }
-            else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
-            {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 mCurrentState = EnemyState::ATTACK;
                 SelectAttack();
@@ -124,13 +117,6 @@ void EnemyBoss::Update()
             else if (mBulletHell && mBulletHellTimer.Delay(mBulletHellCooldown))
             {
                 BulletAttack();
-            }
-            break;
-        case EnemyState::CHARGE:
-            if (mPhaseShiftTimer.Delay(mPhaseShiftTime))
-            {
-                mCurrentState = EnemyState::ATTACK;
-                SelectAttack();
             }
             break;
         case EnemyState::CHARGE:
