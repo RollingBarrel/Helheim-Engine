@@ -138,7 +138,8 @@ void MainMenu::Start()
 
 void MainMenu::Update()
 {
-    if (mStudioBool) {
+    if (mStudioBool) 
+    {
         if (mStudioTimer.DelayWithoutReset(2.0f))
         {
             OpenMenu(MENU_TYPE::ENGINE);
@@ -148,7 +149,8 @@ void MainMenu::Update()
         else return;
     }
         
-    if (mEngineBool) {
+    if (mEngineBool) 
+    {
         if (mEngineTimer.DelayWithoutReset(2.0f))
         {
             OpenMenu(MENU_TYPE::SPLASH);
