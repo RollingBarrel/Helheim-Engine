@@ -15,7 +15,7 @@
 
 #include <vector>
 #include <string>
-
+#include <random>
 
 RangeWeapon::RangeWeapon() : Weapon()
 {
@@ -64,14 +64,26 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 
 float3 RangeWeapon::Spread(const float3& front, const float3& up, const float3& right, float maxSpread)
 {
+
+	std::random_device rdev;
+	std::mt19937 rgen(rdev());
+	std::uniform_real_distribution<float> idist(-maxSpread, maxSpread);
+	
+	float upSpread = idist(rgen);
+	float rightSpread = idist(rgen);
+
 	float random = ((float)rand()) / (float)RAND_MAX;
-	float diff = maxSpread - (-maxSpread);
-	float upSpread = random * diff;
-	random = ((float)rand()) / (float)RAND_MAX;
-	float rightSpread = random * diff;
-	random = ((float)rand()) / (float)RAND_MAX;
-	diff = 0.2f;
+	float diff = 0.2f;
 	float r = random * diff;
+
+	//float random = ((float)rand()) / (float)RAND_MAX;
+	//float diff = maxSpread - (-maxSpread);
+	//float upSpread = random * diff;
+	//random = ((float)rand()) / (float)RAND_MAX;
+	//float rightSpread = random * diff;
+	//random = ((float)rand()) / (float)RAND_MAX;
+	//diff = 0.2f;
+	//float r = random * diff;
 
 	float3 spread = float3::zero;
 	spread += up * upSpread;
