@@ -848,7 +848,6 @@ void PlayerController::EnableUltimate(bool enable)
 {
     if (mUltimateGO)
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
         mUltimateGO->SetEnabled(enable);
     }
 }
@@ -857,6 +856,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
 {
     if (mUltimateChargeGO)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
         mUltimateChargeGO->SetEnabled(enable);
     }
 }
