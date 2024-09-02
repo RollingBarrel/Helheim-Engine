@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1372620664,
+                "UID": 491799722,
                 "ParentUID": 1,
                 "Name": "BombingTemplate",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1442868253,
-                "ParentUID": 1372620664,
+                "UID": 139980907,
+                "ParentUID": 491799722,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -67,22 +67,17 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -99,13 +94,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 1498495432,
-                "ParentUID": 1442868253,
+                "UID": 1715643379,
+                "ParentUID": 139980907,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -136,23 +131,25 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
-                            1.0,
-                            1.0,
-                            1.0
+                            2.0,
+                            2.0,
+                            0.10000000149011612
                         ],
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
@@ -160,28 +157,111 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
-                            "CurvePoints": []
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.0013717421097680927
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.010973936878144741
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.037037041038274768
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.08779149502515793
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.17146779596805573
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.2962963283061981
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.47050756216049197
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.7023319602012634
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
-                            "CurvePoints": []
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.026809651404619218,
                                 "Color": [
                                     1.0,
+                                    0.19200003147125245,
                                     0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9664865732192993,
+                                "Color": [
+                                    1.0,
+                                    0.5519999861717224,
                                     0.0,
                                     1.0
                                 ]
@@ -191,15 +271,15 @@
                 ]
             },
             {
-                "UID": 1552521328,
-                "ParentUID": 1372620664,
+                "UID": 1176961800,
+                "ParentUID": 491799722,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
+                    -2.0,
                     0.0,
-                    0.0,
-                    6.0
+                    2.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -228,22 +308,17 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -260,13 +335,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.49900001287460329
                     }
                 ]
             },
             {
-                "UID": 1606686466,
-                "ParentUID": 1552521328,
+                "UID": 647957540,
+                "ParentUID": 1176961800,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -297,19 +372,21 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -321,8 +398,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -330,19 +407,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.008042899891734124,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9718499183654785,
+                                "Color": [
+                                    1.0,
+                                    0.5999999642372131,
                                     0.0,
                                     1.0
                                 ]
@@ -352,15 +438,15 @@
                 ]
             },
             {
-                "UID": 1660990846,
-                "ParentUID": 1372620664,
+                "UID": 107813920,
+                "ParentUID": 491799722,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
+                    -1.0,
                     0.0,
-                    0.0,
-                    -6.0
+                    -1.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -389,22 +475,17 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -421,13 +502,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 1715155984,
-                "ParentUID": 1660990846,
+                "UID": 1690090387,
+                "ParentUID": 107813920,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -458,19 +539,21 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -482,8 +565,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -491,19 +574,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.002680954523384571,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9825734496116638,
+                                "Color": [
+                                    1.0,
+                                    0.4559999704360962,
                                     0.0,
                                     1.0
                                 ]
@@ -513,337 +605,15 @@
                 ]
             },
             {
-                "UID": 1769390743,
-                "ParentUID": 1372620664,
+                "UID": 1139782101,
+                "ParentUID": 491799722,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    8.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    -0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "BombBoss",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mRadius",
-                                "MemberType": 1,
-                                "VariableData": 2.5
-                            },
-                            {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
-                                "VariableName": "mTimeDelay",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 19,
-                        "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
-                        "DiffuseColor": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "IsSpriteSheet": false,
-                        "SpriteSheetSize": [
-                            1,
-                            1
-                        ],
-                        "DefaultPosition": [
-                            0,
-                            0
-                        ],
-                        "Speed": 30,
-                        "Fade": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 1823695123,
-                "ParentUID": 1769390743,
-                "Name": "Explosion",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
+                    -3.0,
                     0.0,
                     1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 148626881,
-                        "Delay": 0.0,
-                        "Duration": 1.5,
-                        "EmissionRate": 10.0,
-                        "MaxParticles": 1000,
-                        "Looping": false,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.0,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
-                        "ShapeSize": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": false,
-                        "BlendMode": 0,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
-                                "Color": [
-                                    1.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1880714722,
-                "ParentUID": 1372620664,
-                "Name": "BombingArea",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -8.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    -0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "BombBoss",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mRadius",
-                                "MemberType": 1,
-                                "VariableData": 2.5
-                            },
-                            {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
-                                "VariableName": "mTimeDelay",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 19,
-                        "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
-                        "DiffuseColor": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "IsSpriteSheet": false,
-                        "SpriteSheetSize": [
-                            1,
-                            1
-                        ],
-                        "DefaultPosition": [
-                            0,
-                            0
-                        ],
-                        "Speed": 30,
-                        "Fade": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 1935227965,
-                "ParentUID": 1880714722,
-                "Name": "Explosion",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 148626881,
-                        "Delay": 0.0,
-                        "Duration": 1.5,
-                        "EmissionRate": 10.0,
-                        "MaxParticles": 1000,
-                        "Looping": false,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.0,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
-                        "ShapeSize": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": false,
-                        "BlendMode": 0,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
-                                "Color": [
-                                    1.0,
-                                    0.0,
-                                    0.0,
-                                    1.0
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 154163466,
-                "ParentUID": 1372620664,
-                "Name": "BombingArea",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    8.0,
-                    0.0,
-                    6.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -872,22 +642,17 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -904,13 +669,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 455761638,
-                "ParentUID": 154163466,
+                "UID": 556543082,
+                "ParentUID": 1139782101,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -941,19 +706,21 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -965,8 +732,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -974,19 +741,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.010723873041570187,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9664880037307739,
+                                "Color": [
+                                    1.0,
+                                    0.527999997138977,
                                     0.0,
                                     1.0
                                 ]
@@ -996,15 +772,349 @@
                 ]
             },
             {
-                "UID": 1744685920,
-                "ParentUID": 1372620664,
+                "UID": 19114681,
+                "ParentUID": 491799722,
+                "Name": "BombingArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -2.0,
+                    0.0,
+                    2.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    5.0,
+                    5.0,
+                    5.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BombBoss",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mRadius",
+                                "MemberType": 1,
+                                "VariableData": 2.5
+                            },
+                            {
+                                "VariableName": "mTimeDelay",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
+                        "DiffuseColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 0.5
+                    }
+                ]
+            },
+            {
+                "UID": 1580852953,
+                "ParentUID": 19114681,
+                "Name": "Explosion",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 1.5,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.699999988079071,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.02412867546081543,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9718499779701233,
+                                "Color": [
+                                    1.0,
+                                    0.48000001907348635,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1032633297,
+                "ParentUID": 491799722,
+                "Name": "BombingArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    -3.0
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    5.0,
+                    5.0,
+                    5.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BombBoss",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mRadius",
+                                "MemberType": 1,
+                                "VariableData": 2.5
+                            },
+                            {
+                                "VariableName": "mTimeDelay",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
+                        "DiffuseColor": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 0.5
+                    }
+                ]
+            },
+            {
+                "UID": 477660404,
+                "ParentUID": 1032633297,
+                "Name": "Explosion",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 1.5,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.699999988079071,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.024128690361976625,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9705097675323486,
+                                "Color": [
+                                    1.0,
+                                    0.527999997138977,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2082911801,
+                "ParentUID": 491799722,
                 "Name": "BombingArea ",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    8.0,
+                    1.0,
                     0.0,
-                    -6.0
+                    3.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -1033,22 +1143,17 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -1065,13 +1170,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 2058467767,
-                "ParentUID": 1744685920,
+                "UID": 1503223453,
+                "ParentUID": 2082911801,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1102,19 +1207,21 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -1126,8 +1233,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -1135,19 +1242,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.013404831290245057,
                                 "Color": [
                                     1.0,
                                     0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.990616500377655,
+                                "Color": [
+                                    1.0,
+                                    0.5759999752044678,
                                     0.0,
                                     1.0
                                 ]
@@ -1157,15 +1273,15 @@
                 ]
             },
             {
-                "UID": 261093,
-                "ParentUID": 1372620664,
+                "UID": 949921464,
+                "ParentUID": 491799722,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -8.0,
+                    2.0,
                     0.0,
-                    6.0
+                    1.0
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -1194,22 +1310,17 @@
                                 "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
                                 "VariableName": "mTimeDelay",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 1.0
                             }
                         ]
                     },
                     {
                         "ComponentType": 19,
                         "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
+                        "DiffuseID": 2086942310,
+                        "DiffuseName": "Warning_Icon2.png",
                         "DiffuseColor": [
                             1.0,
                             1.0,
@@ -1226,13 +1337,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 1.0
+                        "Fade": 0.5
                     }
                 ]
             },
             {
-                "UID": 310074543,
-                "ParentUID": 261093,
+                "UID": 424537496,
+                "ParentUID": 949921464,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1263,19 +1374,21 @@
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 10.0,
+                        "EmissionRate": 200.0,
                         "MaxParticles": 1000,
+                        "Burst": 0,
                         "Looping": false,
+                        "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.0,
+                            "MinValue": 0.699999988079071,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -1287,8 +1400,8 @@
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "IsValueRandom": true,
+                                "MinValue": 0.20000000298023225,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -1296,180 +1409,28 @@
                         },
                         "SpeedCurve": {
                             "Value": {
-                                "IsValueRandom": false,
+                                "IsValueRandom": true,
                                 "MinValue": 1.0,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.5,
+                                "Time": 0.01072386559098959,
                                 "Color": [
                                     1.0,
                                     0.0,
                                     0.0,
                                     1.0
                                 ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1927384425,
-                "ParentUID": 1372620664,
-                "Name": "BombingArea",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -8.0,
-                    0.0,
-                    -6.0
-                ],
-                "Rotation": [
-                    -0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "BombBoss",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mRadius",
-                                "MemberType": 1,
-                                "VariableData": 2.5
                             },
                             {
-                                "VariableName": "mDamage",
-                                "MemberType": 1,
-                                "VariableData": 25.0
-                            },
-                            {
-                                "VariableName": "mTimeDelay",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 19,
-                        "IsEnabled": true,
-                        "DiffuseID": 985945546,
-                        "DiffuseName": "Warning_Icon.png",
-                        "DiffuseColor": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "IsSpriteSheet": false,
-                        "SpriteSheetSize": [
-                            1,
-                            1
-                        ],
-                        "DefaultPosition": [
-                            0,
-                            0
-                        ],
-                        "Speed": 30,
-                        "Fade": 1.0
-                    }
-                ]
-            },
-            {
-                "UID": 85258484,
-                "ParentUID": 1927384425,
-                "Name": "Explosion",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 148626881,
-                        "Delay": 0.0,
-                        "Duration": 1.5,
-                        "EmissionRate": 10.0,
-                        "MaxParticles": 1000,
-                        "Looping": false,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.0,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 1,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
-                        "ShapeSize": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": false,
-                        "BlendMode": 0,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
+                                "Time": 0.9638057351112366,
                                 "Color": [
                                     1.0,
-                                    0.0,
+                                    0.527999997138977,
                                     0.0,
                                     1.0
                                 ]

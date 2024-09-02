@@ -1,12 +1,8 @@
 #pragma once
 #include "Enemy.h"
-#include "Geometry/Ray.h"
-#include "TimerScript.h"
 
 struct CollisionData;
 class BoxColliderComponent;
-
-
 
 GENERATE_BODY(EnemyBoss);
 class EnemyBoss : public Enemy
@@ -18,6 +14,7 @@ public:
 	~EnemyBoss() {}
 	void Update() override;
 	void Start() override;
+	float GetBombsDelay() const { return mBombsDelay; }
 
 private:
 	//void Idle();
@@ -45,10 +42,16 @@ private:
 	TimerScript mBulletHellTimer;
 	float mBulletHellCooldown = 0.2f;
 	float mBulletHellDuration = 6.0f;
-	float mLaserDuration = 3.25f;
-	float mBombsDuration = 6.0f;
 
-	const char* mTemplateNames[3] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb" };
+	//Laser
+	float mLaserDuration = 5.0f;
+	float mLaserDamage = 3.0f;
+	float mLaserSpeed = 2.0f;
+	float mLaserDistance = 10.0f;
+	float mBombsDelay = 1.f;
+	float mBombsDuration = 2.0f;
+
+	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
 	float mBulletHellAngleSpread = 180;
