@@ -129,7 +129,13 @@ void LightningPanel::Draw(int windowFlags)
 	if (ImGui::DragFloat("Anisotropy (Mie scattering)", &openGl->mVolAnisotropy, 0.05f, 0.0f, 1.0f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
-		glUniform1f(0, openGl->mVolAnisotropy);
+		glUniform1f(4, openGl->mVolAnisotropy);
+		glUseProgram(0);
+	}
+	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.01f))
+	{
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1f(8, openGl->mVolStepSize);
 		glUseProgram(0);
 	}
 
