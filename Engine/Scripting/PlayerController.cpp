@@ -26,6 +26,7 @@
 #include "Geometry/Plane.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "HudController.h"
 
 #include "State.h"
@@ -847,6 +848,7 @@ void PlayerController::EnableUltimate(bool enable)
 {
     if (mUltimateGO)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
         mUltimateGO->SetEnabled(enable);
     }
 }

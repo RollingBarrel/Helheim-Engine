@@ -41,7 +41,11 @@ bool ModuleCamera::AddEnabledCamera(CameraComponent* camera)
 	if (!found)
 	{
 		mActiveCameras.push_back(camera);
-		AddMainCamera(camera);
+		if (!AddMainCamera(camera))
+		{
+			if (!mCurrentCamera) mCurrentCamera = camera;
+		}
+		
 		App->GetOpenGL()->SetOpenGlCameraUniforms();
 		return true;
 	}
