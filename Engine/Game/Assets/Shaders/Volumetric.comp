@@ -195,6 +195,26 @@ bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 		++i;
 	}
 
+	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
+	{
+		SpotLight sLight = sLights[idx];
+		float dotDV = dot(rayDir, sLight.aimD.xyz);
+		float CO = o - sLight.pos.xyz;
+		float dotCOV = dot(CO, sLight.col.w);
+		float a = dotDV * dotDV - sLight.col.w * sLight.col.w;
+		float b = 2*( dotDV*dotCOV - dot(rayDir, CO) * sLight.col.w * sLight.col.w );
+		float c = dotCOV * dotCOV - dot(CO, CO) * sLight.col.w * sLight.col.w;
+		float det = b*b - 4*a*c;
+		if(det > 0)
+		{
+			t0 = (-b-sqrt(det)) / 2*a;
+			t1 = (-b + sqrt(det)) / 2*a;
+		}
+		else if(det == 0)
+			t0 = -b / 2*a;
+		++i;
+	}
 	return ret;
 }
 
