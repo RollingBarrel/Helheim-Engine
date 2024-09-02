@@ -88,6 +88,7 @@ StateType DashState::HandleInput()
 
 void DashState::Update()
 {
+    if (GameManager::GetInstance()->IsPaused()) return;
 
     float dashSpeed = mPlayerController->GetDashRange() / mPlayerController->GetDashDuration();
     float3 currentPos = mPlayerController->GetPlayerPosition();
