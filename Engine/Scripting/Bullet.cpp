@@ -38,6 +38,8 @@ void Bullet::Start()
 
 void Bullet::Update()
 {
+	if (GameManager::GetInstance()->IsPaused()) return;
+
 	if (!mHasCollided)
 	{
 		if (mTotalMovement == 0.0f)
