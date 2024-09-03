@@ -26,7 +26,8 @@ void HealVFX::Start()
 
 void HealVFX::Update()
 {
-    if (mTimer.Delay(2.0f)) {
+    if (mTimer.Delay(2.0f)) 
+    {
         mSpriteSheet->StopAnimation();
         mGameObject->SetEnabled(false);
     }
