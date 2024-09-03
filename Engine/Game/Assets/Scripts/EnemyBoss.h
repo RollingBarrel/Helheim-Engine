@@ -41,8 +41,8 @@ private:
 	float mBombDamage = 5.0f;
 	int mLastAttack = -1;
 	unsigned int mStage = 0;
-	float mPhase1Hp = 0.6;
-	float mPhase2Hp = 0.3;
+	float mPhase1Hp = 0.6f;
+	float mPhase2Hp = 0.3f;
 	BulletPattern mBulletHell = BulletPattern::NONE;
 
 	//Collider

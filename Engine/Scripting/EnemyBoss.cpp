@@ -22,7 +22,7 @@
 #define IDLE_ANIMATION 40.0f / 20
 #define PHASE_ANIMATION 120.0f / 20
 #define DEATH_ANIMATION 107.0f / 20
-#define BPS 2.36686391
+#define BPS 2.36686391f
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -269,7 +269,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
         float3 rotation = mGameObject->GetWorldEulerAngles();
         float3 front = mGameObject->GetFront();
-        for (int i = 0; i < nBullets; ++i)
+        for (unsigned int i = 0; i < nBullets; ++i)
         {
             // Give bullet random directon
             float angle = (-pi / 2) + offset + i * alpha;
