@@ -27,8 +27,8 @@ CREATE(ExplosiveTrap)
     MEMBER(MemberType::FLOAT, mDamageAmount);
 
     SEPARATOR("GAME OBJECT");
-    MEMBER(MemberType::GAMEOBJECT, mExplosionPrestartSFX);
-    MEMBER(MemberType::GAMEOBJECT, mExplosionSFX);
+    MEMBER(MemberType::GAMEOBJECT, mExplosionPrestartVFX);
+    MEMBER(MemberType::GAMEOBJECT, mExplosionVFX);
 
     END_CREATE;
 }
@@ -46,6 +46,8 @@ ExplosiveTrap::~ExplosiveTrap()
 
 void ExplosiveTrap::Start()
 {
+
+
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
@@ -54,10 +56,16 @@ void ExplosiveTrap::Start()
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ExplosiveTrap::OnCollisionEnter, this, std::placeholders::_1)));
     }
 
-    if (mExplosionPrestartSFX != nullptr)
+    if (mExplosionPrestartVFX != nullptr)
     {
-        float3 area(2 + mTriggerArea, 2 + mTriggerArea, 2 + mTriggerArea);
-        mExplosionPrestartSFX->SetLocalScale(area);
+        float3 area(mExplosionArea + 2, mExplosionArea + 2, mExplosionArea + 2);
+        mExplosionPrestartVFX->SetLocalScale(area);
+    }
+
+    if (mExplosionVFX != nullptr)
+    {
+        float3 area(mExplosionArea, mExplosionArea, mExplosionArea);
+        mExplosionVFX->SetLocalScale(area);
     }
 }
 
@@ -68,8 +76,8 @@ void ExplosiveTrap::Update()
         if (mExplosionWaitTimer.Delay(mExplosionWait))
         {
             mState = TRAP_STATE::EXPLOSION_START;
-            mExplosionPrestartSFX->SetEnabled(false);
-            mExplosionSFX->SetEnabled(true);
+            mExplosionPrestartVFX->SetEnabled(false);
+            mExplosionVFX->SetEnabled(true);
 
             GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_MACHINEGUN, mGameObject->GetWorldPosition());
 
@@ -110,7 +118,7 @@ void ExplosiveTrap::OnCollisionEnter(CollisionData* collisionData)
         if (collision->GetTag().compare("Player") == 0)
         {
             mState = TRAP_STATE::EXPLOSION_PRESTART;
-            mExplosionPrestartSFX->SetEnabled(true);
+            mExplosionPrestartVFX->SetEnabled(true);
         }
     }
 
@@ -136,6 +144,9 @@ void ExplosiveTrap::OnCollisionEnter(CollisionData* collisionData)
 
 void ExplosiveTrap::InnerTrapTakeDamage()
 {
-    mState = TRAP_STATE::EXPLOSION_PRESTART;
-    mExplosionPrestartSFX->SetEnabled(true);
+    if (mState != TRAP_STATE::EXPLOSION_START)
+    {
+        mState = TRAP_STATE::EXPLOSION_PRESTART;
+        mExplosionPrestartVFX->SetEnabled(true);
+    }
 }

@@ -10768,6 +10768,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 1.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -10902,6 +10903,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 2.4000000953674318,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.4000000059604645,
@@ -11021,6 +11023,11 @@
                         "ScriptVariables": [
                             {
                                 "VariableName": "mLaserGO",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyCollisionParticle",
                                 "MemberType": 3,
                                 "VariableData": -1
                             }
@@ -11151,6 +11158,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 0.5,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -11313,6 +11321,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -11575,6 +11584,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 0.6000000238418579,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -15938,6 +15948,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16088,6 +16099,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16238,6 +16250,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16388,6 +16401,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16538,6 +16552,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16688,6 +16703,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16838,6 +16854,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -16988,6 +17005,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 1.0,
@@ -17223,6 +17241,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.20000000298023225,
@@ -17325,6 +17344,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -17427,6 +17447,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -17785,6 +17806,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 2.4000000953674318,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.4000000059604645,
@@ -17910,6 +17932,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 2.4000000953674318,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.4000000059604645,
@@ -18388,6 +18411,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 1.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -18522,6 +18546,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": true,
                         "StretchedRatio": 2.0999999046325685,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
@@ -18968,14 +18993,14 @@
                 ]
             },
             {
-                "UID": 303333437,
+                "UID": 2134256738,
                 "ParentUID": 1,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     4.584421157836914,
-                    -0.8547101020812988,
+                    0.0,
                     -0.003418385051190853
                 ],
                 "Rotation": [
@@ -19022,7 +19047,7 @@
                             {
                                 "VariableName": "mTriggerArea",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mExplosionArea",
@@ -19057,22 +19082,22 @@
                                 "MemberType": 5
                             },
                             {
-                                "VariableName": "mExplosionPrestartSFX",
+                                "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1884736550
+                                "VariableData": 154629322
                             },
                             {
-                                "VariableName": "mExplosionSFX",
+                                "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1832092850
+                                "VariableData": 84729838
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1832092850,
-                "ParentUID": 303333437,
+                "UID": 84729838,
+                "ParentUID": 2134256738,
                 "Name": "Explosion",
                 "Enabled": false,
                 "Active": false,
@@ -19110,6 +19135,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.699999988079071,
@@ -19117,7 +19143,7 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 1.0,
-                        "ShapeAngle": 0.0,
+                        "ShapeAngle": 1.0,
                         "ShapeSize": [
                             2.0,
                             2.0,
@@ -19243,8 +19269,8 @@
                 ]
             },
             {
-                "UID": 1884736550,
-                "ParentUID": 303333437,
+                "UID": 154629322,
+                "ParentUID": 2134256738,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -19260,9 +19286,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.000000476837158,
-                    5.000000476837158
+                    7.0,
+                    7.0,
+                    7.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -19295,14 +19321,14 @@
                 ]
             },
             {
-                "UID": 236433887,
-                "ParentUID": 303333437,
+                "UID": 223762975,
+                "ParentUID": 2134256738,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    2.0,
+                    0.5,
                     0.0
                 ],
                 "Rotation": [
@@ -19312,11 +19338,11 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.5,
+                    0.5,
+                    0.5
                 ],
-                "Tag": "Untagged",
+                "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -19331,7 +19357,7 @@
                         ],
                         "Size": [
                             1.0,
-                            1.0,
+                            2.0,
                             1.0
                         ],
                         "ColliderType": 0,
@@ -19345,15 +19371,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 303333437
+                                "VariableData": 2134256738
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 291504098,
-                "ParentUID": 236433887,
+                "UID": 293871322,
+                "ParentUID": 223762975,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -19380,8 +19406,8 @@
                 "Components": []
             },
             {
-                "UID": 330909584,
-                "ParentUID": 291504098,
+                "UID": 363492322,
+                "ParentUID": 293871322,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,

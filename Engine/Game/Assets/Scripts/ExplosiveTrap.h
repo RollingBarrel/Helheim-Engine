@@ -42,8 +42,8 @@ private:
 	float mTriggerArea = 2.0f;
 	float mExplosionArea= 5.0f;
 
-	GameObject* mExplosionPrestartSFX = nullptr;
-	GameObject* mExplosionSFX = nullptr;
+	GameObject* mExplosionPrestartVFX = nullptr;
+	GameObject* mExplosionVFX = nullptr;
 
 	// Activation
 	float mExplosionWait = 1.5f;

@@ -2,14 +2,14 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 303333437,
+                "UID": 870292187,
                 "ParentUID": 1,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     4.584421157836914,
-                    -0.8547101020812988,
+                    0.0,
                     -0.003418385051190853
                 ],
                 "Rotation": [
@@ -56,7 +56,7 @@
                             {
                                 "VariableName": "mTriggerArea",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mExplosionArea",
@@ -91,22 +91,22 @@
                                 "MemberType": 5
                             },
                             {
-                                "VariableName": "mExplosionPrestartSFX",
+                                "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1884736550
+                                "VariableData": 1058756234
                             },
                             {
-                                "VariableName": "mExplosionSFX",
+                                "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1832092850
+                                "VariableData": 988230161
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1832092850,
-                "ParentUID": 303333437,
+                "UID": 988230161,
+                "ParentUID": 870292187,
                 "Name": "Explosion",
                 "Enabled": false,
                 "Active": false,
@@ -144,6 +144,7 @@
                         "FollowEmitter": false,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.699999988079071,
@@ -151,7 +152,7 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 1.0,
-                        "ShapeAngle": 0.0,
+                        "ShapeAngle": 1.0,
                         "ShapeSize": [
                             2.0,
                             2.0,
@@ -277,8 +278,8 @@
                 ]
             },
             {
-                "UID": 1884736550,
-                "ParentUID": 303333437,
+                "UID": 1058756234,
+                "ParentUID": 870292187,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -294,9 +295,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.000000476837158,
-                    5.000000476837158
+                    7.0,
+                    7.0,
+                    7.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -329,14 +330,14 @@
                 ]
             },
             {
-                "UID": 236433887,
-                "ParentUID": 303333437,
+                "UID": 1128446855,
+                "ParentUID": 870292187,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    2.0,
+                    0.5,
                     0.0
                 ],
                 "Rotation": [
@@ -346,11 +347,11 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    0.5,
+                    0.5,
+                    0.5
                 ],
-                "Tag": "Untagged",
+                "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -365,7 +366,7 @@
                         ],
                         "Size": [
                             1.0,
-                            1.0,
+                            2.0,
                             1.0
                         ],
                         "ColliderType": 0,
@@ -379,15 +380,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 303333437
+                                "VariableData": 870292187
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 291504098,
-                "ParentUID": 236433887,
+                "UID": 1197998234,
+                "ParentUID": 1128446855,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -414,8 +415,8 @@
                 "Components": []
             },
             {
-                "UID": 330909584,
-                "ParentUID": 291504098,
+                "UID": 1293796730,
+                "ParentUID": 1197998234,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
