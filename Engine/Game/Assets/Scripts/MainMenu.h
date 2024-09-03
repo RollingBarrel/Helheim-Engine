@@ -59,7 +59,7 @@ private:
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
-    void OnNewButtonClick();
+    void OnPlayButtonClick();
     void OnSplashButtonClick();
     void OnControlsButtonClick();
     void OnSettingsButtonClick();
@@ -127,17 +127,37 @@ private:
     GameObject* mMainMenu = nullptr;
     GameObject* mOptionsMenu = nullptr;
     GameObject* mCreditsMenu = nullptr;
-    GameObject* mCreditsText = nullptr;
+    GameObject* mCreditsListText = nullptr;
     Transform2DComponent* mTextTransform = nullptr;
 
+    // PLAY Button
     GameObject* mPlayGO = nullptr;
+    GameObject* mPlayText = nullptr;
+    GameObject* mPlayHover = nullptr;
+    GameObject* mPlayClicked = nullptr;
     ButtonComponent* mPlayButton = nullptr;
+
+    // OPTIONS Button
     GameObject* mOptionsGO = nullptr;
+    GameObject* mOptionsText = nullptr;
+    GameObject* mOptionsHover = nullptr;
+    GameObject* mOptionsClicked = nullptr;
     ButtonComponent* mOptionsButton = nullptr;
+
+    // Credits Button
     GameObject* mCreditsGO = nullptr;
+    GameObject* mCreditsText = nullptr;
+    GameObject* mCreditsHover = nullptr;
+    GameObject* mCreditsClicked = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+
+    // OPTIONS Button
     GameObject* mQuitGO = nullptr;
+    GameObject* mQuitText = nullptr;
+    GameObject* mQuitHover = nullptr;
+    GameObject* mQuitClicked = nullptr;
     ButtonComponent* mQuitButton = nullptr;
+
     GameObject* mBackCreditGO = nullptr;
     ButtonComponent* mBackCreditButton = nullptr;
 
