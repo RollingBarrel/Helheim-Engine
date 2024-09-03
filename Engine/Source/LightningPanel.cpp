@@ -108,22 +108,22 @@ void LightningPanel::Draw(int windowFlags)
 
 	ImGui::Separator();
 	ImGui::Text("Volumetric");
-	if (ImGui::DragFloat("baseExtCoeff", &openGl->mBaseExtCoeff, 0.05f, 0.0f, 1.0f))
+	if (ImGui::DragFloat("baseExtCoeff", &openGl->mBaseExtCoeff, 0.004f, 0.0f, 0.5f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
 		glUniform1f(0, openGl->mBaseExtCoeff);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("Noise Amount", &openGl->mNoiseAmount, 0.05f, 0.0f, 1.0f))
+	if (ImGui::DragFloat("Noise Amount", &openGl->mNoiseAmount, 0.02f, 0.0f, 1.0f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
-		glUniform1f(0, openGl->mNoiseAmount);
+		glUniform1f(2, openGl->mNoiseAmount);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("VolIntensity", &openGl->mVolIntensity, 0.05f, 0.0f, 1.0f))
+	if (ImGui::DragFloat("VolIntensity", &openGl->mVolIntensity, 0.02f, 0.0f, 1.0f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
-		glUniform1f(0, openGl->mVolIntensity);
+		glUniform1f(3, openGl->mVolIntensity);
 		glUseProgram(0);
 	}
 	if (ImGui::DragFloat("Anisotropy (Mie scattering)", &openGl->mVolAnisotropy, 0.05f, 0.0f, 1.0f))

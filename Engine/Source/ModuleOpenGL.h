@@ -289,7 +289,7 @@ private:
 
 	unsigned int mNoiseTexId = 0;
 
-	float mBaseExtCoeff = 0.1f;
+	float mBaseExtCoeff = 0.04f;
 	float mNoiseAmount = 1.0f;
 	float mVolIntensity = 1.0f;
 	float mVolAnisotropy = 0.35f;

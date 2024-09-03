@@ -180,28 +180,31 @@ bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//Point Lights
-	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
-	{
-		vec4 pLight = pLights[idx].pos;
-		vec3 L = pLight.xyz - o;
-		float tca = dot(L, rayDir);
-		float r2 = pLight.w * pLight.w;
-		float d2 =  dot(L, L) - tca * tca;
-		if(d2 > r2)
-			break;
-		float thc = sqrt(r2 - d2);
-		float tmp = tca - thc;
-		if(tmp < t0)
-			t0 = tmp;
-		tmp = tca + thc;
-		if(tmp > t1)
-			t1 = tmp;
-		ret = true;
-		++i;
-	}
+	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
+	//for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
+	//{
+	//	vec4 pLight = pLights[idx].pos;
+	//	vec3 L = pLight.xyz - o;
+	//	float tca = dot(L, rayDir);
+	//	float r2 = pLight.w * pLight.w;
+	//	float d2 =  dot(L, L) - tca * tca;
+	//	if(d2 > r2)
+	//		break;
+	//	float thc = sqrt(r2 - d2);
+	//	float tmp = tca - thc;
+	//	if(tmp < t0)
+	//		t0 = tmp;
+	//	tmp = tca + thc;
+	//	if(tmp > t1)
+	//		if(tmp > t0)
+	//			t1 = tmp;
+	//		else
+	//			t0 = tmp;
+	//	ret = true;
+	//	++i;
+	//}
 
-	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
 	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 	{
 		SpotLight sLight = sLights[idx];
@@ -216,20 +219,38 @@ bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 		{
 			float detSqrt = sqrt(det);
 			float tmp = (-b-sqrt(det)) / (2*a);
-			if(tmp < t0)
-				t0 = tmp;
+			vec3 p = o + tmp*rayDir;
+			if(dot(p - sLight.pos.xyz, sLight.aimD.xyz) > 0.0f)
+			{
+				if(tmp < t0)
+					t0 = tmp;
+				ret = true;
+			}
 			tmp = (-b + detSqrt) / (2*a);
-			if(tmp > t1)
-				t1 = tmp;
-			ret = true;
+			p = o + tmp*rayDir;
+			if(dot(p - sLight.pos.xyz, sLight.aimD.xyz) > 0.0f)
+			{
+				if(tmp > t1)
+					if(tmp < t0)
+						t0 = tmp;
+					else
+						t1 = tmp;
+				ret = true;
+			}
 		}
 		else if(det == 0)
 		{
 			float tmp = -b / (2*a);
-			if(tmp < t0)
-				t0 = tmp;
+			vec3 p = o + tmp*rayDir;
+			if(dot(p - sLight.pos.xyz, sLight.aimD.xyz) > 0.0f)
+			{
+				if(tmp < t0)
+					t0 = tmp;
+				else if(tmp > t1)
+					t1 = tmp;
+				ret = true;
+			}
 		}
-		ret = true;
 		++i;
 	}
 	return ret;
@@ -270,7 +291,7 @@ void main()
 			}
 			float transmitance = fogIntensity*exp(-extCoeff);
 			vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
-			pixelCol = vec4(pixelCol.rgb * transmitance + accInScattering, pixelCol.a);
+			pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
 			imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
 		}
 	}
