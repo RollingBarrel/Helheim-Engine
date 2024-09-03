@@ -1764,6 +1764,13 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Follow Emitter");
 	ImGui::SameLine();
 	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
+	if (component->mFollowEmitter)
+	{
+		ImGui::SameLine();
+		ImGui::Text("Spin Speed");
+		ImGui::SameLine();
+		ImGui::DragFloat("##SpinSpeed", &(component->mSpinSpeed), 0.1f, 0.0f);
+	}
 	ImGui::Text("Gravity");
 	ImGui::SameLine();
 	ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);

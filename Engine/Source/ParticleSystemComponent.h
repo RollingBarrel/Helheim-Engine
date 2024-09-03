@@ -73,6 +73,7 @@ private:
 
 	// Atributos del Emisor
 	bool mFollowEmitter = false;
+	float mSpinSpeed = 0.0f;
 	float mGravity = 0.0f;
 	EmitterType mShapeType = EmitterType::CONE;
 	float mShapeRadius = 0.01f;
