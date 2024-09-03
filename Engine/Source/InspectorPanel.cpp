@@ -2412,6 +2412,39 @@ void InspectorPanel::DrawVideoComponent(VideoComponent* component) const
 		component->SetLoop(loop);
 	}
 
+	const char* currentItem = component->GetName();
+	if (strcmp(currentItem, "") == 0)
+	{
+		currentItem = "una_rosa.mp4";
+	}
+
+
+	if (ImGui::BeginCombo("##combo", currentItem))
+	{
+		std::vector<std::string> videoNames;
+		EngineApp->GetFileSystem()->GetDirectoryFiles("Assets/Videos", videoNames);
+
+		for (int n = 0; n < videoNames.size(); n++)
+		{
+			bool is_selected = (currentItem == videoNames[n]);
+			if (ImGui::Selectable(videoNames[n].c_str(), is_selected))
+			{
+				currentItem = videoNames[n].c_str();
+				std::string videoPath = std::string("./Assets/Videos/");
+				videoPath += currentItem;
+				component->OpenVideo(videoPath.c_str());
+			}
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+
+		}
+		ImGui::EndCombo();
+	}
+
+
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const

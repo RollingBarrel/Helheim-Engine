@@ -26,8 +26,8 @@ VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentTy
 	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
 	InitVBO();
 	InitVAO();
-	OpenVideo();
-	ReadNextFrame();
+	OpenVideo("./Assets/Videos/una_rosa.mp4");
+
 	GameObject* currentObject = owner;
 	while (currentObject)
 	{
@@ -180,12 +180,12 @@ void VideoComponent::InitVAO()
 	glBindVertexArray(0);
 }
 
-void VideoComponent::OpenVideo()
+void VideoComponent::OpenVideo(const char* filePath)
 {
-	//const char* videoFilePath = "C:\\Users\\carlo\\Desktop\\Nueva carpeta\\sweaty gamer speedrun meme original (360p).mp4";
-	//const char* videoFilePath = "C:\\Users\\carlo\\Documents\\GitHub\\Assigment2\\Engine\\Game\\Assets\\Video\\una_rosa.mp4";
-	const char* videoFilePath = "C:\\Users\\carlo\\Documents\\GitHub\\Assigment2\\Engine\\Game\\Assets\\Video\\bunny.mp4";
-
+	CloseVideo();
+	const char* name = strrchr(filePath, '/');
+	mName = ++name;
+	
 	// Allocating memory for AVFormatContext
 	mFormatContext = avformat_alloc_context();
 	if (!mFormatContext)
@@ -195,9 +195,8 @@ void VideoComponent::OpenVideo()
 	}
 
 	// Open the file and read its header. The codecs are not opened.
-	if (avformat_open_input(&mFormatContext, videoFilePath, NULL, NULL) != 0)
+	if (avformat_open_input(&mFormatContext, filePath, NULL, NULL) != 0)
 	{
-
 		assert(false && "ERROR could not open the file");
 		return;
 	}
@@ -261,7 +260,7 @@ void VideoComponent::OpenVideo()
 
 	if (mVideoStreamIndex == -1)
 	{
-		LOG("File %s does not contain a video stream!", videoFilePath);
+		LOG("File %s does not contain a video stream!", filePath);
 		return;
 	}
 
@@ -310,6 +309,7 @@ void VideoComponent::OpenVideo()
 	mScalerCtx = sws_getContext(mCodecContext->width, mCodecContext->height, mCodecContext->pix_fmt, mCodecContext->width, mCodecContext->height, AV_PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
 	mVideoStream = mFormatContext->streams[mVideoStreamIndex];
 	av_image_alloc(mFrameRGB->data, mFrameRGB->linesize, mCodecContext->width, mCodecContext->height, AV_PIX_FMT_RGB24, 1);
+	ReadNextFrame();
 }
 
 void VideoComponent::CloseVideo()

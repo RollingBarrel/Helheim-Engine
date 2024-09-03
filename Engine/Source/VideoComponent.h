@@ -27,9 +27,12 @@ public:
 	void Save(JsonObject& obj) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
+	void OpenVideo(const char* filePath);
 	void Play() { mIsPlaying = true; }
 	void Pause() { mIsPlaying = false; }
 	void Stop();
+
+	const char* GetName() { return mName.c_str(); }
 
 	bool GetLoop() { return mLoop; }
 	void SetLoop(bool loop) { mLoop = loop; }
@@ -44,7 +47,6 @@ private:
 	void InitVAO();
 
 
-	void OpenVideo();
 	void CloseVideo();
 	void RestartVideo();
 
@@ -80,6 +82,8 @@ private:
 	bool mIsPlaying = false;
 	bool mLoop = false;
 	
+	std::string mName;
+
 	//uint8_t* frameData = nullptr;
 
 };
