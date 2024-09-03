@@ -111,6 +111,16 @@ void Enemy::CheckHitEffect()
     }
 }
 
+//void Enemy::CheckUltHitVFX()
+//{
+//	if (mUltHit)
+//	{
+//		if (mUltEffectTimer.Delay(mUltEffectTime)) {
+//			ActivateUltVFX();
+//		}
+//	}
+//}
+
 void Enemy::ResetEnemyColor()
 {
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
@@ -306,6 +316,15 @@ void Enemy::ActivateHitEffect()
         meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
     }
     mHit = true;
+}
+
+void Enemy::ActivateUltVFX()
+{
+	if (mUltHitEffectGO)
+	{
+		mUltHitEffectGO->SetEnabled(false); 
+		mUltHitEffectGO->SetEnabled(true);
+	}
 }
 
 void Enemy::Death()

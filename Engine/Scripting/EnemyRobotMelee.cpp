@@ -24,6 +24,7 @@ CREATE(EnemyRobotMelee)
     MEMBER(MemberType::FLOAT, mAttackDistance);
     SEPARATOR("VFX");
     MEMBER(MemberType::GAMEOBJECT, mSwordTrail);
+    MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
     END_CREATE;
 }
 
