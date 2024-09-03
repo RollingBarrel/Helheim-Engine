@@ -95,7 +95,9 @@ void Dialog::OnClick()
         NextDialogSet();
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->SetPaused(false, false);
-        GameManager::GetInstance()->GetHud()->SetSanity();
+        if (firstTime) firstTime = false;
+        else GameManager::GetInstance()->GetHud()->SetSanity();
+        
         return;
     }
 
