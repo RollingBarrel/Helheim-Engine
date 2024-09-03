@@ -718,6 +718,10 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = !mGodMode;
     }
+    if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
+    {
+        mDamageModifier = 99999.0f;
+    }
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);
