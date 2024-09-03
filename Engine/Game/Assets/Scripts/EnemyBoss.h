@@ -8,7 +8,7 @@ enum BulletPattern
 {
 	CIRCLES,
 	ARROW,
-	SINUS,
+	WAVE,
 	NONE
 };
 GENERATE_BODY(EnemyBoss);

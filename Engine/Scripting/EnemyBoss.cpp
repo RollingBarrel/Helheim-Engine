@@ -127,7 +127,7 @@ void EnemyBoss::Update()
                 case BulletPattern::ARROW:
                     BulletHellPattern2();
                     break;
-                case BulletPattern::SINUS:
+                case BulletPattern::WAVE:
                     BulletHellPattern3();
                     break;
                 }
@@ -151,7 +151,7 @@ void EnemyBoss::Update()
 
 void EnemyBoss::SelectAttack()
 {
-    short attack = rand() % 3;
+    short attack = 0;// rand() % 3;
     /*if (attack == mLastAttack)
     {
         ++attack;
@@ -304,9 +304,8 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         {
             // Give bullet random directon
             GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
-            float3 offset = right * space * (wave % 4);
-            float3 position = bulletOriginPosition + right * space * (wave % 4) * i;
-            float3 direction = target - bulletOriginPosition;
+            float3 position = bulletOriginPosition + right * space * (wave % 6) * i;
+            float3 direction = target - position;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
@@ -317,13 +316,13 @@ void EnemyBoss::BulletHellPattern2() //Arrow
     }
 }
 
-void EnemyBoss::BulletHellPattern3() //Sinus
+void EnemyBoss::BulletHellPattern3() //WAVE
 {
     static int wave = 0;
-    if (mBulletHellTimer.Delay(0.5f / BPS)) //Each pattern will need different rythm
+    if (mBulletHellTimer.Delay(0.25f / BPS)) //Each pattern will need different rythm
     {
-        int nBullets = 8;
-        float alpha = (pi/2)*sin(2 * pi * wave / nBullets);
+        int nBullets = 16;
+        float alpha = (pi / 2) - pi * (wave % nBullets) / (nBullets - 1);
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
         float3 front = mGameObject->GetFront();
