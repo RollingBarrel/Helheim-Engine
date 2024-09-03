@@ -27,6 +27,7 @@ Component(owner, ComponentType::PARTICLESYSTEM), mImageName(original.mImageName)
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode), 
+mShapeRandAngle(original.mShapeRandAngle), mIsShapeAngleRand(original.mIsShapeAngleRand), mShapeInverseDir(original.mShapeInverseDir),
 mFollowEmitter(original.mFollowEmitter), mSpinSpeed(original.mSpinSpeed), mBurst(original.mBurst), mGravity(original.mGravity)
 {
     if (original.mImage)
