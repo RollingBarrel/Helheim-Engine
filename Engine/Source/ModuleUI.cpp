@@ -137,7 +137,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 		{
 
 			float2 mouseAbsolute(App->GetInput()->GetGlobalMousePosition());
-
 			
 			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsolute.x - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
 			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsolute.y - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);
