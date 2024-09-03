@@ -297,7 +297,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": true,
-                        "ImageID": 124508655,
+                        "ImageID": 1269833389,
                         "Color": [
                             1.0,
                             1.0,
@@ -526,7 +526,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -682,7 +684,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -838,7 +842,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -994,7 +1000,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1266,7 +1274,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1340,7 +1350,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1492,7 +1504,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1566,7 +1580,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1718,7 +1734,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1792,7 +1810,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -1944,7 +1964,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2018,7 +2040,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2170,7 +2194,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2244,7 +2270,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2396,7 +2424,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2470,7 +2500,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2622,7 +2654,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2696,7 +2730,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2848,7 +2884,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -2922,7 +2960,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -3074,7 +3114,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 1
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -3148,7 +3190,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 1
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -3222,7 +3266,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 1
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -3296,7 +3342,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 1
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -3452,7 +3500,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -3517,7 +3567,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 530660603,
+                        "ImageID": 707421625,
                         "Color": [
                             1.0,
                             1.0,
@@ -3984,7 +4034,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -4140,7 +4192,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -4430,7 +4484,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -4582,7 +4638,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -4734,7 +4792,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -4886,7 +4946,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -5038,7 +5100,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -6067,7 +6131,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -6141,7 +6207,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -6293,7 +6361,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             },
@@ -6367,7 +6437,9 @@
                         "Alpha": 1.0,
                         "LineWidth": 0,
                         "LineSpacing": 0,
-                        "Alignment": 0
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 48
                     }
                 ]
             }
@@ -6384,6 +6456,16 @@
             1.0,
             1.0,
             0.05000000074505806
-        ]
+        ],
+        "Fog": {
+            "Color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Density": 0.008999999612569809,
+            "HeightFallof": 0.0,
+            "MaxFog": 0.0
+        }
     }
 }

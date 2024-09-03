@@ -1906,6 +1906,30 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("##Color", (float*)color);
 	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("##Alpha", alpha, 0.0f, 1.0f);
 	
+	const char* renderModes[] = { "Regular", "Medium", "SemiBold", "Bold", "Light"};
+	static int selectedRenderMode;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+
+	if (ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes)))
+	{
+		switch (selectedRenderMode)
+		{
+		case -1: break;
+		case 0: component->SetTextFont("Assets\\Fonts\\Akshar-Regular.ttf");
+			break;
+		case 1: component->SetTextFont("Assets\\Fonts\\Akshar-Medium.ttf");
+			break;
+		case 2: component->SetTextFont("Assets\\Fonts\\Akshar-SemiBold.ttf");
+			break;
+		case 3: component->SetTextFont("Assets\\Fonts\\Akshar-Bold.ttf");
+			break;
+		case 4: component->SetTextFont("Assets\\Fonts\\Akshar-Light.ttf");
+			break;
+		}
+	}
+
 	ImGui::Text("Alignment:");
 	if (ImGui::Button("Left"))
 	{
@@ -1922,7 +1946,9 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 		component->SetAlignment(TextAlignment::RIGHT);
 	}
 
-	ImGui::Text("Font Size:"); ImGui::SameLine(); ImGui::DragInt("##Font Size", fontSize);
+	bool sizeChanged = false;
+	ImGui::Text("Font Size:"); ImGui::SameLine(); sizeChanged = ImGui::DragInt("##Font Size", fontSize);
+	if (sizeChanged) component->SetFontSize(*fontSize);
 	ImGui::Text("Line Spacing:"); ImGui::SameLine(); ImGui::DragInt("##Line Space", lineSpacing);
 	ImGui::Text("Line Width:"); ImGui::SameLine(); ImGui::DragInt("##Line Width", lineWidth);
 }
