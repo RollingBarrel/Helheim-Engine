@@ -34,7 +34,7 @@ enum update_status
 #define SCREEN_HEIGHT 720
 #define FULLSCREEN false
 #define	RESIZEABLE true
-#define TITLE "HellHeim Engine"
+#define TITLE "HelHeim Engine"
 
 #define RELEASE_ARRAY( x ) \
 	{\

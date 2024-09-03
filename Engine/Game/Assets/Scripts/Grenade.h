@@ -3,10 +3,18 @@
 #include "Macros.h"
 #include "float3.h"
 #include <vector>
+#include "TimerScript.h"
 
 GENERATE_BODY(Grenade);
 
 class GameObject;
+
+enum class GRENADE_STATE
+{
+	INACTIVE,
+	MOVEMENT,
+	EXPLOSION_START,
+};
 
 class Grenade : public Script
 {
@@ -18,27 +26,43 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void SetDestination(float3 destination);
+	void SetPositionDestination(float3 initialPosition, float3 destination);
 
 	float GetGrenadeRadius();
 private:
-	void Explotion();
+	void MoveToTarget();
+	void CalculateTrajectory();
+	float3  CalculatePositionAtTime(float t);
+	void Explosion();
 	void BlackHole();
 	void PullCloser(std::vector<GameObject*> enemies);
-	void EndExplotion();
+	void EndExplosion();
 
 	std::vector<GameObject*> GetAffectedEnemies();
 
+	GRENADE_STATE mState = GRENADE_STATE::INACTIVE;
 	// Player-depends status
 	float mGrenadeDPS = 1.0f;
 	float mGrenadeDuration = 4.0f;
-	float mGrenadeCurrentTime = mGrenadeDuration;
-	float mGrenadeRadius = 3.0f; // Explotion area
+	TimerScript mExplosionTimer;
+	float mGrenadeRadius = 5.0f; // Explosion area
 
-	float3 mDestination = float3(0, 0, 0); // Init destination to 0,0,0
+	// Before explotion
+	float3 mInitialPosition = float3(0, 0, 0); 
+	float3 mDestination = float3(0, 0, 0);
+	float3 mCurrentPosition;
 
-	bool mExplotionStart = false;
+	float mTotalDistance;
+	float mCurrentDistance = 0.0f;
+	float3 mVelocity;
 
-	float mTimeAccumulator = 0.0f;
-	const float mPullInterval = 0.3f;
+	// Very slow <0.5 -- 1 -- 2.5> Very fast
+	float mTrajectorySpeedFactor = 1.5f;
+
+	float mFlightTime = 0.0f;
+	float mElapsedTime = 0.0f;
+
+
+	GameObject* mGrenade = nullptr;
+	GameObject* mExplosionSFX = nullptr;
 };
