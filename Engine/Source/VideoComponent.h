@@ -7,11 +7,12 @@ class Transform2DComponent;
 struct AVFormatContext;
 struct AVPacket;
 struct AVFrame;
+struct AVStream;
 struct AVCodecContext;
 struct AVCodecParameters;
 struct SwsContext;
 
-class VideoComponent : public Component
+class ENGINE_API VideoComponent : public Component
 {
 public:
 	explicit VideoComponent(GameObject* owner);
@@ -19,13 +20,19 @@ public:
 	VideoComponent(const VideoComponent& original, GameObject* owner);
 	~VideoComponent();
 
-
 	void Update() override;
 	void Draw();
 	Component* Clone(GameObject* owner) const override;
 
 	void Save(JsonObject& obj) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
+
+	void Play() { mIsPlaying = true; }
+	void Pause() { mIsPlaying = false; }
+	void Stop();
+
+	bool GetLoop() { return mLoop; }
+	void SetLoop(bool loop) { mLoop = loop; }
 
 protected:
 
@@ -39,6 +46,7 @@ private:
 
 	void OpenVideo();
 	void CloseVideo();
+	void RestartVideo();
 
 	void ReadNextFrame();
 	int DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame);
@@ -52,10 +60,14 @@ private:
 	AVFrame* pFrameRGB = nullptr;
 	AVCodecContext* pCodecContext = nullptr;
 	AVCodecParameters* pCodecParameters = nullptr;
+	AVStream* pVideoStream = nullptr;
 	SwsContext* scalerCtx = nullptr;
 
 	int mVideoStreamIndex = -1;
 
+
+	float mElapsedTime = 0.0f;
+	double mFrameTime = 0.0;
 
 	unsigned int mTextureID = 0;
 	unsigned int mQuadVBO = 0;
@@ -65,6 +77,8 @@ private:
 
 	unsigned int mUIProgramID = 0;
 
+	bool mIsPlaying = false;
+	bool mLoop = false;
 	
 	//uint8_t* frameData = nullptr;
 

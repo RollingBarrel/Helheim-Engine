@@ -2389,7 +2389,29 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component) const
 
 void InspectorPanel::DrawVideoComponent(VideoComponent* component) const
 {
-	ImGui::Text("DRAW VIDEO COMPONENT");
+	ImGui::Text("VIDEO CONTROLS");
+
+	if(ImGui::Button(ICON_FA_PLAY))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_FA_PAUSE))
+	{
+		component->Pause();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_FA_STOP))
+	{
+		component->Stop();
+	}
+
+	bool loop = component->GetLoop();
+	if (ImGui::Checkbox("Loop", &loop))
+	{
+		component->SetLoop(loop);
+	}
+
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const

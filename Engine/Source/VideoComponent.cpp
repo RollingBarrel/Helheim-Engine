@@ -4,9 +4,8 @@
 #include "ModuleOpenGL.h"
 #include "glew.h"
 
-
 #include "GameObject.h"
-#include "CanvasComponent.h"
+
 #include "Transform2DComponent.h"
 
 #include "float2.h"
@@ -57,7 +56,14 @@ VideoComponent::~VideoComponent()
 
 void VideoComponent::Update()
 {
-	Draw();
+	if (mIsPlaying)
+	{
+		mElapsedTime += App->GetDt();
+		while (mElapsedTime > mFrameTime)
+		{
+			ReadNextFrame();
+		}
+	}
 }
 
 void VideoComponent::Draw()
@@ -123,7 +129,7 @@ void VideoComponent::Draw()
 
 Component* VideoComponent::Clone(GameObject* owner) const
 {
-	return nullptr;
+	return new VideoComponent(*this, owner);
 }
 
 void VideoComponent::Save(JsonObject& obj) const
@@ -134,8 +140,16 @@ void VideoComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 {
 }
 
+void VideoComponent::Stop()
+{
+	Pause();
+	RestartVideo();
+	ReadNextFrame();
+}
+
 void VideoComponent::Reset()
 {
+	Stop();
 }
 
 void VideoComponent::InitVBO()
@@ -150,17 +164,9 @@ void VideoComponent::InitVBO()
 		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
 	};
 
-	if (mQuadVBO == 0)
-	{
-		glGenBuffers(1, &mQuadVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-	}
-	else
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
-	}
+	glGenBuffers(1, &mQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 }
 
 void VideoComponent::InitVAO()
@@ -179,18 +185,11 @@ void VideoComponent::InitVAO()
 
 void VideoComponent::OpenVideo()
 {
-	//if (argc < 2) {
-	//    printf("You need to specify a media file.\n");
-	//    return;
-	//}
+	//const char* videoFilePath = "C:\\Users\\carlo\\Desktop\\Nueva carpeta\\sweaty gamer speedrun meme original (360p).mp4";
 	//const char* videoFilePath = "C:\\Users\\carlo\\Documents\\GitHub\\Assigment2\\Engine\\Game\\Assets\\Video\\una_rosa.mp4";
 	const char* videoFilePath = "C:\\Users\\carlo\\Documents\\GitHub\\Assigment2\\Engine\\Game\\Assets\\Video\\bunny.mp4";
 
-	LOG("initializing all the containers, codecs and protocols.");
-
-	// AVFormatContext holds the header information from the format (Container)
-	// Allocating memory for this component
-	// http://ffmpeg.org/doxygen/trunk/structAVFormatContext.html
+	// Allocating memory for AVFormatContext
 	pFormatContext = avformat_alloc_context();
 	if (!pFormatContext)
 	{
@@ -198,14 +197,7 @@ void VideoComponent::OpenVideo()
 		return;
 	}
 
-	LOG("opening the input file (%s) and loading format (container) header", videoFilePath);
 	// Open the file and read its header. The codecs are not opened.
-	// The function arguments are:
-	// AVFormatContext (the component we allocated memory for),
-	// url (filename),
-	// AVInputFormat (if you pass NULL it'll do the auto detect)
-	// and AVDictionary (which are options to the demuxer)
-	// http://ffmpeg.org/doxygen/trunk/group__lavf__decoding.html#ga31d601155e9035d5b0e7efedc894ee49
 	if (avformat_open_input(&pFormatContext, videoFilePath, NULL, NULL) != 0)
 	{
 
@@ -213,19 +205,6 @@ void VideoComponent::OpenVideo()
 		return;
 	}
 
-	// now we have access to some information about our file
-	// since we read its header we can say what format (container) it's
-	// and some other information related to the format itself.
-	LOG("format %s, duration %lld us, bit_rate %lld", pFormatContext->iformat->name, pFormatContext->duration, pFormatContext->bit_rate);
-	LOG("finding stream info from format");
-	// read Packets from the Format to get stream information
-	// this function populates pFormatContext->streams
-	// (of size equals to pFormatContext->nb_streams)
-	// the arguments are:
-	// the AVFormatContext
-	// and options contains options for codec corresponding to i-th stream.
-	// On return each dictionary will be filled with options that were not found.
-	// https://ffmpeg.org/doxygen/trunk/group__lavf__decoding.html#gad42172e27cddafb81096939783b157bb
 	if (avformat_find_stream_info(pFormatContext, NULL) < 0)
 	{
 		LOG("ERROR could not get the stream info");
@@ -234,14 +213,10 @@ void VideoComponent::OpenVideo()
 
 	// the component that knows how to enCOde and DECode the stream
 	// it's the codec (audio or video)
-	// http://ffmpeg.org/doxygen/trunk/structAVCodec.html
 	const AVCodec* pCodec = NULL;
-	// this component describes the properties of a codec used by the stream i
-	// https://ffmpeg.org/doxygen/trunk/structAVCodecParameters.html
-	//AVCodecParameters* pCodecParameters = NULL;
 
 	// loop though all the streams and print its main information
-	for (int i = 0; i < pFormatContext->nb_streams; i++)
+	for (unsigned int i = 0; i < pFormatContext->nb_streams; i++)
 	{
 		AVCodecParameters* pLocalCodecParameters = NULL;
 		pLocalCodecParameters = pFormatContext->streams[i]->codecpar;
@@ -293,7 +268,6 @@ void VideoComponent::OpenVideo()
 		return;
 	}
 
-	// https://ffmpeg.org/doxygen/trunk/structAVCodecContext.html
 	pCodecContext = avcodec_alloc_context3(pCodec);
 	if (!pCodecContext)
 	{
@@ -302,7 +276,6 @@ void VideoComponent::OpenVideo()
 	}
 
 	// Fill the codec context based on the values from the supplied codec parameters
-	// https://ffmpeg.org/doxygen/trunk/group__lavc__core.html#gac7b282f51540ca7a99416a3ba6ee0d16
 	if (avcodec_parameters_to_context(pCodecContext, pCodecParameters) < 0)
 	{
 		LOG("failed to copy codec params to codec context");
@@ -310,22 +283,26 @@ void VideoComponent::OpenVideo()
 	}
 
 	// Initialize the AVCodecContext to use the given AVCodec.
-	// https://ffmpeg.org/doxygen/trunk/group__lavc__core.html#ga11f785a188d7d9df71621001465b0f1d
 	if (avcodec_open2(pCodecContext, pCodec, NULL) < 0)
 	{
 		LOG("failed to open codec through avcodec_open2");
 		return;
 	}
 
-	// https://ffmpeg.org/doxygen/trunk/structAVFrame.html
 	pFrame = av_frame_alloc();
+	if (!pFrame)
+	{
+		LOG("failed to allocate memory for AVFrame");
+		return;
+	}
+
 	pFrameRGB = av_frame_alloc();
 	if (!pFrame)
 	{
 		LOG("failed to allocate memory for AVFrame");
 		return;
 	}
-	// https://ffmpeg.org/doxygen/trunk/structAVPacket.html
+
 	pPacket = av_packet_alloc();
 	if (!pPacket)
 	{
@@ -334,7 +311,8 @@ void VideoComponent::OpenVideo()
 	}
 
 	scalerCtx = sws_getContext(pCodecContext->width, pCodecContext->height, pCodecContext->pix_fmt, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
-
+	pVideoStream = pFormatContext->streams[mVideoStreamIndex];
+	av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, 1);
 }
 
 void VideoComponent::CloseVideo()
@@ -347,6 +325,7 @@ void VideoComponent::CloseVideo()
 	av_frame_free(&pFrameRGB);
 	avcodec_free_context(&pCodecContext);
 	sws_freeContext(scalerCtx);
+	//av_freep(pFrameRGB->data[0]);
 
 	pFormatContext = nullptr;
 	pPacket = nullptr;
@@ -354,14 +333,21 @@ void VideoComponent::CloseVideo()
 	pCodecContext = nullptr;
 
 	mVideoStreamIndex = -1;
+}
 
+void VideoComponent::RestartVideo()
+{
+	mElapsedTime = 0.0f;
+	mFrameTime = 0.0;
+	av_seek_frame(pFormatContext, mVideoStreamIndex, 0, AVSEEK_FLAG_BACKWARD);
+	avcodec_flush_buffers(pCodecContext);
 }
 
 void VideoComponent::ReadNextFrame()
 {
 	int response = 0;
 
-	while (av_read_frame(pFormatContext, pPacket) >= 0)
+	while ((response = av_read_frame(pFormatContext, pPacket)) >= 0)
 	{
 		if (pPacket->stream_index == mVideoStreamIndex)
 		{
@@ -372,28 +358,19 @@ void VideoComponent::ReadNextFrame()
 		av_packet_unref(pPacket);
 	}	
 	
-	//frameData = new uint8_t[pCodecContext->width * pCodecContext->height * 4];
-	//uint8_t* dest[8] = { frameData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-	//int linSize[8] = { pCodecContext->width * 4, 0, 0, 0, 0, 0, 0, 0 };
+	if (response == AVERROR_EOF)
+	{
+		if (mLoop) RestartVideo();
+		else Stop();
+		return;
+	}
 	
-	
-	//int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, pCodecContext->width, pCodecContext->height, 1);
-	//uint8_t* buffer = (uint8_t*)av_malloc(numBytes * sizeof(uint8_t));
-	//
-	//av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, buffer, AV_PIX_FMT_RGB24, pCodecContext->width, pCodecContext->height, 1);
-	av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, 1);
-
-	sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
-	//sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
-	//sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, dest, linSize);
-
-	//av_free(buffer);
-
+    sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
+	mFrameTime = pFrame->pts * av_q2d(pVideoStream->time_base);
 }
 
 int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame)
 { 
-
 	int response = avcodec_send_packet(pCodecContext, pPacket);
 	if (response < 0)
 	{
@@ -401,34 +378,29 @@ int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContex
 		return response;
 	}
 
-	while (response >= 0)
+	response = avcodec_receive_frame(pCodecContext, pFrame);
+	if (response == AVERROR(EAGAIN))
 	{
-		response = avcodec_receive_frame(pCodecContext, pFrame);
+		return 0;
+	}
+	else if (response < 0)
+	{
+		LOG("Error while receiving a frame from the decoder: %s", "Error"); //av_err2str(response)
+		return response;
+	}
+	if (response >= 0)
+	{
+		LOG(
+			"Frame %d (type=%c, size=%d bytes, format=%d) pts %d key_frame %d [DTS %d]",
+			pCodecContext->frame_num,
+			av_get_picture_type_char(pFrame->pict_type),
+			pFrame->pkt_size,
+			pFrame->format,
+			pFrame->pts,
+			pFrame->key_frame
+		);
 
-		if (response == AVERROR(EAGAIN) || response == AVERROR_EOF)
-		{
-			break;
-		}
-		else if (response < 0)
-		{
-			LOG("Error while receiving a frame from the decoder: %s", "Error"); // av_err2str(response)
-			return response;
-		}
-
-		if (response >= 0)
-		{
-			LOG(
-				"Salchichon: Frame %d (type=%c, size=%d bytes, format=%d) pts %d key_frame %d [DTS %d]",
-				pCodecContext->frame_num,
-				av_get_picture_type_char(pFrame->pict_type),
-				pFrame->pkt_size,
-				pFrame->format,
-				pFrame->pts,
-				pFrame->key_frame
-			);
-
-			return -1;
-		}
+		return -1;
 	}
 
 	return 0;
