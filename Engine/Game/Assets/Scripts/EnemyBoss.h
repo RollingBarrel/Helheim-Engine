@@ -8,6 +8,7 @@ enum BulletPattern
 {
 	CIRCLES,
 	ARROW,
+	SINUS,
 	NONE
 };
 GENERATE_BODY(EnemyBoss);
@@ -28,6 +29,7 @@ private:
 	void StartBulletAttack();
 	void BulletHellPattern1();
 	void BulletHellPattern2();
+	void BulletHellPattern3();
 	void LaserAttack();
 	void BombAttack();
 
@@ -36,7 +38,6 @@ private:
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
 	float mBulletRange = 50.0f;
-	float mLaserDamage = 2.0f;
 	float mBombDamage = 5.0f;
 	int mLastAttack = -1;
 	unsigned int mStage = 0;
