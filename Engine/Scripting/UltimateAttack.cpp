@@ -56,10 +56,7 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
         {
             if (mDamageTimer.Delay(mInterval)) 
             {
-                mEnemyCollisionParticle->SetWorldPosition(float3(collisionGO->GetWorldPosition().x, mEnemyCollisionParticle->GetWorldPosition().y, collisionGO->GetWorldPosition().z));
-                mEnemyCollisionParticle->SetEnabled(false);
-                mEnemyCollisionParticle->SetEnabled(true);
-
+                enemyScript->ActivateUltVFX();
                 enemyScript->TakeDamage(mDamageTick);
                 //TODO: Slow enemies 
                 LOG("Ultimate tick")
@@ -67,10 +64,7 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
 
             if(mDamageEffectTimer.Delay(1.0f))
             {
-                /*GameObject* damageVFX = App->GetScene()->DuplicateGameObject(mEnemyCollisionParticle);
-                mEnemyCollisionParticle->SetWorldPosition(float3(collisionGO->GetWorldPosition().x ,mEnemyCollisionParticle->GetWorldPosition().y, collisionGO->GetWorldPosition().z));
-                mEnemyCollisionParticle->SetEnabled(false);
-                mEnemyCollisionParticle->SetEnabled(true);*/
+                
             }
         }
     }
