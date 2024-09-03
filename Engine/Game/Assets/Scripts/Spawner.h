@@ -25,9 +25,9 @@ private:
 	bool mOnlyOnce = false;
 	bool mIsActive = false;
 	int mSpawnedCounter = 0;
-
+	int mWaveRounds = 1;
 	TimerScript mSpawnDelayTimer;
-	float mSpawnDelay = 0.25f;
+	float mSpawnDelay = 1.25f;
 
 	PoolType mPoolType = PoolType::FIRST;
 	PoolManager* mPoolManager = nullptr;
