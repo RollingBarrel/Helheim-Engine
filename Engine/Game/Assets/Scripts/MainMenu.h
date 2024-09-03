@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 class ButtonComponent;
 class SliderComponent;
@@ -45,8 +46,6 @@ public:
     void Update() override;
 
 private:
-    
-    bool Delay(float delay);
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
@@ -111,6 +110,12 @@ private:
     float mGeneralVolumeValue = .75f;
     float mMusicVolumeValue = .75f;
     float mEffectsVolumeValue = .75f;
+
+    TimerScript mTimer;
+    TimerScript mStudioTimer;
+    bool mStudioBool = true;
+    TimerScript mEngineTimer;
+    bool mEngineBool = true;
 
     // Screens
     GameObject* mSplashScreen = nullptr;

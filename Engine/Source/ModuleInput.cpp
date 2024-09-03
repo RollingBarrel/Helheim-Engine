@@ -174,6 +174,10 @@ update_status ModuleInput::PreUpdate(float dt)
             {
                 return UPDATE_STOP;
             }
+			if (sdlEvent.window.event == SDL_WINDOWEVENT_MOVED) 
+			{
+				App->GetWindow()->WindowMoved(sdlEvent.window.data1, sdlEvent.window.data2);
+			}
             break;
         case SDL_MOUSEWHEEL:
             mWheelY = sdlEvent.wheel.y;

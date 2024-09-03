@@ -20,9 +20,9 @@ public:
 	bool CleanUp() override;
 
 
-	int GetWidth() const { return width; };
-	int GetHeight() const { return height; };
-	float GetAspectRatio() const { return (float)width / (float)height; }
+	int GetWidth() const { return mWidth; };
+	int GetHeight() const { return mHeight; };
+	float GetAspectRatio() const { return (float)mWidth / (float)mHeight; }
 	float2 GetGameWindowsSize() const { return mGameWindowsSize; }
 	float2 GetGameWindowsPosition() const { return mGameWindowsPosition; }
 	void SetGameWindowsPosition(float2 gameWindowsPosition) { mGameWindowsPosition = gameWindowsPosition; }
@@ -30,6 +30,7 @@ public:
 
 	void GameWindowsResized(float2 gameWindowsSize) { mGameWindowsSize = gameWindowsSize; }
 	void WindowResized(unsigned width, unsigned height);
+	void WindowMoved(unsigned x, unsigned y);
 	void WindowFullscreen(bool value);
 	bool IsWindowFullscreen();
 
@@ -37,8 +38,8 @@ public:
 	SDL_Surface* mScreenSurface = nullptr;
 
 private:
-	int width = 0;
-	int height = 0;
+	int mWidth = 0;
+	int mHeight = 0;
 
 	float2 mGameWindowsSize;
 	float2 mGameWindowsPosition;

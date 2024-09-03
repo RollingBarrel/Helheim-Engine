@@ -38,6 +38,8 @@ public:
 	virtual void Paralyzed(float percentage, bool paralyzed);
 	virtual void SetAttracted(bool attracted);
 
+	void ActivateUltVFX();
+
 protected:
 	virtual void Idle();
 	virtual void Chase();
@@ -86,7 +88,7 @@ protected:
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
-	TimerScript  mHitEffectTimer;
+	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
 	float mFleeToAttackTime = 1.0f;
@@ -107,6 +109,7 @@ protected:
 	bool mHit = false;
 	std::vector<Component*> mMeshComponents;
 	std::vector <float4> mOgColors;
+	GameObject* mUltHitEffectGO = nullptr;
 	// DEBUFF
 	bool mBeAttracted = false;
 
