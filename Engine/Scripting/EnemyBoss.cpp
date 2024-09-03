@@ -309,7 +309,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-            bulletScript->Init(position, front, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+            bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         }
         wave++;
     }

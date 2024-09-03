@@ -4,6 +4,12 @@
 struct CollisionData;
 class BoxColliderComponent;
 
+enum BulletPattern
+{
+	CIRCLES,
+	ARROW,
+	NONE
+};
 GENERATE_BODY(EnemyBoss);
 class EnemyBoss : public Enemy
 {
@@ -20,7 +26,8 @@ private:
 	//void Idle();
 	void SelectAttack();
 	void StartBulletAttack();
-	void BulletAttack();
+	void BulletHellPattern1();
+	void BulletHellPattern2();
 	void LaserAttack();
 	void BombAttack();
 
@@ -28,11 +35,14 @@ private:
 
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
+	float mBulletRange = 50.0f;
 	float mLaserDamage = 2.0f;
 	float mBombDamage = 5.0f;
 	int mLastAttack = -1;
 	unsigned int mStage = 0;
-	bool mBulletHell = false;
+	float mPhase1Hp = 0.6;
+	float mPhase2Hp = 0.3;
+	BulletPattern mBulletHell = BulletPattern::NONE;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
