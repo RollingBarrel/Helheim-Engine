@@ -27,7 +27,8 @@ Component(owner, ComponentType::PARTICLESYSTEM), mImageName(original.mImageName)
 mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRate(original.mEmissionRate), mMaxParticles(original.mMaxParticles),
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode), 
-mFollowEmitter(original.mFollowEmitter), mBurst(original.mBurst), mGravity(original.mGravity)
+mShapeRandAngle(original.mShapeRandAngle), mIsShapeAngleRand(original.mIsShapeAngleRand), mShapeInverseDir(original.mShapeInverseDir),
+mFollowEmitter(original.mFollowEmitter), mSpinSpeed(original.mSpinSpeed), mBurst(original.mBurst), mGravity(original.mGravity)
 {
     if (original.mImage)
         mImage = (ResourceTexture*)App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
@@ -130,7 +131,7 @@ void ParticleSystemComponent::Draw()
                 float3 pos;
                 if (mFollowEmitter)
                 {
-                    pos = mOwner->GetWorldPosition() + mParticles[i]->GetPosition();
+                    pos =  (mOwner->GetWorldTransform() * float4(mParticles[i]->GetPosition(),1)).Float3Part();
                 }
                 else
                 {
@@ -227,6 +228,11 @@ void ParticleSystemComponent::Update()
             }
         }
 
+        if (mFollowEmitter)
+        {
+            mOwner->SetLocalRotation(mOwner->GetLocalRotation() * Quat::RotateZ(mSpinSpeed * App->GetDt()));
+        }
+
         if (!mLooping and mEmitterTime - mDelay > mDuration) return;
         
         if (mIsInBurst)
@@ -263,9 +269,9 @@ void ParticleSystemComponent::CreateNewParticle()
     {
         float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
         emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+        float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
+        emitionDirection = auxDirection.Normalized();
     }
-    float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
-    emitionDirection = auxDirection.Normalized();
 
     float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
@@ -305,6 +311,7 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddInt("Burst", mBurst);
     obj.AddBool("Looping", mLooping);
     obj.AddBool("FollowEmitter", mFollowEmitter);
+    obj.AddFloat("SpinSpeed", mSpinSpeed);
     obj.AddBool("StretchedBillboard", mStretchedBillboard);
     obj.AddFloat("StretchedRatio", mStretchedRatio);
     obj.AddFloat("Gravity", mGravity);
@@ -344,6 +351,7 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     if (data.HasMember("Burst")) mBurst = data.GetInt("Burst");
     if (data.HasMember("Looping")) mLooping = data.GetBool("Looping");
     if (data.HasMember("FollowEmitter")) mFollowEmitter = data.GetBool("FollowEmitter");
+    if (data.HasMember("SpinSpeed")) mSpinSpeed = data.GetFloat("SpinSpeed");
     if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
     if (data.HasMember("StretchedRatio")) mStretchedRatio = data.GetFloat("StretchedRatio");
     if (data.HasMember("Gravity")) mGravity = data.GetFloat("Gravity");
@@ -487,7 +495,7 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
             // Rotate direction around the rotation axis by phi
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
-        return direction;
+        return direction.Normalized();
     }
     case EmitterType::SPHERE:
     {
@@ -504,10 +512,10 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
             // Rotate direction around the rotation axis by phi
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
-        return direction;
+        return direction.Normalized();
     }
     default:
-        return float3(0, 0, 1);
+        return float3(0, 0, 1).Normalized();
     }
 }
 
