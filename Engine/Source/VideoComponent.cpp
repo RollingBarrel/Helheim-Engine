@@ -19,6 +19,7 @@ extern "C"
 	#include "libavcodec/avcodec.h"
 	#include "libavformat/avformat.h"
 	#include "libswscale/swscale.h"
+	#include "libavutil/imgutils.h"
 }
 
 VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentType::VIDEO)
@@ -75,7 +76,7 @@ void VideoComponent::Draw()
 
 		// allocate memory and set texture data
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, frameWidth, frameHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, frameData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, frameWidth, frameHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pFrameRGB->data[0]);
 
 		glUseProgram(mUIProgramID);
 		glEnable(GL_BLEND);
@@ -332,7 +333,7 @@ void VideoComponent::OpenVideo()
 		return;
 	}
 
-	scalerCtx = sws_getContext(pCodecContext->width, pCodecContext->height, pCodecContext->pix_fmt, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+	scalerCtx = sws_getContext(pCodecContext->width, pCodecContext->height, pCodecContext->pix_fmt, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
 
 }
 
@@ -371,18 +372,23 @@ void VideoComponent::ReadNextFrame()
 		av_packet_unref(pPacket);
 	}	
 	
-	frameData = new uint8_t[pCodecContext->width * pCodecContext->height * 4];
-	uint8_t* dest[8] = { frameData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
-	int linSize[8] = { pCodecContext->width * 4, 0, 0, 0, 0, 0, 0, 0 };
+	//frameData = new uint8_t[pCodecContext->width * pCodecContext->height * 4];
+	//uint8_t* dest[8] = { frameData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+	//int linSize[8] = { pCodecContext->width * 4, 0, 0, 0, 0, 0, 0, 0 };
 	
-	int numBytes = pCodecContext->width * pCodecContext->height * 3;
-	uint8_t* buffer = (uint8_t*)av_malloc(numBytes * sizeof(uint8_t));
-	pFrameRGB->data[0] = buffer;
-	pFrameRGB->linesize[0] = pCodecContext->width * 3;
+	
+	//int numBytes = av_image_get_buffer_size(AV_PIX_FMT_RGB24, pCodecContext->width, pCodecContext->height, 1);
+	//uint8_t* buffer = (uint8_t*)av_malloc(numBytes * sizeof(uint8_t));
+	//
+	//av_image_fill_arrays(pFrameRGB->data, pFrameRGB->linesize, buffer, AV_PIX_FMT_RGB24, pCodecContext->width, pCodecContext->height, 1);
+	av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, 1);
 
 	sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
 	//sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
 	//sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, dest, linSize);
+
+	//av_free(buffer);
+
 }
 
 int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame)

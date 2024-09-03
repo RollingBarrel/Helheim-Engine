@@ -66,7 +66,7 @@ private:
 	unsigned int mUIProgramID = 0;
 
 	
-	uint8_t* frameData = nullptr;
+	//uint8_t* frameData = nullptr;
 
 };
 
