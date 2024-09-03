@@ -3,17 +3,19 @@
 class Weapon
 {
 public:
-	enum class WeaponType {
+	enum class WeaponType 
+	{
 		RANGE,
-		MELEE
+		MELEE,
+		NONE
 	};
 
 	Weapon();
 	~Weapon();
 
-	virtual void Enter() = 0;
+	virtual void Enter() {}
 	virtual void Attack(float time) = 0;
-	virtual void Exit() = 0;
+	virtual void Exit() {}
 
 	WeaponType GetType() { return mType; }
 	int GetCurrentAmmo() { return mCurrentAmmo; }
@@ -26,13 +28,16 @@ public:
 	void SetDamage(float value) { mDamage = value; }
 protected:
 	virtual void PlayHitSound() = 0;
-	WeaponType mType;
+	WeaponType mType = WeaponType::NONE;
 
 	float mDamage = 0.0f;
 	float mAttackRange = 0.0f;
 
 	float mAttackCooldown = 0.0f;
 	float mAttackDuration = 0.0f;
+
+	float mCameraShakeDuration = 0.0f;
+	float mCameraShakeStrengh = 0.0f;
 
 	int mCurrentAmmo = 0;
 	int mMaxAmmo = 0;

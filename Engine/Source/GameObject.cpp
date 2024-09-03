@@ -25,6 +25,7 @@
 #include "ParticleSystemComponent.h"
 #include "BoxColliderComponent.h"
 #include "TrailComponent.h"
+#include "LineComponent.h"
 #include "DecalComponent.h"
 #include "TextComponent.h"
 
@@ -77,7 +78,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 		mComponents.push_back(cloned);
 		if (meshRendererComps && cloned->GetType() == ComponentType::MESHRENDERER)
 		{
-			meshRendererComps->push_back(reinterpret_cast<MeshRendererComponent*>(cloned));
+			meshRendererComps->push_back(static_cast<MeshRendererComponent*>(cloned));
 		}
 	}
 
@@ -155,7 +156,7 @@ AABB GameObject::GetAABB()
 
 	for (Component* component : components)
 	{
-		mixedAABB.Enclose(reinterpret_cast<MeshRendererComponent*>(component)->GetAABB());
+		mixedAABB.Enclose(static_cast<MeshRendererComponent*>(component)->GetAABB());
 	}
 
 	return mixedAABB;
@@ -170,7 +171,7 @@ void GameObject::SetTag(const std::string& tag)
 	mTag = tag;
 	App->GetScene()->AddToTagMap(tag, this);
 
-	CameraComponent* camera = reinterpret_cast<CameraComponent*>(GetComponent(ComponentType::CAMERA));
+	CameraComponent* camera = static_cast<CameraComponent*>(GetComponent(ComponentType::CAMERA));
 	if (camera)
 	{
 		App->GetCamera()->AddMainCamera(camera);
@@ -396,13 +397,8 @@ void GameObject::LookAt(const float3& target)
 	rotationMatrix[1][2] = -forward.y;
 	rotationMatrix[2][2] = -forward.z;
 
-
-	mLocalRotation = Quat(rotationMatrix);
-	mWorldEulerAngles = mLocalRotation.ToEulerXYZ();
-
-
-	mLocalTransformMatrix = float4x4::FromTRS(GetLocalPosition(), mLocalRotation, mWorldScale);
-	SetTransformsDirtyFlag();
+	//SetLocalRotation(rotationMatrix.ToEulerXYZ());
+	SetLocalRotation(Quat(rotationMatrix));
 }
 
 void GameObject::ResetTransform()
@@ -490,6 +486,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 	case ComponentType::TRAIL:
 		newComponent = new TrailComponent(this);
 		break;
+	case ComponentType::LINE:
+		newComponent = new LineComponent(this);
+		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);
 		break;
@@ -569,7 +568,7 @@ Component* GameObject::GetComponentInChildren(ComponentType type) const
 
 void GameObject::GetMeshesInChildren(std::vector<const MeshRendererComponent*>& componentVector) const
 {
-	MeshRendererComponent* gameObjectComponent = reinterpret_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
+	MeshRendererComponent* gameObjectComponent = static_cast<MeshRendererComponent*>(GetComponent(ComponentType::MESHRENDERER));
 
 	if (gameObjectComponent)
 	{

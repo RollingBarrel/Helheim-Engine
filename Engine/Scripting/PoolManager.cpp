@@ -32,6 +32,8 @@ void PoolManager::Start()
 	GameObject* EnemyRobotRange = new GameObject("EnemyRobotRange_Pool", mGameObject);
 	GameObject* EnemyCreatureMelee = new GameObject("EnemyCreatureMelee_Pool", mGameObject);
 	GameObject* EnemyCreatureRange = new GameObject("EnemyCreatureRange_Pool", mGameObject);
+	GameObject* EnemyExplosive = new GameObject("EnemyExplosive_Pool", mGameObject);
+
 
 
 	mPoolMap =
@@ -47,7 +49,9 @@ void PoolManager::Start()
 		{ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) },
 		{ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) },
 		{ PoolType::CREATURE_RANGE, ObjectPool("Creature_Range.prfb", numEnemies, EnemyCreatureRange) },
-		{ PoolType::CREATURE_MELEE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyCreatureMelee) }
+		{ PoolType::CREATURE_MELEE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyCreatureMelee) },
+		{ PoolType::ROBOT_EXPLOSIVE, ObjectPool("Enemy_Explosive.prfb", numEnemies, EnemyExplosive) }
+
 	};
 
 }

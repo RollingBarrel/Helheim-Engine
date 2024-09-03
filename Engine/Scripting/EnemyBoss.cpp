@@ -12,6 +12,16 @@
 #include "Bullet.h"
 #include "BossLaser.h"
 #include "HudController.h"
+#include "MathFunc.h"
+
+#define LASER_ANIMATION 78.0f / 20
+#define LASER_WIND_UP 38.0f / 20
+#define BULLETS_ANIMATION 146.0f / 20
+#define BULLETS_WIND_UP 92.0f / 20
+#define ERUPTION_ANIMATION 144.0f / 20
+#define IDLE_ANIMATION 40.0f / 20
+#define PHASE_ANIMATION 120.0f / 20
+#define DEATH_ANIMATION 107.0f / 20
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -20,12 +30,24 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mSpeed);
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
-    MEMBER(MemberType::FLOAT, mAttackDamage);
-    MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
-    MEMBER(MemberType::FLOAT, mAttackDuration);
     MEMBER(MemberType::FLOAT, mDeathTime);
+    SEPARATOR("BULLET HELL");
+    MEMBER(MemberType::FLOAT, mBulletHellDuration);
+    MEMBER(MemberType::FLOAT, mBulletHellCooldown);
+    MEMBER(MemberType::FLOAT, mBulletSpeed);
+    MEMBER(MemberType::FLOAT, mBulletsDamage);    
+    MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
+    SEPARATOR("BOMBS");
+    MEMBER(MemberType::FLOAT, mBombsDuration);
+    MEMBER(MemberType::FLOAT, mBombsDelay);
+    MEMBER(MemberType::FLOAT, mBombDamage);
+    SEPARATOR("LASER");
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
+    MEMBER(MemberType::FLOAT, mLaserDuration);
+    MEMBER(MemberType::FLOAT, mLaserDamage);
+    MEMBER(MemberType::FLOAT, mLaserDistance);
+    MEMBER(MemberType::FLOAT, mLaserSpeed);
 
     END_CREATE;
 }
@@ -36,6 +58,8 @@ EnemyBoss::EnemyBoss(GameObject* owner) : Enemy(owner)
 
 void EnemyBoss::Start()
 {
+    srand(static_cast<unsigned int>(time(0)));
+
     Enemy::Start();
     mCurrentState = EnemyState::IDLE;
 
@@ -49,7 +73,7 @@ void EnemyBoss::Start()
         }
     }
 
-    mAnimationComponent = reinterpret_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -67,7 +91,14 @@ void EnemyBoss::Update()
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-            if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
+            if ((mStage == 1 && mHealth / mMaxHealth < 0.2) || (mStage == 0 && mHealth / mMaxHealth < 0.6))
+            {
+                //Phase change
+                ++mStage;
+                mCurrentState = EnemyState::CHARGE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
+            }
+            else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 mCurrentState = EnemyState::ATTACK;
@@ -77,13 +108,26 @@ void EnemyBoss::Update()
         case EnemyState::ATTACK:
             if (mAttackDurationTimer.Delay(mAttackDuration))
             {
+                mBulletHell = false;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 mCurrentState = EnemyState::IDLE;
+            }
+            else if (mBulletHell && mBulletHellTimer.Delay(mBulletHellCooldown))
+            {
+                BulletAttack();
+            }
+            break;
+        case EnemyState::CHARGE:
+            if (mPhaseShiftTimer.Delay(mPhaseShiftTime))
+            {
+                mCurrentState = EnemyState::ATTACK;
+                SelectAttack();
             }
             break;
         case EnemyState::DEATH:
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
             Death();
+            break;
         }
     }
 
@@ -91,49 +135,102 @@ void EnemyBoss::Update()
 
 void EnemyBoss::SelectAttack()
 {
-    int attack = rand() % 3;
-    if (attack == mLastAttack)
+    short attack = rand() % 3;
+    /*if (attack == mLastAttack)
     {
         ++attack;
+        attack %= 3;
     }
+    mLastAttack = attack;*/
+
+    attack += mStage * 10;
     switch (attack)
     {
     case 1:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
+        if (mAnimationComponent) mAnimationComponent->SetAnimSpeed(LASER_ANIMATION / mAttackDuration);
         LaserAttack();
+        mAttackDuration = mLaserDuration;
         break;
     case 2:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
         BombAttack();
+        mAttackDuration = mBombsDuration;
         break;
     case 0:
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
-        BulletAttack();
+        StartBulletAttack();
+        mAttackDuration = mBulletHellDuration;
+        break;
+    case 10:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
+        LaserAttack();
+        StartBulletAttack();
+        mAttackDuration = Max(mLaserDuration, mBulletHellDuration);
+        break;
+    case 11:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
+        StartBulletAttack();
+        BombAttack();
+        mAttackDuration = Max(mBombsDuration, mBulletHellDuration);
+        break;
+    case 12:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
+        LaserAttack();
+        BombAttack();
+        mAttackDuration = Max(mLaserDuration, mBombsDuration);
+        break;
+    case 20:
+    case 21:
+    case 22:
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
+        LaserAttack();
+        BombAttack();
+        StartBulletAttack();
+        mAttackDuration = Max(mLaserDuration, mBulletHellDuration, mBombsDuration);
         break;
     }
+    
+}
+
+void EnemyBoss::StartBulletAttack()
+{
+    mBulletHell = true;
 }
 
 void EnemyBoss::BulletAttack()
 {
+    auto randFloat = []() -> float
+        {
+            return static_cast<float>(rand()) / static_cast<float>(RAND_MAX);
+        };
+
     float3 bulletOriginPosition = mGameObject->GetWorldPosition();
     bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
+    float3 rotation = mGameObject->GetWorldEulerAngles();
+
+    // Give bullet random directon
+    float angle = randFloat() * mBulletHellAngleSpread - mBulletHellAngleSpread / 2;
+    angle = DegToRad(angle);
     GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
     bulletGO->SetWorldPosition(bulletOriginPosition);
-    bulletGO->SetWorldRotation(mGameObject->GetWorldRotation());
-    Bullet* bulletScript = reinterpret_cast<Bullet*>(reinterpret_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    //bulletGO->SetWorldRotation(rotation);
+    
+    float3 front = mGameObject->GetFront();
+    float3 direction = float3(front.x * cos(angle) - front.z * sin(angle), front.y, front.x * sin(angle) + front.z * cos(angle));
+    Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
-    bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(), mBulletSpeed, 1.0f, &gradient, mAttackDamage);
+    bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage);
 }
 
 void EnemyBoss::LaserAttack()
 {
     if (mLaserGO)
     {
-        BossLaser* laserScript = reinterpret_cast<BossLaser*>(reinterpret_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (laserScript) laserScript->Init(mAttackDamage, mAttackDistance);
+        BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        if (laserScript) laserScript->Init(mLaserDamage,mLaserDuration,mLaserDistance,mLaserSpeed);
     }
-
 }
 
 void EnemyBoss::BombAttack()
@@ -141,14 +238,18 @@ void EnemyBoss::BombAttack()
     float3 target = mPlayer->GetWorldPosition();
     int index = rand() % mTemplates.size();
     GameObject* bombGO = mTemplates[index];
+	//LOG("Bomb index: %d", index);
     bombGO->SetWorldPosition(target);
+	float randRotation = static_cast<float>(rand() % 180);
+	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
+	bombGO->SetWorldRotation(bombRotation);
     std::vector<Component*> scriptComponents;
     bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
     bombGO->SetEnabled(true);
     for (Component* scriptComponent : scriptComponents)
     {
-        BombBoss* bombScript = reinterpret_cast<BombBoss*>(reinterpret_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-        bombScript->Init(mGameObject->GetWorldPosition());
+        BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
     }
 }
 
@@ -159,5 +260,4 @@ void EnemyBoss::Death()
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->Victory();
     }
-
 }

@@ -9,6 +9,7 @@ layout(location = 1) uniform mat4 model;
 layout(std140, binding = 0) uniform CameraMatrices{
 	mat4 view;
 	mat4 proj;
+	mat4 invView;
 };
 
 

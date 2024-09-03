@@ -2,14 +2,17 @@
 #include "Application.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
-
+#include "ParticleSystemComponent.h"
 #include "GameManager.h"
 
 CREATE(Spawner)
 {
 	CLASS(owner);
 	MEMBER(MemberType::INT, mPoolType);
-	MEMBER(MemberType::FLOAT, mSpawnRate);
+	MEMBER(MemberType::FLOAT, mParticlesTime);
+	MEMBER(MemberType::GAMEOBJECT, mParticlesGO);
+	MEMBER(MemberType::BOOL, mOnlyOnce);
+	MEMBER(MemberType::INT, mWaveRounds);
 	END_CREATE;
 }
 
@@ -18,35 +21,54 @@ Spawner::Spawner(GameObject* owner) : Script(owner) {}
 void Spawner::Start()
 {
 	mPoolManager = GameManager::GetInstance()->GetPoolManager();
+
 }
 
 void Spawner::Update()
 {
-	if (mIsActive)
+
+	if (mSpawnedCounter>0)
 	{
-		mLastSpawnTime += App->GetDt();
+		if (mParticlesGO)
+		{
+			mParticlesGO->SetEnabled(true);
+		}
+
+	
+
+		if (mSpawnDelayTimer.Delay(mSpawnDelay))
+		{			
+			GameObject* enemy = mPoolManager->Spawn(mPoolType);
+			if (enemy)
+			{
+				ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
+				Enemy* enemyScript = static_cast<Enemy*>(script->GetScriptInstance());
+				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
+				enemy->SetEnabled(true);
+				enemyScript->Init();
+				if (mParticlesGO)
+				{
+					mParticlesGO->SetEnabled(false);
+				}
+				if(mOnlyOnce)
+				{
+					mIsActive = false;
+					mSpawnedCounter= 0;
+					return;
+				}
+				--mSpawnedCounter;
+			}
+		}
 	}
 }
 
 bool Spawner::Spawn()
 {
-	if (mIsActive)
-	{
-		if (mLastSpawnTime >= mSpawnRate)
-		{
-			GameObject* enemy = mPoolManager->Spawn(mPoolType);
-			if (enemy)
-			{
-				ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
-				Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
-				enemy->SetWorldPosition(mGameObject->GetWorldPosition());
-				enemy->SetEnabled(true);
- 				enemyScript->Init();
-
-				mLastSpawnTime = 0.0f;
-				return true;
-			}
+		if (mIsActive)
+		{	
+			++mSpawnedCounter;
+			return true;
 		}
-	}
 	return false;
 }
+

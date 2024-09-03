@@ -51,6 +51,31 @@ SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameO
 	}
 }
 
+void SpotLightComponent::GetBoundingSphere(float boundingSphere[4]) const
+{
+	float angle = GetOuterAngle();
+	float size = mData.range;
+
+	if (angle > (pi / 4.0f))
+	{
+		float cosine = cos(angle);
+		for (unsigned int i = 0; i < 3; ++i)
+		{
+			boundingSphere[i] = mData.pos[i] + cosine * size * mData.aimD[i];
+		}
+		boundingSphere[3] = sin(angle) * size;
+	}
+	else
+	{
+		float cosine = cos(angle);
+		for (unsigned int i = 0; i < 3; ++i)
+		{
+			boundingSphere[i] = mData.pos[i] + size / (2.0f * cosine) * mData.aimD[i];
+		}
+		boundingSphere[3] = size / (2.0f * cos(angle));
+	}
+}
+
 SpotLightComponent::~SpotLightComponent()
 {
 	App->GetOpenGL()->RemoveSpotLight(*this);
@@ -82,7 +107,8 @@ void SpotLightComponent::SetRange(float range)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-float SpotLightComponent::GetOuterAngle() const {
+float SpotLightComponent::GetOuterAngle() const 
+{
 	return acos(mData.color[3]);
 }
 
@@ -94,7 +120,8 @@ void SpotLightComponent::SetOuterAngle(float angle)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
-float SpotLightComponent::GetInnerAngle() const {
+float SpotLightComponent::GetInnerAngle() const 
+{
 	return acos(mData.aimD[3]);
 }
 
@@ -203,7 +230,6 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
-
 
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	

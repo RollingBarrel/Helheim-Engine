@@ -662,13 +662,13 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             DrawSkeleton(focusGameObject);
         }
 
-        CameraComponent* camera = reinterpret_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
+        CameraComponent* camera = static_cast<CameraComponent*>(focusGameObject->GetComponent(ComponentType::CAMERA));
         if (camera)
         {
             DrawFrustum(camera->GetFrustum());
         }
 
-        SpotLightComponent* spotLight = reinterpret_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
+        SpotLightComponent* spotLight = static_cast<SpotLightComponent*>(focusGameObject->GetComponent(ComponentType::SPOTLIGHT));
         if (spotLight)
         {
             float radius = spotLight->GetRange() * tan(spotLight->GetOuterAngle());
@@ -677,20 +677,25 @@ void ModuleDebugDraw::Draw(const float4x4& viewproj,  unsigned width, unsigned h
             //DrawFrustum(spotLight->GetFrustum());
         }
 
-        PointLightComponent* pointLight = reinterpret_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
+        PointLightComponent* pointLight = static_cast<PointLightComponent*>(focusGameObject->GetComponent(ComponentType::POINTLIGHT));
         if (pointLight)
         {
             DrawSphere(pointLight->GetPosition(), pointLight->GetColor(), pointLight->GetRadius());
         }
 
-        DecalComponent* decalComponent = reinterpret_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
+        DecalComponent* decalComponent = static_cast<DecalComponent*>(focusGameObject->GetComponent(ComponentType::DECAL));
         if (decalComponent)
         {
             OBB obb = OBB(AABB(float3(-0.5f, -0.5f, -0.5f), float3(0.5f, 0.5f, 0.5f)));
             obb.Transform(focusGameObject->GetWorldTransform());
             dd::arrow(focusGameObject->GetWorldPosition(), focusGameObject->GetWorldPosition() - focusGameObject->GetFront(), float3(1.0f, 0.5f, 0.5f), 0.5f);
             DrawCube(obb, float3(0.8f, 0.8f, 0.8f));
-        }        
+        }
+
+        if ((reinterpret_cast<DebugPanel*>(EngineApp->GetEditor()->GetPanel(DEBUGPANEL)))->ShouldDrawBoundingBoxes())
+        {
+            EngineApp->GetDebugDraw()->DrawBoundingBoxes(focusGameObject);
+        }     
         
         DrawColliders(focusGameObject);
     }
@@ -820,22 +825,32 @@ void ModuleDebugDraw::DrawBoundingBoxes(GameObject* gameObject)
     std::vector<Component*> meshComponents;
     gameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, meshComponents);
 
-    if (!meshComponents.empty())
+    for (unsigned int i = 0; i < meshComponents.size(); ++i)
     {
-        AABB aabb = gameObject->GetAABB();
-        //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
-        if (aabb.IsFinite())
-        {
-            //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
-        }
-
-      ////OBB obb = gameObject->GetOBB();
-      //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
-      //if (obb.IsFinite())
-      //{
-      //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
-      //}
+        const MeshRendererComponent& comp = *reinterpret_cast<MeshRendererComponent*>(meshComponents[i]);
+        math::OBB obb;
+        math::AABB resAbb;
+        comp.GetAABBOBB(resAbb, obb);
+        DrawCube(obb, float3(1.0f, 0.0f, 0.0f));
+        DrawCube(resAbb, float3(1.0f, 1.0f, 0.0f));
     }
+
+    //if (!meshComponents.empty())
+    //{
+    //    AABB aabb = gameObject->GetAABB();
+    //    //AABB aabb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetAABB();
+    //    if (aabb.IsFinite())
+    //    {
+    //        //EngineApp->GetDebugDraw()->DrawCube(aabb, float3(1.0f, 0.0f, 0.0f));
+    //    }
+    //
+    //  ////OBB obb = gameObject->GetOBB();
+    //  //OBB obb = reinterpret_cast<MeshRendererComponent*>(meshComponents[0])->GetOBB();
+    //  //if (obb.IsFinite())
+    //  //{
+    //  //   // EngineApp->GetDebugDraw()->DrawCube(obb, float3(0.0f, 0.0f, 1.0f));
+    //  //}
+    //}
     
 }
 

@@ -11,6 +11,8 @@
 #include "HudController.h"
 #include "Keys.h"
 #include "ModuleInput.h"
+#include "PlayerStats.h"
+#include "ModuleScene.h"
 
 CREATE(Dialog)
 {
@@ -37,12 +39,13 @@ void Dialog::Start()
     if (mProtagonistGO) mProtagonistImage = static_cast<ImageComponent*>(mProtagonistGO->GetComponent(ComponentType::IMAGE));
     if (mWifeGO) mWifeImage = static_cast<ImageComponent*>(mWifeGO->GetComponent(ComponentType::IMAGE));
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
-
+    mPlayerStats = App->GetScene()->GetPlayerStats();
+    mCurrentDialogSet = mPlayerStats->GetDialogIndex();
 }
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
     Controls();
 }
 
@@ -64,30 +67,45 @@ void Dialog::StartDialog()
     UpdateDialog();
 }
 
-void Dialog::UpdateDialog()
+void Dialog::NextDialogSet()
 {
-    mText->SetText(mDialog[mCurrentDialog]);
+    if (mCurrentDialogSet < mDialogList.size() - 1)
+    {
+        mCurrentDialogSet++; 
+        mPlayerStats->SetDialogIndex(mCurrentDialogSet);
+    }
 }
 
-void Dialog::OnClick() 
+void Dialog::UpdateDialog()
+{
+    if (mText && !mDialogList.empty() && mCurrentDialogSet < mDialogList.size() &&
+        mCurrentDialog < mDialogList[mCurrentDialogSet].size())
+    {
+        mText->SetText(mDialogList[mCurrentDialogSet][mCurrentDialog]);
+    }
+}
+
+void Dialog::OnClick()
 {
     if (mTimeout) return;
 
-    // Verify if the dialog is over
-    if (mCurrentDialog == (sizeof(mDialog) / sizeof(mDialog[0])) - 1)
+    // Check if the current dialog set is over
+    if (mCurrentDialog == mDialogList[mCurrentDialogSet].size() - 1)
     {
+        NextDialogSet();
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->SetPaused(false, false);
         GameManager::GetInstance()->GetHud()->SetSanity();
         return;
     }
 
+    // Swap between Protagonist and Wife images
     if (*mProtagonistImage->GetAlpha() == 0.5f)
     {
         mProtagonistImage->SetAlpha(1.0f);
         mWifeImage->SetAlpha(0.5f);
     }
-    else 
+    else
     {
         mProtagonistImage->SetAlpha(0.5f);
         mWifeImage->SetAlpha(1.0f);
@@ -96,4 +114,3 @@ void Dialog::OnClick()
     mCurrentDialog++;
     UpdateDialog();
 }
-

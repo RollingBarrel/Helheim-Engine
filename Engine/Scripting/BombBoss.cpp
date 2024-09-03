@@ -9,11 +9,12 @@
 #include "DecalComponent.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
+#include "EnemyBoss.h"
+
 CREATE(BombBoss)
 {
 	CLASS(owner);
 	MEMBER(MemberType::FLOAT, mRadius);
-	MEMBER(MemberType::FLOAT, mDamage);
 	MEMBER(MemberType::FLOAT, mTimeDelay);
 	END_CREATE;
 }
@@ -37,18 +38,29 @@ void BombBoss::Start()
 			break;
 		}
 	}
-}
 
+	std::vector<GameObject*> rootChildren = App->GetScene()->GetRoot()->GetChildren();
+	for (GameObject* go : rootChildren)
+	{
+		if (go->GetName() == "FinalBoss")
+		{
+			mTimeDelay = static_cast<EnemyBoss*>(static_cast<ScriptComponent*>(go->GetComponent(ComponentType::SCRIPT))->GetScriptInstance())->GetBombsDelay();
+			break;
+		}
+	}
+}
 
 void BombBoss::Update()
 {
+	if (GameManager::GetInstance()->IsPaused()) return;
+	
 	mTimePassed += App->GetDt();
 	if (mHasExploded)
 	{
 		bool finishedExploding = true;
 		for (Component* particlecomponent : mExplosionParticles)
 		{
-			finishedExploding = reinterpret_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
+			finishedExploding = static_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
 		}
 		if (finishedExploding)
 		{
@@ -73,16 +85,16 @@ void BombBoss::Update()
 	}
 }
 
-void BombBoss::Init(float3 bombOrigin)
+void BombBoss::Init(float3 bombOrigin, float damage)
 {
 	mGameObject->SetEnabled(true);
 	mHasExploded = false;
 	mTimePassed = 0.0f;
 	mBombOrigin = bombOrigin;
+	mDamage = damage;
 	for (Component* particlecomponent : mExplosionParticles)
 	{
 		particlecomponent->GetOwner()->SetEnabled(false);
 	}
 	mGameObject->SetWorldScale(float3(mRadius*2));
-	
 }

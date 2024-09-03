@@ -1,21 +1,27 @@
 #include "HudController.h"
 
-#include "GameObject.h"
 #include "Application.h"
-#include "MainMenu.h"
-#include "GameManager.h"
 #include "ModuleInput.h"
-#include "Keys.h"
-#include "PlayerController.h"
+#include "ModuleScene.h"
 
+#include "PlayerStats.h"
+
+#include "GameObject.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
 #include "ScriptComponent.h"
-#include "Sanity.h"
+
+#include "GameManager.h"
+#include "PlayerController.h"
+#include "MainMenu.h"
+#include "Keys.h"
 #include "Dialog.h"
+#include "Sanity.h"
+
+
 
 
 CREATE(HudController)
@@ -53,6 +59,13 @@ CREATE(HudController)
     SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     MEMBER(MemberType::GAMEOBJECT, mDialogGO);
+
+    SEPARATOR("Collectible");
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleScreen);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleTextGO);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleContinueBtnGO);
+    MEMBER(MemberType::GAMEOBJECT, mInteractGO);
+
     END_CREATE;
 }
 
@@ -75,6 +88,7 @@ void HudController::Start()
             mContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnContinueBtnClick, this)));
             mContinueBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnContinueBtnHoverOn, this)));
             mContinueBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnContinueBtnHoverOff, this)));
+            OnContinueBtnHoverOn();
         }
         if (mOptionsBtnGO)
         {
@@ -114,17 +128,32 @@ void HudController::Start()
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
 
+    if (mCollectibleScreen)
+    {
+        mCollectibleScreen->SetEnabled(false);
+        if (mCollectibleTextGO) mLoreText = static_cast<TextComponent*>(mCollectibleTextGO->GetComponent(ComponentType::TEXT));
+        if (mCollectibleContinueBtnGO) 
+        {
+            mCollectibleContinueBtn = static_cast<ButtonComponent*>(mCollectibleContinueBtnGO->GetComponent(ComponentType::BUTTON));
+            mCollectibleContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnCollectibleContinueBtnClick, this)));
+        }
+
+    }
+
     if (mHealthGO)
     {
         mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
         mHealthSlider->SetValue(1.0f);
     }
-
+    
     if (mHealthGradualGO) 
     {
         mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
         mHealthGradualSlider->SetValue(1.0f);
     }
+
+    SetMaxHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
+    //SetHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
     
     if (mBossHealthGO)
     {
@@ -154,9 +183,15 @@ void HudController::Start()
     if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
     if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
+    if (mInteractGO) 
+    {
+        mInteractGO->SetEnabled(false);
+        const std::vector<GameObject*> children = mInteractGO->GetChildren();
+        mInteractText = static_cast<TextComponent*>(children[0]->GetComponent(ComponentType::TEXT));
+    }
 
-    if (mSanityGO) mSanity = reinterpret_cast<Sanity*>(reinterpret_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-    if (mDialogGO) mDialog = reinterpret_cast<Dialog*>(reinterpret_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 }
 
 void HudController::Update()
@@ -344,6 +379,11 @@ void HudController::SetDialog()
     mDialog->StartDialog();
 }
 
+void HudController::DisableCollectible()
+{
+    OnCollectibleContinueBtnClick();
+}
+
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
@@ -466,6 +506,11 @@ void HudController::SetUltimateCooldown(float cooldown)
     mUltimateTimer = 0.001f;
 }
 
+void HudController::SetCollectibleText(std::string text)
+{
+    if (mLoreText) mLoreText->SetText(text);
+}
+
 void HudController::SetScreen(SCREEN name, bool active)
 {
     switch (name) {
@@ -481,9 +526,26 @@ void HudController::SetScreen(SCREEN name, bool active)
         case SCREEN::PAUSE:
             if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
+        case SCREEN::COLLECTIBLE:
+            if (mCollectibleScreen) mCollectibleScreen->SetEnabled(active);
+            break;
         default:
             break;
     }
+}
+
+void HudController::SetInteract(bool active)
+{
+    if (mInteractGO)
+    {
+        if (mInteractText) 
+        {
+           if(GameManager::GetInstance()->UsingController()) mInteractText->SetText("Y to Interact");
+           else mInteractText->SetText("F to Interact");
+        }
+        mInteractGO->SetEnabled(active);
+    }
+        
 }
 
 #pragma region Click Events
@@ -580,6 +642,22 @@ void HudController::OnMainMenuBtnHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.0f);
+}
+
+void HudController::OnCollectibleContinueBtnClick()
+{
+    if (mCollectibleScreen->IsActive()) {
+        SetScreen(SCREEN::COLLECTIBLE, false);
+        GameManager::GetInstance()->SetPaused(false, false);
+    }
+}
+
+void HudController::OnCollectibleContinueBtnHoverOn()
+{
+}
+
+void HudController::OnCollectibleContinueBtnHoverOff()
+{
 }
 
 void HudController::SetBossHealthBarEnabled(bool enabled)

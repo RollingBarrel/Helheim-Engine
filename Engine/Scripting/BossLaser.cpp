@@ -1,136 +1,149 @@
 #include "BossLaser.h"
 #include "Application.h"
 #include "GameObject.h"
-#include "BoxColliderComponent.h"
+#include "ModuleScene.h"
 #include "ScriptComponent.h"
-#include "PlayerController.h"
 #include "GameManager.h"
+
 #include "MathFunc.h"
-#include "State.h"
-#include "Geometry/Ray.h"
+#include "BossLaserEyeBall.h"
 
 CREATE(BossLaser)
 {
-	CLASS(owner);
-	MEMBER(MemberType::FLOAT, mAngle);
-	MEMBER(MemberType::FLOAT, mDamage);
-	MEMBER(MemberType::FLOAT, mSpeed);
-	MEMBER(MemberType::FLOAT, mRange);
-
-	SEPARATOR("GAME OBJECTS");
-	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
-	MEMBER(MemberType::GAMEOBJECT, mLaserTrail);
-	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
-	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
-
-	END_CREATE;
+    CLASS(owner);
+    MEMBER(MemberType::FLOAT, mBossDistance);
+    MEMBER(MemberType::INT, mPoolSize);
+    END_CREATE;
 }
 
 BossLaser::BossLaser(GameObject* owner) : Script(owner)
 {
 }
 
-BossLaser::~BossLaser()
-{
-}
-
 void BossLaser::Start()
 {
+    mCurrentState = LaserState::IDLE;
 
+    for (size_t i = 0; i < mPoolSize; ++i)
+    {
+        GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb",mGameObject);
+        if (eyeBall)
+        {
+            eyeBall->SetEnabled(false);
+            eyeBall->SetLocalScale(float3::one * 0.5f);
+            mInactiveEyeBall.push_back(eyeBall);
+        }
+    }
 }
-
 
 void BossLaser::Update()
 {
-	float dt = App->GetDt();
-	if (mSwipeProgress > mAngle)
-	{
-		mGameObject->SetEnabled(false);
-	}
-	else
-	{
-		mSwipeProgress += dt * mSpeed;
-		float newAngle = mSwipeProgress - (mAngle / 2);
-		mGameObject->SetLocalRotation(float3(0, DegToRad(newAngle), 0));
-		Ray ray;
-		ray.pos = mLaserOrigin->GetWorldPosition();
-		ray.pos.y++;
-		ray.dir = mGameObject->GetFront();
+    if (GameManager::GetInstance()->IsPaused()) return;
 
-		Hit hit;
-		Physics::Raycast(hit, ray, mRange);
-		if (hit.IsValid())
-		{
-			if (hit.mGameObject->GetTag() == "Player" && mIframes == 0)
-			{
-				mIframes = 10.0f;
-				LOG("Collided with player");
-				ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-				PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
-				if (player->GetPlayerLowerState()->GetType() != StateType::DASH)
-				{
-					player->TakeDamage(mDamage);
-				}
-			}
+    float deltaTime = App->GetDt();
+    mStateTime += deltaTime;
 
-			mLaserEnd->SetWorldPosition(hit.mHitPoint);
-			//Trails WorkAround
-			if (mMoveTrail)
-			{
-				mLaserTrail->SetWorldPosition(hit.mHitPoint);
-				mMoveTrail = false;
-			}
-			else
-			{
-				mMoveTrail = true;
-				mLaserTrail->SetWorldPosition(mLaserOrigin->GetWorldPosition());
-			}
-
-
-		}
-		else
-		{
-			float3 originPosition = mLaserOrigin->GetWorldPosition();
-			//mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mRange));
-			mLaserEnd->SetWorldPosition(originPosition + mGameObject->GetFront() * mRange);
-
-			//Trails WorkAround
-			if (mMoveTrail)
-			{
-				//mLaserTrail->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mRange));
-				mLaserTrail->SetWorldPosition(originPosition + mGameObject->GetFront() * mRange);
-				mMoveTrail = false;
-			}
-			else
-			{
-				//mLaserTrail->SetLocalPosition(originPosition);
-				mLaserTrail->SetWorldPosition(originPosition);
-				mMoveTrail = true;
-			}
-		}
-	}
-	if (mIframes > 0) --mIframes;
+    switch (mCurrentState)
+    {
+    case LaserState::IDLE:
+        break;
+    case LaserState::CHARGING:
+        if (mStateTime >= mChargeTime)
+        {
+            Fire();
+        }
+        break;
+    case LaserState::FIRING:
+        if (mStateTime >= mLaserEnemyDuration)
+        {
+            Cooldown();
+        }
+        break;
+    case LaserState::COOLDOWN:
+        if (mStateTime >= mCooldownDuration)
+        {
+            mCurrentState = LaserState::IDLE;
+        }
+        break;
+    }
 }
 
-void BossLaser::Init(float damage, float range)
+void BossLaser::Init(float damage, float duration, float distance,float speed)
 {
-	mSwipeProgress = 0.0f;
-	mGameObject->SetEnabled(true);
-	mGameObject->SetLocalRotation(float3(0, DegToRad(-mAngle / 2), 0));
-	mDamage = damage;
-	mRange = range;
+    mDamage = damage;
+    mLaserEnemyDuration = duration;
+    mLaserDistance = distance;
+    mLaserSpeed = speed;    
+    Charge();
 }
 
-void BossLaser::OnCollisionEnter(CollisionData* collisionData)
+void BossLaser::Charge()
 {
-	//if (collisionData->collidedWith->GetTag().compare("Player") == 0)
-	//{
-	//	LOG("Collided with player");
-	//	ScriptComponent* playerScript = reinterpret_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-	//	PlayerController* player = reinterpret_cast<PlayerController*>(playerScript->GetScriptInstance());
-	//	if (player->GetPlayerLowerState()->GetType() != StateType::DASH)
-	//	{
-	//		player->TakeDamage(mDamage);
-	//	}
-	//}
+    mCurrentState = LaserState::CHARGING;
+    mStateTime = 0.0f;
+}
+
+void BossLaser::Fire()
+{
+    mCurrentState = LaserState::FIRING;
+    mStateTime = 0.0f;
+    SpawnEyeBalls();
+}
+
+void BossLaser::Cooldown()
+{
+    mCurrentState = LaserState::COOLDOWN;
+    mStateTime = 0.0f;
+
+    for (GameObject* eyeBall : mActiveEyeBalls)
+    {
+        eyeBall->SetEnabled(false);
+    }
+    mActiveEyeBalls.clear();
+
+    ReturnEyeBallsToPool();
+}
+
+void BossLaser::SpawnEyeBalls()
+{
+    float totalArc = 180.0f;
+    float angleStep = totalArc / (mPoolSize - 1);
+
+    float3 bossPosition = mGameObject->GetWorldPosition();
+    float3 bossFront = mGameObject->GetFront();
+    float3 bossRight = mGameObject->GetRight();
+
+    for (int i = 0; i < mPoolSize; ++i)
+    {
+        if (i >= mInactiveEyeBall.size())
+            break;
+
+        GameObject* eyeBall = mInactiveEyeBall[i];
+
+        float angle = DegToRad(-90.0f + i * angleStep); 
+        float3 positionOffset = bossFront * std::cos(angle) * mBossDistance + bossRight * std::sin(angle) * mBossDistance;
+        positionOffset.y = -1.0f;
+
+        eyeBall->SetWorldPosition(bossPosition + positionOffset);
+        eyeBall->SetEnabled(true);
+
+        BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+        if (eyeBallScript)
+        {
+            eyeBallScript->Init(mDamage, mLaserEnemyDuration, mLaserDistance, mLaserSpeed, angle);
+        }
+
+        mActiveEyeBalls.push_back(eyeBall);
+    }
+}
+
+
+void BossLaser::ReturnEyeBallsToPool()
+{
+    for (GameObject* eyeBall : mActiveEyeBalls)
+    {
+        eyeBall->SetEnabled(false);
+        mInactiveEyeBall.push_back(eyeBall);  
+    }
+    mActiveEyeBalls.clear();
 }

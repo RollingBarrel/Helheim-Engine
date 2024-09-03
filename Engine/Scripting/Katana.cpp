@@ -7,6 +7,7 @@
 #include "Enemy.h"
 #include "ScriptComponent.h"
 #include "GameObject.h"
+#include "PlayerController.h"
 
 Katana::Katana(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
@@ -26,7 +27,7 @@ void Katana::PlayHitSound()
 {
     const char* parameterName = "Speed";
     GameManager::GetInstance()->GetAudio()->PlayOneShot(
-        SFX::MEELEE,
+        SFX::PLAYER_MEELEE,
         GameManager::GetInstance()->GetPlayer()->GetWorldPosition(),
         { { parameterName, 8.0f } }
     );
@@ -34,9 +35,9 @@ void Katana::PlayHitSound()
 
 void Katana::HitEffect(GameObject* enemy)
 {
-    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (enemyScript)
     {
-        enemyScript->TakeDamage(mDamage);
+        enemyScript->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
     }
 }

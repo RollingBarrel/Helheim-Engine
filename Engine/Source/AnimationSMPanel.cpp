@@ -418,7 +418,7 @@ void AnimationSMPanel::GetResourcesList()
                 currentItem = modelNames[n].c_str();
                 std::string path = std::string("Assets/StateMachines/" + modelNames[n] + ".smbin");
                 
-                ResourceStateMachine* newSM = reinterpret_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+                ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
                 mStateMachine = newSM->GetStateMachine();
                 mStateMachine->SetUID(newSM->GetUID());
                 //mStateMachine->LoadResource(path.c_str());
@@ -468,7 +468,7 @@ void AnimationSMPanel::DrawMenuBar()
 
         if (uid != 0)
         {
-            ResourceStateMachine* existingRes = reinterpret_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(uid, Resource::Type::StateMachine));
+            ResourceStateMachine* existingRes = static_cast<ResourceStateMachine*>(App->GetResource()->RequestResource(uid, Resource::Type::StateMachine));
             existingRes->SetStateMachine(mStateMachine);
             //Importer::StateMachine::Save(existingRes);
             Importer::StateMachine::Import(filePath.c_str(), uid);

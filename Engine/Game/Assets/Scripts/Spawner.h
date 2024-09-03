@@ -3,6 +3,7 @@
 #include "Enemy.h"
 #include "Macros.h"
 #include "PoolManager.h"
+#include "TimerScript.h"
 
 GENERATE_BODY(Spawner);
 class Spawner : public Script
@@ -16,17 +17,23 @@ public:
 	bool Spawn();
 
 	bool IsActive() const { return mIsActive; }
-	float GetSpawnRate() const { return mSpawnRate; }
 	PoolType GetEnemyType() const { return mPoolType; }
 	void Active(bool active) { mIsActive = active; }
-	void SetSpawnRate(float seconds) { mSpawnRate = seconds; }
+
 
 private:
+	bool mOnlyOnce = false;
 	bool mIsActive = false;
-	float mSpawnRate = 0.0f;
-	float mLastSpawnTime = 0.0f;
-	PoolType mPoolType = PoolType::FIRST;
+	int mSpawnedCounter = 0;
+	int mWaveRounds = 1;
+	TimerScript mSpawnDelayTimer;
+	float mSpawnDelay = 1.25f;
 
+	PoolType mPoolType = PoolType::FIRST;
 	PoolManager* mPoolManager = nullptr;
 
+	GameObject* mParticlesGO = nullptr;
+	bool mParticlesOn = false;
+	TimerScript  mParticlesTimer;
+	float mParticlesTime = 0.5f;
 };

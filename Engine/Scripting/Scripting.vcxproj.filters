@@ -140,9 +140,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
       <Filter>Sound\Test</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
-      <Filter>Sound</Filter>
-    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Spawner.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -178,7 +175,6 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
       <Filter>Enemies</Filter>
     </ClInclude>
@@ -188,7 +184,28 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveSpawner.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\BossLaserEyeBall.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h">
+      <Filter>States\Attack</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ExplosiveTrap.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -331,10 +348,27 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="UltimateAttack.cpp" />
-    <ClCompile Include="UltimateState.cpp" />
     <ClCompile Include="BossLaser.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="EnemyExplosiveSpawner.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
     <ClCompile Include="RayCastBullet.cpp" />
+    <ClCompile Include="BossLaserEyeBall.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
+    <ClCompile Include="UltimateChargeState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="UltimateState.cpp">
+      <Filter>States\Attack</Filter>
+    </ClCompile>
+    <ClCompile Include="HealVFX.cpp" />
+    <ClCompile Include="LoreCollectible.cpp" />
+    <ClCompile Include="ExplosiveTrap.cpp" />
+    <ClCompile Include="EnemyExplosiveTrap.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -4,6 +4,9 @@
 #include "ScriptComponent.h"
 #include "GameObject.h"
 
+#include "GameManager.h"
+#include "PlayerController.h"
+
 Bat::Bat(BoxColliderComponent* collider, TrailComponent* trail) : MeleeWeapon(collider, trail)
 {
     mDamage = 4.0f;
@@ -22,12 +25,10 @@ void Bat::PlayHitSound()
 
 void Bat::HitEffect(GameObject* enemy)
 {
-    Enemy* enemyScript = reinterpret_cast<Enemy*>(reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (enemyScript)
     {
-        enemyScript->TakeDamage(mDamage);
+        enemyScript->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
     }
     LOG("apply special effects bat");
 }
-
-

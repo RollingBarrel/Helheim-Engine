@@ -76,13 +76,13 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 	if (gameObject->IsEnabled())
 	{
 		//TODO: Check this...
-		ImageComponent* image = reinterpret_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
 		if (image && image->IsEnabled())
 		{
 			image->Draw();
 		}
 		
-		TextComponent* text = reinterpret_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
+		TextComponent* text = static_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
 		if (text && text->IsEnabled())
 		{
 			text->Draw();
@@ -137,7 +137,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 		{
 
 			float2 mouseAbsolute(App->GetInput()->GetGlobalMousePosition());
-
 			
 			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsolute.x - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
 			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsolute.y - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);

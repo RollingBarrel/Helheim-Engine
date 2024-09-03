@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float4.h"
+#include "float3.h"
 #include "TimerScript.h"
 
 class GameObject;
@@ -15,6 +16,7 @@ enum class EnemyState
 	CHASE,
 	CHARGE,
 	ATTACK,
+	FLEE,
 	DEATH
 };
 
@@ -22,40 +24,40 @@ enum class EnemyState
 class Enemy : public Script
 {
 public:
-	Enemy(GameObject* owner);
+	Enemy(GameObject* owner) : Script(owner) {}
 	~Enemy() {}
 	void Start() override;
 	void Update() override;
 
 	virtual void TakeDamage(float damage);
 	virtual void Death();
-	virtual void PushBack();
+	virtual void PushBack(); 
 	virtual void Init();
-	bool IsChasing();
 	
-	//Grenade
-
 	// DEBUFF
 	virtual void Paralyzed(float percentage, bool paralyzed);
+	virtual void SetAttracted(bool attracted);
 
-	virtual void SetAttracted(bool attracted) { mBeAttracted = attracted; };
+	void ActivateUltVFX();
 
 protected:
 	virtual void Idle();
 	virtual void Chase();
 	virtual void Charge();
 	virtual void Attack();
-
+	virtual void Flee();
 	virtual void PlayStepAudio() {};
 	virtual void PlayAttackAudio() {};
 
 	bool IsPlayerInRange(float range);
+	bool IsPlayerReachable();
 	void DropItem();
 	void ActivateEnemy();
 	void ActivateHitEffect();
 	void CheckHitEffect();
 	void ResetEnemyColor();
 	bool IsDeath() const { return mCurrentState == EnemyState::DEATH; }
+
 	//Stats
 	float mHealth = 10.0f;
 	float mMaxHealth = 6.0f;
@@ -86,8 +88,11 @@ protected:
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
-	TimerScript  mHitEffectTimer;
+	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
+	TimerScript mFleeToAttackTimer;
+	float mFleeToAttackTime = 1.0f;
+
 
 	//Transition Times
 	float mIdleTransitionDuration = 0.2f;
@@ -96,11 +101,15 @@ protected:
 	float mAttackTransitionDuration = 0.2f;
 	float mDeathTransitionDuration = 0.2f;
 
+	//Movement
+	float3 mEnemyCollisionDirection = float3::zero;
+
 
 	//Hit Effect
 	bool mHit = false;
 	std::vector<Component*> mMeshComponents;
 	std::vector <float4> mOgColors;
+	GameObject* mUltHitEffectGO = nullptr;
 	// DEBUFF
 	bool mBeAttracted = false;
 

@@ -1,8 +1,11 @@
-#include "GameObject.h"
 #include "PlayerCamera.h"
-#include "CameraComponent.h"
-#include "Application.h"
+#include "GameObject.h"
+
 #include <MathFunc.h>
+
+#include "Application.h"
+
+#include "ModuleInput.h"
 
 
 CREATE(PlayerCamera)
@@ -15,17 +18,11 @@ CREATE(PlayerCamera)
     END_CREATE;
 }
 
-PlayerCamera::PlayerCamera(GameObject* owner) : Script(owner)
-{
-}
-
-void PlayerCamera::Awake() 
-{
-
-}
-
 void PlayerCamera::Start()
 {
+    const std::vector<GameObject*> children = mGameObject->GetChildren();
+    if (!children.empty()) mCameraObject = mGameObject->GetChildren()[0];
+
     mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
@@ -33,10 +30,36 @@ void PlayerCamera::Start()
 
 void PlayerCamera::Update()
 {
-    // TODO: Change to offset when camera values are defined.
-
     mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     //mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
     mGameObject->Translate(-(mGameObject->GetFront())*mDistanceToPlayer);
+
+    if (!mShakeTimer.Delay(mShakeDuration))
+    {
+        Shake();
+    }
+    else
+    {
+        if (mCameraObject) mCameraObject->SetLocalPosition(float3::zero);
+        mShakeDuration = 0.0f;
+    }
+}
+
+void PlayerCamera::ActivateShake(float duration, float positionOffsetStrength)
+{
+    mShakeDuration = duration;
+    mShakePositionOffsetStrength = positionOffsetStrength;
+    mShakeTimer.Reset();
+}
+
+void PlayerCamera::Shake()
+{
+    if (mCameraObject)
+    {
+        float randomX = ((float)rand()) / (float)RAND_MAX * mShakePositionOffsetStrength;
+        float randomY = ((float)rand()) / (float)RAND_MAX * mShakePositionOffsetStrength;
+
+        mCameraObject->SetLocalPosition(float3(randomX,randomY,0.0f));
+    }
 }
 
