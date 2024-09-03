@@ -54,14 +54,14 @@ private:
 	void Disable() override;
 
 
-	AVFormatContext* pFormatContext = nullptr;
-	AVPacket* pPacket = nullptr;
-	AVFrame* pFrame = nullptr;
-	AVFrame* pFrameRGB = nullptr;
-	AVCodecContext* pCodecContext = nullptr;
-	AVCodecParameters* pCodecParameters = nullptr;
-	AVStream* pVideoStream = nullptr;
-	SwsContext* scalerCtx = nullptr;
+	AVFormatContext* mFormatContext = nullptr;
+	AVPacket* mPacket = nullptr;
+	AVFrame* mFrame = nullptr;
+	AVFrame* mFrameRGB = nullptr;
+	AVCodecContext* mCodecContext = nullptr;
+	AVCodecParameters* mCodecParameters = nullptr;
+	AVStream* mVideoStream = nullptr;
+	SwsContext* mScalerCtx = nullptr;
 
 	int mVideoStreamIndex = -1;
 

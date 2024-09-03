@@ -5,7 +5,7 @@
 #include "glew.h"
 
 #include "GameObject.h"
-
+#include "CanvasComponent.h"
 #include "Transform2DComponent.h"
 
 #include "float2.h"
@@ -74,15 +74,12 @@ void VideoComponent::Draw()
 		//glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glActiveTexture(GL_TEXTURE0);
 
-		int frameWidth = pCodecParameters->width;
-		int frameHeight = pCodecParameters->height;
-
-		//int frameWidth = pFrame->width;
-		//int frameHeight = pFrame->height;
+		int frameWidth = mCodecParameters->width;
+		int frameHeight = mCodecParameters->height;
 
 		// allocate memory and set texture data
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, frameWidth, frameHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, pFrameRGB->data[0]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, frameWidth, frameHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, mFrameRGB->data[0]);
 
 		glUseProgram(mUIProgramID);
 		glEnable(GL_BLEND);
@@ -190,22 +187,22 @@ void VideoComponent::OpenVideo()
 	const char* videoFilePath = "C:\\Users\\carlo\\Documents\\GitHub\\Assigment2\\Engine\\Game\\Assets\\Video\\bunny.mp4";
 
 	// Allocating memory for AVFormatContext
-	pFormatContext = avformat_alloc_context();
-	if (!pFormatContext)
+	mFormatContext = avformat_alloc_context();
+	if (!mFormatContext)
 	{
 		assert(false && "ERROR could not allocate memory for Format Context");
 		return;
 	}
 
 	// Open the file and read its header. The codecs are not opened.
-	if (avformat_open_input(&pFormatContext, videoFilePath, NULL, NULL) != 0)
+	if (avformat_open_input(&mFormatContext, videoFilePath, NULL, NULL) != 0)
 	{
 
 		assert(false && "ERROR could not open the file");
 		return;
 	}
 
-	if (avformat_find_stream_info(pFormatContext, NULL) < 0)
+	if (avformat_find_stream_info(mFormatContext, NULL) < 0)
 	{
 		LOG("ERROR could not get the stream info");
 		return;
@@ -216,14 +213,14 @@ void VideoComponent::OpenVideo()
 	const AVCodec* pCodec = NULL;
 
 	// loop though all the streams and print its main information
-	for (unsigned int i = 0; i < pFormatContext->nb_streams; i++)
+	for (unsigned int i = 0; i < mFormatContext->nb_streams; i++)
 	{
 		AVCodecParameters* pLocalCodecParameters = NULL;
-		pLocalCodecParameters = pFormatContext->streams[i]->codecpar;
-		LOG("AVStream->time_base before open coded %d/%d", pFormatContext->streams[i]->time_base.num, pFormatContext->streams[i]->time_base.den);
-		LOG("AVStream->r_frame_rate before open coded %d/%d", pFormatContext->streams[i]->r_frame_rate.num, pFormatContext->streams[i]->r_frame_rate.den);
-		LOG("AVStream->start_time %" PRId64, pFormatContext->streams[i]->start_time);
-		LOG("AVStream->duration %" PRId64, pFormatContext->streams[i]->duration);
+		pLocalCodecParameters = mFormatContext->streams[i]->codecpar;
+		LOG("AVStream->time_base before open coded %d/%d", mFormatContext->streams[i]->time_base.num, mFormatContext->streams[i]->time_base.den);
+		LOG("AVStream->r_frame_rate before open coded %d/%d", mFormatContext->streams[i]->r_frame_rate.num, mFormatContext->streams[i]->r_frame_rate.den);
+		LOG("AVStream->start_time %" PRId64, mFormatContext->streams[i]->start_time);
+		LOG("AVStream->duration %" PRId64, mFormatContext->streams[i]->duration);
 
 		LOG("finding the proper decoder (CODEC)");
 
@@ -247,7 +244,7 @@ void VideoComponent::OpenVideo()
 			{
 				mVideoStreamIndex = i;
 				pCodec = pLocalCodec;
-				pCodecParameters = pLocalCodecParameters;
+				mCodecParameters = pLocalCodecParameters;
 			}
 
 			LOG("Video Codec: resolution %d x %d", pLocalCodecParameters->width, pLocalCodecParameters->height);
@@ -268,69 +265,69 @@ void VideoComponent::OpenVideo()
 		return;
 	}
 
-	pCodecContext = avcodec_alloc_context3(pCodec);
-	if (!pCodecContext)
+	mCodecContext = avcodec_alloc_context3(pCodec);
+	if (!mCodecContext)
 	{
 		LOG("failed to allocated memory for AVCodecContext");
 		return;
 	}
 
 	// Fill the codec context based on the values from the supplied codec parameters
-	if (avcodec_parameters_to_context(pCodecContext, pCodecParameters) < 0)
+	if (avcodec_parameters_to_context(mCodecContext, mCodecParameters) < 0)
 	{
 		LOG("failed to copy codec params to codec context");
 		return;
 	}
 
 	// Initialize the AVCodecContext to use the given AVCodec.
-	if (avcodec_open2(pCodecContext, pCodec, NULL) < 0)
+	if (avcodec_open2(mCodecContext, pCodec, NULL) < 0)
 	{
 		LOG("failed to open codec through avcodec_open2");
 		return;
 	}
 
-	pFrame = av_frame_alloc();
-	if (!pFrame)
+	mFrame = av_frame_alloc();
+	if (!mFrame)
 	{
 		LOG("failed to allocate memory for AVFrame");
 		return;
 	}
 
-	pFrameRGB = av_frame_alloc();
-	if (!pFrame)
+	mFrameRGB = av_frame_alloc();
+	if (!mFrame)
 	{
 		LOG("failed to allocate memory for AVFrame");
 		return;
 	}
 
-	pPacket = av_packet_alloc();
-	if (!pPacket)
+	mPacket = av_packet_alloc();
+	if (!mPacket)
 	{
 		LOG("failed to allocate memory for AVPacket");
 		return;
 	}
 
-	scalerCtx = sws_getContext(pCodecContext->width, pCodecContext->height, pCodecContext->pix_fmt, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
-	pVideoStream = pFormatContext->streams[mVideoStreamIndex];
-	av_image_alloc(pFrameRGB->data, pFrameRGB->linesize, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, 1);
+	mScalerCtx = sws_getContext(mCodecContext->width, mCodecContext->height, mCodecContext->pix_fmt, mCodecContext->width, mCodecContext->height, AV_PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
+	mVideoStream = mFormatContext->streams[mVideoStreamIndex];
+	av_image_alloc(mFrameRGB->data, mFrameRGB->linesize, mCodecContext->width, mCodecContext->height, AV_PIX_FMT_RGB24, 1);
 }
 
 void VideoComponent::CloseVideo()
 {
 	LOG("releasing all video resources");
 
-	avformat_close_input(&pFormatContext);
-	av_packet_free(&pPacket);
-	av_frame_free(&pFrame);
-	av_frame_free(&pFrameRGB);
-	avcodec_free_context(&pCodecContext);
-	sws_freeContext(scalerCtx);
+	avformat_close_input(&mFormatContext);
+	av_packet_free(&mPacket);
+	av_frame_free(&mFrame);
+	av_frame_free(&mFrameRGB);
+	avcodec_free_context(&mCodecContext);
+	sws_freeContext(mScalerCtx);
 	//av_freep(pFrameRGB->data[0]);
 
-	pFormatContext = nullptr;
-	pPacket = nullptr;
-	pFrame = nullptr;
-	pCodecContext = nullptr;
+	mFormatContext = nullptr;
+	mPacket = nullptr;
+	mFrame = nullptr;
+	mCodecContext = nullptr;
 
 	mVideoStreamIndex = -1;
 }
@@ -339,23 +336,23 @@ void VideoComponent::RestartVideo()
 {
 	mElapsedTime = 0.0f;
 	mFrameTime = 0.0;
-	av_seek_frame(pFormatContext, mVideoStreamIndex, 0, AVSEEK_FLAG_BACKWARD);
-	avcodec_flush_buffers(pCodecContext);
+	av_seek_frame(mFormatContext, mVideoStreamIndex, 0, AVSEEK_FLAG_BACKWARD);
+	avcodec_flush_buffers(mCodecContext);
 }
 
 void VideoComponent::ReadNextFrame()
 {
 	int response = 0;
 
-	while ((response = av_read_frame(pFormatContext, pPacket)) >= 0)
+	while ((response = av_read_frame(mFormatContext, mPacket)) >= 0)
 	{
-		if (pPacket->stream_index == mVideoStreamIndex)
+		if (mPacket->stream_index == mVideoStreamIndex)
 		{
-			LOG("AVPacket->pts %" PRId64, pPacket->pts);
-			response = DecodePacket(pPacket, pCodecContext, pFrame);
+			LOG("AVPacket->pts %" PRId64, mPacket->pts);
+			response = DecodePacket(mPacket, mCodecContext, mFrame);
 			if (response < 0) break;
 		}
-		av_packet_unref(pPacket);
+		av_packet_unref(mPacket);
 	}	
 	
 	if (response == AVERROR_EOF)
@@ -365,8 +362,8 @@ void VideoComponent::ReadNextFrame()
 		return;
 	}
 	
-    sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
-	mFrameTime = pFrame->pts * av_q2d(pVideoStream->time_base);
+    sws_scale(mScalerCtx, mFrame->data, mFrame->linesize, 0, mCodecContext->height, mFrameRGB->data, mFrameRGB->linesize);
+	mFrameTime = mFrame->pts * av_q2d(mVideoStream->time_base);
 }
 
 int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame)
@@ -408,8 +405,10 @@ int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContex
 
 void VideoComponent::Enable()
 {
+	
 }
 
 void VideoComponent::Disable()
 {
+	Pause();
 }
