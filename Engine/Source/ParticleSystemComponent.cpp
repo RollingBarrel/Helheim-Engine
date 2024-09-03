@@ -130,7 +130,7 @@ void ParticleSystemComponent::Draw()
                 float3 pos;
                 if (mFollowEmitter)
                 {
-                    pos = mOwner->GetWorldPosition() + mParticles[i]->GetPosition();
+                    pos =  (mOwner->GetWorldTransform() * float4(mParticles[i]->GetPosition(),1)).Float3Part();
                 }
                 else
                 {
@@ -263,9 +263,9 @@ void ParticleSystemComponent::CreateNewParticle()
     {
         float4 auxPosition = mOwner->GetWorldTransform() * float4(emitionPosition, 1.0);
         emitionPosition = float3(auxPosition.x, auxPosition.y, auxPosition.z);
+        float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
+        emitionDirection = auxDirection.Normalized();
     }
-    float3 auxDirection = mOwner->GetWorldTransform().Float3x3Part() * emitionDirection;
-    emitionDirection = auxDirection.Normalized();
 
     float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
@@ -487,7 +487,7 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
             // Rotate direction around the rotation axis by phi
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
-        return direction;
+        return direction.Normalized();
     }
     case EmitterType::SPHERE:
     {
@@ -504,10 +504,10 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
             // Rotate direction around the rotation axis by phi
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
-        return direction;
+        return direction.Normalized();
     }
     default:
-        return float3(0, 0, 1);
+        return float3(0, 0, 1).Normalized();
     }
 }
 
