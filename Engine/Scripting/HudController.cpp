@@ -214,6 +214,18 @@ void HudController::Update()
             mHealthGradualSlider->SetValue(mTargetHealth);
         }
     }
+    if (mBossHealthGradualSlider && mBossHealthSlider)
+    {
+        float targetHealth = mBossHealthSlider->GetValue();
+        if (mBossHealthGradualSlider->GetValue() > targetHealth)
+        {
+            mBossHealthGradualSlider->SetValue(mBossHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+        }
+        else if (mBossHealthGradualSlider->GetValue() < targetHealth)
+        {
+            mBossHealthGradualSlider->SetValue(targetHealth);
+        }
+    }
 
     // Decrease the damage feedback
     if (mFeedbackImage && *(mFeedbackImage->GetAlpha()) >= 0.0f) {
@@ -672,7 +684,10 @@ void HudController::SetBossHealth(float health)
     {
         SetBossHealthBarEnabled(false);
     }
-    else  if (mBossHealthSlider) mBossHealthSlider->SetValue(health);
+    else if (mBossHealthSlider)
+    {
+        mBossHealthSlider->SetValue(health);
+    }
 }
 
 #pragma endregion
