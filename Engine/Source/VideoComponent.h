@@ -9,6 +9,7 @@ struct AVPacket;
 struct AVFrame;
 struct AVCodecContext;
 struct AVCodecParameters;
+struct SwsContext;
 
 class VideoComponent : public Component
 {
@@ -33,6 +34,7 @@ protected:
 private:
 
 	void InitVBO();
+	void InitVAO();
 
 
 	void OpenVideo();
@@ -47,18 +49,24 @@ private:
 	AVFormatContext* pFormatContext = nullptr;
 	AVPacket* pPacket = nullptr;
 	AVFrame* pFrame = nullptr;
+	AVFrame* pFrameRGB = nullptr;
 	AVCodecContext* pCodecContext = nullptr;
 	AVCodecParameters* pCodecParameters = nullptr;
+	SwsContext* scalerCtx = nullptr;
 
 	int mVideoStreamIndex = -1;
 
 
 	unsigned int mTextureID = 0;
 	unsigned int mQuadVBO = 0;
+	unsigned int mQuadVAO = 0;
 
 	CanvasComponent* mCanvas = nullptr;
 
 	unsigned int mUIProgramID = 0;
+
+	
+	uint8_t* frameData = nullptr;
 
 };
 

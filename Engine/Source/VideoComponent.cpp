@@ -25,6 +25,7 @@ VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentTy
 {
 	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
 	InitVBO();
+	InitVAO();
 	OpenVideo();
 	ReadNextFrame();
 	GameObject* currentObject = owner;
@@ -62,16 +63,19 @@ void VideoComponent::Draw()
 {
 	if (mCanvas && mUIProgramID != 0 && mTextureID != 0)
 	{
-
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Video Component");
+		//glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glActiveTexture(GL_TEXTURE0);
 
 		int frameWidth = pCodecParameters->width;
 		int frameHeight = pCodecParameters->height;
 
+		//int frameWidth = pFrame->width;
+		//int frameHeight = pFrame->height;
+
 		// allocate memory and set texture data
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, frameWidth, frameHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, pFrame->data);
-
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, frameWidth, frameHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, frameData);
 
 		glUseProgram(mUIProgramID);
 		glEnable(GL_BLEND);
@@ -92,7 +96,7 @@ void VideoComponent::Draw()
 		}
 		glEnable(GL_CULL_FACE);
 
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+		glBindVertexArray(mQuadVAO);
 
 		glUniform4fv(glGetUniformLocation(mUIProgramID, "inputColor"), 1, float4(1.0f, 1.0f, 1.0f, 1.0f).ptr());
 
@@ -108,12 +112,11 @@ void VideoComponent::Draw()
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
-
 		glUseProgram(0);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
+		glPopDebugGroup();
 	}
 }
 
@@ -157,6 +160,20 @@ void VideoComponent::InitVBO()
 		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
 	}
+}
+
+void VideoComponent::InitVAO()
+{
+	glGenVertexArrays(1, &mQuadVAO);
+	glBindVertexArray(mQuadVAO);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glBindVertexArray(0);
 }
 
 void VideoComponent::OpenVideo()
@@ -301,6 +318,7 @@ void VideoComponent::OpenVideo()
 
 	// https://ffmpeg.org/doxygen/trunk/structAVFrame.html
 	pFrame = av_frame_alloc();
+	pFrameRGB = av_frame_alloc();
 	if (!pFrame)
 	{
 		LOG("failed to allocate memory for AVFrame");
@@ -313,6 +331,9 @@ void VideoComponent::OpenVideo()
 		LOG("failed to allocate memory for AVPacket");
 		return;
 	}
+
+	scalerCtx = sws_getContext(pCodecContext->width, pCodecContext->height, pCodecContext->pix_fmt, pCodecContext->width, pCodecContext->height, AV_PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+
 }
 
 void VideoComponent::CloseVideo()
@@ -322,7 +343,9 @@ void VideoComponent::CloseVideo()
 	avformat_close_input(&pFormatContext);
 	av_packet_free(&pPacket);
 	av_frame_free(&pFrame);
+	av_frame_free(&pFrameRGB);
 	avcodec_free_context(&pCodecContext);
+	sws_freeContext(scalerCtx);
 
 	pFormatContext = nullptr;
 	pPacket = nullptr;
@@ -337,7 +360,6 @@ void VideoComponent::ReadNextFrame()
 {
 	int response = 0;
 
-	
 	while (av_read_frame(pFormatContext, pPacket) >= 0)
 	{
 		if (pPacket->stream_index == mVideoStreamIndex)
@@ -347,7 +369,20 @@ void VideoComponent::ReadNextFrame()
 			if (response < 0) break;
 		}
 		av_packet_unref(pPacket);
-	}
+	}	
+	
+	frameData = new uint8_t[pCodecContext->width * pCodecContext->height * 4];
+	uint8_t* dest[8] = { frameData, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr};
+	int linSize[8] = { pCodecContext->width * 4, 0, 0, 0, 0, 0, 0, 0 };
+	
+	int numBytes = pCodecContext->width * pCodecContext->height * 3;
+	uint8_t* buffer = (uint8_t*)av_malloc(numBytes * sizeof(uint8_t));
+	pFrameRGB->data[0] = buffer;
+	pFrameRGB->linesize[0] = pCodecContext->width * 3;
+
+	sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
+	//sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, pFrameRGB->data, pFrameRGB->linesize);
+	//sws_scale(scalerCtx, pFrame->data, pFrame->linesize, 0, pCodecContext->height, dest, linSize);
 }
 
 int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame)
