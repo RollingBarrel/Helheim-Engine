@@ -30,6 +30,7 @@ private:
 	void BulletHellPattern1();
 	void BulletHellPattern2();
 	void BulletHellPattern3();
+	void BulletHellPattern4();
 	void LaserAttack();
 	void BombAttack();
 
