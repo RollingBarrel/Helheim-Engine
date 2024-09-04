@@ -15,6 +15,7 @@
 #include "Geometry/Ray.h"
 
 #include "GameManager.h"
+#include "PlayerController.h"
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
@@ -394,20 +395,29 @@ void Enemy::SetAttracted(bool attracted)
 
 void Enemy::DropItem()
 {
+	int shieldDropRate = mShieldDropRate;
+	int redDropRate = mRedEnergyDropRate;
+	int blueDropRate = mBlueEnergyDropRate;
+	float playerShield= GameManager::GetInstance()->GetPlayerController()->GetCurrentShield();
+	if( playerShield<=50.0f)
+	{
+		shieldDropRate = 50;
+		redDropRate = 70;
+		blueDropRate = 90;
+	}
 	srand(static_cast<unsigned int>(std::time(nullptr)));
 	int randomValue = rand() % 100;
-
 	PoolType poolType = PoolType::LAST;
 
-	if (randomValue < mShieldDropRate)
+	if (randomValue < shieldDropRate)
 	{
 		poolType = PoolType::SHIELD;
 	}
-	else if (randomValue < mRedEnergyDropRate)
+	else if (randomValue < redDropRate)
 	{
 		poolType = PoolType::RED_ENERGY;
 	}
-	else if (randomValue < mBlueEnergyDropRate)
+	else if (randomValue < blueDropRate)
 	{
 		poolType = PoolType::BLUE_ENERGY;
 	}

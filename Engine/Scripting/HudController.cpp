@@ -137,7 +137,6 @@ void HudController::Start()
             mCollectibleContinueBtn = static_cast<ButtonComponent*>(mCollectibleContinueBtnGO->GetComponent(ComponentType::BUTTON));
             mCollectibleContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnCollectibleContinueBtnClick, this)));
         }
-
     }
 
     if (mHealthGO)
@@ -153,7 +152,6 @@ void HudController::Start()
     }
 
     SetMaxHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
-    //SetHealth(App->GetScene()->GetPlayerStats()->GetMaxHealth());
     
     if (mBossHealthGO)
     {
@@ -192,12 +190,13 @@ void HudController::Start()
 
     if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+
+
+    GameManager::GetInstance()->GetHud()->SetDialog();
 }
 
 void HudController::Update()
 {
-    Loading();
-
     Controls();
 
     if (GameManager::GetInstance()->IsPaused()) return;
@@ -271,20 +270,6 @@ bool HudController::Delay(float delay)
         return true;
     }
     else return false;
-}
-
-void HudController::Loading()
-{
-    /*if (mLoading)
-    {
-        mLoadingScreen->SetEnabled(true);
-
-        if (Delay(0.1f))
-        {
-            mLoading = false;
-            GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
-        }
-    }*/
 }
 
 void HudController::Controls()

@@ -210,7 +210,7 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
 
     // Level Specific audio
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "TestAudio")
     {
         mAudioManager->AddAudioToASComponent(BGM::LEVEL1);
     }
@@ -225,7 +225,7 @@ void GameManager::StartAudio()
     PrepareAudio();
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" ||  sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" ||  sceneName == "TestAudio")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL1);
     }
@@ -263,7 +263,7 @@ void GameManager::EndAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "TestAudio")
     {
         mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
     }
