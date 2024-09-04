@@ -55,6 +55,9 @@ bool ModuleAudio::Init()
 	CheckError(mSystem->getBus("bus:/", &masterBus));
 
 	CheckError(masterBus->setVolume(0.5f));
+
+	CheckError(mCoreSystem->createChannelGroup("CustomAudio", &mChannelGroup));
+	//mMyChannel.se
 	return true;
 }
 
@@ -207,31 +210,10 @@ void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, 
 
 int ModuleAudio::Play(const std::string& fileName, int id) {
 	FMOD::Sound* sound = nullptr;
-	FMOD::Channel* channel = nullptr;
-	FMOD_RESULT result;
 
-	// Check if sound exists; if not, create it as a one-shot
-	if (mSounds.find(id) == mSounds.end()) {
-		result = mCoreSystem->createSound(fileName.c_str(), FMOD_CREATESTREAM | FMOD_NONBLOCKING, 0, &sound);
-		CheckError(result);
-		if (result != FMOD_OK) return -1;
+	CheckError(mCoreSystem->createSound("example.mp3", FMOD_DEFAULT, 0, &sound));
+	CheckError(mCoreSystem->playSound(sound, 0, false, nullptr));
 
-		mSounds[id] = sound;  // Store sound by ID
-	}
-	else {
-		sound = mSounds[id];  // Use existing sound
-	}
-
-	// Play the sound
-	result = mCoreSystem->playSound(sound, 0, false, &channel);
-	CheckError(result);
-	if (result != FMOD_OK) return -1;
-
-	mChannels[id] = channel;  // Store channel by ID
-
-	// Set callback for the end of playback to release the sound
-	result = channel->setCallback(ChannelEndCallback);
-	CheckError(result);
 
 	return 0;
 }

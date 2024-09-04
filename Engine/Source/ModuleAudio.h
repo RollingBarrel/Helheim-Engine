@@ -21,6 +21,7 @@ namespace FMOD {
 	class System;
 	class Sound;
 	class Channel;
+	class ChannelGroup;
 }
 enum FMOD_RESULT : int;
 
@@ -87,8 +88,8 @@ private:
 	bool mPaused = false;
 	bool mStopped = false;
 
-	std::unordered_map<int, FMOD::Sound*> mSounds;  // Map of sounds by ID
-	std::unordered_map<int, FMOD::Channel*> mChannels;  // Map of channels by ID
+	//std::unordered_map<int, FMOD::Sound*> mSounds;  // Map of sounds by ID
+	FMOD::ChannelGroup* mChannelGroup = nullptr;
 
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 

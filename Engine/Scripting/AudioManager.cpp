@@ -85,6 +85,10 @@ void AudioManager::PlayOneShot(SFX sfx, float3 position, const std::unordered_ma
     const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
     if (description == nullptr)
     {
+        // Assuming that it is a no-fmod audio
+        std::string audioName = GetSFXName(sfx);
+
+        App->GetAudio()->Play(audioName, -1);
         return;
     }
 
