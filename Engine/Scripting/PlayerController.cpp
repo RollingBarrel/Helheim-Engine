@@ -150,7 +150,7 @@ void PlayerController::Start()
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
 
-    mPlayerSpeed = mPlayerStats->GetSpeed();
+   mPlayerSpeed = mPlayerStats->GetSpeed();
 
     // States
     mDashState = new DashState(this, mDashCoolDown);
@@ -593,10 +593,15 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
-void PlayerController::SetMovementSpeed(float percentage) 
+void PlayerController::SetMovementSpeedStat(float percentage)
 {
     mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
     mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
+void PlayerController::SetSpeed(float speed)
+{
+    mPlayerSpeed = speed;
 }
 
 void PlayerController::SetWeaponDamage(float percentage)
