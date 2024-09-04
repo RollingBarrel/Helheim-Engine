@@ -39,8 +39,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
     MEMBER(MemberType::FLOAT, mBulletRange);
-    MEMBER(MemberType::FLOAT, mBulletsDamage);    
-    MEMBER(MemberType::FLOAT, mBulletHellAngleSpread);
+    MEMBER(MemberType::FLOAT, mBulletsDamage);
     SEPARATOR("BOMBS");
     MEMBER(MemberType::FLOAT, mBombsDuration);
     MEMBER(MemberType::FLOAT, mBombsDelay);
@@ -103,7 +102,7 @@ void EnemyBoss::Update()
                 mCurrentState = EnemyState::PHASE;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
             }
-            else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
+            else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(mBulletRange))
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 mCurrentState = EnemyState::ATTACK;

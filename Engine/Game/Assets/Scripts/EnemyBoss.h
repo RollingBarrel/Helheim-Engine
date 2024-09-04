@@ -53,7 +53,6 @@ private:
 	TimerScript mPhaseShiftTimer;
 	float mPhaseShiftTime = 5.0f;
 	TimerScript mBulletHellTimer;
-	float mBulletHellCooldown = 0.2f;
 	float mBulletHellDuration = 6.0f;
 
 	//Laser
@@ -67,6 +66,5 @@ private:
 	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
-	float mBulletHellAngleSpread = 180;
 };
 
