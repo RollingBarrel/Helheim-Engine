@@ -27,6 +27,7 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mStudioScreen);
     MEMBER(MemberType::GAMEOBJECT, mEngineScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingSliderGO);
 
     MEMBER(MemberType::GAMEOBJECT, mMainMenu);
     MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
@@ -98,6 +99,14 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mAudioScreenGO);
     MEMBER(MemberType::GAMEOBJECT, mKeyboardScreenGO);
 
+    SEPARATOR("Audio buttons");
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeUp);
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeDown);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeUp);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeDown);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeUp);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeDown);
+
     SEPARATOR("OTHERS");
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
 
@@ -159,6 +168,19 @@ void MainMenu::Start()
 
     mTextTransform = static_cast<Transform2DComponent*>(mCreditsListText->GetComponent(ComponentType::TRANSFORM2D));
 
+    static_cast<ButtonComponent*>(mGeneralVolumeUp->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnGeneralUp, this)));
+    static_cast<ButtonComponent*>(mGeneralVolumeDown->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnGeneralDown, this)));
+    static_cast<ButtonComponent*>(mMusicVolumeUp->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMusicUp, this)));
+    static_cast<ButtonComponent*>(mMusicVolumeDown->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMusicDown, this)));
+    static_cast<ButtonComponent*>(mEffectsVolumeUp->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsUp, this)));
+    static_cast<ButtonComponent*>(mEffectsVolumeDown->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsDown, this)));
+
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
     mMusicVolumeSlider = static_cast<SliderComponent*>(mMusicVolumeSliderGO->GetComponent(ComponentType::SLIDER));
@@ -180,6 +202,9 @@ void MainMenu::Start()
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
         mBGMID = mAudioManager->Play(BGM::MAINMENU);
     }
+
+    mLoadingSlider = static_cast<SliderComponent*>(mLoadingSliderGO->GetComponent(ComponentType::SLIDER));
+    mLoadingSlider->SetValue(0.01f);
 
     // Init the volume setting sliders
     App->GetAudio()->SetVolume("bus:/", mGeneralVolumeValue);
@@ -234,7 +259,6 @@ void MainMenu::Update()
 
     Controls();
         
-
     if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
@@ -242,10 +266,15 @@ void MainMenu::Update()
         else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
     }
 
-    if (mLoadlevel == true && mTimer.Delay(1.0f))
+    if (mLoadlevel == true && mTimer.Delay(2.0f))
     {
         mAudioManager->Release(BGM::MAINMENU, mBGMID);
         App->GetScene()->Load("Assets/Scenes/Level1Scene");
+    }
+    else if (mLoadlevel == true)
+    {
+        if (mLoadingSlider->GetValue() < 1)
+        mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
     }
 
 }
@@ -276,7 +305,7 @@ void MainMenu::Controls()
             }
             else
             {
-                mSettingOption = 8;
+                mSettingOption = 10;
             }
             HoverSubMenu(static_cast<MENU_TYPE>(mSettingOption));
         }
@@ -312,7 +341,7 @@ void MainMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-            if (mSettingOption < 8)
+            if (mSettingOption < 10)
 
             {
                 mSettingOption++;
@@ -406,20 +435,38 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
-        if (mCurrentMenu == MENU_TYPE::SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS)
+        if (mCurrentMenu == MENU_TYPE::SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO || mCurrentMenu == MENU_TYPE::KEYBOARD )
         {
 			if (mCurrentMenu == MENU_TYPE::SETTINGS)
             {
-                mSubsettingOption = 0;
+                mSubsettingOption = 3;
+                mSettingsClicked->SetEnabled(false);
                 OnSettingsButtonHover();
             }
-            else {
+            else if (mCurrentMenu == MENU_TYPE::CONTROLS) 
+            {
+                mSubsettingOption = 1;
+                mControllerClicked->SetEnabled(false);
                 OnControllerButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::AUDIO)
+            {
+                mSubsettingOption = 2;
+                mAudioClicked->SetEnabled(false);
+                OnAudioButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::KEYBOARD)
+            {
+                mSubsettingOption = 0;
+                mKeyboardClicked->SetEnabled(false);
+                OnKeyboardButtonHover();
             }
             OpenMenu(MENU_TYPE::OPTIONS);
         }
 		else
         {
+            mOptionsClicked->SetEnabled(false);
+            mCreditsClicked->SetEnabled(false);
 			OpenMenu(MENU_TYPE::MAIN);
 		}
     }
@@ -756,6 +803,12 @@ void MainMenu::HoverSubMenu(MENU_TYPE type)
         case MENU_TYPE::SETTINGS:
             OnSettingsButtonHover();
             break;
+        case MENU_TYPE::AUDIO:
+            OnAudioButtonHover();
+            break;
+        case MENU_TYPE::KEYBOARD:
+            OnKeyboardButtonHover();
+            break;
     }
 }
 
@@ -1052,4 +1105,34 @@ void MainMenu::OnFullscreenButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
+}
+
+void MainMenu::OnGeneralUp()
+{
+    OnSlide(static_cast<SETTING_TYPE>(0), DIRECTION::RIGHT, 0.1f);
+}
+
+void MainMenu::OnGeneralDown()
+{
+    OnSlide(static_cast<SETTING_TYPE>(0), DIRECTION::LEFT, 0.1f);
+}
+
+void MainMenu::OnMusicUp()
+{
+    OnSlide(static_cast<SETTING_TYPE>(1), DIRECTION::RIGHT, 0.1f);
+}
+
+void MainMenu::OnMusicDown()
+{
+    OnSlide(static_cast<SETTING_TYPE>(1), DIRECTION::LEFT, 0.1f);
+}
+
+void MainMenu::OnEffectsUp()
+{
+    OnSlide(static_cast<SETTING_TYPE>(2), DIRECTION::RIGHT, 0.1f);
+}
+
+void MainMenu::OnEffectsDown()
+{
+    OnSlide(static_cast<SETTING_TYPE>(2), DIRECTION::LEFT, 0.1f);
 }
