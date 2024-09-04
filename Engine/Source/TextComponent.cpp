@@ -16,7 +16,7 @@
 TextComponent::TextComponent(GameObject* owner) : Component(owner, ComponentType::TEXT) 
 {
     InitFreeType();
-    LoadFont("Assets\\Fonts\\Akshar-Regular.ttf");
+    LoadFont();
     CreateBuffers();
 
     GameObject* canvasGO = FindCanvasOnParents(this->GetOwner());
@@ -42,7 +42,7 @@ TextComponent::TextComponent(const TextComponent& other, GameObject* owner)
 
     mCanvas = (CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS));
 
-    LoadFont("Assets\\Fonts\\Akshar-Regular.ttf");
+    LoadFont();
 }
 
 TextComponent::~TextComponent()
@@ -55,6 +55,10 @@ TextComponent::~TextComponent()
     for (auto& pair : mCharacters) {
         glDeleteTextures(1, &pair.second.TextureID);
     }
+
+    // Cleanup FreeType resources
+    FT_Done_Face(mFace);
+    FT_Done_FreeType(mFt);
 }
 
 Component* TextComponent::Clone(GameObject* owner) const
@@ -62,7 +66,38 @@ Component* TextComponent::Clone(GameObject* owner) const
     return new TextComponent(*this, owner);
 }
 
-void TextComponent::InitFreeType() 
+void TextComponent::SetTextFont(std::string font)
+{
+    // Clean up textures for each character
+    for (auto& pair : mCharacters) {
+        glDeleteTextures(1, &pair.second.TextureID);
+    }
+
+    // Clear the current character map
+    mCharacters.clear();
+
+    // Load the new font
+    mFontName = font;
+    LoadFont();
+}
+
+void TextComponent::SetFontSize(int fontSize)
+{
+    mFontSize = fontSize;  // Update the font size
+
+    // Clean up textures for each character
+    for (auto& pair : mCharacters) {
+        glDeleteTextures(1, &pair.second.TextureID);
+    }
+
+    mCharacters.clear();  // Clear the character map
+
+    // Reload the font with the new size
+    LoadFont();
+    
+}
+
+void TextComponent::InitFreeType()
 {
     if (FT_Init_FreeType(&mFt)) 
     {
@@ -71,9 +106,14 @@ void TextComponent::InitFreeType()
     }
 }
 
-void TextComponent::LoadFont(const std::string& fontPath)
+void TextComponent::LoadFont()
 {
-    if (FT_New_Face(mFt, fontPath.c_str(), 0, &mFace)) 
+    // Clean up the previous face if already initialized
+    if (mFace) {
+        FT_Done_Face(mFace);
+    }
+
+    if (FT_New_Face(mFt, mFontName.c_str(), 0, &mFace)) 
     {
         std::cerr << "Failed to load font" << std::endl;
         return;
@@ -120,9 +160,6 @@ void TextComponent::LoadFont(const std::string& fontPath)
         };
         mCharacters.insert(std::pair<char, Character>(c, character));
     }
-
-    FT_Done_Face(mFace);
-    FT_Done_FreeType(mFt);
 }
 
 void TextComponent::CreateBuffers() 
@@ -259,9 +296,6 @@ void TextComponent::RenderText(const std::string& text)
     glUseProgram(0);
 }
 
-
-
-
 void TextComponent::Save(JsonObject& obj) const
 {
     Component::Save(obj);
@@ -272,6 +306,8 @@ void TextComponent::Save(JsonObject& obj) const
     obj.AddInt("LineWidth", mLineWidth);
     obj.AddInt("LineSpacing", mLineSpacing);
     obj.AddInt("Alignment", (int)mAlignment);
+    obj.AddString("FontName", mFontName.c_str());
+    obj.AddInt("FontSize", mFontSize);
 }
 
 void TextComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -309,6 +345,18 @@ void TextComponent::Load(const JsonObject& data, const std::unordered_map<unsign
                 break;
         }
     }
+
+    if (data.HasMember("FontName"))
+    {
+        mFontName = data.GetString("FontName");
+    }
+
+    if (data.HasMember("FontSize"))
+    {
+        mFontSize = data.GetInt("FontSize");
+    }
+
+    LoadFont();
 }
 
 void TextComponent::Draw() 

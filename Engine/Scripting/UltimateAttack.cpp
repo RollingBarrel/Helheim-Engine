@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "MathFunc.h"
+#include "ModuleScene.h"
+
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
@@ -14,6 +16,7 @@ CREATE(UltimateAttack)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyCollisionParticle);
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)
@@ -41,6 +44,11 @@ void UltimateAttack::Update()
 void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
 {
     GameObject* collisionGO = collisionData->collidedWith;
+    Hit hit;
+    Ray ray;
+    ray.dir = mGameObject->GetFront();
+    ray.pos = mGameObject->GetWorldPosition();
+
     if (collisionGO->GetTag() == "Enemy")
     {
         Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -48,20 +56,21 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
         {
             if (mDamageTimer.Delay(mInterval)) 
             {
+                enemyScript->ActivateUltVFX();
                 enemyScript->TakeDamage(mDamageTick);
                 //TODO: Slow enemies 
                 LOG("Ultimate tick")
+            }
+
+            if(mDamageEffectTimer.Delay(1.0f))
+            {
+                
             }
         }
     }
     else if (collisionGO->GetTag() != "Player" && collisionGO->GetTag() != "Drop" && collisionGO->GetTag() != "Trap")
     {
         float3 currentScale = mGameObject->GetLocalScale();
-         
-        Hit hit;
-        Ray ray;
-        ray.dir = mGameObject->GetFront();
-        ray.pos = mGameObject->GetWorldPosition();
 
         Physics::Raycast(hit, ray, 10.0f);  
         if (hit.IsValid()) {

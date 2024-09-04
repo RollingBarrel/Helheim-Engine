@@ -56,6 +56,7 @@ StateType GrenadeState::HandleInput()
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_UP)
     {
+        mPlayerController->GetGrenadeState()->ResetCooldown();
         mThrowGrenade = true;
         return StateType::AIM;
     }

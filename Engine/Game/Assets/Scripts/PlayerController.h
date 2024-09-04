@@ -86,6 +86,7 @@ public:
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
     float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
+    float GetCurrentShield() const { return mShield; }
     float GetDamageModifier() const { return mDamageModifier; }
     GameObject* GetShootOriginGO() const { return mShootOrigin; }
 

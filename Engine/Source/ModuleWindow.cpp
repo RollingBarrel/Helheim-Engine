@@ -117,6 +117,10 @@ void ModuleWindow::WindowFullscreen(bool value)
 	{
 		SDL_SetWindowFullscreen(mWindow, 0);
 	}
+
+	int w, h;
+	SDL_GetWindowSize(mWindow, &w, &h);
+	WindowResized(w, h);
 }
 
 bool ModuleWindow::IsWindowFullscreen()
