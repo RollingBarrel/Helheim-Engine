@@ -43,6 +43,7 @@ protected:
 
 private:
 
+	void Init();
 	void InitVBO();
 	void InitVAO();
 
@@ -56,6 +57,7 @@ private:
 
 	CanvasComponent* mCanvas = nullptr;
 	Transform2DComponent* mTransform2D = nullptr;
+	std::string mFilePath;
 	std::string mName;
 
 	AVFormatContext* mFormatContext = nullptr;

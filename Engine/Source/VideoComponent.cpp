@@ -23,32 +23,15 @@ extern "C"
 
 VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentType::VIDEO)
 {
-	GameObject* currentObject = owner;
-	while (currentObject)
-	{
-		if (currentObject->GetComponent(ComponentType::CANVAS)) break;
-		currentObject = currentObject->GetParent();
-	}
-	if (currentObject) mCanvas = (CanvasComponent*)(currentObject->GetComponent(ComponentType::CANVAS));
-	mTransform2D = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-
-	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
-	InitVBO();
-	InitVAO();
-
-	glGenTextures(1, &mTextureID);
-	glBindTexture(GL_TEXTURE_2D, mTextureID);
-
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
+	Init();
 	OpenVideo("./Assets/Videos/una_rosa.mp4");
 }
 
-VideoComponent::VideoComponent(const VideoComponent& original, GameObject* owner) : Component(owner, ComponentType::VIDEO)
+VideoComponent::VideoComponent(const VideoComponent& original, GameObject* owner) : Component(owner, ComponentType::VIDEO),
+mName(original.mName),mFilePath(original.mFilePath), mCanvas(mCanvas), mLoop(original.mLoop)
 {
+	Init();
+	OpenVideo(mFilePath.c_str());
 }
 
 VideoComponent::~VideoComponent()
@@ -123,14 +106,22 @@ void VideoComponent::Draw()
 	}
 }
 
-
-
 void VideoComponent::Save(JsonObject& obj) const
 {
+	Component::Save(obj);
+	//obj.AddString("Video Name", mName.c_str());
+	obj.AddString("Video Path", mFilePath.c_str());
+	obj.AddBool("Loop", mLoop);
 }
 
 void VideoComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
 {
+	Component::Load(data, uidPointerMap);
+	//if (data.HasMember("Video Name")) mName = data.GetString("Video Name");
+	if (data.HasMember("Video Path")) mFilePath = data.GetString("Video Path");
+	if (data.HasMember("Loop")) mLoop = data.GetBool("Loop");
+
+	OpenVideo(mFilePath.c_str());
 }
 
 void VideoComponent::Stop()
@@ -143,6 +134,30 @@ void VideoComponent::Stop()
 void VideoComponent::Reset()
 {
 	Stop();
+}
+
+void VideoComponent::Init()
+{
+	GameObject* currentObject = mOwner;
+	while (currentObject)
+	{
+		if (currentObject->GetComponent(ComponentType::CANVAS)) break;
+		currentObject = currentObject->GetParent();
+	}
+	if (currentObject) mCanvas = (CanvasComponent*)(currentObject->GetComponent(ComponentType::CANVAS));
+	mTransform2D = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+
+	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
+	InitVBO();
+	InitVAO();
+
+	glGenTextures(1, &mTextureID);
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 }
 
 void VideoComponent::InitVBO()
@@ -181,7 +196,8 @@ void VideoComponent::OpenVideo(const char* filePath)
 	CloseVideo();
 	const char* name = strrchr(filePath, '/');
 	mName = ++name;
-	
+	mFilePath = filePath;
+
 	// Allocating memory for AVFormatContext
 	mFormatContext = avformat_alloc_context();
 	if (!mFormatContext)
@@ -313,7 +329,7 @@ void VideoComponent::OpenVideo(const char* filePath)
 
 void VideoComponent::CloseVideo()
 {
-	LOG("releasing all video resources");
+	//LOG("releasing all video resources");
 
 	avformat_close_input(&mFormatContext);
 	av_packet_free(&mPacket);
@@ -386,15 +402,15 @@ int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContex
 	}
 	if (response >= 0)
 	{
-		LOG(
-			"Frame %d (type=%c, size=%d bytes, format=%d) pts %d key_frame %d [DTS %d]",
-			pCodecContext->frame_num,
-			av_get_picture_type_char(pFrame->pict_type),
-			pFrame->pkt_size,
-			pFrame->format,
-			pFrame->pts,
-			pFrame->key_frame
-		);
+		//LOG(
+		//	"Frame %d (type=%c, size=%d bytes, format=%d) pts %d key_frame %d [DTS %d]",
+		//	pCodecContext->frame_num,
+		//	av_get_picture_type_char(pFrame->pict_type),
+		//	pFrame->pkt_size,
+		//	pFrame->format,
+		//	pFrame->pts,
+		//	pFrame->key_frame
+		//);
 
 		return -1;
 	}
