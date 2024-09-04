@@ -651,6 +651,14 @@ void MainMenu::OnSettingsButtonClick()
 {
     mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::SETTINGS);
+    if (App->GetWindow()->IsWindowFullscreen())
+    {
+        mFullscreenImage->SetAlpha(1.0f);
+    }
+    else
+    {
+        mFullscreenImage->SetAlpha(0.5f);
+    }
 }
 
 void MainMenu::OnVSyncButtonClick()
@@ -670,6 +678,14 @@ void MainMenu::OnVSyncButtonClick()
 //TODO: Investige why this is not working.
 void MainMenu::OnFullscreenButtonClick()
 {
+    if (*mFullscreenImage->GetAlpha() == 1.0f)
+    {
+        mFullscreenImage->SetAlpha(0.5f);
+    }
+    else
+    {
+        mFullscreenImage->SetAlpha(1.0f);
+    }
     App->GetWindow()->WindowFullscreen(!App->GetWindow()->IsWindowFullscreen());
 }
 

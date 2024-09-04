@@ -3159,7 +3159,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -3313,7 +3313,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -3467,7 +3467,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -6664,7 +6664,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -6818,7 +6818,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -6867,8 +6867,8 @@
                 "UID": 2031559607,
                 "ParentUID": 532651538,
                 "Name": "Clicked",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6892,7 +6892,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             0.0,
                             0.0,
@@ -6923,7 +6923,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ImageID": 958789565,
                         "Color": [
                             1.0,
@@ -6946,7 +6946,7 @@
                 "ParentUID": 2031559607,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6970,9 +6970,9 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -7001,7 +7001,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Text": "PLAY",
                         "Color": [
                             0.0,
@@ -7130,7 +7130,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -7284,7 +7284,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -7438,7 +7438,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -7596,7 +7596,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -7750,7 +7750,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -7904,7 +7904,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -8062,7 +8062,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -8216,7 +8216,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -8370,7 +8370,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -8606,7 +8606,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -8760,7 +8760,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -8914,7 +8914,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -9072,7 +9072,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -9226,7 +9226,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -9380,7 +9380,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -9538,7 +9538,7 @@
                         "ComponentType": 9,
                         "IsEnabled": true,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -9692,7 +9692,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -52.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
@@ -9846,7 +9846,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -50.0,
+                            -75.0,
                             -12.5,
                             0.0
                         ],
