@@ -206,6 +206,7 @@ private:
 
     // Speed
     float mPlayerSpeed;
+    float mBaseSpeed = 5.5f;
 
     // Shield
     float mShield = 100.0f;

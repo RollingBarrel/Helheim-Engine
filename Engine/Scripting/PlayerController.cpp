@@ -150,7 +150,13 @@ void PlayerController::Start()
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
 
-    mPlayerSpeed = mPlayerStats->GetSpeed();
+    if (mPlayerStats->GetSpeed() < 5.5f)
+    {
+        mPlayerSpeed = mBaseSpeed;
+        mPlayerStats->SetSpeed(mBaseSpeed);
+    } 
+    else 
+        mPlayerSpeed = mPlayerStats->GetSpeed();
 
     // States
     mDashState = new DashState(this, mDashCoolDown);
