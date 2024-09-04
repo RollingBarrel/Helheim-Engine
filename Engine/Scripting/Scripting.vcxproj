@@ -189,6 +189,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotMelee.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyRobotRange.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ExplosiveTrap.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
@@ -252,6 +253,7 @@
     <ClCompile Include="EnemyRobotRange.cpp" />
     <ClCompile Include="ExplosiveTrap.cpp" />
     <ClCompile Include="EnemyExplosiveTrap.cpp" />
+    <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="HealVFX.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />

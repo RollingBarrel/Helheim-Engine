@@ -15,7 +15,7 @@ public:
 	void Start() override;
 
 private:
-	float mSpeed = 0;
+	float mSpeed = 1;
 	float3 mDirection = float3::zero;
 
 };
