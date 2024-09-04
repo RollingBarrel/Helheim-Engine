@@ -33,6 +33,8 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
 	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
 	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
+	SEPARATOR("VFX");
+	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
 	END_CREATE;
 }
 
