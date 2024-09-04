@@ -100,7 +100,7 @@ void EnemyBoss::Update()
             {
                 //Phase change
                 ++mStage;
-                mCurrentState = EnemyState::CHARGE;
+                mCurrentState = EnemyState::PHASE;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
             }
             else if (mAttackCoolDownTimer.Delay(mAttackCoolDown) && IsPlayerInRange(50))
@@ -133,7 +133,7 @@ void EnemyBoss::Update()
                 }
             }
             break;
-        case EnemyState::CHARGE:
+        case EnemyState::PHASE:
             if (mPhaseShiftTimer.Delay(mPhaseShiftTime))
             {
                 mCurrentState = EnemyState::ATTACK;

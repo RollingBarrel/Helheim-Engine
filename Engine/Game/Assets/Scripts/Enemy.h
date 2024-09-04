@@ -17,7 +17,9 @@ enum class EnemyState
 	CHARGE,
 	ATTACK,
 	FLEE,
-	DEATH
+	DEATH,
+	//Boss States
+	PHASE
 };
 
 
