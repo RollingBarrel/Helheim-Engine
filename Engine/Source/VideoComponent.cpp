@@ -23,11 +23,6 @@ extern "C"
 
 VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentType::VIDEO)
 {
-	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
-	InitVBO();
-	InitVAO();
-	OpenVideo("./Assets/Videos/una_rosa.mp4");
-
 	GameObject* currentObject = owner;
 	while (currentObject)
 	{
@@ -35,6 +30,11 @@ VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentTy
 		currentObject = currentObject->GetParent();
 	}
 	if (currentObject) mCanvas = (CanvasComponent*)(currentObject->GetComponent(ComponentType::CANVAS));
+	mTransform2D = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+
+	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
+	InitVBO();
+	InitVAO();
 
 	glGenTextures(1, &mTextureID);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
@@ -43,6 +43,8 @@ VideoComponent::VideoComponent(GameObject* owner) : Component(owner, ComponentTy
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	OpenVideo("./Assets/Videos/una_rosa.mp4");
 }
 
 VideoComponent::VideoComponent(const VideoComponent& original, GameObject* owner) : Component(owner, ComponentType::VIDEO)
@@ -52,6 +54,11 @@ VideoComponent::VideoComponent(const VideoComponent& original, GameObject* owner
 VideoComponent::~VideoComponent()
 {
 	CloseVideo();
+}
+
+Component* VideoComponent::Clone(GameObject* owner) const
+{
+	return new VideoComponent(*this, owner);
 }
 
 void VideoComponent::Update()
@@ -68,40 +75,28 @@ void VideoComponent::Update()
 
 void VideoComponent::Draw()
 {
-	if (mCanvas && mUIProgramID != 0 && mTextureID != 0)
+	if (mCanvas && mTransform2D && mUIProgramID != 0 && mTextureID != 0)
 	{
 		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Video Component");
-		//glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
 		glActiveTexture(GL_TEXTURE0);
 
-		int frameWidth = mCodecParameters->width;
-		int frameHeight = mCodecParameters->height;
-
-		// allocate memory and set texture data
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, frameWidth, frameHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, mFrameRGB->data[0]);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, mCodecParameters->width, mCodecParameters->height, GL_RGB, GL_UNSIGNED_BYTE, mFrameRGB->data[0]);
 
 		glUseProgram(mUIProgramID);
 		glEnable(GL_BLEND);
 		glDepthMask(GL_TRUE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		float2 canvasSize = mCanvas->GetSize();
+		
+		float4x4 model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * mTransform2D->GetGlobalMatrix();
 		float4x4 proj = float4x4::identity;
-		float4x4 model = float4x4::identity;
 		float4x4 view = float4x4::identity;
-
-		Transform2DComponent* transform2d = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-		if (transform2d)
-		{
-			model = transform2d->GetGlobalMatrix();
-			float2 canvasSize = mCanvas->GetSize();
-			model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
-
-		}
+		
 		glEnable(GL_CULL_FACE);
 
 		glBindVertexArray(mQuadVAO);
-
 		glUniform4fv(glGetUniformLocation(mUIProgramID, "inputColor"), 1, float4(1.0f, 1.0f, 1.0f, 1.0f).ptr());
 
 		glActiveTexture(GL_TEXTURE0);
@@ -122,12 +117,13 @@ void VideoComponent::Draw()
 		glFrontFace(GL_CCW);
 		glPopDebugGroup();
 	}
+	else if (!mTransform2D)
+	{
+		mTransform2D = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+	}
 }
 
-Component* VideoComponent::Clone(GameObject* owner) const
-{
-	return new VideoComponent(*this, owner);
-}
+
 
 void VideoComponent::Save(JsonObject& obj) const
 {
@@ -310,6 +306,9 @@ void VideoComponent::OpenVideo(const char* filePath)
 	mVideoStream = mFormatContext->streams[mVideoStreamIndex];
 	av_image_alloc(mFrameRGB->data, mFrameRGB->linesize, mCodecContext->width, mCodecContext->height, AV_PIX_FMT_RGB24, 1);
 	ReadNextFrame();
+
+	glBindTexture(GL_TEXTURE_2D, mTextureID);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, mCodecParameters->width, mCodecParameters->height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
 }
 
 void VideoComponent::CloseVideo()
@@ -401,11 +400,6 @@ int VideoComponent::DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContex
 	}
 
 	return 0;
-}
-
-void VideoComponent::Enable()
-{
-	
 }
 
 void VideoComponent::Disable()

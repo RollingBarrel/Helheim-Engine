@@ -20,9 +20,9 @@ public:
 	VideoComponent(const VideoComponent& original, GameObject* owner);
 	~VideoComponent();
 
+	Component* Clone(GameObject* owner) const override;
 	void Update() override;
 	void Draw();
-	Component* Clone(GameObject* owner) const override;
 
 	void Save(JsonObject& obj) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
@@ -46,15 +46,17 @@ private:
 	void InitVBO();
 	void InitVAO();
 
-
 	void CloseVideo();
 	void RestartVideo();
 
 	void ReadNextFrame();
 	int DecodePacket(AVPacket* pPacket, AVCodecContext* pCodecContext, AVFrame* pFrame);
-	void Enable() override;
 	void Disable() override;
 
+
+	CanvasComponent* mCanvas = nullptr;
+	Transform2DComponent* mTransform2D = nullptr;
+	std::string mName;
 
 	AVFormatContext* mFormatContext = nullptr;
 	AVPacket* mPacket = nullptr;
@@ -67,24 +69,15 @@ private:
 
 	int mVideoStreamIndex = -1;
 
-
 	float mElapsedTime = 0.0f;
 	double mFrameTime = 0.0;
+
+	bool mIsPlaying = false;
+	bool mLoop = false;
 
 	unsigned int mTextureID = 0;
 	unsigned int mQuadVBO = 0;
 	unsigned int mQuadVAO = 0;
-
-	CanvasComponent* mCanvas = nullptr;
-
 	unsigned int mUIProgramID = 0;
-
-	bool mIsPlaying = false;
-	bool mLoop = false;
-	
-	std::string mName;
-
-	//uint8_t* frameData = nullptr;
-
 };
 
