@@ -718,6 +718,17 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = !mGodMode;
     }
+    if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
+    {
+        if (mDamageModifier != 99999.0f)
+        {
+            mDamageModifier = 99999.0f;
+        }
+        else
+        {
+            mDamageModifier = 1.0f;
+        }
+     }
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);
@@ -726,15 +737,15 @@ void PlayerController::CheckDebugOptions()
     {
         RechargeBattery(EnergyType::RED);
     }
-    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
     }
-    else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN)
+    else if (input->GetKey(Keys::Keys_F8) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
     }
-    else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN)
+    else if (input->GetKey(Keys::Keys_F9) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
     }
@@ -764,7 +775,8 @@ void PlayerController::RechargeShield(float shield)
 
 void PlayerController::RechargeBattery(EnergyType batteryType)
 {
-    mCurrentEnergy = 100;
+    if(mEnergyType!= batteryType) mCurrentEnergy = 0;
+    mCurrentEnergy = Clamp(mCurrentEnergy+30,0,100);
     mEnergyType = batteryType;
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
