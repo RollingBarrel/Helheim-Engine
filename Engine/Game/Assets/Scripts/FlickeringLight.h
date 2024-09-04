@@ -29,15 +29,14 @@ private:
 
 	void UpdateLightState();
 
-	float mLoopDuration = 5.0f;
+	float mLoopDuration = 10.0f;
+	float mSpeed = 1.0f;
 
 	float mTimer = 0.0f;
 	bool mLightOn = true;
 	float mLightIntensity = 0;
 
 	std::vector<Blackout> flickering;
-
-	//BezierCurve mLightCurve = BezierCurve();
 
 	SpotLightComponent* mSpotLight = nullptr;
 	PointLightComponent* mPointLight = nullptr;

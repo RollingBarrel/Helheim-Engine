@@ -11,7 +11,7 @@
 CREATE(FlickeringLight)
 {
 	CLASS(owner);
-	//MEMBER(MemberType::FLOAT, mLoopDuration);
+	MEMBER(MemberType::FLOAT, mSpeed);
 	END_CREATE;
 }
 
@@ -19,10 +19,11 @@ FlickeringLight::FlickeringLight(GameObject* owner) : Script(owner) {}
 
 void FlickeringLight::Start()
 {
-	//Check if the gameobject has some type of light
-	mPointLight = mGameObject->GetComponent<PointLightComponent>();
-	mSpotLight = mGameObject->GetComponent<SpotLightComponent>();
+	//Check if the gameobject has some type of light and registers its intensity
+	mPointLight = static_cast<PointLightComponent*>(mGameObject->GetComponent(ComponentType::POINTLIGHT));
+	mSpotLight = static_cast<SpotLightComponent*>(mGameObject->GetComponent(ComponentType::SPOTLIGHT));
 
+	//This script doen't work as intended if both types of lights are in the same go
 	if (mPointLight)
 	{
 		mLightIntensity = mPointLight->GetIntensity();
@@ -45,7 +46,7 @@ void FlickeringLight::Start()
 
 void FlickeringLight::Update()
 {
-	mTimer += App->GetDt();
+	mTimer += App->GetDt() * mSpeed;
 
 	if (mPointLight) 
 	{
@@ -72,6 +73,11 @@ void FlickeringLight::Update()
 		{
 			mSpotLight->SetIntensity(mLightIntensity);
 		}
+	}
+
+	if (mTimer >= mLoopDuration) 
+	{
+		mTimer -= mLoopDuration;
 	}
 }
 
