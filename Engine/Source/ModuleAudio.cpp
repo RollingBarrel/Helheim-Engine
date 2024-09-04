@@ -5,6 +5,23 @@
 #include "fmod_studio.hpp"
 #include "Application.h"
 
+FMOD_RESULT F_CALLBACK ChannelEndCallback(FMOD_CHANNELCONTROL* channelControl, FMOD_CHANNELCONTROL_TYPE controlType, FMOD_CHANNELCONTROL_CALLBACK_TYPE callbackType, void* commandData1, void* commandData2)
+{
+	if (callbackType == FMOD_CHANNELCONTROL_CALLBACK_END)
+	{
+		FMOD::Channel* channel = (FMOD::Channel*)channelControl;
+		FMOD::Sound* sound = nullptr;
+		channel->getCurrentSound(&sound);
+
+		if (sound)
+		{
+			sound->release();  // Release the sound when playback ends
+		}
+	}
+
+	return FMOD_OK;
+}
+
 ModuleAudio::ModuleAudio()
 {
 }
@@ -186,6 +203,37 @@ void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, 
 	{
 		LOG("Cannot stop event");
 	}
+}
+
+int ModuleAudio::Play(const std::string& fileName, int id) {
+	FMOD::Sound* sound = nullptr;
+	FMOD::Channel* channel = nullptr;
+	FMOD_RESULT result;
+
+	// Check if sound exists; if not, create it as a one-shot
+	if (mSounds.find(id) == mSounds.end()) {
+		result = mCoreSystem->createSound(fileName.c_str(), FMOD_CREATESTREAM | FMOD_NONBLOCKING, 0, &sound);
+		CheckError(result);
+		if (result != FMOD_OK) return -1;
+
+		mSounds[id] = sound;  // Store sound by ID
+	}
+	else {
+		sound = mSounds[id];  // Use existing sound
+	}
+
+	// Play the sound
+	result = mCoreSystem->playSound(sound, 0, false, &channel);
+	CheckError(result);
+	if (result != FMOD_OK) return -1;
+
+	mChannels[id] = channel;  // Store channel by ID
+
+	// Set callback for the end of playback to release the sound
+	result = channel->setCallback(ChannelEndCallback);
+	CheckError(result);
+
+	return 0;
 }
 
 void ModuleAudio::Stop(const FMOD::Studio::EventDescription* eventDescription, const int id)

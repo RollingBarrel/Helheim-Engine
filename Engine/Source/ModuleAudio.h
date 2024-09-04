@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include <map>
 #include "float3.h"
 
@@ -18,6 +19,8 @@ namespace FMOD {
 		class EventDescription;
 	}
 	class System;
+	class Sound;
+	class Channel;
 }
 enum FMOD_RESULT : int;
 
@@ -46,6 +49,9 @@ public:
 	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
 	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
+
+	int Play(const std::string& fileName, const int id = -1);
+
 	// Kill instance
 	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
@@ -80,6 +86,9 @@ private:
 
 	bool mPaused = false;
 	bool mStopped = false;
+
+	std::unordered_map<int, FMOD::Sound*> mSounds;  // Map of sounds by ID
+	std::unordered_map<int, FMOD::Channel*> mChannels;  // Map of channels by ID
 
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 

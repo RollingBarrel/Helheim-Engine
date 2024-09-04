@@ -60,6 +60,10 @@ int AudioManager::Play(SFX sfx, int id, float3 position)
     const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
     if (description == nullptr)
     {
+        // Assuming that it is a no-fmod audio
+        std::string audioName = GetSFXName(sfx);
+
+        App->GetAudio()->Play(audioName, id);
         return -1;
     }
 
