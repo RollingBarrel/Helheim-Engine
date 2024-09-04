@@ -120,7 +120,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\Optick\lib\x64\debug;$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Debug;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib\Debug;$(ProjectDir)Dependencies\Bullet\lib\Debug;$(ProjectDir)Dependencies\Ffmpeg\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>OptickCore.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;BulletInverseDynamics_Debug.lib;BulletSoftBody_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies);avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib</AdditionalDependencies>
+      <AdditionalDependencies>OptickCore.lib;fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;BulletCollision_Debug.lib;BulletDynamics_Debug.lib;BulletInverseDynamics_Debug.lib;BulletSoftBody_Debug.lib;LinearMath_Debug.lib;%(AdditionalDependencies);avcodec.lib;avformat.lib;avutil.lib;swscale.lib</AdditionalDependencies>
     </Link>
     <Lib>
       <SubSystem>Windows</SubSystem>
@@ -148,7 +148,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProjectDir)Dependencies\FMOD\api\core\lib\x64;$(ProjectDir)Dependencies\FMOD\api\studio\lib\x64;$(ProjectDir)Dependencies\Physfs-3.2.0\lib\Release;$(ProjectDir)Dependencies\SDL-2.0.16\lib\x64;$(ProjectDir)Dependencies\GLEW-2.1.0\lib\Release\x64;$(ProjectDir)Dependencies\Freetype\lib\Release;$(ProjectDir)Dependencies\Bullet\lib\Release;$(ProjectDir)Dependencies\Ffmpeg\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;BulletCollision.lib;BulletDynamics.lib;BulletInverseDynamics.lib;BulletSoftBody.lib;LinearMath.lib;%(AdditionalDependencies);avcodec.lib;avdevice.lib;avfilter.lib;avformat.lib;avutil.lib;swresample.lib;swscale.lib</AdditionalDependencies>
+      <AdditionalDependencies>fmod_vc.lib;fmodstudio_vc.lib;physfs.lib;freetype.lib;glew32.lib;SDL2.lib;opengl32.lib;BulletCollision.lib;BulletDynamics.lib;BulletInverseDynamics.lib;BulletSoftBody.lib;LinearMath.lib;%(AdditionalDependencies);avcodec.lib;avformat.lib;avutil.lib;swscale.lib</AdditionalDependencies>
     </Link>
     <Lib>
       <SubSystem>Windows</SubSystem>
