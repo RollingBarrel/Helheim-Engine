@@ -23,7 +23,7 @@ void ItemDrop::Init()
 {
     std::vector<Component*> components;
     mGameObject->GetComponentsInChildren(ComponentType::ANIMATION, components);
-
+    mAlreadyUsed = false;
     if (!components.empty())
     {
         mAnimation = static_cast<AnimationComponent*>(*components.begin());
@@ -67,23 +67,27 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
        
 
         PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-        if (playerScript != nullptr)
+        if (playerScript != nullptr && !mAlreadyUsed)
         {
+            
             switch (mDropId)
             {
             case 1:
                 if (playerScript->GetShieldPercetage() != 100.0f)
                 {
                     playerScript->RechargeShield(mHealthRecovered);
+                    mAlreadyUsed = true;
                     mGameObject->SetEnabled(false);
                 }
                 break;
             case 2:
                 playerScript->RechargeBattery(EnergyType::BLUE);
+                mAlreadyUsed = true;
                 mGameObject->SetEnabled(false);
                 break;
             case 3:
                 playerScript->RechargeBattery(EnergyType::RED);
+                mAlreadyUsed = true;
                 mGameObject->SetEnabled(false);
                 break;
             default:
