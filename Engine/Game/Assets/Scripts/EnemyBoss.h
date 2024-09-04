@@ -40,6 +40,7 @@ private:
 	float mBulletsDamage = 2.0f;
 	float mBulletRange = 50.0f;
 	float mBombDamage = 5.0f;
+	unsigned int mBulletsWave = 0;
 	int mLastAttack = -1;
 	unsigned int mStage = 0;
 	float mPhase1Hp = 0.6f;
