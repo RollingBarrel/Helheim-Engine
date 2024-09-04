@@ -96,7 +96,8 @@ public:
     int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
-    void SetMovementSpeed(float percentage);
+    void SetMovementSpeedStat(float percentage);
+    void SetSpeed(float speed);
     void SetWeaponDamage(float percentage); 
     void SetMaxShield(float percentage); 
 
