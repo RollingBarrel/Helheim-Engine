@@ -28,7 +28,6 @@ StateType AimState::HandleInput()
        (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN || 
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
     {
-        mPlayerController->GetGrenadeState()->ResetCooldown();
         return StateType::GRENADE;
     }
 
