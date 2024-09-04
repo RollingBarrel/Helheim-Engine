@@ -206,6 +206,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -370,5 +371,6 @@
     <ClCompile Include="EnemyExplosiveTrap.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="RotateObject.cpp" />
   </ItemGroup>
 </Project>
