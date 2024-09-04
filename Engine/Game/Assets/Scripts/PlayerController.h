@@ -86,6 +86,7 @@ public:
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
     float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
+    float GetCurrentShield() const { return mShield; }
     float GetDamageModifier() const { return mDamageModifier; }
     GameObject* GetShootOriginGO() const { return mShootOrigin; }
 
@@ -96,7 +97,8 @@ public:
     int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
-    void SetMovementSpeed(float percentage);
+    void SetMovementSpeedStat(float percentage);
+    void SetSpeed(float speed);
     void SetWeaponDamage(float percentage); 
     void SetMaxShield(float percentage); 
 
@@ -206,6 +208,7 @@ private:
 
     // Speed
     float mPlayerSpeed;
+    float mBaseSpeed = 5.5f;
 
     // Shield
     float mShield = 100.0f;

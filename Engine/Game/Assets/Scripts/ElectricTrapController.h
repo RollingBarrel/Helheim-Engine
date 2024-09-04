@@ -21,7 +21,7 @@ public:
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private:
-	bool CheckIfCaptured(const GameObject* target);
+	bool IsInTrap(const GameObject* target);
 	void ActiveTrap(bool active);
 
 	BoxColliderComponent* mCollider = nullptr;
