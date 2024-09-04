@@ -18,7 +18,9 @@ enum MENU_TYPE {
     ENGINE,
     STUDIO,
     CONTROLS,
-    SETTINGS
+    SETTINGS,
+    AUDIO,
+    KEYBOARD
 };
 
 enum SETTING_TYPE {
@@ -61,7 +63,9 @@ private:
     void OnCreditsButtonClick();
     void OnPlayButtonClick();
     void OnSplashButtonClick();
-    void OnControlsButtonClick();
+    void OnControllerButtonClick();
+    void OnKeyboardButtonClick();
+    void OnAudioButtonClick();
     void OnSettingsButtonClick();
     void OnVSyncButtonClick();
     void OnFullscreenButtonClick();
@@ -73,7 +77,9 @@ private:
     void OnCreditsButtonHover();
     void OnPlayButtonHover();
     void OnBackCreditsButtonHover();
-    void OnControlsButtonHover();
+    void OnControllerButtonHover();
+    void OnKeyboardButtonHover();
+    void OnAudioButtonHover();
     void OnSettingsButtonHover();
     void OnBackButtonHover();
 	void OnGeneralVolumeHover();
@@ -87,7 +93,9 @@ private:
     void OnCreditsButtonHoverOff();
     void OnPlayButtonHoverOff();
     void OnBackCreditsButtonHoverOff();
-    void OnControlsButtonHoverOff();
+    void OnControllerButtonHoverOff();
+    void OnKeyboardButtonHoverOff();
+    void OnAudioButtonHoverOff();
     void OnSettingsButtonHoverOff();
     void OnBackButtonHoverOff();
     void OnGeneralVolumeHoverOff();
@@ -130,6 +138,8 @@ private:
     GameObject* mCreditsListText = nullptr;
     Transform2DComponent* mTextTransform = nullptr;
 
+    // --- BUTTON GameObjects ---
+    
     // PLAY Button
     GameObject* mPlayGO = nullptr;
     GameObject* mPlayText = nullptr;
@@ -158,17 +168,40 @@ private:
     GameObject* mQuitClicked = nullptr;
     ButtonComponent* mQuitButton = nullptr;
 
-    GameObject* mBackCreditGO = nullptr;
-    ButtonComponent* mBackCreditButton = nullptr;
+    // Keyboard Button
+    GameObject* mKeyboardGO = nullptr;
+    GameObject* mKeyboardText = nullptr;
+    GameObject* mKeyboardHover = nullptr;
+    GameObject* mKeyboardClicked = nullptr;
+    ButtonComponent* mKeyboardButton = nullptr;
+
+    // Controller Button
+    GameObject* mControllerGO = nullptr;
+    GameObject* mControllerText = nullptr;
+    GameObject* mControllerHover = nullptr;
+    GameObject* mControllerClicked = nullptr;
+    ButtonComponent* mControllerButton = nullptr;
+
+    // Audio Button
+    GameObject* mAudioGO = nullptr;
+    GameObject* mAudioText = nullptr;
+    GameObject* mAudioHover = nullptr;
+    GameObject* mAudioClicked = nullptr;
+    ButtonComponent* mAudioButton = nullptr;
+
+    // Settings Button
+    GameObject* mSettingsGO = nullptr;
+    GameObject* mSettingsText = nullptr;
+    GameObject* mSettingsHover = nullptr;
+    GameObject* mSettingsClicked = nullptr;
+    ButtonComponent* mSettingsButton = nullptr;
 
     // Options
     GameObject* mOptionsContainerGO = nullptr;
-    GameObject* mSettingsButtonGO = nullptr;
-    GameObject* mSettingsGO = nullptr;
-    ButtonComponent* mSettingsButton = nullptr;
-    GameObject* mControlsGO = nullptr;
-    GameObject* mControlsButtonGO = nullptr;
-    ButtonComponent* mControlsButton = nullptr;
+    GameObject* mSettingsScreenGO = nullptr;
+    GameObject* mControlsScreenGO = nullptr;
+    GameObject* mAudioScreenGO = nullptr;
+    GameObject* mKeyboardScreenGO = nullptr;
 
     // Settings
     // General Volume
