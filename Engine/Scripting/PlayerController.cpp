@@ -915,6 +915,7 @@ void PlayerController::UltimateInterpolateLookAt(const float3& target)
 
 void PlayerController::TakeDamage(float damage)
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;
@@ -926,9 +927,17 @@ void PlayerController::TakeDamage(float damage)
 
         //CONTROLLER VIBRATION
         App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
+        return;
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    // Last opportunity
+    if (mShield == 0.0f)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BROKEN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DANGER, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    }
 
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(40000, 30000, 100);

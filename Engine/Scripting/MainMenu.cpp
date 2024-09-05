@@ -369,12 +369,17 @@ void MainMenu::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
+
         if (mCurrentMenu == MENU_TYPE::MAIN)
         {
+            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+
             ClickMenu(static_cast<MENU_TYPE>(mOption));
         } 
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
+            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+
             OpenMenu(static_cast<MENU_TYPE>(mSettingOption));
         }
         else if (mCurrentMenu == MENU_TYPE::SETTINGS)
@@ -434,6 +439,7 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
+        mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
         if (mCurrentMenu == MENU_TYPE::SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO || mCurrentMenu == MENU_TYPE::KEYBOARD )
         {
 			if (mCurrentMenu == MENU_TYPE::SETTINGS)
@@ -592,31 +598,27 @@ void MainMenu::ClickMenu(MENU_TYPE type)
 
 void MainMenu::OnMainButtonClick() 
 {
-    mAudioManager->PlayOneShot(SFX::PLAYER_PISTOL);
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnQuitButtonClick() {
     App->Exit();
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     exit(0);
 }
 
 void MainMenu::OnOptionsButtonClick() 
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::OPTIONS);
 }
 
 void MainMenu::OnCreditsButtonClick() 
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::CREDITS);
 }
 
 void MainMenu::OnPlayButtonClick() 
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+    mAudioManager->PlayOneShot(SFX::MAINMENU_START);
     OpenMenu(MENU_TYPE::LOADING);
     mLoadlevel = true;
 }
@@ -624,31 +626,26 @@ void MainMenu::OnPlayButtonClick()
 void MainMenu::OnSplashButtonClick() 
 {
     OnPlayButtonHover();
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnControllerButtonClick()
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::CONTROLS);
 }
 
 void MainMenu::OnAudioButtonClick()
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::AUDIO);
 }
 
 void MainMenu::OnKeyboardButtonClick()
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::KEYBOARD);
 }
 
 void MainMenu::OnSettingsButtonClick()
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::SETTINGS);
     if (App->GetWindow()->IsWindowFullscreen())
     {

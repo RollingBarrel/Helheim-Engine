@@ -201,13 +201,17 @@ void GameManager::PrepareAudio()
 
     // Commun Audio
     // Player
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
+    mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")

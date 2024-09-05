@@ -17,6 +17,8 @@ enum class SFX
 	// MAIN MENU
 	MAINMENU_SELECT,
 	MAINMENU_OK,
+	MAINMENU_START,
+	MAINMENU_CANCEL,
 
 	// PLAYER
 	PLAYER_FOOTSTEP,
@@ -28,6 +30,10 @@ enum class SFX
 	PLAYER_MEELEE,
 
 	PLAYER_ULTIMATE,
+
+	PLAYER_HIT,
+	PLAYER_BROKEN,
+	PLAYER_DANGER,
 
 	// ENEMY
 	ENEMY_ROBOT_FOOTSTEP,
@@ -102,20 +108,26 @@ private:
 	{
 		// MAIN MENU
 		{SFX::MAINMENU_SELECT, "Assets/FMOD/Audios/sfx/select2.wav"},
-		{SFX::MAINMENU_OK, "Assets/FMOD/Audios/sfx/pick.wav"},
+		{SFX::MAINMENU_OK, "Assets/FMOD/Audios/sfx/ok.wav"},
+		{SFX::MAINMENU_CANCEL, "Assets/FMOD/Audios/sfx/cancel.wav"},
+		{SFX::MAINMENU_START, "Assets/FMOD/Audios/sfx/gamestart.wav"},
 
 		// PLAYER
-		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},
+		{SFX::PLAYER_FOOTSTEP, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
 
 		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
 		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
 		{SFX::PLAYER_SHOTGUN, "event:/SFX/CHAR/main_shotgun"},
 
-		{SFX::PLAYER_ULTIMATE, "event:/SFX/CHAR/main_ultimate"}, // Draft audio
+		{SFX::PLAYER_ULTIMATE, "event:/SFX/CHAR/main_ultimate"},
+
+		{SFX::PLAYER_HIT, "Assets/FMOD/Audios/sfx/generalhit.wav"},
+		{SFX::PLAYER_BROKEN, "Assets/FMOD/Audios/sfx/broken.wav"},
+		{SFX::PLAYER_DANGER, "Assets/FMOD/Audios/sfx/danger.wav"},
 
 
 		// ENEMY
-		{SFX::ENEMY_ROBOT_FOOTSTEP, "event:/Character/Enemy Footsteps"},
+		{SFX::ENEMY_ROBOT_FOOTSTEP, "Assets/FMOD/Audios/sfx/robotfootstep.wav"}, // [X]
 		{SFX::ENEMY_ROBOT_GUNFIRE, "event:/SFX/NPC/robot_distance"},
 	};
 };
