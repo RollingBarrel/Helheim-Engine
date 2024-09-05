@@ -30,6 +30,7 @@ private:
 	void UpdateLightState();
 
 	float mLoopDuration = 10.0f;
+	float mStartingTime = 0.0f;
 	float mSpeed = 1.0f;
 
 	float mTimer = 0.0f;

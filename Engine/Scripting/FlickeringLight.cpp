@@ -10,7 +10,9 @@
 
 CREATE(FlickeringLight)
 {
-	CLASS(owner);
+	CLASS(owner);MEMBER(MemberType::FLOAT, mSpeed);
+	MEMBER(MemberType::FLOAT, mLoopDuration);
+	MEMBER(MemberType::FLOAT, mStartingTime);
 	MEMBER(MemberType::FLOAT, mSpeed);
 	END_CREATE;
 }
@@ -19,6 +21,9 @@ FlickeringLight::FlickeringLight(GameObject* owner) : Script(owner) {}
 
 void FlickeringLight::Start()
 {
+	//Starting time setup
+	mTimer = fmod(mStartingTime,mLoopDuration);
+
 	//Check if the gameobject has some type of light and registers its intensity
 	mPointLight = static_cast<PointLightComponent*>(mGameObject->GetComponent(ComponentType::POINTLIGHT));
 	mSpotLight = static_cast<SpotLightComponent*>(mGameObject->GetComponent(ComponentType::SPOTLIGHT));
