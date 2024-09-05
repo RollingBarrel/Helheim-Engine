@@ -63,7 +63,7 @@ int AudioManager::Play(SFX sfx, int id, float3 position)
         // Assuming that it is a no-fmod audio
         std::string audioName = GetSFXName(sfx);
 
-        App->GetAudio()->Play(audioName, id);
+        App->GetAudio()->PlayOneShot(audioName, position, id);
         return -1;
     }
 
@@ -88,7 +88,7 @@ void AudioManager::PlayOneShot(SFX sfx, float3 position, const std::unordered_ma
         // Assuming that it is a no-fmod audio
         std::string audioName = GetSFXName(sfx);
 
-        App->GetAudio()->Play(audioName, -1);
+        App->GetAudio()->PlayOneShot(audioName, position ,-1);
         return;
     }
 
