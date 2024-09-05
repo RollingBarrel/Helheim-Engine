@@ -5,8 +5,8 @@
                 "UID": 1324924497,
                 "ParentUID": 1735689159,
                 "Name": "Second_Tutorial",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -30,7 +30,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -500.0,
                             250.0,
@@ -58,6 +58,51 @@
                             0.0,
                             0.0
                         ]
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": false,
+                        "ScriptName": "SecondTutorial",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "CONTROLLER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mSecondaryTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 1247031607
+                            },
+                            {
+                                "VariableName": "mGrenadeTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 1713662589
+                            },
+                            {
+                                "VariableName": "mUltimateTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 1610302907
+                            },
+                            {
+                                "VariableName": "KEYBOARD",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mSecondaryTutorial",
+                                "MemberType": 3,
+                                "VariableData": 560253152
+                            },
+                            {
+                                "VariableName": "mGrenadeTutorial",
+                                "MemberType": 3,
+                                "VariableData": 1668549851
+                            },
+                            {
+                                "VariableName": "mUltimateTutorial",
+                                "MemberType": 3,
+                                "VariableData": 772225195
+                            }
+                        ]
                     }
                 ]
             },
@@ -65,8 +110,8 @@
                 "UID": 560253152,
                 "ParentUID": 1324924497,
                 "Name": "Secondary",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -90,7 +135,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -275.6499938964844,
                             0.0,
@@ -121,7 +166,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 1595443056,
                         "Color": [
                             1.0,
@@ -143,8 +188,8 @@
                 "UID": 1668549851,
                 "ParentUID": 1324924497,
                 "Name": "Grenade",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -168,7 +213,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -275.6499938964844,
                             0.0,
@@ -199,7 +244,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 222992621,
                         "Color": [
                             1.0,
@@ -221,8 +266,8 @@
                 "UID": 772225195,
                 "ParentUID": 1324924497,
                 "Name": "Ultimate",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -246,7 +291,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -280.54998779296877,
                             0.0,
@@ -277,8 +322,242 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 655254179,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1247031607,
+                "ParentUID": 1324924497,
+                "Name": "Secondary_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -275.6499938964844,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            229.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1390725528,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1713662589,
+                "ParentUID": 1324924497,
+                "Name": "Grenade_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -275.6499938964844,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            229.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 593541629,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1610302907,
+                "ParentUID": 1324924497,
+                "Name": "Ultimate_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -280.54998779296877,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 175441900,
                         "Color": [
                             1.0,
                             1.0,
