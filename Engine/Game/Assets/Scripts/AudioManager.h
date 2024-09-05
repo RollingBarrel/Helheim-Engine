@@ -101,8 +101,8 @@ private:
 	const std::unordered_map<SFX, std::string> mSFXToString
 	{
 		// MAIN MENU
-		{SFX::MAINMENU_SELECT, "Assets/FMOD/Audios/sfx/cu.wav"},
-		{SFX::MAINMENU_OK, "event:/UI/Okay"},
+		{SFX::MAINMENU_SELECT, "Assets/FMOD/Audios/sfx/select2.wav"},
+		{SFX::MAINMENU_OK, "Assets/FMOD/Audios/sfx/pick.wav"},
 
 		// PLAYER
 		{SFX::PLAYER_FOOTSTEP, "event:/Character/Player Footsteps"},

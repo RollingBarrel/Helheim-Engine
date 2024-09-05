@@ -236,7 +236,7 @@ int ModuleAudio::PlayOneShot(const std::string& fileName, float3 eventPosition, 
 
 		channel->set3DAttributes(&position, &velocity);  
 	}
-
+	mSystem->update();
 	return 0; 
 }
 

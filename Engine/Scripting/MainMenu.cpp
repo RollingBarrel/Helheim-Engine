@@ -6,7 +6,6 @@
 #include "Keys.h"
 #include "ModuleAudio.h"
 #include "ScriptComponent.h"
-#include "MainMenuManager.h"
 #include "Transform2DComponent.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
@@ -457,7 +456,7 @@ void MainMenu::ClickMenu(MENU_TYPE type)
 
 void MainMenu::OnMainButtonClick() 
 {
-    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+    mAudioManager->PlayOneShot(SFX::PLAYER_PISTOL);
     OpenMenu(MENU_TYPE::MAIN);
 }
 

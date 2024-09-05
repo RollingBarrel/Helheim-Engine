@@ -5914,6 +5914,10 @@
                             {
                                 "Name": "event:/MC/main/Theme",
                                 "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/SFX/CHAR/main_normal",
+                                "PreviewPlayID": -1
                             }
                         ]
                     }
@@ -6384,6 +6388,16 @@
             1.0,
             1.0,
             0.05000000074505806
-        ]
+        ],
+        "Fog": {
+            "Color": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "Density": 0.008999999612569809,
+            "HeightFallof": 0.0,
+            "MaxFog": 0.0
+        }
     }
 }
