@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 92335769,
+                "UID": 55653230,
                 "ParentUID": 265972669,
                 "Name": "UltimateGO",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.6196659207344055,
-                    0.4308112859725952
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -36,12 +36,12 @@
                             {
                                 "VariableName": "mLaserGO",
                                 "MemberType": 3,
-                                "VariableData": 1373779895
+                                "VariableData": 1250279969
                             },
                             {
                                 "VariableName": "mEnemyCollisionParticle",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 342211181
                             }
                         ]
                     },
@@ -64,15 +64,15 @@
                 ]
             },
             {
-                "UID": 1373779895,
-                "ParentUID": 92335769,
+                "UID": 1250279969,
+                "ParentUID": 55653230,
                 "Name": "Ultimte_Laser_Line",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.11999999731779099,
-                    0.9700000286102295,
-                    0.27000001072883608
+                    1.1699999570846558,
+                    0.41999998688697817
                 ],
                 "Rotation": [
                     0.0,
@@ -168,8 +168,8 @@
                 ]
             },
             {
-                "UID": 536006500,
-                "ParentUID": 1373779895,
+                "UID": 253422589,
+                "ParentUID": 1250279969,
                 "Name": "Ultimate_laser_Origin_V1",
                 "Enabled": true,
                 "Active": true,
@@ -269,8 +269,8 @@
                 ]
             },
             {
-                "UID": 1661081860,
-                "ParentUID": 1373779895,
+                "UID": 1365757306,
+                "ParentUID": 1250279969,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
@@ -297,8 +297,8 @@
                 "Components": []
             },
             {
-                "UID": 416791446,
-                "ParentUID": 1661081860,
+                "UID": 326779221,
+                "ParentUID": 1365757306,
                 "Name": "Ultimate_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -380,8 +380,8 @@
                 ]
             },
             {
-                "UID": 1326668295,
-                "ParentUID": 416791446,
+                "UID": 1410638949,
+                "ParentUID": 326779221,
                 "Name": "Laser_End_Trail",
                 "Enabled": true,
                 "Active": true,
@@ -508,8 +508,8 @@
                 ]
             },
             {
-                "UID": 114890888,
-                "ParentUID": 416791446,
+                "UID": 342211181,
+                "ParentUID": 326779221,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
