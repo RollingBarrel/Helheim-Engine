@@ -190,6 +190,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                         }
 
                         mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+                        mActiveCinematicCamera = true;
                         App->GetCamera()->ActivateFirstCamera();
 
                         mFadeOn = false;
@@ -286,10 +287,14 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
 
 void CinematicCamera::EndCinematic(GameObject* camera)
 {
-    App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-    App->GetCamera()->AddEnabledCamera(mMainCamera);
-    App->GetCamera()->ActivateFirstCamera();
-
+    if (mActiveCinematicCamera)
+    {
+        mActiveCinematicCamera = false;
+        App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
+        App->GetCamera()->AddEnabledCamera(mMainCamera);
+        App->GetCamera()->ActivateFirstCamera();
+    }
+    
     GameManager::GetInstance()->SetPaused(false, false);
 
     if (mBattleArea1)

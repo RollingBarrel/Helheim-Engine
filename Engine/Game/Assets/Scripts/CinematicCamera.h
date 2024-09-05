@@ -79,6 +79,7 @@ private:
     bool mFadeStart = false;
     bool mFadeOn = false;
     bool mEscape = false;
+    bool mActiveCinematicCamera = false;
 
     const CameraComponent* mCurrentCamera = nullptr;
     CameraComponent* mMainCamera = nullptr;
