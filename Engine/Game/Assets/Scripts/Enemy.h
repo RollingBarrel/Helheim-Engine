@@ -68,9 +68,9 @@ protected:
 	float mAttackDamage = 2.0f;
 
 	//DropRates
-	int mShieldDropRate = 20;
-	int mRedEnergyDropRate = 35;
-	int mBlueEnergyDropRate = 45;
+	int mShieldDropRate = 15;
+	int mRedEnergyDropRate = 45;
+	int mBlueEnergyDropRate = 80;
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	GameObject* mPlayer = nullptr;
