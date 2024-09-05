@@ -259,25 +259,26 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                     }                   
                 }
             }   
-           
+            
             if (!mEscape)
             {
                 if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT)
-                {     
-                        mEscape = true;
-                        mFadeStart = false;
-                        EndCinematic(camera);
-                }
-            }
-            
-            if (mEscape)
-            {
-                if (Fade(false))
                 {
-                    mEscape = false;
+                    mEscape = true;
                     mTravelling = true;
                     mPlayingCinematic = false;
+                    mFadeStart = false;
+
+                    EndCinematic(camera);
                 }
+            }
+        }
+
+        if (mEscape)
+        {
+            if (Fade(false))
+            {
+                mEscape = false;
             }
         }
     }
@@ -458,10 +459,9 @@ bool CinematicCamera::Fade(bool fadeOut)
             if (!mFadeStart)
             {
                 mFadeStart = true;
-                mFade->SetEnabled(true);
                 mCounter = 0.0f;
             }
-
+            
             if (mCounter < 1.0f)
             {
                 mCounter += mFadeSpeed;
@@ -469,6 +469,7 @@ bool CinematicCamera::Fade(bool fadeOut)
 
                 return false;
             }
+
             else return true;
         }
         else
@@ -476,10 +477,9 @@ bool CinematicCamera::Fade(bool fadeOut)
             if (!mFadeStart)
             {
                 mFadeStart = true;
-                mFade->SetEnabled(true);
                 mCounter = 1.0f;
             }
-
+            
             if (mCounter > 0.0f)
             {
                 mCounter -= mFadeSpeed;
@@ -487,7 +487,7 @@ bool CinematicCamera::Fade(bool fadeOut)
 
                 return false;
             }
-            else return true;       
+            else return true;      
         }
     }
 }
