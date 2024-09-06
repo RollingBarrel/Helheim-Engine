@@ -20,6 +20,7 @@ CREATE(BattleArea)
 	SEPARATOR("DOORS");
 	MEMBER(MemberType::GAMEOBJECT, mDoor1);
 	MEMBER(MemberType::GAMEOBJECT, mDoor2);
+	MEMBER(MemberType::GAMEOBJECT, mElevator);
 	SEPARATOR("TRAPS");
 	MEMBER(MemberType::GAMEOBJECT, mTrap1);
 	MEMBER(MemberType::GAMEOBJECT, mTrap2);
@@ -249,6 +250,11 @@ void BattleArea::CloseDoors(bool close)
 		{
 			door2Collider->SetEnable(close);
 		}
+	}
+
+	if (mElevator)
+	{
+		mElevator->GetComponent(ComponentType::SCRIPT)->SetEnable(!close);
 	}
 
 }

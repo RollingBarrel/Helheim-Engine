@@ -53,6 +53,7 @@ private:
 	GameObject* mDoor1 = nullptr;
 	GameObject* mDoor2 = nullptr;
 	std::vector<Spawner*> mSpawners;
+	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 };
 
