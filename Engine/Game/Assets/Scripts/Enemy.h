@@ -17,7 +17,12 @@ enum class EnemyState
 	CHARGE,
 	ATTACK,
 	FLEE,
-	DEATH
+	DEATH,
+	//Boss States
+	CHARGING_BULLET_HELL,
+	CHARGING_LASER,
+	WAKE,
+	PHASE
 };
 
 

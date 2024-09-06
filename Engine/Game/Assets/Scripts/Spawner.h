@@ -18,6 +18,7 @@ public:
 
 	bool IsActive() const { return mIsActive; }
 	PoolType GetEnemyType() const { return mPoolType; }
+	int GetWaveRounds() const { return mWaveRounds; }
 	void Active(bool active) { mIsActive = active; }
 
 
