@@ -150,7 +150,7 @@ void PlayerController::Start()
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
 
-    mPlayerSpeed = mPlayerStats->GetSpeed();
+   mPlayerSpeed = mPlayerStats->GetSpeed();
 
     // States
     mDashState = new DashState(this, mDashCoolDown);
@@ -286,7 +286,6 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
-
     // Check input
     CheckInput();
 
@@ -478,6 +477,7 @@ void PlayerController::SetAnimationSpeed(float speed)
 
 void PlayerController::MoveInDirection(float3 direction)
 {
+
     float collisionDotProduct = direction.Dot(mCollisionDirection);
     if (collisionDotProduct < 0.0f)
     {
@@ -494,6 +494,7 @@ void PlayerController::MoveInDirection(float3 direction)
 
 void PlayerController::MoveToPosition(float3 position)
 {
+
     mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(position, float3(10.0f)));
 }
 
@@ -593,10 +594,15 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
-void PlayerController::SetMovementSpeed(float percentage) 
+void PlayerController::SetMovementSpeedStat(float percentage)
 {
     mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
     mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
+void PlayerController::SetSpeed(float speed)
+{
+    mPlayerSpeed = speed;
 }
 
 void PlayerController::SetWeaponDamage(float percentage)

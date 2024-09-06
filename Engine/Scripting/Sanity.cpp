@@ -255,7 +255,7 @@ void Buff::Consume()
     switch (stat) 
     {
         case Buff::StatType::MOVEMENT:
-            GameManager::GetInstance()->GetPlayerController()->SetMovementSpeed(value);
+            GameManager::GetInstance()->GetPlayerController()->SetMovementSpeedStat(value);
             break;
         case Buff::StatType::DAMAGE:
             GameManager::GetInstance()->GetPlayerController()->SetWeaponDamage(value);
