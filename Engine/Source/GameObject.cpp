@@ -1,38 +1,35 @@
 #include "GameObject.h"
 #include "Application.h"
-#include "ModuleScene.h"
-#include "ModuleOpenGL.h"
-#include "ModuleScriptManager.h"
 #include "ModuleCamera.h"
+#include "ModuleScene.h"
+#include "ModuleScriptManager.h"
 
 #include "Component.h"
-#include "MeshRendererComponent.h"
-#include "CameraComponent.h"
 #include "AIAgentComponent.h"
-#include "NavMeshObstacleComponent.h"
 #include "AnimationComponent.h"
-#include "ImageComponent.h"
-#include "MaskComponent.h"
-#include "CanvasComponent.h"
-#include "PointLightComponent.h"
-#include "SpotLightComponent.h"
-#include "ButtonComponent.h"
-#include "ScriptComponent.h"
-#include "AudioSourceComponent.h"
 #include "AudioListenerComponent.h"
-#include "Transform2DComponent.h"
-#include "SliderComponent.h"
-#include "ParticleSystemComponent.h"
+#include "AudioSourceComponent.h"
 #include "BoxColliderComponent.h"
-#include "TrailComponent.h"
-#include "LineComponent.h"
+#include "ButtonComponent.h"
+#include "CameraComponent.h"
+#include "CanvasComponent.h"
 #include "DecalComponent.h"
+#include "ImageComponent.h"
+#include "LineComponent.h"
+#include "MaskComponent.h"
+#include "MeshRendererComponent.h"
+#include "NavMeshObstacleComponent.h"
+#include "ParticleSystemComponent.h"
+#include "PointLightComponent.h"
+#include "ScriptComponent.h"
+#include "SliderComponent.h"
+#include "SpotLightComponent.h"
 #include "TextComponent.h"
+#include "TrailComponent.h"
+#include "Transform2DComponent.h"
+#include "VideoComponent.h"
 
-#include <algorithm>
 #include "Algorithm/Random/LCG.h"
-#include "MathFunc.h"
-
 
 #pragma region Constructors and Destructors
 
@@ -110,8 +107,6 @@ GameObject::~GameObject()
 	{
 		delete gameObject;
 	}
-
-	
 }
 
 #pragma endregion
@@ -491,6 +486,9 @@ Component* GameObject::CreateComponent(ComponentType type)
 		break;
 	case ComponentType::TEXT:
 		newComponent = new TextComponent(this);
+		break;
+	case ComponentType::VIDEO:
+		newComponent = new VideoComponent(this);
 		break;
 	default:
 		break;
