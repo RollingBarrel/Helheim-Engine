@@ -74,11 +74,6 @@
                                 "VariableData": 180144080
                             },
                             {
-                                "VariableName": "mShootTutorialCon",
-                                "MemberType": 3,
-                                "VariableData": 540422501
-                            },
-                            {
                                 "VariableName": "mDashTutorialCon",
                                 "MemberType": 3,
                                 "VariableData": 585281607
@@ -91,11 +86,6 @@
                                 "VariableName": "mMoveTutorial",
                                 "MemberType": 3,
                                 "VariableData": 2073653120
-                            },
-                            {
-                                "VariableName": "mShootTutorial",
-                                "MemberType": 3,
-                                "VariableData": 1972239225
                             },
                             {
                                 "VariableName": "mDashTutorial",
@@ -116,9 +106,9 @@
                 ]
             },
             {
-                "UID": 1972239225,
+                "UID": 180144080,
                 "ParentUID": 423102354,
-                "Name": "Fire",
+                "Name": "Move_Con",
                 "Enabled": false,
                 "Active": false,
                 "Translation": [
@@ -146,7 +136,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -305.6499938964844,
+                            -328.54998779296877,
                             0.0,
                             0.0
                         ],
@@ -157,7 +147,7 @@
                             1.0
                         ],
                         "Size": [
-                            204.0,
+                            157.0,
                             48.0
                         ],
                         "AnchorMin": [
@@ -176,7 +166,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1057701924,
+                        "ImageID": 1730986441,
                         "Color": [
                             1.0,
                             1.0,
@@ -350,84 +340,6 @@
                 ]
             },
             {
-                "UID": 540422501,
-                "ParentUID": 423102354,
-                "Name": "Fire_Con",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -305.6499938964844,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            204.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 696676741,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
                 "UID": 585281607,
                 "ParentUID": 423102354,
                 "Name": "Dash_Con",
@@ -458,7 +370,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -312.04998779296877,
+                            -328.6499938964844,
                             0.0,
                             0.0
                         ],
@@ -469,7 +381,7 @@
                             1.0
                         ],
                         "Size": [
-                            193.0,
+                            156.0,
                             48.0
                         ],
                         "AnchorMin": [
@@ -488,85 +400,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 843395444,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 180144080,
-                "ParentUID": 423102354,
-                "Name": "Move_Con",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -275.6499938964844,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            264.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 1730986441,
+                        "ImageID": 1687512706,
                         "Color": [
                             1.0,
                             1.0,
