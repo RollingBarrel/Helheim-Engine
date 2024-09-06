@@ -208,6 +208,16 @@ void GameManager::ActivateSecondTutorial()
     }
 }
 
+void GameManager::UnlockUltimate(bool unlock)
+{
+    mPlayerController->UnlockUltimate(unlock);
+}
+
+void GameManager::UnlockGrenade(bool unlock)
+{
+    mPlayerController->UnlockGrenade(unlock);
+}
+
 void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();

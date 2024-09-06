@@ -101,6 +101,15 @@
                                 "VariableName": "mDashTutorial",
                                 "MemberType": 3,
                                 "VariableData": 961318403
+                            },
+                            {
+                                "VariableName": "DOOR",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": 1148983579
                             }
                         ]
                     }

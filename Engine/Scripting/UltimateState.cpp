@@ -68,7 +68,7 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
+	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()) return true;
 	return false;
 }
 

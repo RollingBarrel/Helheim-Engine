@@ -4,6 +4,8 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "GameManager.h"
+#include "AnimationComponent.h"
+#include "BoxColliderComponent.h"
 #include "Keys.h"
 
 CREATE(FirstTutorial)
@@ -17,6 +19,8 @@ CREATE(FirstTutorial)
     MEMBER(MemberType::GAMEOBJECT, mMoveTutorial);
     MEMBER(MemberType::GAMEOBJECT, mShootTutorial);
     MEMBER(MemberType::GAMEOBJECT, mDashTutorial);
+    SEPARATOR("DOOR");
+    MEMBER(MemberType::GAMEOBJECT, mDoor1);
     END_CREATE;
 }
 
@@ -53,9 +57,41 @@ void FirstTutorial::Update()
     if (!mCompleted)
     {
         Tutorial();
+        if (mDoor1)
+        {
+            AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
+            if (doorAnimation1)
+            {
+                doorAnimation1->SetIsPlaying(true);
+                doorAnimation1->SendTrigger("tClose", 0.6f);
+
+            }
+
+            BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
+            if (door1Collider)
+            {
+                door1Collider->SetEnable(true);
+            }
+        }
     }
     else 
     {
+        if (mDoor1)
+        {
+            AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
+            if (doorAnimation1)
+            {
+                doorAnimation1->SetIsPlaying(true);
+                doorAnimation1->SendTrigger("tOpen", 0.6f);
+
+            }
+
+            BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
+            if (door1Collider)
+            {
+                door1Collider->SetEnable(false);
+            }
+        }
         mGameObject->SetEnabled(false);
     }
 }

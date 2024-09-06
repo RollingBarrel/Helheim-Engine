@@ -74,6 +74,8 @@ void SecondTutorial::Tutorial()
                 mSecondaryTutorial->SetEnabled(false);
                 mGrenadeTutorial->SetEnabled(true);
                 mCurrentStep = 2;
+                GameManager::GetInstance()->UnlockGrenade(true);
+             
             }
             break;
         case 2:
@@ -83,6 +85,7 @@ void SecondTutorial::Tutorial()
                 mGrenadeTutorial->SetEnabled(false);
                 mUltimateTutorial->SetEnabled(true);
                 mCurrentStep = 3;
+                GameManager::GetInstance()->UnlockUltimate(true);
             }
             break;
         case 3:
@@ -108,6 +111,7 @@ void SecondTutorial::Tutorial()
                 mSecondaryTutorialCon->SetEnabled(false);
                 mGrenadeTutorialCon->SetEnabled(true);
                 mCurrentStep = 2;
+                GameManager::GetInstance()->UnlockGrenade(true);
             }
             break;
         case 2:
@@ -117,6 +121,7 @@ void SecondTutorial::Tutorial()
                 mGrenadeTutorialCon->SetEnabled(false);
                 mUltimateTutorialCon->SetEnabled(true);
                 mCurrentStep = 3;
+                GameManager::GetInstance()->UnlockUltimate(true);
             }
             break;
         case 3:

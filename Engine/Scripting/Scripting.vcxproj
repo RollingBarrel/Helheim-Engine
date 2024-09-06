@@ -193,6 +193,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Spawner.h" />
     <ClInclude Include="..\Game\Assets\Scripts\GameManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Grenade.h" />
@@ -227,7 +228,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Keys.h" />
-    <ClInclude Include="SecondTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />

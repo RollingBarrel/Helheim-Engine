@@ -207,7 +207,7 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\FirstTutorial.h" />
-    <ClInclude Include="SecondTutorial.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">

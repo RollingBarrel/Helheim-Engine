@@ -28,6 +28,8 @@ private:
 	GameObject* mShootTutorialCon = nullptr;
 	GameObject* mDashTutorialCon = nullptr;
 
+	GameObject* mDoor1 = nullptr;
+
 	int mCurrentStep = 0;
 
 	bool mCompleted = false;
