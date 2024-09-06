@@ -21,6 +21,7 @@
 Machinegun::Machinegun()
 {
 	mDamage = 4.0f;
+    mEnergyCost = 5;
 	mAttackDuration = 0.3f;
     mAttackCooldown = 0.35f;
 	mAttackRange = 25.0f;
@@ -59,7 +60,7 @@ void Machinegun::Attack(float time)
    
     if (mShootTimer.Delay(delay))
     {
-        GameManager::GetInstance()->GetPlayerController()->UseEnergy(mNumBullets);
+        GameManager::GetInstance()->GetPlayerController()->UseEnergy(mEnergyCost);
         
         //Audio
         if (GameManager::GetInstance()->GetAudio())
