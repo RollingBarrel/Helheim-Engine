@@ -270,6 +270,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                     mPlayingCinematic = false;
                     mFadeStart = false;
 
+                    mTimer.Reset();
                     EndCinematic(camera);
                 }
             }
