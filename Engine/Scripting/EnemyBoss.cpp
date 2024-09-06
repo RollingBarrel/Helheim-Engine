@@ -34,6 +34,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
+    MEMBER(MemberType::FLOAT, mAttackSequenceCooldown);
     MEMBER(MemberType::FLOAT, mPhase1Hp);
     MEMBER(MemberType::FLOAT, mPhase2Hp);
     MEMBER(MemberType::FLOAT, mDeathTime);
