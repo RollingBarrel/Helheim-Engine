@@ -302,6 +302,6 @@ private:
     GameObject* mDashVFX = nullptr;
 
     //UNLOCKED ABILITIES
-    bool mGrenadeUnlocked = false;
-    bool mUltimateUnlocked = false;
+    bool mGrenadeUnlocked = true;
+    bool mUltimateUnlocked = true;
 };

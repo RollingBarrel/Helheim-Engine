@@ -82,8 +82,12 @@ void GameManager::Start()
         StartAudio();
     }
 
-    if (mFirstTutorial) mFirstTutorial->SetEnabled(true);
+    if (mFirstTutorial) {
 
+        mFirstTutorial->SetEnabled(true);
+        UnlockGrenade(false);
+        UnlockUltimate(false);
+    }
     mGameTimer = App->GetCurrentClock();
 }
 
