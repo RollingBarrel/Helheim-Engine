@@ -17,7 +17,6 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
 	MEMBER(MemberType::INT, mWavesRounds);
-	MEMBER(MemberType::INT, mSpawnerCycles);
 	SEPARATOR("DOORS");
 	MEMBER(MemberType::GAMEOBJECT, mDoor1);
 	MEMBER(MemberType::GAMEOBJECT, mDoor2);
@@ -39,22 +38,27 @@ BattleArea::~BattleArea()
 
 void BattleArea::Start()
 {
-	mCurrentSpawnerCycles = mSpawnerCycles;
+	mSpawners.reserve(4);
 	if (mSpawnerGO1)
 	{
 		mEnemySpawner1 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner1);
+
 	}
 	if (mSpawnerGO2)
 	{
 		mEnemySpawner2 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner2);
 	}
 	if (mSpawnerGO3)
 	{
 		mEnemySpawner3 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner3);
 	}
 	if (mSpawnerGO4)
 	{
 		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mSpawners.push_back(mEnemySpawner4);
 	};
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
@@ -69,37 +73,20 @@ void BattleArea::Start()
 
 void BattleArea::Update()
 {
-	if (mHasBeenActivated && mCurrentSpawnerCycles >0 )
+	if (mHasBeenActivated && mNeedsToSpawn)
 	{
-		if (mEnemySpawner1)
+		for (size_t i = 0; i < mSpawners.size(); i++)
 		{
-			if (mEnemySpawner1->Spawn())
+			if (mSpawners[i]->IsActive())
 			{
-				mCurrentEnemies++;				
+				for (size_t i = 0; i < mEnemySpawner1->GetWaveRounds(); i++)
+				{
+					mSpawners[i]->Spawn();
+					mCurrentEnemies++;
+				}
 			}
 		}
-		if (mEnemySpawner2)
-		{
-			if (mEnemySpawner2->Spawn())
-			{
-				mCurrentEnemies++;				
-			}
-		}
-		if (mEnemySpawner3 )
-		{
-			if (mEnemySpawner3->Spawn())
-			{
-				mCurrentEnemies++;				
-			}
-		}
-		if (mEnemySpawner4 )
-		{
-			if (mEnemySpawner4->Spawn())
-			{
-				mCurrentEnemies++;				
-			}
-		}
-		mCurrentSpawnerCycles--;
+		mNeedsToSpawn = false;
 	}
 }
 
@@ -121,7 +108,11 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 		if (mCurrentEnemies == 0)
 		{
 			mWavesRounds--;
-			mCurrentSpawnerCycles = mSpawnerCycles;
+			if (mWavesRounds >= 1)
+			{
+				mNeedsToSpawn = true;
+			}
+
 		}
 
 	}
@@ -132,6 +123,7 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 
 	if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0 && mCurrentTraps <= 0)
 	{
+
 		ActivateArea(false);
 		mGameObject->SetEnabled(false);
 		return;
@@ -143,6 +135,7 @@ inline void BattleArea::ActivateArea(bool activate)
 {
 
 	CloseDoors(activate);
+
 
 	if (mEnemySpawner1)
 	{
@@ -160,7 +153,7 @@ inline void BattleArea::ActivateArea(bool activate)
 	{
 		mEnemySpawner4->Active(activate);
 	}
-
+	mNeedsToSpawn = activate;
 	SetTrapState(mTrap1, activate);
 	SetTrapState(mTrap2, activate);
 	SetTrapState(mTrap3, activate);
