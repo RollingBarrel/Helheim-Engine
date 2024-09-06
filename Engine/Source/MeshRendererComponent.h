@@ -57,9 +57,6 @@ private:
 
 	void UpdatePalette();
 
-	
-
-
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;
 

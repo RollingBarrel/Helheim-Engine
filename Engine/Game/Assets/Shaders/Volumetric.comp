@@ -89,7 +89,7 @@ float noise(in vec3 position,in float time)
 
 float CalculateExtinctionCoeff(in vec3 currPos)
 {
-	return baseExtCoeff * noise(currPos, currTime) * noiseAmount;
+	return baseExtCoeff + noise(currPos, currTime) * noiseAmount;
 }
 
 float MieScattering(vec3 V, vec3 lDir)
@@ -204,6 +204,29 @@ bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 	//	++i;
 	//}
 
+	bool IntersectPlane(in vec3 pP, in vec3 pN, in vec3 rO, in vec3 rDir, out float t)
+	{
+		float denom = dot(pN, rDir);
+		if(denom > 1e-6)
+		{
+			vec3 pPO = pP - rO;
+			t = dot(pPO, pN) / denom;
+			return t >= 0.0f;
+		}
+		return false;
+	}
+
+	bool IntersectDisk(in vec3 dC, in vec3 dN, float dRadius, in vec3 rO, in vec3 rDir, out float t)
+	{
+		if(IntersectPlane(dC, dN, rO, rDir, t))
+		{
+			vec3 p = rO + t*rDir;
+			vec3 v = p - dC;
+			dSquared = dot(v,v);
+			return d2 <= dRadius * dRadius;
+		}
+	}
+
 	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
 	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 	{
@@ -218,7 +241,7 @@ bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 		if(det > 0)
 		{
 			float detSqrt = sqrt(det);
-			float tmp = (-b-sqrt(det)) / (2*a);
+			float tmp = (-b-detSqrt) / (2*a);
 			vec3 p = o + tmp*rayDir;
 			if(dot(p - sLight.pos.xyz, sLight.aimD.xyz) > 0.0f)
 			{
@@ -253,6 +276,7 @@ bool IntersectLightShapes(in vec3 o, in vec3 rayDir, out float t0, out float t1)
 		}
 		++i;
 	}
+
 	return ret;
 }
 
@@ -277,7 +301,7 @@ void main()
 			t0 = max(t0, 0.0);
 			t1 = min(t1, maxDist);
 		
-			float nSteps = ceil(t1 - t0 / stepSize); //Uniform constant de stepSize
+			float nSteps = ceil((t1 - t0) / stepSize); //Uniform constant de stepSize
 			vec3 marchingStep = rayDir*stepSize;
 			vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
 		
