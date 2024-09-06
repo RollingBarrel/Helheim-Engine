@@ -106,6 +106,7 @@ void EnemyBoss::Update()
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
+            mBulletHell = BulletPattern::NONE;
         case EnemyState::ATTACK:
             switch (mStage)
             {

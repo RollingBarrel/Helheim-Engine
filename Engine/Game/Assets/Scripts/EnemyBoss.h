@@ -55,10 +55,11 @@ private:
 	TimerScript mPhaseShiftTimer;
 	float mPhaseShiftTime = 5.0f;
 	TimerScript mBulletHellTimer;
-	float mBulletHellDuration = 6.0f;
+	
 	float mAttackSequenceCooldown = 4.0f;
 
 	// Bullet Hell
+	float mBulletHellDuration = 5.0f;
 	float mBulletSpeed = 15.0f;
 	float mBulletsDamage = 2.0f;
 	float mBulletRange = 50.0f;
