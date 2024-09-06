@@ -162,6 +162,7 @@ public:
     ReloadState* GetReloadState() { return mReloadState; }
     UltimateState* GetUltimateState() { return mUltimateState; }
 
+
 private:
     void CheckInput();
     void CheckHitEffect();
@@ -290,6 +291,9 @@ private:
     float mHitEffectTime = 0.15f;
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
+    std::vector<unsigned int> mMaterialIds;
+    bool Delay(float delay);
+
     std::vector<float4> mPlayerOgColor;
  
     // DEBUFF
