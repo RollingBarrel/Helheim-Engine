@@ -385,7 +385,7 @@ void AnimationComponent::ReloadGameObjects()
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
-	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine"))
+	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine") || current->GetName() == std::string("Spine1")) //This will be changed
 	{
 		if (mOwner->GetTag() == "Player")
 		{
