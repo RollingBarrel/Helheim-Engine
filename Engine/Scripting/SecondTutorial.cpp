@@ -6,18 +6,23 @@
 #include "ModuleInput.h"
 #include "GameManager.h"
 #include "Keys.h"
+#include "BattleArea.h"
 
 CREATE(SecondTutorial)
 {
     CLASS(owner);
     SEPARATOR("CONTROLLER");
+    MEMBER(MemberType::GAMEOBJECT, mShootTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mSecondaryTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mUltimateTutorialCon);
     SEPARATOR("KEYBOARD");
+    MEMBER(MemberType::GAMEOBJECT, mShootTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondaryTutorial);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeTutorial);
     MEMBER(MemberType::GAMEOBJECT, mUltimateTutorial);
+    SEPARATOR("AREA");
+    MEMBER(MemberType::GAMEOBJECT, mTutorialAreaGO);
     END_CREATE;
 }
 
@@ -31,20 +36,21 @@ SecondTutorial::~SecondTutorial()
 
 void SecondTutorial::Start()
 {
+    if (mTutorialAreaGO)
+        mTutorialArea = (BattleArea*)((ScriptComponent*)mTutorialAreaGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+  
     if (GameManager::GetInstance()->UsingController())
     {
-        if (mSecondaryTutorialCon && mGrenadeTutorialCon && mUltimateTutorialCon)
+        if (mSecondaryTutorialCon && mGrenadeTutorialCon && mUltimateTutorialCon && mShootTutorialCon)
         {
-            mSecondaryTutorialCon->SetEnabled(true);
-            mCurrentStep = 1;
+            mShootTutorialCon->SetEnabled(true);
         }
     }
     else
     {
-        if (mSecondaryTutorial && mGrenadeTutorial && mUltimateTutorial)
+        if (mSecondaryTutorial && mGrenadeTutorial && mUltimateTutorial && mShootTutorial)
         {
-            mSecondaryTutorial->SetEnabled(true);
-            mCurrentStep = 1;
+            mShootTutorial->SetEnabled(true);
         }
     }
 }
@@ -53,6 +59,7 @@ void SecondTutorial::Update()
 {
     if (!mCompleted)
     {
+        if (mTutorialArea) mCurrentStep = mTutorialArea->GetCurrentWave();
         Tutorial();
     }
     else
@@ -67,34 +74,31 @@ void SecondTutorial::Tutorial()
     {
         switch (mCurrentStep)
         {
-        case 1:
-            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
-            {
-                //mMoveTutorialCon->SetEnabled(false);
-                mSecondaryTutorial->SetEnabled(false);
-                mGrenadeTutorial->SetEnabled(true);
-                mCurrentStep = 2;
-                GameManager::GetInstance()->UnlockGrenade(true);
-             
-            }
+        case 5:
+            mShootTutorial->SetEnabled(false);
+            mSecondaryTutorial->SetEnabled(true);
+            GameManager::GetInstance()->UnlockSecondary();
+            mCurrentStep = 2;
             break;
-        case 2:
-            if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
-            {
-                //mShootTutorialCon->SetEnabled(false);
-                mGrenadeTutorial->SetEnabled(false);
-                mUltimateTutorial->SetEnabled(true);
-                mCurrentStep = 3;
-                GameManager::GetInstance()->UnlockUltimate(true);
-            }
+        case 4:
+              //mMoveTutorialCon->SetEnabled(false);
+            mSecondaryTutorial->SetEnabled(false);
+            mGrenadeTutorial->SetEnabled(true);
+            mCurrentStep = 2;
+            GameManager::GetInstance()->UnlockGrenade(true);
             break;
         case 3:
-            if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN)
-            {
-                //mDashTutorialCon->SetEnabled(false);
-                mUltimateTutorial->SetEnabled(false);
-                mCompleted = true;
-            }
+            //mShootTutorialCon->SetEnabled(false);
+            mGrenadeTutorial->SetEnabled(false);
+            mUltimateTutorial->SetEnabled(true);
+            mCurrentStep = 3;
+            GameManager::GetInstance()->UnlockUltimate(true);
+            
+            break;
+        case 2:
+            //mDashTutorialCon->SetEnabled(false);
+            mUltimateTutorial->SetEnabled(false);
+            mCompleted = true;
             break;
         default:
             break;
@@ -104,33 +108,31 @@ void SecondTutorial::Tutorial()
     {
         switch (mCurrentStep)
         {
-        case 1:
-            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
-            {
-                //mMoveTutorial->SetEnabled(false);
-                mSecondaryTutorialCon->SetEnabled(false);
-                mGrenadeTutorialCon->SetEnabled(true);
-                mCurrentStep = 2;
-                GameManager::GetInstance()->UnlockGrenade(true);
-            }
+        case 5:
+            mShootTutorialCon->SetEnabled(false);
+            mSecondaryTutorialCon->SetEnabled(true);
+            GameManager::GetInstance()->UnlockSecondary();
+            mCurrentStep = 2;
             break;
-        case 2:
-            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
-            {
-                //mShootTutorial->SetEnabled(false);
-                mGrenadeTutorialCon->SetEnabled(false);
-                mUltimateTutorialCon->SetEnabled(true);
-                mCurrentStep = 3;
-                GameManager::GetInstance()->UnlockUltimate(true);
-            }
+        case 4:
+            //mMoveTutorialCon->SetEnabled(false);
+            mSecondaryTutorialCon->SetEnabled(false);
+            mGrenadeTutorialCon->SetEnabled(true);
+            mCurrentStep = 2;
+            GameManager::GetInstance()->UnlockGrenade(true);
             break;
         case 3:
-            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
-            {
-                //mDashTutorialCon->SetEnabled(false);
-                mUltimateTutorialCon->SetEnabled(false);
-                mCompleted = true;
-            }
+            //mShootTutorialCon->SetEnabled(false);
+            mGrenadeTutorialCon->SetEnabled(false);
+            mUltimateTutorialCon->SetEnabled(true);
+            mCurrentStep = 3;
+            GameManager::GetInstance()->UnlockUltimate(true);
+
+            break;
+        case 2:
+            //mDashTutorialCon->SetEnabled(false);
+            mUltimateTutorialCon->SetEnabled(false);
+            mCompleted = true;
             break;
         default:
             break;

@@ -5,6 +5,7 @@
 GENERATE_BODY(SecondTutorial);
 
 class GameObject;
+class BattleArea;
 
 class SecondTutorial : public Script
 {
@@ -20,13 +21,18 @@ public:
 
 private:
 	//KEYBOARD
+	GameObject* mShootTutorial = nullptr;
 	GameObject* mSecondaryTutorial = nullptr;
 	GameObject* mGrenadeTutorial = nullptr;
 	GameObject* mUltimateTutorial = nullptr;
 	//CONTROLLER
+	GameObject* mShootTutorialCon = nullptr;
 	GameObject* mSecondaryTutorialCon = nullptr;
 	GameObject* mGrenadeTutorialCon = nullptr;
 	GameObject* mUltimateTutorialCon = nullptr;
+
+	GameObject* mTutorialAreaGO = nullptr;
+	BattleArea* mTutorialArea = nullptr;
 
 	int mCurrentStep = 0;
 

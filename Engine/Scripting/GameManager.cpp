@@ -82,8 +82,8 @@ void GameManager::Start()
         StartAudio();
     }
 
-    if (mFirstTutorial) {
-
+    if (mFirstTutorial) 
+    {
         mFirstTutorial->SetEnabled(true);
         UnlockGrenade(false);
         UnlockUltimate(false);
@@ -210,6 +210,11 @@ void GameManager::ActivateSecondTutorial()
         if (mFirstTutorial) mFirstTutorial->SetEnabled(false);
         mSecondTutorial->SetEnabled(true);
     }
+}
+
+void GameManager::UnlockSecondary()
+{
+    mPlayerController->RechargeBattery(EnergyType::RED);
 }
 
 void GameManager::UnlockUltimate(bool unlock)

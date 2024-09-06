@@ -51,6 +51,7 @@ public:
     bool IsStopped() { return mStopActive; };
 
     void ActivateSecondTutorial();
+    void UnlockSecondary();
     void UnlockUltimate(bool unlock);
     void UnlockGrenade(bool unlock);
 

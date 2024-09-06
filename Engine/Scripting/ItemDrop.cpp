@@ -78,21 +78,11 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                     mGameObject->SetEnabled(false);
                 }
                 break;
-            case 2:
-                if (!mTutorialActivated)
-                {
-                    mTutorialActivated = true;
-                    GameManager::GetInstance()->ActivateSecondTutorial();
-                }
+            case 2:              
                 playerScript->RechargeBattery(EnergyType::BLUE);
                 mGameObject->SetEnabled(false);
                 break;
-            case 3:
-                if (!mTutorialActivated)
-                {
-                    mTutorialActivated = true;
-                    GameManager::GetInstance()->ActivateSecondTutorial();
-                }
+            case 3:             
                 playerScript->RechargeBattery(EnergyType::RED);
                 mGameObject->SetEnabled(false);
                 break;

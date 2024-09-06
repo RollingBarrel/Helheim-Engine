@@ -20,6 +20,7 @@ public:
 	void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
 	int GetCurrentEnemies() { return mCurrentEnemies; }
+	int GetCurrentWave() { return mWavesRounds; }
 	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
 	void AddExplosiveEnemy();
 
@@ -36,6 +37,7 @@ private:
 	int mCurrentExplosiveEnemies = 0;
 	int mCurrentTraps = 0;
 	bool mHasBeenActivated = false;
+	bool mIsTutorialArea = false;
 
 	GameObject* mSpawnerGO1 = nullptr;
 	GameObject* mSpawnerGO2 = nullptr;

@@ -21,11 +21,9 @@ public:
 private:
 	//KEYBOARD
 	GameObject* mMoveTutorial = nullptr;
-	GameObject* mShootTutorial = nullptr;
 	GameObject* mDashTutorial = nullptr;
 	//CONTROLLER
 	GameObject* mMoveTutorialCon = nullptr;
-	GameObject* mShootTutorialCon = nullptr;
 	GameObject* mDashTutorialCon = nullptr;
 
 	GameObject* mDoor1 = nullptr;

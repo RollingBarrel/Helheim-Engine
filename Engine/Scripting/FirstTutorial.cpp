@@ -13,11 +13,9 @@ CREATE(FirstTutorial)
     CLASS(owner);
     SEPARATOR("CONTROLLER");
     MEMBER(MemberType::GAMEOBJECT, mMoveTutorialCon);
-    MEMBER(MemberType::GAMEOBJECT, mShootTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mDashTutorialCon);
     SEPARATOR("KEYBOARD");
     MEMBER(MemberType::GAMEOBJECT, mMoveTutorial);
-    MEMBER(MemberType::GAMEOBJECT, mShootTutorial);
     MEMBER(MemberType::GAMEOBJECT, mDashTutorial);
     SEPARATOR("DOOR");
     MEMBER(MemberType::GAMEOBJECT, mDoor1);
@@ -36,7 +34,7 @@ void FirstTutorial::Start()
 {
     if (GameManager::GetInstance()->UsingController()) 
     {
-        if (mMoveTutorialCon && mShootTutorialCon && mDashTutorialCon)
+        if (mMoveTutorialCon && mDashTutorialCon)
         {
             mMoveTutorialCon->SetEnabled(true);
             mCurrentStep = 1;
@@ -44,7 +42,7 @@ void FirstTutorial::Start()
     }
     else
     {
-        if (mMoveTutorial && mShootTutorial && mDashTutorial)
+        if (mMoveTutorial && mDashTutorial)
         {
             mMoveTutorial->SetEnabled(true);
             mCurrentStep = 1;
@@ -110,20 +108,11 @@ void FirstTutorial::Tutorial()
             {
                 //mMoveTutorialCon->SetEnabled(false);
                 mMoveTutorial->SetEnabled(false);
-                mShootTutorial->SetEnabled(true);
+                mDashTutorial->SetEnabled(true);
                 mCurrentStep = 2;
             }
             break;
         case 2:
-            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN)
-            {
-                //mShootTutorialCon->SetEnabled(false);
-                mShootTutorial->SetEnabled(false);
-                mDashTutorial->SetEnabled(true);
-                mCurrentStep = 3;
-            }
-            break;
-        case 3:
             if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
             {
                 //mDashTutorialCon->SetEnabled(false);
@@ -145,20 +134,11 @@ void FirstTutorial::Tutorial()
             {
                 //mMoveTutorial->SetEnabled(false);
                 mMoveTutorialCon->SetEnabled(false);
-                mShootTutorialCon->SetEnabled(true);
+                mDashTutorial->SetEnabled(true);
                 mCurrentStep = 2;
             }
             break;
         case 2:
-            if (App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN)
-            {
-                //mShootTutorial->SetEnabled(false);
-                mShootTutorialCon->SetEnabled(false);
-                mDashTutorial->SetEnabled(true);
-                mCurrentStep = 3;
-            }
-            break;
-        case 3:
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
             {
                 //mDashTutorialCon->SetEnabled(false);
