@@ -134,7 +134,7 @@ void FirstTutorial::Tutorial()
             {
                 //mMoveTutorial->SetEnabled(false);
                 mMoveTutorialCon->SetEnabled(false);
-                mDashTutorial->SetEnabled(true);
+                mDashTutorialCon->SetEnabled(true);
                 mCurrentStep = 2;
             }
             break;
@@ -142,7 +142,7 @@ void FirstTutorial::Tutorial()
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
             {
                 //mDashTutorialCon->SetEnabled(false);
-                mDashTutorial->SetEnabled(false);
+                mDashTutorialCon->SetEnabled(false);
                 mCompleted = true;
             }
             break;
