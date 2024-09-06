@@ -16,7 +16,7 @@ void PoolManager::Start()
 {
 
 	unsigned int numBullets = 200;
-	unsigned int numItems = 10;
+	unsigned int numItems = 20;
 	unsigned int numEnemies = 15;
 
 

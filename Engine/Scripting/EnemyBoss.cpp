@@ -92,14 +92,7 @@ void EnemyBoss::Update()
     if (GameManager::GetInstance()->IsPaused()) return;
     if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
 
-    if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
-    {
-        //Phase change
-        ++mStage;
-        mCurrentState = EnemyState::PHASE;
-        mBulletHell = BulletPattern::NONE;
-        if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
-    }
+    
 
     if (!mBeAttracted)
     {
@@ -108,6 +101,15 @@ void EnemyBoss::Update()
         case EnemyState::IDLE:
             mBulletHell = BulletPattern::NONE;
         case EnemyState::ATTACK:
+            if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
+            {
+                //Phase change
+                ++mStage;
+                mCurrentState = EnemyState::PHASE;
+                mBulletHell = BulletPattern::NONE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
+            }
+
             switch (mStage)
             {
             case 0:
@@ -174,7 +176,7 @@ void EnemyBoss::Update()
             }
             break;
         case EnemyState::WAKE:
-            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
+            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION) && IsPlayerInRange(mBulletRange))
             {
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
                 mCurrentState = EnemyState::IDLE;
