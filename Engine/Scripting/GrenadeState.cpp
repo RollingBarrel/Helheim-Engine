@@ -24,7 +24,7 @@ GrenadeState::~GrenadeState()
 
 StateType GrenadeState::HandleInput()
 {
-    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::DASH;
 
     if (mPlayerController->GetAttackState()->IsReady())
     {
@@ -56,6 +56,7 @@ StateType GrenadeState::HandleInput()
     if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_UP ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_UP)
     {
+        mPlayerController->GetGrenadeState()->ResetCooldown();
         mThrowGrenade = true;
         return StateType::AIM;
     }

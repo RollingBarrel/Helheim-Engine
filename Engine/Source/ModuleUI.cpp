@@ -11,6 +11,7 @@
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
+#include "VideoComponent.h"
 #include "Transform2DComponent.h"
 
 #include "glew.h"
@@ -88,6 +89,12 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 			text->Draw();
 		}
 
+		VideoComponent* video = static_cast<VideoComponent*>(gameObject->GetComponent(ComponentType::VIDEO));
+		if (video && video->IsEnabled())
+		{
+			video->Draw();
+		}
+
 		for (GameObject* child : gameObject->GetChildren())
 		{
 			DrawWidget(child);
@@ -137,7 +144,6 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 		{
 
 			float2 mouseAbsolute(App->GetInput()->GetGlobalMousePosition());
-
 			
 			float normalizedX = -1.0f + 2.0f * static_cast<float>(mouseAbsolute.x - App->GetWindow()->GetGameWindowsPosition().x) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().x);
 			float normalizedY = 1.0f - 2.0f * static_cast<float>(mouseAbsolute.y - App->GetWindow()->GetGameWindowsPosition().y) / static_cast<float>(App->GetWindow()->GetGameWindowsSize().y);

@@ -18,7 +18,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init(float3 bombOrigin);
+	void Init(float3 bombOrigin, float damage);
 
 private:
 	GameObject* mBombGO = nullptr;
@@ -29,6 +29,4 @@ private:
 	float3 mBombOrigin = float3::zero;
 	bool mHasExploded = false;
 	std::vector<Component*> mExplosionParticles;
-
-
 };

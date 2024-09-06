@@ -86,6 +86,7 @@ public:
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
     float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
+    float GetCurrentShield() const { return mShield; }
     float GetDamageModifier() const { return mDamageModifier; }
     GameObject* GetShootOriginGO() const { return mShootOrigin; }
 
@@ -96,7 +97,8 @@ public:
     int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
-    void SetMovementSpeed(float percentage);
+    void SetMovementSpeedStat(float percentage);
+    void SetSpeed(float speed);
     void SetWeaponDamage(float percentage); 
     void SetMaxShield(float percentage); 
 
@@ -160,6 +162,7 @@ public:
     ReloadState* GetReloadState() { return mReloadState; }
     UltimateState* GetUltimateState() { return mUltimateState; }
 
+
 private:
     void CheckInput();
     void CheckHitEffect();
@@ -206,6 +209,7 @@ private:
 
     // Speed
     float mPlayerSpeed;
+    float mBaseSpeed = 5.5f;
 
     // Shield
     float mShield = 100.0f;
@@ -254,6 +258,7 @@ private:
     // Grenade
     float mGrenadeCoolDown = 5.0f;
     float mGrenadeRange = 5.0f;
+    float mGrenadeCursorSpeed = 6.0f;
     float3 mGrenadePosition;
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
@@ -286,6 +291,9 @@ private:
     float mHitEffectTime = 0.15f;
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
+    std::vector<unsigned int> mMaterialIds;
+    bool Delay(float delay);
+
     std::vector<float4> mPlayerOgColor;
  
     // DEBUFF

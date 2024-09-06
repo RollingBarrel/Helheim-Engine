@@ -1,5 +1,8 @@
 #include "UltimateChargeState.h"
 #include "PlayerController.h"
+#include "Application.h"
+#include "ModuleScene.h"
+#include "PlayerStats.h"
 
 UltimateChargeState::UltimateChargeState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
@@ -28,13 +31,13 @@ void UltimateChargeState::Enter()
 	//Enable Charging GO with particles
 	//keep player still while charging
 	mPlayerController->EnableChargeUltimate(true);
-	mPlayerController->SetMovementSpeed(0.01f);
+	mPlayerController->SetSpeed(1.0f);
 }
 
 void UltimateChargeState::Exit()
 {
 	mPlayerController->EnableChargeUltimate(false);
-	mPlayerController->SetMovementSpeed(1/0.01f);
+	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed());
 }
 
 StateType UltimateChargeState::GetType()

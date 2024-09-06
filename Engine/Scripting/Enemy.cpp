@@ -9,11 +9,13 @@
 #include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
 #include "ResourceMaterial.h"
+#include "ModuleDetourNavigation.h"
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
 
 #include "GameManager.h"
+#include "PlayerController.h"
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
@@ -28,7 +30,7 @@ void Enemy::Start()
 
     //Hit Effect
 
-	if (!(mGameObject->GetName() == "FinalBoss")) 
+	if (mGameObject->GetName() != "FinalBoss") 
 		/*
 		⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀
 		⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀
@@ -95,6 +97,7 @@ void Enemy::Update()
 
     //Hit Effect
     CheckHitEffect();
+	mEnemyCollisionDirection = float3::zero;
 }
 
 void Enemy::CheckHitEffect()
@@ -108,6 +111,16 @@ void Enemy::CheckHitEffect()
         }
     }
 }
+
+//void Enemy::CheckUltHitVFX()
+//{
+//	if (mUltHit)
+//	{
+//		if (mUltEffectTimer.Delay(mUltEffectTime)) {
+//			ActivateUltVFX();
+//		}
+//	}
+//}
 
 void Enemy::ResetEnemyColor()
 {
@@ -134,6 +147,10 @@ void Enemy::ActivateEnemy()
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
 			Chase();
 			break;
+		case EnemyState::FLEE:
+			if (mAnimationComponent) mAnimationComponent->SendTrigger("tChase", mChaseTransitionDuration);
+			Flee();
+			break;
 		case EnemyState::CHARGE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
 			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
@@ -149,8 +166,11 @@ void Enemy::ActivateEnemy()
 			break;
 		}
 	}
-
-	mBeAttracted = false;
+	else 
+	{
+		mBeAttracted = false;
+		mAiAgentComponent->SetEnable(true);
+	}
 }
 
 void Enemy::Idle()
@@ -164,8 +184,7 @@ void Enemy::Idle()
 void Enemy::Chase()
 {
 	PlayStepAudio();
-	if (IsPlayerInRange(mChaseDistance))
-	{
+
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
@@ -177,11 +196,36 @@ void Enemy::Chase()
 		{
 			mCurrentState = EnemyState::CHARGE;
 		}
-	}
-	else
+
+}
+
+void Enemy::Flee()
+{
+	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
-		mCurrentState = EnemyState::IDLE;
+		mCurrentState = EnemyState::ATTACK;
+		return;
 	}
+	PlayStepAudio();	
+		if (mAiAgentComponent)
+		{
+			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
+			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
+			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
+			if (collisionDotProduct < 0.0f)
+			{
+				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
+			}
+			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
+			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+		
+		}
+
+		if (!IsPlayerInRange(mAttackDistance))
+		{
+			mCurrentState = EnemyState::IDLE;
+		}
 }
 
 void Enemy::Charge()
@@ -275,6 +319,15 @@ void Enemy::ActivateHitEffect()
     mHit = true;
 }
 
+void Enemy::ActivateUltVFX()
+{
+	if (mUltHitEffectGO)
+	{
+		mUltHitEffectGO->SetEnabled(false); 
+		mUltHitEffectGO->SetEnabled(true);
+	}
+}
+
 void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
@@ -331,22 +384,39 @@ void Enemy::Paralyzed(float percentage, bool paralyzed)
 	}
 }
 
+void Enemy::SetAttracted(bool attracted)
+{ 
+	mBeAttracted = attracted;
+	// Sometime, AI component is over everything, I need to set it disable to make blackhole works
+	mAiAgentComponent->SetEnable(!attracted);
+}
+
+
 void Enemy::DropItem()
 {
+	int shieldDropRate = mShieldDropRate;
+	int redDropRate = mRedEnergyDropRate;
+	int blueDropRate = mBlueEnergyDropRate;
+	float playerShield= GameManager::GetInstance()->GetPlayerController()->GetCurrentShield();
+	if( playerShield<=50.0f)
+	{
+		shieldDropRate = 50;
+		redDropRate = 70;
+		blueDropRate = 90;
+	}
 	srand(static_cast<unsigned int>(std::time(nullptr)));
 	int randomValue = rand() % 100;
-
 	PoolType poolType = PoolType::LAST;
 
-	if (randomValue < mShieldDropRate)
+	if (randomValue < shieldDropRate)
 	{
 		poolType = PoolType::SHIELD;
 	}
-	else if (randomValue < mRedEnergyDropRate)
+	else if (randomValue < redDropRate)
 	{
 		poolType = PoolType::RED_ENERGY;
 	}
-	else if (randomValue < mBlueEnergyDropRate)
+	else if (randomValue < blueDropRate)
 	{
 		poolType = PoolType::BLUE_ENERGY;
 	}

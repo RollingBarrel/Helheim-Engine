@@ -64,6 +64,7 @@ private:
     void EndAudio();
 
     void HandleLevel1Audio();
+    void HandleLevel2Audio();
 
     static GameManager* mInstance;
     

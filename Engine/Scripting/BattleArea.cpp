@@ -16,11 +16,12 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO2);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
-	MEMBER(MemberType::INT, mMaxSimulNumEnemies);
-	MEMBER(MemberType::INT, mTotalNumEnemies);
+	MEMBER(MemberType::INT, mWavesRounds);
+	MEMBER(MemberType::INT, mSpawnerCycles);
 	SEPARATOR("DOORS");
 	MEMBER(MemberType::GAMEOBJECT, mDoor1);
 	MEMBER(MemberType::GAMEOBJECT, mDoor2);
+	MEMBER(MemberType::GAMEOBJECT, mElevator);
 	SEPARATOR("TRAPS");
 	MEMBER(MemberType::GAMEOBJECT, mTrap1);
 	MEMBER(MemberType::GAMEOBJECT, mTrap2);
@@ -39,6 +40,7 @@ BattleArea::~BattleArea()
 
 void BattleArea::Start()
 {
+	mCurrentSpawnerCycles = mSpawnerCycles;
 	if (mSpawnerGO1)
 	{
 		mEnemySpawner1 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -54,8 +56,7 @@ void BattleArea::Start()
 	if (mSpawnerGO4)
 	{
 		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-	}
-
+	};
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
@@ -69,40 +70,37 @@ void BattleArea::Start()
 
 void BattleArea::Update()
 {
-	if (mHasBeenActivated && mTotalNumEnemies > 0)
+	if (mHasBeenActivated && mCurrentSpawnerCycles >0 )
 	{
-		if (mEnemySpawner1 && mCurrentEnemies < mMaxSimulNumEnemies)
+		if (mEnemySpawner1)
 		{
 			if (mEnemySpawner1->Spawn())
 			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
+				mCurrentEnemies++;				
 			}
 		}
-		if (mEnemySpawner2 && mCurrentEnemies < mMaxSimulNumEnemies)
+		if (mEnemySpawner2)
 		{
 			if (mEnemySpawner2->Spawn())
 			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
+				mCurrentEnemies++;				
 			}
 		}
-		if (mEnemySpawner3 && mCurrentEnemies < mMaxSimulNumEnemies)
+		if (mEnemySpawner3 )
 		{
 			if (mEnemySpawner3->Spawn())
 			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
+				mCurrentEnemies++;				
 			}
 		}
-		if (mEnemySpawner4 && mCurrentEnemies < mMaxSimulNumEnemies)
+		if (mEnemySpawner4 )
 		{
 			if (mEnemySpawner4->Spawn())
 			{
-				mCurrentEnemies++;
-				mTotalNumEnemies--;
+				mCurrentEnemies++;				
 			}
 		}
+		mCurrentSpawnerCycles--;
 	}
 }
 
@@ -121,13 +119,19 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	else // Any enemy except traps and explosive enemies
 	{
 		mCurrentEnemies--;
+		if (mCurrentEnemies == 0)
+		{
+			mWavesRounds--;
+			mCurrentSpawnerCycles = mSpawnerCycles;
+		}
+
 	}
 
 	LOG("CURRENT TRAPS: %i", mCurrentTraps);
 	LOG("CURRENT EXPLOSIVE ENEMIES: %i", mCurrentExplosiveEnemies);
 	LOG("CURRENT ENEMIES: %i", mCurrentEnemies);
 
-	if (mTotalNumEnemies <= 0 && mCurrentEnemies <= 0 && mCurrentTraps <= 0)
+	if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0 && mCurrentTraps <= 0)
 	{
 		ActivateArea(false);
 
@@ -179,7 +183,7 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mHasBeenActivated)
 	{
-		mHasBeenActivated = true;
+ 		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
@@ -257,6 +261,11 @@ void BattleArea::CloseDoors(bool close)
 		{
 			door2Collider->SetEnable(close);
 		}
+	}
+
+	if (mElevator)
+	{
+		mElevator->GetComponent(ComponentType::SCRIPT)->SetEnable(!close);
 	}
 
 }

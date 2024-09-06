@@ -7,11 +7,13 @@ GENERATE_BODY(LoreCollectible);
 
 class GameObject;
 class BoxColliderComponent;
-class CollisionData;
 class TextComponent;
 class ImageComponent;
 class ResourceTexture;
 class MeshRendererComponent;
+
+struct CollisionData;
+
 
 class LoreCollectible : public Script
 {

@@ -21,14 +21,14 @@
 
 Shootgun::Shootgun()
 {
-    mDamage = 2.0f;
+    mDamage = 1.0f;
     mAttackRange = 25.0f;
     mAttackDuration = 0.0f;
     mAttackCooldown = 0.5f;
 
     mBulletSpeed = 30.0f;
     mBulletMaxSpread = 0.5f;
-
+    mEnergyCost = 15;
     mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
     if (mFire)
     {
@@ -61,7 +61,7 @@ void Shootgun::Attack(float time)
 
     //Shoot Logic
     int numBullets = 10;
-    GameManager::GetInstance()->GetPlayerController()->UseEnergy(numBullets);
+    GameManager::GetInstance()->GetPlayerController()->UseEnergy(mEnergyCost);
     for (int i = 0; i < numBullets; ++i)
     {
         Shoot(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition(), mBulletMaxSpread, gradient);
@@ -78,5 +78,5 @@ void Shootgun::Attack(float time)
 
 void Shootgun::PlayHitSound()
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::GUNFIRE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_SHOTGUN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 }
