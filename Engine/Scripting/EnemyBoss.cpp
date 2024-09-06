@@ -179,6 +179,7 @@ void EnemyBoss::Update()
         case EnemyState::WAKE:
             if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION) && IsPlayerInRange(mBulletRange))
             {
+                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
                 mCurrentState = EnemyState::IDLE;
             }
