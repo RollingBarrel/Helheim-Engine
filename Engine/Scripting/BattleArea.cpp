@@ -80,7 +80,7 @@ void BattleArea::Update()
 		{
 			if (mSpawners[i]->IsActive())
 			{
-				for (size_t i = 0; i < mEnemySpawner1->GetWaveRounds(); i++)
+				for (size_t y = 0; y < mSpawners[i]->GetWaveRounds(); y++)
 				{
 					mSpawners[i]->Spawn();
 					mCurrentEnemies++;
@@ -99,10 +99,11 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	{
 		mCurrentTraps--;
 	}
-	else if (scriptName == "EnemyExplosive")
-	{
-		mCurrentExplosiveEnemies--;
-	}
+	//else if (scriptName == "EnemyExplosive")
+	//{
+	//	mCurrentExplosiveEnemies--;
+	//	mCurrentEnemies--;
+	//}
 	else // Any enemy except traps and explosive enemies
 	{
 		mCurrentEnemies--;
