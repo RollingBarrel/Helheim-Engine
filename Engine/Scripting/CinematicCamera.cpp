@@ -263,7 +263,8 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
             
             if (!mEscape)
             {
-                if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT)
+                if ((App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN) || 
+                    (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN))
                 {
                     mEscape = true;
                     mTravelling = true;
