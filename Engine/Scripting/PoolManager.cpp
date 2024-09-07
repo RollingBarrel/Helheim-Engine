@@ -15,8 +15,8 @@ PoolManager::PoolManager(GameObject* owner) : Script(owner)
 void PoolManager::Start()
 {
 
-	unsigned int numBullets = 50;
-	unsigned int numItems = 10;
+	unsigned int numBullets = 200;
+	unsigned int numItems = 20;
 	unsigned int numEnemies = 15;
 
 

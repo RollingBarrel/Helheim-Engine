@@ -70,6 +70,8 @@ const char* Component::GetNameFromType(ComponentType type)
 			return "Line";
 		case ComponentType::DECAL:
 			return "Decal Projector";
+		case ComponentType::VIDEO:
+			return "Video";
 		default:
 			return "None";
 		}

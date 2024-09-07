@@ -52,7 +52,6 @@ private:
     HudController(GameObject* owner);
     ~HudController();
 
-    void Loading();
     void Controls();
     void ButtonHover();
     void ButtonClick();

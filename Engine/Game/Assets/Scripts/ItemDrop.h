@@ -26,6 +26,7 @@ public:
 private:
     int mDropId = -1;
     float mHealthRecovered = 15.0f;
+    bool mAlreadyUsed = false;
     GameObject* mPlayer = nullptr;
     AnimationComponent* mAnimation = nullptr;
     BoxColliderComponent* mCollider = nullptr;

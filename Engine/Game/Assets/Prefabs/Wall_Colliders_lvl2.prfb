@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1555389679,
+                "UID": 892503707,
                 "ParentUID": 1,
                 "Name": "Wall_Colliders_lvl2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1766525675,
-                "ParentUID": 1555389679,
+                "UID": 897631759,
+                "ParentUID": 892503707,
                 "Name": "Section_1_1",
                 "Enabled": true,
                 "Active": true,
@@ -58,8 +58,8 @@
                 "Components": []
             },
             {
-                "UID": 1802983207,
-                "ParentUID": 1766525675,
+                "UID": 565446066,
+                "ParentUID": 897631759,
                 "Name": "Left_wall",
                 "Enabled": true,
                 "Active": true,
@@ -86,8 +86,8 @@
                 "Components": []
             },
             {
-                "UID": 1404813253,
-                "ParentUID": 1802983207,
+                "UID": 200538503,
+                "ParentUID": 565446066,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -131,8 +131,8 @@
                 ]
             },
             {
-                "UID": 421541268,
-                "ParentUID": 1802983207,
+                "UID": 1997038787,
+                "ParentUID": 565446066,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -176,8 +176,8 @@
                 ]
             },
             {
-                "UID": 1186031785,
-                "ParentUID": 1802983207,
+                "UID": 1642713616,
+                "ParentUID": 565446066,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -221,8 +221,8 @@
                 ]
             },
             {
-                "UID": 495948736,
-                "ParentUID": 1802983207,
+                "UID": 1267919871,
+                "ParentUID": 565446066,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -266,8 +266,8 @@
                 ]
             },
             {
-                "UID": 253395202,
-                "ParentUID": 1766525675,
+                "UID": 903638897,
+                "ParentUID": 897631759,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -294,13 +294,13 @@
                 "Components": []
             },
             {
-                "UID": 1655383946,
-                "ParentUID": 253395202,
+                "UID": 541446553,
+                "ParentUID": 903638897,
                 "Name": "Battery",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.611785888671875,
+                    1.1049041748046876,
                     0.9625473022460938,
                     -5.496619701385498
                 ],
@@ -315,7 +315,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -329,7 +329,7 @@
                             0.0
                         ],
                         "Size": [
-                            4.199999809265137,
+                            4.699999809265137,
                             0.949999988079071,
                             0.8999999761581421
                         ],
@@ -339,8 +339,8 @@
                 ]
             },
             {
-                "UID": 962143817,
-                "ParentUID": 253395202,
+                "UID": 183013743,
+                "ParentUID": 903638897,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -367,8 +367,8 @@
                 "Components": []
             },
             {
-                "UID": 1116295785,
-                "ParentUID": 962143817,
+                "UID": 1967469594,
+                "ParentUID": 183013743,
                 "Name": "SmallBox",
                 "Enabled": true,
                 "Active": true,
@@ -412,15 +412,15 @@
                 ]
             },
             {
-                "UID": 1247244403,
-                "ParentUID": 962143817,
+                "UID": 1621081217,
+                "ParentUID": 183013743,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -4.28558349609375,
+                    -5.2203216552734379,
                     0.776702880859375,
-                    5.051105499267578
+                    4.6603546142578129
                 ],
                 "Rotation": [
                     0.0,
@@ -433,7 +433,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -447,9 +447,9 @@
                             0.0
                         ],
                         "Size": [
-                            1.399999976158142,
+                            2.299999952316284,
                             0.699999988079071,
-                            0.699999988079071
+                            1.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -457,15 +457,15 @@
                 ]
             },
             {
-                "UID": 505831888,
-                "ParentUID": 962143817,
+                "UID": 1253667298,
+                "ParentUID": 183013743,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -6.41436767578125,
+                    -6.5922393798828129,
                     0.776702880859375,
-                    2.920551300048828
+                    3.2012462615966799
                 ],
                 "Rotation": [
                     0.0,
@@ -478,7 +478,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -494,7 +494,7 @@
                         "Size": [
                             1.399999976158142,
                             0.699999988079071,
-                            0.699999988079071
+                            1.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -502,8 +502,8 @@
                 ]
             },
             {
-                "UID": 800048000,
-                "ParentUID": 253395202,
+                "UID": 908949825,
+                "ParentUID": 903638897,
                 "Name": "Servers",
                 "Enabled": true,
                 "Active": true,
@@ -547,8 +547,8 @@
                 ]
             },
             {
-                "UID": 332815861,
-                "ParentUID": 253395202,
+                "UID": 556574042,
+                "ParentUID": 903638897,
                 "Name": "Computer",
                 "Enabled": true,
                 "Active": true,
@@ -568,7 +568,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -592,8 +592,8 @@
                 ]
             },
             {
-                "UID": 260892552,
-                "ParentUID": 332815861,
+                "UID": 193337383,
+                "ParentUID": 556574042,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -637,15 +637,15 @@
                 ]
             },
             {
-                "UID": 789399910,
-                "ParentUID": 1766525675,
-                "Name": "Right_Wall",
+                "UID": 208259957,
+                "ParentUID": 897631759,
+                "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    0.18408775329589845
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -656,7 +656,7 @@
                 "Scale": [
                     1.0,
                     1.0,
-                    -1.0
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -665,21 +665,66 @@
                 "Components": []
             },
             {
-                "UID": 1680130984,
-                "ParentUID": 789399910,
+                "UID": 1273041668,
+                "ParentUID": 208259957,
+                "Name": "Wall_P2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.1749725341796876,
+                    2.387542724609375,
+                    -7.40887451171875
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.27000001072883608,
+                            2.4000000953674318,
+                            4.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1633493487,
+                "ParentUID": 208259957,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     5.7842864990234379,
                     2.3875045776367189,
-                    5.983884811401367
+                    -5.799797058105469
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
-                    1.0
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -710,15 +755,15 @@
                 ]
             },
             {
-                "UID": 473784015,
-                "ParentUID": 789399910,
-                "Name": "Wall_P2",
+                "UID": 553460829,
+                "ParentUID": 208259957,
+                "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.1749725341796876,
+                    -10.596603393554688,
                     2.387542724609375,
-                    7.592962265014648
+                    -3.554384231567383
                 ],
                 "Rotation": [
                     0.0,
@@ -727,9 +772,9 @@
                     0.7071068286895752
                 ],
                 "Scale": [
+                    1.0000001192092896,
                     1.0,
-                    1.0,
-                    1.0
+                    1.0000001192092896
                 ],
                 "Tag": "Wall",
                 "PrefabUid": 0,
@@ -747,7 +792,7 @@
                         "Size": [
                             0.27000001072883608,
                             2.4000000953674318,
-                            4.5
+                            3.200000047683716
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -755,21 +800,21 @@
                 ]
             },
             {
-                "UID": 1386376083,
-                "ParentUID": 789399910,
+                "UID": 909874630,
+                "ParentUID": 208259957,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -5.64813232421875,
                     2.387603759765625,
-                    5.625450134277344
+                    -5.441362380981445
                 ],
                 "Rotation": [
                     0.0,
-                    0.3809686005115509,
+                    -0.3826834559440613,
                     0.0,
-                    0.9245879650115967
+                    0.9238795042037964
                 ],
                 "Scale": [
                     1.0,
@@ -800,53 +845,8 @@
                 ]
             },
             {
-                "UID": 153921239,
-                "ParentUID": 789399910,
-                "Name": "Wall_P4",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -10.596603393554688,
-                    2.387542724609375,
-                    3.7384719848632814
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.27000001072883608,
-                            2.4000000953674318,
-                            3.200000047683716
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 378877790,
-                "ParentUID": 1555389679,
+                "UID": 191755832,
+                "ParentUID": 892503707,
                 "Name": "Section_1_2",
                 "Enabled": true,
                 "Active": true,
@@ -873,8 +873,8 @@
                 "Components": []
             },
             {
-                "UID": 816602902,
-                "ParentUID": 378877790,
+                "UID": 1981085153,
+                "ParentUID": 191755832,
                 "Name": "Left_wall",
                 "Enabled": true,
                 "Active": true,
@@ -901,8 +901,8 @@
                 "Components": []
             },
             {
-                "UID": 1705314967,
-                "ParentUID": 816602902,
+                "UID": 1625506804,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -946,8 +946,8 @@
                 ]
             },
             {
-                "UID": 461511900,
-                "ParentUID": 816602902,
+                "UID": 1276542450,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -991,8 +991,8 @@
                 ]
             },
             {
-                "UID": 162535424,
-                "ParentUID": 816602902,
+                "UID": 931616114,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -1036,8 +1036,8 @@
                 ]
             },
             {
-                "UID": 1405085313,
-                "ParentUID": 816602902,
+                "UID": 573879514,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -1081,8 +1081,8 @@
                 ]
             },
             {
-                "UID": 1178415097,
-                "ParentUID": 816602902,
+                "UID": 218579649,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -1126,8 +1126,8 @@
                 ]
             },
             {
-                "UID": 2042883275,
-                "ParentUID": 816602902,
+                "UID": 2013757134,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -1171,8 +1171,8 @@
                 ]
             },
             {
-                "UID": 601166851,
-                "ParentUID": 816602902,
+                "UID": 1661172488,
+                "ParentUID": 1981085153,
                 "Name": "Wall_P7",
                 "Enabled": true,
                 "Active": true,
@@ -1216,8 +1216,8 @@
                 ]
             },
             {
-                "UID": 2068465453,
-                "ParentUID": 378877790,
+                "UID": 1299676354,
+                "ParentUID": 191755832,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -1244,8 +1244,8 @@
                 "Components": []
             },
             {
-                "UID": 22316800,
-                "ParentUID": 2068465453,
+                "UID": 944167626,
+                "ParentUID": 1299676354,
                 "Name": "Computer",
                 "Enabled": true,
                 "Active": true,
@@ -1265,7 +1265,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1289,8 +1289,8 @@
                 ]
             },
             {
-                "UID": 653214215,
-                "ParentUID": 2068465453,
+                "UID": 576544844,
+                "ParentUID": 1299676354,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -1317,8 +1317,8 @@
                 "Components": []
             },
             {
-                "UID": 1532179340,
-                "ParentUID": 653214215,
+                "UID": 227858974,
+                "ParentUID": 576544844,
                 "Name": "SmallBox",
                 "Enabled": true,
                 "Active": true,
@@ -1338,7 +1338,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1362,15 +1362,15 @@
                 ]
             },
             {
-                "UID": 286496506,
-                "ParentUID": 653214215,
+                "UID": 2009878090,
+                "ParentUID": 576544844,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -4.755012512207031,
+                    -5.065277099609375,
                     0.776702880859375,
-                    5.028348922729492
+                    4.325231552124023
                 ],
                 "Rotation": [
                     0.0,
@@ -1383,7 +1383,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1397,7 +1397,7 @@
                             0.0
                         ],
                         "Size": [
-                            1.5,
+                            2.200000047683716,
                             0.75,
                             0.75
                         ],
@@ -1407,8 +1407,8 @@
                 ]
             },
             {
-                "UID": 1189063150,
-                "ParentUID": 653214215,
+                "UID": 1657571928,
+                "ParentUID": 576544844,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -1428,7 +1428,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1452,8 +1452,8 @@
                 ]
             },
             {
-                "UID": 931052927,
-                "ParentUID": 653214215,
+                "UID": 1294822616,
+                "ParentUID": 576544844,
                 "Name": "Box3",
                 "Enabled": true,
                 "Active": true,
@@ -1473,7 +1473,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1497,8 +1497,8 @@
                 ]
             },
             {
-                "UID": 1765675515,
-                "ParentUID": 2068465453,
+                "UID": 935067007,
+                "ParentUID": 1299676354,
                 "Name": "BrokenPods",
                 "Enabled": true,
                 "Active": true,
@@ -1525,28 +1525,28 @@
                 "Components": []
             },
             {
-                "UID": 1319366873,
-                "ParentUID": 1765675515,
+                "UID": 571830348,
+                "ParentUID": 935067007,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -6.827186584472656,
-                    1.114501953125,
-                    12.239120483398438
+                    -6.914299011230469,
+                    1.4715042114257813,
+                    13.004171371459961
                 ],
                 "Rotation": [
                     0.0,
+                    0.3420201539993286,
                     0.0,
-                    0.0,
-                    1.0
+                    0.9396927356719971
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1560,9 +1560,9 @@
                             0.0
                         ],
                         "Size": [
-                            0.8999999761581421,
-                            1.100000023841858,
-                            0.8999999761581421
+                            1.0,
+                            1.5,
+                            1.149999976158142
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -1570,53 +1570,8 @@
                 ]
             },
             {
-                "UID": 2024976400,
-                "ParentUID": 1765675515,
-                "Name": "Pod2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -10.283172607421875,
-                    1.114501953125,
-                    12.500680923461914
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.8999999761581421,
-                            1.100000023841858,
-                            0.8999999761581421
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1251006524,
-                "ParentUID": 1765675515,
+                "UID": 2007530708,
+                "ParentUID": 935067007,
                 "Name": "Pod3",
                 "Enabled": true,
                 "Active": true,
@@ -1636,7 +1591,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1660,8 +1615,53 @@
                 ]
             },
             {
-                "UID": 243747003,
-                "ParentUID": 2068465453,
+                "UID": 2104677904,
+                "ParentUID": 935067007,
+                "Name": "Pod1 (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -10.946609497070313,
+                    1.4715042114257813,
+                    13.000070571899414
+                ],
+                "Rotation": [
+                    0.0,
+                    0.3420201539993286,
+                    0.0,
+                    0.9396927356719971
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.5,
+                            1.149999976158142
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1652300464,
+                "ParentUID": 1299676354,
                 "Name": "Battery",
                 "Enabled": true,
                 "Active": true,
@@ -1681,7 +1681,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1705,8 +1705,8 @@
                 ]
             },
             {
-                "UID": 2106905700,
-                "ParentUID": 2068465453,
+                "UID": 1299158850,
+                "ParentUID": 1299676354,
                 "Name": "RestrictedArea1",
                 "Enabled": true,
                 "Active": true,
@@ -1726,22 +1726,22 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 1728997835,
-                "ParentUID": 2106905700,
+                "UID": 937105748,
+                "ParentUID": 1299158850,
                 "Name": "MechanicalArm",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.2762451171875,
+                    2.7344818115234377,
                     0.0,
-                    -0.08950090408325196
+                    -1.1311383247375489
                 ],
                 "Rotation": [
                     0.0,
@@ -1761,7 +1761,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -1778,8 +1778,8 @@
                 ]
             },
             {
-                "UID": 444108869,
-                "ParentUID": 1728997835,
+                "UID": 575122267,
+                "ParentUID": 937105748,
                 "Name": "Arm",
                 "Enabled": true,
                 "Active": true,
@@ -1823,15 +1823,15 @@
                 ]
             },
             {
-                "UID": 840933505,
-                "ParentUID": 2106905700,
+                "UID": 208195695,
+                "ParentUID": 1299158850,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.92889404296875,
-                    -0.8849639892578125,
-                    0.9618406295776367
+                    5.8329925537109379,
+                    -0.8850250244140625,
+                    -0.4879416227340698
                 ],
                 "Rotation": [
                     0.0,
@@ -1868,15 +1868,15 @@
                 ]
             },
             {
-                "UID": 1786375747,
-                "ParentUID": 2106905700,
+                "UID": 1995923733,
+                "ParentUID": 1299158850,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.27072906494140627,
-                    -0.8849639892578125,
-                    -0.5149728059768677
+                    4.2695159912109379,
+                    -1.021453857421875,
+                    0.8364057540893555
                 ],
                 "Rotation": [
                     0.0,
@@ -1903,9 +1903,9 @@
                             0.0
                         ],
                         "Size": [
-                            0.800000011920929,
-                            1.100000023841858,
-                            0.800000011920929
+                            0.699999988079071,
+                            0.8999999761581421,
+                            0.699999988079071
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -1913,15 +1913,15 @@
                 ]
             },
             {
-                "UID": 1233763748,
-                "ParentUID": 2106905700,
+                "UID": 1640902352,
+                "ParentUID": 1299158850,
                 "Name": "Battery3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.5274124145507814,
-                    -0.8849639892578125,
-                    -0.9739340543746948
+                    4.034149169921875,
+                    -1.1822586059570313,
+                    -1.1248944997787476
                 ],
                 "Rotation": [
                     0.0,
@@ -1948,9 +1948,9 @@
                             0.0
                         ],
                         "Size": [
-                            0.800000011920929,
-                            1.100000023841858,
-                            0.800000011920929
+                            0.5,
+                            0.699999988079071,
+                            0.5
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -1958,21 +1958,21 @@
                 ]
             },
             {
-                "UID": 600429118,
-                "ParentUID": 2068465453,
-                "Name": "RestrictedArea2",
+                "UID": 1416617660,
+                "ParentUID": 1299158850,
+                "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -6.66302490234375,
-                    1.9992599487304688,
-                    -12.910177230834961
+                    0.9497222900390625,
+                    -0.39719390869140627,
+                    0.074469193816185
                 ],
                 "Rotation": [
                     0.0,
+                    0.3420201539993286,
                     0.0,
-                    0.0,
-                    1.0
+                    0.9396927356719971
                 ],
                 "Scale": [
                     1.0,
@@ -1983,18 +1983,63 @@
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0499999523162842,
+                            1.600000023841858,
+                            1.149999976158142
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1293469660,
+                "ParentUID": 1299676354,
+                "Name": "RestrictedArea2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -9.025764465332032,
+                    1.9992599487304688,
+                    -12.647756576538086
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
                 "Components": []
             },
             {
-                "UID": 962740187,
-                "ParentUID": 600429118,
+                "UID": 930789969,
+                "ParentUID": 1293469660,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.3784561157226564,
-                    -0.5680618286132813,
-                    0.8766765594482422
+                    -3.191314697265625,
+                    -0.5679931640625,
+                    1.121368408203125
                 ],
                 "Rotation": [
                     0.0,
@@ -2031,15 +2076,15 @@
                 ]
             },
             {
-                "UID": 1412803413,
-                "ParentUID": 600429118,
+                "UID": 566300132,
+                "ParentUID": 1293469660,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.5130538940429688,
+                    -0.18170166015625,
                     -0.5680618286132813,
-                    0.4026311933994293
+                    1.1973152160644532
                 ],
                 "Rotation": [
                     0.0,
@@ -2076,15 +2121,15 @@
                 ]
             },
             {
-                "UID": 790458068,
-                "ParentUID": 600429118,
+                "UID": 212392687,
+                "ParentUID": 1293469660,
                 "Name": "Battery3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.801177978515625,
+                    -0.84375,
                     -0.5679931640625,
-                    -1.0410763025283814
+                    -1.5218305587768555
                 ],
                 "Rotation": [
                     0.0,
@@ -2121,15 +2166,15 @@
                 ]
             },
             {
-                "UID": 1935723548,
-                "ParentUID": 600429118,
+                "UID": 1995664981,
+                "ParentUID": 1293469660,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.0722579956054689,
+                    -2.07232666015625,
                     0.021575927734375,
-                    -0.11095714569091797
+                    -0.22283422946929933
                 ],
                 "Rotation": [
                     0.0,
@@ -2166,15 +2211,60 @@
                 ]
             },
             {
-                "UID": 120229665,
-                "ParentUID": 378877790,
-                "Name": "Right_Wall",
+                "UID": 1407308049,
+                "ParentUID": 1293469660,
+                "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.6158370971679688,
+                    1.272216796875,
+                    -0.56463623046875,
+                    -0.5586873888969421
+                ],
+                "Rotation": [
+                    0.10933767259120941,
+                    0.324074923992157,
+                    0.30040237307548525,
+                    0.8903814554214478
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.600000023841858,
+                            1.100000023841858
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1518988002,
+                "ParentUID": 191755832,
+                "Name": "RightWall",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
                     0.0,
-                    0.11093807220458985
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -2185,7 +2275,7 @@
                 "Scale": [
                     1.0,
                     1.0,
-                    -1.0
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -2194,111 +2284,21 @@
                 "Components": []
             },
             {
-                "UID": 1004834091,
-                "ParentUID": 120229665,
-                "Name": "Wall_P1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    18.960800170898439,
-                    2.3875045776367189,
-                    3.609670639038086
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.27000001072883608,
-                            2.4000000953674318,
-                            2.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1911717237,
-                "ParentUID": 120229665,
-                "Name": "Wall_P2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    15.69122314453125,
-                    2.38763427734375,
-                    4.765350341796875
-                ],
-                "Rotation": [
-                    0.0,
-                    -0.3826834559440613,
-                    0.0,
-                    0.9238795042037964
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.27000001072883608,
-                            2.4000000953674318,
-                            1.7999999523162842
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 659559650,
-                "ParentUID": 120229665,
+                "UID": 557826102,
+                "ParentUID": 1518988002,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    14.559310913085938,
+                    15.175148010253907,
                     2.3874130249023439,
-                    10.69725227355957
+                    -10.58631420135498
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
-                    1.0
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -2329,15 +2329,60 @@
                 ]
             },
             {
-                "UID": 1558575623,
-                "ParentUID": 120229665,
-                "Name": "Wall_P4",
+                "UID": 1295040786,
+                "ParentUID": 1518988002,
+                "Name": "Wall_P7",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.88037109375,
-                    2.3874969482421877,
-                    15.455101013183594
+                    -26.04912567138672,
+                    2.3875198364257814,
+                    -4.551243782043457
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.5343523025512695,
+                    0.0,
+                    0.8452618718147278
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.27000001072883608,
+                            2.4000000953674318,
+                            2.4000000953674318
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1278590498,
+                "ParentUID": 1518988002,
+                "Name": "Wall_P1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    19.576637268066408,
+                    2.3875045776367189,
+                    -3.498732566833496
                 ],
                 "Rotation": [
                     0.0,
@@ -2346,9 +2391,54 @@
                     0.7071068286895752
                 ],
                 "Scale": [
+                    1.0000001192092896,
                     1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.27000001072883608,
+                            2.4000000953674318,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 214501049,
+                "ParentUID": 1518988002,
+                "Name": "Wall_P4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.4962081909179688,
+                    2.3874969482421877,
+                    -15.344162940979004
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0000001192092896,
                     1.0,
-                    1.0
+                    1.0000001192092896
                 ],
                 "Tag": "Wall",
                 "PrefabUid": 0,
@@ -2374,21 +2464,66 @@
                 ]
             },
             {
-                "UID": 312544684,
-                "ParentUID": 120229665,
+                "UID": 917233606,
+                "ParentUID": 1518988002,
+                "Name": "Wall_P2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    16.30706024169922,
+                    2.38763427734375,
+                    -4.654412269592285
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.9250441789627075,
+                    0.0,
+                    0.3798598349094391
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.27000001072883608,
+                            2.4000000953674318,
+                            1.7999999523162842
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1992551768,
+                "ParentUID": 1518988002,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -14.581977844238282,
+                    -13.966140747070313,
                     2.3874130249023439,
-                    10.69725227355957
+                    -10.58631420135498
                 ],
                 "Rotation": [
-                    0.0,
-                    0.19166556000709535,
-                    0.0,
-                    0.9814602732658386
+                    -0.0000010622676427374245,
+                    0.18455182015895844,
+                    7.263971042448247e-7,
+                    -0.9828228950500488
                 ],
                 "Scale": [
                     1.0,
@@ -2419,15 +2554,15 @@
                 ]
             },
             {
-                "UID": 1216851853,
-                "ParentUID": 120229665,
+                "UID": 1634467063,
+                "ParentUID": 1518988002,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -20.689430236816408,
+                    -20.073593139648439,
                     2.3875198364257814,
-                    5.569694519042969
+                    -5.458756446838379
                 ],
                 "Rotation": [
                     0.0,
@@ -2436,9 +2571,9 @@
                     0.7071068286895752
                 ],
                 "Scale": [
+                    1.0000001192092896,
                     1.0,
-                    1.0,
-                    1.0
+                    1.0000001192092896
                 ],
                 "Tag": "Wall",
                 "PrefabUid": 0,
@@ -2464,56 +2599,11 @@
                 ]
             },
             {
-                "UID": 2137102231,
-                "ParentUID": 120229665,
-                "Name": "Wall_P7",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -26.664962768554689,
-                    2.3875198364257814,
-                    4.662181854248047
-                ],
-                "Rotation": [
-                    0.0,
-                    0.5262139439582825,
-                    0.0,
-                    0.8503522276878357
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.27000001072883608,
-                            2.4000000953674318,
-                            2.4000000953674318
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1654580133,
-                "ParentUID": 378877790,
+                "UID": 935702903,
+                "ParentUID": 191755832,
                 "Name": "Railing",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.6158370971679688,
                     0.0,
@@ -2537,11 +2627,11 @@
                 "Components": []
             },
             {
-                "UID": 896986228,
-                "ParentUID": 1654580133,
+                "UID": 572605486,
+                "ParentUID": 935702903,
                 "Name": "Railing2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     7.580635070800781,
                     0.5699999928474426,
@@ -2565,7 +2655,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -2582,11 +2672,11 @@
                 ]
             },
             {
-                "UID": 508274664,
-                "ParentUID": 1654580133,
+                "UID": 213615708,
+                "ParentUID": 935702903,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     11.786407470703125,
                     0.5699996948242188,
@@ -2610,7 +2700,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -2627,11 +2717,11 @@
                 ]
             },
             {
-                "UID": 486475141,
-                "ParentUID": 1654580133,
+                "UID": 1994660130,
+                "ParentUID": 935702903,
                 "Name": "Railing3",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     3.4829177856445314,
                     0.5699996948242188,
@@ -2655,7 +2745,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -2672,11 +2762,11 @@
                 ]
             },
             {
-                "UID": 1478297548,
-                "ParentUID": 378877790,
+                "UID": 1654468022,
+                "ParentUID": 191755832,
                 "Name": "Railing2",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -14.430000305175782,
                     0.0,
@@ -2700,11 +2790,11 @@
                 "Components": []
             },
             {
-                "UID": 213817044,
-                "ParentUID": 1478297548,
+                "UID": 1322908918,
+                "ParentUID": 1654468022,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     11.786407470703125,
                     0.5699996948242188,
@@ -2728,7 +2818,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -2745,11 +2835,11 @@
                 ]
             },
             {
-                "UID": 1139567481,
-                "ParentUID": 1478297548,
+                "UID": 960020364,
+                "ParentUID": 1654468022,
                 "Name": "Railing2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     7.580635070800781,
                     0.5699999928474426,
@@ -2773,7 +2863,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -2790,11 +2880,11 @@
                 ]
             },
             {
-                "UID": 2057381124,
-                "ParentUID": 1478297548,
+                "UID": 594973559,
+                "ParentUID": 1654468022,
                 "Name": "Railing3",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     3.4829177856445314,
                     0.5699996948242188,
@@ -2818,7 +2908,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -2835,8 +2925,8 @@
                 ]
             },
             {
-                "UID": 517464024,
-                "ParentUID": 1555389679,
+                "UID": 224357074,
+                "ParentUID": 892503707,
                 "Name": "Section_2_1",
                 "Enabled": true,
                 "Active": true,
@@ -2863,8 +2953,8 @@
                 "Components": []
             },
             {
-                "UID": 1403112765,
-                "ParentUID": 517464024,
+                "UID": 2003660971,
+                "ParentUID": 224357074,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -2891,8 +2981,8 @@
                 "Components": []
             },
             {
-                "UID": 149794307,
-                "ParentUID": 1403112765,
+                "UID": 1638057198,
+                "ParentUID": 2003660971,
                 "Name": "Computers",
                 "Enabled": true,
                 "Active": true,
@@ -2919,8 +3009,8 @@
                 "Components": []
             },
             {
-                "UID": 160584526,
-                "ParentUID": 149794307,
+                "UID": 1294384040,
+                "ParentUID": 1638057198,
                 "Name": "Computer1",
                 "Enabled": true,
                 "Active": true,
@@ -2940,7 +3030,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2964,8 +3054,8 @@
                 ]
             },
             {
-                "UID": 1417853500,
-                "ParentUID": 160584526,
+                "UID": 929894203,
+                "ParentUID": 1294384040,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -3009,8 +3099,8 @@
                 ]
             },
             {
-                "UID": 1542189412,
-                "ParentUID": 149794307,
+                "UID": 569163900,
+                "ParentUID": 1638057198,
                 "Name": "Computer2",
                 "Enabled": true,
                 "Active": true,
@@ -3030,7 +3120,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3054,8 +3144,8 @@
                 ]
             },
             {
-                "UID": 1568133069,
-                "ParentUID": 149794307,
+                "UID": 214212140,
+                "ParentUID": 1638057198,
                 "Name": "Computer3",
                 "Enabled": true,
                 "Active": true,
@@ -3075,7 +3165,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3099,8 +3189,8 @@
                 ]
             },
             {
-                "UID": 1094236955,
-                "ParentUID": 1568133069,
+                "UID": 1995674288,
+                "ParentUID": 214212140,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -3144,8 +3234,8 @@
                 ]
             },
             {
-                "UID": 1760112548,
-                "ParentUID": 1403112765,
+                "UID": 1632716113,
+                "ParentUID": 2003660971,
                 "Name": "Batteries",
                 "Enabled": true,
                 "Active": true,
@@ -3172,8 +3262,8 @@
                 "Components": []
             },
             {
-                "UID": 382467477,
-                "ParentUID": 1760112548,
+                "UID": 1304498817,
+                "ParentUID": 1632716113,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -3193,7 +3283,7 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3217,8 +3307,8 @@
                 ]
             },
             {
-                "UID": 116423162,
-                "ParentUID": 1760112548,
+                "UID": 953515454,
+                "ParentUID": 1632716113,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -3238,7 +3328,7 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Wall",
+                "Tag": "Door",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3262,8 +3352,8 @@
                 ]
             },
             {
-                "UID": 269557981,
-                "ParentUID": 1403112765,
+                "UID": 592645909,
+                "ParentUID": 2003660971,
                 "Name": "Pods",
                 "Enabled": true,
                 "Active": true,
@@ -3290,13 +3380,13 @@
                 "Components": []
             },
             {
-                "UID": 2051679120,
-                "ParentUID": 269557981,
+                "UID": 228782661,
+                "ParentUID": 592645909,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    3.9590415954589845,
+                    4.666858673095703,
                     1.3957595825195313,
                     14.544626235961914
                 ],
@@ -3335,21 +3425,21 @@
                 ]
             },
             {
-                "UID": 928658398,
-                "ParentUID": 269557981,
+                "UID": 2010314430,
+                "ParentUID": 592645909,
                 "Name": "Pod2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -4.397304534912109,
+                    -0.5715713500976563,
                     1.3805618286132813,
-                    -10.511726379394532
+                    -14.42093276977539
                 ],
                 "Rotation": [
                     0.0,
-                    0.5900501012802124,
                     0.0,
-                    0.8073666095733643
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     0.9999999403953552,
@@ -3380,8 +3470,98 @@
                 ]
             },
             {
-                "UID": 1030875503,
-                "ParentUID": 517464024,
+                "UID": 1066150725,
+                "ParentUID": 592645909,
+                "Name": "Pod2 (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    4.307819366455078,
+                    1.3805618286132813,
+                    -14.42093276977539
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.75,
+                            1.399999976158142,
+                            0.6499999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1622091758,
+                "ParentUID": 592645909,
+                "Name": "Pod2 (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.254032135009766,
+                    0.5120162963867188,
+                    -14.42093276977539
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    1.0,
+                    0.9999999403953552
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            0.5,
+                            0.6499999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1651115789,
+                "ParentUID": 224357074,
                 "Name": "Left_Wall",
                 "Enabled": true,
                 "Active": true,
@@ -3408,8 +3588,8 @@
                 "Components": []
             },
             {
-                "UID": 1451882206,
-                "ParentUID": 1030875503,
+                "UID": 1304309686,
+                "ParentUID": 1651115789,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -3453,8 +3633,8 @@
                 ]
             },
             {
-                "UID": 1578342698,
-                "ParentUID": 1030875503,
+                "UID": 938566671,
+                "ParentUID": 1651115789,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -3498,8 +3678,8 @@
                 ]
             },
             {
-                "UID": 1129551637,
-                "ParentUID": 1030875503,
+                "UID": 586678235,
+                "ParentUID": 1651115789,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -3543,8 +3723,8 @@
                 ]
             },
             {
-                "UID": 907067997,
-                "ParentUID": 1030875503,
+                "UID": 216688339,
+                "ParentUID": 1651115789,
                 "Name": "Door",
                 "Enabled": true,
                 "Active": true,
@@ -3588,11 +3768,11 @@
                 ]
             },
             {
-                "UID": 2071288881,
-                "ParentUID": 1030875503,
+                "UID": 2014372180,
+                "ParentUID": 1651115789,
                 "Name": "Small_Wall",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -6.223834991455078,
                     -0.12111282348632813,
@@ -3616,7 +3796,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -3633,13 +3813,13 @@
                 ]
             },
             {
-                "UID": 108524118,
-                "ParentUID": 517464024,
-                "Name": "Right_Wall",
+                "UID": 248663874,
+                "ParentUID": 224357074,
+                "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.6200000047683716,
+                    0.0,
                     0.0,
                     0.0
                 ],
@@ -3652,7 +3832,7 @@
                 "Scale": [
                     1.0,
                     1.0,
-                    -1.0
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -3661,21 +3841,66 @@
                 "Components": []
             },
             {
-                "UID": 981849942,
-                "ParentUID": 108524118,
+                "UID": 948402964,
+                "ParentUID": 248663874,
+                "Name": "Wall_P2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.9900474548339844,
+                    2.010631561279297,
+                    -15.573497772216797
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.25,
+                            2.0,
+                            7.699999809265137
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1310943413,
+                "ParentUID": 248663874,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    8.815792083740235,
+                    9.435791015625,
                     2.010639190673828,
-                    9.69742202758789
+                    -9.69742202758789
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
-                    1.0
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -3706,66 +3931,21 @@
                 ]
             },
             {
-                "UID": 1901404110,
-                "ParentUID": 108524118,
-                "Name": "Wall_P2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    1.3700485229492188,
-                    2.010631561279297,
-                    15.573497772216797
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.25,
-                            2.0,
-                            7.699999809265137
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 664841627,
-                "ParentUID": 108524118,
+                "UID": 587672661,
+                "ParentUID": 248663874,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -6.3108367919921879,
+                    -5.690837860107422,
                     2.010639190673828,
-                    10.67062759399414
+                    -10.67062759399414
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
-                    1.0
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -3796,8 +3976,8 @@
                 ]
             },
             {
-                "UID": 25372544,
-                "ParentUID": 1555389679,
+                "UID": 224087897,
+                "ParentUID": 892503707,
                 "Name": "Section_2_2",
                 "Enabled": true,
                 "Active": true,
@@ -3824,11 +4004,11 @@
                 "Components": []
             },
             {
-                "UID": 771040916,
-                "ParentUID": 25372544,
+                "UID": 2017315994,
+                "ParentUID": 224087897,
                 "Name": "LeftRailing",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -7.317995071411133,
                     0.0,
@@ -3852,11 +4032,11 @@
                 "Components": []
             },
             {
-                "UID": 187494562,
-                "ParentUID": 771040916,
+                "UID": 1673016247,
+                "ParentUID": 2017315994,
                 "Name": "Fence2",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -3880,11 +4060,11 @@
                 "Components": []
             },
             {
-                "UID": 439133707,
-                "ParentUID": 187494562,
+                "UID": 1330108920,
+                "ParentUID": 1673016247,
                 "Name": "Railing2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     7.886608123779297,
                     0.5699996948242188,
@@ -3908,7 +4088,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -3925,11 +4105,11 @@
                 ]
             },
             {
-                "UID": 1671588551,
-                "ParentUID": 187494562,
+                "UID": 979195178,
+                "ParentUID": 1673016247,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     11.651266098022461,
                     0.5699996948242188,
@@ -3953,7 +4133,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -3970,11 +4150,11 @@
                 ]
             },
             {
-                "UID": 441370289,
-                "ParentUID": 187494562,
+                "UID": 624939628,
+                "ParentUID": 1673016247,
                 "Name": "Railing3",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     3.9607534408569338,
                     0.5699996948242188,
@@ -3998,7 +4178,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4015,11 +4195,11 @@
                 ]
             },
             {
-                "UID": 1340305869,
-                "ParentUID": 771040916,
+                "UID": 263304252,
+                "ParentUID": 2017315994,
                 "Name": "Fence1",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     13.739999771118164,
                     0.00006103515625,
@@ -4043,11 +4223,11 @@
                 "Components": []
             },
             {
-                "UID": 1037012891,
-                "ParentUID": 1340305869,
+                "UID": 2048804418,
+                "ParentUID": 263304252,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     10.519737243652344,
                     0.5699996948242188,
@@ -4071,7 +4251,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4088,11 +4268,11 @@
                 ]
             },
             {
-                "UID": 1945427699,
-                "ParentUID": 1340305869,
+                "UID": 1688839946,
+                "ParentUID": 263304252,
                 "Name": "Railing2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.092369079589844,
                     0.5699996948242188,
@@ -4116,7 +4296,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4133,11 +4313,11 @@
                 ]
             },
             {
-                "UID": 769054795,
-                "ParentUID": 1340305869,
+                "UID": 1324628593,
+                "ParentUID": 263304252,
                 "Name": "Railing3",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     5.62867546081543,
                     0.5699996948242188,
@@ -4161,7 +4341,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4178,11 +4358,11 @@
                 ]
             },
             {
-                "UID": 845517276,
-                "ParentUID": 1340305869,
+                "UID": 977126280,
+                "ParentUID": 263304252,
                 "Name": "Railing4",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.092369079589844,
                     0.5699996948242188,
@@ -4206,7 +4386,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4223,11 +4403,11 @@
                 ]
             },
             {
-                "UID": 1279694447,
-                "ParentUID": 771040916,
+                "UID": 616535219,
+                "ParentUID": 2017315994,
                 "Name": "Fence3",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -16.209999084472658,
                     0.00006103515625,
@@ -4251,11 +4431,11 @@
                 "Components": []
             },
             {
-                "UID": 6789802,
-                "ParentUID": 1279694447,
+                "UID": 259285966,
+                "ParentUID": 616535219,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     10.519737243652344,
                     0.5699996948242188,
@@ -4279,7 +4459,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4296,11 +4476,11 @@
                 ]
             },
             {
-                "UID": 900793063,
-                "ParentUID": 1279694447,
+                "UID": 2042210155,
+                "ParentUID": 616535219,
                 "Name": "Railing2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.092369079589844,
                     0.5699996948242188,
@@ -4324,7 +4504,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4341,11 +4521,11 @@
                 ]
             },
             {
-                "UID": 1787486119,
-                "ParentUID": 1279694447,
+                "UID": 1690739445,
+                "ParentUID": 616535219,
                 "Name": "Railing3",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     5.62867546081543,
                     0.5699996948242188,
@@ -4369,7 +4549,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4386,11 +4566,11 @@
                 ]
             },
             {
-                "UID": 630709302,
-                "ParentUID": 1279694447,
+                "UID": 1333211708,
+                "ParentUID": 616535219,
                 "Name": "Railing4",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.092369079589844,
                     0.5699996948242188,
@@ -4414,7 +4594,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4431,8 +4611,8 @@
                 ]
             },
             {
-                "UID": 466372047,
-                "ParentUID": 25372544,
+                "UID": 983899249,
+                "ParentUID": 224087897,
                 "Name": "Left_Wall",
                 "Enabled": true,
                 "Active": true,
@@ -4459,8 +4639,8 @@
                 "Components": []
             },
             {
-                "UID": 1328906616,
-                "ParentUID": 466372047,
+                "UID": 625675302,
+                "ParentUID": 983899249,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -4504,8 +4684,8 @@
                 ]
             },
             {
-                "UID": 925011293,
-                "ParentUID": 466372047,
+                "UID": 268286807,
+                "ParentUID": 983899249,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -4549,11 +4729,11 @@
                 ]
             },
             {
-                "UID": 518539993,
-                "ParentUID": 466372047,
+                "UID": 2051976827,
+                "ParentUID": 983899249,
                 "Name": "Small_Wall",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     8.822542190551758,
                     -0.12111282348632813,
@@ -4577,7 +4757,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4594,21 +4774,21 @@
                 ]
             },
             {
-                "UID": 1140876238,
-                "ParentUID": 466372047,
+                "UID": 1691873113,
+                "ParentUID": 983899249,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -37.081485748291019,
+                    -38.20577621459961,
                     2.0106544494628908,
-                    -52.156097412109378
+                    -52.0489387512207
                 ],
                 "Rotation": [
                     0.0,
-                    0.293206125497818,
                     0.0,
-                    0.9560492634773254
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
@@ -4631,7 +4811,7 @@
                         "Size": [
                             0.25,
                             2.0,
-                            2.200000047683716
+                            2.5
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -4639,8 +4819,8 @@
                 ]
             },
             {
-                "UID": 331464411,
-                "ParentUID": 466372047,
+                "UID": 1329680769,
+                "ParentUID": 983899249,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -4684,8 +4864,8 @@
                 ]
             },
             {
-                "UID": 1882795834,
-                "ParentUID": 466372047,
+                "UID": 977235365,
+                "ParentUID": 983899249,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -4729,8 +4909,98 @@
                 ]
             },
             {
-                "UID": 888603323,
-                "ParentUID": 25372544,
+                "UID": 1554167463,
+                "ParentUID": 983899249,
+                "Name": "Wall_P6",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -37.0352783203125,
+                    2.0106544494628908,
+                    -49.95712661743164
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.5,
+                            2.0,
+                            1.2999999523162842
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 443898828,
+                "ParentUID": 983899249,
+                "Name": "Wall_P5 (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -38.20577621459961,
+                    2.0106544494628908,
+                    -62.710174560546878
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.25,
+                            2.0,
+                            2.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 612397423,
+                "ParentUID": 224087897,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -4757,8 +5027,8 @@
                 "Components": []
             },
             {
-                "UID": 1294339642,
-                "ParentUID": 888603323,
+                "UID": 271857210,
+                "ParentUID": 612397423,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -4785,8 +5055,8 @@
                 "Components": []
             },
             {
-                "UID": 899146944,
-                "ParentUID": 1294339642,
+                "UID": 2053597842,
+                "ParentUID": 271857210,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -4830,8 +5100,8 @@
                 ]
             },
             {
-                "UID": 281712362,
-                "ParentUID": 1294339642,
+                "UID": 1707000602,
+                "ParentUID": 271857210,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -4875,11 +5145,11 @@
                 ]
             },
             {
-                "UID": 1466891060,
-                "ParentUID": 1294339642,
+                "UID": 1340422135,
+                "ParentUID": 271857210,
                 "Name": "Box3",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -18.42213249206543,
                     0.5359840393066406,
@@ -4903,7 +5173,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4920,11 +5190,11 @@
                 ]
             },
             {
-                "UID": 724537739,
-                "ParentUID": 1294339642,
+                "UID": 1244251632,
+                "ParentUID": 271857210,
                 "Name": "SmallBox",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -18.534076690673829,
                     0.40746307373046877,
@@ -4948,7 +5218,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4965,8 +5235,8 @@
                 ]
             },
             {
-                "UID": 1740346637,
-                "ParentUID": 888603323,
+                "UID": 889647977,
+                "ParentUID": 612397423,
                 "Name": "Computers",
                 "Enabled": true,
                 "Active": true,
@@ -4993,8 +5263,8 @@
                 "Components": []
             },
             {
-                "UID": 92439384,
-                "ParentUID": 1740346637,
+                "UID": 519658081,
+                "ParentUID": 889647977,
                 "Name": "Computer4",
                 "Enabled": true,
                 "Active": true,
@@ -5038,8 +5308,8 @@
                 ]
             },
             {
-                "UID": 1852061995,
-                "ParentUID": 1740346637,
+                "UID": 176402649,
+                "ParentUID": 889647977,
                 "Name": "Computer3",
                 "Enabled": true,
                 "Active": true,
@@ -5083,8 +5353,8 @@
                 ]
             },
             {
-                "UID": 1512242907,
-                "ParentUID": 1740346637,
+                "UID": 1969143399,
+                "ParentUID": 889647977,
                 "Name": "Computer2",
                 "Enabled": true,
                 "Active": true,
@@ -5128,8 +5398,8 @@
                 ]
             },
             {
-                "UID": 452960824,
-                "ParentUID": 1740346637,
+                "UID": 1606742192,
+                "ParentUID": 889647977,
                 "Name": "Computer1",
                 "Enabled": true,
                 "Active": true,
@@ -5173,8 +5443,8 @@
                 ]
             },
             {
-                "UID": 54061763,
-                "ParentUID": 1740346637,
+                "UID": 1262024719,
+                "ParentUID": 889647977,
                 "Name": "Computer5",
                 "Enabled": true,
                 "Active": true,
@@ -5218,8 +5488,8 @@
                 ]
             },
             {
-                "UID": 309854106,
-                "ParentUID": 1740346637,
+                "UID": 905750160,
+                "ParentUID": 889647977,
                 "Name": "Computer6",
                 "Enabled": true,
                 "Active": true,
@@ -5263,8 +5533,8 @@
                 ]
             },
             {
-                "UID": 1312858582,
-                "ParentUID": 1740346637,
+                "UID": 544462889,
+                "ParentUID": 889647977,
                 "Name": "Computer7",
                 "Enabled": true,
                 "Active": true,
@@ -5308,8 +5578,8 @@
                 ]
             },
             {
-                "UID": 1183813713,
-                "ParentUID": 888603323,
+                "UID": 185751595,
+                "ParentUID": 612397423,
                 "Name": "BrokenPods",
                 "Enabled": true,
                 "Active": true,
@@ -5336,8 +5606,8 @@
                 "Components": []
             },
             {
-                "UID": 1325587325,
-                "ParentUID": 1183813713,
+                "UID": 1969650478,
+                "ParentUID": 185751595,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -5381,8 +5651,8 @@
                 ]
             },
             {
-                "UID": 2119198132,
-                "ParentUID": 1183813713,
+                "UID": 1603977084,
+                "ParentUID": 185751595,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -5426,8 +5696,8 @@
                 ]
             },
             {
-                "UID": 2080521938,
-                "ParentUID": 1183813713,
+                "UID": 1254664625,
+                "ParentUID": 185751595,
                 "Name": "Pod2",
                 "Enabled": true,
                 "Active": true,
@@ -5471,13 +5741,13 @@
                 ]
             },
             {
-                "UID": 1390781409,
-                "ParentUID": 1183813713,
+                "UID": 891567208,
+                "ParentUID": 185751595,
                 "Name": "Pod3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -4.7942657470703129,
+                    -5.226315498352051,
                     1.145416259765625,
                     13.905281066894532
                 ],
@@ -5516,8 +5786,8 @@
                 ]
             },
             {
-                "UID": 494685723,
-                "ParentUID": 1183813713,
+                "UID": 526659645,
+                "ParentUID": 185751595,
                 "Name": "Pod4",
                 "Enabled": true,
                 "Active": true,
@@ -5561,8 +5831,368 @@
                 ]
             },
             {
-                "UID": 16290250,
-                "ParentUID": 888603323,
+                "UID": 78181869,
+                "ParentUID": 185751595,
+                "Name": "Pod3 (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -4.80836296081543,
+                    1.145416259765625,
+                    -13.606653213500977
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.8999999761581421,
+                            1.100000023841858,
+                            0.8999999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1477189793,
+                "ParentUID": 185751595,
+                "Name": "Pod3 (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -11.731342315673829,
+                    1.145416259765625,
+                    -13.606653213500977
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.8999999761581421,
+                            1.100000023841858,
+                            0.8999999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1393015202,
+                "ParentUID": 185751595,
+                "Name": "Pod3 (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -20.36102294921875,
+                    1.145416259765625,
+                    -14.657027244567871
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.8999999761581421,
+                            1.100000023841858,
+                            0.8999999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 26356244,
+                "ParentUID": 185751595,
+                "Name": "Pod3 (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -23.725597381591798,
+                    1.1454124450683594,
+                    -27.846500396728517
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.8999999761581421,
+                            1.100000023841858,
+                            0.8999999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1081139940,
+                "ParentUID": 185751595,
+                "Name": "Pod3 (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -10.287253379821778,
+                    0.7855682373046875,
+                    -14.511282920837403
+                ],
+                "Rotation": [
+                    0.0,
+                    0.25001734495162966,
+                    0.0,
+                    0.9682413339614868
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.8999999761581421,
+                            0.75,
+                            0.8999999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1788790070,
+                "ParentUID": 185751595,
+                "Name": "Pod (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -23.90590476989746,
+                    1.7446327209472657,
+                    13.99179458618164
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.7999999523162842,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1852529593,
+                "ParentUID": 185751595,
+                "Name": "Pod (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -22.371522903442384,
+                    0.8143463134765625,
+                    14.535013198852539
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.6000000238418579,
+                            0.800000011920929,
+                            0.6000000238418579
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1778924629,
+                "ParentUID": 185751595,
+                "Name": "Pod (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.9128684997558594,
+                    2.0712966918945314,
+                    -0.2694730758666992
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.030115550383925439,
+                    0.9995465278625488
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            8.0,
+                            0.8500000238418579
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 169967360,
+                "ParentUID": 612397423,
                 "Name": "Batteries",
                 "Enabled": true,
                 "Active": true,
@@ -5589,8 +6219,8 @@
                 "Components": []
             },
             {
-                "UID": 895603480,
-                "ParentUID": 16290250,
+                "UID": 1962847352,
+                "ParentUID": 169967360,
                 "Name": "SmallBattery",
                 "Enabled": true,
                 "Active": true,
@@ -5634,13 +6264,13 @@
                 ]
             },
             {
-                "UID": 1228070590,
-                "ParentUID": 16290250,
+                "UID": 1602604396,
+                "ParentUID": 169967360,
                 "Name": "BigBattery",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -23.76436424255371,
+                    -26.094097137451173,
                     1.5259208679199219,
                     -50.623531341552737
                 ],
@@ -5679,15 +6309,195 @@
                 ]
             },
             {
-                "UID": 741952463,
-                "ParentUID": 25372544,
-                "Name": "Right_Wall",
+                "UID": 220092180,
+                "ParentUID": 169967360,
+                "Name": "BigBattery (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    11.228826522827149,
+                    -25.427532196044923,
+                    1.1813888549804688,
+                    -52.35890579223633
+                ],
+                "Rotation": [
                     0.0,
-                    0.0
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            1.2000000476837159,
+                            0.800000011920929
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1282808927,
+                "ParentUID": 169967360,
+                "Name": "BigBattery (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -20.670869827270509,
+                    0.6233558654785156,
+                    -50.03040313720703
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.4000000059604645,
+                            0.6000000238418579,
+                            0.4000000059604645
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2030975583,
+                "ParentUID": 169967360,
+                "Name": "BigBattery (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -20.716960906982423,
+                    0.6233482360839844,
+                    -63.699039459228519
+                ],
+                "Rotation": [
+                    0.0,
+                    0.06602693349123001,
+                    0.0,
+                    0.997817873954773
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.6000000238418579,
+                            0.6000000238418579,
+                            1.399999976158142
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1894303788,
+                "ParentUID": 169967360,
+                "Name": "BigBattery (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -20.799942016601564,
+                    1.1803703308105469,
+                    -64.68246459960938
+                ],
+                "Rotation": [
+                    0.0,
+                    0.37606081366539,
+                    0.0,
+                    0.9265949726104736
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.30000001192092898,
+                            0.4000000059604645,
+                            0.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1643720250,
+                "ParentUID": 224087897,
+                "Name": "RightRailing",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    -7.317995071411133,
+                    0.0,
+                    0.1860198974609375
                 ],
                 "Rotation": [
                     0.0,
@@ -5707,21 +6517,628 @@
                 "Components": []
             },
             {
-                "UID": 1600449014,
-                "ParentUID": 741952463,
-                "Name": "Wall_P1",
-                "Enabled": true,
-                "Active": true,
+                "UID": 1279230413,
+                "ParentUID": 1643720250,
+                "Name": "Fence1",
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
-                    8.815793991088868,
-                    2.010639190673828,
-                    10.70819091796875
+                    13.739999771118164,
+                    0.00006103515625,
+                    -5.470709323883057
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
                     1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 929917954,
+                "ParentUID": 1279230413,
+                "Name": "Railing1",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    10.519737243652344,
+                    0.5699996948242188,
+                    15.569234848022461
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            4.400000095367432
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 575592783,
+                "ParentUID": 1279230413,
+                "Name": "Railing2",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    8.092369079589844,
+                    0.5699996948242188,
+                    11.149236679077149
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            2.299999952316284
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 214932101,
+                "ParentUID": 1279230413,
+                "Name": "Railing3",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    5.62867546081543,
+                    0.5699996948242188,
+                    15.569234848022461
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            4.400000095367432
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2003495591,
+                "ParentUID": 1279230413,
+                "Name": "Railing4",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    8.092369079589844,
+                    0.5699996948242188,
+                    20.095619201660158
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            2.299999952316284
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1655993278,
+                "ParentUID": 1643720250,
+                "Name": "Fence2",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1290667989,
+                "ParentUID": 1655993278,
+                "Name": "Railing3",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    3.9607534408569338,
+                    0.5699996948242188,
+                    13.182022094726563
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            2.0999999046325685
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 965792501,
+                "ParentUID": 1655993278,
+                "Name": "Railing1",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    11.651266098022461,
+                    0.5699996948242188,
+                    13.182022094726563
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            2.0999999046325685
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 615923074,
+                "ParentUID": 1655993278,
+                "Name": "Railing2",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    7.886608123779297,
+                    0.5699996948242188,
+                    11.105779647827149
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            3.799999952316284
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 256445949,
+                "ParentUID": 1643720250,
+                "Name": "Fence3",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    -16.209999084472658,
+                    0.00006103515625,
+                    -5.470709323883057
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2041598010,
+                "ParentUID": 256445949,
+                "Name": "Railing1",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    10.519737243652344,
+                    0.5699996948242188,
+                    15.569234848022461
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            4.400000095367432
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1679544908,
+                "ParentUID": 256445949,
+                "Name": "Railing2",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    8.092369079589844,
+                    0.5699996948242188,
+                    11.149236679077149
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            2.299999952316284
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1328004577,
+                "ParentUID": 256445949,
+                "Name": "Railing3",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    5.62867546081543,
+                    0.5699996948242188,
+                    15.569234848022461
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            4.400000095367432
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 982590894,
+                "ParentUID": 256445949,
+                "Name": "Railing4",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    8.092369079589844,
+                    0.5699996948242188,
+                    20.095619201660158
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.15000000596046449,
+                            0.6000000238418579,
+                            2.299999952316284
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 149653485,
+                "ParentUID": 224087897,
+                "Name": "RightWall",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 902726300,
+                "ParentUID": 149653485,
+                "Name": "Wall_P1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    20.044620513916017,
+                    2.010639190673828,
+                    -10.70819091796875
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -5752,15 +7169,60 @@
                 ]
             },
             {
-                "UID": 370848631,
-                "ParentUID": 741952463,
-                "Name": "Wall_P2",
+                "UID": 1631795327,
+                "ParentUID": 149653485,
+                "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.1192073822021485,
+                    -19.914575576782228,
+                    2.0106544494628908,
+                    -55.71820068359375
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    0.9999999403953552
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.25,
+                            2.0,
+                            7.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2003684722,
+                "ParentUID": 149653485,
+                "Name": "Door",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    11.280654907226563,
                     2.010631561279297,
-                    15.364521026611329
+                    -15.452140808105469
                 ],
                 "Rotation": [
                     0.0,
@@ -5769,9 +7231,54 @@
                     0.7071068286895752
                 ],
                 "Scale": [
+                    1.0000001192092896,
                     1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.44999998807907107,
+                            2.0,
+                            2.5999999046325685
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 545825152,
+                "ParentUID": 149653485,
+                "Name": "Wall_P2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    12.348033905029297,
+                    2.010631561279297,
+                    -15.364521026611329
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0000001192092896,
                     1.0,
-                    1.0
+                    1.0000001192092896
                 ],
                 "Tag": "Wall",
                 "PrefabUid": 0,
@@ -5797,15 +7304,15 @@
                 ]
             },
             {
-                "UID": 1254687226,
-                "ParentUID": 741952463,
+                "UID": 197487387,
+                "ParentUID": 149653485,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -22.68563461303711,
+                    -11.456808090209961,
                     2.010631561279297,
-                    15.372636795043946
+                    -15.372636795043946
                 ],
                 "Rotation": [
                     0.0,
@@ -5814,9 +7321,9 @@
                     0.7071068286895752
                 ],
                 "Scale": [
+                    1.0000001192092896,
                     1.0,
-                    1.0,
-                    1.0
+                    1.0000001192092896
                 ],
                 "Tag": "Wall",
                 "PrefabUid": 0,
@@ -5842,21 +7349,66 @@
                 ]
             },
             {
-                "UID": 2140335967,
-                "ParentUID": 741952463,
+                "UID": 1284293014,
+                "ParentUID": 149653485,
+                "Name": "Wall_P5",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    -18.83174705505371,
+                    2.0106544494628908,
+                    -59.931175231933597
+                ],
+                "Rotation": [
+                    0.0,
+                    0.2583582103252411,
+                    0.0,
+                    0.9660491943359375
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.25,
+                            2.0,
+                            2.200000047683716
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1984519215,
+                "ParentUID": 149653485,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -31.227935791015626,
+                    -19.999109268188478,
                     2.0106544494628908,
-                    33.066123962402347
+                    -33.066123962402347
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
-                    1.0
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -5887,111 +7439,21 @@
                 ]
             },
             {
-                "UID": 1480828120,
-                "ParentUID": 741952463,
-                "Name": "Wall_P6",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -28.958642959594728,
-                    2.0106544494628908,
-                    55.21434783935547
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.25,
-                            2.0,
-                            3.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1273247332,
-                "ParentUID": 741952463,
-                "Name": "Wall_P5",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -30.06057357788086,
-                    2.0106544494628908,
-                    59.931175231933597
-                ],
-                "Rotation": [
-                    0.0,
-                    -0.2588190734386444,
-                    0.0,
-                    0.965925931930542
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.25,
-                            2.0,
-                            2.200000047683716
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 818580037,
-                "ParentUID": 741952463,
+                "UID": 925581720,
+                "ParentUID": 149653485,
                 "Name": "Wall_P8",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -31.183055877685548,
+                    -19.9542293548584,
                     2.0106544494628908,
-                    63.64427947998047
+                    -63.64427947998047
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
                     0.0,
-                    1.0
+                    0.9999999403953552
                 ],
                 "Scale": [
                     1.0,
@@ -6022,21 +7484,21 @@
                 ]
             },
             {
-                "UID": 782518477,
-                "ParentUID": 741952463,
+                "UID": 574667978,
+                "ParentUID": 149653485,
                 "Name": "Wall_P7",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
-                    -30.076725006103517,
+                    -18.847898483276368,
                     2.0106544494628908,
-                    51.244224548339847
+                    -51.244224548339847
                 ],
                 "Rotation": [
                     0.0,
-                    0.3826834559440613,
+                    -0.3791682720184326,
                     0.0,
-                    0.9238795042037964
+                    0.9253277778625488
                 ],
                 "Scale": [
                     1.0,
@@ -6050,7 +7512,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -6067,15 +7529,15 @@
                 ]
             },
             {
-                "UID": 1674745679,
-                "ParentUID": 741952463,
+                "UID": 216444031,
+                "ParentUID": 149653485,
                 "Name": "Wall_P9",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -34.62255096435547,
+                    -23.39372444152832,
                     1.800872802734375,
-                    65.49305725097656
+                    -65.49305725097656
                 ],
                 "Rotation": [
                     0.0,
@@ -6084,9 +7546,9 @@
                     0.7071068286895752
                 ],
                 "Scale": [
+                    1.0000001192092896,
                     1.0,
-                    1.0,
-                    1.0
+                    1.0000001192092896
                 ],
                 "Tag": "Wall",
                 "PrefabUid": 0,
@@ -6112,663 +7574,11 @@
                 ]
             },
             {
-                "UID": 300770188,
-                "ParentUID": 741952463,
-                "Name": "Door",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.05182838439941406,
-                    2.010631561279297,
-                    15.452140808105469
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.44999998807907107,
-                            2.0,
-                            2.5999999046325685
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1734038570,
-                "ParentUID": 25372544,
-                "Name": "RightRailing",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -7.317995071411133,
-                    0.0,
-                    0.1860198974609375
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    -1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 450133807,
-                "ParentUID": 1734038570,
-                "Name": "Fence1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    13.739999771118164,
-                    0.00006103515625,
-                    -5.470709323883057
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1307446801,
-                "ParentUID": 450133807,
-                "Name": "Railing1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    10.519737243652344,
-                    0.5699996948242188,
-                    15.569234848022461
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            4.400000095367432
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 75897030,
-                "ParentUID": 450133807,
-                "Name": "Railing2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    8.092369079589844,
-                    0.5699996948242188,
-                    11.149236679077149
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    1.0000001192092896,
-                    1.0,
-                    1.0000001192092896
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            2.299999952316284
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1004989275,
-                "ParentUID": 450133807,
-                "Name": "Railing3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    5.62867546081543,
-                    0.5699996948242188,
-                    15.569234848022461
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            4.400000095367432
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1930321986,
-                "ParentUID": 450133807,
-                "Name": "Railing4",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    8.092369079589844,
-                    0.5699996948242188,
-                    20.095619201660158
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    1.0000001192092896,
-                    1.0,
-                    1.0000001192092896
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            2.299999952316284
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 712905278,
-                "ParentUID": 1734038570,
-                "Name": "Fence2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1591661540,
-                "ParentUID": 712905278,
-                "Name": "Railing3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    3.9607534408569338,
-                    0.5699996948242188,
-                    13.182022094726563
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            2.0999999046325685
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 327807625,
-                "ParentUID": 712905278,
-                "Name": "Railing1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    11.651266098022461,
-                    0.5699996948242188,
-                    13.182022094726563
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            2.0999999046325685
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1220836192,
-                "ParentUID": 712905278,
-                "Name": "Railing2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    7.886608123779297,
-                    0.5699996948242188,
-                    11.105779647827149
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    1.0000001192092896,
-                    1.0,
-                    1.0000001192092896
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            3.799999952316284
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 2117554672,
-                "ParentUID": 1734038570,
-                "Name": "Fence3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -16.209999084472658,
-                    0.00006103515625,
-                    -5.470709323883057
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 841029735,
-                "ParentUID": 2117554672,
-                "Name": "Railing1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    10.519737243652344,
-                    0.5699996948242188,
-                    15.569234848022461
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            4.400000095367432
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1726260750,
-                "ParentUID": 2117554672,
-                "Name": "Railing2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    8.092369079589844,
-                    0.5699996948242188,
-                    11.149236679077149
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    1.0000001192092896,
-                    1.0,
-                    1.0000001192092896
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            2.299999952316284
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 462963803,
-                "ParentUID": 2117554672,
-                "Name": "Railing3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    5.62867546081543,
-                    0.5699996948242188,
-                    15.569234848022461
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            4.400000095367432
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1355296160,
-                "ParentUID": 2117554672,
-                "Name": "Railing4",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    8.092369079589844,
-                    0.5699996948242188,
-                    20.095619201660158
-                ],
-                "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    1.0000001192092896,
-                    1.0,
-                    1.0000001192092896
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.15000000596046449,
-                            0.6000000238418579,
-                            2.299999952316284
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1591953914,
-                "ParentUID": 25372544,
+                "UID": 625202399,
+                "ParentUID": 224087897,
                 "Name": "ElevatorRailing",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -25.440814971923829,
                     -0.000087738037109375,
@@ -6792,11 +7602,11 @@
                 "Components": []
             },
             {
-                "UID": 937074187,
-                "ParentUID": 1591953914,
+                "UID": 264541717,
+                "ParentUID": 625202399,
                 "Name": "LeftRailing",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     -0.24310302734375,
                     0.5541915893554688,
@@ -6820,7 +7630,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -6837,11 +7647,11 @@
                 ]
             },
             {
-                "UID": 1088990320,
-                "ParentUID": 937074187,
+                "UID": 2054776111,
+                "ParentUID": 264541717,
                 "Name": "RailingTurn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     2.0565032958984377,
                     0.0,
@@ -6865,7 +7675,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -6882,11 +7692,11 @@
                 ]
             },
             {
-                "UID": 187538720,
-                "ParentUID": 1591953914,
+                "UID": 1699963593,
+                "ParentUID": 625202399,
                 "Name": "RightRailing",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     -0.24310302734375,
                     0.5541915893554688,
@@ -6910,7 +7720,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -6927,11 +7737,11 @@
                 ]
             },
             {
-                "UID": 1084883789,
-                "ParentUID": 187538720,
+                "UID": 1353435974,
+                "ParentUID": 1699963593,
                 "Name": "RailingTurn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     2.0565032958984377,
                     0.0,
@@ -6955,7 +7765,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -6968,6 +7778,330 @@
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1039676667,
+                "ParentUID": 224087897,
+                "Name": "RailingHole1",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    14.490669250488282,
+                    0.5913200378417969,
+                    10.130000114440918
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.5,
+                            0.6000000238418579,
+                            4.599999904632568
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 676313992,
+                "ParentUID": 224087897,
+                "Name": "RailingHole2",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    14.490669250488282,
+                    0.5913200378417969,
+                    -9.9794340133667
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.5,
+                            0.6000000238418579,
+                            4.599999904632568
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 676734294,
+                "ParentUID": 224087897,
+                "Name": "RailingHole3",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    -15.434751510620118,
+                    0.5913200378417969,
+                    10.130001068115235
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.5,
+                            0.6000000238418579,
+                            4.599999904632568
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1296526255,
+                "ParentUID": 224087897,
+                "Name": "RailingHole4",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    -15.430000305175782,
+                    0.5913200378417969,
+                    -9.9794340133667
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.5,
+                            0.6000000238418579,
+                            4.599999904632568
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2050241444,
+                "ParentUID": 892503707,
+                "Name": "Spawner",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    66.49987030029297,
+                    0.0,
+                    -1.4934715032577515
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "Spawner",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mPoolType",
+                                "MemberType": 0,
+                                "VariableData": 6
+                            },
+                            {
+                                "VariableName": "mParticlesTime",
+                                "MemberType": 1,
+                                "VariableData": 0.5
+                            },
+                            {
+                                "VariableName": "mParticlesGO",
+                                "MemberType": 3,
+                                "VariableData": 2135433646
+                            },
+                            {
+                                "VariableName": "mOnlyOnce",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mWaveRounds",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 2135433646,
+                "ParentUID": 2050241444,
+                "Name": "SpawnerParticle",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 172.3000030517578,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 0,
+                        "SizeCurve": {},
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 6.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    0.0786239355802536,
+                                    0.5609157681465149,
+                                    0.7559999823570252,
+                                    1.0
+                                ]
+                            }
+                        ]
                     }
                 ]
             }

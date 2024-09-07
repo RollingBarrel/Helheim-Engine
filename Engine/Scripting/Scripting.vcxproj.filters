@@ -208,6 +208,8 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\FirstTutorial.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -374,5 +376,7 @@
     </ClCompile>
     <ClCompile Include="FirstTutorial.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
+    <ClCompile Include="RotateObject.cpp" />
+    <ClCompile Include="FlickeringLight.cpp" />
   </ItemGroup>
 </Project>

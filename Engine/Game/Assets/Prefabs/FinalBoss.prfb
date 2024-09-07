@@ -62,7 +62,7 @@
                             {
                                 "VariableName": "mMaxHealth",
                                 "MemberType": 1,
-                                "VariableData": 100.0
+                                "VariableData": 2000.0
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -85,6 +85,21 @@
                                 "VariableData": 2.0
                             },
                             {
+                                "VariableName": "mAttackSequenceCooldown",
+                                "MemberType": 1,
+                                "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mPhase1Hp",
+                                "MemberType": 1,
+                                "VariableData": 0.6000000238418579
+                            },
+                            {
+                                "VariableName": "mPhase2Hp",
+                                "MemberType": 1,
+                                "VariableData": 0.30000001192092898
+                            },
+                            {
                                 "VariableName": "mDeathTime",
                                 "MemberType": 1,
                                 "VariableData": 4.25
@@ -99,24 +114,19 @@
                                 "VariableData": 6.0
                             },
                             {
-                                "VariableName": "mBulletHellCooldown",
-                                "MemberType": 1,
-                                "VariableData": 0.20000000298023225
-                            },
-                            {
                                 "VariableName": "mBulletSpeed",
                                 "MemberType": 1,
-                                "VariableData": 10.0
+                                "VariableData": 7.0
+                            },
+                            {
+                                "VariableName": "mBulletRange",
+                                "MemberType": 1,
+                                "VariableData": 25.0
                             },
                             {
                                 "VariableName": "mBulletsDamage",
                                 "MemberType": 1,
                                 "VariableData": 2.0
-                            },
-                            {
-                                "VariableName": "mBulletHellAngleSpread",
-                                "MemberType": 1,
-                                "VariableData": 180.0
                             },
                             {
                                 "VariableName": "BOMBS",
@@ -126,6 +136,11 @@
                                 "VariableName": "mBombsDuration",
                                 "MemberType": 1,
                                 "VariableData": 6.0
+                            },
+                            {
+                                "VariableName": "mBombsDelay",
+                                "MemberType": 1,
+                                "VariableData": 1.0
                             },
                             {
                                 "VariableName": "mBombDamage",
@@ -144,12 +159,12 @@
                             {
                                 "VariableName": "mLaserDuration",
                                 "MemberType": 1,
-                                "VariableData": 5.0
+                                "VariableData": 3.25
                             },
                             {
                                 "VariableName": "mLaserDamage",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mLaserDistance",

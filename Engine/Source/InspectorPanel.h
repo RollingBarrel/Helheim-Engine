@@ -7,7 +7,6 @@
 
 class GameObject;
 class Component;
-class TestComponent;
 class MeshRendererComponent;
 class CameraComponent;
 class ScriptComponent;
@@ -29,8 +28,9 @@ class TextComponent;
 class BoxColliderComponent;
 class TrailComponent;
 class LineComponent;
-class BezierCurve;
 class DecalComponent;
+class VideoComponent;
+class BezierCurve;
 class RandomFloat;
 
 
@@ -58,33 +58,34 @@ private:
 	void RightClickPopup(Component* component);
 	void DrawComponents(GameObject* object);
 
-	void DrawCameraComponent(CameraComponent* component);
-	void DrawScriptComponent(ScriptComponent* component);
-	void DrawPointLightComponent(PointLightComponent* component);
-	void DrawSpotLightComponent(SpotLightComponent* component);
-	void DrawMeshRendererComponent(MeshRendererComponent& component);
-	void DrawAIAgentComponent(AIAgentComponent* component);
-	void DrawImageComponent(ImageComponent* component);
-	void DrawMaskComponent(MaskComponent* component);
-	void DrawCanvasComponent(CanvasComponent* component);
-	void DrawButtonComponent(ButtonComponent* component);
-	void DrawSliderComponent(SliderComponent* component);
-	void DrawAudioSourceComponent(AudioSourceComponent* component);
-	void DrawListenerComponent(AudioListenerComponent* component);
-	void DrawTransform2DComponent(Transform2DComponent* component);
-	void DrawTextComponent(TextComponent* component);
-	void DrawBoxColliderComponent(BoxColliderComponent* component);
+	void DrawCameraComponent(CameraComponent* component) const;
+	void DrawScriptComponent(ScriptComponent* component) const;
+	void DrawPointLightComponent(PointLightComponent* component) const;
+	void DrawSpotLightComponent(SpotLightComponent* component) const;
+	void DrawMeshRendererComponent(MeshRendererComponent& component) const;
+	void DrawAIAgentComponent(AIAgentComponent* component) const;
+	void DrawImageComponent(ImageComponent* component) const;
+	void DrawMaskComponent(MaskComponent* component) const;
+	void DrawCanvasComponent(CanvasComponent* component) const;
+	void DrawButtonComponent(ButtonComponent* component) const {}
+	void DrawSliderComponent(SliderComponent* component) const;
+	void DrawAudioSourceComponent(AudioSourceComponent* component) const;
+	void DrawListenerComponent(AudioListenerComponent* component) const {}
+	void DrawTransform2DComponent(Transform2DComponent* component) const;
+	void DrawTextComponent(TextComponent* component) const;
+	void DrawBoxColliderComponent(BoxColliderComponent* component) const;
 	void DrawParticleSystemComponent(ParticleSystemComponent* component) const;
 	void DrawTrailComponent(TrailComponent* component) const;
 	void DrawLineComponent(LineComponent* component) const;
-	void DrawDecalComponent(DecalComponent* component);
+	void DrawDecalComponent(DecalComponent* component) const;
+	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component) const;
+	void DrawAnimationComponent(AnimationComponent* component) const;
+	void DrawVideoComponent(VideoComponent* component) const;
 
 	//void DragAndDropSource(Component* component);
 	//void DragAndDropTarget(GameObject* object, Component* target);
-	void MaterialVariables(const MeshRendererComponent& renderComponent);
-	void DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component);
-	void DrawAnimationComponent(AnimationComponent* component);
-	void GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names);
+	void MaterialVariables(const MeshRendererComponent& renderComponent) const;
+	void GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names) const;
 	void DrawBezierCurve(BezierCurve* curve, const char* cLabel) const;
 	void DrawRandomFloat(RandomFloat& value, const char* cLabel) const;
 	void DrawBlendTypeSelector(int& type, const char* cLabel) const;

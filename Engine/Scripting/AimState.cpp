@@ -23,7 +23,7 @@ AimState::~AimState()
 StateType AimState::HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::DASH;
-
+    if (mPlayerController->GetWeapon()->GetCurrentAmmo()== 0) return StateType::RELOAD;
     if (mPlayerController->GetGrenadeState()->IsReady() &&
        (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN || 
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
