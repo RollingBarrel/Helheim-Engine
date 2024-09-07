@@ -162,6 +162,8 @@ public:
     ReloadState* GetReloadState() { return mReloadState; }
     UltimateState* GetUltimateState() { return mUltimateState; }
 
+	void SetIdleState();
+
 
 private:
     void CheckInput();

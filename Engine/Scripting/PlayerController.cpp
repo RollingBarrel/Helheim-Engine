@@ -333,10 +333,17 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
     }
 }
 
+void PlayerController::SetIdleState() {
+    mLowerState = mIdleState;
+}
+
+
+
 void PlayerController::CheckInput()
 {
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
+
     if (mLowerStateType != type) 
     {
         //LOG(("LOWER: " + std::to_string(type)).c_str());
@@ -349,7 +356,14 @@ void PlayerController::CheckInput()
                 mLowerState = mDashState;
                 break;
             case StateType::MOVE:
-                mLowerState = mMoveState;
+                if (GameManager::GetInstance()->IsPaused())
+                {
+                    mLowerState = mIdleState;
+                }
+                else
+                {
+                    mLowerState = mMoveState;
+                }
                 break;
             case StateType::IDLE:
                 if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
