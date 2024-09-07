@@ -104,6 +104,7 @@ public:
 
     State* GetPlayerLowerState() const { return mLowerState; }
     State* GetPlayerUpperState() const { return mUpperState; }
+    void SetIdleState();
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
@@ -161,8 +162,6 @@ public:
     SpecialState* GetSpecialState() { return mSpecialState; }
     ReloadState* GetReloadState() { return mReloadState; }
     UltimateState* GetUltimateState() { return mUltimateState; }
-
-	void SetIdleState();
 
 private:
     void CheckInput();

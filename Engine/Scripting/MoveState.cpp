@@ -38,11 +38,6 @@ StateType MoveState::HandleInput()
         {
             return StateType::MOVE;
         }
-        else
-        {
-			return StateType::IDLE;
-
-        }
     }
     else
     {
