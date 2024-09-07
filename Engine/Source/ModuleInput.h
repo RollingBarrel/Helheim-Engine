@@ -119,6 +119,8 @@ public:
 
 
 	void HandleGameControllerInput();
+	void FlushGameControllerButtonPressedEvent();
+	void FlushGameControllerAxisMotionEvent();
 
 protected:
 

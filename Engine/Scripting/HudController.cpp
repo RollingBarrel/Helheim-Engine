@@ -328,7 +328,10 @@ void HudController::ButtonClick()
     switch (mCurrentOption)
     {
     case 0:
+        App->GetInput()->FlushGameControllerButtonPressedEvent();
+        App->GetInput()->FlushGameControllerAxisMotionEvent();
         OnContinueBtnClick();
+        
         break;
     case 1:
         OnOptionsBtnClick();

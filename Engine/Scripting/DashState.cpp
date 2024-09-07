@@ -61,13 +61,14 @@ DashState::~DashState()
 
 StateType DashState::HandleInput()
 {
+   
     mDashTimer += App->GetDt();
     if (mDashTimer <= mPlayerController->GetDashDuration()) return StateType::DASH;
 
     if (GameManager::GetInstance()->UsingController())
     {
         if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0 && !GameManager::GetInstance()->IsPaused())
         {
             return StateType::MOVE;
         }

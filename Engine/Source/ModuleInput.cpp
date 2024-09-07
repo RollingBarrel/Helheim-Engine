@@ -409,3 +409,10 @@ void ModuleInput::SetGameControllerRumble(unsigned int low_freq, unsigned int hi
 {
 	SDL_GameControllerRumble(mGameController.mId, low_freq, high_freq, time); 
 }
+
+void ModuleInput::FlushGameControllerButtonPressedEvent() {
+	SDL_FlushEvent(SDL_CONTROLLERBUTTONDOWN);
+}
+void ModuleInput::FlushGameControllerAxisMotionEvent() {
+	SDL_FlushEvent(SDL_CONTROLLERAXISMOTION);
+}
