@@ -333,7 +333,8 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
     }
 }
 
-void PlayerController::SetIdleState() {
+void PlayerController::SetIdleState()
+{
     mLowerState = mIdleState;
 }
 
