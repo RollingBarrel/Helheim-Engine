@@ -51,7 +51,7 @@ protected:
 	//Specific 
 	float mRange = 1.0f;
 	float mDamage = 1;
-	int mEnergyCost = 0;
+
 	float mCooldownMultiplier = 1.0f;
 
 

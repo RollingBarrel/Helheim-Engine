@@ -105,4 +105,6 @@ private:
     bool mTimeout = false;
     
     PlayerStats* mPlayerStats = nullptr;
+
+    bool firstTime = true;
 };

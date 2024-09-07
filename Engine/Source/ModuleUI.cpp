@@ -11,6 +11,7 @@
 #include "CanvasComponent.h"
 #include "ImageComponent.h"
 #include "TextComponent.h"
+#include "VideoComponent.h"
 #include "Transform2DComponent.h"
 
 #include "glew.h"
@@ -86,6 +87,12 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 		if (text && text->IsEnabled())
 		{
 			text->Draw();
+		}
+
+		VideoComponent* video = static_cast<VideoComponent*>(gameObject->GetComponent(ComponentType::VIDEO));
+		if (video && video->IsEnabled())
+		{
+			video->Draw();
 		}
 
 		for (GameObject* child : gameObject->GetChildren())
