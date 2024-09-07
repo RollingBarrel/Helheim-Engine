@@ -88,7 +88,8 @@ void FlickeringLight::Update()
 
 void FlickeringLight::UpdateLightState()
 {
-	for (const auto& element : flickering) {
+	for (const auto& element : flickering) 
+	{
 		if (element.mTime < mTimer && mTimer < element.mTime + element.mDuration)
 		{
 			mLightOn = false;
