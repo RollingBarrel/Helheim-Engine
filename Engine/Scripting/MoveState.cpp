@@ -27,14 +27,14 @@ StateType MoveState::HandleInput()
     if (GameManager::GetInstance()->UsingController())
     {
         if (mPlayerController->GetDashState()->IsReady() && 
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN )
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
         {
             mPlayerController->GetDashState()->ResetCooldown();
             return StateType::DASH;
         }
 
         if ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
-            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0) && !GameManager::GetInstance()->IsPaused())
+            App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0))
         {
             return StateType::MOVE;
         }

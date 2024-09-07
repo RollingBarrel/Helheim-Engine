@@ -356,14 +356,7 @@ void PlayerController::CheckInput()
                 mLowerState = mDashState;
                 break;
             case StateType::MOVE:
-                if (GameManager::GetInstance()->IsPaused())
-                {
-                    mLowerState = mIdleState;
-                }
-                else
-                {
-                    mLowerState = mMoveState;
-                }
+                mLowerState = mMoveState;
                 break;
             case StateType::IDLE:
                 if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
