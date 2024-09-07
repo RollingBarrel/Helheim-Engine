@@ -32,6 +32,5 @@ private:
     BoxColliderComponent* mCollider = nullptr;
 
     float mDespawnTimer = 0.0f;
-    bool mTutorialActivated = false;
     
 };
