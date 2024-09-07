@@ -28,7 +28,8 @@ private:
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ResetParameters(bool CinematicStarted);
-
+ 
+    GameObject* mPlayerCamera = nullptr;
     GameObject* mCinematicCamera1 = nullptr;
     GameObject* mCinematicCamera2 = nullptr;
     GameObject* mCinematicCamera3 = nullptr;
@@ -81,10 +82,7 @@ private:
     bool mEscape = false;
     bool mActiveCinematicCamera = false;
 
-    const CameraComponent* mCurrentCamera = nullptr;
-    CameraComponent* mMainCamera = nullptr;
     CameraComponent* mCinematicCamera = nullptr;  
-
     AnimationComponent* mAnimationComponent = nullptr;
     ImageComponent* mImage = nullptr;
 };

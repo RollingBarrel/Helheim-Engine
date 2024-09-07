@@ -22,6 +22,7 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT, mSpeedFactor);
     MEMBER(MemberType::FLOAT, mAnimationTime);
     SEPARATOR("CAMERAS");
+    MEMBER(MemberType::GAMEOBJECT, mPlayerCamera);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera1);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera2);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCamera3);
@@ -61,9 +62,6 @@ void CinematicCamera::Awake()
 void CinematicCamera::Start()
 {
     DeActivateCameras();
-
-    mCurrentCamera = App->GetCamera()->GetCurrentCamera();
-    mMainCamera = const_cast<CameraComponent*>(mCurrentCamera);
 
     if (mFade)
     {
@@ -183,10 +181,10 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                 {
                     if (Fade(true))
                     {
-                        if (mMainCamera)
+                        if (mPlayerCamera)
                         {
                             ActivateCamera(camera);
-                            App->GetCamera()->RemoveEnabledCamera(mMainCamera);
+                            mPlayerCamera->SetEnabled(false);
                         }
 
                         mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
@@ -293,7 +291,7 @@ void CinematicCamera::EndCinematic(GameObject* camera)
     {
         mActiveCinematicCamera = false;
         App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-        App->GetCamera()->AddEnabledCamera(mMainCamera);
+        mPlayerCamera->SetEnabled(true);
         App->GetCamera()->ActivateFirstCamera();
     }
     
