@@ -2,26 +2,54 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 130929331,
+                "UID": 1033180874,
                 "ParentUID": 265972669,
-                "Name": "UltimateChargeGO",
+                "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.15000000596046449,
-                    1.1699999570846558,
-                    0.4699999988079071
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
-                    -0.07873575389385224,
-                    -0.11618073284626007,
-                    0.8125742673873901,
-                    -0.5653703212738037
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 453374532,
+                "ParentUID": 1033180874,
+                "Name": "UltimateChargeGO (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.15000152587890626,
+                    1.1699999570846558,
+                    0.4700000286102295
+                ],
+                "Rotation": [
+                    0.1402285099029541,
+                    -0.0035621540155261757,
+                    0.03655940666794777,
+                    0.9894275665283203
+                ],
+                "Scale": [
+                    0.9992585778236389,
+                    0.9992597103118897,
+                    0.9999725222587586
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -40,8 +68,8 @@
                         "Looping": true,
                         "FollowEmitter": true,
                         "SpinSpeed": 5.699999809265137,
-                        "StretchedBillboard": true,
-                        "StretchedRatio": 0.10000000149011612,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
@@ -75,7 +103,7 @@
                                 "Time": 0.16621984541416169,
                                 "Color": [
                                     0.8999999761581421,
-                                    0.32328000664711,
+                                    0.8481599688529968,
                                     0.09000001847743988,
                                     1.0
                                 ]
