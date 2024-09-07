@@ -2,21 +2,21 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 130929331,
+                "UID": 1924668730,
                 "ParentUID": 265972669,
                 "Name": "UltimateChargeGO",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
-                    0.15000000596046449,
-                    1.1699999570846558,
-                    0.4699999988079071
+                    0.0,
+                    0.933051347732544,
+                    0.6044856309890747
                 ],
                 "Rotation": [
-                    -0.07873575389385224,
-                    -0.11618073284626007,
-                    0.8125742673873901,
-                    -0.5653703212738037
+                    0.0,
+                    0.0,
+                    0.27085742354393008,
+                    -0.9627686738967896
                 ],
                 "Scale": [
                     1.0,
@@ -30,26 +30,26 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 1711944677,
+                        "IsEnabled": false,
+                        "Image": 213516520,
                         "Delay": 0.0,
                         "Duration": 2.0,
-                        "EmissionRate": 43.70000076293945,
-                        "MaxParticles": 50,
+                        "EmissionRate": 22.399999618530275,
+                        "MaxParticles": 199,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": true,
-                        "SpinSpeed": 5.699999809265137,
+                        "SpinSpeed": 3.700000047683716,
                         "StretchedBillboard": true,
-                        "StretchedRatio": 0.10000000149011612,
+                        "StretchedRatio": 1.0,
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.20000000298023225,
-                            "MaxValue": 0.5
+                            "MaxValue": 0.30000001192092898
                         },
                         "ShapeType": 3,
-                        "ShapeRadius": 0.5,
+                        "ShapeRadius": 0.10000000149011612,
                         "ShapeAngle": 1.0,
                         "ShapeSize": [
                             1.0,
@@ -57,14 +57,22 @@
                             1.0
                         ],
                         "ShapeRandAngle": 1.0,
-                        "ShapeIsRandAngle": false,
+                        "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": true,
-                        "BlendMode": 1,
-                        "SizeCurve": {},
+                        "BlendMode": 0,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 5.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 1.5,
+                                "MinValue": 0.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -72,29 +80,138 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.16621984541416169,
+                                "Time": 0.029490232467651368,
                                 "Color": [
-                                    0.8999999761581421,
-                                    0.32328000664711,
-                                    0.09000001847743988,
+                                    0.9879999756813049,
+                                    0.150176003575325,
+                                    0.150176003575325,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.5683640837669373,
+                                "Time": 0.6126002073287964,
                                 "Color": [
-                                    0.9800000190734863,
-                                    0.19207999110221864,
-                                    0.19207999110221864,
+                                    0.4359999895095825,
+                                    0.013952001929283142,
+                                    0.013952001929283142,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.97050940990448,
                                 "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
+                                    0.10000002384185791,
+                                    0.09160002321004868,
+                                    0.09160002321004868,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 839658699,
+                "ParentUID": 1924668730,
+                "Name": "UltimateChargeGO_core",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": false,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 22.399999618530275,
+                        "MaxParticles": 199,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.5,
+                            "MaxValue": 0.6000000238418579
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.20000000298023225,
+                        "ShapeAngle": 1.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 1.0,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": true,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 4.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.2999999523162842,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.029490232467651368,
+                                "Color": [
+                                    0.9879999756813049,
+                                    0.150176003575325,
+                                    0.150176003575325,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6126002073287964,
+                                "Color": [
+                                    0.4359999895095825,
+                                    0.013952001929283142,
+                                    0.013952001929283142,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.97050940990448,
+                                "Color": [
+                                    0.14399999380111695,
+                                    0.00172800337895751,
+                                    0.00172800337895751,
                                     1.0
                                 ]
                             }
