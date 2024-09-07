@@ -38,6 +38,8 @@ void Bullet::Start()
 
 void Bullet::Update()
 {
+	if (GameManager::GetInstance()->IsPaused()) return;
+
 	if (!mHasCollided)
 	{
 		if (mTotalMovement == 0.0f)
@@ -66,7 +68,7 @@ void Bullet::Update()
 	}
 }
 
-void Bullet::Init(const float3& position, const float3& direction, float speed, float size, ColorGradient* gradient, float damage)
+void Bullet::Init(const float3& position, const float3& direction, float speed, float size, ColorGradient* gradient, float damage, float range)
 {
 	mTotalMovement = 0.0f;
 	mHasCollided = false;
@@ -76,6 +78,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	mDirection = direction;
 	mSpeed = speed;
 	mDamage = damage;
+	mRange = range;
 
 	mGameObject->SetEnabled(true);
 

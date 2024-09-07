@@ -474,6 +474,9 @@
     <ClCompile Include="LineComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="VideoComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1987,6 +1990,9 @@
     </ClInclude>
     <ClInclude Include="LineComponent.h">
       <Filter>GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="VideoComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
