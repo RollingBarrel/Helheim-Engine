@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1693562081,
-                "ParentUID": 265972669,
+                "UID": 453202370,
+                "ParentUID": 1,
                 "Name": "Ult_Enemy_Collide_V1",
                 "Enabled": true,
                 "Active": true,
