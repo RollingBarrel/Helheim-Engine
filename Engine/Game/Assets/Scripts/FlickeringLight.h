@@ -8,7 +8,8 @@ GENERATE_BODY(FlickeringLight);
 class SpotLightComponent;
 class PointLightComponent;
 
-struct Blackout {
+struct Blackout 
+{
 	float mTime;
 	float mDuration;
 
