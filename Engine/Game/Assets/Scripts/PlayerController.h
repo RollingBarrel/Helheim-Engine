@@ -164,7 +164,6 @@ public:
 
 	void SetIdleState();
 
-
 private:
     void CheckInput();
     void CheckHitEffect();

@@ -337,8 +337,6 @@ void PlayerController::SetIdleState() {
     mLowerState = mIdleState;
 }
 
-
-
 void PlayerController::CheckInput()
 {
     // Lowerbody state machine

@@ -330,7 +330,7 @@ void HudController::ButtonClick()
     switch (mCurrentOption)
     {
     case 0:
-        OnContinueBtnClick();        
+        OnContinueBtnClick();
         break;
     case 1:
         OnOptionsBtnClick();

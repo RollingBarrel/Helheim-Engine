@@ -61,7 +61,6 @@ DashState::~DashState()
 
 StateType DashState::HandleInput()
 {
-   
     mDashTimer += App->GetDt();
     if (mDashTimer <= mPlayerController->GetDashDuration()) return StateType::DASH;
 
