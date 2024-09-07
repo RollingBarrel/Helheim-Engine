@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 423102354,
+                "UID": 1038267305,
                 "ParentUID": 1735689159,
                 "Name": "Base_Tutorial",
                 "Enabled": false,
@@ -71,12 +71,12 @@
                             {
                                 "VariableName": "mMoveTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 180144080
+                                "VariableData": 471249979
                             },
                             {
                                 "VariableName": "mDashTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 585281607
+                                "VariableData": 1783999653
                             },
                             {
                                 "VariableName": "KEYBOARD",
@@ -85,12 +85,12 @@
                             {
                                 "VariableName": "mMoveTutorial",
                                 "MemberType": 3,
-                                "VariableData": 2073653120
+                                "VariableData": 642563358
                             },
                             {
                                 "VariableName": "mDashTutorial",
                                 "MemberType": 3,
-                                "VariableData": 961318403
+                                "VariableData": 1638306802
                             },
                             {
                                 "VariableName": "DOOR",
@@ -106,8 +106,8 @@
                 ]
             },
             {
-                "UID": 180144080,
-                "ParentUID": 423102354,
+                "UID": 471249979,
+                "ParentUID": 1038267305,
                 "Name": "Move_Con",
                 "Enabled": false,
                 "Active": false,
@@ -184,8 +184,8 @@
                 ]
             },
             {
-                "UID": 961318403,
-                "ParentUID": 423102354,
+                "UID": 1638306802,
+                "ParentUID": 1038267305,
                 "Name": "Dash",
                 "Enabled": false,
                 "Active": false,
@@ -214,7 +214,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -312.04998779296877,
+                            -258.95001220703127,
                             0.0,
                             0.0
                         ],
@@ -225,7 +225,7 @@
                             1.0
                         ],
                         "Size": [
-                            193.0,
+                            300.0,
                             48.0
                         ],
                         "AnchorMin": [
@@ -244,7 +244,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1971327503,
+                        "ImageID": 131372401,
                         "Color": [
                             1.0,
                             1.0,
@@ -262,8 +262,8 @@
                 ]
             },
             {
-                "UID": 2073653120,
-                "ParentUID": 423102354,
+                "UID": 642563358,
+                "ParentUID": 1038267305,
                 "Name": "Move",
                 "Enabled": false,
                 "Active": false,
@@ -340,8 +340,8 @@
                 ]
             },
             {
-                "UID": 585281607,
-                "ParentUID": 423102354,
+                "UID": 1783999653,
+                "ParentUID": 1038267305,
                 "Name": "Dash_Con",
                 "Enabled": false,
                 "Active": false,
@@ -370,7 +370,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -328.6499938964844,
+                            -276.5,
                             0.0,
                             0.0
                         ],
@@ -381,7 +381,7 @@
                             1.0
                         ],
                         "Size": [
-                            156.0,
+                            267.0,
                             48.0
                         ],
                         "AnchorMin": [
@@ -400,7 +400,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1687512706,
+                        "ImageID": 1157376262,
                         "Color": [
                             1.0,
                             1.0,

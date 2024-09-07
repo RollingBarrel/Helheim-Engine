@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1324924497,
+                "UID": 866895921,
                 "ParentUID": 1735689159,
                 "Name": "Second_Tutorial",
                 "Enabled": false,
@@ -71,22 +71,27 @@
                             {
                                 "VariableName": "mShootTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 540422501
+                                "VariableData": 91363700
                             },
                             {
                                 "VariableName": "mSecondaryTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1247031607
+                                "VariableData": 1645952826
                             },
                             {
                                 "VariableName": "mGrenadeTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1713662589
+                                "VariableData": 661487984
                             },
                             {
                                 "VariableName": "mUltimateTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1610302907
+                                "VariableData": 1822278917
+                            },
+                            {
+                                "VariableName": "mSkipTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 107420466
                             },
                             {
                                 "VariableName": "KEYBOARD",
@@ -95,22 +100,27 @@
                             {
                                 "VariableName": "mShootTutorial",
                                 "MemberType": 3,
-                                "VariableData": 1972239225
+                                "VariableData": 1262180057
                             },
                             {
                                 "VariableName": "mSecondaryTutorial",
                                 "MemberType": 3,
-                                "VariableData": 560253152
+                                "VariableData": 323108107
                             },
                             {
                                 "VariableName": "mGrenadeTutorial",
                                 "MemberType": 3,
-                                "VariableData": 1668549851
+                                "VariableData": 1495734610
                             },
                             {
                                 "VariableName": "mUltimateTutorial",
                                 "MemberType": 3,
-                                "VariableData": 772225195
+                                "VariableData": 498181020
+                            },
+                            {
+                                "VariableName": "mSkipTutorial",
+                                "MemberType": 3,
+                                "VariableData": 631050911
                             },
                             {
                                 "VariableName": "AREA",
@@ -126,13 +136,13 @@
                 ]
             },
             {
-                "UID": 540422501,
-                "ParentUID": 1324924497,
+                "UID": 91363700,
+                "ParentUID": 866895921,
                 "Name": "Fire_Con",
                 "Enabled": false,
                 "Active": false,
                 "Translation": [
-                    0.0,
+                    3.450000047683716,
                     0.0,
                     0.0
                 ],
@@ -156,7 +166,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -305.6499938964844,
+                            -288.04998779296877,
                             0.0,
                             0.0
                         ],
@@ -204,8 +214,8 @@
                 ]
             },
             {
-                "UID": 1972239225,
-                "ParentUID": 1324924497,
+                "UID": 1262180057,
+                "ParentUID": 866895921,
                 "Name": "Fire",
                 "Enabled": false,
                 "Active": false,
@@ -234,7 +244,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -305.6499938964844,
+                            -289.3500061035156,
                             0.0,
                             0.0
                         ],
@@ -282,8 +292,8 @@
                 ]
             },
             {
-                "UID": 560253152,
-                "ParentUID": 1324924497,
+                "UID": 323108107,
+                "ParentUID": 866895921,
                 "Name": "Secondary",
                 "Enabled": false,
                 "Active": false,
@@ -360,8 +370,8 @@
                 ]
             },
             {
-                "UID": 1668549851,
-                "ParentUID": 1324924497,
+                "UID": 1495734610,
+                "ParentUID": 866895921,
                 "Name": "Grenade",
                 "Enabled": false,
                 "Active": false,
@@ -390,7 +400,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -275.6499938964844,
+                            -210.89999389648438,
                             0.0,
                             0.0
                         ],
@@ -401,7 +411,7 @@
                             1.0
                         ],
                         "Size": [
-                            229.0,
+                            360.0,
                             48.0
                         ],
                         "AnchorMin": [
@@ -420,7 +430,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 222992621,
+                        "ImageID": 1078098944,
                         "Color": [
                             1.0,
                             1.0,
@@ -438,8 +448,8 @@
                 ]
             },
             {
-                "UID": 772225195,
-                "ParentUID": 1324924497,
+                "UID": 498181020,
+                "ParentUID": 866895921,
                 "Name": "Ultimate",
                 "Enabled": false,
                 "Active": false,
@@ -516,8 +526,8 @@
                 ]
             },
             {
-                "UID": 1247031607,
-                "ParentUID": 1324924497,
+                "UID": 1645952826,
+                "ParentUID": 866895921,
                 "Name": "Secondary_Con",
                 "Enabled": false,
                 "Active": false,
@@ -594,8 +604,8 @@
                 ]
             },
             {
-                "UID": 1713662589,
-                "ParentUID": 1324924497,
+                "UID": 661487984,
+                "ParentUID": 866895921,
                 "Name": "Grenade_Con",
                 "Enabled": false,
                 "Active": false,
@@ -624,7 +634,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -275.6499938964844,
+                            -212.75,
                             0.0,
                             0.0
                         ],
@@ -635,7 +645,7 @@
                             1.0
                         ],
                         "Size": [
-                            229.0,
+                            360.0,
                             48.0
                         ],
                         "AnchorMin": [
@@ -654,7 +664,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1806618312,
+                        "ImageID": 973642726,
                         "Color": [
                             1.0,
                             1.0,
@@ -672,8 +682,8 @@
                 ]
             },
             {
-                "UID": 1610302907,
-                "ParentUID": 1324924497,
+                "UID": 1822278917,
+                "ParentUID": 866895921,
                 "Name": "Ultimate_Con",
                 "Enabled": false,
                 "Active": false,
@@ -733,6 +743,162 @@
                         "ComponentType": 8,
                         "IsEnabled": false,
                         "ImageID": 2028193430,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 631050911,
+                "ParentUID": 866895921,
+                "Name": "Skip",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -281.5,
+                            -54.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 206833790,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 107420466,
+                "ParentUID": 866895921,
+                "Name": "Skip_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -280.79998779296877,
+                            -54.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 853283238,
                         "Color": [
                             1.0,
                             1.0,

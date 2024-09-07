@@ -16,11 +16,13 @@ CREATE(SecondTutorial)
     MEMBER(MemberType::GAMEOBJECT, mSecondaryTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mUltimateTutorialCon);
+    MEMBER(MemberType::GAMEOBJECT, mSkipTutorialCon);
     SEPARATOR("KEYBOARD");
     MEMBER(MemberType::GAMEOBJECT, mShootTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondaryTutorial);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeTutorial);
     MEMBER(MemberType::GAMEOBJECT, mUltimateTutorial);
+    MEMBER(MemberType::GAMEOBJECT, mSkipTutorial);
     SEPARATOR("AREA");
     MEMBER(MemberType::GAMEOBJECT, mTutorialAreaGO);
     END_CREATE;
@@ -60,7 +62,16 @@ void SecondTutorial::Update()
     if (!mCompleted)
     {
         if (mTutorialArea) mCurrentStep = mTutorialArea->GetCurrentWave();
-        Tutorial();
+        Tutorial(); 
+        if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN)
+        {
+            mCompleted = true;
+            mTutorialArea->SetSpawnerCycles(3);
+            mTutorialArea->SetWaves(3);
+            GameManager::GetInstance()->UnlockSecondary();
+            GameManager::GetInstance()->UnlockGrenade(true);
+            GameManager::GetInstance()->UnlockUltimate(true);
+        }
     }
     else
     {
@@ -72,33 +83,52 @@ void SecondTutorial::Tutorial()
 {
     if (!GameManager::GetInstance()->UsingController())
     {
+        if (mSkipTutorial)
+        {
+            mSkipTutorial->SetEnabled(true);
+            if (mSkipTutorialCon) mSkipTutorialCon->SetEnabled(false);
+        }
         switch (mCurrentStep)
         {
         case 5:
             mShootTutorial->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
-            mCurrentStep = 2;
+            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
+                mSecondaryUsed = true;
             break;
         case 4:
-              //mMoveTutorialCon->SetEnabled(false);
-            mSecondaryTutorial->SetEnabled(false);
-            mGrenadeTutorial->SetEnabled(true);
-            mCurrentStep = 2;
-            GameManager::GetInstance()->UnlockGrenade(true);
+            if (mSecondaryUsed)
+            {
+                mSecondaryTutorial->SetEnabled(false);
+                mGrenadeTutorial->SetEnabled(true);
+                GameManager::GetInstance()->UnlockGrenade(true);
+                if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
+                    mGrenadeUsed = true;
+            }
+            else
+                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
         case 3:
-            //mShootTutorialCon->SetEnabled(false);
-            mGrenadeTutorial->SetEnabled(false);
-            mUltimateTutorial->SetEnabled(true);
-            mCurrentStep = 3;
-            GameManager::GetInstance()->UnlockUltimate(true);
-            
+            if (mGrenadeUsed)
+            {
+                mGrenadeTutorial->SetEnabled(false);
+                mUltimateTutorial->SetEnabled(true);
+                GameManager::GetInstance()->UnlockUltimate(true);
+                if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN)
+                    mUltimateUsed = true;
+            }
+            else
+                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
         case 2:
-            //mDashTutorialCon->SetEnabled(false);
-            mUltimateTutorial->SetEnabled(false);
-            mCompleted = true;
+            if (mUltimateUsed)
+            {
+                mUltimateTutorial->SetEnabled(false);
+                mCompleted = true;
+            }
+            else
+                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
         default:
             break;
@@ -106,33 +136,52 @@ void SecondTutorial::Tutorial()
     }
     else
     {
+        if (mSkipTutorialCon)
+        {
+            mSkipTutorialCon->SetEnabled(true);
+            if (mSkipTutorial) mSkipTutorial->SetEnabled(false);
+        }
         switch (mCurrentStep)
         {
         case 5:
             mShootTutorialCon->SetEnabled(false);
             mSecondaryTutorialCon->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
-            mCurrentStep = 2;
+            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+                mSecondaryUsed = true;
             break;
         case 4:
-            //mMoveTutorialCon->SetEnabled(false);
-            mSecondaryTutorialCon->SetEnabled(false);
-            mGrenadeTutorialCon->SetEnabled(true);
-            mCurrentStep = 2;
-            GameManager::GetInstance()->UnlockGrenade(true);
+            if (mSecondaryUsed)
+            {
+                mSecondaryTutorialCon->SetEnabled(false);
+                mGrenadeTutorialCon->SetEnabled(true);
+                GameManager::GetInstance()->UnlockGrenade(true);
+                if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
+                    mGrenadeUsed = true;
+            }
+            else
+                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
         case 3:
-            //mShootTutorialCon->SetEnabled(false);
-            mGrenadeTutorialCon->SetEnabled(false);
-            mUltimateTutorialCon->SetEnabled(true);
-            mCurrentStep = 3;
-            GameManager::GetInstance()->UnlockUltimate(true);
-
+            if (mGrenadeUsed)
+            {
+                mGrenadeTutorialCon->SetEnabled(false);
+                mUltimateTutorialCon->SetEnabled(true);
+                GameManager::GetInstance()->UnlockUltimate(true);
+                if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
+                    mUltimateUsed = true;
+            }
+            else
+                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
         case 2:
-            //mDashTutorialCon->SetEnabled(false);
-            mUltimateTutorialCon->SetEnabled(false);
-            mCompleted = true;
+            if (mUltimateUsed)
+            {
+                mUltimateTutorialCon->SetEnabled(false);
+                mCompleted = true;
+            }
+            else
+                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
         default:
             break;
