@@ -329,8 +329,8 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddInt("BlendMode", mBlendMode);
 
     JsonObject size = obj.AddNewJsonObject("SizeCurve");
-    JsonObject speed = obj.AddNewJsonObject("SpeedCurve");
     mSizeCurve.Save(size);
+    JsonObject speed = obj.AddNewJsonObject("SpeedCurve");
     mSpeedCurve.Save(speed);
     mColorGradient.Save(obj);
 
