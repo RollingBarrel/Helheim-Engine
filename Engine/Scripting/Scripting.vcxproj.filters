@@ -43,9 +43,6 @@
     <Filter Include="Pools">
       <UniqueIdentifier>{475c614c-9d94-4dab-9927-3f6f3e127db0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="CInematic">
-      <UniqueIdentifier>{4882e39a-fcdf-41f7-8499-903242aa8204}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
@@ -209,9 +206,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
-      <Filter>CInematic</Filter>
-    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -376,8 +372,7 @@
     <ClCompile Include="EnemyExplosiveTrap.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="CinematicCamera.cpp">
-      <Filter>CInematic</Filter>
-    </ClCompile>
+    <ClCompile Include="RotateObject.cpp" />
+    <ClCompile Include="FlickeringLight.cpp" />
   </ItemGroup>
 </Project>
