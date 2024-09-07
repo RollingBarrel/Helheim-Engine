@@ -66,7 +66,7 @@ void SecondTutorial::Update()
         if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN)
         {
             mCompleted = true;
-            mTutorialArea->SetSpawnerCycles(3);
+            //mTutorialArea->SetSpawnerCycles(3);
             mTutorialArea->SetWaves(3);
             GameManager::GetInstance()->UnlockSecondary();
             GameManager::GetInstance()->UnlockGrenade(true);

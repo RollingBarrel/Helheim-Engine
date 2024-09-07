@@ -207,9 +207,9 @@
       <Filter>Enemies</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\FirstTutorial.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -375,8 +375,8 @@
       <Filter>Enemies</Filter>
     </ClCompile>
     <ClCompile Include="FirstTutorial.cpp" />
-    <ClCompile Include="SecondTutorial.cpp" />
     <ClCompile Include="RotateObject.cpp" />
     <ClCompile Include="FlickeringLight.cpp" />
+    <ClCompile Include="SecondTutorial.cpp" />
   </ItemGroup>
 </Project>

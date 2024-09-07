@@ -22,8 +22,7 @@ public:
 	int GetCurrentEnemies() { return mCurrentEnemies; }
 	int GetCurrentWave() { return mWavesRounds; }
 	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
-	void SetWaves(int waves) { mWavesRounds = waves; };
-	void SetSpawnerCycles(int cycles) { mSpawnerCycles = cycles; };
+	void SetWaves(int waves) { mWavesRounds = waves; }; 
 	void AddExplosiveEnemy();
 
 private:
