@@ -32,7 +32,7 @@ protected:
 
 	float mDamage = 0.0f;
 	float mAttackRange = 0.0f;
-
+	
 	float mAttackCooldown = 0.0f;
 	float mAttackDuration = 0.0f;
 
@@ -41,5 +41,6 @@ protected:
 
 	int mCurrentAmmo = 0;
 	int mMaxAmmo = 0;
-};
+	int mEnergyCost = 0;
+};	
 
