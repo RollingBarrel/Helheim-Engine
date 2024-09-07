@@ -72,7 +72,7 @@ const void ProjectPanel::DrawFolders(const PathNode& current)
 
 		if (mSelectedNode) 
 		{
-			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;
+ª			selected = strcmp(mSelectedNode->mName, current.mChildren[i]->mName) == 0;
 		}
 		
 		std::string nameWithoutPath = current.mChildren[i]->mName;
