@@ -23,6 +23,8 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
+    MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
+    MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
     MEMBER(MemberType::FLOAT, mDefaultHitStopTime);
     END_CREATE;
 }
@@ -80,6 +82,12 @@ void GameManager::Start()
         StartAudio();
     }
 
+    if (mFirstTutorial) 
+    {
+        mFirstTutorial->SetEnabled(true);
+        UnlockGrenade(false);
+        UnlockUltimate(false);
+    }
     mGameTimer = App->GetCurrentClock();
 }
 
@@ -195,6 +203,30 @@ void GameManager::HitStop(float duration)
     mGameTimer->SetTimeScale(0.0f);
     mStopActive = true;
     
+}
+
+void GameManager::ActivateSecondTutorial()
+{
+    if (mSecondTutorial)
+    {
+        if (mFirstTutorial) mFirstTutorial->SetEnabled(false);
+        mSecondTutorial->SetEnabled(true);
+    }
+}
+
+void GameManager::UnlockSecondary()
+{
+    mPlayerController->RechargeBattery(EnergyType::RED);
+}
+
+void GameManager::UnlockUltimate(bool unlock)
+{
+    mPlayerController->UnlockUltimate(unlock);
+}
+
+void GameManager::UnlockGrenade(bool unlock)
+{
+    mPlayerController->UnlockGrenade(unlock);
 }
 
 void GameManager::PrepareAudio()

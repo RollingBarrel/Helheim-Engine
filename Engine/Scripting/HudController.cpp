@@ -214,6 +214,18 @@ void HudController::Update()
             mHealthGradualSlider->SetValue(mTargetHealth);
         }
     }
+    if (mBossHealthGradualSlider && mBossHealthSlider)
+    {
+        float targetHealth = mBossHealthSlider->GetValue();
+        if (mBossHealthGradualSlider->GetValue() > targetHealth)
+        {
+            mBossHealthGradualSlider->SetValue(mBossHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+        }
+        else if (mBossHealthGradualSlider->GetValue() < targetHealth)
+        {
+            mBossHealthGradualSlider->SetValue(targetHealth);
+        }
+    }
 
     // Decrease the damage feedback
     if (mFeedbackImage && *(mFeedbackImage->GetAlpha()) >= 0.0f) {
@@ -264,6 +276,8 @@ bool HudController::Delay(float delay)
 void HudController::Controls()
 {
     if (!GameManager::GetInstance()->IsPaused()) return;
+
+    GameManager::GetInstance()->GetPlayerController()->SetIdleState();
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
@@ -660,7 +674,10 @@ void HudController::SetBossHealth(float health)
     {
         SetBossHealthBarEnabled(false);
     }
-    else  if (mBossHealthSlider) mBossHealthSlider->SetValue(health);
+    else if (mBossHealthSlider)
+    {
+        mBossHealthSlider->SetValue(health);
+    }
 }
 
 #pragma endregion

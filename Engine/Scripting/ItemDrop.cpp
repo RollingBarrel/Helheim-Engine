@@ -80,12 +80,12 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                     mGameObject->SetEnabled(false);
                 }
                 break;
-            case 2:
+            case 2:              
                 playerScript->RechargeBattery(EnergyType::BLUE);
                 mAlreadyUsed = true;
                 mGameObject->SetEnabled(false);
                 break;
-            case 3:
+            case 3:             
                 playerScript->RechargeBattery(EnergyType::RED);
                 mAlreadyUsed = true;
                 mGameObject->SetEnabled(false);

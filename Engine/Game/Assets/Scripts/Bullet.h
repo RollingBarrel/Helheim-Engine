@@ -21,7 +21,7 @@ public:
 	void Start() override;
 	void Update() override; 
 
-	void Init(const float3& position, const float3& direction, float speed = 1.0f, float size = 1.0f, ColorGradient* gradient = nullptr, float damage=0.0f);
+	void Init(const float3& position, const float3& direction, float speed = 1.0f, float size = 1.0f, ColorGradient* gradient = nullptr, float damage=0.0f, float range = 150.0f);
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private: 

@@ -474,6 +474,9 @@
     <ClCompile Include="LineComponent.cpp">
       <Filter>GameObjects\Components</Filter>
     </ClCompile>
+    <ClCompile Include="VideoComponent.cpp">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameObject.h">
@@ -1988,6 +1991,9 @@
     <ClInclude Include="LineComponent.h">
       <Filter>GameObjects\Components</Filter>
     </ClInclude>
+    <ClInclude Include="VideoComponent.h">
+      <Filter>GameObjects\Components\UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Game\Assets\Shaders\PBRCT_PixelShader.glsl">
@@ -2135,6 +2141,9 @@
       <Filter>Shaders</Filter>
     </None>
     <None Include="..\Game\Assets\Shaders\Noise.comp">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="..\Game\Assets\Shaders\Postpo.comp">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

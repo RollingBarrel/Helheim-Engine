@@ -407,7 +407,8 @@ void ModuleFileSystem::SplitPath(const char* path, std::string* file, std::strin
 
 void ModuleFileSystem::GetDirectoryFiles(const char* directory, std::vector<std::string>& files) const
 {
-    char** dirFiles = PHYSFS_enumerateFiles("Assets/Scripts");
+    //char** dirFiles = PHYSFS_enumerateFiles("Assets/Scripts");
+    char** dirFiles = PHYSFS_enumerateFiles(directory);
     for (char** file = dirFiles; *file != nullptr; ++file)
     {
         files.push_back(*file);
