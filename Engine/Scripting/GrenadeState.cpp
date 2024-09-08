@@ -94,6 +94,7 @@ void GrenadeState::Exit()
 bool GrenadeState::IsReady()
 {
     if (mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsGrenadeUnlocked()) return true; 
+    return false;
 }
 
 StateType GrenadeState::GetType()
