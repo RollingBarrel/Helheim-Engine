@@ -91,11 +91,16 @@ void BombBoss::Init(float3 bombOrigin, float damage)
 {
 	// Check with a raycast if there's floor under the bomb
 	Ray ray;
-	ray.pos = bombOrigin + float3(0,5,0);
+	ray.pos = mGameObject->GetWorldPosition() + float3(0, 10, 0);
 	ray.dir = float3(0, -1, 0);
 	Hit hit;
 
-	Physics::Raycast(hit, ray, 100);
+	Physics::Raycast(hit, ray, 50);
+	LOG("Bomb origin: %f %f %f", mGameObject->GetWorldPosition().x, mGameObject->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
+	LOG("Raycast position: %f %f %f", ray.pos.x, ray.pos.y, ray.pos.z);
+	LOG("Raycast hit point: %f %f %f", hit.mHitPoint.x, hit.mHitPoint.y, hit.mHitPoint.z);
+	LOG("Raycast hit: %s", hit.IsValid() ? "TRUE" : "FALSE");
+	LOG("-----------------------------------");
 
 	if (hit.IsValid())
 	{
