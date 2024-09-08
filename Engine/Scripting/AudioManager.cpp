@@ -64,7 +64,7 @@ int AudioManager::Play(SFX sfx, int id, float3 position)
     {
         // Assuming that it is a no-fmod audio
         std::string audioName = GetSFXName(sfx);
-        return PlaySFX(audioName);
+        return PlaySFX(audioName, position);
     }
 
     if (id != -1)
@@ -178,11 +178,12 @@ int AudioManager::Release(SFX sfx, int id)
     return -1;
 }
 
-void AudioManager::ReleaseAllAudio(int id)
+void AudioManager::ReleaseAllAudio()
 {
+    App->GetAudio()->ReleaseAllAudio();
     for (size_t i = 0; i < mStreamAudios.size(); ++i) {
         FMOD::Channel* channel = mStreamAudios[i];
-        if (channel && i != id) {
+        if (channel) {
             App->GetAudio()->Release(channel);
         }
     }

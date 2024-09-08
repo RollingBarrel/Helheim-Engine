@@ -55,6 +55,7 @@ public:
 	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
 
+	void ReleaseAllAudio();
 	
 	// Update
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);

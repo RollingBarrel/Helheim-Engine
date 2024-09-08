@@ -46,7 +46,7 @@ void EnemyExplosive::Start()
         mExplosionParticle->SetEnabled(false);
     }
 
-    mMovingSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_STEPS);
+    //mMovingSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_STEPS, mMovingSound, mGameObject->GetWorldPosition());
 
     mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
     mAttackSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_EXPLOSION);

@@ -168,6 +168,37 @@ void ModuleAudio::EngineStop()
 			instance->release();
 		}
 	}
+	if (mOneShotChannelGroup) {
+		int numChannels = 0;
+		mOneShotChannelGroup->getNumChannels(&numChannels);
+		for (int i = 0; i < numChannels; ++i) {
+			FMOD::Channel* channel = nullptr;
+			if (mOneShotChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) {
+				FMOD::Sound* sound = nullptr;
+				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
+					channel->stop();
+					sound->release();
+				}
+			}
+		}
+		mOneShotChannelGroup->release();
+	}
+
+	if (mAudioChannelGroup) {
+		int numChannels = 0;
+		mAudioChannelGroup->getNumChannels(&numChannels);
+		for (int i = 0; i < numChannels; ++i) {
+			FMOD::Channel* channel = nullptr;
+			if (mAudioChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) {
+				FMOD::Sound* sound = nullptr;
+				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
+					channel->stop();
+					sound->release();
+				}
+			}
+		}
+		mAudioChannelGroup->release();
+	}
 }
 
 int ModuleAudio::Play(const FMOD::Studio::EventDescription* eventDescription, const int id)
@@ -286,6 +317,34 @@ void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription
 	{
 		LOG("Cannot release event");
 	}
+}
+
+void ModuleAudio::ReleaseAllAudio()
+{
+	for (FMOD::Studio::EventDescription* eventDescription : mActiveEvent) 
+	{
+		if (eventDescription) 
+		{
+			int instanceCount = 0;
+			eventDescription->getInstanceCount(&instanceCount);
+
+			if (instanceCount > 0) 
+			{
+				std::vector<FMOD::Studio::EventInstance*> instances(instanceCount);
+				eventDescription->getInstanceList(instances.data(), instanceCount, &instanceCount);
+
+				for (FMOD::Studio::EventInstance* instance : instances) 
+				{
+					if (instance) 
+					{
+						instance->release();
+					}
+				}
+			}
+		}
+	}
+
+	mActiveEvent.clear();
 }
 
 void ModuleAudio::GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
