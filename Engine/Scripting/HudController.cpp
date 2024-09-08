@@ -30,10 +30,7 @@ CREATE(HudController)
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
-    MEMBER(MemberType::GAMEOBJECT, mWeaponMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
-    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponMeleeGO);
-    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
@@ -475,9 +472,9 @@ void HudController::SetMaxHealth(float health)
 
 void HudController::SwitchWeapon()
 {
-    if (!mWeaponMeleeGO || !mWeaponRangeGO || !mSecondWeaponMeleeGO || !mSecondWeaponRangeGO) return;
+    return;
 
-    if (mWeaponMeleeGO->IsEnabled())
+    /*if (mWeaponMeleeGO->IsEnabled())
     {
         mWeaponMeleeGO->SetEnabled(false);
         mWeaponRangeGO->SetEnabled(true);
@@ -490,7 +487,7 @@ void HudController::SwitchWeapon()
         mWeaponRangeGO->SetEnabled(false);
         mSecondWeaponMeleeGO->SetEnabled(false);
         mSecondWeaponRangeGO->SetEnabled(true);
-    }
+    }*/
 }
 
 void HudController::SetGrenadeCooldown(float cooldown)
