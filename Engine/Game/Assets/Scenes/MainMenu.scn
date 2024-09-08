@@ -6546,6 +6546,10 @@
                             {
                                 "Name": "event:/MC/main/Theme",
                                 "PreviewPlayID": -1
+                            },
+                            {
+                                "Name": "event:/SFX/CHAR/main_normal",
+                                "PreviewPlayID": -1
                             }
                         ]
                     }

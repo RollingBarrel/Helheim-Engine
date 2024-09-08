@@ -7,6 +7,7 @@
 #include "ImageComponent.h"
 #include "ButtonComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PlayerController.h"
 #include "HudController.h"
 #include "Keys.h"
@@ -41,6 +42,8 @@ void Dialog::Start()
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
     mPlayerStats = App->GetScene()->GetPlayerStats();
     mCurrentDialogSet = mPlayerStats->GetDialogIndex();
+    mDialogBGM = GameManager::GetInstance()->GetAudio()->Play(SFX::DIALOG, mDialogBGM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);
 }
 
 void Dialog::Update()
@@ -65,6 +68,9 @@ void Dialog::StartDialog()
     mCurrentDialog = 0;
     mTimeout = true;
     UpdateDialog();
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, false);
+    GameManager::GetInstance()->GetAudio()->SetPosition(SFX::DIALOG, mDialogBGM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
 }
 
 void Dialog::NextDialogSet()
@@ -97,18 +103,23 @@ void Dialog::OnClick()
         GameManager::GetInstance()->SetPaused(false, false);
         if (firstTime) firstTime = false;
         else GameManager::GetInstance()->GetHud()->SetSanity();
-        
+        GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);
+
         return;
     }
 
     // Swap between Protagonist and Wife images
     if (*mProtagonistImage->GetAlpha() == 0.5f)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_MALE);
+
         mProtagonistImage->SetAlpha(1.0f);
         mWifeImage->SetAlpha(0.5f);
     }
     else
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_FEMALE);
+
         mProtagonistImage->SetAlpha(0.5f);
         mWifeImage->SetAlpha(1.0f);
     }

@@ -82,6 +82,12 @@ void EnemyRobotRange::RangeAttack()
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
 }
 
+void EnemyRobotRange::TakeDamage(float damage)
+{
+    Enemy::TakeDamage(damage);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+}
+
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "Door")
