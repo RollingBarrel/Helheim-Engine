@@ -7,6 +7,7 @@
 #include "float3.h"
 #include "PlayerController.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 #include "ScriptComponent.h"
 #include "PoolManager.h"
@@ -112,6 +113,7 @@ void DashState::Update()
 void DashState::Enter()
 {
     mDashTimer = 0.0f;
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
     if (mDashTrail)
     {

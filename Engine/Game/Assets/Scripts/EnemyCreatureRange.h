@@ -34,5 +34,6 @@ private:
 	//Laser Trail WorkAround
 	bool mMoveTrail = false;
 
+	int mLaserSound = -1;
 };
 
