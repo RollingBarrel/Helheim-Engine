@@ -206,6 +206,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -370,5 +372,7 @@
     <ClCompile Include="EnemyExplosiveTrap.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="RotateObject.cpp" />
+    <ClCompile Include="FlickeringLight.cpp" />
   </ItemGroup>
 </Project>

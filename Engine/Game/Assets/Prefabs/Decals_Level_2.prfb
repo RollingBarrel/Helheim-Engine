@@ -1,0 +1,398 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 873117070,
+                "ParentUID": 1,
+                "Name": "Decals_Level_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1464055652,
+                "ParentUID": 873117070,
+                "Name": "Lines",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    51.90446472167969,
+                    35.991546630859378,
+                    6.941373825073242
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.1965267658233644,
+                    0.42482906579971316,
+                    0.10000003129243851
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823529481887817,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 832828570,
+                "ParentUID": 873117070,
+                "Name": "Lines (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    53.37889862060547,
+                    35.984840393066409,
+                    5.221486568450928
+                ],
+                "Rotation": [
+                    -0.5000001788139343,
+                    0.5000001788139343,
+                    0.49999988079071047,
+                    0.4999999403953552
+                ],
+                "Scale": [
+                    3.1965267658233644,
+                    0.42482906579971316,
+                    0.10000003129243851
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823529481887817,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1828295119,
+                "ParentUID": 873117070,
+                "Name": "Lines (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    53.37889862060547,
+                    35.98391342163086,
+                    2.256727695465088
+                ],
+                "Rotation": [
+                    -0.5000001192092896,
+                    0.5000001192092896,
+                    0.49999988079071047,
+                    0.4999999403953552
+                ],
+                "Scale": [
+                    3.200000047683716,
+                    0.4248291254043579,
+                    0.1000000536441803
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823529481887817,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1210476173,
+                "ParentUID": 873117070,
+                "Name": "Lines (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    55.10348129272461,
+                    35.97798156738281,
+                    0.7793646454811096
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    -2.897594875150844e-8,
+                    -2.897594875150844e-8,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.200000047683716,
+                    0.4248291254043579,
+                    0.1000000536441803
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823529481887817,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1619550959,
+                "ParentUID": 873117070,
+                "Name": "Lines (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    57.60201644897461,
+                    35.97798156738281,
+                    0.7802377939224243
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    -2.897594875150844e-8,
+                    -2.897594875150844e-8,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.200000047683716,
+                    0.4248291254043579,
+                    0.1000000536441803
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823529481887817,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1926286766,
+                "ParentUID": 873117070,
+                "Name": "Lines (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    60.33466720581055,
+                    35.97798156738281,
+                    0.78070068359375
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    -2.897594875150844e-8,
+                    -2.897594875150844e-8,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.200000047683716,
+                    0.4248291254043579,
+                    0.1000000536441803
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823529481887817,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1024592021,
+                "ParentUID": 873117070,
+                "Name": "Lines (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    61.806541442871097,
+                    35.97798156738281,
+                    -0.9438273906707764
+                ],
+                "Rotation": [
+                    -0.5000000596046448,
+                    0.5,
+                    0.5,
+                    0.5000000596046448
+                ],
+                "Scale": [
+                    3.200000047683716,
+                    0.4248291552066803,
+                    0.10000006854534149
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "EmisiveID": 2105727089,
+                        "EmisiveName": "Alpha_Rectangle.png",
+                        "EmisiveColor": [
+                            0.0,
+                            0.8823530673980713,
+                            1.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            }
+        ]
+    }
+}

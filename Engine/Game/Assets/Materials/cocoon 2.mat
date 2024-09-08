@@ -1,0 +1,24 @@
+{
+    "Name": "cocoon 2",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        0.2705882489681244,
+        0.0,
+        1.0
+    ],
+    "BaseColorTex": 1000973234,
+    "MetallicRoughTex": 1000973235,
+    "NormalTex": 1000973236,
+    "EmissiveTex": 1000973237,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}
