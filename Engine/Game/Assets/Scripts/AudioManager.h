@@ -112,6 +112,8 @@ public:
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
 
+	void ReleaseAllAudio(int id);
+
 	void UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value);
 	void UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value);
 

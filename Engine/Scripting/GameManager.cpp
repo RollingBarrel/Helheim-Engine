@@ -314,6 +314,8 @@ void GameManager::EndAudio()
     {
         mGameOverAudio = mAudioManager->Release(BGM::GAMEOVER, mGameOverAudio);
     }
+
+    mAudioManager->ReleaseAllAudio(mGameOverAudio);
 }
 
 void GameManager::HandleLevel1Audio()

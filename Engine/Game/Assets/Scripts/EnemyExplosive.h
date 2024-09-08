@@ -16,6 +16,8 @@ public:
 	void Start() override;
 	void Charge() override;
 	void Attack() override;
+
+	void Death() override;
 	void PlayStepAudio() override;
 
 private:

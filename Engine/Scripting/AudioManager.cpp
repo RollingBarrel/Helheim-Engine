@@ -178,6 +178,16 @@ int AudioManager::Release(SFX sfx, int id)
     return -1;
 }
 
+void AudioManager::ReleaseAllAudio(int id)
+{
+    for (size_t i = 0; i < mStreamAudios.size(); ++i) {
+        FMOD::Channel* channel = mStreamAudios[i];
+        if (channel && i != id) {
+            App->GetAudio()->Release(channel);
+        }
+    }
+}
+
 void AudioManager::UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value)
 {
     const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);

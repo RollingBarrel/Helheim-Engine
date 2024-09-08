@@ -51,8 +51,8 @@ void EnemyExplosive::Start()
     mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
     mAttackSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_EXPLOSION);
 
-    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mAttackSound, true);
-    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_EXPLOSION,mAttackSound, true);
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, true);
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound, true);
 
 }
 
@@ -62,7 +62,7 @@ void EnemyExplosive::Charge()
     Enemy::Charge();
     if (mExplosionWarningGO)
     {
-        GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mAttackSound, false);
+        GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, false);
         mExplosionWarningGO->SetEnabled(true);
         ChargeWarningArea();
     }
@@ -70,7 +70,7 @@ void EnemyExplosive::Charge()
 
 void EnemyExplosive::Attack()
 {
-    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound, true);
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound, false);
 
     mExplosionWarningGO->SetWorldScale(float3(0.1f));
 
@@ -92,6 +92,26 @@ void EnemyExplosive::Attack()
     }
 
     TakeDamage(mMaxHealth);
+}
+
+void EnemyExplosive::Death()
+{
+    Enemy::Death();
+    if (mMovingSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_STEPS, mMovingSound);
+    }
+
+    if (mChargeSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound);
+
+    }
+
+    if (mAttackSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound);
+    }
 }
 
 void EnemyExplosive::PlayStepAudio()
