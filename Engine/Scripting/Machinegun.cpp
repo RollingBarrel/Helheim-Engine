@@ -32,7 +32,7 @@ Machinegun::Machinegun()
 
     mShootDuration = mAttackDuration / static_cast<float>(mNumBullets);
 
-    mFire = App->GetScene()->InstantiatePrefab("MachingunFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
+    mFire = App->GetScene()->InstantiatePrefab("MachingunFire.prfb");
     if (mFire)
     {
         mFire->SetEnabled(false);
@@ -79,6 +79,7 @@ void Machinegun::Attack(float time)
         {
             mFire->SetEnabled(false);
             mFire->SetEnabled(true);
+            mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
         }
     }
 }
