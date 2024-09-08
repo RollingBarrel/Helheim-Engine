@@ -161,12 +161,13 @@ void MoveState::DoAnimation()
             setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
         }
         //LOG("x:%f ", animation);
-        mPlayerController->SetAnimation(animation, 0.3f);
+        mPlayerController->SetAnimation(animation, 0.01f);
+        mPlayerController->SetAnimationSpeed(0.85f);
+
         if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
         {
             //mPlayerController->SetSpineAnimation(animation, 0.3f);
-        }
-        
+        }    
         
     }
 }
