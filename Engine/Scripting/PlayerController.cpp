@@ -449,9 +449,29 @@ void PlayerController::HandleRotation()
         float distance;
         if (plane.Intersects(ray, &distance))
         {
-            mAimPosition = ray.GetPoint(distance);
-            mAimPosition.y = mGameObject->GetWorldPosition().y;
+            GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+            
+            float3 rayPoint = ray.GetPoint(distance);
+            
+
+
+            if (mGameObject->GetWorldPosition().Distance(rayPoint) > 2.0f)
+            {
+                mAimPosition = rayPoint;
+
+                float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
+                laserDirection.y = 0;
+                laserDirection.Normalize();
+                if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
+                //if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mAimPosition);
+
+                mAimPosition.y = mGameObject->GetWorldPosition().y;
+               
+            }
+
+            
         }
+       
     }
     if (mUpperStateType != StateType::ULTIMATE)
         mGameObject->LookAt(mAimPosition);
