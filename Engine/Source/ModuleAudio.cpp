@@ -58,6 +58,10 @@ bool ModuleAudio::Init()
 
 	CheckError(mCoreSystem->createChannelGroup("CustomOneShotAudio", &mOneShotChannelGroup));
 	CheckError(mCoreSystem->createChannelGroup("CustomAudio", &mAudioChannelGroup));
+
+	CheckError(mOneShotChannelGroup->setVolume(0.5f));
+	CheckError(mAudioChannelGroup->setVolume(0.5f));
+
 	return true;
 }
 
@@ -397,6 +401,18 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 	CheckError(mSystem->getBus(busname.c_str(), &bus));
 
 	CheckError(bus->setVolume(value));
+
+	if (busname == "bus:/music")
+	{
+		CheckError(mAudioChannelGroup->setVolume(value));
+	} else if (busname == "bus:/sfx")
+	{
+		CheckError(mOneShotChannelGroup->setVolume(value));
+	}else if (busname == "bus:/")
+	{
+		CheckError(mAudioChannelGroup->setVolume(value));
+		CheckError(mOneShotChannelGroup->setVolume(value));
+	}
 }
 
 void ModuleAudio::CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line)

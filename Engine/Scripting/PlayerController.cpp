@@ -629,7 +629,7 @@ void PlayerController::SetGrenadeVisuals(bool value)
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
     }
 }
 
