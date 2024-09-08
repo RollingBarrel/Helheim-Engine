@@ -276,6 +276,8 @@ void HudController::Controls()
 {
     if (!GameManager::GetInstance()->IsPaused()) return;
 
+    GameManager::GetInstance()->GetPlayerController()->SetIdleState();
+
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
     {

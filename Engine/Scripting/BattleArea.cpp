@@ -26,6 +26,8 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mTrap2);
 	MEMBER(MemberType::GAMEOBJECT, mTrap3);
 	MEMBER(MemberType::GAMEOBJECT, mTrap4);
+	SEPARATOR("TUTORIAL");
+	MEMBER(MemberType::BOOL, mIsTutorialArea);
 	END_CREATE;
 }
 
@@ -173,6 +175,10 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag().compare("Player") == 0 && !mHasBeenActivated)
 	{
+		if (mIsTutorialArea)
+		{
+			GameManager::GetInstance()->ActivateSecondTutorial();
+		}
  		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
