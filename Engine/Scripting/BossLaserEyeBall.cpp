@@ -136,6 +136,8 @@ void BossLaserEyeBall::DisableLaserVFX()
 
 void BossLaserEyeBall::UpdateLaser()
 {
+    if (mLaserCharge) mLaserCharge->SetEnabled(false);
+
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
     {
         mCanDamage = true; 
