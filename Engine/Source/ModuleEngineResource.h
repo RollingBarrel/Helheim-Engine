@@ -16,11 +16,8 @@ public:
 private:
 	
 	Resource::Type DeduceResourceType(const char* assetsFile);
-
-
-
 	std::string DuplicateFileInAssetDir(const char* importedFilePath, const Resource::Type type) const;
-
+	void ImportMeta(const std::string& meta);
 
 	std::unordered_map<std::string, Resource::Type> mExtensionToResourceType = {
 		{".png", Resource::Type::Texture},
