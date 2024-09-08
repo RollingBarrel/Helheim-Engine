@@ -250,7 +250,7 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -629,7 +629,7 @@ void PlayerController::SetGrenadeVisuals(bool value)
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
     }
 }
 
@@ -692,6 +692,8 @@ void PlayerController::UpdateGrenadeVisuals()
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
     if (mGrenade)
     {
         mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
@@ -768,6 +770,8 @@ void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield) 
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HEAL, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
 
         float healthRatio = mShield / mMaxShield;
@@ -806,7 +810,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mBlueBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mMachinegun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -827,7 +833,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mRedBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mShootgun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -855,7 +863,9 @@ void PlayerController::UseEnergy(int energy)
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
-        mEquippedSpecialGO->SetEnabled(false);
+
+        if(mEquippedSpecialGO)
+            mEquippedSpecialGO->SetEnabled(false);
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
@@ -922,6 +932,7 @@ void PlayerController::UltimateInterpolateLookAt(const float3& target)
 
 void PlayerController::TakeDamage(float damage)
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;
@@ -929,13 +940,24 @@ void PlayerController::TakeDamage(float damage)
 
     if (mShield <= 0.0f)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH1, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH2, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         GameManager::GetInstance()->GameOver();
 
         //CONTROLLER VIBRATION
         App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
+        return;
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    // Last opportunity
+    if (mShield == 0.0f)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BROKEN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DANGER, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    }
 
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(40000, 30000, 100);

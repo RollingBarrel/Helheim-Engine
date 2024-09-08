@@ -1,5 +1,7 @@
 #include "Grenade.h"
 #include "GameObject.h"
+#include "GameManager.h"
+#include "AudioManager.h"
 #include "ModuleScene.h"
 #include "ScriptComponent.h"
 #include "Enemy.h"
@@ -30,7 +32,10 @@ void Grenade::Start()
 {
     mExplosionSFX->SetEnabled(false);
     mGrenade->SetEnabled(false);
-} 
+
+    mExplosionAudio = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2,mExplosionAudio, true);
+}
 
 void Grenade::Update()
 {
@@ -65,6 +70,10 @@ void Grenade::MoveToTarget()
 
         mState = GRENADE_STATE::EXPLOSION_START;
         mExplosionSFX->SetWorldPosition(mDestination);
+
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE1, mExplosionSFX->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, false);
+        GameManager::GetInstance()->GetAudio()->SetPosition(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, mExplosionSFX->GetWorldPosition());
     }
 }
 
@@ -142,6 +151,7 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
 
 void Grenade::EndExplosion()
 {
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_THROW, mExplosionAudio, true);
     mExplosionSFX->SetEnabled(false);
     mState = GRENADE_STATE::INACTIVE;
 }

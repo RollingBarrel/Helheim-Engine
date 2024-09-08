@@ -98,10 +98,7 @@ private:
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
     GameObject* mAmmoGO = nullptr;
-    GameObject* mWeaponMeleeGO = nullptr;
-    GameObject* mSecondWeaponMeleeGO = nullptr;
     GameObject* mWeaponRangeGO = nullptr;
-    GameObject* mSecondWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
     GameObject* mUltimateSliderGO = nullptr;
     GameObject* mEnergyGO = nullptr;
