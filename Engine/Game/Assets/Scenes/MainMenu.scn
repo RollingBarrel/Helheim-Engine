@@ -170,14 +170,44 @@
                                 "VariableData": 1236365584
                             },
                             {
-                                "VariableName": "mVSyncButtonGO",
+                                "VariableName": "mVSyncButtonOffGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 323646839
                             },
                             {
-                                "VariableName": "mFullscreenButtonGO",
+                                "VariableName": "mVSyncButtonOnGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1506037091
+                            },
+                            {
+                                "VariableName": "mVSyncImageOn_On",
+                                "MemberType": 3,
+                                "VariableData": 1617500312
+                            },
+                            {
+                                "VariableName": "mVSyncImageOff_On",
+                                "MemberType": 3,
+                                "VariableData": 43646981
+                            },
+                            {
+                                "VariableName": "mFullscreenButtonOnGO",
+                                "MemberType": 3,
+                                "VariableData": 935381240
+                            },
+                            {
+                                "VariableName": "mFullscreenButtonOffGO",
+                                "MemberType": 3,
+                                "VariableData": 1949195049
+                            },
+                            {
+                                "VariableName": "mFullscreenImageOn_On",
+                                "MemberType": 3,
+                                "VariableData": 1285783733
+                            },
+                            {
+                                "VariableName": "mFullscreenImageOff_On",
+                                "MemberType": 3,
+                                "VariableData": 20251721
                             },
                             {
                                 "VariableName": "Play Btn",
@@ -10503,8 +10533,8 @@
                 "UID": 1135889720,
                 "ParentUID": 935381240,
                 "Name": "Off",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10528,7 +10558,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             0.0,
                             0.0,
@@ -10559,7 +10589,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ImageID": 597047512,
                         "Color": [
                             1.0,
@@ -11755,8 +11785,8 @@
                 "UID": 1573639082,
                 "ParentUID": 1506037091,
                 "Name": "Off",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11780,7 +11810,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             0.0,
                             0.0,
@@ -11811,7 +11841,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ImageID": 597047512,
                         "Color": [
                             1.0,

@@ -42,8 +42,14 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeFillGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeFillGO);
-    MEMBER(MemberType::GAMEOBJECT, mVSyncButtonGO);
-    MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonGO);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOffGO);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOnGO);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncImageOn_On);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncImageOff_On);
+    MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOnGO);
+    MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOffGO);
+    MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOn_On);
+    MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOff_On);
 
     SEPARATOR("Play Btn");
     MEMBER(MemberType::GAMEOBJECT, mPlayGO);
@@ -188,13 +194,15 @@ void MainMenu::Start()
     mEffectsVolumeSlider = static_cast<SliderComponent*>(mEffectsVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mEffectsVolumeFill = static_cast<ImageComponent*>(mEffectsVolumeFillGO->GetComponent(ComponentType::IMAGE));
 
-    mVSyncButton = static_cast<ButtonComponent*>(mVSyncButtonGO->GetComponent(ComponentType::BUTTON));
-    mFullscreenButton = static_cast<ButtonComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::BUTTON));
-    mVSyncImage = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    mFullscreenImage = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
+    mVSyncOnButton = static_cast<ButtonComponent*>(mVSyncButtonOnGO->GetComponent(ComponentType::BUTTON));
+    mVSyncOffButton = static_cast<ButtonComponent*>(mVSyncButtonOffGO->GetComponent(ComponentType::BUTTON));
+    mFullscreenOnButton = static_cast<ButtonComponent*>(mFullscreenButtonOnGO->GetComponent(ComponentType::BUTTON));
+    mFullscreenOffButton = static_cast<ButtonComponent*>(mFullscreenButtonOffGO->GetComponent(ComponentType::BUTTON));
 
-    mVSyncButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonClick, this)));
-    mFullscreenButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonClick, this)));
+    mVSyncOnButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonOnClick, this)));
+    mVSyncOffButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnVSyncButtonOffClick, this)));
+    mFullscreenOnButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonOnClick, this)));
+    mFullscreenOffButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnFullscreenButtonOffClick, this)));
 
     if (mAudioManagerGO)
     {
@@ -222,7 +230,7 @@ void MainMenu::Update()
 {
     if (mStudioBool) 
     {
-        if (mStudioTimer.DelayWithoutReset(2.0f))
+        if (mStudioTimer.DelayWithoutReset(1.5f))
         {
             OpenMenu(MENU_TYPE::ENGINE);
             mStudioBool = false;
@@ -233,7 +241,7 @@ void MainMenu::Update()
         
     if (mEngineBool) 
     {
-        if (mEngineTimer.DelayWithoutReset(2.0f))
+        if (mEngineTimer.DelayWithoutReset(1.5f))
         {
             OpenMenu(MENU_TYPE::SPLASH);
             mEngineBool = false;
@@ -251,7 +259,7 @@ void MainMenu::Update()
             mIsInitial = false;
             OpenMenu(MENU_TYPE::MAIN);
             OnPlayButtonHover(); // Hover first option when the menu is first laoded    
-            OnControllerButtonHover(); // Pre-hover the first option
+            OnKeyboardButtonHover(); // Pre-hover the first option
             return;
         }
         else return;
@@ -382,11 +390,11 @@ void MainMenu::Controls()
         {
             if (mCurrentSetting == SETTING_TYPE::VSYNC)
             {
-                OnVSyncButtonClick();
+                OnVSyncButtonOnClick();
             }
             else if (mCurrentSetting == SETTING_TYPE::FULL_SCREEN)
             {
-				OnFullscreenButtonClick();
+				OnFullscreenButtonOnClick();
             }
             
         }
@@ -653,40 +661,46 @@ void MainMenu::OnSettingsButtonClick()
     OpenMenu(MENU_TYPE::SETTINGS);
     if (App->GetWindow()->IsWindowFullscreen())
     {
-        mFullscreenImage->SetAlpha(1.0f);
+        mFullscreenImageOff_On->SetEnabled(false);
+        mFullscreenImageOn_On->SetEnabled(true);
     }
     else
     {
-        mFullscreenImage->SetAlpha(0.5f);
+        mFullscreenImageOff_On->SetEnabled(true);
+        mFullscreenImageOn_On->SetEnabled(false);
     }
 }
 
-void MainMenu::OnVSyncButtonClick()
+void MainMenu::OnVSyncButtonOnClick()
 {
-    if (*mVSyncImage->GetAlpha() == 1.0f)
-    {
-        mVSyncImage->SetAlpha(0.5f);
-        App->GetCurrentClock()->SetVsyncStatus(false);
-    }
-    else
-    {
-        mVSyncImage->SetAlpha(1.0f);
-        App->GetCurrentClock()->SetVsyncStatus(true);
-    }
+    mVSyncImageOff_On->SetEnabled(false);
+    mVSyncImageOn_On->SetEnabled(true);
+
+    App->GetCurrentClock()->SetVsyncStatus(true);
 }
 
-//TODO: Investige why this is not working.
-void MainMenu::OnFullscreenButtonClick()
+void MainMenu::OnVSyncButtonOffClick()
 {
-    if (*mFullscreenImage->GetAlpha() == 1.0f)
-    {
-        mFullscreenImage->SetAlpha(0.5f);
-    }
-    else
-    {
-        mFullscreenImage->SetAlpha(1.0f);
-    }
-    App->GetWindow()->WindowFullscreen(!App->GetWindow()->IsWindowFullscreen());
+    mVSyncImageOff_On->SetEnabled(true);
+    mVSyncImageOn_On->SetEnabled(false);
+
+    App->GetCurrentClock()->SetVsyncStatus(false);
+}
+
+void MainMenu::OnFullscreenButtonOnClick()
+{
+    mFullscreenImageOff_On->SetEnabled(false);
+    mFullscreenImageOn_On->SetEnabled(true);
+
+    App->GetWindow()->WindowFullscreen(true);
+}
+
+void MainMenu::OnFullscreenButtonOffClick()
+{
+    mFullscreenImageOff_On->SetEnabled(true);
+    mFullscreenImageOn_On->SetEnabled(false);
+
+    App->GetWindow()->WindowFullscreen(false);
 }
 
 void MainMenu::OnSlide(SETTING_TYPE type, DIRECTION direction, float step)
@@ -841,12 +855,12 @@ void MainMenu::HoverSubSubMenu(SETTING_TYPE type)
     case SETTING_TYPE::EFFECTS_VOLUME:
         OnEffectsVolumeHover();
         break;
-    case SETTING_TYPE::VSYNC:
+    /*case SETTING_TYPE::VSYNC:
         OnVSyncButtonHover();
 		break;
     case SETTING_TYPE::FULL_SCREEN:
         OnFullscreenButtonHover();
-		break;
+		break;*/
     }
 }
 
@@ -859,8 +873,6 @@ void MainMenu::OnGeneralVolumeHover()
 	//TODO: Abstract this abomination (in all of the hover functions)
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    OnVSyncButtonHoverOff();
-    OnFullscreenButtonHoverOff();
 }
 
 void MainMenu::OnMusicVolumeHover()
@@ -870,8 +882,6 @@ void MainMenu::OnMusicVolumeHover()
 
     OnGeneralVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    OnVSyncButtonHoverOff();
-    OnFullscreenButtonHoverOff();
 }
 
 void MainMenu::OnEffectsVolumeHover()
@@ -881,11 +891,9 @@ void MainMenu::OnEffectsVolumeHover()
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
-    OnVSyncButtonHoverOff();
-    OnFullscreenButtonHoverOff();
 }
 
-void MainMenu::OnVSyncButtonHover()
+/*void MainMenu::OnVSyncButtonHover()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(1.f);
@@ -895,9 +903,9 @@ void MainMenu::OnVSyncButtonHover()
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
     OnFullscreenButtonHoverOff();
-}
+}*/
 
-void MainMenu::OnFullscreenButtonHover()
+/*void MainMenu::OnFullscreenButtonHover()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(1.f);
@@ -907,7 +915,7 @@ void MainMenu::OnFullscreenButtonHover()
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
     OnVSyncButtonHoverOff();
-}
+}*/
 
 void MainMenu::OnQuitButtonHover() 
 {
@@ -1111,17 +1119,17 @@ void MainMenu::OnEffectsVolumeHoverOff()
     mEffectsVolumeFill->SetAlpha(0.8f);
 }
 
-void MainMenu::OnVSyncButtonHoverOff()
+/*void MainMenu::OnVSyncButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
-}
+}*/
 
-void MainMenu::OnFullscreenButtonHoverOff()
+/*void MainMenu::OnFullscreenButtonHoverOff()
 {
     ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
     image->SetAlpha(0.8f);
-}
+}*/
 
 void MainMenu::OnGeneralUp()
 {

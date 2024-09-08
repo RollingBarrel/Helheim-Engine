@@ -67,8 +67,10 @@ private:
     void OnKeyboardButtonClick();
     void OnAudioButtonClick();
     void OnSettingsButtonClick();
-    void OnVSyncButtonClick();
-    void OnFullscreenButtonClick();
+    void OnVSyncButtonOnClick();
+    void OnVSyncButtonOffClick();
+    void OnFullscreenButtonOnClick();
+    void OnFullscreenButtonOffClick();
 	void OnSlide(SETTING_TYPE type, DIRECTION direction, float step); // step is the increment/decrement amount, usually 0.01f (1%) or 0.1f (10%)
 
 
@@ -83,8 +85,8 @@ private:
 	void OnGeneralVolumeHover();
     void OnMusicVolumeHover();
     void OnEffectsVolumeHover();
-    void OnVSyncButtonHover();
-    void OnFullscreenButtonHover();
+    //void OnVSyncButtonHover();
+    //void OnFullscreenButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
@@ -97,8 +99,8 @@ private:
     void OnGeneralVolumeHoverOff();
     void OnMusicVolumeHoverOff();
     void OnEffectsVolumeHoverOff();
-    void OnVSyncButtonHoverOff();
-    void OnFullscreenButtonHoverOff();
+    //void OnVSyncButtonHoverOff();
+    //void OnFullscreenButtonHoverOff();
 
     void OnGeneralUp();
     void OnGeneralDown();
@@ -234,13 +236,19 @@ private:
     GameObject* mEffectsVolumeDown = nullptr;
 
     // VSync
-    GameObject* mVSyncButtonGO = nullptr;
-    ButtonComponent* mVSyncButton = nullptr;
-    ImageComponent* mVSyncImage = nullptr;
+    GameObject* mVSyncButtonOnGO = nullptr;
+    GameObject* mVSyncButtonOffGO = nullptr;
+    GameObject* mVSyncImageOn_On = nullptr;
+    GameObject* mVSyncImageOff_On = nullptr;
+    ButtonComponent* mVSyncOnButton = nullptr;
+    ButtonComponent* mVSyncOffButton = nullptr;
 	// Fullscreen
-    GameObject* mFullscreenButtonGO = nullptr;
-    ImageComponent* mFullscreenImage = nullptr;
-    ButtonComponent* mFullscreenButton = nullptr;
+    GameObject* mFullscreenButtonOnGO = nullptr;
+    GameObject* mFullscreenButtonOffGO = nullptr;
+    ButtonComponent* mFullscreenOnButton = nullptr;
+    ButtonComponent* mFullscreenOffButton = nullptr;
+    GameObject* mFullscreenImageOn_On = nullptr;
+    GameObject* mFullscreenImageOff_On = nullptr;
 
     GameObject* mAudioManagerGO = nullptr;
     AudioManager* mAudioManager = nullptr;
