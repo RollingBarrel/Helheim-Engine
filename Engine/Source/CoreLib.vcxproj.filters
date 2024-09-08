@@ -2143,5 +2143,8 @@
     <None Include="..\Game\Assets\Shaders\Noise.comp">
       <Filter>Shaders</Filter>
     </None>
+    <None Include="..\Game\Assets\Shaders\Postpo.comp">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
