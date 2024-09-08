@@ -172,14 +172,14 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         mCurrentTime = 0.0f;
         mIsEntering = true;
         mPlayer = collisionData->collidedWith;
+
         if (mPlayer)
         {
-            mPlayerAnimation = reinterpret_cast<AnimationComponent*>(mPlayer->GetComponent(ComponentType::ANIMATION));
+            mPlayerAnimation = reinterpret_cast<AnimationComponent*>(mPlayer->GetComponentInChildren(ComponentType::ANIMATION));
             mPlayerAnimation->SendTrigger("tWalkForward", 0.2f);
             mPlayerAnimation->SendSpineTrigger("tWalkForward", 0.2f);
+            mFirstPlayerPos = mPlayer->GetWorldPosition();
         }
-
-        mFirstPlayerPos = mPlayer->GetWorldPosition();
 
         if (mIsAtStart)
         {
