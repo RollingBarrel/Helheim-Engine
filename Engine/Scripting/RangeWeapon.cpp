@@ -48,6 +48,7 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 	if (GameManager::GetInstance()->GetPoolManager())
 	{
 		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+		bullet->SetWorldRotation(GameManager::GetInstance()->GetPlayer()->GetWorldRotation());
 		RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		bullet->SetEnabled(false);
 

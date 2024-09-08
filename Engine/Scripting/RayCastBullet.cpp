@@ -56,7 +56,7 @@ void RayCastBullet::Update()
 	{
 		if (mHit.IsValid() && mHitParticles)
 		{
-			mHitParticles->SetEnable(true);
+			mHitParticles->GetOwner()->SetEnabled(true);
 		}
 
 		if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime()))
@@ -97,6 +97,6 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 	if (mHitParticles)
 	{
 		mHitParticles->GetOwner()->SetWorldPosition(mHitPoint);
-		mHitParticles->SetEnable(false);
+		mHitParticles->GetOwner()->SetEnabled(false);
 	}
 }
