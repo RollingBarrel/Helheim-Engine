@@ -241,12 +241,16 @@ void Sanity::OnCard1Click()
 
 void Sanity::OnCard1HoverOn()
 {
-    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(0.2f));
+    if (mCard1Hovered) return;
+    mCard1Hovered = true;
+    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
 }
 
 void Sanity::OnCard1HoverOff()
 {
-    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Div(0.2f));
+    if (!mCard1Hovered) return;
+    mCard1Hovered = false;
+    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Div(1.2f));
 }
 
 void Sanity::OnCard2Click()
@@ -262,12 +266,16 @@ void Sanity::OnCard2Click()
 
 void Sanity::OnCard2HoverOn()
 {
-    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(0.2f));
+    if (mCard2Hovered) return;
+    mCard2Hovered = true;
+    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
 }
 
 void Sanity::OnCard2HoverOff()
 {
-    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Div(0.2f));
+    if (!mCard2Hovered) return;
+    mCard2Hovered = false;
+    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Div(1.2f));
 }
 
 void Sanity::OnCard3Click()
@@ -283,10 +291,14 @@ void Sanity::OnCard3Click()
 
 void Sanity::OnCard3HoverOn()
 {
-    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(0.2f));
+    if (mCard3Hovered) return;
+    mCard3Hovered = true;
+    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));
 }
 
 void Sanity::OnCard3HoverOff()
 {
-    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(0.2f));
+    if (!mCard3Hovered) return;
+    mCard3Hovered = false;
+    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(1.2f));
 }
