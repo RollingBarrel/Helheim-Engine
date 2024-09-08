@@ -66,7 +66,11 @@ enum class SFX
 	ENEMY_ROBOT_HIT,
 
 	ENEMY_CREATURE_CHARGE,
-	ENEMY_CREATURE_LASER
+	ENEMY_CREATURE_LASER,
+
+	ENEMY_EXPLOSIVE_STEPS,
+	ENEMY_EXPLOSIVE_PREEXPLOSION,
+	ENEMY_EXPLOSIVE_EXPLOSION,
 };
 
 namespace FMOD 
@@ -203,5 +207,9 @@ private:
 
 		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
+
+		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav.wav"},
+		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
+		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion.wav"},
 	};
 };

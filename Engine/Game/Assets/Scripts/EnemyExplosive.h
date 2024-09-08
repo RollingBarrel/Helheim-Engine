@@ -16,6 +16,7 @@ public:
 	void Start() override;
 	void Charge() override;
 	void Attack() override;
+	void PlayStepAudio() override;
 
 private:
 	void ChargeWarningArea();
@@ -25,5 +26,9 @@ private:
 	GameObject* mExplosionParticle = nullptr;
 	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
 	PlayerController* playerScript = nullptr;
+
+	int mMovingSound = -1;
+	int mChargeSound = -1;
+	int mAttackSound = -1;
 
 };
