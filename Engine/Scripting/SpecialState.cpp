@@ -44,9 +44,7 @@ void SpecialState::Enter()
 	{
 		mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
 		mSpecialWeapon->Enter();
-	}
-
-	
+	}	
 }
 
 void SpecialState::Exit()

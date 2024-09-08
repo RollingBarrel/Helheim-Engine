@@ -37,13 +37,13 @@ StateType GrenadeState::HandleInput()
         return StateType::SPECIAL;
     }
 
-    if (mPlayerController->GetSwitchState()->IsReady() &&
-        (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
-    {
-        mPlayerController->GetSwitchState()->ResetCooldown();
-        return StateType::SWITCH;
-    }
+    //if (mPlayerController->GetSwitchState()->IsReady() &&
+    //    (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
+    //        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
+    //{
+    //    mPlayerController->GetSwitchState()->ResetCooldown();
+    //    return StateType::SWITCH;
+    //}
 
     if (mPlayerController->GetReloadState()->IsReady() &&
         (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||

@@ -250,7 +250,7 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -808,7 +808,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mBlueBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mMachinegun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -829,7 +831,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mRedBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mShootgun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -857,7 +861,9 @@ void PlayerController::UseEnergy(int energy)
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
-        mEquippedSpecialGO->SetEnabled(false);
+
+        if(mEquippedSpecialGO)
+            mEquippedSpecialGO->SetEnabled(false);
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
