@@ -1,0 +1,24 @@
+{
+    "Name": "emissive panel level 2 3",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        0.0,
+        0.0
+    ],
+    "BaseColorTex": 1680713172,
+    "MetallicRoughTex": 1680713173,
+    "NormalTex": 1680713174,
+    "EmissiveTex": 1680713175,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

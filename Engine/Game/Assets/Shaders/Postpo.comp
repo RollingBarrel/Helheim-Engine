@@ -1,0 +1,41 @@
+#version 460 core
+
+uniform layout(binding = 0, rgba32f) restrict image2D screenImage;
+layout(binding = 0) uniform sampler2D bluredEmissive;
+uniform float bloomIntensity;
+
+vec3 ACESFilm(in vec3 x)
+{
+	float a = 2.51f;
+	float b = 0.03f;
+	float c = 2.43f;
+	float d = 0.59f;
+	float e = 0.14f;
+	return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
+}
+
+layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
+void main()
+{
+	ivec2 imgSize = imageSize(screenImage);
+	if(gl_GlobalInvocationID.x < imgSize.x && gl_GlobalInvocationID.y < imgSize.y)
+	{
+		vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(imgSize);
+		vec4 screenColor = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
+
+		//bloom
+		screenColor.rgb += texture(bluredEmissive, uv).rgb * bloomIntensity;
+
+		//LDR color with reinhard tone Mapping
+		//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
+		//LDR color with ACES filmic tone Mapping
+		vec3 ldrCol = ACESFilm(screenColor.rgb);
+
+		//Gamma correction
+		ldrCol = pow(ldrCol, vec3(1/2.2));
+
+		//Output
+		vec4 outColor = vec4(ldrCol, screenColor.a );	
+		imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), outColor);
+	}
+}
