@@ -36,71 +36,83 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
+void ModuleEngineResource::ImportMeta(const std::string& meta)
+{
+	std::string assetsPath = meta.substr(0, meta.find_last_of('.'));
+	if (!EngineApp->GetFileSystem()->Exists(assetsPath.c_str()))
+	{
+		EngineApp->GetFileSystem()->RemoveFile(meta.c_str());
+		return;
+	}
+
+	char* fileBuffer = nullptr;
+	if (!EngineApp->GetFileSystem()->Load(meta.c_str(), &fileBuffer))
+	{
+		LOG("Not able to open .emeta file");
+		return;
+	}
+
+	rapidjson::Document document;
+	rapidjson::ParseResult result = document.Parse(fileBuffer);
+	if (!result)
+	{
+		// Handle parsing error
+		LOG("Not able to load .emeta file");
+		RELEASE_ARRAY(fileBuffer);
+		return;
+	}
+
+	unsigned int uid = 0;
+	Resource::Type type = Resource::Type::Unknown;
+
+	assert(document.HasMember("uid") && "Meta has no uid");
+	uid = document["uid"].GetInt();
+	int64_t metaAssetModTime;
+	//Mod time
+	assert(document.HasMember("modTime") && "Meta has no mod time");
+	metaAssetModTime = document["modTime"].GetInt64();
+	int64_t metaCreationTime = EngineApp->GetFileSystem()->GetCreationTime(meta.c_str());
+	int64_t assetModTime = EngineApp->GetFileSystem()->GetLastModTime(assetsPath.c_str());
+
+	//if the meta time is very different compared to the time it stores inside the date has probably been modified by a git clone
+	if (metaCreationTime > (metaAssetModTime + 10))
+	{
+
+		int64_t  diff = metaCreationTime - metaAssetModTime;
+		metaAssetModTime += diff;
+	}
+	const char* libraryFile = EngineApp->GetFileSystem()->GetLibraryFile(uid);
+	if (metaAssetModTime < assetModTime)
+	{
+		ImportFile(assetsPath.c_str(), uid);
+	}
+	else if (!EngineApp->GetFileSystem()->Exists(libraryFile))
+	{
+		ImportFile(assetsPath.c_str(), uid, false);
+	}
+	delete[] libraryFile;
+
+	if (fileBuffer)
+	{
+		delete[] fileBuffer;
+	}
+}
+
 bool ModuleEngineResource::Init()
 {
 	std::vector<std::string> metas;
 	EngineApp->GetFileSystem()->DiscoverFiles("Assets", ".emeta", metas);
-	std::string assetsPath;
-	for (std::string meta : metas)
+	std::vector<unsigned int> materials;
+	for (unsigned int i = 0; i < metas.size(); ++i)
 	{
-		assetsPath = meta.substr(0, meta.find_last_of('.'));
-		if (!EngineApp->GetFileSystem()->Exists(assetsPath.c_str()))
-		{
-			EngineApp->GetFileSystem()->RemoveFile(meta.c_str());
-			continue;
-		}
-
-		char* fileBuffer = nullptr;
-		if (!EngineApp->GetFileSystem()->Load(meta.c_str(), &fileBuffer))
-		{
-			LOG("Not able to open .emeta file");
-			continue;
-		}
-
-		rapidjson::Document document;
-		rapidjson::ParseResult result = document.Parse(fileBuffer);
-		if (!result)
-		{
-			// Handle parsing error
-			LOG("Not able to load .emeta file");
-			RELEASE_ARRAY(fileBuffer);
-			continue;
-		}
-
-		unsigned int uid = 0;
-		Resource::Type type = Resource::Type::Unknown;
-
-		assert(document.HasMember("uid") && "Meta has no uid");
-		uid = document["uid"].GetInt();
-		int64_t metaAssetModTime;
-		//Mod time
-		assert(document.HasMember("modTime") && "Meta has no mod time");
-		metaAssetModTime = document["modTime"].GetInt64();
-		int64_t metaCreationTime = EngineApp->GetFileSystem()->GetCreationTime(meta.c_str());
-		int64_t assetModTime = EngineApp->GetFileSystem()->GetLastModTime(assetsPath.c_str());
-
-		//if the meta time is very different compared to the time it stores inside the date has probably been modified by a git clone
-		if (metaCreationTime > (metaAssetModTime + 10))
-		{
-
-			int64_t  diff = metaCreationTime - metaAssetModTime;
-			metaAssetModTime += diff;
-		}
-		const char* libraryFile = EngineApp->GetFileSystem()->GetLibraryFile(uid);
-		if (metaAssetModTime < assetModTime)
-		{
-			ImportFile(assetsPath.c_str(), uid);
-		}
-		else if (!EngineApp->GetFileSystem()->Exists(libraryFile))
-		{
-			ImportFile(assetsPath.c_str(), uid, false);
-		}
-		delete[] libraryFile;
-
-		if (fileBuffer) 
-		{
-			delete[] fileBuffer;
-		}
+		if (metas[i].find(".mat.") == std::string::npos)
+			ImportMeta(metas[i]);
+		else
+			materials.push_back(i);
+	}
+	for (unsigned int idx : materials)
+	{
+		ImportMeta(metas[idx]);
 	}
 	return true;
 }
