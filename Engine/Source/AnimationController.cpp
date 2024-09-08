@@ -130,7 +130,6 @@ void AnimationController::GetTransform(GameObject* model)
 			return;
 		}
 
-
 		static float lambda;
 		static int keyIndex;
 
@@ -140,14 +139,23 @@ void AnimationController::GetTransform(GameObject* model)
 
 			model->SetLocalPosition(Interpolate(channel->positions[keyIndex - 1], channel->positions[keyIndex], lambda));
 		}
+
 		if (channel->hasRotation)
 		{
-			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
+			if (model->GetName() != "Hips")
+			{
+				CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-			model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+				model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+
+				//if (channel->hasTranslation || channel->hasRotation)
+				//	model->SetLocalScale(model->GetLocalScale());
+			}
+			else
+			{
+				LOG("JUAN");
+			}
 		}
-		//if (channel->hasTranslation || channel->hasRotation)
-		//	model->SetLocalScale(model->GetLocalScale());
 	}
 
 }
@@ -194,21 +202,28 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 			}
 			if (channel->hasRotation)
 			{
-				CalculateIndexAndLambda(channel, "Rotation", mStartTransitionTime, keyIndex, lambda);
-
-				std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
-				auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
-
-				if (upperBoundIterator != rotTimeStampsVector.end())
+				if (model->GetName() != "Hips")
 				{
-					newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+					CalculateIndexAndLambda(channel, "Rotation", mStartTransitionTime, keyIndex, lambda);
+
+					std::vector<float> rotTimeStampsVector(channel->rotTimeStamps.get(), channel->rotTimeStamps.get() + channel->numRotations);
+					auto upperBoundIterator = std::upper_bound(rotTimeStampsVector.begin(), rotTimeStampsVector.end(), mClipStartTime);
+
+					if (upperBoundIterator != rotTimeStampsVector.end())
+					{
+						newClipIndex = std::distance(rotTimeStampsVector.begin(), upperBoundIterator);
+					}
+					else
+					{
+						newClipIndex = channel->numPositions - 1;
+					}
+
+					model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 				}
 				else
 				{
-					newClipIndex = channel->numPositions - 1;
+					LOG("PACO")
 				}
-
-				model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 			}
 			//if(channel->hasTranslation || channel->hasRotation)
 			//	model->SetLocalScale(model->GetLocalScale());

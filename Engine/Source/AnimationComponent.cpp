@@ -166,9 +166,6 @@ void AnimationComponent::OnReset()
 	}
 }
 
-
-
-
 void AnimationComponent::SetAnimSpeed(float speed)
 {
 	mSpeed = speed;
