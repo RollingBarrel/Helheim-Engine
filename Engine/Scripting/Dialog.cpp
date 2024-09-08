@@ -109,19 +109,19 @@ void Dialog::OnClick()
     }
 
     // Swap between Protagonist and Wife images
-    if (*mProtagonistImage->GetAlpha() == 0.5f)
+    if (!mProtagonistImage->IsEnabled())
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_MALE);
 
-        mProtagonistImage->SetAlpha(1.0f);
-        mWifeImage->SetAlpha(0.5f);
+        mProtagonistImage->SetEnable(true);
+        mWifeImage->SetEnable(false);
     }
     else
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_FEMALE);
 
-        mProtagonistImage->SetAlpha(0.5f);
-        mWifeImage->SetAlpha(1.0f);
+        mProtagonistImage->SetEnable(false);
+        mWifeImage->SetEnable(true);
     }
 
     mCurrentDialog++;
