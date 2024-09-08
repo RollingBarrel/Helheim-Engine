@@ -308,6 +308,8 @@ bool ModuleOpenGL::Init()
 	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Volumetric.comp";
 	mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	sourcesPaths[0] = "Postpo.comp";
+	mPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	//sourcesPaths[0] = "GameVertex.glsl";
 	//sourcesPaths[1] = "Fog.glsl";
@@ -953,8 +955,8 @@ void ModuleOpenGL::SetBloomIntensity(float intensity)
 	else if (intensity > 1.0f)
 		intensity = 1.0f;
 	mBloomIntensity = intensity;
-	glUseProgram(mPbrLightingPassProgramId);
-	glUniform1f(glGetUniformLocation(mPbrLightingPassProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(mPostpoProgramId);
+	glUniform1f(glGetUniformLocation(mPostpoProgramId, "bloomIntensity"), mBloomIntensity);
 	glUseProgram(0);
 }
 
@@ -1373,7 +1375,7 @@ void ModuleOpenGL::Draw()
 
 		//dual filter blur
 		BlurTexture(mSSAO, true);
-		
+
 		//Gausian blur
 		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
 		//glActiveTexture(GL_TEXTURE0);
@@ -1417,9 +1419,6 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 
-	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive);
-
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "LightingPass");
@@ -1443,12 +1442,10 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_CUBE_MAP, (mCurrSkyBox) ? mCurrSkyBox->GetIrradianceTextureId() : 0);
 	glActiveTexture(GL_TEXTURE7);
 	glBindTexture(GL_TEXTURE_2D, (mCurrSkyBox) ? mCurrSkyBox->GetEnvBRDFTexId() : 0);
-	glActiveTexture(GL_TEXTURE8);
-	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glActiveTexture(GL_TEXTURE9);
-	glBindTexture(GL_TEXTURE_2D, blurredTex);
-	glActiveTexture(GL_TEXTURE10);
 	glBindTexture(GL_TEXTURE_2D, mSSAO);
+	glActiveTexture(GL_TEXTURE10);
+	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glActiveTexture(GL_TEXTURE11);
 	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
 	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
@@ -1479,21 +1476,6 @@ void ModuleOpenGL::Draw()
 		glPopDebugGroup();
 	}
 	
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
-	glUseProgram(mVolLightProgramId);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	static float time = App->GetDt();
-	glUniform1f(1, time);
-	time += App->GetDt();
-	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	glPopDebugGroup();
-
-
-
 	//Fog using render pipeline (NO COMPUTE)
 	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Fog");
 	//glBindVertexArray(mEmptyVAO);
@@ -1515,11 +1497,36 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glPopDebugGroup();
+
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Postprocessing");
+	//Bloom
+	unsigned int blurredTex = BlurTexture(mGEmissive);
+	glUseProgram(mPostpoProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, blurredTex);
+	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 
+	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
+	//glUseProgram(mVolLightProgramId);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, mGDepth);
+	//glActiveTexture(GL_TEXTURE1);
+	//glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	//static float time = App->GetDt();
+	//glUniform1f(1, time);
+	//time += App->GetDt();
+	//glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	//glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	//glPopDebugGroup();
+
 	//Particles
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Particles");
 	glActiveTexture(GL_TEXTURE0);
 	for (size_t i = 0; i < mParticleSystems.size(); ++i)
 	{
@@ -1529,6 +1536,7 @@ void ModuleOpenGL::Draw()
 	{
 		mTrails[i]->Draw();
 	}
+	glPopDebugGroup();
 
 	//glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Highlight

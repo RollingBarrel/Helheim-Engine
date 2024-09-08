@@ -234,6 +234,7 @@ private:
 	unsigned int mGameProgramId = 0;
 	unsigned int mNoiseProgramId = 0;
 	unsigned int mVolLightProgramId = 0;
+	unsigned int mPostpoProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
