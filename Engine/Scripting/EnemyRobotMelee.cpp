@@ -74,23 +74,13 @@ void EnemyRobotMelee::Attack()
     }
 }
 
-void EnemyRobotMelee::PlayStepAudio()
+void EnemyRobotMelee::TakeDamage(float damage)
 {
-    // TODO: play sound according the animation
-    mStepTimer += App->GetDt();
-    if (mStepTimer >= mStepCooldown)
-    {
-        mStepTimer = 0;
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
-    }
+    Enemy::TakeDamage(damage);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotMelee::PlayMeleeAudio()
 {
-    const char* parameterName = "Speed";
-    //GameManager::GetInstance()->GetAudio()->PlayOneShot(
-    //    SFX::MEELEE,
-    //    mGameObject->GetWorldPosition(),
-    //    { { parameterName, 0.0f } }
-    //);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH, mGameObject->GetWorldPosition());
 }
