@@ -56,7 +56,8 @@ bool ModuleAudio::Init()
 
 	CheckError(masterBus->setVolume(0.5f));
 
-	CheckError(mCoreSystem->createChannelGroup("CustomAudio", &mChannelGroup));
+	CheckError(mCoreSystem->createChannelGroup("CustomOneShotAudio", &mOneShotChannelGroup));
+	CheckError(mCoreSystem->createChannelGroup("CustomAudio", &mAudioChannelGroup));
 	return true;
 }
 
@@ -206,10 +207,32 @@ void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, 
 	}
 }
 
-int ModuleAudio::PlayOneShot(const std::string& fileName, float3 eventPosition, int id) 
+FMOD::Channel* ModuleAudio::Play(const std::string& fileName)
 {
 	FMOD::Sound* sound = nullptr;
-	FMOD::Channel* channel = nullptr;  // Define a channel pointer
+	FMOD::Channel* channel = nullptr;
+
+	FMOD_RESULT result = mCoreSystem->createSound(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
+	CheckError(result);
+
+	// Play the sound on a new channel
+	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
+	CheckError(result);
+
+	channel->setMode(FMOD_LOOP_NORMAL);
+	channel->setChannelGroup(mAudioChannelGroup);
+	return channel;
+}
+
+void ModuleAudio::Pause(FMOD::Channel* channel, bool state)
+{
+	channel->setPaused(state);
+}
+
+FMOD::Channel* ModuleAudio::PlayOneShot(const std::string& fileName)
+{
+	FMOD::Sound* sound = nullptr;
+	FMOD::Channel* channel = nullptr; 
 
 	// Create the sound using the FMOD system
 	FMOD_RESULT result = mCoreSystem->createSound(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
@@ -218,26 +241,19 @@ int ModuleAudio::PlayOneShot(const std::string& fileName, float3 eventPosition, 
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
+	channel->setChannelGroup(mOneShotChannelGroup);
+	return channel;
+}
 
-	// Add the channel to the global channel group
-	if (channel && mChannelGroup) 
+void ModuleAudio::Release(FMOD::Channel* channel)
+{
+	FMOD::Sound* sound = nullptr;
+	channel->getCurrentSound(&sound);
+
+	if (sound)
 	{
-		channel->setChannelGroup(mChannelGroup);
-
-		// To release audio
-		channel->setCallback(ChannelEndCallback);
-
-		FMOD_VECTOR  position = { { 0 } };
-		FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };
-
-		position.x = eventPosition.x;
-		position.y = eventPosition.y;
-		position.z = eventPosition.z;
-
-		channel->set3DAttributes(&position, &velocity);  
+		sound->release();  // Release the sound when playback ends
 	}
-	mSystem->update();
-	return 0; 
 }
 
 void ModuleAudio::Stop(const FMOD::Studio::EventDescription* eventDescription, const int id)
@@ -313,6 +329,27 @@ void ModuleAudio::SetEventPosition(const FMOD::Studio::EventDescription* eventDe
 	attributes.up.y = 1.0f;
 
 	eventInstance->set3DAttributes(&attributes);
+}
+
+void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 eventPosition)
+{
+	// Add the channel to the global channel group
+	if (channel)
+	{
+		channel->setChannelGroup(mOneShotChannelGroup);
+
+		// To release audio
+		channel->setCallback(ChannelEndCallback);
+
+		FMOD_VECTOR  position = { { 0 } };
+		FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };
+
+		position.x = eventPosition.x;
+		position.y = eventPosition.y;
+		position.z = eventPosition.z;
+
+		channel->set3DAttributes(&position, &velocity);
+	}
 }
 
 int ModuleAudio::GetMemoryUsage() const
@@ -398,7 +435,8 @@ void ModuleAudio::AddIntoEventList(const FMOD::Studio::EventDescription* eventDe
 
 bool ModuleAudio::CleanUp()
 {
-	mChannelGroup->release();
+	mOneShotChannelGroup->release();
+	mAudioChannelGroup->release();
 	mSystem->unloadAll();
 	mSystem->release();
 

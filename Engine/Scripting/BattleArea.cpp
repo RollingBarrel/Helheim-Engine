@@ -5,6 +5,7 @@
 #include "GameObject.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "HudController.h"
 #include "Spawner.h"
 
@@ -228,6 +229,8 @@ void BattleArea::CloseDoors(bool close)
 
 	if (mDoor1)
 	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoor1->GetWorldPosition());
+
 		AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation1)
 		{
@@ -244,6 +247,8 @@ void BattleArea::CloseDoors(bool close)
 	}
 	if (mDoor2)
 	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoor2->GetWorldPosition());
+
 		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation2)
 		{

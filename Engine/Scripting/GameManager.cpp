@@ -163,6 +163,8 @@ void GameManager::GameOver()
     mHudController->SetScreen(SCREEN::LOSE, true);
 
     EndAudio();
+
+    mGameOverAudio = GetAudio()->Play(BGM::GAMEOVER);
     // Loading activated from HUD controller on Btn Click.
 }
 
@@ -200,6 +202,8 @@ void GameManager::PrepareAudio()
     std::string sceneName = App->GetScene()->GetName();
 
     // Commun Audio
+    mAudioManager->AddAudioToASComponent(BGM::GAMEOVER);
+
     // Player
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
@@ -260,20 +264,23 @@ void GameManager::HandleAudio()
 
 void GameManager::EndAudio()
 {
-    if (mBackgroundAudioID == -1)
+    if (mBackgroundAudioID != -1)
     {
-        return;
+        std::string sceneName = App->GetScene()->GetName();
+
+        if (sceneName == "Level1Scene" || sceneName == "TestAudio")
+        {
+            mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
+        }
+        else if (sceneName == "Level2Scene")
+        {
+            mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
+        }
     }
 
-    std::string sceneName = App->GetScene()->GetName();
-
-    if (sceneName == "Level1Scene" || sceneName == "TestAudio")
+    if (mGameOverAudio != -1)
     {
-        mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
-    }
-    else if (sceneName == "Level2Scene")
-    {
-        mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
+        mGameOverAudio = mAudioManager->Release(BGM::GAMEOVER, mGameOverAudio);
     }
 }
 

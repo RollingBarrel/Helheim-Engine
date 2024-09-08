@@ -685,6 +685,8 @@ void PlayerController::UpdateGrenadeVisuals()
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
     if (mGrenade)
     {
         mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
@@ -761,6 +763,8 @@ void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield) 
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HEAL, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
 
         float healthRatio = mShield / mMaxShield;
@@ -923,6 +927,9 @@ void PlayerController::TakeDamage(float damage)
 
     if (mShield <= 0.0f)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH1, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH2, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         GameManager::GetInstance()->GameOver();
 
         //CONTROLLER VIBRATION

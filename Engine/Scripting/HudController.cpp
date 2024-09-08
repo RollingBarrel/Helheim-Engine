@@ -15,6 +15,7 @@
 #include "ScriptComponent.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PlayerController.h"
 #include "MainMenu.h"
 #include "Keys.h"
@@ -632,6 +633,8 @@ void HudController::OnMainMenuBtnHoverOff()
 void HudController::OnCollectibleContinueBtnClick()
 {
     if (mCollectibleScreen->IsActive()) {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         SetScreen(SCREEN::COLLECTIBLE, false);
         GameManager::GetInstance()->SetPaused(false, false);
     }

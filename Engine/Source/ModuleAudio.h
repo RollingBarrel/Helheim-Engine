@@ -51,8 +51,6 @@ public:
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
 	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
 
-	int PlayOneShot(const std::string& fileName, float3 eventPosition,const int id = -1);
-
 	// Kill instance
 	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
@@ -62,6 +60,7 @@ public:
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
 	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
+	void SetAudioPosition(FMOD::Channel* eventDescription, float3 eventPosition);
 
 	int GetMemoryUsage() const;
 	void GetInstances(std::map<std::string, int>& instances) const;
@@ -70,6 +69,14 @@ public:
 	void SetVolume(std::string busname, float value) const;
 
 	static void CheckFmodErrorFunction(FMOD_RESULT result, const char* file, int line);
+
+	// Custom stream
+	FMOD::Channel* Play(const std::string& fileName);
+	FMOD::Channel* PlayOneShot(const std::string& fileName);
+
+	void Pause(FMOD::Channel* channel, bool state);
+
+	void Release(FMOD::Channel* channel);
 
 private:
 	FMOD::Studio::EventInstance* FindEventInstance(const FMOD::Studio::EventDescription* eventDescription, const int id);
@@ -88,8 +95,8 @@ private:
 	bool mPaused = false;
 	bool mStopped = false;
 
-	//std::unordered_map<int, FMOD::Sound*> mSounds;  // Map of sounds by ID
-	FMOD::ChannelGroup* mChannelGroup = nullptr;
+	FMOD::ChannelGroup* mOneShotChannelGroup = nullptr;
+	FMOD::ChannelGroup* mAudioChannelGroup = nullptr;
 
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 

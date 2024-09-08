@@ -86,6 +86,7 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
+    int mGameOverAudio = -1;
     int mLastAudioID = -1;
 
     bool mLoadLevel = false;
