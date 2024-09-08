@@ -5,8 +5,8 @@
                 "UID": 1924668730,
                 "ParentUID": 265972669,
                 "Name": "UltimateChargeGO",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.933051347732544,
@@ -15,8 +15,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.27085742354393008,
-                    -0.9627686738967896
+                    0.0023796893656253816,
+                    1.0001391172409058
                 ],
                 "Scale": [
                     1.0,
@@ -30,7 +30,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 213516520,
                         "Delay": 0.0,
                         "Duration": 2.0,
@@ -115,7 +115,7 @@
                 "ParentUID": 1924668730,
                 "Name": "UltimateChargeGO_core",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -139,7 +139,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Image": 1711944677,
                         "Delay": 0.0,
                         "Duration": 2.0,
