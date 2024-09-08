@@ -32,7 +32,7 @@ Pistol::Pistol() : RangeWeapon()
 	mBulletSpeed = 50.0f;
 	mBulletMaxSpread = 0.3f;
 
-	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb");
+	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
 	if (mFire)	mFire->SetEnabled(false);
 
 	mCameraShakeDuration = 0.15f;
@@ -66,7 +66,6 @@ void Pistol::Attack(float time)
 	{
 		mFire->SetEnabled(false);
 		mFire->SetEnabled(true);
-		mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
 	}
 }
 

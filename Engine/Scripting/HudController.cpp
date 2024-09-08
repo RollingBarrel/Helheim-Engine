@@ -15,6 +15,7 @@
 #include "ScriptComponent.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PlayerController.h"
 #include "MainMenu.h"
 #include "Keys.h"
@@ -30,10 +31,7 @@ CREATE(HudController)
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
-    MEMBER(MemberType::GAMEOBJECT, mWeaponMeleeGO);
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
-    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponMeleeGO);
-    MEMBER(MemberType::GAMEOBJECT, mSecondWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
@@ -276,6 +274,8 @@ void HudController::Controls()
 {
     if (!GameManager::GetInstance()->IsPaused()) return;
 
+    GameManager::GetInstance()->GetPlayerController()->SetIdleState();
+
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
     {
@@ -435,7 +435,7 @@ void HudController::SetHealth(float health)
 
 void HudController::SetMaxHealth(float health)
 {
-    float newWidth = health * 3;
+    float newWidth = health * 2.8;
 
     if (mHealthSlider)
     {
@@ -473,9 +473,9 @@ void HudController::SetMaxHealth(float health)
 
 void HudController::SwitchWeapon()
 {
-    if (!mWeaponMeleeGO || !mWeaponRangeGO || !mSecondWeaponMeleeGO || !mSecondWeaponRangeGO) return;
+    return;
 
-    if (mWeaponMeleeGO->IsEnabled())
+    /*if (mWeaponMeleeGO->IsEnabled())
     {
         mWeaponMeleeGO->SetEnabled(false);
         mWeaponRangeGO->SetEnabled(true);
@@ -488,7 +488,7 @@ void HudController::SwitchWeapon()
         mWeaponRangeGO->SetEnabled(false);
         mSecondWeaponMeleeGO->SetEnabled(false);
         mSecondWeaponRangeGO->SetEnabled(true);
-    }
+    }*/
 }
 
 void HudController::SetGrenadeCooldown(float cooldown)
@@ -644,6 +644,8 @@ void HudController::OnMainMenuBtnHoverOff()
 void HudController::OnCollectibleContinueBtnClick()
 {
     if (mCollectibleScreen->IsActive()) {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         SetScreen(SCREEN::COLLECTIBLE, false);
         GameManager::GetInstance()->SetPaused(false, false);
     }

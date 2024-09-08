@@ -52,7 +52,7 @@ protected:
 	virtual void Charge();
 	virtual void Attack();
 	virtual void Flee();
-	virtual void PlayStepAudio() {};
+	virtual void PlayStepAudio();
 	virtual void PlayAttackAudio() {};
 
 	bool IsPlayerInRange(float range);
@@ -109,6 +109,9 @@ protected:
 
 	//Movement
 	float3 mEnemyCollisionDirection = float3::zero;
+	// Step Sound
+	TimerScript mStepTimer;
+	float mStepDuration = 0.0f;
 
 
 	//Hit Effect
@@ -123,5 +126,7 @@ protected:
 	const float mParalyzedDuration = 5.0f;
 	TimerScript mParalyzedTimerScript;
 	float mParalysisSeverityLevel = 1.0f;
+
+
 
 };

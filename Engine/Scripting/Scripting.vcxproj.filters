@@ -19,9 +19,6 @@
     <Filter Include="UI">
       <UniqueIdentifier>{23585057-e09e-4ec7-b536-f7a1bd17e6f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sound">
-      <UniqueIdentifier>{c7e2f35b-49aa-45e2-b9b3-786402cac0a0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Weapons\Melee">
       <UniqueIdentifier>{af3599da-f46a-407d-957c-6e0c61d4d39f}</UniqueIdentifier>
     </Filter>
@@ -36,9 +33,6 @@
     </Filter>
     <Filter Include="States\Attack">
       <UniqueIdentifier>{30388697-f73b-4a9c-9e6d-8d5797552617}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sound\Test">
-      <UniqueIdentifier>{a76f27bd-e8d6-4a04-80b8-3f021cb5f28f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Pools">
       <UniqueIdentifier>{475c614c-9d94-4dab-9927-3f6f3e127db0}</UniqueIdentifier>
@@ -81,9 +75,6 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Pistol.h">
       <Filter>Weapons\Range</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h">
-      <Filter>Sound</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h">
       <Filter>States\Attack</Filter>
@@ -136,9 +127,6 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h">
       <Filter>Weapons\Range</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h">
-      <Filter>Sound\Test</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\Spawner.h">
       <Filter>Enemies</Filter>
@@ -206,6 +194,10 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\FirstTutorial.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -235,9 +227,6 @@
     </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>UI</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuManager.cpp">
-      <Filter>Sound</Filter>
     </ClCompile>
     <ClCompile Include="MeleeWeapon.cpp">
       <Filter>Weapons\Melee</Filter>
@@ -307,9 +296,6 @@
     <ClCompile Include="Hammer.cpp">
       <Filter>Weapons\Melee</Filter>
     </ClCompile>
-    <ClCompile Include="AudioTester.cpp">
-      <Filter>Sound\Test</Filter>
-    </ClCompile>
     <ClCompile Include="ObjectPool.cpp">
       <Filter>Pools</Filter>
     </ClCompile>
@@ -370,5 +356,9 @@
     <ClCompile Include="EnemyExplosiveTrap.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
+    <ClCompile Include="FirstTutorial.cpp" />
+    <ClCompile Include="RotateObject.cpp" />
+    <ClCompile Include="FlickeringLight.cpp" />
+    <ClCompile Include="SecondTutorial.cpp" />
   </ItemGroup>
 </Project>

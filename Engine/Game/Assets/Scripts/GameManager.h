@@ -35,7 +35,7 @@ public:
     HudController* GetHud() const { return mHudController; }
     bool UsingController() const;
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
-    PoolManager* GetPoolManager() const;
+    PoolManager* GetPoolManager() const; 
 
     bool IsPaused() { return mPaused; }
     void SetPaused(bool value, bool screen);
@@ -49,6 +49,11 @@ public:
     void HitStop();
     void HitStop(float duration);
     bool IsStopped() { return mStopActive; };
+
+    void ActivateSecondTutorial();
+    void UnlockSecondary();
+    void UnlockUltimate(bool unlock);
+    void UnlockGrenade(bool unlock);
 
 private:
     void PrepareAudio();
@@ -72,6 +77,8 @@ private:
     HudController* mHudController = nullptr;
     AudioManager* mAudioManager = nullptr;
     GameObject* mPoolManager = nullptr;
+    GameObject* mFirstTutorial = nullptr;
+    GameObject* mSecondTutorial = nullptr;
     TimerScript mHitStopTimer;
     Timer* mGameTimer = nullptr;
 
@@ -86,6 +93,7 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
+    int mGameOverAudio = -1;
     int mLastAudioID = -1;
 
     bool mLoadLevel = false;

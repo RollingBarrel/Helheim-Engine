@@ -23,6 +23,8 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
+    MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
+    MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
     MEMBER(MemberType::FLOAT, mDefaultHitStopTime);
     END_CREATE;
 }
@@ -80,6 +82,12 @@ void GameManager::Start()
         StartAudio();
     }
 
+    if (mFirstTutorial) 
+    {
+        mFirstTutorial->SetEnabled(true);
+        UnlockGrenade(false);
+        UnlockUltimate(false);
+    }
     mGameTimer = App->GetCurrentClock();
 }
 
@@ -163,6 +171,8 @@ void GameManager::GameOver()
     mHudController->SetScreen(SCREEN::LOSE, true);
 
     EndAudio();
+
+    mGameOverAudio = GetAudio()->Play(BGM::GAMEOVER);
     // Loading activated from HUD controller on Btn Click.
 }
 
@@ -195,19 +205,49 @@ void GameManager::HitStop(float duration)
     
 }
 
+void GameManager::ActivateSecondTutorial()
+{
+    if (mSecondTutorial)
+    {
+        if (mFirstTutorial) mFirstTutorial->SetEnabled(false);
+        mSecondTutorial->SetEnabled(true);
+    }
+}
+
+void GameManager::UnlockSecondary()
+{
+    mPlayerController->RechargeBattery(EnergyType::RED);
+}
+
+void GameManager::UnlockUltimate(bool unlock)
+{
+    mPlayerController->UnlockUltimate(unlock);
+}
+
+void GameManager::UnlockGrenade(bool unlock)
+{
+    mPlayerController->UnlockGrenade(unlock);
+}
+
 void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();
 
     // Commun Audio
+    mAudioManager->AddAudioToASComponent(BGM::GAMEOVER);
+
     // Player
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
+    mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -256,20 +296,23 @@ void GameManager::HandleAudio()
 
 void GameManager::EndAudio()
 {
-    if (mBackgroundAudioID == -1)
+    if (mBackgroundAudioID != -1)
     {
-        return;
+        std::string sceneName = App->GetScene()->GetName();
+
+        if (sceneName == "Level1Scene" || sceneName == "TestAudio")
+        {
+            mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
+        }
+        else if (sceneName == "Level2Scene")
+        {
+            mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
+        }
     }
 
-    std::string sceneName = App->GetScene()->GetName();
-
-    if (sceneName == "Level1Scene" || sceneName == "TestAudio")
+    if (mGameOverAudio != -1)
     {
-        mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
-    }
-    else if (sceneName == "Level2Scene")
-    {
-        mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
+        mGameOverAudio = mAudioManager->Release(BGM::GAMEOVER, mGameOverAudio);
     }
 }
 

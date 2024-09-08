@@ -166,9 +166,6 @@ void AnimationComponent::OnReset()
 	}
 }
 
-
-
-
 void AnimationComponent::SetAnimSpeed(float speed)
 {
 	mSpeed = speed;
@@ -206,7 +203,7 @@ void AnimationComponent::SendTrigger(const std::string& trigger, float transitio
 			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
-
+	LOG("Current Default Name:%s", currentStateName.c_str());
 }
 
 void AnimationComponent::ChangeState(const std::string& stateName, float transitionTime)
@@ -295,6 +292,7 @@ void AnimationComponent::SendSpineTrigger(const std::string& trigger, float tran
 			ChangeSpineState(mSpineStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
+	LOG("Current Spine Name:%s", currentStateName.c_str());
 }
 
 void AnimationComponent::ChangeSpineState(const std::string& stateName, float transitionTime)
@@ -385,7 +383,7 @@ void AnimationComponent::ReloadGameObjects()
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
-	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine"))
+	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine") || current->GetName() == std::string("Spine1")) //This will be changed
 	{
 		if (mOwner->GetTag() == "Player")
 		{
@@ -414,6 +412,7 @@ void AnimationComponent::LoadGameObjects(GameObject* current)
 			LoadGameObjects(child);
 		}
 	}
+
 }
 
 void AnimationComponent::LoadSpineChildren(GameObject* current)

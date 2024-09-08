@@ -20,6 +20,7 @@ private:
 	void Start() override;
 	void Attack() override;
 	void RangeAttack();
+	void TakeDamage(float damage) override;
 	void OnCollisionEnter(CollisionData* collisionData);
 
 	BoxColliderComponent* mCollider = nullptr;

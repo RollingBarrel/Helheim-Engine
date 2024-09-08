@@ -40,7 +40,7 @@ private:
     float mDamage = 0.0f;
     float mLaserDistance = 0.0f;
     float mLaserSpeed = 0.0f;
-    float mBossDistance = 5.0f;
+    float mBossDistance = 1.5f;
     float mStateTime = 0.0f;
     float mChargeTime = 1.0f;
     float mLaserEnemyDuration = 0.0f;
