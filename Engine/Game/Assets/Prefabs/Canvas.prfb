@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 545489938,
+                "UID": 822190512,
                 "ParentUID": 1,
                 "Name": "Canvas",
                 "Enabled": true,
@@ -49,57 +49,57 @@
                             {
                                 "VariableName": "mHealthGO",
                                 "MemberType": 3,
-                                "VariableData": 268512580
+                                "VariableData": 1855862806
                             },
                             {
                                 "VariableName": "mHealthGradualGO",
                                 "MemberType": 3,
-                                "VariableData": 1518677145
+                                "VariableData": 1799935326
                             },
                             {
                                 "VariableName": "mWeaponRangeGO",
                                 "MemberType": 3,
-                                "VariableData": 1473936829
+                                "VariableData": 1797407153
                             },
                             {
                                 "VariableName": "mGrenadeSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 1722727956
+                                "VariableData": 1640081340
                             },
                             {
                                 "VariableName": "mUltimateSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 66044287
+                                "VariableData": 1975071605
                             },
                             {
                                 "VariableName": "mAmmoGO",
                                 "MemberType": 3,
-                                "VariableData": 75899345
+                                "VariableData": 1050280300
                             },
                             {
                                 "VariableName": "mEnergyGO",
                                 "MemberType": 3,
-                                "VariableData": 1670430075
+                                "VariableData": 1395194126
                             },
                             {
                                 "VariableName": "mEnergyImageGO",
                                 "MemberType": 3,
-                                "VariableData": 942984148
+                                "VariableData": 2064832806
                             },
                             {
                                 "VariableName": "mFeedbackGO",
                                 "MemberType": 3,
-                                "VariableData": 2130743428
+                                "VariableData": 529075677
                             },
                             {
                                 "VariableName": "mBossHealthGO",
                                 "MemberType": 3,
-                                "VariableData": 132242164
+                                "VariableData": 307578883
                             },
                             {
                                 "VariableName": "mBossHealthGradualGO",
                                 "MemberType": 3,
-                                "VariableData": 1781404680
+                                "VariableData": 133434945
                             },
                             {
                                 "VariableName": "Pause Screen",
@@ -113,22 +113,22 @@
                             {
                                 "VariableName": "mContinueBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 514758854
+                                "VariableData": 383944931
                             },
                             {
                                 "VariableName": "mOptionsBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 1993391469
+                                "VariableData": 1190619556
                             },
                             {
                                 "VariableName": "mMainMenuBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 1321129008
+                                "VariableData": 435392765
                             },
                             {
                                 "VariableName": "mOptionsPanel",
                                 "MemberType": 3,
-                                "VariableData": 680404860
+                                "VariableData": 1083331510
                             },
                             {
                                 "VariableName": "Screens",
@@ -137,32 +137,32 @@
                             {
                                 "VariableName": "mWinScreen",
                                 "MemberType": 3,
-                                "VariableData": 1549750744
+                                "VariableData": 1436635150
                             },
                             {
                                 "VariableName": "mLoseScreen",
                                 "MemberType": 3,
-                                "VariableData": 1107082779
+                                "VariableData": 2066198121
                             },
                             {
                                 "VariableName": "mLoadingScreen",
                                 "MemberType": 3,
-                                "VariableData": 863772946
+                                "VariableData": 514596443
                             },
                             {
                                 "VariableName": "mTryAgainBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 539878407
+                                "VariableData": 772174411
                             },
                             {
                                 "VariableName": "mLoseMenuBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 2083745899
+                                "VariableData": 1584418716
                             },
                             {
                                 "VariableName": "mWinMenuBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 132985211
+                                "VariableData": 1207140432
                             },
                             {
                                 "VariableName": "Sanity & Dialog",
@@ -171,12 +171,12 @@
                             {
                                 "VariableName": "mSanityGO",
                                 "MemberType": 3,
-                                "VariableData": 1887428156
+                                "VariableData": 808579939
                             },
                             {
                                 "VariableName": "mDialogGO",
                                 "MemberType": 3,
-                                "VariableData": 1389768908
+                                "VariableData": 1923162260
                             },
                             {
                                 "VariableName": "Collectible",
@@ -185,30 +185,30 @@
                             {
                                 "VariableName": "mCollectibleScreen",
                                 "MemberType": 3,
-                                "VariableData": 1607301324
+                                "VariableData": 2008593482
                             },
                             {
                                 "VariableName": "mCollectibleTextGO",
                                 "MemberType": 3,
-                                "VariableData": 1743269052
+                                "VariableData": 633043581
                             },
                             {
                                 "VariableName": "mCollectibleContinueBtnGO",
                                 "MemberType": 3,
-                                "VariableData": 333395998
+                                "VariableData": 20842226
                             },
                             {
                                 "VariableName": "mInteractGO",
                                 "MemberType": 3,
-                                "VariableData": 854939570
+                                "VariableData": 1846549154
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1860954831,
-                "ParentUID": 545489938,
+                "UID": 1585560875,
+                "ParentUID": 822190512,
                 "Name": "HUD",
                 "Enabled": true,
                 "Active": true,
@@ -235,8 +235,8 @@
                 "Components": []
             },
             {
-                "UID": 438898102,
-                "ParentUID": 1860954831,
+                "UID": 1088930380,
+                "ParentUID": 1585560875,
                 "Name": "Second_Tutorial",
                 "Enabled": false,
                 "Active": false,
@@ -304,27 +304,27 @@
                             {
                                 "VariableName": "mShootTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1185489804
+                                "VariableData": 1603475289
                             },
                             {
                                 "VariableName": "mSecondaryTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 805400693
+                                "VariableData": 1937560481
                             },
                             {
                                 "VariableName": "mGrenadeTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1527068077
+                                "VariableData": 33308706
                             },
                             {
                                 "VariableName": "mUltimateTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 72359099
+                                "VariableData": 1584673449
                             },
                             {
                                 "VariableName": "mSkipTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1648321872
+                                "VariableData": 295732072
                             },
                             {
                                 "VariableName": "KEYBOARD",
@@ -333,27 +333,27 @@
                             {
                                 "VariableName": "mShootTutorial",
                                 "MemberType": 3,
-                                "VariableData": 1883834153
+                                "VariableData": 1052331551
                             },
                             {
                                 "VariableName": "mSecondaryTutorial",
                                 "MemberType": 3,
-                                "VariableData": 445346868
+                                "VariableData": 613973833
                             },
                             {
                                 "VariableName": "mGrenadeTutorial",
                                 "MemberType": 3,
-                                "VariableData": 1195698104
+                                "VariableData": 307617531
                             },
                             {
                                 "VariableName": "mUltimateTutorial",
                                 "MemberType": 3,
-                                "VariableData": 2045050402
+                                "VariableData": 65521412
                             },
                             {
                                 "VariableName": "mSkipTutorial",
                                 "MemberType": 3,
-                                "VariableData": 949490176
+                                "VariableData": 919699376
                             },
                             {
                                 "VariableName": "AREA",
@@ -369,8 +369,8 @@
                 ]
             },
             {
-                "UID": 1185489804,
-                "ParentUID": 438898102,
+                "UID": 1603475289,
+                "ParentUID": 1088930380,
                 "Name": "Fire_Con",
                 "Enabled": false,
                 "Active": false,
@@ -447,8 +447,8 @@
                 ]
             },
             {
-                "UID": 1883834153,
-                "ParentUID": 438898102,
+                "UID": 1052331551,
+                "ParentUID": 1088930380,
                 "Name": "Fire",
                 "Enabled": false,
                 "Active": false,
@@ -525,8 +525,8 @@
                 ]
             },
             {
-                "UID": 445346868,
-                "ParentUID": 438898102,
+                "UID": 613973833,
+                "ParentUID": 1088930380,
                 "Name": "Secondary",
                 "Enabled": false,
                 "Active": false,
@@ -603,8 +603,8 @@
                 ]
             },
             {
-                "UID": 1195698104,
-                "ParentUID": 438898102,
+                "UID": 307617531,
+                "ParentUID": 1088930380,
                 "Name": "Grenade",
                 "Enabled": false,
                 "Active": false,
@@ -681,8 +681,8 @@
                 ]
             },
             {
-                "UID": 2045050402,
-                "ParentUID": 438898102,
+                "UID": 65521412,
+                "ParentUID": 1088930380,
                 "Name": "Ultimate",
                 "Enabled": false,
                 "Active": false,
@@ -759,8 +759,8 @@
                 ]
             },
             {
-                "UID": 805400693,
-                "ParentUID": 438898102,
+                "UID": 1937560481,
+                "ParentUID": 1088930380,
                 "Name": "Secondary_Con",
                 "Enabled": false,
                 "Active": false,
@@ -837,8 +837,8 @@
                 ]
             },
             {
-                "UID": 1527068077,
-                "ParentUID": 438898102,
+                "UID": 33308706,
+                "ParentUID": 1088930380,
                 "Name": "Grenade_Con",
                 "Enabled": false,
                 "Active": false,
@@ -915,8 +915,8 @@
                 ]
             },
             {
-                "UID": 72359099,
-                "ParentUID": 438898102,
+                "UID": 1584673449,
+                "ParentUID": 1088930380,
                 "Name": "Ultimate_Con",
                 "Enabled": false,
                 "Active": false,
@@ -993,8 +993,8 @@
                 ]
             },
             {
-                "UID": 949490176,
-                "ParentUID": 438898102,
+                "UID": 919699376,
+                "ParentUID": 1088930380,
                 "Name": "Skip",
                 "Enabled": false,
                 "Active": false,
@@ -1071,8 +1071,8 @@
                 ]
             },
             {
-                "UID": 1648321872,
-                "ParentUID": 438898102,
+                "UID": 295732072,
+                "ParentUID": 1088930380,
                 "Name": "Skip_Con",
                 "Enabled": false,
                 "Active": false,
@@ -1149,8 +1149,8 @@
                 ]
             },
             {
-                "UID": 214429573,
-                "ParentUID": 1860954831,
+                "UID": 1692050848,
+                "ParentUID": 1585560875,
                 "Name": "Base_Tutorial",
                 "Enabled": false,
                 "Active": false,
@@ -1218,12 +1218,12 @@
                             {
                                 "VariableName": "mMoveTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1325835315
+                                "VariableData": 933645393
                             },
                             {
                                 "VariableName": "mDashTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1358948924
+                                "VariableData": 1238119843
                             },
                             {
                                 "VariableName": "KEYBOARD",
@@ -1232,12 +1232,12 @@
                             {
                                 "VariableName": "mMoveTutorial",
                                 "MemberType": 3,
-                                "VariableData": 651205740
+                                "VariableData": 1951480511
                             },
                             {
                                 "VariableName": "mDashTutorial",
                                 "MemberType": 3,
-                                "VariableData": 2051331854
+                                "VariableData": 403109471
                             },
                             {
                                 "VariableName": "DOOR",
@@ -1253,8 +1253,8 @@
                 ]
             },
             {
-                "UID": 1325835315,
-                "ParentUID": 214429573,
+                "UID": 933645393,
+                "ParentUID": 1692050848,
                 "Name": "Move_Con",
                 "Enabled": false,
                 "Active": false,
@@ -1331,8 +1331,8 @@
                 ]
             },
             {
-                "UID": 2051331854,
-                "ParentUID": 214429573,
+                "UID": 403109471,
+                "ParentUID": 1692050848,
                 "Name": "Dash",
                 "Enabled": false,
                 "Active": false,
@@ -1409,8 +1409,8 @@
                 ]
             },
             {
-                "UID": 651205740,
-                "ParentUID": 214429573,
+                "UID": 1951480511,
+                "ParentUID": 1692050848,
                 "Name": "Move",
                 "Enabled": false,
                 "Active": false,
@@ -1487,8 +1487,8 @@
                 ]
             },
             {
-                "UID": 1358948924,
-                "ParentUID": 214429573,
+                "UID": 1238119843,
+                "ParentUID": 1692050848,
                 "Name": "Dash_Con",
                 "Enabled": false,
                 "Active": false,
@@ -1565,8 +1565,8 @@
                 ]
             },
             {
-                "UID": 2130743428,
-                "ParentUID": 1860954831,
+                "UID": 529075677,
+                "ParentUID": 1585560875,
                 "Name": "Feedback",
                 "Enabled": true,
                 "Active": true,
@@ -1643,8 +1643,8 @@
                 ]
             },
             {
-                "UID": 725117255,
-                "ParentUID": 1860954831,
+                "UID": 1931869206,
+                "ParentUID": 1585560875,
                 "Name": "Weapon",
                 "Enabled": true,
                 "Active": true,
@@ -1721,8 +1721,8 @@
                 ]
             },
             {
-                "UID": 1473936829,
-                "ParentUID": 725117255,
+                "UID": 1797407153,
+                "ParentUID": 1931869206,
                 "Name": "Pistol",
                 "Enabled": true,
                 "Active": true,
@@ -1799,8 +1799,8 @@
                 ]
             },
             {
-                "UID": 75899345,
-                "ParentUID": 1473936829,
+                "UID": 1050280300,
+                "ParentUID": 1797407153,
                 "Name": "AmmoText",
                 "Enabled": true,
                 "Active": true,
@@ -1875,8 +1875,8 @@
                 ]
             },
             {
-                "UID": 805990870,
-                "ParentUID": 1860954831,
+                "UID": 394287336,
+                "ParentUID": 1585560875,
                 "Name": "Health",
                 "Enabled": true,
                 "Active": true,
@@ -1953,8 +1953,8 @@
                 ]
             },
             {
-                "UID": 1518677145,
-                "ParentUID": 805990870,
+                "UID": 1799935326,
+                "ParentUID": 394287336,
                 "Name": "ProvSlider",
                 "Enabled": true,
                 "Active": true,
@@ -2017,8 +2017,8 @@
                 ]
             },
             {
-                "UID": 74411317,
-                "ParentUID": 1518677145,
+                "UID": 1073277047,
+                "ParentUID": 1799935326,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": true,
@@ -2095,8 +2095,8 @@
                 ]
             },
             {
-                "UID": 1035296457,
-                "ParentUID": 1518677145,
+                "UID": 432113356,
+                "ParentUID": 1799935326,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": true,
@@ -2173,8 +2173,8 @@
                 ]
             },
             {
-                "UID": 268512580,
-                "ParentUID": 805990870,
+                "UID": 1855862806,
+                "ParentUID": 394287336,
                 "Name": "HealthSlider",
                 "Enabled": true,
                 "Active": true,
@@ -2237,8 +2237,8 @@
                 ]
             },
             {
-                "UID": 50342183,
-                "ParentUID": 268512580,
+                "UID": 2109537828,
+                "ParentUID": 1855862806,
                 "Name": "Background",
                 "Enabled": false,
                 "Active": false,
@@ -2315,8 +2315,8 @@
                 ]
             },
             {
-                "UID": 1306141879,
-                "ParentUID": 268512580,
+                "UID": 1503463121,
+                "ParentUID": 1855862806,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": true,
@@ -2393,8 +2393,8 @@
                 ]
             },
             {
-                "UID": 22143593,
-                "ParentUID": 805990870,
+                "UID": 820874935,
+                "ParentUID": 394287336,
                 "Name": "Image",
                 "Enabled": true,
                 "Active": true,
@@ -2471,8 +2471,8 @@
                 ]
             },
             {
-                "UID": 997509901,
-                "ParentUID": 1860954831,
+                "UID": 192312645,
+                "ParentUID": 1585560875,
                 "Name": "Grenade",
                 "Enabled": true,
                 "Active": true,
@@ -2549,8 +2549,8 @@
                 ]
             },
             {
-                "UID": 1722727956,
-                "ParentUID": 997509901,
+                "UID": 1640081340,
+                "ParentUID": 192312645,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": true,
@@ -2613,8 +2613,8 @@
                 ]
             },
             {
-                "UID": 819556540,
-                "ParentUID": 1722727956,
+                "UID": 862599731,
+                "ParentUID": 1640081340,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": true,
@@ -2691,8 +2691,8 @@
                 ]
             },
             {
-                "UID": 1956025842,
-                "ParentUID": 1722727956,
+                "UID": 399596179,
+                "ParentUID": 1640081340,
                 "Name": "Background",
                 "Enabled": false,
                 "Active": false,
@@ -2769,8 +2769,8 @@
                 ]
             },
             {
-                "UID": 593912794,
-                "ParentUID": 997509901,
+                "UID": 299944626,
+                "ParentUID": 192312645,
                 "Name": "Image",
                 "Enabled": true,
                 "Active": true,
@@ -2847,8 +2847,8 @@
                 ]
             },
             {
-                "UID": 1391884794,
-                "ParentUID": 1860954831,
+                "UID": 43645823,
+                "ParentUID": 1585560875,
                 "Name": "Ultimate",
                 "Enabled": true,
                 "Active": true,
@@ -2925,8 +2925,8 @@
                 ]
             },
             {
-                "UID": 66044287,
-                "ParentUID": 1391884794,
+                "UID": 1975071605,
+                "ParentUID": 43645823,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": true,
@@ -2989,8 +2989,8 @@
                 ]
             },
             {
-                "UID": 796344675,
-                "ParentUID": 66044287,
+                "UID": 1537270855,
+                "ParentUID": 1975071605,
                 "Name": "Background",
                 "Enabled": false,
                 "Active": false,
@@ -3067,8 +3067,8 @@
                 ]
             },
             {
-                "UID": 1559923901,
-                "ParentUID": 66044287,
+                "UID": 895898301,
+                "ParentUID": 1975071605,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": true,
@@ -3145,8 +3145,8 @@
                 ]
             },
             {
-                "UID": 141000117,
-                "ParentUID": 1391884794,
+                "UID": 428439005,
+                "ParentUID": 43645823,
                 "Name": "Image",
                 "Enabled": true,
                 "Active": true,
@@ -3223,8 +3223,8 @@
                 ]
             },
             {
-                "UID": 854939570,
-                "ParentUID": 1860954831,
+                "UID": 1846549154,
+                "ParentUID": 1585560875,
                 "Name": "Interact",
                 "Enabled": false,
                 "Active": false,
@@ -3301,8 +3301,8 @@
                 ]
             },
             {
-                "UID": 1586562757,
-                "ParentUID": 854939570,
+                "UID": 1218126106,
+                "ParentUID": 1846549154,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -3377,8 +3377,8 @@
                 ]
             },
             {
-                "UID": 164923754,
-                "ParentUID": 1860954831,
+                "UID": 610241253,
+                "ParentUID": 1585560875,
                 "Name": "Energy",
                 "Enabled": true,
                 "Active": true,
@@ -3455,8 +3455,8 @@
                 ]
             },
             {
-                "UID": 942984148,
-                "ParentUID": 164923754,
+                "UID": 2064832806,
+                "ParentUID": 610241253,
                 "Name": "Image",
                 "Enabled": true,
                 "Active": true,
@@ -3533,8 +3533,8 @@
                 ]
             },
             {
-                "UID": 1670430075,
-                "ParentUID": 164923754,
+                "UID": 1395194126,
+                "ParentUID": 610241253,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": true,
@@ -3609,8 +3609,8 @@
                 ]
             },
             {
-                "UID": 241759351,
-                "ParentUID": 164923754,
+                "UID": 678352408,
+                "ParentUID": 610241253,
                 "Name": "Extra",
                 "Enabled": true,
                 "Active": true,
@@ -3687,8 +3687,8 @@
                 ]
             },
             {
-                "UID": 1015015896,
-                "ParentUID": 545489938,
+                "UID": 41922945,
+                "ParentUID": 822190512,
                 "Name": "Screens",
                 "Enabled": true,
                 "Active": true,
@@ -3715,8 +3715,8 @@
                 "Components": []
             },
             {
-                "UID": 1805886554,
-                "ParentUID": 1015015896,
+                "UID": 1511343771,
+                "ParentUID": 41922945,
                 "Name": "PauseScreen",
                 "Enabled": false,
                 "Active": false,
@@ -3743,8 +3743,8 @@
                 "Components": []
             },
             {
-                "UID": 387102012,
-                "ParentUID": 1805886554,
+                "UID": 838502525,
+                "ParentUID": 1511343771,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -3821,8 +3821,8 @@
                 ]
             },
             {
-                "UID": 103000528,
-                "ParentUID": 1805886554,
+                "UID": 119015209,
+                "ParentUID": 1511343771,
                 "Name": "VerticalBackground",
                 "Enabled": true,
                 "Active": false,
@@ -3899,8 +3899,8 @@
                 ]
             },
             {
-                "UID": 1159799504,
-                "ParentUID": 103000528,
+                "UID": 1684513015,
+                "ParentUID": 119015209,
                 "Name": "Logo",
                 "Enabled": true,
                 "Active": false,
@@ -3977,8 +3977,8 @@
                 ]
             },
             {
-                "UID": 1942246021,
-                "ParentUID": 103000528,
+                "UID": 1082197842,
+                "ParentUID": 119015209,
                 "Name": "PauseText",
                 "Enabled": true,
                 "Active": false,
@@ -4053,8 +4053,8 @@
                 ]
             },
             {
-                "UID": 514758854,
-                "ParentUID": 103000528,
+                "UID": 383944931,
+                "ParentUID": 119015209,
                 "Name": "ContinueBtn",
                 "Enabled": true,
                 "Active": false,
@@ -4135,8 +4135,8 @@
                 ]
             },
             {
-                "UID": 1258426474,
-                "ParentUID": 514758854,
+                "UID": 1785694145,
+                "ParentUID": 383944931,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -4211,8 +4211,8 @@
                 ]
             },
             {
-                "UID": 1993391469,
-                "ParentUID": 103000528,
+                "UID": 1190619556,
+                "ParentUID": 119015209,
                 "Name": "OptionsBtn",
                 "Enabled": true,
                 "Active": false,
@@ -4293,8 +4293,8 @@
                 ]
             },
             {
-                "UID": 561935905,
-                "ParentUID": 1993391469,
+                "UID": 1045853595,
+                "ParentUID": 1190619556,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -4369,8 +4369,8 @@
                 ]
             },
             {
-                "UID": 1321129008,
-                "ParentUID": 103000528,
+                "UID": 435392765,
+                "ParentUID": 119015209,
                 "Name": "MainMenuBtn",
                 "Enabled": true,
                 "Active": false,
@@ -4451,8 +4451,8 @@
                 ]
             },
             {
-                "UID": 2105246429,
-                "ParentUID": 1321129008,
+                "UID": 1823426642,
+                "ParentUID": 435392765,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -4527,8 +4527,8 @@
                 ]
             },
             {
-                "UID": 680404860,
-                "ParentUID": 1805886554,
+                "UID": 1083331510,
+                "ParentUID": 1511343771,
                 "Name": "OptionsPanel",
                 "Enabled": true,
                 "Active": false,
@@ -4605,8 +4605,8 @@
                 ]
             },
             {
-                "UID": 1428528224,
-                "ParentUID": 680404860,
+                "UID": 334464132,
+                "ParentUID": 1083331510,
                 "Name": "ControllsPanel",
                 "Enabled": true,
                 "Active": false,
@@ -4683,8 +4683,8 @@
                 ]
             },
             {
-                "UID": 3268929,
-                "ParentUID": 1428528224,
+                "UID": 1938601593,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem",
                 "Enabled": true,
                 "Active": false,
@@ -4761,8 +4761,8 @@
                 ]
             },
             {
-                "UID": 797481395,
-                "ParentUID": 3268929,
+                "UID": 1317349508,
+                "ParentUID": 1938601593,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -4837,8 +4837,8 @@
                 ]
             },
             {
-                "UID": 1522490587,
-                "ParentUID": 3268929,
+                "UID": 634343596,
+                "ParentUID": 1938601593,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -4913,8 +4913,8 @@
                 ]
             },
             {
-                "UID": 134339285,
-                "ParentUID": 1428528224,
+                "UID": 2076124885,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (1)",
                 "Enabled": true,
                 "Active": false,
@@ -4991,8 +4991,8 @@
                 ]
             },
             {
-                "UID": 861019381,
-                "ParentUID": 134339285,
+                "UID": 1351764099,
+                "ParentUID": 2076124885,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5067,8 +5067,8 @@
                 ]
             },
             {
-                "UID": 1748384745,
-                "ParentUID": 134339285,
+                "UID": 736638662,
+                "ParentUID": 2076124885,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -5143,8 +5143,8 @@
                 ]
             },
             {
-                "UID": 350904229,
-                "ParentUID": 1428528224,
+                "UID": 10328488,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (2)",
                 "Enabled": true,
                 "Active": false,
@@ -5221,8 +5221,8 @@
                 ]
             },
             {
-                "UID": 1075147590,
-                "ParentUID": 350904229,
+                "UID": 1439438755,
+                "ParentUID": 10328488,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5297,8 +5297,8 @@
                 ]
             },
             {
-                "UID": 1843112939,
-                "ParentUID": 350904229,
+                "UID": 778084974,
+                "ParentUID": 10328488,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -5373,8 +5373,8 @@
                 ]
             },
             {
-                "UID": 612305097,
-                "ParentUID": 1428528224,
+                "UID": 84775154,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (3)",
                 "Enabled": true,
                 "Active": false,
@@ -5451,8 +5451,8 @@
                 ]
             },
             {
-                "UID": 1355624612,
-                "ParentUID": 612305097,
+                "UID": 1534353995,
+                "ParentUID": 84775154,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5527,8 +5527,8 @@
                 ]
             },
             {
-                "UID": 2141134453,
-                "ParentUID": 612305097,
+                "UID": 833455486,
+                "ParentUID": 84775154,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -5603,8 +5603,8 @@
                 ]
             },
             {
-                "UID": 720191660,
-                "ParentUID": 1428528224,
+                "UID": 140424150,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (4)",
                 "Enabled": true,
                 "Active": false,
@@ -5681,8 +5681,8 @@
                 ]
             },
             {
-                "UID": 359437455,
-                "ParentUID": 720191660,
+                "UID": 1637832618,
+                "ParentUID": 140424150,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5757,8 +5757,8 @@
                 ]
             },
             {
-                "UID": 514226755,
-                "ParentUID": 720191660,
+                "UID": 1109106842,
+                "ParentUID": 140424150,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -5833,8 +5833,8 @@
                 ]
             },
             {
-                "UID": 287214491,
-                "ParentUID": 1428528224,
+                "UID": 960372484,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (5)",
                 "Enabled": true,
                 "Active": false,
@@ -5911,8 +5911,8 @@
                 ]
             },
             {
-                "UID": 1099598038,
-                "ParentUID": 287214491,
+                "UID": 2028195480,
+                "ParentUID": 960372484,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5987,8 +5987,8 @@
                 ]
             },
             {
-                "UID": 1835885832,
-                "ParentUID": 287214491,
+                "UID": 1369811500,
+                "ParentUID": 960372484,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -6063,8 +6063,8 @@
                 ]
             },
             {
-                "UID": 499184449,
-                "ParentUID": 1428528224,
+                "UID": 540577586,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (6)",
                 "Enabled": true,
                 "Active": false,
@@ -6141,8 +6141,8 @@
                 ]
             },
             {
-                "UID": 1459721484,
-                "ParentUID": 499184449,
+                "UID": 1619607478,
+                "ParentUID": 540577586,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -6217,8 +6217,8 @@
                 ]
             },
             {
-                "UID": 59038402,
-                "ParentUID": 499184449,
+                "UID": 1181365100,
+                "ParentUID": 540577586,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -6293,8 +6293,8 @@
                 ]
             },
             {
-                "UID": 795117333,
-                "ParentUID": 1428528224,
+                "UID": 1548731215,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (7)",
                 "Enabled": true,
                 "Active": false,
@@ -6371,8 +6371,8 @@
                 ]
             },
             {
-                "UID": 1688957450,
-                "ParentUID": 795117333,
+                "UID": 832237602,
+                "ParentUID": 1548731215,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -6447,8 +6447,8 @@
                 ]
             },
             {
-                "UID": 492194277,
-                "ParentUID": 795117333,
+                "UID": 91655123,
+                "ParentUID": 1548731215,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -6523,8 +6523,8 @@
                 ]
             },
             {
-                "UID": 1323305873,
-                "ParentUID": 1428528224,
+                "UID": 1496189177,
+                "ParentUID": 334464132,
                 "Name": "HorizontalItem (8)",
                 "Enabled": true,
                 "Active": false,
@@ -6601,8 +6601,8 @@
                 ]
             },
             {
-                "UID": 2059593667,
-                "ParentUID": 1323305873,
+                "UID": 753100342,
+                "ParentUID": 1496189177,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -6677,8 +6677,8 @@
                 ]
             },
             {
-                "UID": 338073115,
-                "ParentUID": 1323305873,
+                "UID": 358812717,
+                "ParentUID": 1496189177,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -6753,8 +6753,8 @@
                 ]
             },
             {
-                "UID": 1107082779,
-                "ParentUID": 1015015896,
+                "UID": 2066198121,
+                "ParentUID": 41922945,
                 "Name": "DefeatScreen",
                 "Enabled": false,
                 "Active": false,
@@ -6835,8 +6835,8 @@
                 ]
             },
             {
-                "UID": 1886465972,
-                "ParentUID": 1107082779,
+                "UID": 1478433737,
+                "ParentUID": 2066198121,
                 "Name": "PopUp",
                 "Enabled": true,
                 "Active": false,
@@ -6917,8 +6917,8 @@
                 ]
             },
             {
-                "UID": 539878407,
-                "ParentUID": 1886465972,
+                "UID": 772174411,
+                "ParentUID": 1478433737,
                 "Name": "AgainBtn",
                 "Enabled": true,
                 "Active": false,
@@ -6999,8 +6999,8 @@
                 ]
             },
             {
-                "UID": 1346970758,
-                "ParentUID": 539878407,
+                "UID": 215809098,
+                "ParentUID": 772174411,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -7075,8 +7075,8 @@
                 ]
             },
             {
-                "UID": 2083745899,
-                "ParentUID": 1886465972,
+                "UID": 1584418716,
+                "ParentUID": 1478433737,
                 "Name": "BackBtn",
                 "Enabled": true,
                 "Active": false,
@@ -7157,8 +7157,8 @@
                 ]
             },
             {
-                "UID": 729569645,
-                "ParentUID": 2083745899,
+                "UID": 1232948006,
+                "ParentUID": 1584418716,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -7233,8 +7233,8 @@
                 ]
             },
             {
-                "UID": 1549750744,
-                "ParentUID": 1015015896,
+                "UID": 1436635150,
+                "ParentUID": 41922945,
                 "Name": "VictoryScreen",
                 "Enabled": false,
                 "Active": false,
@@ -7315,8 +7315,8 @@
                 ]
             },
             {
-                "UID": 132985211,
-                "ParentUID": 1549750744,
+                "UID": 1207140432,
+                "ParentUID": 1436635150,
                 "Name": "PopUP",
                 "Enabled": true,
                 "Active": false,
@@ -7397,8 +7397,8 @@
                 ]
             },
             {
-                "UID": 863772946,
-                "ParentUID": 1015015896,
+                "UID": 514596443,
+                "ParentUID": 41922945,
                 "Name": "LoadingScreen",
                 "Enabled": false,
                 "Active": false,
@@ -7475,8 +7475,8 @@
                 ]
             },
             {
-                "UID": 1607301324,
-                "ParentUID": 1015015896,
+                "UID": 2008593482,
+                "ParentUID": 41922945,
                 "Name": "CollectibleScreen",
                 "Enabled": false,
                 "Active": false,
@@ -7535,8 +7535,8 @@
                 ]
             },
             {
-                "UID": 1001968546,
-                "ParentUID": 1607301324,
+                "UID": 1301637946,
+                "ParentUID": 2008593482,
                 "Name": "Collectible_Desciption",
                 "Enabled": true,
                 "Active": false,
@@ -7613,8 +7613,8 @@
                 ]
             },
             {
-                "UID": 1743269052,
-                "ParentUID": 1607301324,
+                "UID": 633043581,
+                "ParentUID": 2008593482,
                 "Name": "collectible_Text",
                 "Enabled": true,
                 "Active": false,
@@ -7689,8 +7689,8 @@
                 ]
             },
             {
-                "UID": 333395998,
-                "ParentUID": 1607301324,
+                "UID": 20842226,
+                "ParentUID": 2008593482,
                 "Name": "Collectible_Button",
                 "Enabled": true,
                 "Active": false,
@@ -7771,8 +7771,8 @@
                 ]
             },
             {
-                "UID": 1144039020,
-                "ParentUID": 333395998,
+                "UID": 1482326258,
+                "ParentUID": 20842226,
                 "Name": "ButtonText",
                 "Enabled": true,
                 "Active": false,
@@ -7847,8 +7847,8 @@
                 ]
             },
             {
-                "UID": 1887428156,
-                "ParentUID": 545489938,
+                "UID": 808579939,
+                "ParentUID": 822190512,
                 "Name": "Sanity",
                 "Enabled": false,
                 "Active": false,
@@ -7885,17 +7885,17 @@
                             {
                                 "VariableName": "mCard1GO",
                                 "MemberType": 3,
-                                "VariableData": 533043039
+                                "VariableData": 131352570
                             },
                             {
                                 "VariableName": "mCard2GO",
                                 "MemberType": 3,
-                                "VariableData": 2036739214
+                                "VariableData": 974090873
                             },
                             {
                                 "VariableName": "mCard3GO",
                                 "MemberType": 3,
-                                "VariableData": 1237742631
+                                "VariableData": 1760436166
                             }
                         ]
                     },
@@ -7951,8 +7951,8 @@
                 ]
             },
             {
-                "UID": 533043039,
-                "ParentUID": 1887428156,
+                "UID": 131352570,
+                "ParentUID": 808579939,
                 "Name": "Card",
                 "Enabled": true,
                 "Active": false,
@@ -8033,8 +8033,8 @@
                 ]
             },
             {
-                "UID": 1270792874,
-                "ParentUID": 533043039,
+                "UID": 1736464725,
+                "ParentUID": 131352570,
                 "Name": "Description",
                 "Enabled": true,
                 "Active": false,
@@ -8109,8 +8109,8 @@
                 ]
             },
             {
-                "UID": 2036739214,
-                "ParentUID": 1887428156,
+                "UID": 974090873,
+                "ParentUID": 808579939,
                 "Name": "Card (1)",
                 "Enabled": true,
                 "Active": false,
@@ -8191,8 +8191,8 @@
                 ]
             },
             {
-                "UID": 624150941,
-                "ParentUID": 2036739214,
+                "UID": 268040410,
+                "ParentUID": 974090873,
                 "Name": "Description",
                 "Enabled": true,
                 "Active": false,
@@ -8267,8 +8267,8 @@
                 ]
             },
             {
-                "UID": 1237742631,
-                "ParentUID": 1887428156,
+                "UID": 1760436166,
+                "ParentUID": 808579939,
                 "Name": "Card (2)",
                 "Enabled": true,
                 "Active": false,
@@ -8349,8 +8349,8 @@
                 ]
             },
             {
-                "UID": 2034670316,
-                "ParentUID": 1237742631,
+                "UID": 1050626169,
+                "ParentUID": 1760436166,
                 "Name": "Description",
                 "Enabled": true,
                 "Active": false,
@@ -8425,8 +8425,8 @@
                 ]
             },
             {
-                "UID": 644778489,
-                "ParentUID": 1887428156,
+                "UID": 469406159,
+                "ParentUID": 808579939,
                 "Name": "Image",
                 "Enabled": true,
                 "Active": false,
@@ -8503,427 +8503,8 @@
                 ]
             },
             {
-                "UID": 1389768908,
-                "ParentUID": 545489938,
-                "Name": "Dialog",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1920.0,
-                            1080.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.5040000081062317,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": false,
-                        "ScriptName": "Dialog",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mDialogGO",
-                                "MemberType": 3,
-                                "VariableData": 1389768908
-                            },
-                            {
-                                "VariableName": "mProtagonistGO",
-                                "MemberType": 3,
-                                "VariableData": 197157008
-                            },
-                            {
-                                "VariableName": "mWifeGO",
-                                "MemberType": 3,
-                                "VariableData": 1551472504
-                            },
-                            {
-                                "VariableName": "mTextGO",
-                                "MemberType": 3,
-                                "VariableData": 796944008
-                            }
-                        ]
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
-                    }
-                ]
-            },
-            {
-                "UID": 21738075,
-                "ParentUID": 1389768908,
-                "Name": "Text panel",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -300.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1500.0,
-                            300.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 796944008,
-                "ParentUID": 21738075,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -650.0,
-                            30.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tincidunt, risus ac ultricies ullamcorper, est mauris pharetra ligula, vitae posuere sem tellus et eros.",
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 1300,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 48
-                    }
-                ]
-            },
-            {
-                "UID": 1551472504,
-                "ParentUID": 1389768908,
-                "Name": "Wife - Image",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            550.0,
-                            120.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            400.0,
-                            500.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.7509999871253967,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 197157008,
-                "ParentUID": 1389768908,
-                "Name": "Protagonist - Image",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -550.0,
-                            120.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            400.0,
-                            500.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 1022490061,
-                "ParentUID": 545489938,
+                "UID": 803978698,
+                "ParentUID": 822190512,
                 "Name": "Boss",
                 "Enabled": false,
                 "Active": false,
@@ -9000,8 +8581,8 @@
                 ]
             },
             {
-                "UID": 1781404680,
-                "ParentUID": 1022490061,
+                "UID": 133434945,
+                "ParentUID": 803978698,
                 "Name": "SliderGradual",
                 "Enabled": true,
                 "Active": false,
@@ -9064,8 +8645,8 @@
                 ]
             },
             {
-                "UID": 390468538,
-                "ParentUID": 1781404680,
+                "UID": 1605362127,
+                "ParentUID": 133434945,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -9142,8 +8723,8 @@
                 ]
             },
             {
-                "UID": 1147851495,
-                "ParentUID": 1781404680,
+                "UID": 1001793776,
+                "ParentUID": 133434945,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -9220,8 +8801,8 @@
                 ]
             },
             {
-                "UID": 132242164,
-                "ParentUID": 1022490061,
+                "UID": 307578883,
+                "ParentUID": 803978698,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -9284,8 +8865,8 @@
                 ]
             },
             {
-                "UID": 877302204,
-                "ParentUID": 132242164,
+                "UID": 1764746413,
+                "ParentUID": 307578883,
                 "Name": "Background",
                 "Enabled": false,
                 "Active": false,
@@ -9362,8 +8943,8 @@
                 ]
             },
             {
-                "UID": 1636773791,
-                "ParentUID": 132242164,
+                "UID": 1079443008,
+                "ParentUID": 307578883,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -9436,6 +9017,347 @@
                         "Rows": 1,
                         "Speed": 30,
                         "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1923162260,
+                "ParentUID": 822190512,
+                "Name": "Dialog",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 486032896,
+                        "Color": [
+                            0.5245097875595093,
+                            0.5245097875595093,
+                            0.5245097875595093
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": false,
+                        "ScriptName": "Dialog",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mDialogGO",
+                                "MemberType": 3,
+                                "VariableData": 1923162260
+                            },
+                            {
+                                "VariableName": "mProtagonistGO",
+                                "MemberType": 3,
+                                "VariableData": 1468465424
+                            },
+                            {
+                                "VariableName": "mWifeGO",
+                                "MemberType": 3,
+                                "VariableData": 2129262237
+                            },
+                            {
+                                "VariableName": "mTextGO",
+                                "MemberType": 3,
+                                "VariableData": 603721741
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": false
+                    }
+                ]
+            },
+            {
+                "UID": 2129262237,
+                "ParentUID": 1923162260,
+                "Name": "Wife - Image",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 2025110164,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1468465424,
+                "ParentUID": 1923162260,
+                "Name": "Protagonist - Image",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 981065671,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 603721741,
+                "ParentUID": 1923162260,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -500.0,
+                            -123.80000305175781,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a a ",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 900,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
+                        "FontSize": 40
                     }
                 ]
             }

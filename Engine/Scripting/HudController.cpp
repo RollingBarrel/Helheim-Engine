@@ -435,7 +435,7 @@ void HudController::SetHealth(float health)
 
 void HudController::SetMaxHealth(float health)
 {
-    float newWidth = health * 3;
+    float newWidth = health * 2.8;
 
     if (mHealthSlider)
     {
