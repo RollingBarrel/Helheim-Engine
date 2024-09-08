@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1212581817,
+                "UID": 1427843905,
                 "ParentUID": 1,
                 "Name": "Lights_DEFINITIVE_LEVEL_2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 2130476212,
-                "ParentUID": 1212581817,
+                "UID": 1686764404,
+                "ParentUID": 1427843905,
                 "Name": "AREA 1",
                 "Enabled": true,
                 "Active": true,
@@ -58,8 +58,8 @@
                 "Components": []
             },
             {
-                "UID": 1887937472,
-                "ParentUID": 2130476212,
+                "UID": 1874392999,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -112,8 +112,8 @@
                 ]
             },
             {
-                "UID": 756080984,
-                "ParentUID": 2130476212,
+                "UID": 2073230575,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -166,8 +166,8 @@
                 ]
             },
             {
-                "UID": 112279307,
-                "ParentUID": 2130476212,
+                "UID": 52874874,
+                "ParentUID": 1686764404,
                 "Name": "PointLight",
                 "Enabled": true,
                 "Active": true,
@@ -211,8 +211,8 @@
                 ]
             },
             {
-                "UID": 435953435,
-                "ParentUID": 2130476212,
+                "UID": 157654479,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -256,8 +256,8 @@
                 ]
             },
             {
-                "UID": 1122832450,
-                "ParentUID": 2130476212,
+                "UID": 250041546,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -301,8 +301,8 @@
                 ]
             },
             {
-                "UID": 1376226061,
-                "ParentUID": 2130476212,
+                "UID": 292997703,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -355,8 +355,8 @@
                 ]
             },
             {
-                "UID": 1998069852,
-                "ParentUID": 2130476212,
+                "UID": 335257650,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -409,8 +409,8 @@
                 ]
             },
             {
-                "UID": 1727191408,
-                "ParentUID": 2130476212,
+                "UID": 378422670,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (3)",
                 "Enabled": true,
                 "Active": true,
@@ -463,8 +463,8 @@
                 ]
             },
             {
-                "UID": 271338686,
-                "ParentUID": 2130476212,
+                "UID": 443100579,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (3)",
                 "Enabled": true,
                 "Active": true,
@@ -508,8 +508,8 @@
                 ]
             },
             {
-                "UID": 162652793,
-                "ParentUID": 2130476212,
+                "UID": 510702570,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -553,8 +553,8 @@
                 ]
             },
             {
-                "UID": 445453264,
-                "ParentUID": 2130476212,
+                "UID": 552196686,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (5)",
                 "Enabled": true,
                 "Active": true,
@@ -598,8 +598,8 @@
                 ]
             },
             {
-                "UID": 1180564610,
-                "ParentUID": 2130476212,
+                "UID": 593133834,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -643,8 +643,8 @@
                 ]
             },
             {
-                "UID": 2010507851,
-                "ParentUID": 2130476212,
+                "UID": 633862119,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (7)",
                 "Enabled": true,
                 "Active": true,
@@ -688,8 +688,8 @@
                 ]
             },
             {
-                "UID": 540810435,
-                "ParentUID": 2130476212,
+                "UID": 674799267,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (8)",
                 "Enabled": true,
                 "Active": true,
@@ -733,8 +733,8 @@
                 ]
             },
             {
-                "UID": 834522191,
-                "ParentUID": 2130476212,
+                "UID": 715945278,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (9)",
                 "Enabled": true,
                 "Active": true,
@@ -778,8 +778,8 @@
                 ]
             },
             {
-                "UID": 1719443087,
-                "ParentUID": 2130476212,
+                "UID": 762312864,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (10)",
                 "Enabled": true,
                 "Active": true,
@@ -823,8 +823,8 @@
                 ]
             },
             {
-                "UID": 172804125,
-                "ParentUID": 2130476212,
+                "UID": 802901907,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (11)",
                 "Enabled": true,
                 "Active": true,
@@ -868,8 +868,8 @@
                 ]
             },
             {
-                "UID": 1857214547,
-                "ParentUID": 2130476212,
+                "UID": 843421329,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -918,12 +918,39 @@
                         "Range": 13.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1239393975,
-                "ParentUID": 2130476212,
+                "UID": 884149614,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (5)",
                 "Enabled": true,
                 "Active": true,
@@ -976,8 +1003,8 @@
                 ]
             },
             {
-                "UID": 1478548609,
-                "ParentUID": 2130476212,
+                "UID": 924808278,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -1026,12 +1053,39 @@
                         "Range": 13.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 599165549,
-                "ParentUID": 2130476212,
+                "UID": 965675805,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (7)",
                 "Enabled": true,
                 "Active": true,
@@ -1084,8 +1138,8 @@
                 ]
             },
             {
-                "UID": 217575723,
-                "ParentUID": 2130476212,
+                "UID": 1006334469,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (8)",
                 "Enabled": true,
                 "Active": true,
@@ -1134,12 +1188,39 @@
                         "Range": 6.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1182687925,
-                "ParentUID": 2130476212,
+                "UID": 1046923512,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (9)",
                 "Enabled": true,
                 "Active": true,
@@ -1192,8 +1273,8 @@
                 ]
             },
             {
-                "UID": 143931701,
-                "ParentUID": 2130476212,
+                "UID": 1096284801,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (10)",
                 "Enabled": true,
                 "Active": true,
@@ -1242,12 +1323,39 @@
                         "Range": 17.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1731589807,
-                "ParentUID": 2130476212,
+                "UID": 1157342418,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (11)",
                 "Enabled": true,
                 "Active": true,
@@ -1300,8 +1408,8 @@
                 ]
             },
             {
-                "UID": 1854474220,
-                "ParentUID": 2130476212,
+                "UID": 1212412629,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (12)",
                 "Enabled": true,
                 "Active": true,
@@ -1354,8 +1462,8 @@
                 ]
             },
             {
-                "UID": 1570723121,
-                "ParentUID": 2130476212,
+                "UID": 1266786630,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (12)",
                 "Enabled": true,
                 "Active": true,
@@ -1399,8 +1507,8 @@
                 ]
             },
             {
-                "UID": 1641387118,
-                "ParentUID": 2130476212,
+                "UID": 1308419988,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (13)",
                 "Enabled": true,
                 "Active": true,
@@ -1444,8 +1552,8 @@
                 ]
             },
             {
-                "UID": 330173799,
-                "ParentUID": 2130476212,
+                "UID": 1363142094,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (14)",
                 "Enabled": true,
                 "Active": true,
@@ -1489,8 +1597,8 @@
                 ]
             },
             {
-                "UID": 1246621921,
-                "ParentUID": 2130476212,
+                "UID": 1411250205,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (15)",
                 "Enabled": true,
                 "Active": true,
@@ -1534,8 +1642,8 @@
                 ]
             },
             {
-                "UID": 677548219,
-                "ParentUID": 2130476212,
+                "UID": 1459915284,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (16)",
                 "Enabled": true,
                 "Active": true,
@@ -1579,8 +1687,8 @@
                 ]
             },
             {
-                "UID": 761882191,
-                "ParentUID": 2130476212,
+                "UID": 1508162637,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (13)",
                 "Enabled": true,
                 "Active": true,
@@ -1633,8 +1741,8 @@
                 ]
             },
             {
-                "UID": 1915970957,
-                "ParentUID": 2130476212,
+                "UID": 1548821301,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (17)",
                 "Enabled": true,
                 "Active": true,
@@ -1678,8 +1786,8 @@
                 ]
             },
             {
-                "UID": 73646541,
-                "ParentUID": 2130476212,
+                "UID": 1589410344,
+                "ParentUID": 1686764404,
                 "Name": "PointLight (18)",
                 "Enabled": true,
                 "Active": true,
@@ -1723,8 +1831,8 @@
                 ]
             },
             {
-                "UID": 838938075,
-                "ParentUID": 2130476212,
+                "UID": 1629860145,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (14)",
                 "Enabled": true,
                 "Active": true,
@@ -1777,8 +1885,8 @@
                 ]
             },
             {
-                "UID": 1405595592,
-                "ParentUID": 2130476212,
+                "UID": 1670727672,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (15)",
                 "Enabled": true,
                 "Active": true,
@@ -1831,8 +1939,8 @@
                 ]
             },
             {
-                "UID": 1180903208,
-                "ParentUID": 2130476212,
+                "UID": 1711316715,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (16)",
                 "Enabled": true,
                 "Active": true,
@@ -1885,8 +1993,8 @@
                 ]
             },
             {
-                "UID": 295545198,
-                "ParentUID": 2130476212,
+                "UID": 1752323484,
+                "ParentUID": 1686764404,
                 "Name": "Spotlight (17)",
                 "Enabled": true,
                 "Active": true,
@@ -1939,8 +2047,8 @@
                 ]
             },
             {
-                "UID": 56152046,
-                "ParentUID": 1212581817,
+                "UID": 1794374568,
+                "ParentUID": 1427843905,
                 "Name": "AREA 2",
                 "Enabled": true,
                 "Active": true,
@@ -1967,8 +2075,8 @@
                 "Components": []
             },
             {
-                "UID": 1299964394,
-                "ParentUID": 56152046,
+                "UID": 1926654468,
+                "ParentUID": 1794374568,
                 "Name": "Spotlight (18)",
                 "Enabled": true,
                 "Active": true,
@@ -2021,8 +2129,8 @@
                 ]
             },
             {
-                "UID": 396369461,
-                "ParentUID": 56152046,
+                "UID": 2001148938,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight",
                 "Enabled": true,
                 "Active": true,
@@ -2071,12 +2179,39 @@
                         "Range": 15.0,
                         "CastShadow": true,
                         "Bias": 0.000029999999242136256
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1735816363,
-                "ParentUID": 56152046,
+                "UID": 2068193961,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -2125,12 +2260,39 @@
                         "Range": 12.0,
                         "CastShadow": true,
                         "Bias": 0.000029999999242136256
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1908786519,
-                "ParentUID": 56152046,
+                "UID": 2109618456,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -2183,8 +2345,8 @@
                 ]
             },
             {
-                "UID": 2075106341,
-                "ParentUID": 56152046,
+                "UID": 10034057,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight",
                 "Enabled": true,
                 "Active": true,
@@ -2237,8 +2399,8 @@
                 ]
             },
             {
-                "UID": 477866764,
-                "ParentUID": 56152046,
+                "UID": 61553597,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (3)",
                 "Enabled": true,
                 "Active": true,
@@ -2291,8 +2453,8 @@
                 ]
             },
             {
-                "UID": 22557639,
-                "ParentUID": 56152046,
+                "UID": 116275703,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -2345,8 +2507,8 @@
                 ]
             },
             {
-                "UID": 763994315,
-                "ParentUID": 56152046,
+                "UID": 173573786,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (5)",
                 "Enabled": true,
                 "Active": true,
@@ -2399,8 +2561,8 @@
                 ]
             },
             {
-                "UID": 118729955,
-                "ParentUID": 56152046,
+                "UID": 216599564,
+                "ParentUID": 1794374568,
                 "Name": "PointLight",
                 "Enabled": true,
                 "Active": true,
@@ -2444,8 +2606,8 @@
                 ]
             },
             {
-                "UID": 55118286,
-                "ParentUID": 56152046,
+                "UID": 271530533,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -2489,8 +2651,8 @@
                 ]
             },
             {
-                "UID": 839800905,
-                "ParentUID": 56152046,
+                "UID": 338018588,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -2534,8 +2696,8 @@
                 ]
             },
             {
-                "UID": 1653226351,
-                "ParentUID": 56152046,
+                "UID": 388215329,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (3)",
                 "Enabled": true,
                 "Active": true,
@@ -2579,8 +2741,8 @@
                 ]
             },
             {
-                "UID": 167287951,
-                "ParentUID": 56152046,
+                "UID": 458393297,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -2624,8 +2786,8 @@
                 ]
             },
             {
-                "UID": 1119434365,
-                "ParentUID": 56152046,
+                "UID": 525925667,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -2678,8 +2840,8 @@
                 ]
             },
             {
-                "UID": 141093718,
-                "ParentUID": 56152046,
+                "UID": 603553082,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (7)",
                 "Enabled": true,
                 "Active": true,
@@ -2732,8 +2894,8 @@
                 ]
             },
             {
-                "UID": 54319489,
-                "ParentUID": 56152046,
+                "UID": 653332097,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (8)",
                 "Enabled": true,
                 "Active": true,
@@ -2786,8 +2948,8 @@
                 ]
             },
             {
-                "UID": 501981921,
-                "ParentUID": 56152046,
+                "UID": 713971988,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (9)",
                 "Enabled": true,
                 "Active": true,
@@ -2840,8 +3002,8 @@
                 ]
             },
             {
-                "UID": 84181172,
-                "ParentUID": 56152046,
+                "UID": 768972578,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (10)",
                 "Enabled": true,
                 "Active": true,
@@ -2894,8 +3056,8 @@
                 ]
             },
             {
-                "UID": 412482414,
-                "ParentUID": 56152046,
+                "UID": 931607234,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (11)",
                 "Enabled": true,
                 "Active": true,
@@ -2948,8 +3110,8 @@
                 ]
             },
             {
-                "UID": 1717737419,
-                "ParentUID": 56152046,
+                "UID": 973449455,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (12)",
                 "Enabled": true,
                 "Active": true,
@@ -3002,8 +3164,8 @@
                 ]
             },
             {
-                "UID": 219000882,
-                "ParentUID": 56152046,
+                "UID": 1014943571,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (13)",
                 "Enabled": true,
                 "Active": true,
@@ -3052,12 +3214,39 @@
                         "Range": 3.0,
                         "CastShadow": true,
                         "Bias": 0.00007000000186963007
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1448822438,
-                "ParentUID": 56152046,
+                "UID": 1071197339,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (5)",
                 "Enabled": true,
                 "Active": true,
@@ -3101,8 +3290,8 @@
                 ]
             },
             {
-                "UID": 158327228,
-                "ParentUID": 56152046,
+                "UID": 1119166208,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -3146,8 +3335,8 @@
                 ]
             },
             {
-                "UID": 228366349,
-                "ParentUID": 56152046,
+                "UID": 1171799684,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (7)",
                 "Enabled": true,
                 "Active": true,
@@ -3191,8 +3380,8 @@
                 ]
             },
             {
-                "UID": 1838682313,
-                "ParentUID": 56152046,
+                "UID": 1216844471,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (8)",
                 "Enabled": true,
                 "Active": true,
@@ -3236,8 +3425,8 @@
                 ]
             },
             {
-                "UID": 1098194264,
-                "ParentUID": 56152046,
+                "UID": 1275395732,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (14)",
                 "Enabled": true,
                 "Active": true,
@@ -3286,12 +3475,39 @@
                         "Range": 28.0,
                         "CastShadow": true,
                         "Bias": 0.000029999999242136256
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 909151083,
-                "ParentUID": 56152046,
+                "UID": 1340700230,
+                "ParentUID": 1794374568,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -3344,8 +3560,8 @@
                 ]
             },
             {
-                "UID": 496781559,
-                "ParentUID": 56152046,
+                "UID": 1407606011,
+                "ParentUID": 1794374568,
                 "Name": "Spotlight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -3398,8 +3614,8 @@
                 ]
             },
             {
-                "UID": 919564553,
-                "ParentUID": 56152046,
+                "UID": 1478340947,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (9)",
                 "Enabled": true,
                 "Active": true,
@@ -3443,8 +3659,8 @@
                 ]
             },
             {
-                "UID": 1515204427,
-                "ParentUID": 56152046,
+                "UID": 1547335358,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (10)",
                 "Enabled": true,
                 "Active": true,
@@ -3488,8 +3704,8 @@
                 ]
             },
             {
-                "UID": 360734721,
-                "ParentUID": 56152046,
+                "UID": 1646754146,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (15)",
                 "Enabled": true,
                 "Active": true,
@@ -3533,17 +3749,44 @@
                             1.0,
                             0.0,
                             0.0,
-                            0.9271838665008545
+                            0.8910065293312073
                         ],
                         "Range": 15.0,
                         "CastShadow": true,
                         "Bias": 0.000029999999242136256
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 64156405,
-                "ParentUID": 56152046,
+                "UID": 1703286398,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (16)",
                 "Enabled": true,
                 "Active": true,
@@ -3575,7 +3818,7 @@
                             -5.656829357147217,
                             44.652931213378909,
                             -12.68356990814209,
-                            110.0
+                            269.0
                         ],
                         "Direction": [
                             0.0,
@@ -3587,17 +3830,44 @@
                             1.0,
                             0.0,
                             0.0,
-                            0.9271838665008545
+                            0.8987940549850464
                         ],
                         "Range": 15.0,
                         "CastShadow": true,
                         "Bias": 0.000029999999242136256
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1190780534,
-                "ParentUID": 56152046,
+                "UID": 1758635093,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (17)",
                 "Enabled": true,
                 "Active": true,
@@ -3650,8 +3920,8 @@
                 ]
             },
             {
-                "UID": 375564860,
-                "ParentUID": 56152046,
+                "UID": 1854085484,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (18)",
                 "Enabled": true,
                 "Active": true,
@@ -3683,7 +3953,7 @@
                             -5.656848430633545,
                             44.653133392333987,
                             -32.38035583496094,
-                            110.0
+                            269.0
                         ],
                         "Direction": [
                             0.0,
@@ -3704,8 +3974,8 @@
                 ]
             },
             {
-                "UID": 1081721275,
-                "ParentUID": 56152046,
+                "UID": 1932896456,
+                "ParentUID": 1794374568,
                 "Name": "SpotLight (19)",
                 "Enabled": true,
                 "Active": true,
@@ -3758,8 +4028,8 @@
                 ]
             },
             {
-                "UID": 1018399921,
-                "ParentUID": 56152046,
+                "UID": 1980238736,
+                "ParentUID": 1794374568,
                 "Name": "PointLight",
                 "Enabled": true,
                 "Active": true,
@@ -3803,8 +4073,8 @@
                 ]
             },
             {
-                "UID": 1320793245,
-                "ParentUID": 56152046,
+                "UID": 2036701367,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (11)",
                 "Enabled": true,
                 "Active": true,
@@ -3848,8 +4118,8 @@
                 ]
             },
             {
-                "UID": 1866564716,
-                "ParentUID": 56152046,
+                "UID": 2080005629,
+                "ParentUID": 1794374568,
                 "Name": "PointLight (12)",
                 "Enabled": true,
                 "Active": true,
@@ -3893,8 +4163,8 @@
                 ]
             },
             {
-                "UID": 985941620,
-                "ParentUID": 1212581817,
+                "UID": 2132221379,
+                "ParentUID": 1427843905,
                 "Name": "AREA 3",
                 "Enabled": true,
                 "Active": true,
@@ -3921,8 +4191,8 @@
                 "Components": []
             },
             {
-                "UID": 1705657534,
-                "ParentUID": 985941620,
+                "UID": 32428117,
+                "ParentUID": 2132221379,
                 "Name": "Spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -3975,8 +4245,8 @@
                 ]
             },
             {
-                "UID": 1489426004,
-                "ParentUID": 985941620,
+                "UID": 83181826,
+                "ParentUID": 2132221379,
                 "Name": "SpotLight",
                 "Enabled": true,
                 "Active": true,
@@ -4029,8 +4299,8 @@
                 ]
             },
             {
-                "UID": 1057324353,
-                "ParentUID": 985941620,
+                "UID": 154264867,
+                "ParentUID": 2132221379,
                 "Name": "SpotLight (1)",
                 "Enabled": true,
                 "Active": true,
@@ -4083,8 +4353,8 @@
                 ]
             },
             {
-                "UID": 306367259,
-                "ParentUID": 985941620,
+                "UID": 223746625,
+                "ParentUID": 2132221379,
                 "Name": "SpotLight (2)",
                 "Enabled": true,
                 "Active": true,
@@ -4137,8 +4407,8 @@
                 ]
             },
             {
-                "UID": 85320863,
-                "ParentUID": 985941620,
+                "UID": 292114447,
+                "ParentUID": 2132221379,
                 "Name": "SpotLight (3)",
                 "Enabled": true,
                 "Active": true,
@@ -4191,8 +4461,8 @@
                 ]
             },
             {
-                "UID": 1215560525,
-                "ParentUID": 985941620,
+                "UID": 355260694,
+                "ParentUID": 2132221379,
                 "Name": "SpotLight (4)",
                 "Enabled": true,
                 "Active": true,
@@ -4245,8 +4515,8 @@
                 ]
             },
             {
-                "UID": 836320268,
-                "ParentUID": 985941620,
+                "UID": 420425950,
+                "ParentUID": 2132221379,
                 "Name": "PointLight",
                 "Enabled": true,
                 "Active": true,

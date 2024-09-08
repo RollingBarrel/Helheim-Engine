@@ -11,6 +11,7 @@
 #include "PlayerController.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "Transform2DComponent.h"
 
 CREATE(Sanity)
 {
@@ -40,11 +41,10 @@ void Sanity::Start()
     {
         const std::vector<GameObject*> children1 = mCard1GO->GetChildren();
         mCard1Image = static_cast<ImageComponent*>(mCard1GO->GetComponent(ComponentType::IMAGE));
-        mCard1Image->SetAlpha(0.7f);
-        mCard1TitleText = static_cast<TextComponent*>(children1[0]->GetComponent(ComponentType::TEXT));
-        mCard1BuffImage = static_cast<ImageComponent*>(children1[1]->GetComponent(ComponentType::IMAGE));
-        mCard1Text = static_cast<TextComponent*>(children1[2]->GetComponent(ComponentType::TEXT));
+        //mCard1Image->SetAlpha(0.7f);
+        mCard1Text = static_cast<TextComponent*>(children1[0]->GetComponent(ComponentType::TEXT));
         mCard1Btn = static_cast<ButtonComponent*>(mCard1GO->GetComponent(ComponentType::BUTTON));
+        mCard1Transform = static_cast<Transform2DComponent*>(mCard1Image->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         mCard1Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard1Click, this)));
         mCard1Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOn, this)));
         mCard1Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOff, this)));
@@ -54,11 +54,9 @@ void Sanity::Start()
     {
         const std::vector<GameObject*> children2 = mCard2GO->GetChildren();
         mCard2Image = static_cast<ImageComponent*>(mCard2GO->GetComponent(ComponentType::IMAGE));
-        mCard2Image->SetAlpha(0.7f);
-        mCard2TitleText = static_cast<TextComponent*>(children2[0]->GetComponent(ComponentType::TEXT));
-        mCard2BuffImage = static_cast<ImageComponent*>(children2[1]->GetComponent(ComponentType::IMAGE));
-        mCard2Text = static_cast<TextComponent*>(children2[2]->GetComponent(ComponentType::TEXT));
+        mCard2Text = static_cast<TextComponent*>(children2[0]->GetComponent(ComponentType::TEXT));
         mCard2Btn = static_cast<ButtonComponent*>(mCard2GO->GetComponent(ComponentType::BUTTON));
+        mCard2Transform = static_cast<Transform2DComponent*>(mCard2Image->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         mCard2Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard2Click, this)));
         mCard2Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOn, this)));
         mCard2Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOff, this)));
@@ -68,11 +66,9 @@ void Sanity::Start()
     {
         const std::vector<GameObject*> children3 = mCard3GO->GetChildren();
         mCard3Image = static_cast<ImageComponent*>(mCard3GO->GetComponent(ComponentType::IMAGE));
-        mCard3Image->SetAlpha(0.7f);
-        mCard3TitleText = static_cast<TextComponent*>(children3[0]->GetComponent(ComponentType::TEXT));
-        mCard3BuffImage = static_cast<ImageComponent*>(children3[1]->GetComponent(ComponentType::IMAGE));
-        mCard3Text = static_cast<TextComponent*>(children3[2]->GetComponent(ComponentType::TEXT));
+        mCard3Text = static_cast<TextComponent*>(children3[0]->GetComponent(ComponentType::TEXT));
         mCard3Btn = static_cast<ButtonComponent*>(mCard3GO->GetComponent(ComponentType::BUTTON));
+        mCard3Transform = static_cast<Transform2DComponent*>(mCard3Image->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         mCard3Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard3Click, this)));
         mCard3Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOn, this)));
         mCard3Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOff, this)));
@@ -141,42 +137,21 @@ void Sanity::CreateSelection(int arena)
     if (!mCurrentBuffs.empty())
     {
         Buff buff1 = mCurrentBuffs[0];
-        mCard1TitleText->SetText(GetBuffTitle(buff1));
         mCard1Text->SetText(GetBuffDescription(buff1));
-        //mCard1BuffImage->SetImage(GetImage(buff1));
     }
 
     // Card 2
     if (mCurrentBuffs.size() > 1)
     {
         Buff buff2 = mCurrentBuffs[1];
-        mCard2TitleText->SetText(GetBuffTitle(buff2));
         mCard2Text->SetText(GetBuffDescription(buff2));
-        //mCard2BuffImage->SetImage(GetImage(buff2));
     }
 
     // Card 3
     if (mCurrentBuffs.size() > 2)
     {
         Buff buff3 = mCurrentBuffs[2];
-        mCard3TitleText->SetText(GetBuffTitle(buff3));
         mCard3Text->SetText(GetBuffDescription(buff3));
-        //mCard3BuffImage->SetImage(GetImage(buff3));
-    }
-}
-
-std::string Sanity::GetBuffTitle(const Buff& buff)
-{
-    switch (buff.getStatType()) 
-    {
-        case Buff::StatType::MOVEMENT:
-            return "Movement Buff";
-        case Buff::StatType::DAMAGE:
-            return "Damage Buff";
-        case Buff::StatType::HEALTH:
-            return "Health Buff";
-        default:
-            return "";
     }
 }
 
@@ -185,28 +160,13 @@ std::string Sanity::GetBuffDescription(const Buff& buff)
     switch (buff.getStatType())
     {
         case Buff::StatType::MOVEMENT:
-            return "Increases movement speed by " + std::to_string(((int)((buff.getValue()-1)*100))) + "%";
+            return "MOVEMENT SPEED +" + std::to_string(((int)((buff.getValue()-1)*100))) + "%";
         case Buff::StatType::DAMAGE:
-            return "Increases damage by " + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
+            return "DAMAGE +" + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
         case Buff::StatType::HEALTH:
-            return "Increases health by " + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
+            return "HEALTH +" + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
         default:
             return "";
-    }
-}
-
-unsigned int Sanity::GetImage(const Buff& buff)
-{
-    switch (buff.getStatType()) 
-    {
-        case Buff::StatType::MOVEMENT:
-            return App->GetResource()->Find("ui-speed-buff.png");
-        case Buff::StatType::DAMAGE:
-            return App->GetResource()->Find("ui-image-pistol.png");
-        case Buff::StatType::HEALTH:
-            return App->GetResource()->Find("ui-health-buff.png");
-        default:
-            return 0;
     }
 }
 
@@ -281,14 +241,16 @@ void Sanity::OnCard1Click()
 
 void Sanity::OnCard1HoverOn()
 {
-    if (mCard1Image)
-        mCard1Image->SetAlpha(0.95f);
+    if (mCard1Hovered) return;
+    mCard1Hovered = true;
+    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
 }
 
 void Sanity::OnCard1HoverOff()
 {
-    if (mCard1Image)
-        mCard1Image->SetAlpha(0.6f);
+    if (!mCard1Hovered) return;
+    mCard1Hovered = false;
+    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Div(1.2f));
 }
 
 void Sanity::OnCard2Click()
@@ -304,14 +266,16 @@ void Sanity::OnCard2Click()
 
 void Sanity::OnCard2HoverOn()
 {
-    if (mCard2Image)
-        mCard2Image->SetAlpha(0.95f);
+    if (mCard2Hovered) return;
+    mCard2Hovered = true;
+    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
 }
 
 void Sanity::OnCard2HoverOff()
 {
-    if (mCard2Image)
-        mCard2Image->SetAlpha(0.6f);
+    if (!mCard2Hovered) return;
+    mCard2Hovered = false;
+    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Div(1.2f));
 }
 
 void Sanity::OnCard3Click()
@@ -327,12 +291,14 @@ void Sanity::OnCard3Click()
 
 void Sanity::OnCard3HoverOn()
 {
-    if (mCard3Image)
-        mCard3Image->SetAlpha(0.95f);
+    if (mCard3Hovered) return;
+    mCard3Hovered = true;
+    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));
 }
 
 void Sanity::OnCard3HoverOff()
 {
-    if (mCard3Image)
-        mCard3Image->SetAlpha(0.6f);
+    if (!mCard3Hovered) return;
+    mCard3Hovered = false;
+    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(1.2f));
 }
