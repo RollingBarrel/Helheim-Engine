@@ -30,7 +30,7 @@ Pistol::Pistol() : RangeWeapon()
 	mAttackRange = 25.0f;
 
 	mBulletSpeed = 50.0f;
-	mBulletMaxSpread = 0.3f;
+	mBulletMaxSpread = 0.0f; //0.3f
 
 	mFire = App->GetScene()->InstantiatePrefab("PistolFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
 	if (mFire)	mFire->SetEnabled(false);
