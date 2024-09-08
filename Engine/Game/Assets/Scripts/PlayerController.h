@@ -86,6 +86,7 @@ public:
     float GetSwitchDuration() const { return mSwitchDuration; }
     float GetReloadDuration() const { return mReloadDuration; }
     float GetShieldPercetage() const { return ( mShield /mMaxShield) * 100.0f;}
+    float GetCurrentShield() const { return mShield; }
     float GetDamageModifier() const { return mDamageModifier; }
     GameObject* GetShootOriginGO() const { return mShootOrigin; }
 
@@ -96,12 +97,14 @@ public:
     int GetCurrentEnergy() const { return mCurrentEnergy; }
     EnergyType GetEnergyType() const { return mEnergyType; }
 
-    void SetMovementSpeed(float percentage);
+    void SetMovementSpeedStat(float percentage);
+    void SetSpeed(float speed);
     void SetWeaponDamage(float percentage); 
     void SetMaxShield(float percentage); 
 
     State* GetPlayerLowerState() const { return mLowerState; }
     State* GetPlayerUpperState() const { return mUpperState; }
+    void SetIdleState();
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
@@ -129,7 +132,10 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
-
+    void UnlockGrenade(bool unlock) { mGrenadeUnlocked = unlock; }
+    void UnlockUltimate(bool unlock) { mUltimateUnlocked = unlock; }
+    bool IsGrenadeUnlocked() const { return mGrenadeUnlocked; }
+    bool IsUltimateUnlocked() const { return mUltimateUnlocked; }
     //Hit Effect
     void ActivateHitEffect();
     
@@ -206,6 +212,7 @@ private:
 
     // Speed
     float mPlayerSpeed;
+    float mBaseSpeed = 5.5f;
 
     // Shield
     float mShield = 100.0f;
@@ -287,6 +294,9 @@ private:
     float mHitEffectTime = 0.15f;
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
+    std::vector<unsigned int> mMaterialIds;
+    bool Delay(float delay);
+
     std::vector<float4> mPlayerOgColor;
  
     // DEBUFF
@@ -297,4 +307,8 @@ private:
 
     //Dash VFX
     GameObject* mDashVFX = nullptr;
+
+    //UNLOCKED ABILITIES
+    bool mGrenadeUnlocked = true;
+    bool mUltimateUnlocked = true;
 };

@@ -1,0 +1,133 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1676243125,
+                "ParentUID": 235443142,
+                "Name": "SanityParticles",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -42.88035583496094,
+                    1.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 1.0,
+                            "MaxValue": 3.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            250.0,
+                            1.0,
+                            100.0
+                        ],
+                        "ShapeRandAngle": 7.0,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.0,
+                                "MaxValue": 1.5
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.01608579233288765,
+                                "Color": [
+                                    0.1679999828338623,
+                                    0.008735996671020985,
+                                    0.008735996671020985,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.32171592116355898,
+                                "Color": [
+                                    0.38514411449432375,
+                                    0.16977599263191224,
+                                    0.5239999890327454,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5227882266044617,
+                                "Color": [
+                                    0.6363555192947388,
+                                    0.12249599397182465,
+                                    0.6959999799728394,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.691688597202301,
+                                "Color": [
+                                    0.3219507038593292,
+                                    0.19711999595165254,
+                                    0.5600000023841858,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9812330007553101,
+                                "Color": [
+                                    0.1600000262260437,
+                                    0.011520005762577057,
+                                    0.011520005762577057,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}

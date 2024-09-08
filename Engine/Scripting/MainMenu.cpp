@@ -27,16 +27,13 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mStudioScreen);
     MEMBER(MemberType::GAMEOBJECT, mEngineScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingSliderGO);
 
     MEMBER(MemberType::GAMEOBJECT, mMainMenu);
     MEMBER(MemberType::GAMEOBJECT, mOptionsMenu);
     MEMBER(MemberType::GAMEOBJECT, mCreditsMenu);
-    MEMBER(MemberType::GAMEOBJECT, mCreditsText);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsListText);
     MEMBER(MemberType::GAMEOBJECT, mOptionsContainerGO);
-    MEMBER(MemberType::GAMEOBJECT, mControlsGO);
-    MEMBER(MemberType::GAMEOBJECT, mSettingsGO);
-    MEMBER(MemberType::GAMEOBJECT, mControlsButtonGO);
-    MEMBER(MemberType::GAMEOBJECT, mSettingsButtonGO);
 
     SEPARATOR("SETTINGS");
 	MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeSliderGO);
@@ -48,12 +45,67 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonGO);
 
-    SEPARATOR("BUTTONS");
+    SEPARATOR("Play Btn");
     MEMBER(MemberType::GAMEOBJECT, mPlayGO);
+    MEMBER(MemberType::GAMEOBJECT, mPlayText);
+    MEMBER(MemberType::GAMEOBJECT, mPlayHover);
+    MEMBER(MemberType::GAMEOBJECT, mPlayClicked);
+
+    SEPARATOR("Options Btn");
     MEMBER(MemberType::GAMEOBJECT, mOptionsGO);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsText);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsHover);
+    MEMBER(MemberType::GAMEOBJECT, mOptionsClicked);
+
+    SEPARATOR("Credits Btn");
     MEMBER(MemberType::GAMEOBJECT, mCreditsGO);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsText);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsHover);
+    MEMBER(MemberType::GAMEOBJECT, mCreditsClicked);
+
+    SEPARATOR("Quit Btn");
     MEMBER(MemberType::GAMEOBJECT, mQuitGO);
-    MEMBER(MemberType::GAMEOBJECT, mBackCreditGO);
+    MEMBER(MemberType::GAMEOBJECT, mQuitText);
+    MEMBER(MemberType::GAMEOBJECT, mQuitHover);
+    MEMBER(MemberType::GAMEOBJECT, mQuitClicked);
+
+    SEPARATOR("Keyboard Btn");
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardText);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardHover);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardClicked);
+
+    SEPARATOR("Controller Btn");
+    MEMBER(MemberType::GAMEOBJECT, mControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mControllerText);
+    MEMBER(MemberType::GAMEOBJECT, mControllerHover);
+    MEMBER(MemberType::GAMEOBJECT, mControllerClicked);
+
+    SEPARATOR("Audio Btn");
+    MEMBER(MemberType::GAMEOBJECT, mAudioGO);
+    MEMBER(MemberType::GAMEOBJECT, mAudioText);
+    MEMBER(MemberType::GAMEOBJECT, mAudioHover);
+    MEMBER(MemberType::GAMEOBJECT, mAudioClicked);
+
+    SEPARATOR("Settings Btn");
+    MEMBER(MemberType::GAMEOBJECT, mSettingsGO);
+    MEMBER(MemberType::GAMEOBJECT, mSettingsText);
+    MEMBER(MemberType::GAMEOBJECT, mSettingsHover);
+    MEMBER(MemberType::GAMEOBJECT, mSettingsClicked);
+
+    SEPARATOR("Options Screens");
+    MEMBER(MemberType::GAMEOBJECT, mControlsScreenGO);
+    MEMBER(MemberType::GAMEOBJECT, mSettingsScreenGO);
+    MEMBER(MemberType::GAMEOBJECT, mAudioScreenGO);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardScreenGO);
+
+    SEPARATOR("Audio buttons");
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeUp);
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeDown);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeUp);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeDown);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeUp);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeDown);
 
     SEPARATOR("OTHERS");
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
@@ -66,41 +118,68 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 void MainMenu::Start() 
 {
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
-    mPlayButton = static_cast<ButtonComponent*>(mPlayGO->GetComponent(ComponentType::BUTTON));
-    mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
-    mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
-    mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
-    mBackCreditButton = static_cast<ButtonComponent*>(mBackCreditGO->GetComponent(ComponentType::BUTTON));
-    mSettingsButton = static_cast<ButtonComponent*>(mSettingsButtonGO->GetComponent(ComponentType::BUTTON));
-    mControlsButton = static_cast<ButtonComponent*>(mControlsButtonGO->GetComponent(ComponentType::BUTTON));
-
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
-    mPlayButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnNewButtonClick, this)));
-    mOptionsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonClick, this)));
-    mCreditsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonClick, this)));
-    mQuitButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonClick, this)));
-    mBackCreditButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMainButtonClick, this)));
-    mBackCreditButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnBackButtonHover, this)));
-    mBackCreditButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnBackButtonHoverOff, this)));
 
+    // Main buttons
+
+    mPlayButton = static_cast<ButtonComponent*>(mPlayGO->GetComponent(ComponentType::BUTTON));
+    mPlayButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnPlayButtonClick, this)));
     mPlayButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnPlayButtonHover, this)));
-    mOptionsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHover, this)));
-    mCreditsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHover, this)));
-    mQuitButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHover, this)));
-
     mPlayButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnPlayButtonHoverOff, this)));
+
+    mOptionsButton = static_cast<ButtonComponent*>(mOptionsGO->GetComponent(ComponentType::BUTTON));
+    mOptionsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonClick, this)));
+    mOptionsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHover, this)));
     mOptionsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHoverOff, this)));
+
+    mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
+    mCreditsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonClick, this)));
+    mCreditsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHover, this)));
     mCreditsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonHoverOff, this)));
+
+    mQuitButton = static_cast<ButtonComponent*>(mQuitGO->GetComponent(ComponentType::BUTTON));
+    mQuitButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonClick, this)));
+    mQuitButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHover, this)));
     mQuitButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnQuitButtonHoverOff, this)));
 
-    mSettingsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonClick, this)));
-    mControlsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonClick, this)));
-    mSettingsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonHover, this)));
-    mControlsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonHover, this)));
-    mSettingsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonHoverOff, this)));
-    mControlsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnControlsButtonHoverOff, this)));
+    // Options buttons
 
-    mTextTransform = static_cast<Transform2DComponent*>(mCreditsText->GetComponent(ComponentType::TRANSFORM2D));
+    mSettingsButton = static_cast<ButtonComponent*>(mSettingsGO->GetComponent(ComponentType::BUTTON));
+    mSettingsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonClick, this)));
+    mSettingsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonHover, this)));
+    mSettingsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnSettingsButtonHoverOff, this)));
+
+    mControllerButton = static_cast<ButtonComponent*>(mControllerGO->GetComponent(ComponentType::BUTTON));
+    mControllerButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnControllerButtonClick, this)));
+    mControllerButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnControllerButtonHover, this)));
+    mControllerButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnControllerButtonHoverOff, this)));
+
+    mAudioButton = static_cast<ButtonComponent*>(mAudioGO->GetComponent(ComponentType::BUTTON));
+    mAudioButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnAudioButtonClick, this)));
+    mAudioButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnAudioButtonHover, this)));
+    mAudioButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnAudioButtonHoverOff, this)));
+
+    mKeyboardButton = static_cast<ButtonComponent*>(mKeyboardGO->GetComponent(ComponentType::BUTTON));
+    mKeyboardButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnKeyboardButtonClick, this)));
+    mKeyboardButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnKeyboardButtonHover, this)));
+    mKeyboardButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnKeyboardButtonHoverOff, this)));
+
+    // Others
+
+    mTextTransform = static_cast<Transform2DComponent*>(mCreditsListText->GetComponent(ComponentType::TRANSFORM2D));
+
+    static_cast<ButtonComponent*>(mGeneralVolumeUp->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnGeneralUp, this)));
+    static_cast<ButtonComponent*>(mGeneralVolumeDown->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnGeneralDown, this)));
+    static_cast<ButtonComponent*>(mMusicVolumeUp->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMusicUp, this)));
+    static_cast<ButtonComponent*>(mMusicVolumeDown->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnMusicDown, this)));
+    static_cast<ButtonComponent*>(mEffectsVolumeUp->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsUp, this)));
+    static_cast<ButtonComponent*>(mEffectsVolumeDown->GetComponent(ComponentType::BUTTON))
+        ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsDown, this)));
 
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
@@ -124,6 +203,9 @@ void MainMenu::Start()
         mBGMID = mAudioManager->Play(BGM::MAINMENU);
     }
 
+    mLoadingSlider = static_cast<SliderComponent*>(mLoadingSliderGO->GetComponent(ComponentType::SLIDER));
+    mLoadingSlider->SetValue(0.01f);
+
     // Init the volume setting sliders
     App->GetAudio()->SetVolume("bus:/", mGeneralVolumeValue);
     mGeneralVolumeSlider->SetValue(mGeneralVolumeValue);
@@ -138,19 +220,45 @@ void MainMenu::Start()
 
 void MainMenu::Update()
 {
-    Controls();
-    if (mIsInitial) 
+    if (mStudioBool) 
     {
-        if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::STUDIO) OpenMenu(MENU_TYPE::ENGINE);
-        else if (Delay(2.0f) && mCurrentMenu == MENU_TYPE::ENGINE)
+        if (mStudioTimer.DelayWithoutReset(2.0f))
+        {
+            OpenMenu(MENU_TYPE::ENGINE);
+            mStudioBool = false;
+            return;
+        }
+        else return;
+    }
+        
+    if (mEngineBool) 
+    {
+        if (mEngineTimer.DelayWithoutReset(2.0f))
         {
             OpenMenu(MENU_TYPE::SPLASH);
+            mEngineBool = false;
+            return;
         }
-        OnPlayButtonHover(); // Hover first option when the menu is first laoded
-        OnControlsButtonHover(); // Pre-hover the first option
-        return;
-    } 
+        else return;
+    }
+        
+    if (mIsInitial) 
+    {
+        if (App->GetInput()->GetKeyboardReciveInputs() ||
+            App->GetInput()->GetGameControllerReceivedInputs() ||
+            App->GetInput()->GetMouseRecieveInputs()) 
+        {
+            mIsInitial = false;
+            OpenMenu(MENU_TYPE::MAIN);
+            OnPlayButtonHover(); // Hover first option when the menu is first laoded    
+            OnControllerButtonHover(); // Pre-hover the first option
+            return;
+        }
+        else return;
+    }
 
+    Controls();
+        
     if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
@@ -158,25 +266,17 @@ void MainMenu::Update()
         else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
     }
 
-    if (mLoadlevel == true && Delay(1.0f)) 
+    if (mLoadlevel == true && mTimer.Delay(1.25f))
     {
         mAudioManager->Release(BGM::MAINMENU, mBGMID);
         App->GetScene()->Load("Assets/Scenes/Level1Scene");
     }
-
-}
-
-
-bool MainMenu::Delay(float delay)
-{
-    mTimePassed += App->GetDt();
-
-    if (mTimePassed >= delay)
+    else if (mLoadlevel == true)
     {
-        mTimePassed = 0;
-        return true;
+        if (mLoadingSlider->GetValue() < 1)
+        mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
     }
-    else return false;
+
 }
 
 void MainMenu::Controls()
@@ -205,7 +305,7 @@ void MainMenu::Controls()
             }
             else
             {
-                mSettingOption = 8;
+                mSettingOption = 10;
             }
             HoverSubMenu(static_cast<MENU_TYPE>(mSettingOption));
         }
@@ -241,7 +341,7 @@ void MainMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-            if (mSettingOption < 8)
+            if (mSettingOption < 10)
 
             {
                 mSettingOption++;
@@ -270,12 +370,6 @@ void MainMenu::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
-        if (mIsInitial) 
-        {
-            OpenMenu(MENU_TYPE::MAIN);
-            mIsInitial = false;
-            return;
-        }
         if (mCurrentMenu == MENU_TYPE::MAIN)
         {
             ClickMenu(static_cast<MENU_TYPE>(mOption));
@@ -341,20 +435,38 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
-        if (mCurrentMenu == MENU_TYPE::SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS)
+        if (mCurrentMenu == MENU_TYPE::SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO || mCurrentMenu == MENU_TYPE::KEYBOARD )
         {
 			if (mCurrentMenu == MENU_TYPE::SETTINGS)
             {
-                mSubsettingOption = 0;
+                mSubsettingOption = 3;
+                mSettingsClicked->SetEnabled(false);
                 OnSettingsButtonHover();
             }
-            else {
-                OnControlsButtonHover();
+            else if (mCurrentMenu == MENU_TYPE::CONTROLS) 
+            {
+                mSubsettingOption = 1;
+                mControllerClicked->SetEnabled(false);
+                OnControllerButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::AUDIO)
+            {
+                mSubsettingOption = 2;
+                mAudioClicked->SetEnabled(false);
+                OnAudioButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::KEYBOARD)
+            {
+                mSubsettingOption = 0;
+                mKeyboardClicked->SetEnabled(false);
+                OnKeyboardButtonHover();
             }
             OpenMenu(MENU_TYPE::OPTIONS);
         }
 		else
         {
+            mOptionsClicked->SetEnabled(false);
+            mCreditsClicked->SetEnabled(false);
 			OpenMenu(MENU_TYPE::MAIN);
 		}
     }
@@ -374,9 +486,11 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     mOptionsMenu->SetEnabled(false);
     mCreditsMenu->SetEnabled(false);
 
-    mSettingsGO->SetEnabled(false);
-    mControlsGO->SetEnabled(false);
+    mSettingsScreenGO->SetEnabled(false);
+    mControlsScreenGO->SetEnabled(false);
     mOptionsContainerGO->SetEnabled(false);
+    mAudioScreenGO->SetEnabled(false);
+    mKeyboardScreenGO->SetEnabled(false);
 
     mIsScrolling = false;
 
@@ -385,16 +499,19 @@ void MainMenu::OpenMenu(MENU_TYPE type)
     {
         case MENU_TYPE::MAIN:
             mMainMenu->SetEnabled(true);
-            mIsInitial = false;
             break;
         case MENU_TYPE::OPTIONS:
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
+            mOptionsClicked->SetEnabled(true);
+            mCreditsClicked->SetEnabled(false);
             break;
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
             mIsScrolling = true;
             mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
+            mOptionsClicked->SetEnabled(false);
+            mCreditsClicked->SetEnabled(true);
             break;
         case MENU_TYPE::LOADING:
             mLoadingScreen->SetEnabled(true);
@@ -411,12 +528,38 @@ void MainMenu::OpenMenu(MENU_TYPE type)
         case MENU_TYPE::CONTROLS:
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
-            mControlsGO->SetEnabled(true);
+            mControlsScreenGO->SetEnabled(true);
+            mControllerClicked->SetEnabled(true);
+            mAudioClicked->SetEnabled(false);
+            mKeyboardClicked->SetEnabled(false);
+            mSettingsClicked->SetEnabled(false);
+            break;
+        case MENU_TYPE::AUDIO:
+            mOptionsMenu->SetEnabled(true);
+            mOptionsContainerGO->SetEnabled(true);
+            mAudioScreenGO->SetEnabled(true);
+            mControllerClicked->SetEnabled(false);
+            mAudioClicked->SetEnabled(true);
+            mKeyboardClicked->SetEnabled(false);
+            mSettingsClicked->SetEnabled(false);
+            break;
+        case MENU_TYPE::KEYBOARD:
+            mOptionsMenu->SetEnabled(true);
+            mOptionsContainerGO->SetEnabled(true);
+            mKeyboardScreenGO->SetEnabled(true);
+            mControllerClicked->SetEnabled(false);
+            mAudioClicked->SetEnabled(false);
+            mKeyboardClicked->SetEnabled(true);
+            mSettingsClicked->SetEnabled(false);
             break;
         case MENU_TYPE::SETTINGS:
             mOptionsMenu->SetEnabled(true);
             mOptionsContainerGO->SetEnabled(true);
-            mSettingsGO->SetEnabled(true);
+            mSettingsScreenGO->SetEnabled(true);
+            mControllerClicked->SetEnabled(false);
+            mAudioClicked->SetEnabled(false);
+            mKeyboardClicked->SetEnabled(false);
+            mSettingsClicked->SetEnabled(true);
             OnGeneralVolumeHover(); // Hover the first button
             break;
     }
@@ -434,7 +577,7 @@ void MainMenu::ClickMenu(MENU_TYPE type)
 
     switch (type) {
     case MENU_TYPE::MAIN:
-        OnNewButtonClick();
+        OnPlayButtonClick();
         break;
     case MENU_TYPE::OPTIONS:
         OnOptionsButtonClick();
@@ -472,7 +615,7 @@ void MainMenu::OnCreditsButtonClick()
     OpenMenu(MENU_TYPE::CREDITS);
 }
 
-void MainMenu::OnNewButtonClick() 
+void MainMenu::OnPlayButtonClick() 
 {
     mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::LOADING);
@@ -486,17 +629,36 @@ void MainMenu::OnSplashButtonClick()
     OpenMenu(MENU_TYPE::MAIN);
 }
 
-void MainMenu::OnControlsButtonClick()
+void MainMenu::OnControllerButtonClick()
 {
-	mSettingsGO->SetEnabled(false);
     mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
     OpenMenu(MENU_TYPE::CONTROLS);
 }
 
+void MainMenu::OnAudioButtonClick()
+{
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+    OpenMenu(MENU_TYPE::AUDIO);
+}
+
+void MainMenu::OnKeyboardButtonClick()
+{
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+    OpenMenu(MENU_TYPE::KEYBOARD);
+}
+
 void MainMenu::OnSettingsButtonClick()
 {
-        mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
-        OpenMenu(MENU_TYPE::SETTINGS);
+    mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+    OpenMenu(MENU_TYPE::SETTINGS);
+    if (App->GetWindow()->IsWindowFullscreen())
+    {
+        mFullscreenImage->SetAlpha(1.0f);
+    }
+    else
+    {
+        mFullscreenImage->SetAlpha(0.5f);
+    }
 }
 
 void MainMenu::OnVSyncButtonClick()
@@ -516,6 +678,14 @@ void MainMenu::OnVSyncButtonClick()
 //TODO: Investige why this is not working.
 void MainMenu::OnFullscreenButtonClick()
 {
+    if (*mFullscreenImage->GetAlpha() == 1.0f)
+    {
+        mFullscreenImage->SetAlpha(0.5f);
+    }
+    else
+    {
+        mFullscreenImage->SetAlpha(1.0f);
+    }
     App->GetWindow()->WindowFullscreen(!App->GetWindow()->IsWindowFullscreen());
 }
 
@@ -644,10 +814,16 @@ void MainMenu::HoverSubMenu(MENU_TYPE type)
     switch (type) 
     {
         case MENU_TYPE::CONTROLS:
-            OnControlsButtonHover();
+            OnControllerButtonHover();
             break;
         case MENU_TYPE::SETTINGS:
             OnSettingsButtonHover();
+            break;
+        case MENU_TYPE::AUDIO:
+            OnAudioButtonHover();
+            break;
+        case MENU_TYPE::KEYBOARD:
+            OnKeyboardButtonHover();
             break;
     }
 }
@@ -673,8 +849,6 @@ void MainMenu::HoverSubSubMenu(SETTING_TYPE type)
 		break;
     }
 }
-
-
 
 void MainMenu::OnGeneralVolumeHover()
 {
@@ -741,8 +915,10 @@ void MainMenu::OnQuitButtonHover()
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
-    ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+
+    mQuitHover->SetEnabled(true);
+    mQuitText->SetEnabled(false);
+
     mOption = 3;
 
     // Set the other hovers off (integration mouse/click)
@@ -753,8 +929,8 @@ void MainMenu::OnQuitButtonHover()
 
 void MainMenu::OnQuitButtonHoverOff() 
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mQuitGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mQuitHover->SetEnabled(false);
+    mQuitText->SetEnabled(true);
 }
 
 void MainMenu::OnOptionsButtonHover() 
@@ -763,8 +939,10 @@ void MainMenu::OnOptionsButtonHover()
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
-    ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+
+    mOptionsHover->SetEnabled(true);
+    mOptionsText->SetEnabled(false);
+
     mOption = 1;
 
     // Set the other hovers off (integration mouse/click)
@@ -775,8 +953,8 @@ void MainMenu::OnOptionsButtonHover()
 
 void MainMenu::OnOptionsButtonHoverOff() 
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mOptionsGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mOptionsHover->SetEnabled(false);
+    mOptionsText->SetEnabled(true);
 }
 
 void MainMenu::OnCreditsButtonHover() 
@@ -785,8 +963,10 @@ void MainMenu::OnCreditsButtonHover()
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
-    ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+
+    mCreditsHover->SetEnabled(true);
+    mCreditsText->SetEnabled(false);
+
     mOption = 2;
 
     // Set the other hovers off (integration mouse/click)
@@ -797,8 +977,8 @@ void MainMenu::OnCreditsButtonHover()
 
 void MainMenu::OnCreditsButtonHoverOff() 
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mCreditsGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mCreditsHover->SetEnabled(false);
+    mCreditsText->SetEnabled(true);
 }
 
 void MainMenu::OnPlayButtonHover()
@@ -807,8 +987,10 @@ void MainMenu::OnPlayButtonHover()
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
     }
-    ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+
+    mPlayHover->SetEnabled(true);
+    mPlayText->SetEnabled(false);
+
     mOption = 0;
 
     // Set the other hovers off (integration mouse/click)
@@ -819,62 +1001,99 @@ void MainMenu::OnPlayButtonHover()
 
 void MainMenu::OnPlayButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mPlayGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mPlayHover->SetEnabled(false);
+    mPlayText->SetEnabled(true);
 }
 
-void MainMenu::OnBackCreditsButtonHover()
+void MainMenu::OnControllerButtonHover()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-    mOption = 0;
-}
+    //ImageComponent* image = static_cast<ImageComponent*>(mControllerGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.8f);
 
-void MainMenu::OnBackCreditsButtonHoverOff() 
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
-}
-
-void MainMenu::OnControlsButtonHover()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mControlsButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+    mControllerHover->SetEnabled(true);
+    mControllerText->SetEnabled(false);
 
     // Set the other hovers off (integration mouse/click)
     OnSettingsButtonHoverOff();
+    OnAudioButtonHoverOff();
+    OnKeyboardButtonHoverOff();
 }
 
-void MainMenu::OnControlsButtonHoverOff()
+void MainMenu::OnControllerButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mControlsButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.2f);
+    //ImageComponent* image = static_cast<ImageComponent*>(mControllerGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.2f);
+    mControllerHover->SetEnabled(false);
+    mControllerText->SetEnabled(true);
+}
+
+void MainMenu::OnAudioButtonHover()
+{
+    //ImageComponent* image = static_cast<ImageComponent*>(mAudioGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.8f);
+
+    mAudioHover->SetEnabled(true);
+    mAudioText->SetEnabled(false);
+
+    // Set the other hovers off (integration mouse/click)
+    OnSettingsButtonHoverOff();
+    OnControllerButtonHoverOff();
+    OnKeyboardButtonHoverOff();
+}
+
+void MainMenu::OnAudioButtonHoverOff()
+{
+    mAudioHover->SetEnabled(false);
+    mAudioText->SetEnabled(true);
+
+    //ImageComponent* image = static_cast<ImageComponent*>(mAudioGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.2f);
+}
+
+void MainMenu::OnKeyboardButtonHover()
+{
+    //ImageComponent* image = static_cast<ImageComponent*>(mKeyboardGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.8f);
+
+    mKeyboardHover->SetEnabled(true);
+    mKeyboardText->SetEnabled(false);
+
+    // Set the other hovers off (integration mouse/click)
+    OnSettingsButtonHoverOff();
+    OnControllerButtonHoverOff();
+    OnAudioButtonHoverOff();
+}
+
+void MainMenu::OnKeyboardButtonHoverOff()
+{
+    //ImageComponent* image = static_cast<ImageComponent*>(mKeyboardGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.2f);
+
+    mKeyboardHover->SetEnabled(false);
+    mKeyboardText->SetEnabled(true);
 }
 
 void MainMenu::OnSettingsButtonHover()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
+    //ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.8f);
+
+    mSettingsHover->SetEnabled(true);
+    mSettingsText->SetEnabled(false);
+
     // Set the other hovers off (integration mouse/click)
-    OnControlsButtonHoverOff();
+    OnKeyboardButtonHoverOff();
+    OnControllerButtonHoverOff();
+    OnAudioButtonHoverOff();
 }
 
 void MainMenu::OnSettingsButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.2f);
-}
+    //ImageComponent* image = static_cast<ImageComponent*>(mSettingsButtonGO->GetComponent(ComponentType::IMAGE));
+    //image->SetAlpha(0.2f);
 
-void MainMenu::OnBackButtonHover()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}
-
-void MainMenu::OnBackButtonHoverOff()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mBackCreditGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mSettingsHover->SetEnabled(false);
+    mSettingsText->SetEnabled(true);
 }
 
 void MainMenu::OnGeneralVolumeHoverOff()
@@ -904,3 +1123,32 @@ void MainMenu::OnFullscreenButtonHoverOff()
     image->SetAlpha(0.8f);
 }
 
+void MainMenu::OnGeneralUp()
+{
+    OnSlide(static_cast<SETTING_TYPE>(0), DIRECTION::RIGHT, 0.1f);
+}
+
+void MainMenu::OnGeneralDown()
+{
+    OnSlide(static_cast<SETTING_TYPE>(0), DIRECTION::LEFT, 0.1f);
+}
+
+void MainMenu::OnMusicUp()
+{
+    OnSlide(static_cast<SETTING_TYPE>(1), DIRECTION::RIGHT, 0.1f);
+}
+
+void MainMenu::OnMusicDown()
+{
+    OnSlide(static_cast<SETTING_TYPE>(1), DIRECTION::LEFT, 0.1f);
+}
+
+void MainMenu::OnEffectsUp()
+{
+    OnSlide(static_cast<SETTING_TYPE>(2), DIRECTION::RIGHT, 0.1f);
+}
+
+void MainMenu::OnEffectsDown()
+{
+    OnSlide(static_cast<SETTING_TYPE>(2), DIRECTION::LEFT, 0.1f);
+}

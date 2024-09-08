@@ -1,7 +1,7 @@
 #pragma once
 #include <Script.h>
 #include "Macros.h"
-
+#include "vector"
 struct CollisionData;
 class Spawner;
 class BoxColliderComponent;
@@ -20,7 +20,9 @@ public:
 	void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
 	int GetCurrentEnemies() { return mCurrentEnemies; }
+	int GetCurrentWave() { return mWavesRounds; }
 	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
+	void SetWaves(int waves) { mWavesRounds = waves; }; 
 	void AddExplosiveEnemy();
 
 private:
@@ -31,12 +33,12 @@ private:
 
 	int mCurrentEnemies = 0;
 	int mWavesRounds = 0;
-	int mCurrentSpawnerCycles = 0;
-	int mSpawnerCycles = 0;
 	int mCurrentExplosiveEnemies = 0;
 	int mCurrentTraps = 0;
 	bool mHasBeenActivated = false;
+	bool mIsTutorialArea = false;
 
+	bool mNeedsToSpawn = false;
 	GameObject* mSpawnerGO1 = nullptr;
 	GameObject* mSpawnerGO2 = nullptr;
 	GameObject* mSpawnerGO3 = nullptr;
@@ -54,7 +56,8 @@ private:
 
 	GameObject* mDoor1 = nullptr;
 	GameObject* mDoor2 = nullptr;
-
+	std::vector<Spawner*> mSpawners;
+	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 };
 

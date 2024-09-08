@@ -1,18 +1,18 @@
 ﻿#include "InspectorPanel.h"
 
 #include "ImBezier.h"
-#include "imgui.h"
 #include "ImColorGradient.h"
-#include "ImGuiFileDialog.h"
+#include "imgui.h"
+
+#include "HierarchyPanel.h"
+#include "SettingsPanel.h"
 
 #include "EngineApp.h"
 #include "ModuleScene.h"
+#include "ModuleEngineResource.h"
 #include "ModuleEditor.h"
 #include "ModuleFileSystem.h"
 #include "ModuleResource.h"
-#include "HierarchyPanel.h"
-#include "SettingsPanel.h"
-#include "ProjectPanel.h"
 #include "ModuleCamera.h"
 #include "ModuleScriptManager.h"
 #include "ModuleAudio.h"
@@ -22,7 +22,6 @@
 #include "GameObject.h"
 
 #include "MeshRendererComponent.h"
-#include "ModuleEngineResource.h"
 #include "PointLightComponent.h"
 #include "SpotLightComponent.h"
 #include "ScriptComponent.h"
@@ -43,27 +42,20 @@
 #include "AnimationComponent.h"
 #include "SliderComponent.h"
 #include "DecalComponent.h"
-
-#include "ImporterMaterial.h"
-#include "MathFunc.h"
-#include "Script.h"
-#include "AnimationController.h"
-#include "BezierCurve.h"
-#include "AudioUnit.h"
-#include "Trail.h"
-
-#include "ResourceMaterial.h"
-#include "ResourceTexture.h"
-#include "ResourceAnimation.h"
-#include "ResourceModel.h"
-#include "ResourceStateMachine.h"
-
-#include "IconsFontAwesome6.h"
-
+#include "VideoComponent.h"
 
 #include "AnimationStateMachine.h"
 #include "AnimationSMPanel.h"
+#include "AudioUnit.h"
+
 #include "SaveLoadMaterial.h"
+#include "ResourceMaterial.h"
+#include "ResourceTexture.h"
+#include "ResourceStateMachine.h"
+
+#include "Trail.h"
+#include "MathFunc.h"
+#include "IconsFontAwesome6.h"
 
 InspectorPanel::InspectorPanel() : Panel(INSPECTORPANEL, true) {}
 
@@ -520,10 +512,13 @@ void InspectorPanel::DrawComponents(GameObject* object)
 					DrawTrailComponent(static_cast<TrailComponent*>(component));
 					break;
 				case ComponentType::LINE:
-						DrawLineComponent(static_cast<LineComponent*>(component));
-						break;
+					DrawLineComponent(static_cast<LineComponent*>(component));
+					break;
 				case ComponentType::DECAL:
 					DrawDecalComponent(static_cast<DecalComponent*>(component));
+					break;
+				case ComponentType::VIDEO:
+					DrawVideoComponent(static_cast<VideoComponent*>(component));
 					break;
 			}
 		}
@@ -532,7 +527,8 @@ void InspectorPanel::DrawComponents(GameObject* object)
 	//DragAndDropTarget(object, nullptr);
 }
 
-void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
+void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) const 
+{
 	const float* pCol = component->GetColor();
 	float col[3] = { pCol[0], pCol[1] , pCol[2] };
 	if (ImGui::ColorPicker3("Color", col))
@@ -552,7 +548,7 @@ void InspectorPanel::DrawPointLightComponent(PointLightComponent* component) {
 	//ImGui::Checkbox("Debug draw", &component->debugDraw);
 }
 
-void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) 
+void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) const
 {
 	const float* sCol = component->GetColor();
 	float col[3] = { sCol[0], sCol[1] , sCol[2] };
@@ -617,7 +613,7 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component)
 
 }
 
-void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component) 
+void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component) const
 {
 	static bool createMaterialPopUp = false;
 
@@ -688,7 +684,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 	}
 }
 
-void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
+void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component) const
 {
 	ImGui::SeparatorText("Agent Parameters");
 
@@ -716,7 +712,7 @@ void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component)
 
 }
 
-void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderComponent)
+void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderComponent) const
 {
 	ResourceMaterial* material = const_cast<ResourceMaterial*>(renderComponent.GetResourceMaterial());
 
@@ -761,7 +757,7 @@ void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderCompon
 	}
 }
 
-void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component)
+void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* component) const
 {
 	ImGui::SeparatorText("Navigation Mesh Obstacle");
 
@@ -776,7 +772,7 @@ void InspectorPanel::DrawNavMeshObstacleComponent(NavMeshObstacleComponent* comp
 }
 
 
-void InspectorPanel::DrawCameraComponent(CameraComponent* component)
+void InspectorPanel::DrawCameraComponent(CameraComponent* component) const
 {
 	ImGui::SeparatorText("Camera");
 
@@ -820,7 +816,7 @@ void InspectorPanel::DrawCameraComponent(CameraComponent* component)
 	ImGui::PopID();
 }
 
-void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
+void InspectorPanel::DrawScriptComponent(ScriptComponent* component) const
 {
 
 	const char* currentItem = component->GetScriptName();
@@ -992,7 +988,7 @@ void InspectorPanel::DrawScriptComponent(ScriptComponent* component)
 }
 
 
-void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) 
+void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 {
 
 	ImGui::SeparatorText("Animation");
@@ -1107,7 +1103,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component)
 	}
 }
 
-void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names)
+void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool isSpine, std::vector<std::string>& names) const
 {
 	
 	const char* currentItem = component->GetStateMachine()->GetName().c_str();
@@ -1136,7 +1132,7 @@ void InspectorPanel::GetStateMachineAssets(AnimationComponent* component, bool i
 	}
 }
 
-void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
+void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) const
 {
 	// Drag and drop	
 	ImGui::Columns(2);
@@ -1165,6 +1161,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 				imageComponent->SetImage(resource->GetUID());
 				imageComponent->SetFileName(asset->mName);
 			}
+			EngineApp->GetResource()->ReleaseResource(resource->GetUID());
 		}
 		ImGui::EndDragDropTarget();
 	}
@@ -1321,7 +1318,7 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent)
 	}
 }
 
-void InspectorPanel::DrawMaskComponent(MaskComponent* component)
+void InspectorPanel::DrawMaskComponent(MaskComponent* component) const
 {
 	if (component->GetMask() == nullptr)
 		ImGui::Text("No image component attached");
@@ -1359,7 +1356,7 @@ void InspectorPanel::DrawMaskComponent(MaskComponent* component)
 }
 
 
-void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) 
+void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent) const
 {
 	const char* renderModes[] = { "World Space", "Screen Space", "Billboard mode", "World axis billboard"};
 	static int selectedRenderMode = static_cast<int>(canvasComponent->GetRenderSpace());
@@ -1418,7 +1415,8 @@ void InspectorPanel::DrawCanvasComponent(CanvasComponent* canvasComponent)
 	ImGui::EndTable();
 }
 
-void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
+void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) const
+{
 	// List event and add
 	std::vector<const char*> events = App->GetAudio()->GetEventsNames();
 
@@ -1512,16 +1510,8 @@ void InspectorPanel::DrawAudioSourceComponent(AudioSourceComponent* component) {
 	}
 }
 
-void InspectorPanel::DrawListenerComponent(AudioListenerComponent* component)
-{
 
-}
-;
-void InspectorPanel::DrawButtonComponent(ButtonComponent* imageComponent) 
-{
-}
-
-void InspectorPanel::DrawSliderComponent(SliderComponent* component)
+void InspectorPanel::DrawSliderComponent(SliderComponent* component) const
 {
 	float value = component->GetValue();
 
@@ -1529,7 +1519,7 @@ void InspectorPanel::DrawSliderComponent(SliderComponent* component)
 	component->SetValue(value);
 }
 
-void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) 
+void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) const
 {
 	
 	if (ImGui::IsItemClicked(ImGuiMouseButton_Right)) 
@@ -1764,6 +1754,13 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	ImGui::Text("Follow Emitter");
 	ImGui::SameLine();
 	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
+	if (component->mFollowEmitter)
+	{
+		ImGui::SameLine();
+		ImGui::Text("Spin Speed");
+		ImGui::SameLine();
+		ImGui::DragFloat("##SpinSpeed", &(component->mSpinSpeed), 0.1f, 0.0f);
+	}
 	ImGui::Text("Gravity");
 	ImGui::SameLine();
 	ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
@@ -1881,7 +1878,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 	}
 }
 
-void InspectorPanel::DrawTextComponent(TextComponent* component)
+void InspectorPanel::DrawTextComponent(TextComponent* component) const
 {
 	float3* color = component->GetColor();
 	float* alpha = component->GetAlpha();
@@ -1906,6 +1903,30 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 	ImGui::Text("Color:"); ImGui::SameLine(); ImGui::ColorEdit3("##Color", (float*)color);
 	ImGui::Text("Alpha:"); ImGui::SameLine(); ImGui::SliderFloat("##Alpha", alpha, 0.0f, 1.0f);
 	
+	const char* renderModes[] = { "Regular", "Medium", "SemiBold", "Bold", "Light"};
+	static int selectedRenderMode;
+
+	ImGui::Text("Render Mode");
+	ImGui::SameLine();
+
+	if (ImGui::Combo("##RenderModeCombo", &selectedRenderMode, renderModes, IM_ARRAYSIZE(renderModes)))
+	{
+		switch (selectedRenderMode)
+		{
+		case -1: break;
+		case 0: component->SetTextFont("Assets\\Fonts\\Akshar-Regular.ttf");
+			break;
+		case 1: component->SetTextFont("Assets\\Fonts\\Akshar-Medium.ttf");
+			break;
+		case 2: component->SetTextFont("Assets\\Fonts\\Akshar-SemiBold.ttf");
+			break;
+		case 3: component->SetTextFont("Assets\\Fonts\\Akshar-Bold.ttf");
+			break;
+		case 4: component->SetTextFont("Assets\\Fonts\\Akshar-Light.ttf");
+			break;
+		}
+	}
+
 	ImGui::Text("Alignment:");
 	if (ImGui::Button("Left"))
 	{
@@ -1922,12 +1943,14 @@ void InspectorPanel::DrawTextComponent(TextComponent* component)
 		component->SetAlignment(TextAlignment::RIGHT);
 	}
 
-	ImGui::Text("Font Size:"); ImGui::SameLine(); ImGui::DragInt("##Font Size", fontSize);
+	bool sizeChanged = false;
+	ImGui::Text("Font Size:"); ImGui::SameLine(); sizeChanged = ImGui::DragInt("##Font Size", fontSize);
+	if (sizeChanged) component->SetFontSize(*fontSize);
 	ImGui::Text("Line Spacing:"); ImGui::SameLine(); ImGui::DragInt("##Line Space", lineSpacing);
 	ImGui::Text("Line Width:"); ImGui::SameLine(); ImGui::DragInt("##Line Width", lineWidth);
 }
 
-void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component)
+void InspectorPanel::DrawBoxColliderComponent(BoxColliderComponent* component) const
 {
 	if (ImGui::BeginTable("transformTable", 4))
 	{
@@ -2174,7 +2197,7 @@ void InspectorPanel::DrawLineComponent(LineComponent* component) const
 	}
 }
 
-void InspectorPanel::DrawDecalComponent(DecalComponent* component)
+void InspectorPanel::DrawDecalComponent(DecalComponent* component) const
 {
 
 	unsigned int imageSize = 50;
@@ -2395,6 +2418,66 @@ void InspectorPanel::DrawDecalComponent(DecalComponent* component)
 
 		ImGui::EndTable();
 	}
+}
+
+void InspectorPanel::DrawVideoComponent(VideoComponent* component) const
+{
+	ImGui::Text("VIDEO CONTROLS");
+
+	if(ImGui::Button(ICON_FA_PLAY))
+	{
+		component->Play();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_FA_PAUSE))
+	{
+		component->Pause();
+	}
+	ImGui::SameLine();
+	if (ImGui::Button(ICON_FA_STOP))
+	{
+		component->Stop();
+	}
+
+	bool loop = component->GetLoop();
+	if (ImGui::Checkbox("Loop", &loop))
+	{
+		component->SetLoop(loop);
+	}
+
+	const char* currentItem = component->GetName();
+	if (strcmp(currentItem, "") == 0)
+	{
+		currentItem = "una_rosa.mp4";
+	}
+
+
+	if (ImGui::BeginCombo("##combo", currentItem))
+	{
+		std::vector<std::string> videoNames;
+		EngineApp->GetFileSystem()->GetDirectoryFiles("Assets/Videos", videoNames);
+
+		for (int n = 0; n < videoNames.size(); n++)
+		{
+			bool is_selected = (currentItem == videoNames[n]);
+			if (ImGui::Selectable(videoNames[n].c_str(), is_selected))
+			{
+				currentItem = videoNames[n].c_str();
+				std::string videoPath = std::string("./Assets/Videos/");
+				videoPath += currentItem;
+				component->OpenVideo(videoPath.c_str());
+			}
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
+
+		}
+		ImGui::EndCombo();
+	}
+
+
 }
 
 void InspectorPanel::DrawBezierCurve(BezierCurve* curve, const char* cLabel) const

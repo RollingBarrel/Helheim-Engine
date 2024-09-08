@@ -23,6 +23,8 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
+    MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
+    MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
     MEMBER(MemberType::FLOAT, mDefaultHitStopTime);
     END_CREATE;
 }
@@ -80,6 +82,12 @@ void GameManager::Start()
         StartAudio();
     }
 
+    if (mFirstTutorial) 
+    {
+        mFirstTutorial->SetEnabled(true);
+        UnlockGrenade(false);
+        UnlockUltimate(false);
+    }
     mGameTimer = App->GetCurrentClock();
 }
 
@@ -195,6 +203,30 @@ void GameManager::HitStop(float duration)
     
 }
 
+void GameManager::ActivateSecondTutorial()
+{
+    if (mSecondTutorial)
+    {
+        if (mFirstTutorial) mFirstTutorial->SetEnabled(false);
+        mSecondTutorial->SetEnabled(true);
+    }
+}
+
+void GameManager::UnlockSecondary()
+{
+    mPlayerController->RechargeBattery(EnergyType::RED);
+}
+
+void GameManager::UnlockUltimate(bool unlock)
+{
+    mPlayerController->UnlockUltimate(unlock);
+}
+
+void GameManager::UnlockGrenade(bool unlock)
+{
+    mPlayerController->UnlockGrenade(unlock);
+}
+
 void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -210,7 +242,7 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
 
     // Level Specific audio
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "TestAudio")
     {
         mAudioManager->AddAudioToASComponent(BGM::LEVEL1);
     }
@@ -225,7 +257,7 @@ void GameManager::StartAudio()
     PrepareAudio();
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" ||  sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" ||  sceneName == "TestAudio")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL1);
     }
@@ -263,7 +295,7 @@ void GameManager::EndAudio()
 
     std::string sceneName = App->GetScene()->GetName();
 
-    if (sceneName == "Level1Scene" || sceneName == "TestAudioWithScene")
+    if (sceneName == "Level1Scene" || sceneName == "TestAudio")
     {
         mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL1, mBackgroundAudioID);
     }

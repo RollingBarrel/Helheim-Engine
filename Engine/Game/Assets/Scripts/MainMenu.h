@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 class ButtonComponent;
 class SliderComponent;
@@ -16,7 +17,9 @@ enum MENU_TYPE {
     SPLASH,
     ENGINE,
     STUDIO,
+    KEYBOARD,
     CONTROLS,
+    AUDIO,
     SETTINGS
 };
 
@@ -45,8 +48,6 @@ public:
     void Update() override;
 
 private:
-    
-    bool Delay(float delay);
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
@@ -60,9 +61,11 @@ private:
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
-    void OnNewButtonClick();
+    void OnPlayButtonClick();
     void OnSplashButtonClick();
-    void OnControlsButtonClick();
+    void OnControllerButtonClick();
+    void OnKeyboardButtonClick();
+    void OnAudioButtonClick();
     void OnSettingsButtonClick();
     void OnVSyncButtonClick();
     void OnFullscreenButtonClick();
@@ -73,10 +76,10 @@ private:
     void OnOptionsButtonHover();
     void OnCreditsButtonHover();
     void OnPlayButtonHover();
-    void OnBackCreditsButtonHover();
-    void OnControlsButtonHover();
+    void OnControllerButtonHover();
+    void OnKeyboardButtonHover();
+    void OnAudioButtonHover();
     void OnSettingsButtonHover();
-    void OnBackButtonHover();
 	void OnGeneralVolumeHover();
     void OnMusicVolumeHover();
     void OnEffectsVolumeHover();
@@ -87,15 +90,22 @@ private:
     void OnOptionsButtonHoverOff();
     void OnCreditsButtonHoverOff();
     void OnPlayButtonHoverOff();
-    void OnBackCreditsButtonHoverOff();
-    void OnControlsButtonHoverOff();
+    void OnControllerButtonHoverOff();
+    void OnKeyboardButtonHoverOff();
+    void OnAudioButtonHoverOff();
     void OnSettingsButtonHoverOff();
-    void OnBackButtonHoverOff();
     void OnGeneralVolumeHoverOff();
     void OnMusicVolumeHoverOff();
     void OnEffectsVolumeHoverOff();
     void OnVSyncButtonHoverOff();
     void OnFullscreenButtonHoverOff();
+
+    void OnGeneralUp();
+    void OnGeneralDown();
+    void OnMusicUp();
+    void OnMusicDown();
+    void OnEffectsUp();
+    void OnEffectsDown();
     
     int mOption = 0;
     int mSettingOption = 7;
@@ -112,38 +122,91 @@ private:
     float mMusicVolumeValue = .75f;
     float mEffectsVolumeValue = .75f;
 
+    TimerScript mTimer;
+    TimerScript mStudioTimer;
+    bool mStudioBool = true;
+    TimerScript mEngineTimer;
+    bool mEngineBool = true;
+
     // Screens
     GameObject* mSplashScreen = nullptr;
     ButtonComponent* mSplashButton = nullptr;
     GameObject* mStudioScreen = nullptr;
     GameObject* mEngineScreen = nullptr;
     GameObject* mLoadingScreen = nullptr;
+    GameObject* mLoadingSliderGO = nullptr;
+    SliderComponent* mLoadingSlider = nullptr;
 
     GameObject* mMainMenu = nullptr;
     GameObject* mOptionsMenu = nullptr;
     GameObject* mCreditsMenu = nullptr;
-    GameObject* mCreditsText = nullptr;
+    GameObject* mCreditsListText = nullptr;
     Transform2DComponent* mTextTransform = nullptr;
 
+    // --- BUTTON GameObjects ---
+    
+    // PLAY Button
     GameObject* mPlayGO = nullptr;
+    GameObject* mPlayText = nullptr;
+    GameObject* mPlayHover = nullptr;
+    GameObject* mPlayClicked = nullptr;
     ButtonComponent* mPlayButton = nullptr;
+
+    // OPTIONS Button
     GameObject* mOptionsGO = nullptr;
+    GameObject* mOptionsText = nullptr;
+    GameObject* mOptionsHover = nullptr;
+    GameObject* mOptionsClicked = nullptr;
     ButtonComponent* mOptionsButton = nullptr;
+
+    // Credits Button
     GameObject* mCreditsGO = nullptr;
+    GameObject* mCreditsText = nullptr;
+    GameObject* mCreditsHover = nullptr;
+    GameObject* mCreditsClicked = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+
+    // OPTIONS Button
     GameObject* mQuitGO = nullptr;
+    GameObject* mQuitText = nullptr;
+    GameObject* mQuitHover = nullptr;
+    GameObject* mQuitClicked = nullptr;
     ButtonComponent* mQuitButton = nullptr;
-    GameObject* mBackCreditGO = nullptr;
-    ButtonComponent* mBackCreditButton = nullptr;
+
+    // Keyboard Button
+    GameObject* mKeyboardGO = nullptr;
+    GameObject* mKeyboardText = nullptr;
+    GameObject* mKeyboardHover = nullptr;
+    GameObject* mKeyboardClicked = nullptr;
+    ButtonComponent* mKeyboardButton = nullptr;
+
+    // Controller Button
+    GameObject* mControllerGO = nullptr;
+    GameObject* mControllerText = nullptr;
+    GameObject* mControllerHover = nullptr;
+    GameObject* mControllerClicked = nullptr;
+    ButtonComponent* mControllerButton = nullptr;
+
+    // Audio Button
+    GameObject* mAudioGO = nullptr;
+    GameObject* mAudioText = nullptr;
+    GameObject* mAudioHover = nullptr;
+    GameObject* mAudioClicked = nullptr;
+    ButtonComponent* mAudioButton = nullptr;
+
+    // Settings Button
+    GameObject* mSettingsGO = nullptr;
+    GameObject* mSettingsText = nullptr;
+    GameObject* mSettingsHover = nullptr;
+    GameObject* mSettingsClicked = nullptr;
+    ButtonComponent* mSettingsButton = nullptr;
 
     // Options
     GameObject* mOptionsContainerGO = nullptr;
-    GameObject* mSettingsButtonGO = nullptr;
-    GameObject* mSettingsGO = nullptr;
-    ButtonComponent* mSettingsButton = nullptr;
-    GameObject* mControlsGO = nullptr;
-    GameObject* mControlsButtonGO = nullptr;
-    ButtonComponent* mControlsButton = nullptr;
+    GameObject* mSettingsScreenGO = nullptr;
+    GameObject* mControlsScreenGO = nullptr;
+    GameObject* mAudioScreenGO = nullptr;
+    GameObject* mKeyboardScreenGO = nullptr;
 
     // Settings
     // General Volume
@@ -151,16 +214,25 @@ private:
     SliderComponent* mGeneralVolumeSlider = nullptr;
     GameObject* mGeneralVolumeFillGO = nullptr;
     ImageComponent* mGeneralVolumeFill = nullptr;
+    GameObject* mGeneralVolumeUp = nullptr;
+    GameObject* mGeneralVolumeDown = nullptr;
+
     // Music Volume
     GameObject* mMusicVolumeSliderGO = nullptr;
     SliderComponent* mMusicVolumeSlider = nullptr;
     GameObject* mMusicVolumeFillGO = nullptr;
     ImageComponent* mMusicVolumeFill = nullptr;
+    GameObject* mMusicVolumeUp = nullptr;
+    GameObject* mMusicVolumeDown = nullptr;
+
 	// Effects Volume
     GameObject* mEffectsVolumeSliderGO = nullptr;
     SliderComponent* mEffectsVolumeSlider = nullptr;
     GameObject* mEffectsVolumeFillGO = nullptr;
     ImageComponent* mEffectsVolumeFill = nullptr;
+    GameObject* mEffectsVolumeUp = nullptr;
+    GameObject* mEffectsVolumeDown = nullptr;
+
     // VSync
     GameObject* mVSyncButtonGO = nullptr;
     ButtonComponent* mVSyncButton = nullptr;
