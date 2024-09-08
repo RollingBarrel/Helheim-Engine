@@ -6,6 +6,7 @@
 #include "BoxColliderComponent.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PlayerController.h"
 #include "Math/MathFunc.h"
 
@@ -64,12 +65,11 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag().compare("Player") == 0)
     {
-       
-
         PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (playerScript != nullptr && !mAlreadyUsed)
         {
-            
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
             switch (mDropId)
             {
             case 1:
