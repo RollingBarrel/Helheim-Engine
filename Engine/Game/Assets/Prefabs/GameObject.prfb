@@ -1,0 +1,135 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1033180874,
+                "ParentUID": 265972669,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 453374532,
+                "ParentUID": 1033180874,
+                "Name": "UltimateChargeGO (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.15000152587890626,
+                    1.1699999570846558,
+                    0.4700000286102295
+                ],
+                "Rotation": [
+                    0.1402285099029541,
+                    -0.0035621540155261757,
+                    0.03655940666794777,
+                    0.9894275665283203
+                ],
+                "Scale": [
+                    0.9992585778236389,
+                    0.9992597103118897,
+                    0.9999725222587586
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 2.0,
+                        "EmissionRate": 43.70000076293945,
+                        "MaxParticles": 50,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 5.699999809265137,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 0.20000000298023225,
+                            "MaxValue": 0.5
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.5,
+                        "ShapeAngle": 1.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 1.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": true,
+                        "BlendMode": 1,
+                        "SizeCurve": {},
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.16621984541416169,
+                                "Color": [
+                                    0.8999999761581421,
+                                    0.8481599688529968,
+                                    0.09000001847743988,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5683640837669373,
+                                "Color": [
+                                    0.9800000190734863,
+                                    0.19207999110221864,
+                                    0.19207999110221864,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.97050940990448,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
