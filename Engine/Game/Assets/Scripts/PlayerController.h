@@ -132,7 +132,10 @@ public:
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
 
-
+    void UnlockGrenade(bool unlock) { mGrenadeUnlocked = unlock; }
+    void UnlockUltimate(bool unlock) { mUltimateUnlocked = unlock; }
+    bool IsGrenadeUnlocked() const { return mGrenadeUnlocked; }
+    bool IsUltimateUnlocked() const { return mUltimateUnlocked; }
     //Hit Effect
     void ActivateHitEffect();
     
@@ -304,4 +307,8 @@ private:
 
     //Dash VFX
     GameObject* mDashVFX = nullptr;
+
+    //UNLOCKED ABILITIES
+    bool mGrenadeUnlocked = true;
+    bool mUltimateUnlocked = true;
 };
