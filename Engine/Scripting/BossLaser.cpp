@@ -122,7 +122,7 @@ void BossLaser::SpawnEyeBalls()
 
         float angle = DegToRad(-90.0f + i * angleStep); 
         float3 positionOffset = bossFront * std::cos(angle) * mBossDistance + bossRight * std::sin(angle) * mBossDistance;
-        positionOffset.y = -1.0f;
+        positionOffset.y = 1.0f;
 
         eyeBall->SetWorldPosition(bossPosition + positionOffset);
         eyeBall->SetEnabled(true);
