@@ -151,10 +151,10 @@ void AnimationController::GetTransform(GameObject* model)
 				//if (channel->hasTranslation || channel->hasRotation)
 				//	model->SetLocalScale(model->GetLocalScale());
 			}
-			else
-			{
-				LOG("JUAN");
-			}
+			//else
+			//{
+			//	LOG("JUAN");
+			//}
 		}
 	}
 
@@ -220,11 +220,11 @@ void AnimationController::GetTransform_Blending(GameObject* model)
 
 					model->SetLocalRotation(Interpolate(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda), channel->rotations[newClipIndex], weight));
 				}
-				else
-				{
-					LOG("PACO")
-				}
-			}
+				//else
+				//{
+				//	LOG("PACO")
+				//}
+			}	
 			//if(channel->hasTranslation || channel->hasRotation)
 			//	model->SetLocalScale(model->GetLocalScale());
 		}
