@@ -27,7 +27,12 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 	GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(mCameraShakeDuration, mCameraShakeStrengh);
 
 	//float3 front = GameManager::GetInstance()->GetPlayer()->GetFront();
-	float3 front = GameManager::GetInstance()->GetPlayerController()->GetPlayerAimPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
+	//float3 front = GameManager::GetInstance()->GetPlayerController()->GetPlayerAimPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
+
+	GameObject* laserEndPoint = GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetChildren()[0];
+	float3 front;
+	if (laserEndPoint) front = laserEndPoint->GetWorldPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
+	else  front = GameManager::GetInstance()->GetPlayerController()->GetPlayerAimPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
 	front.y = 0.0f;
 	front.Normalize();
 	float3 up = GameManager::GetInstance()->GetPlayer()->GetUp();
