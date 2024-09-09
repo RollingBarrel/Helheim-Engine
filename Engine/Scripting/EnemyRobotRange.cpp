@@ -24,7 +24,8 @@ CREATE(EnemyRobotRange)
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
-
+    SEPARATOR("VFX");
+    MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
     END_CREATE;
 }
 
@@ -79,6 +80,12 @@ void EnemyRobotRange::RangeAttack()
     ColorGradient gradient;
     gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
     bulletScript->Init(bulletOriginPosition, mGameObject->GetFront(),mBulletSpeed,1.0f, &gradient,mRangeDamage);
+}
+
+void EnemyRobotRange::TakeDamage(float damage)
+{
+    Enemy::TakeDamage(damage);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)

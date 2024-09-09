@@ -25,7 +25,8 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::FLOAT, mAttackCoolDown);
 	SEPARATOR("STATES");
 	MEMBER(MemberType::FLOAT, mAttackDistance);
-
+	SEPARATOR("VFX");
+	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
 	END_CREATE;
 }
 
@@ -66,6 +67,8 @@ void EnemyCreatureMelee::Chase()
 				}
 				if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
 				{
+					GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, mGameObject->GetWorldPosition());
+
 					mCurrentState = EnemyState::CHARGE;
 				}
 			}
@@ -96,7 +99,6 @@ void EnemyCreatureMelee::Charge()
 	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
 	Enemy::Charge();
 	mHit = false;
-
 }
 
 void EnemyCreatureMelee::Attack()
@@ -108,7 +110,7 @@ void EnemyCreatureMelee::Attack()
 	}
 	
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
-
+	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, mGameObject->GetWorldPosition());
 	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
 }
 

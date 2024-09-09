@@ -15,6 +15,8 @@
 #include "Geometry/Ray.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
+#include "PlayerController.h"
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
@@ -26,6 +28,8 @@ void Enemy::Start()
 	ModuleScene* scene = App->GetScene();
 	mPlayer = GameManager::GetInstance()->GetPlayer();
 	mHealth = mMaxHealth;
+
+
 
     //Hit Effect
 
@@ -64,6 +68,8 @@ void Enemy::Start()
 		⣿⡿⠋⠁⠀⠀⢀⣀⣠⡴⣸⣿⣇⡄⠀⠀⠀⠀⢀⡿⠄⠙⠛⠀⣀⣠⣤⣤⠄
 		*/
 	{
+		//Randn step duration to not sound so mess
+		mStepDuration = 0.4 + static_cast<float>(rand()) / RAND_MAX * (0.7 - 0.4);
 		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
@@ -110,6 +116,16 @@ void Enemy::CheckHitEffect()
         }
     }
 }
+
+//void Enemy::CheckUltHitVFX()
+//{
+//	if (mUltHit)
+//	{
+//		if (mUltEffectTimer.Delay(mUltEffectTime)) {
+//			ActivateUltVFX();
+//		}
+//	}
+//}
 
 void Enemy::ResetEnemyColor()
 {
@@ -217,6 +233,14 @@ void Enemy::Flee()
 		}
 }
 
+void Enemy::PlayStepAudio()
+{
+	if (mStepTimer.Delay(mStepDuration))
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
+	}
+}
+
 void Enemy::Charge()
 {
 	if (mChargeDurationTimer.Delay(mChargeDuration))
@@ -277,6 +301,7 @@ bool Enemy::IsPlayerReachable()
 
 void Enemy::TakeDamage(float damage)
 {
+	if (mCurrentState == EnemyState::PHASE) return;
 	if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
 	{
 		ActivateHitEffect();
@@ -308,10 +333,21 @@ void Enemy::ActivateHitEffect()
     mHit = true;
 }
 
+void Enemy::ActivateUltVFX()
+{
+	if (mUltHitEffectGO)
+	{
+		mUltHitEffectGO->SetEnabled(false); 
+		mUltHitEffectGO->SetEnabled(true);
+	}
+}
+
 void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
+
 		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
 		if (activeBattleArea)
 		{
@@ -374,20 +410,29 @@ void Enemy::SetAttracted(bool attracted)
 
 void Enemy::DropItem()
 {
+	int shieldDropRate = mShieldDropRate;
+	int redDropRate = mRedEnergyDropRate;
+	int blueDropRate = mBlueEnergyDropRate;
+	float playerShield= GameManager::GetInstance()->GetPlayerController()->GetCurrentShield();
+	if( playerShield<=50.0f)
+	{
+		shieldDropRate = 50;
+		redDropRate = 70;
+		blueDropRate = 90;
+	}
 	srand(static_cast<unsigned int>(std::time(nullptr)));
 	int randomValue = rand() % 100;
-
 	PoolType poolType = PoolType::LAST;
 
-	if (randomValue < mShieldDropRate)
+	if (randomValue < shieldDropRate)
 	{
 		poolType = PoolType::SHIELD;
 	}
-	else if (randomValue < mRedEnergyDropRate)
+	else if (randomValue < redDropRate)
 	{
 		poolType = PoolType::RED_ENERGY;
 	}
-	else if (randomValue < mBlueEnergyDropRate)
+	else if (randomValue < blueDropRate)
 	{
 		poolType = PoolType::BLUE_ENERGY;
 	}

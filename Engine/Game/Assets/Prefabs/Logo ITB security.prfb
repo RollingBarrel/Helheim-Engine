@@ -1,0 +1,58 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1415117397,
+                "ParentUID": 224743922,
+                "Name": "Line hall",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    61.39164733886719,
+                    -0.4706314206123352,
+                    8.73694133758545
+                ],
+                "Rotation": [
+                    3.090862321641907e-8,
+                    0.7071068286895752,
+                    0.7071068286895752,
+                    -3.090862321641907e-8
+                ],
+                "Scale": [
+                    15.543506622314454,
+                    0.4970611035823822,
+                    1.0000005960464478
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "DiffuseID": 1743710194,
+                        "DiffuseName": "Alpha_square.png",
+                        "DiffuseColor": [
+                            1.0,
+                            0.9411764740943909,
+                            0.0,
+                            1.0
+                        ],
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            }
+        ]
+    }
+}

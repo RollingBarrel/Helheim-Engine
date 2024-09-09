@@ -8,6 +8,8 @@
 #include "ScriptComponent.h"
 #include "GameManager.h"
 #include "HudController.h"
+#include "ModuleScene.h"
+#include "PlayerStats.h"
 
 UltimateState::UltimateState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
@@ -46,13 +48,13 @@ void UltimateState::Enter()
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
 	//mPlayerController->SetUltimateResource(0);
 	mPlayerController->EnableUltimate(true);
-	mPlayerController->SetMovementSpeed(mPlayerController->GetUltimateSlow());
+	mPlayerController->SetSpeed(2.5f);
 }
 
 void UltimateState::Exit()
 {
 	mPlayerController->EnableUltimate(false);
-	mPlayerController->SetMovementSpeed(1.0f/ mPlayerController->GetUltimateSlow());
+	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed());
 	SetCooldown(mPlayerController->GetUltimateCooldown());
 
 	if (GameManager::GetInstance()->GetHud())
@@ -68,7 +70,7 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
+	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()) return true;
 	return false;
 }
 

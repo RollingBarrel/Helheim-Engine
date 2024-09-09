@@ -19,13 +19,10 @@ private:
 	void Charge() override;
 	void Attack() override;
 
-	void PlayStepAudio();
+	void TakeDamage(float damage) override;
 	void PlayMeleeAudio();
 
 	float mMeeleDamage = 10.0f;
-
-	// Step Sound
-	float mStepTimer = 0.0f;
-	float mStepCooldown = 0.5f;
+	GameObject* mSwordTrail = nullptr;
 };
 

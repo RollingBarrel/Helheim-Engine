@@ -1,0 +1,920 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 866895921,
+                "ParentUID": 1735689159,
+                "Name": "Second_Tutorial",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -500.0,
+                            250.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": false,
+                        "ScriptName": "SecondTutorial",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "CONTROLLER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mShootTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 91363700
+                            },
+                            {
+                                "VariableName": "mSecondaryTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 1645952826
+                            },
+                            {
+                                "VariableName": "mGrenadeTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 661487984
+                            },
+                            {
+                                "VariableName": "mUltimateTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 1822278917
+                            },
+                            {
+                                "VariableName": "mSkipTutorialCon",
+                                "MemberType": 3,
+                                "VariableData": 107420466
+                            },
+                            {
+                                "VariableName": "KEYBOARD",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mShootTutorial",
+                                "MemberType": 3,
+                                "VariableData": 1262180057
+                            },
+                            {
+                                "VariableName": "mSecondaryTutorial",
+                                "MemberType": 3,
+                                "VariableData": 323108107
+                            },
+                            {
+                                "VariableName": "mGrenadeTutorial",
+                                "MemberType": 3,
+                                "VariableData": 1495734610
+                            },
+                            {
+                                "VariableName": "mUltimateTutorial",
+                                "MemberType": 3,
+                                "VariableData": 498181020
+                            },
+                            {
+                                "VariableName": "mSkipTutorial",
+                                "MemberType": 3,
+                                "VariableData": 631050911
+                            },
+                            {
+                                "VariableName": "AREA",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mTutorialAreaGO",
+                                "MemberType": 3,
+                                "VariableData": 109034488
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 91363700,
+                "ParentUID": 866895921,
+                "Name": "Fire_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    3.450000047683716,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -288.04998779296877,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            204.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 737739670,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1262180057,
+                "ParentUID": 866895921,
+                "Name": "Fire",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -289.3500061035156,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            204.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1057701924,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 323108107,
+                "ParentUID": 866895921,
+                "Name": "Secondary",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -275.6499938964844,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            229.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1595443056,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1495734610,
+                "ParentUID": 866895921,
+                "Name": "Grenade",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -210.89999389648438,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            360.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1078098944,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 498181020,
+                "ParentUID": 866895921,
+                "Name": "Ultimate",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -280.54998779296877,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 655254179,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1645952826,
+                "ParentUID": 866895921,
+                "Name": "Secondary_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -275.6499938964844,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            229.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1992829316,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 661487984,
+                "ParentUID": 866895921,
+                "Name": "Grenade_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -212.75,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            360.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 973642726,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 1822278917,
+                "ParentUID": 866895921,
+                "Name": "Ultimate_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -280.54998779296877,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 2028193430,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 631050911,
+                "ParentUID": 866895921,
+                "Name": "Skip",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -281.5,
+                            -54.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 206833790,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 107420466,
+                "ParentUID": 866895921,
+                "Name": "Skip_Con",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -280.79998779296877,
+                            -54.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            219.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 853283238,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            }
+        ]
+    }
+}

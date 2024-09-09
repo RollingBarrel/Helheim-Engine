@@ -22,6 +22,9 @@ CREATE(EnemyRobotMelee)
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     SEPARATOR("STATES");
     MEMBER(MemberType::FLOAT, mAttackDistance);
+    SEPARATOR("VFX");
+    MEMBER(MemberType::GAMEOBJECT, mSwordTrail);
+    MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
     END_CREATE;
 }
 
@@ -29,6 +32,7 @@ void EnemyRobotMelee::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.1f;
+    mSwordTrail->SetEnabled(false);
 }
 
 void EnemyRobotMelee::Charge()
@@ -40,7 +44,14 @@ void EnemyRobotMelee::Charge()
 void EnemyRobotMelee::Attack()
 {
     Enemy::Attack();
-    
+    if (mCurrentState == EnemyState::CHARGE) 
+    {
+        mSwordTrail->SetEnabled(true);
+    }    
+    if (mCurrentState == EnemyState::CHASE) 
+    {
+        mSwordTrail->SetEnabled(false);
+    }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
     {
         mAnimationComponent->OnRestart();
@@ -63,23 +74,13 @@ void EnemyRobotMelee::Attack()
     }
 }
 
-void EnemyRobotMelee::PlayStepAudio()
+void EnemyRobotMelee::TakeDamage(float damage)
 {
-    // TODO: play sound according the animation
-    mStepTimer += App->GetDt();
-    if (mStepTimer >= mStepCooldown)
-    {
-        mStepTimer = 0;
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
-    }
+    Enemy::TakeDamage(damage);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotMelee::PlayMeleeAudio()
 {
-    const char* parameterName = "Speed";
-    //GameManager::GetInstance()->GetAudio()->PlayOneShot(
-    //    SFX::MEELEE,
-    //    mGameObject->GetWorldPosition(),
-    //    { { parameterName, 0.0f } }
-    //);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_SLASH, mGameObject->GetWorldPosition());
 }

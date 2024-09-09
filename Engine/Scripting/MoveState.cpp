@@ -164,7 +164,7 @@ void MoveState::DoAnimation()
         mPlayerController->SetAnimation(animation, 0.3f);
         if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
         {
-            mPlayerController->SetSpineAnimation(animation, 0.3f);
+            //mPlayerController->SetSpineAnimation(animation, 0.3f);
         }
         
         

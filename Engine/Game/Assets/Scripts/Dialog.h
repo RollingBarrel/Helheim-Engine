@@ -101,8 +101,12 @@ private:
     int mCurrentDialogSet = 0;  // Index of the current dialog set
     int mCurrentDialog = 0;      // Index of the current dialog within the set
 
+    int mDialogBGM = -1;
+
     TimerScript mClickTimout;
     bool mTimeout = false;
     
     PlayerStats* mPlayerStats = nullptr;
+
+    bool firstTime = true;
 };

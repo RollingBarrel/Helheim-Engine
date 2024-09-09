@@ -17,7 +17,12 @@ enum class EnemyState
 	CHARGE,
 	ATTACK,
 	FLEE,
-	DEATH
+	DEATH,
+	//Boss States
+	CHARGING_BULLET_HELL,
+	CHARGING_LASER,
+	WAKE,
+	PHASE
 };
 
 
@@ -38,13 +43,15 @@ public:
 	virtual void Paralyzed(float percentage, bool paralyzed);
 	virtual void SetAttracted(bool attracted);
 
+	void ActivateUltVFX();
+
 protected:
 	virtual void Idle();
 	virtual void Chase();
 	virtual void Charge();
 	virtual void Attack();
 	virtual void Flee();
-	virtual void PlayStepAudio() {};
+	virtual void PlayStepAudio();
 	virtual void PlayAttackAudio() {};
 
 	bool IsPlayerInRange(float range);
@@ -66,9 +73,9 @@ protected:
 	float mAttackDamage = 2.0f;
 
 	//DropRates
-	int mShieldDropRate = 20;
-	int mRedEnergyDropRate = 35;
-	int mBlueEnergyDropRate = 45;
+	int mShieldDropRate = 15;
+	int mRedEnergyDropRate = 45;
+	int mBlueEnergyDropRate = 80;
 
 	EnemyState mCurrentState = EnemyState::IDLE;
 	GameObject* mPlayer = nullptr;
@@ -86,7 +93,7 @@ protected:
 	float mDisengageTime = 1.0f;
 	TimerScript mDeathTimer;
 	float mDeathTime = 1.4f;
-	TimerScript  mHitEffectTimer;
+	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
 	float mFleeToAttackTime = 1.0f;
@@ -101,12 +108,16 @@ protected:
 
 	//Movement
 	float3 mEnemyCollisionDirection = float3::zero;
+	// Step Sound
+	TimerScript mStepTimer;
+	float mStepDuration = 0.0f;
 
 
 	//Hit Effect
 	bool mHit = false;
 	std::vector<Component*> mMeshComponents;
 	std::vector <float4> mOgColors;
+	GameObject* mUltHitEffectGO = nullptr;
 	// DEBUFF
 	bool mBeAttracted = false;
 
@@ -114,5 +125,7 @@ protected:
 	const float mParalyzedDuration = 5.0f;
 	TimerScript mParalyzedTimerScript;
 	float mParalysisSeverityLevel = 1.0f;
+
+
 
 };

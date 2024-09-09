@@ -6,6 +6,7 @@
 #include "AIAGentComponent.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PoolManager.h"
 #include "PlayerController.h"
 
@@ -33,6 +34,8 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
 	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
 	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
+	SEPARATOR("VFX");
+	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
 	END_CREATE;
 }
 
@@ -51,6 +54,8 @@ void EnemyCreatureRange::Start()
 
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
+	mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
+	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound,true);
 }
 
 void EnemyCreatureRange::Update()
@@ -59,6 +64,8 @@ void EnemyCreatureRange::Update()
 
 	if (mCurrentState != EnemyState::ATTACK)
 	{
+		GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, true);
+
 		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
 		if (mLaserEnd) mLaserEnd->SetEnabled(false);
 	}
@@ -82,6 +89,8 @@ void EnemyCreatureRange::Charge()
 
 void EnemyCreatureRange::Attack()
 {
+	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
+
 	Enemy::Attack();
 	Rotate();
 	mAimTimer.Reset();

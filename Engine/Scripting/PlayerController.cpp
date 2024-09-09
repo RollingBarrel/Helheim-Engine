@@ -150,7 +150,7 @@ void PlayerController::Start()
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
 
-    mPlayerSpeed = mPlayerStats->GetSpeed();
+   mPlayerSpeed = mPlayerStats->GetSpeed();
 
     // States
     mDashState = new DashState(this, mDashCoolDown);
@@ -250,7 +250,7 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -286,7 +286,6 @@ void PlayerController::Start()
 void PlayerController::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
-
     // Check input
     CheckInput();
 
@@ -334,10 +333,16 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
     }
 }
 
+void PlayerController::SetIdleState()
+{
+    mLowerState = mIdleState;
+}
+
 void PlayerController::CheckInput()
 {
     // Lowerbody state machine
     StateType type = mLowerState->HandleInput();
+
     if (mLowerStateType != type) 
     {
         //LOG(("LOWER: " + std::to_string(type)).c_str());
@@ -478,6 +483,7 @@ void PlayerController::SetAnimationSpeed(float speed)
 
 void PlayerController::MoveInDirection(float3 direction)
 {
+
     float collisionDotProduct = direction.Dot(mCollisionDirection);
     if (collisionDotProduct < 0.0f)
     {
@@ -494,6 +500,7 @@ void PlayerController::MoveInDirection(float3 direction)
 
 void PlayerController::MoveToPosition(float3 position)
 {
+
     mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(position, float3(10.0f)));
 }
 
@@ -593,10 +600,15 @@ void PlayerController::EquipRangedWeapons(bool equip)
     }
 }
 
-void PlayerController::SetMovementSpeed(float percentage) 
+void PlayerController::SetMovementSpeedStat(float percentage)
 {
     mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
     mPlayerSpeed = mPlayerStats->GetSpeed();
+}
+
+void PlayerController::SetSpeed(float speed)
+{
+    mPlayerSpeed = speed;
 }
 
 void PlayerController::SetWeaponDamage(float percentage)
@@ -617,7 +629,7 @@ void PlayerController::SetGrenadeVisuals(bool value)
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
     }
 }
 
@@ -680,6 +692,8 @@ void PlayerController::UpdateGrenadeVisuals()
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
     if (mGrenade)
     {
         mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
@@ -718,6 +732,17 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = !mGodMode;
     }
+    if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
+    {
+        if (mDamageModifier != 99999.0f)
+        {
+            mDamageModifier = 99999.0f;
+        }
+        else
+        {
+            mDamageModifier = 1.0f;
+        }
+     }
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);
@@ -726,15 +751,15 @@ void PlayerController::CheckDebugOptions()
     {
         RechargeBattery(EnergyType::RED);
     }
-    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
     }
-    else if (input->GetKey(Keys::Keys_4) == KeyState::KEY_DOWN)
+    else if (input->GetKey(Keys::Keys_F8) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
     }
-    else if (input->GetKey(Keys::Keys_5) == KeyState::KEY_DOWN)
+    else if (input->GetKey(Keys::Keys_F9) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
     }
@@ -745,6 +770,8 @@ void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield) 
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HEAL, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
 
         float healthRatio = mShield / mMaxShield;
@@ -764,7 +791,8 @@ void PlayerController::RechargeShield(float shield)
 
 void PlayerController::RechargeBattery(EnergyType batteryType)
 {
-    mCurrentEnergy = 100;
+    if(mEnergyType!= batteryType) mCurrentEnergy = 0;
+    mCurrentEnergy = Clamp(mCurrentEnergy+30,0,100);
     mEnergyType = batteryType;
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
@@ -782,7 +810,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mBlueBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mMachinegun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -803,7 +833,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mRedBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mShootgun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -831,7 +863,9 @@ void PlayerController::UseEnergy(int energy)
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
-        mEquippedSpecialGO->SetEnabled(false);
+
+        if(mEquippedSpecialGO)
+            mEquippedSpecialGO->SetEnabled(false);
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
@@ -898,6 +932,7 @@ void PlayerController::UltimateInterpolateLookAt(const float3& target)
 
 void PlayerController::TakeDamage(float damage)
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;
@@ -905,13 +940,24 @@ void PlayerController::TakeDamage(float damage)
 
     if (mShield <= 0.0f)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH1, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH2, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         GameManager::GetInstance()->GameOver();
 
         //CONTROLLER VIBRATION
         App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
+        return;
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    // Last opportunity
+    if (mShield == 0.0f)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BROKEN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DANGER, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    }
 
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(40000, 30000, 100);

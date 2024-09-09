@@ -4,6 +4,7 @@
 #include "Keys.h"
 #include "GameObject.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "HudController.h"
 
 #include "MathFunc.h"
@@ -79,6 +80,8 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 
 			if (GameManager::GetInstance()->GetHud())
 			{
+				GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_INTERACT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
 				GameManager::GetInstance()->SetPaused(true, false);
 				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
 				GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
