@@ -13,6 +13,7 @@
 #include "Physics.h"
 #include "Geometry/Ray.h"
 
+
 CREATE(BombBoss)
 {
 	CLASS(owner);
@@ -114,5 +115,9 @@ void BombBoss::Init(float3 bombOrigin, float damage)
 			particlecomponent->GetOwner()->SetEnabled(false);
 		}
 		mGameObject->SetWorldScale(float3(mRadius * 2));
+	}
+	else
+	{
+		mGameObject->SetEnabled(false);
 	}
 }
