@@ -224,18 +224,13 @@ uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in vec3 rO, in vec
 		p = rO + tmp*rDir;
 		if(dot(p - cPos, cDir) > 0.0f)
 		{
-			if(ret == 1)
+			if(tmp < 0)
 			{
-				if(tmp < t0)
-				{
-					t1 = t0;
-					t0 = tmp;
-				}
-				else
-					t1 = tmp;
+				t1 = t0;
+				t0 = tmp;
 			}
 			else
-				t0 = tmp;
+				t1 = tmp;
 			++ret;
 		}
 	}
@@ -292,19 +287,8 @@ bool IntersectLightShapes(in vec3 rO, in vec3 rDir, out float t0, out float t1)
 		{
 			float h = sLight.radius / sLight.col.w;
 			float dRadius2 = h*h - sLight.radius * sLight.radius;
-			if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt2))
-			{
-				if(tt2 > tt0)
-				{
-					tt0 = tt2;
-				}
-			}
+			IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt2));
 			
-			t0 = min(t0, tt0);
-			if(cIntersections == 2)
-			{
-				t1 = max(t1, tt1);
-			}
 			ret = true;
 		}
 		++i;
