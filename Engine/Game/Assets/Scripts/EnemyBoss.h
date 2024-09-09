@@ -22,6 +22,7 @@ public:
 	~EnemyBoss() {}
 	void Update() override;
 	void Start() override;
+	void TakeDamage(float damage) override;
 	float GetBombsDelay() const { return mBombsDelay; }
 	void LookAt(float3 target);
 

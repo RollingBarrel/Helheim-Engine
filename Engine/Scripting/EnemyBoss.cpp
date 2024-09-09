@@ -98,6 +98,8 @@ void EnemyBoss::Update()
     {
         //Phase change
         ++mStage;
+        if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
+        else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
         mCurrentState = EnemyState::PHASE;
         mBulletHell = BulletPattern::NONE;
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
@@ -265,6 +267,7 @@ void EnemyBoss::Death()
 {
     if (mDeathTimer.Delay(mDeathTime))
     {
+        GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(false);
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->Victory();
     }
@@ -619,4 +622,20 @@ void EnemyBoss::LookAt(float3 target)
 {
     mTargetFront = target - mGameObject->GetWorldPosition();
     mTargetFront.Normalize();
+}
+
+void EnemyBoss::TakeDamage(float damage)
+{
+    if (mCurrentState == EnemyState::PHASE) return;
+    if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
+    {
+        ActivateHitEffect();
+        mHealth -= damage;
+
+        if (mHealth <= 0)
+        {
+            // Use Hit2 animation before Death??
+            mCurrentState = EnemyState::DEATH;
+        }
+    }
 }
