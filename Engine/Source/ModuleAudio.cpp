@@ -402,16 +402,21 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 
 	CheckError(bus->setVolume(value));
 
-	if (busname == "bus:/music")
+	if (busname.compare("bus:/music") == 0)
 	{
 		CheckError(mAudioChannelGroup->setVolume(value));
-	} else if (busname == "bus:/sfx")
+	}
+	
+	if (busname.compare("bus:/sfx") == 0)
 	{
 		CheckError(mOneShotChannelGroup->setVolume(value));
-	}else if (busname == "bus:/")
+	}
+	
+	if (busname.compare("bus:/") == 0)
 	{
+		CheckError(mOneShotChannelGroup->setVolume(value));
 		CheckError(mAudioChannelGroup->setVolume(value));
-		CheckError(mOneShotChannelGroup->setVolume(value));
+
 	}
 }
 
