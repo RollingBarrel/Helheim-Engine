@@ -52,6 +52,7 @@
 #include "Machinegun.h"
 #include "Shootgun.h"
 #include "Grenade.h"
+#include <LineComponent.h>
 
 CREATE(PlayerController)
 {
@@ -436,20 +437,48 @@ void PlayerController::HandleRotation()
 
         if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
 
-        float3 position = mGameObject->GetWorldPosition();
+        //float3 position = mGameObject->GetWorldPosition();
+        float3 position = mShootOrigin->GetWorldPosition();
+        position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
+
+        GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+        float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
+        laserDirection.y = 0;
+        laserDirection.Normalize();
+        if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
+
     }
     else
     {
         Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-        Plane plane(mGameObject->GetWorldPosition(), float3::unitY);
+        float3 planePoint = float3(mGameObject->GetWorldPosition().x ,mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
+        Plane plane(planePoint, float3::unitY);
 
         float distance;
         if (plane.Intersects(ray, &distance))
-        {
-            mAimPosition = ray.GetPoint(distance);
+        {      
+            float3 rayPoint = ray.GetPoint(distance);
+            mAimPosition = rayPoint;
+            if (mGameObject->GetWorldPosition().Distance(rayPoint) > 2.5f)
+            {
+                
+
+                GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+                float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
+                laserDirection.y = 0;
+                laserDirection.Normalize();
+                if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
+                //if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mAimPosition);
+
+                
+            } 
+
+            mAimPosition.y = mGameObject->GetWorldPosition().y;
+
         }
+       
     }
     if (mUpperStateType != StateType::ULTIMATE)
         mGameObject->LookAt(mAimPosition);
@@ -547,6 +576,12 @@ void PlayerController::SwitchWeapon()
 float3 PlayerController::GetPlayerPosition()
 {
     return  mGameObject->GetWorldPosition(); 
+}
+
+void PlayerController::EnableLaser(bool enable)
+{
+    LineComponent* lineComponent = static_cast<LineComponent*>(mShootOrigin->GetComponent(ComponentType::LINE));
+    if (lineComponent) lineComponent->SetEnable(enable);
 }
 
 void PlayerController::EquipMeleeWeapon(bool equip)

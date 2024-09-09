@@ -237,7 +237,7 @@ void Enemy::PlayStepAudio()
 {
 	if (mStepTimer.Delay(mStepDuration))
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
+		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
 	}
 }
 
@@ -345,7 +345,7 @@ void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
+		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
 
 		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
 		if (activeBattleArea)
