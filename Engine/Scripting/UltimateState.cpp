@@ -61,6 +61,9 @@ void UltimateState::Exit()
 	{
 		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mPlayerController->GetUltimateCooldown());
 	}
+
+	mPlayerController->EnableLaser(true);
+
 }
 
 StateType UltimateState::GetType()
