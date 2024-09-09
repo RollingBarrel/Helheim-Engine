@@ -14,16 +14,15 @@
 #include "HudController.h"
 #include "MathFunc.h"
 
-#define LASER_ANIMATION 78.0f / 20
-#define LASER_WIND_UP 38.0f / 20
-#define BULLETS_ANIMATION 146.0f / 20
-#define BULLETS_WIND_UP 92.0f / 20
-#define ERUPTION_ANIMATION 144.0f / 20
-#define IDLE_ANIMATION 40.0f / 20
-#define PHASE_ANIMATION 120.0f / 20
-#define DEATH_ANIMATION 107.0f / 20
-#define WAKEUP_ANIMATION 60.0f / 20
-#define HIT_ANIMATION 30.0f / 20
+#define LASER_WIND_UP 2.625f
+#define BULLETS_ANIMATION 146.0f / 24.0f
+#define BULLETS_WIND_UP 92.0f / 24.0f
+#define ERUPTION_ANIMATION 144.0f / 24.0f
+#define IDLE_ANIMATION 40.0f / 24.0f
+#define PHASE_ANIMATION 5.0f
+#define DEATH_ANIMATION 4.4583f
+#define WAKEUP_ANIMATION 2.5f
+#define HIT_ANIMATION 1.25f
 #define BEAT_TIME 0.428571435f
 
 CREATE(EnemyBoss) {
@@ -35,6 +34,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::FLOAT, mAttackSequenceCooldown);
+    MEMBER(MemberType::FLOAT, mPhaseShiftTime);
     MEMBER(MemberType::FLOAT, mPhase1Hp);
     MEMBER(MemberType::FLOAT, mPhase2Hp);
     MEMBER(MemberType::FLOAT, mDeathTime);
@@ -66,7 +66,7 @@ void EnemyBoss::Start()
     srand(static_cast<unsigned int>(time(0)));
 
     Enemy::Start();
-    mCurrentState = EnemyState::WAKE;
+    mCurrentState = EnemyState::DOWN;
     mFront = mGameObject->GetFront();
 
     for (const char* prefab : mTemplateNames)
@@ -83,8 +83,7 @@ void EnemyBoss::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-        mAnimationComponent->SetLoop(true);
-        mAnimationComponent->SendTrigger("tWake", mIdleTransitionDuration);
+        mAnimationComponent->SetLoop(false);
     }
 }
 
@@ -92,24 +91,25 @@ void EnemyBoss::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
     if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
+    float t = HIT_ANIMATION;
+    static short phaseChange = 0;
 
-    
+    if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
+    {
+        //Phase change
+        ++mStage;
+        mCurrentState = EnemyState::PHASE;
+        mBulletHell = BulletPattern::NONE;
+        if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
+        return;
+    }
 
     if (!mBeAttracted)
     {
         switch (mCurrentState)
         {
         case EnemyState::IDLE:
-            mBulletHell = BulletPattern::NONE;
         case EnemyState::ATTACK:
-            if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
-            {
-                //Phase change
-                ++mStage;
-                mCurrentState = EnemyState::PHASE;
-                mBulletHell = BulletPattern::NONE;
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
-            }
 
             switch (mStage)
             {
@@ -123,66 +123,98 @@ void EnemyBoss::Update()
                 UpdatePhase3();
                 break;
             }
-
-            if (mBulletHell != BulletPattern::NONE)
-            {
-                switch (mBulletHell)
-                {
-                case BulletPattern::CIRCLES:
-                    BulletHellPattern1();
-                    break;
-                case BulletPattern::ARROW:
-                    BulletHellPattern2();
-                    break;
-                case BulletPattern::WAVE:
-                    BulletHellPattern5();
-                    break;
-                case BulletPattern::TARGETED_CIRCLES:
-                    BulletHellPattern6();
-                    break;
-                }
-            }
+            
             break;
         case EnemyState::PHASE:
-            if (mPhaseShiftTimer.Delay(mPhaseShiftTime))
+            switch (phaseChange)
             {
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tWake", mDeathTransitionDuration);
-                mCurrentState = EnemyState::WAKE;
+            case 0:
+                if (mPhaseShiftTimer.Delay(HIT_ANIMATION))
+                {
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+                    ++phaseChange;
+                }
+                break;
+            case 1:
+                if (mPhaseShiftTimer.Delay(DEATH_ANIMATION + mPhaseShiftTime))
+                {
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", 1.0f);
+                    ++phaseChange;
+                }
+                break;
+            case 2:
+                if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
+                {
+
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
+                    ++phaseChange;
+                }
+                break;
+            case 3:
+                if (mPhaseShiftTimer.Delay(PHASE_ANIMATION))
+                {
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
+                    mCurrentState = EnemyState::IDLE;
+                    phaseChange = 0;
+                }
+                break;
             }
-            else if (mPhaseShiftTimer.DelayWithoutReset(DEATH_ANIMATION+HIT_ANIMATION))
-            {
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
-            }
-            else if (mPhaseShiftTimer.DelayWithoutReset(HIT_ANIMATION))
-            {
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
-            }
+           
             break;
         case EnemyState::DEATH:
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+            mBulletHell = BulletPattern::NONE;
             Death();
             break;
         case EnemyState::CHARGING_BULLET_HELL:
-            if (mAttackDurationTimer.Delay(BULLETS_WIND_UP))
+            if (mPhaseShiftTimer.Delay(BULLETS_WIND_UP))
             {
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("", mAttackTransitionDuration);
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tBulletHell", mAttackTransitionDuration);
                 mCurrentState = EnemyState::ATTACK;
             }
             break;
         case EnemyState::CHARGING_LASER:
-            if (mAttackDurationTimer.Delay(LASER_WIND_UP))
+            if (mPhaseShiftTimer.Delay(2.625f))
             {
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("", mAttackTransitionDuration);
                 mCurrentState = EnemyState::ATTACK;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
             }
             break;
         case EnemyState::WAKE:
-            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION) && IsPlayerInRange(mBulletRange))
+            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
                 mCurrentState = EnemyState::IDLE;
             }
+            break;
+        case EnemyState::DOWN:
+            if (IsPlayerInRange(mBulletRange))
+            {
+                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
+                mCurrentState = EnemyState::WAKE;
+            }
+        }
+    }
+
+    if (mBulletHell != BulletPattern::NONE)
+    {
+        if (mAttackDurationTimer.Delay(mBulletHellDuration)) mBulletHell = BulletPattern::NONE;
+        else switch (mBulletHell)
+        {
+        case BulletPattern::CIRCLES:
+            BulletHellPattern1();
+            break;
+        case BulletPattern::ARROW:
+            BulletHellPattern2();
+            break;
+        case BulletPattern::WAVE:
+            BulletHellPattern5();
+            break;
+        case BulletPattern::TARGETED_CIRCLES:
+            BulletHellPattern6();
+            break;
         }
     }
 
@@ -190,12 +222,16 @@ void EnemyBoss::Update()
 
 void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 {
+    mCurrentState = EnemyState::CHARGING_LASER;
+    if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
     mBulletHell = pattern;
     mBulletsWave = 0;
 }
 
 void EnemyBoss::LaserAttack()
 {
+    mCurrentState = EnemyState::CHARGING_LASER;
+    if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
     if (mLaserGO)
     {
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -205,6 +241,8 @@ void EnemyBoss::LaserAttack()
 
 void EnemyBoss::BombAttack()
 {
+    mCurrentState = EnemyState::ATTACK;
+    if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
     float3 target = mPlayer->GetWorldPosition();
     int index = rand() % mTemplates.size();
     GameObject* bombGO = mTemplates[index];
@@ -432,13 +470,13 @@ void EnemyBoss::UpdatePhase1()
                 StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             }
-            mCurrentState = EnemyState::ATTACK;
         }
         break;
     case EnemyState::ATTACK:
-        if (mAttackDurationTimer.Delay(mBulletHellDuration))
+        if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
         {
             mCurrentState = EnemyState::IDLE;
+            if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
             ++sequence;
             sequence %= 3;
         }
@@ -470,7 +508,6 @@ void EnemyBoss::UpdatePhase2()
                 StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             }
-            mCurrentState = EnemyState::ATTACK;
         }
         break;
     case EnemyState::ATTACK:
@@ -492,9 +529,10 @@ void EnemyBoss::UpdatePhase2()
             }
             break;
         default:
-            if (mAttackDurationTimer.Delay(mBulletHellDuration))
+            if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
             {
                 mCurrentState = EnemyState::IDLE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 ++sequence;
                 sequence %= 4;
                 attack = 0;
@@ -506,7 +544,7 @@ void EnemyBoss::UpdatePhase2()
 
 void EnemyBoss::UpdatePhase3()
 {
-    static unsigned int sequence = 4;
+    static int sequence = -1;
     static unsigned int attack = 0;
     switch (mCurrentState)
     {
@@ -527,17 +565,16 @@ void EnemyBoss::UpdatePhase3()
             case 3:
                 StartBulletAttack(BulletPattern::CIRCLES);
                 break;
+            case -1:// Start with bombs. Never repeat this sequence
+                BombAttack();
+                break;
+
             }
-            mCurrentState = EnemyState::ATTACK;
         }
         break;
     case EnemyState::ATTACK:
         switch (sequence * 10 + attack)
         {
-        case 40: // Start with bombs. Never repeat this sequence
-            BombAttack();
-            sequence = 0;
-            break;
         case 0:
         case 11:
         case 30:
@@ -564,9 +601,10 @@ void EnemyBoss::UpdatePhase3()
             }
             break;
         default:
-            if (mAttackDurationTimer.Delay(mBulletHellDuration))
+            if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
             {
                 mCurrentState = EnemyState::IDLE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 ++sequence;
                 sequence %= 4;
                 attack = 0;
