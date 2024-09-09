@@ -335,7 +335,7 @@ void main()
 		
 			float nSteps = ceil((t1 - t0) / stepSize); //Uniform constant de stepSize
 			vec3 marchingStep = rayDir*stepSize;
-			vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
+			vec3 currPos = cameraPos + rayDir*t0;//+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
 		
 			float extCoeff = 0.0;
 			vec3 accInScattering = vec3(0.0);
@@ -345,7 +345,6 @@ void main()
 				accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
 				currPos += marchingStep;
 			}
-			float transmitance = fogIntensity*exp(-extCoeff);
 			vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
 			pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
 			imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
