@@ -439,7 +439,7 @@ void PlayerController::HandleRotation()
 
         //float3 position = mGameObject->GetWorldPosition();
         float3 position = mShootOrigin->GetWorldPosition();
-        position.y = 0;
+        position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
 
