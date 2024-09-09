@@ -68,6 +68,8 @@ public:
     float3 GetPlayerAimPosition() { return mAimPosition; }
     float3 GetPlayerPosition();
    
+    void EnableLaser(bool enable);
+
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
     void SetAnimationSpeed(float speed);
