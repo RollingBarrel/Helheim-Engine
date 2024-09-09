@@ -33291,8 +33291,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.6203362345695496,
-                    0.7846854329109192
+                    0.6430531740188599,
+                    -0.7662677764892578
                 ],
                 "Scale": [
                     1.0,
@@ -43785,6 +43785,91 @@
                         "Alignment": 0,
                         "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
                         "FontSize": 40
+                    }
+                ]
+            },
+            {
+                "UID": 134391865,
+                "ParentUID": 896417734,
+                "Name": "Canvas",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.000240325927734375,
+                    3.7108848094940187,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    6.0,
+                    6.0,
+                    9.629998207092286
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            1920.0,
+                            1920.0
+                        ],
+                        "Render": 2
+                    }
+                ]
+            },
+            {
+                "UID": 1917459597,
+                "ParentUID": 134391865,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.06028619408607483,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    0.09595014899969101
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 1978895827,
+                        "Color": [
+                            0.9852941036224365,
+                            0.009659774601459504,
+                            0.44008710980415347
+                        ],
+                        "Alpha": 0.3449999988079071,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 6,
+                        "Rows": 6,
+                        "Speed": 12,
+                        "IsPlaying": false
                     }
                 ]
             }
