@@ -18,65 +18,65 @@ CREATE(FlickeringLight)
 	MEMBER(MemberType::FLOAT, mTimeOffset);
 	SEPARATOR("Blackouts");
 	SEPARATOR("1");
-	MEMBER(MemberType::FLOAT, b1.mTime);
-	MEMBER(MemberType::FLOAT, b1.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout1.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout1.mDuration);
 	SEPARATOR("2");
-	MEMBER(MemberType::FLOAT, b2.mTime);
-	MEMBER(MemberType::FLOAT, b2.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout2.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout2.mDuration);
 	SEPARATOR("3");
-	MEMBER(MemberType::FLOAT, b3.mTime);
-	MEMBER(MemberType::FLOAT, b3.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout3.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout3.mDuration);
 	SEPARATOR("4");
-	MEMBER(MemberType::FLOAT, b4.mTime);
-	MEMBER(MemberType::FLOAT, b4.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout4.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout4.mDuration);
 	SEPARATOR("5");
-	MEMBER(MemberType::FLOAT, b5.mTime);
-	MEMBER(MemberType::FLOAT, b5.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout5.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout5.mDuration);
 	SEPARATOR("6");
-	MEMBER(MemberType::FLOAT, b6.mTime);
-	MEMBER(MemberType::FLOAT, b6.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout6.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout6.mDuration);
 	SEPARATOR("7");
-	MEMBER(MemberType::FLOAT, b7.mTime);
-	MEMBER(MemberType::FLOAT, b7.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout7.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout7.mDuration);
 	SEPARATOR("8");
-	MEMBER(MemberType::FLOAT, b8.mTime);
-	MEMBER(MemberType::FLOAT, b8.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout8.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout8.mDuration);
 	SEPARATOR("9");
-	MEMBER(MemberType::FLOAT, b9.mTime);
-	MEMBER(MemberType::FLOAT, b9.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout9.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout9.mDuration);
 	SEPARATOR("10");
-	MEMBER(MemberType::FLOAT, b10.mTime);
-	MEMBER(MemberType::FLOAT, b10.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout10.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout10.mDuration);
 	SEPARATOR("11");
-	MEMBER(MemberType::FLOAT, b11.mTime);
-	MEMBER(MemberType::FLOAT, b11.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout11.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout11.mDuration);
 	SEPARATOR("12");
-	MEMBER(MemberType::FLOAT, b12.mTime);
-	MEMBER(MemberType::FLOAT, b12.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout12.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout12.mDuration);
 	SEPARATOR("13");
-	MEMBER(MemberType::FLOAT, b13.mTime);
-	MEMBER(MemberType::FLOAT, b13.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout13.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout13.mDuration);
 	SEPARATOR("14");
-	MEMBER(MemberType::FLOAT, b14.mTime);
-	MEMBER(MemberType::FLOAT, b14.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout14.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout14.mDuration);
 	SEPARATOR("15");
-	MEMBER(MemberType::FLOAT, b15.mTime);
-	MEMBER(MemberType::FLOAT, b15.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout15.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout15.mDuration);
 	SEPARATOR("16");
-	MEMBER(MemberType::FLOAT, b16.mTime);
-	MEMBER(MemberType::FLOAT, b16.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout16.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout16.mDuration);
 	SEPARATOR("17");
-	MEMBER(MemberType::FLOAT, b17.mTime);
-	MEMBER(MemberType::FLOAT, b17.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout17.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout17.mDuration);
 	SEPARATOR("18");
-	MEMBER(MemberType::FLOAT, b18.mTime);
-	MEMBER(MemberType::FLOAT, b18.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout18.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout18.mDuration);
 	SEPARATOR("19");
-	MEMBER(MemberType::FLOAT, b19.mTime);
-	MEMBER(MemberType::FLOAT, b19.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout19.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout19.mDuration);
 	SEPARATOR("20");
-	MEMBER(MemberType::FLOAT, b20.mTime);
-	MEMBER(MemberType::FLOAT, b20.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout20.mTime);
+	MEMBER(MemberType::FLOAT, mBlackout20.mDuration);
 
 	END_CREATE;
 }
@@ -99,26 +99,26 @@ void FlickeringLight::Start()
 	mSpotLight = static_cast<SpotLightComponent*>(mGameObject->GetComponent(ComponentType::SPOTLIGHT));
 
 	//Initialize the blackouts
-	flickering.push_back(b1);
-	flickering.push_back(b2);
-	flickering.push_back(b3);
-	flickering.push_back(b4);
-	flickering.push_back(b5);
-	flickering.push_back(b6);
-	flickering.push_back(b7);
-	flickering.push_back(b8);
-	flickering.push_back(b9);
-	flickering.push_back(b10);
-	flickering.push_back(b11);
-	flickering.push_back(b12);
-	flickering.push_back(b13);
-	flickering.push_back(b14);
-	flickering.push_back(b15);
-	flickering.push_back(b16);
-	flickering.push_back(b17);
-	flickering.push_back(b18);
-	flickering.push_back(b19);
-	flickering.push_back(b20);
+	flickering.push_back(mBlackout1);
+	flickering.push_back(mBlackout2);
+	flickering.push_back(mBlackout3);
+	flickering.push_back(mBlackout4);
+	flickering.push_back(mBlackout5);
+	flickering.push_back(mBlackout6);
+	flickering.push_back(mBlackout7);
+	flickering.push_back(mBlackout8);
+	flickering.push_back(mBlackout9);
+	flickering.push_back(mBlackout10);
+	flickering.push_back(mBlackout11);
+	flickering.push_back(mBlackout12);
+	flickering.push_back(mBlackout13);
+	flickering.push_back(mBlackout14);
+	flickering.push_back(mBlackout15);
+	flickering.push_back(mBlackout16);
+	flickering.push_back(mBlackout17);
+	flickering.push_back(mBlackout18);
+	flickering.push_back(mBlackout19);
+	flickering.push_back(mBlackout20);
 }
 
 void FlickeringLight::Update()
@@ -135,7 +135,12 @@ void FlickeringLight::Update()
 
 	//Updates time
 	mTimer += App->GetDt() * mSpeed;
+	if (mTimer - mStartingTime >= mLoopDuration) 
+	{
+		mTimer -= mLoopDuration;
+	}
 
+	//Updates light state
 	if (mPointLight) 
 	{
 		UpdateLightState();
@@ -161,11 +166,6 @@ void FlickeringLight::Update()
 		{
 			mSpotLight->SetEnable(true);
 		}
-	}
-
-	if (mTimer - mStartingTime >= mLoopDuration) 
-	{
-		mTimer -= mLoopDuration;
 	}
 }
 

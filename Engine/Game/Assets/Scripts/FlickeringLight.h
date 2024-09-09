@@ -44,26 +44,26 @@ private:
 	bool mLightOn = true;
 
 	//Blackouts
-	Blackout b1;
-	Blackout b2;
-	Blackout b3;
-	Blackout b4;
-	Blackout b5;
-	Blackout b6;
-	Blackout b7;
-	Blackout b8;
-	Blackout b9;
-	Blackout b10;
-	Blackout b11;
-	Blackout b12;
-	Blackout b13;
-	Blackout b14;
-	Blackout b15;
-	Blackout b16;
-	Blackout b17;
-	Blackout b18;
-	Blackout b19;
-	Blackout b20;
+	Blackout mBlackout1;
+	Blackout mBlackout2;
+	Blackout mBlackout3;
+	Blackout mBlackout4;
+	Blackout mBlackout5;
+	Blackout mBlackout6;
+	Blackout mBlackout7;
+	Blackout mBlackout8;
+	Blackout mBlackout9;
+	Blackout mBlackout10;
+	Blackout mBlackout11;
+	Blackout mBlackout12;
+	Blackout mBlackout13;
+	Blackout mBlackout14;
+	Blackout mBlackout15;
+	Blackout mBlackout16;
+	Blackout mBlackout17;
+	Blackout mBlackout18;
+	Blackout mBlackout19;
+	Blackout mBlackout20;
 
 	std::vector<Blackout> flickering;
 
