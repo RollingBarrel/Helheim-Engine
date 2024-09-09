@@ -416,7 +416,6 @@ void ModuleAudio::SetVolume(std::string busname, float value) const
 	{
 		CheckError(mOneShotChannelGroup->setVolume(value));
 		CheckError(mAudioChannelGroup->setVolume(value));
-
 	}
 }
 
