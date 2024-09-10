@@ -63,8 +63,6 @@ EnemyBoss::EnemyBoss(GameObject* owner) : Enemy(owner)
 
 void EnemyBoss::Start()
 {
-    srand(static_cast<unsigned int>(time(0)));
-
     Enemy::Start();
     mCurrentState = EnemyState::DOWN;
     mFront = mGameObject->GetFront();
