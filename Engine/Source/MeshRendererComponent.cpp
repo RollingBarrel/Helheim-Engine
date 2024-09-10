@@ -394,6 +394,13 @@ void MeshRendererComponent::SetEnableBaseColorTexture(bool baseColorTex)
 	App->GetOpenGL()->BatchEditMaterial(*this);
 }
 
+void MeshRendererComponent::SetEnableEmissiveTexture(bool emissiveTex)
+{
+	assert(mMaterial);
+	mMaterial->SetEnableEmissiveTexture(emissiveTex);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}
+
 void MeshRendererComponent::SetBaseColorFactor(const float4& baseColor)
 { 
 	assert(mMaterial);

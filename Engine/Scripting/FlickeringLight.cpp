@@ -6,8 +6,8 @@
 
 #include "ScriptComponent.h"
 
-#include "SpotLightComponent.h"
-#include "PointLightComponent.h"
+#include "Component.h"
+#include "MeshRendererComponent.h"
 
 CREATE(FlickeringLight)
 {
@@ -62,7 +62,7 @@ CREATE(FlickeringLight)
 	SEPARATOR("15");
 	MEMBER(MemberType::FLOAT, mBlackout15.mTime);
 	MEMBER(MemberType::FLOAT, mBlackout15.mDuration);
-	SEPARATOR("16");
+	/*SEPARATOR("16");
 	MEMBER(MemberType::FLOAT, mBlackout16.mTime);
 	MEMBER(MemberType::FLOAT, mBlackout16.mDuration);
 	SEPARATOR("17");
@@ -76,7 +76,7 @@ CREATE(FlickeringLight)
 	MEMBER(MemberType::FLOAT, mBlackout19.mDuration);
 	SEPARATOR("20");
 	MEMBER(MemberType::FLOAT, mBlackout20.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout20.mDuration);
+	MEMBER(MemberType::FLOAT, mBlackout20.mDuration);*/
 
 	END_CREATE;
 }
@@ -94,9 +94,19 @@ void FlickeringLight::Start()
 	//Starting time setup
 	mTimer = fmod(mStartingTime,mLoopDuration);
 
-	//Check if the gameobject has some type of light and registers its intensity
-	mPointLight = static_cast<PointLightComponent*>(mGameObject->GetComponent(ComponentType::POINTLIGHT));
-	mSpotLight = static_cast<SpotLightComponent*>(mGameObject->GetComponent(ComponentType::SPOTLIGHT));
+	//Checks if there is a spotlight or pointlight component
+	mLightComp = mGameObject->GetComponent(ComponentType::SPOTLIGHT);
+	if (!mLightComp)
+	{
+		mLightComp = mGameObject->GetComponent(ComponentType::POINTLIGHT);
+	}
+
+	//Checks if there is a mesh renderer attached to it
+	mMeshRenderComp = static_cast<MeshRendererComponent*>(mGameObject->GetComponent(ComponentType::MESHRENDERER));
+	if (mMeshRenderComp) 
+	{
+		mMeshRenderComp->CreateUiqueMaterial();
+	}
 
 	//Initialize the blackouts
 	flickering.push_back(mBlackout1);
@@ -114,11 +124,11 @@ void FlickeringLight::Start()
 	flickering.push_back(mBlackout13);
 	flickering.push_back(mBlackout14);
 	flickering.push_back(mBlackout15);
-	flickering.push_back(mBlackout16);
+	/*flickering.push_back(mBlackout16);
 	flickering.push_back(mBlackout17);
 	flickering.push_back(mBlackout18);
 	flickering.push_back(mBlackout19);
-	flickering.push_back(mBlackout20);
+	flickering.push_back(mBlackout20);*/
 }
 
 void FlickeringLight::Update()
@@ -140,31 +150,29 @@ void FlickeringLight::Update()
 		mTimer -= mLoopDuration;
 	}
 
-	//Updates light state
-	if (mPointLight) 
-	{
-		UpdateLightState();
+	UpdateLightState();
 
+	//Updates light state
+	if (mLightComp)
+	{
 		if (!mLightOn) 
 		{
-			mPointLight->SetEnable(false);
+			mLightComp->SetEnable(false);
 		}
 		else 
 		{
-			mPointLight->SetEnable(true);
+			mLightComp->SetEnable(true);
 		}
 	}
-	if (mSpotLight) 
+	if (mMeshRenderComp) 
 	{
-		UpdateLightState();
-
 		if (!mLightOn)
 		{
-			mSpotLight->SetEnable(false);
+			mMeshRenderComp->SetEnableEmissiveTexture(false);
 		}
 		else
 		{
-			mSpotLight->SetEnable(true);
+			mMeshRenderComp->SetEnableEmissiveTexture(true);
 		}
 	}
 }

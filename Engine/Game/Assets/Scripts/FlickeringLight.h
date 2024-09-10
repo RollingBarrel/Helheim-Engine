@@ -5,8 +5,10 @@
 
 GENERATE_BODY(FlickeringLight);
 
-class SpotLightComponent;
-class PointLightComponent;
+//class SpotLightComponent;
+//class PointLightComponent;
+class Component;
+class MeshRendererComponent;
 
 struct Blackout 
 {
@@ -59,15 +61,15 @@ private:
 	Blackout mBlackout13;
 	Blackout mBlackout14;
 	Blackout mBlackout15;
-	Blackout mBlackout16;
+	/*Blackout mBlackout16;
 	Blackout mBlackout17;
 	Blackout mBlackout18;
 	Blackout mBlackout19;
-	Blackout mBlackout20;
+	Blackout mBlackout20;*/
 
 	std::vector<Blackout> flickering;
 
-	SpotLightComponent* mSpotLight = nullptr;
-	PointLightComponent* mPointLight = nullptr;
+	Component* mLightComp = nullptr;
+	MeshRendererComponent* mMeshRenderComp = nullptr;
 
 };
