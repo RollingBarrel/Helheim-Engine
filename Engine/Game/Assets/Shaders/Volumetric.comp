@@ -89,8 +89,8 @@ float noise(in vec3 position,in float time)
 
 float CalculateExtinctionCoeff(in vec3 currPos)
 {	
-	//return baseExtCoeff * noise(currPos, currTime) * noiseAmount;
-	return baseExtCoeff;
+	return baseExtCoeff * noise(currPos, currTime) * noiseAmount;
+	//return baseExtCoeff;
 }
 
 float MieScattering(vec3 V, vec3 lDir)
@@ -352,10 +352,11 @@ void main()
 		//	imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
 		//}
 
-		const uint NUM_STEPS = 200;
+		const uint NUM_STEPS = 32;
 		vec3 rayDir = worldPos - cameraPos;
-		vec3 currentPos = cameraPos;
+		//vec3 currentPos = cameraPos;
 		vec3 marchingStep = rayDir/float(NUM_STEPS);
+		vec3 currentPos = cameraPos + marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
 		float stepSize = length(marchingStep);
 		float extCoeff = 0.0;
 		vec3 accInScattering = vec3(0.0);

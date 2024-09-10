@@ -1472,9 +1472,9 @@ void ModuleOpenGL::Draw()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
-		//glDepthMask(GL_FALSE);
+		glDepthMask(GL_FALSE);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glDepthMask(GL_TRUE);
+		glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LESS);
 		glPopDebugGroup();
 	}
