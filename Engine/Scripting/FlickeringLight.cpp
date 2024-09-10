@@ -1,4 +1,3 @@
-#include <string>
 #include "FlickeringLight.h"
 #include "Application.h"
 #include "GameObject.h"

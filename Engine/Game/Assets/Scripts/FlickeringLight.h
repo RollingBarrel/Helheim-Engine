@@ -4,6 +4,7 @@
 #include "Macros.h"
 
 GENERATE_BODY(FlickeringLight);
+
 class Component;
 class MeshRendererComponent;
 
