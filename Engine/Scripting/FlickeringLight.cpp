@@ -93,12 +93,24 @@ void FlickeringLight::Start()
 	mLightComp = mGameObject->GetComponent(ComponentType::SPOTLIGHT);
 	if (!mLightComp)
 	{
+		mLightComp = mGameObject->GetComponentInChildren(ComponentType::SPOTLIGHT);
+	}
+	if (!mLightComp)
+	{
 		mLightComp = mGameObject->GetComponent(ComponentType::POINTLIGHT);
+	}
+	if (!mLightComp)
+	{
+		mLightComp = mGameObject->GetComponentInChildren(ComponentType::POINTLIGHT);
 	}
 
 	//Checks if there is a mesh renderer attached to it
 	mMeshRenderComp = static_cast<MeshRendererComponent*>(mGameObject->GetComponent(ComponentType::MESHRENDERER));
-	if (mMeshRenderComp) 
+	if (!mMeshRenderComp) 
+	{
+		mMeshRenderComp = static_cast<MeshRendererComponent*>(mGameObject->GetComponentInChildren(ComponentType::MESHRENDERER));
+	}
+	if (mMeshRenderComp)
 	{
 		mMeshRenderComp->CreateUniqueMaterial();
 	}
