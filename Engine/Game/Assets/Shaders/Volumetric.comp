@@ -97,7 +97,7 @@ float MieScattering(vec3 V, vec3 lDir)
 {
 	//Henyey-Greenstein Schlick aproximation
 	float k = 1.55*anisotropy - 0.55*anisotropy*anisotropy*anisotropy;
-	float toSquareTerm = 1+k*dot(V,lDir);
+	float toSquareTerm = 1+k*dot(-V,lDir);
 	return (1.0 - k*k) / (4*PI*toSquareTerm*toSquareTerm);
 }
 
