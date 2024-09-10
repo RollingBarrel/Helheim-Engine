@@ -29,7 +29,7 @@ Shootgun::Shootgun()
     mBulletSpeed = 30.0f;
     mBulletMaxSpread = 0.5f;
     mEnergyCost = 15;
-    mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb");
+    mFire = App->GetScene()->InstantiatePrefab("ShootgunFire.prfb", GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO());
     if (mFire)
     {
         mFire->SetEnabled(false);
@@ -72,7 +72,6 @@ void Shootgun::Attack(float time)
     {
         mFire->SetEnabled(false);
         mFire->SetEnabled(true);
-        mFire->SetWorldPosition(GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition());
     }
 }
 

@@ -167,7 +167,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\AudioTester.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
@@ -208,7 +207,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\Katana.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Machinegun.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MainMenu.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\MainMenuManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MeleeWeapon.h" />
     <ClInclude Include="..\Game\Assets\Scripts\MoveState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ObjectPool.h" />
@@ -234,7 +232,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
-    <ClCompile Include="AudioTester.cpp" />
     <ClCompile Include="BattleArea.cpp" />
     <ClCompile Include="AimState.cpp" />
     <ClCompile Include="AttackState.cpp" />
@@ -276,7 +273,6 @@
     <ClCompile Include="Machinegun.cpp" />
     <ClCompile Include="Macros.h" />
     <ClCompile Include="MainMenu.cpp" />
-    <ClCompile Include="MainMenuManager.cpp" />
     <ClCompile Include="MeleeWeapon.cpp" />
     <ClCompile Include="MoveState.cpp" />
     <ClCompile Include="ObjectPool.cpp" />

@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "PlayerStats.h"
 
+
 UltimateChargeState::UltimateChargeState(PlayerController* player, float cooldown, float duration) : State(player, cooldown)
 {
 	mUltimateChargeDuration = duration;
@@ -32,6 +33,9 @@ void UltimateChargeState::Enter()
 	//keep player still while charging
 	mPlayerController->EnableChargeUltimate(true);
 	mPlayerController->SetSpeed(1.0f);
+
+	mPlayerController->EnableLaser(false);
+
 }
 
 void UltimateChargeState::Exit()

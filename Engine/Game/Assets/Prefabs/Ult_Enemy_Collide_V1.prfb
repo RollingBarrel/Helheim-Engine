@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1508053747,
+                "UID": 453202370,
                 "ParentUID": 1,
                 "Name": "Ult_Enemy_Collide_V1",
                 "Enabled": true,
@@ -31,7 +31,7 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 148626881,
+                        "Image": 213516520,
                         "Delay": 0.0,
                         "Duration": 0.5,
                         "EmissionRate": 10.0,
@@ -39,8 +39,10 @@
                         "Burst": 21,
                         "Looping": false,
                         "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 2.4000000953674318,
+                        "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
                             "MinValue": 0.5,
@@ -61,8 +63,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.20000000298023225,
-                                "MaxValue": 0.30000001192092898
+                                "MinValue": 3.0,
+                                "MaxValue": 4.0
                             },
                             "IsCurve": false,
                             "CurvePoints": [
@@ -115,27 +117,9 @@
                             {
                                 "Time": 0.21983914077281953,
                                 "Color": [
-                                    0.4520000219345093,
-                                    0.9868480563163757,
                                     1.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.4892761707305908,
-                                "Color": [
-                                    0.322704017162323,
-                                    0.8005857467651367,
-                                    0.972000002861023,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.6648795008659363,
-                                "Color": [
-                                    0.09672725945711136,
-                                    0.2827557921409607,
-                                    0.42424237728118899,
+                                    0.02799999713897705,
+                                    0.02799999713897705,
                                     1.0
                                 ]
                             },

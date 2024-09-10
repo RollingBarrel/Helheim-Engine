@@ -41,13 +41,13 @@ StateType ReloadState::HandleInput()
         return StateType::SPECIAL;
     }
 
-    if (mPlayerController->GetSwitchState()->IsReady() &&
-        (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
-    {
-        mPlayerController->GetSwitchState()->ResetCooldown();
-        return StateType::SWITCH;
-    }
+    //if (mPlayerController->GetSwitchState()->IsReady() &&
+    //    (App->GetInput()->GetKey(Keys::Keys_Q) == KeyState::KEY_DOWN ||
+    //        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN))
+    //{
+    //    mPlayerController->GetSwitchState()->ResetCooldown();
+    //    return StateType::SWITCH;
+    //}
 
 	mReloadTimer += App->GetDt();
 	if (mReloadTimer < mPlayerController->GetReloadDuration())
@@ -72,11 +72,15 @@ void ReloadState::Enter()
     mDoRecharge = false;
 
 	mPlayerController->SetSpineAnimation("tReload", 0.1f);
+
+    mPlayerController->EnableLaser(false);
 }
 
 void ReloadState::Exit()
 {
     if(mDoRecharge)	mPlayerController->Reload();
+
+    mPlayerController->EnableLaser(true);
 }
 
 StateType ReloadState::GetType()

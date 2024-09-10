@@ -52,6 +52,7 @@
 #include "Machinegun.h"
 #include "Shootgun.h"
 #include "Grenade.h"
+#include <LineComponent.h>
 
 CREATE(PlayerController)
 {
@@ -250,7 +251,7 @@ void PlayerController::Start()
     }
 
     // ANIMATION
-    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+    mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
@@ -436,20 +437,48 @@ void PlayerController::HandleRotation()
 
         if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
 
-        float3 position = mGameObject->GetWorldPosition();
+        //float3 position = mGameObject->GetWorldPosition();
+        float3 position = mShootOrigin->GetWorldPosition();
+        position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
+
+        GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+        float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
+        laserDirection.y = 0;
+        laserDirection.Normalize();
+        if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
+
     }
     else
     {
         Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-        Plane plane(mGameObject->GetWorldPosition(), float3::unitY);
+        float3 planePoint = float3(mGameObject->GetWorldPosition().x ,mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
+        Plane plane(planePoint, float3::unitY);
 
         float distance;
         if (plane.Intersects(ray, &distance))
-        {
-            mAimPosition = ray.GetPoint(distance);
+        {      
+            float3 rayPoint = ray.GetPoint(distance);
+            mAimPosition = rayPoint;
+            if (mGameObject->GetWorldPosition().Distance(rayPoint) > 2.5f)
+            {
+                
+
+                GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+                float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
+                laserDirection.y = 0;
+                laserDirection.Normalize();
+                if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
+                //if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mAimPosition);
+
+                
+            } 
+
+            mAimPosition.y = mGameObject->GetWorldPosition().y;
+
         }
+       
     }
     if (mUpperStateType != StateType::ULTIMATE)
         mGameObject->LookAt(mAimPosition);
@@ -549,6 +578,12 @@ float3 PlayerController::GetPlayerPosition()
     return  mGameObject->GetWorldPosition(); 
 }
 
+void PlayerController::EnableLaser(bool enable)
+{
+    LineComponent* lineComponent = static_cast<LineComponent*>(mShootOrigin->GetComponent(ComponentType::LINE));
+    if (lineComponent) lineComponent->SetEnable(enable);
+}
+
 void PlayerController::EquipMeleeWeapon(bool equip)
 {
     if (mUnEquippedMeleeGO && mEquippedMeleeGO)
@@ -629,7 +664,7 @@ void PlayerController::SetGrenadeVisuals(bool value)
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 0.5f));
+        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
     }
 }
 
@@ -692,6 +727,8 @@ void PlayerController::UpdateGrenadeVisuals()
 void PlayerController::ThrowGrenade()
 {
     // TODO wait for thow animation time
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
     if (mGrenade)
     {
         mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
@@ -768,6 +805,8 @@ void PlayerController::RechargeShield(float shield)
 {
     if (mShield < mMaxShield) 
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HEAL, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         mShield = Clamp(mShield + shield, 0.0f, mMaxShield);
 
         float healthRatio = mShield / mMaxShield;
@@ -806,7 +845,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mBlueBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mMachinegun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -827,7 +868,9 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
                     mRedBaterryParticles->SetEnabled(true);
                 }
                 mSpecialWeapon = mShootgun;
-                mEquippedSpecialGO->SetEnabled(true);
+
+                if(mEquippedSpecialGO)
+                    mEquippedSpecialGO->SetEnabled(true);
             }
             else
             {
@@ -855,7 +898,9 @@ void PlayerController::UseEnergy(int energy)
         mCurrentEnergy = 0;
         mEnergyType = EnergyType::NONE;
         mSpecialWeapon = nullptr;
-        mEquippedSpecialGO->SetEnabled(false);
+
+        if(mEquippedSpecialGO)
+            mEquippedSpecialGO->SetEnabled(false);
     }
         
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
@@ -922,6 +967,7 @@ void PlayerController::UltimateInterpolateLookAt(const float3& target)
 
 void PlayerController::TakeDamage(float damage)
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;
@@ -929,13 +975,24 @@ void PlayerController::TakeDamage(float damage)
 
     if (mShield <= 0.0f)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH1, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DEATH2, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
         GameManager::GetInstance()->GameOver();
 
         //CONTROLLER VIBRATION
         App->GetInput()->SetGameControllerRumble(20000, 30000, 100);
+        return;
     }
 
     mShield = Clamp(mShield - damage, 0.0f, mMaxShield);
+
+    // Last opportunity
+    if (mShield == 0.0f)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BROKEN, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DANGER, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    }
 
     //CONTROLLER VIBRATION
     App->GetInput()->SetGameControllerRumble(40000, 30000, 100);
