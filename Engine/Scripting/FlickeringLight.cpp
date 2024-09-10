@@ -13,8 +13,8 @@ CREATE(FlickeringLight)
 {
 	CLASS(owner);
 	MEMBER(MemberType::FLOAT, mSpeed);
-	MEMBER(MemberType::FLOAT, mLoopDuration);
 	MEMBER(MemberType::FLOAT, mStartingTime);
+	MEMBER(MemberType::FLOAT, mLoopDuration);
 	MEMBER(MemberType::FLOAT, mTimeOffset);
 	SEPARATOR("Blackouts");
 	SEPARATOR("1");
@@ -62,21 +62,21 @@ CREATE(FlickeringLight)
 	SEPARATOR("15");
 	MEMBER(MemberType::FLOAT, mBlackout15.mTime);
 	MEMBER(MemberType::FLOAT, mBlackout15.mDuration);
-	/*SEPARATOR("16");
-	MEMBER(MemberType::FLOAT, mBlackout16.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout16.mDuration);
-	SEPARATOR("17");
-	MEMBER(MemberType::FLOAT, mBlackout17.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout17.mDuration);
-	SEPARATOR("18");
-	MEMBER(MemberType::FLOAT, mBlackout18.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout18.mDuration);
-	SEPARATOR("19");
-	MEMBER(MemberType::FLOAT, mBlackout19.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout19.mDuration);
-	SEPARATOR("20");
-	MEMBER(MemberType::FLOAT, mBlackout20.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout20.mDuration);*/
+	//SEPARATOR("16");
+	//MEMBER(MemberType::FLOAT, mBlackout16.mTime);
+	//MEMBER(MemberType::FLOAT, mBlackout16.mDuration);
+	//SEPARATOR("17");
+	//MEMBER(MemberType::FLOAT, mBlackout17.mTime);
+	//MEMBER(MemberType::FLOAT, mBlackout17.mDuration);
+	//SEPARATOR("18");
+	//MEMBER(MemberType::FLOAT, mBlackout18.mTime);
+	//MEMBER(MemberType::FLOAT, mBlackout18.mDuration);
+	//SEPARATOR("19");
+	//MEMBER(MemberType::FLOAT, mBlackout19.mTime);
+	//MEMBER(MemberType::FLOAT, mBlackout19.mDuration);
+	//SEPARATOR("20");
+	//MEMBER(MemberType::FLOAT, mBlackout20.mTime);
+	//MEMBER(MemberType::FLOAT, mBlackout20.mDuration);
 
 	END_CREATE;
 }
@@ -85,14 +85,9 @@ FlickeringLight::FlickeringLight(GameObject* owner) : Script(owner) {}
 
 void FlickeringLight::Start()
 {
-	//Checks range
-	if (mTimeOffset<mStartingTime || mTimeOffset>mStartingTime + mLoopDuration) 
-	{
-		mTimeOffset = mStartingTime;
-	}
-
 	//Starting time setup
-	mTimer = fmod(mStartingTime,mLoopDuration);
+	mTimeOffset = fmod(mTimeOffset, mLoopDuration);
+	mTimer = fmod(mStartingTime + mTimeOffset, mLoopDuration);
 
 	//Checks if there is a spotlight or pointlight component
 	mLightComp = mGameObject->GetComponent(ComponentType::SPOTLIGHT);
@@ -105,7 +100,7 @@ void FlickeringLight::Start()
 	mMeshRenderComp = static_cast<MeshRendererComponent*>(mGameObject->GetComponent(ComponentType::MESHRENDERER));
 	if (mMeshRenderComp) 
 	{
-		mMeshRenderComp->CreateUiqueMaterial();
+		mMeshRenderComp->CreateUniqueMaterial();
 	}
 
 	//Initialize the blackouts
@@ -124,11 +119,11 @@ void FlickeringLight::Start()
 	flickering.push_back(mBlackout13);
 	flickering.push_back(mBlackout14);
 	flickering.push_back(mBlackout15);
-	/*flickering.push_back(mBlackout16);
-	flickering.push_back(mBlackout17);
-	flickering.push_back(mBlackout18);
-	flickering.push_back(mBlackout19);
-	flickering.push_back(mBlackout20);*/
+	//flickering.push_back(mBlackout16);
+	//flickering.push_back(mBlackout17);
+	//flickering.push_back(mBlackout18);
+	//flickering.push_back(mBlackout19);
+	//flickering.push_back(mBlackout20);
 }
 
 void FlickeringLight::Update()
@@ -152,7 +147,7 @@ void FlickeringLight::Update()
 
 	UpdateLightState();
 
-	//Updates light state
+	//Updates lights and emissive
 	if (mLightComp)
 	{
 		if (!mLightOn) 

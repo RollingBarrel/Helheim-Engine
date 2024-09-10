@@ -48,7 +48,7 @@ public:
 	void Enable() override;
 	void Disable() override;
 
-	void CreateUiqueMaterial();
+	void CreateUniqueMaterial();
 	bool HasUniqueMaterial() const { return mUniqueMaterial; }
 
 

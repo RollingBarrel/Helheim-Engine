@@ -197,7 +197,7 @@ void MeshRendererComponent::Disable()
 		App->GetOpenGL()->BatchRemoveMesh(*this);
 }
 
-void MeshRendererComponent::CreateUiqueMaterial()
+void MeshRendererComponent::CreateUniqueMaterial()
 {
 	assert(mMaterial && mMesh);
 	if (!mUniqueMaterial)
