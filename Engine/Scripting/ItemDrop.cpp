@@ -9,6 +9,8 @@
 #include "AudioManager.h"
 #include "PlayerController.h"
 #include "Math/MathFunc.h"
+#include "Keys.h"
+#include "ModuleInput.h"
 
 CREATE(ItemDrop)
 {
@@ -68,27 +70,56 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
         PlayerController* playerScript = static_cast<PlayerController*>(static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (playerScript != nullptr && !mAlreadyUsed)
         {
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-
             switch (mDropId)
             {
             case 1:
                 if (playerScript->GetShieldPercetage() != 100.0f)
                 {
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                     playerScript->RechargeShield(mHealthRecovered);
                     mAlreadyUsed = true;
                     mGameObject->SetEnabled(false);
                 }
                 break;
-            case 2:              
-                playerScript->RechargeBattery(EnergyType::BLUE);
-                mAlreadyUsed = true;
-                mGameObject->SetEnabled(false);
+            case 2:
+                if (playerScript->GetEnergyType() == EnergyType::RED)
+                {
+                    if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
+                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
+                    {
+                        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+                        playerScript->RechargeBattery(EnergyType::BLUE);
+                        mAlreadyUsed = true;
+                        mGameObject->SetEnabled(false);
+                    }
+                }
+                else
+                {
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+                    playerScript->RechargeBattery(EnergyType::BLUE);
+                    mAlreadyUsed = true;
+                    mGameObject->SetEnabled(false);
+                }
                 break;
             case 3:             
-                playerScript->RechargeBattery(EnergyType::RED);
-                mAlreadyUsed = true;
-                mGameObject->SetEnabled(false);
+                if (playerScript->GetEnergyType() == EnergyType::BLUE)
+                {
+                    if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
+                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
+                    {
+                        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+                        playerScript->RechargeBattery(EnergyType::RED);
+                        mAlreadyUsed = true;
+                        mGameObject->SetEnabled(false);
+                    }
+                }
+                else
+                {
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+                    playerScript->RechargeBattery(EnergyType::RED);
+                    mAlreadyUsed = true;
+                    mGameObject->SetEnabled(false);
+                }
                 break;
             default:
                 break;

@@ -31,14 +31,21 @@ StateType AimState::HandleInput()
         return StateType::GRENADE;
     }
 
-    if (mPlayerController->GetAttackState()->IsReady())
+    if (mPlayerController->GetEnergyType()!=EnergyType::NONE)
     {
-        return StateType::ATTACK;
+        if (mPlayerController->GetSpecialState()->IsReady())
+        {
+            return StateType::SPECIAL;
+        }
     }
-
-    if (mPlayerController->GetSpecialState()->IsReady())
+    else 
     {
-        return StateType::SPECIAL;
+
+        if (mPlayerController->GetAttackState()->IsReady())
+        {
+            return StateType::ATTACK;
+        }
+
     }
 
     //if (mPlayerController->GetSwitchState()->IsReady() &&
