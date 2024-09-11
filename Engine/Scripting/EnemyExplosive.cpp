@@ -46,8 +46,6 @@ void EnemyExplosive::Start()
         mExplosionParticle->SetEnabled(false);
     }
 
-    //mMovingSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_STEPS, mMovingSound, mGameObject->GetWorldPosition());
-
     mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
     mAttackSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_EXPLOSION);
 
@@ -97,10 +95,6 @@ void EnemyExplosive::Attack()
 void EnemyExplosive::Death()
 {
     Enemy::Death();
-    if (mMovingSound != -1)
-    {
-        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_STEPS, mMovingSound);
-    }
 
     if (mChargeSound != -1)
     {

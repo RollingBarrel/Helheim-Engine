@@ -29,7 +29,6 @@ private:
 	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
 	PlayerController* playerScript = nullptr;
 
-	int mMovingSound = -1;
 	int mChargeSound = -1;
 	int mAttackSound = -1;
 

@@ -1,4 +1,5 @@
 #include "ModuleAudio.h"
+#include "ModuleAudio.h"
 #include "Globals.h"
 #include "AudioSourceComponent.h"
 #include "fmod_errors.h"
@@ -162,10 +163,11 @@ void ModuleAudio::EngineStop()
 		int count = 0;
 		CheckError(eventDescription->getInstanceList(instances.data(), capacity, &count));
 
-		for (const auto& instance : instances)
+		for (int j = 0; j < count; ++j)
 		{
-			instance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-			instance->release();
+			auto instance = instances[j];
+			CheckError(instance->stop(FMOD_STUDIO_STOP_IMMEDIATE));
+			CheckError(instance->release());
 		}
 	}
 	if (mOneShotChannelGroup) {
@@ -176,12 +178,11 @@ void ModuleAudio::EngineStop()
 			if (mOneShotChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) {
 				FMOD::Sound* sound = nullptr;
 				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
-					channel->stop();
-					sound->release();
+					CheckError(channel->stop());
+					CheckError(sound->release());
 				}
 			}
 		}
-		mOneShotChannelGroup->release();
 	}
 
 	if (mAudioChannelGroup) {
@@ -192,12 +193,11 @@ void ModuleAudio::EngineStop()
 			if (mAudioChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) {
 				FMOD::Sound* sound = nullptr;
 				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
-					channel->stop();
-					sound->release();
+					CheckError(channel->stop());
+					CheckError(sound->release());
 				}
 			}
 		}
-		mAudioChannelGroup->release();
 	}
 }
 
@@ -345,6 +345,8 @@ void ModuleAudio::ReleaseAllAudio()
 	}
 
 	mActiveEvent.clear();
+	//mOneShotChannelGroup->release();
+	//mAudioChannelGroup->release();
 }
 
 void ModuleAudio::GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
@@ -510,10 +512,65 @@ void ModuleAudio::AddIntoEventList(const FMOD::Studio::EventDescription* eventDe
 
 bool ModuleAudio::CleanUp()
 {
-	mOneShotChannelGroup->release();
-	mAudioChannelGroup->release();
-	mSystem->unloadAll();
-	mSystem->release();
+	// Unload all loaded banks
+	if (mUiBank)
+	{
+		mUiBank->unload();
+		mUiBank = nullptr;
+	}
+	if (mAmbBank)
+	{
+		mAmbBank->unload();
+		mAmbBank = nullptr;
+	}
+	if (mMusicBank)
+	{
+		mMusicBank->unload();
+		mMusicBank = nullptr;
+	}
+	if (mSFXBank)
+	{
+		mSFXBank->unload();
+		mSFXBank = nullptr;
+	}
+	if (mMasterBank)
+	{
+		mMasterBank->unload();
+		mMasterBank = nullptr;
+	}
+	if (mStringBank)
+	{
+		mStringBank->unload();
+		mStringBank = nullptr;
+	}
+
+	// Release channel groups
+	if (mOneShotChannelGroup)
+	{
+		mOneShotChannelGroup->release();
+		mOneShotChannelGroup = nullptr;
+	}
+	if (mAudioChannelGroup)
+	{
+		mAudioChannelGroup->release();
+		mAudioChannelGroup = nullptr;
+	}
+
+	// Release the Studio System and Core System
+	if (mSystem)
+	{
+		// Release the Studio System object
+		mSystem->release();
+		mSystem = nullptr;
+	}
+
+	if (mCoreSystem)
+	{
+		// Release the Studio System object
+		mCoreSystem->release();
+		mCoreSystem = nullptr;
+	}
+
 
     return true;
 }

@@ -32,6 +32,8 @@ enum class SFX
 	PLAYER_SHOTGUN,
 
 	PLAYER_MEELEE,
+	PLAYER_KATANA,
+	PLAYER_HAMMER,
 
 	PLAYER_ULTIMATE,
 
@@ -112,7 +114,7 @@ public:
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
 
-	void ReleaseAllAudio(int id);
+	void ReleaseAllAudio();
 
 	void UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value);
 	void UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value);
@@ -131,6 +133,8 @@ private:
 
 	const FMOD::Studio::EventDescription* GetEventDescription(BGM bgm);
 	const FMOD::Studio::EventDescription* GetEventDescription(SFX sfx);
+
+	bool IsPlayeble(SFX sfx);
 
 	// Handle Custom Audio
 	int PlayBGM(const std::string& fileName);
@@ -210,7 +214,7 @@ private:
 		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
 
-		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav.wav"},
+		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
 		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion.wav"},
 	};

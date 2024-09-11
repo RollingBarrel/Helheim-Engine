@@ -47,6 +47,8 @@ public:
 	void AudioResume();
 
 	void EngineStop();
+
+	void ReleadAudioSystem();
 	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
 	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
@@ -100,5 +102,4 @@ private:
 	FMOD::ChannelGroup* mAudioChannelGroup = nullptr;
 
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
-
 };

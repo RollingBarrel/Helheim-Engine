@@ -82,23 +82,10 @@ int AudioManager::Play(SFX sfx, int id, float3 position)
 
 void AudioManager::PlayOneShot(SFX sfx, float3 position, const std::unordered_map<const char*, float>& parameters)
 {
-    auto currentTime = std::chrono::steady_clock::now();  // Get the current time
-    auto lastTimeIt = mLastPlayedTime.find(sfx);
-
-    // If the last play time of this SFX is found, check the time interval
-    if (lastTimeIt != mLastPlayedTime.end())
+    if (!IsPlayeble(sfx))
     {
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTimeIt->second).count();
-        if (elapsed < 200)  // If the interval is less than 0.2 seconds
-        {
-            //LOG(" %s is omitted", mSFXToString.at(sfx).c_str());
-            // Ignore the play request
-            return;
-        }
+        return;
     }
-
-    // Update the last play time
-    mLastPlayedTime[sfx] = currentTime;
 
     const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
     if (description == nullptr)
@@ -180,13 +167,14 @@ int AudioManager::Release(SFX sfx, int id)
 
 void AudioManager::ReleaseAllAudio()
 {
-    App->GetAudio()->ReleaseAllAudio();
     for (size_t i = 0; i < mStreamAudios.size(); ++i) {
         FMOD::Channel* channel = mStreamAudios[i];
         if (channel) {
             App->GetAudio()->Release(channel);
         }
     }
+
+    App->GetAudio()->ReleaseAllAudio();
 }
 
 void AudioManager::UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value)
@@ -367,6 +355,40 @@ const FMOD::Studio::EventDescription* AudioManager::GetEventDescription(SFX sfx)
     }
 }
 
+bool AudioManager::IsPlayeble(SFX sfx)
+{
+    switch (sfx) 
+    {
+        case SFX::PLAYER_PISTOL:
+        case SFX::PLAYER_SHOTGUN:
+        case SFX::PLAYER_MACHINEGUN:
+        case SFX::PLAYER_MEELEE:
+        case SFX::PLAYER_KATANA:
+        case SFX::PLAYER_HAMMER:
+            return true;
+            break;
+    }
+
+    auto currentTime = std::chrono::steady_clock::now();  // Get the current time
+    auto lastTimeIt = mLastPlayedTime.find(sfx);
+
+    // If the last play time of this SFX is found, check the time interval
+    if (lastTimeIt != mLastPlayedTime.end())
+    {
+        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastTimeIt->second).count();
+        if (elapsed < 200)  // If the interval is less than 0.2 seconds
+        {
+            //LOG(" %s is omitted", mSFXToString.at(sfx).c_str());
+            // Ignore the play request
+            return false;
+        }
+    }
+
+    // Update the last play time
+    mLastPlayedTime[sfx] = currentTime;
+
+    return true;
+}
 
 
 
