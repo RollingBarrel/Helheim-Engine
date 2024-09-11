@@ -32,13 +32,13 @@ private:
 
 	// Activation
 	bool mIsActive = false;
-	float mActivationInterval = 8.0f;
-	float mActivationDuration = 4.0f;
+	float mActivationInterval = 4.0f;
+	float mActivationDuration = 2.0f;
 	TimerScript mActivationIntervalTimer;
 	TimerScript mActivationDurationTimer;
 	
 	// Damage
 	float mDamageAmount = 5.0f;
-	float mSpeedReduction = 0.3f; // Reduce 70%
+	float mSpeedReduction = 0.5f; // Reduce 50%
 };
 
