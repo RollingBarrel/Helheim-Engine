@@ -9,7 +9,7 @@
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
 #include "MeshRendererComponent.h"
-
+#include <algorithm> 
 #include "glew.h"
 
 #include "PlayerStats.h"
@@ -523,7 +523,7 @@ GameObject* ModuleScene::Find(const char* name) const
 
 	return nullptr;
 }
-#include <algorithm> 
+
 const std::vector<GameObject*> ModuleScene::FilterGameObjects(std::string& filter) const
 {
 	std::vector<GameObject*> filteredObjects;
