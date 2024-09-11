@@ -25,6 +25,7 @@ public:
 	void TakeDamage(float damage) override;
 	float GetBombsDelay() const { return mBombsDelay; }
 	void LookAt(float3 target);
+	void WakeUp() { mWakeUp = true; }
 
 private:
 	//void Idle();
@@ -49,6 +50,7 @@ private:
 	unsigned int mStage = 0;
 	float mPhase1Hp = 0.6f;
 	float mPhase2Hp = 0.3f;
+	bool mWakeUp = false;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;

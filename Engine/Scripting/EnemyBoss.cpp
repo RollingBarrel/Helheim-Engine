@@ -13,6 +13,7 @@
 #include "BossLaser.h"
 #include "HudController.h"
 #include "MathFunc.h"
+#include "BossBattleArea.h"
 
 #define LASER_WIND_UP 2.625f
 #define BULLETS_ANIMATION 146.0f / 24.0f
@@ -131,15 +132,18 @@ void EnemyBoss::Update()
             case 0:
                 if (mPhaseShiftTimer.Delay(HIT_ANIMATION))
                 {
+                    BossBattleArea* ba = static_cast<BossBattleArea*>(GameManager::GetInstance()->GetActiveBattleArea());
+                    if (ba) ba->SpawnEnemies();
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
                     ++phaseChange;
                 }
                 break;
             case 1:
-                if (mPhaseShiftTimer.Delay(DEATH_ANIMATION + mPhaseShiftTime))
+                if (mWakeUp)
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", 1.0f);
                     ++phaseChange;
+                    mWakeUp = false;
                 }
                 break;
             case 2:
@@ -276,7 +280,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
     if (mBulletHellTimer.Delay(4 * BEAT_TIME)) //Each pattern will need different rythm
     {
         unsigned int nBullets = 10;
-        float alpha = DegToRad(180 / (nBullets - 1));
+        float alpha = DegToRad(180.0f / (nBullets - 1));
         float offset = 0.0f;
         if (mBulletsWave % 2 == 1)
         {
