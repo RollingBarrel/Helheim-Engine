@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "ModuleFileSystem.h"
 #include "MeshRendererComponent.h"
+#include "IconsFontAwesome6.h"
 #include <regex>
 
 static void AddSuffix(GameObject& gameObject)
@@ -61,6 +62,13 @@ void HierarchyPanel::Draw(int windowFlags)
 	ImGui::SetNextWindowPos(ImVec2(-100, 100), ImGuiCond_FirstUseEver);
 	ImGui::SetNextWindowSize(ImVec2(550, 680), ImGuiCond_Once);
 	ImGui::Begin(GetName(), &mOpen, windowFlags);
+	static char tmp[128] = "";
+	if (ImGui::InputText("##", tmp, IM_ARRAYSIZE(tmp)))
+	{
+		FilterGameObjects(std::string(tmp));
+	}
+	ImGui::SameLine();
+	ImGui::Text(ICON_FA_MAGNIFYING_GLASS);
 	ImGui::BeginChild("##tree");
 	if (!ImGui::GetIO().MouseDown[0] && mUnmarkFlag) 
 	{
@@ -274,7 +282,8 @@ void HierarchyPanel::DrawTree(GameObject* node)
 	{
 		for (auto child : node->mChildren) 
 		{
-			DrawTree(child);
+			if (mFilteredGameObjects.empty() || mFilteredGameObjects.find(child) != mFilteredGameObjects.end())
+				DrawTree(child);
 		}
 
 		if (!node->mIsRoot) 
@@ -418,7 +427,7 @@ void HierarchyPanel::ShiftClick(GameObject* node, bool selected, bool click)
 }
 
 // Excludes from the list of selected objects any that is the child (directly or indirectly) of another selected item.
-// Use this before doing any operation on all selected items that would already EngineApply to all children
+// Use this before doing any operation on all selected items that would already apply to all children
 // Ex. When you duplicate an object all it's children are allways duplicated too.
 const std::vector<GameObject*> HierarchyPanel::FilterMarked() const 
 {
@@ -452,5 +461,22 @@ GameObject* HierarchyPanel::GetFocusedObject() const
 	else 
 	{ 
 		return focus; 
+	}
+}
+
+void HierarchyPanel::FilterGameObjects(std::string filter)
+{
+	mFilteredGameObjects.clear();
+	if (filter.empty()) return;
+	const std::vector<GameObject*> fil = App->GetScene()->FilterGameObjects(filter);
+	for (const auto go : fil)
+	{
+		mFilteredGameObjects.insert(go);
+		GameObject* parent = go->GetParent();
+		while (parent != nullptr)
+		{
+			mFilteredGameObjects.insert(parent);
+			parent = parent->GetParent();
+		}
 	}
 }

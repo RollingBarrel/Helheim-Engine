@@ -523,6 +523,23 @@ GameObject* ModuleScene::Find(const char* name) const
 
 	return nullptr;
 }
+#include <algorithm> 
+const std::vector<GameObject*> ModuleScene::FilterGameObjects(std::string& filter) const
+{
+	std::vector<GameObject*> filteredObjects;
+	std::transform(filter.begin(), filter.end(), filter.begin(), ::toupper);
+	for (GameObject* go : mSceneGO)
+	{
+		std::string name = go->GetName();
+		std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+		if(name.find(filter) != std::string::npos)
+		{
+			filteredObjects.push_back(go);
+		}
+	}
+
+	return filteredObjects;
+}
 
 GameObject* ModuleScene::Find(unsigned int UID) const
 {
