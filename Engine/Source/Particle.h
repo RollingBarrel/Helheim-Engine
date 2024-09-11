@@ -8,7 +8,7 @@ class Particle
 {
 public:
     Particle();
-    Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool hasTrail, const Trail* trail);
+    Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool hasTrail, const Trail* trail, bool followEmitter);
     ~Particle();
 
     float Update(float deltaTime, float gravity, GameObject* owner);
@@ -51,4 +51,5 @@ private:
 
     bool mHasTrail = false;
     Trail* mTrail = nullptr;
+    bool mFollowEmitter = false;
 };

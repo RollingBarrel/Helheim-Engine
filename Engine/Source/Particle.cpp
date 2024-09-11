@@ -6,13 +6,16 @@ Particle::Particle()
 {
 }
 
-Particle::Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool hasTrail, const Trail* trail)
+Particle::Particle(float3 position, float3 direction, float4 color, 
+    float rotation, float lifeTime, 
+    bool hasTrail, const Trail* trail, bool followEmitter)
     : mPosition(position), 
     mDirection(direction),
     mRotation(rotation),
     mMaxLifeTime(lifeTime),
     mColor(color),
-    mHasTrail(hasTrail)
+    mHasTrail(hasTrail),
+    mFollowEmitter(followEmitter)
 {
     if (mHasTrail) mTrail = new Trail(*trail);
 }
@@ -28,8 +31,10 @@ float Particle::Update(float DeltaTime, float gravity, GameObject* owner)
     float dt01 = mLifeTime / mMaxLifeTime;
     mDirection = mDirection + float3(0, 1, 0) * DeltaTime * -9.81 * gravity;
     mPosition = mPosition + mDirection * mSpeed * DeltaTime;
-    //if (mHasTrail) mTrail->UpdateTrailParticle(owner->GetWorldRotation().Transform(mPosition));
-    if (mHasTrail) mTrail->UpdateTrailParticle(owner->GetWorldPosition() + owner->GetWorldRotation().Transform(mPosition));
+    //if (mHasTrail) mTrail->UpdateTrailParticle(owner->GetLocalRotation().Transform(mPosition));
+    if (mHasTrail and !mFollowEmitter) mTrail->UpdateTrailParticle(mPosition);
+    else if (mHasTrail and mFollowEmitter) mTrail->UpdateTrailParticle((owner->GetWorldTransform() * float4(mPosition,1)).Float3Part());
+
     return dt01;
 }
 

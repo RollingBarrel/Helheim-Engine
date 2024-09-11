@@ -288,7 +288,7 @@ void ParticleSystemComponent::CreateNewParticle()
     // Create the particle and sets its speed and size considering if they are linear or curve
     Particle* particle = new Particle(emitionPosition, emitionDirection, 
         mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom(),
-        mHasTrails, mTrail);
+        mHasTrails, mTrail, mFollowEmitter);
     particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
     particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
 
