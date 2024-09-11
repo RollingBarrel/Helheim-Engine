@@ -16,13 +16,11 @@ CREATE(SecondTutorial)
     MEMBER(MemberType::GAMEOBJECT, mSecondaryTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeTutorialCon);
     MEMBER(MemberType::GAMEOBJECT, mUltimateTutorialCon);
-    MEMBER(MemberType::GAMEOBJECT, mSkipTutorialCon);
     SEPARATOR("KEYBOARD");
     MEMBER(MemberType::GAMEOBJECT, mShootTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondaryTutorial);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeTutorial);
     MEMBER(MemberType::GAMEOBJECT, mUltimateTutorial);
-    MEMBER(MemberType::GAMEOBJECT, mSkipTutorial);
     SEPARATOR("AREA");
     MEMBER(MemberType::GAMEOBJECT, mTutorialAreaGO);
     END_CREATE;
@@ -83,11 +81,6 @@ void SecondTutorial::Tutorial()
 {
     if (!GameManager::GetInstance()->UsingController())
     {
-        if (mSkipTutorial)
-        {
-            mSkipTutorial->SetEnabled(true);
-            if (mSkipTutorialCon) mSkipTutorialCon->SetEnabled(false);
-        }
         switch (mCurrentStep)
         {
         case 5:
