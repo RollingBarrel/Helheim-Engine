@@ -665,12 +665,12 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	const unsigned int numTiles = ((screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX) * ((screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glBindBuffer(GL_TEXTURE_BUFFER, mPLightListImgBuffer);
-	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mPLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(short), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R16I, mPLightListImgBuffer);
 	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
 	glBindBuffer(GL_TEXTURE_BUFFER, mSLightListImgBuffer);
-	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mSLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(short), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R16I, mSLightListImgBuffer);
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
@@ -1209,8 +1209,8 @@ void ModuleOpenGL::Draw()
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
 	//Light lists
 	glUseProgram(mTileLightCullingProgramId);
-	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
-	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
+	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R16I);
+	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R16I);
 	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
@@ -1463,6 +1463,24 @@ void ModuleOpenGL::Draw()
 	glDepthMask(GL_TRUE);
 	glPopDebugGroup();
 
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
+	glUseProgram(mVolLightProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
+	static float time = App->GetDt();
+	glUniform1f(1, time);
+	time += App->GetDt();
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glPopDebugGroup();
+
 	//Draw the skybox
 	if (mCurrSkyBox != nullptr)
 	{
@@ -1472,25 +1490,12 @@ void ModuleOpenGL::Draw()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
-		glDepthMask(GL_FALSE);
+		//glDepthMask(GL_FALSE);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthMask(GL_TRUE);
+		//glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LESS);
 		glPopDebugGroup();
 	}
-	
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
-	glUseProgram(mVolLightProgramId);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	static float time = App->GetDt();
-	glUniform1f(1, time);
-	time += App->GetDt();
-	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	glPopDebugGroup();
 
 
 	//Fog using render pipeline (NO COMPUTE)
