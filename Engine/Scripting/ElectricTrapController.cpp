@@ -115,7 +115,6 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
             const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
             Enemy* enemy = static_cast<Enemy*>(script->GetScriptInstance());
             enemy->Paralyzed(mSpeedReduction, true);
-            enemy->TakeDamage(mDamageAmount);
         }
     }
 }
