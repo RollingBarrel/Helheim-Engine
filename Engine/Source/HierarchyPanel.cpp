@@ -468,8 +468,9 @@ void HierarchyPanel::FilterGameObjects(std::string filter)
 {
 	mFilteredGameObjects.clear();
 	if (filter.empty()) return;
-	const std::vector<GameObject*> fil = App->GetScene()->FilterGameObjects(filter);
-	for (const auto go : fil)
+	std::vector<GameObject*> filteredList;
+	App->GetScene()->FilterGameObjects(filter, filteredList);
+	for (const auto go : filteredList)
 	{
 		mFilteredGameObjects.insert(go);
 		GameObject* parent = go->GetParent();
