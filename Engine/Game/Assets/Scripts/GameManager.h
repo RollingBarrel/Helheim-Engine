@@ -54,6 +54,8 @@ public:
     void UnlockSecondary();
     void UnlockUltimate(bool unlock);
     void UnlockGrenade(bool unlock);
+    
+    void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
 
 private:
     void PrepareAudio();

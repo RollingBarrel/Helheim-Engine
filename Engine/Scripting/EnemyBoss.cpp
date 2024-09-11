@@ -196,6 +196,7 @@ void EnemyBoss::Update()
             if (IsPlayerInRange(mBulletRange))
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
+                GameManager::GetInstance()->SetIsFightingBoss(true);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
                 mCurrentState = EnemyState::WAKE;
             }
@@ -270,6 +271,7 @@ void EnemyBoss::Death()
     if (mDeathTimer.Delay(mDeathTime))
     {
         GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(false);
+        GameManager::GetInstance()->SetIsFightingBoss(false);
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->Victory();
     }
