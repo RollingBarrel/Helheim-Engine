@@ -65,7 +65,7 @@ void SecondTutorial::Update()
         {
             mCompleted = true;
             //mTutorialArea->SetSpawnerCycles(3);
-            mTutorialArea->SetWaves(3);
+            mTutorialArea->SetWaves(1);
             GameManager::GetInstance()->UnlockSecondary();
             GameManager::GetInstance()->UnlockGrenade(true);
             GameManager::GetInstance()->UnlockUltimate(true);
