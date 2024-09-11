@@ -19,7 +19,7 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-layout(binding = 2) uniform isamplerBuffer pointLightList;
+layout(binding = 2) uniform usamplerBuffer pointLightList;
 struct SpotLight
 {
 	vec4 pos; //w intensity
@@ -33,7 +33,7 @@ readonly layout(std430, binding = 1) buffer SpotLights
 	uint numSLights;
 	SpotLight sLights[];
 };
-layout(binding = 3) uniform isamplerBuffer spotLightList;
+layout(binding = 3) uniform usamplerBuffer spotLightList;
 
 struct Shadow
 {
@@ -116,8 +116,8 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//point lights
-	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
+	int idx = int(texelFetch(pointLightList, int(tileIdx * lightListSize)).x);
+	for(uint i = 0; i < lightListSize && idx != 255; idx = int((texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x))
 	{
 		PointLight pLight = pLights[idx];
 		vec3 mVector = currPos - pLight.pos.xyz;
@@ -129,9 +129,8 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	}
 
 	//spot lights
-	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
-	//for(int i = 0; i < numSLights; ++i)
+	idx = int(texelFetch(spotLightList, int(tileIdx * lightListSize)).x);
+	for (int i = 0; i < lightListSize && idx != 255; idx = int((texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x))
 	{
 		SpotLight sLight = sLights[idx];
 		//Shadows
@@ -176,142 +175,142 @@ float sampleIGN(vec2 pixelXY, float frameTime)
 	return fract(52.9829189f * fract(0.06711056f*float(pixelXY.x) + 0.00583715f*float(pixelXY.y)));
 }
 
-bool IntersectPlane(in vec3 pP, in vec3 pN, in vec3 rO, in vec3 rDir, out float t)
-{
-	float denom = dot(pN, rDir);
-	if(denom > 1e-6)
-	{
-		vec3 pPO = pP - rO;
-		t = dot(pPO, pN) / denom;
-		return t >= 0.0f;
-	}
-	return false;
-}
-
-bool IntersectDisk(in vec3 dC, in vec3 dN, float dRadius2, in vec3 rO, in vec3 rDir, out float t)
-{
-	if(IntersectPlane(dC, dN, rO, rDir, t))
-	{
-		vec3 p = rO + t*rDir;
-		vec3 v = p - dC;
-		float dSquared = dot(v,v);
-		return dSquared <= dRadius2;
-	}
-	return false;
-}
-
-uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in vec3 rO, in vec3 rDir, out float t0, out float t1)
-{
-	uint ret = 0;
-	float dotDV = dot(rDir, cDir);
-	vec3 CO = rO - cPos;
-	float dotCOV = dot(CO, cDir);
-	float cCos2 = cCos * cCos;
-	float a = dotDV * dotDV - cCos2;
-	float b = 2*( dotDV*dotCOV - dot(rDir, CO) * cCos2 );
-	float c = dotCOV * dotCOV - dot(CO, CO) * cCos2;
-	float det = b*b - 4*a*c;
-	if(det > 0)
-	{
-		float detSqrt = sqrt(det);
-		float tmp = (-b-detSqrt) / (2*a);
-		vec3 p = rO + tmp*rDir;
-		if(dot(p - cPos, cDir) > 0.0f)
-		{
-			t0 = tmp;
-			++ret;
-		}
-		tmp = (-b + detSqrt) / (2*a);
-		p = rO + tmp*rDir;
-		if(dot(p - cPos, cDir) > 0.0f)
-		{
-			if(tmp < 0)
-			{
-				t1 = t0;
-				t0 = tmp;
-			}
-			else
-				t1 = tmp;
-			++ret;
-		}
-	}
-	else if(det == 0)
-	{
-		t0 = -b / (2*a);
-		vec3 p = rO + t0*rDir;
-		if(dot(p - cPos, cDir) > 0.0f)
-			++ret;
-	}
-	return ret;
-}
-
-bool IntersectLightShapes(in vec3 rO, in vec3 rDir, out float t0, out float t1)
-{
-	bool ret = false;
-	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
-	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
-	//Point Lights
-	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-	//for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
-	//{
-	//	vec4 pLight = pLights[idx].pos;
-	//	vec3 L = pLight.xyz - rO;
-	//	float tca = dot(L, rDir);
-	//	float r2 = pLight.w * pLight.w;
-	//	float d2 =  dot(L, L) - tca * tca;
-	//	if(d2 > r2)
-	//		break;
-	//	float thc = sqrt(r2 - d2);
-	//	float tmp = tca - thc;
-	//	if(tmp < t0)
-	//		t0 = tmp;
-	//	tmp = tca + thc;
-	//	if(tmp > t1)
-	//		if(tmp > t0)
-	//			t1 = tmp;
-	//		else
-	//			t0 = tmp;
-	//	ret = true;
-	//	++i;
-	//}
-
-	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
-	{
-		SpotLight sLight = sLights[idx];
-		float tt0 = 0.0f;
-		float tt1 = 0.0f;
-		float tt2 = 0.0f;
-		vec3 lDir = normalize(sLight.aimD.xyz);
-		uint cIntersections = IntersectCone(sLight.pos.xyz, lDir, sLight.col.w, rO, rDir, tt0, tt1);
-		if(cIntersections >= 1)
-		{
-			float minim = tt0;
-			float maxim = 0.0;
-			if(cIntersections == 2)
-			{
-				maxim = tt1;
-				float h = sLight.radius / sLight.col.w;
-				float dRadius2 = h*h - sLight.radius * sLight.radius;
-				if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt2))
-				{
-					if(tt2 < minim)
-					{
-						minim = tt2;
-						maxim = tt0;
-					}
-					else
-						maxim = tt2;
-				}
-			}
-			t0 = min(minim, t0);
-			t1 = max(maxim, t1);
-			ret = true;
-		}
-		++i;
-	}
-	return ret;
-}
+//bool IntersectPlane(in vec3 pP, in vec3 pN, in vec3 rO, in vec3 rDir, out float t)
+//{
+//	float denom = dot(pN, rDir);
+//	if(denom > 1e-6)
+//	{
+//		vec3 pPO = pP - rO;
+//		t = dot(pPO, pN) / denom;
+//		return t >= 0.0f;
+//	}
+//	return false;
+//}
+//
+//bool IntersectDisk(in vec3 dC, in vec3 dN, float dRadius2, in vec3 rO, in vec3 rDir, out float t)
+//{
+//	if(IntersectPlane(dC, dN, rO, rDir, t))
+//	{
+//		vec3 p = rO + t*rDir;
+//		vec3 v = p - dC;
+//		float dSquared = dot(v,v);
+//		return dSquared <= dRadius2;
+//	}
+//	return false;
+//}
+//
+//uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in vec3 rO, in vec3 rDir, out float t0, out float t1)
+//{
+//	uint ret = 0;
+//	float dotDV = dot(rDir, cDir);
+//	vec3 CO = rO - cPos;
+//	float dotCOV = dot(CO, cDir);
+//	float cCos2 = cCos * cCos;
+//	float a = dotDV * dotDV - cCos2;
+//	float b = 2*( dotDV*dotCOV - dot(rDir, CO) * cCos2 );
+//	float c = dotCOV * dotCOV - dot(CO, CO) * cCos2;
+//	float det = b*b - 4*a*c;
+//	if(det > 0)
+//	{
+//		float detSqrt = sqrt(det);
+//		float tmp = (-b-detSqrt) / (2*a);
+//		vec3 p = rO + tmp*rDir;
+//		if(dot(p - cPos, cDir) > 0.0f)
+//		{
+//			t0 = tmp;
+//			++ret;
+//		}
+//		tmp = (-b + detSqrt) / (2*a);
+//		p = rO + tmp*rDir;
+//		if(dot(p - cPos, cDir) > 0.0f)
+//		{
+//			if(tmp < 0)
+//			{
+//				t1 = t0;
+//				t0 = tmp;
+//			}
+//			else
+//				t1 = tmp;
+//			++ret;
+//		}
+//	}
+//	else if(det == 0)
+//	{
+//		t0 = -b / (2*a);
+//		vec3 p = rO + t0*rDir;
+//		if(dot(p - cPos, cDir) > 0.0f)
+//			++ret;
+//	}
+//	return ret;
+//}
+//
+//bool IntersectLightShapes(in vec3 rO, in vec3 rDir, out float t0, out float t1)
+//{
+//	bool ret = false;
+//	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
+//	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
+//	//Point Lights
+//	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
+//	//for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
+//	//{
+//	//	vec4 pLight = pLights[idx].pos;
+//	//	vec3 L = pLight.xyz - rO;
+//	//	float tca = dot(L, rDir);
+//	//	float r2 = pLight.w * pLight.w;
+//	//	float d2 =  dot(L, L) - tca * tca;
+//	//	if(d2 > r2)
+//	//		break;
+//	//	float thc = sqrt(r2 - d2);
+//	//	float tmp = tca - thc;
+//	//	if(tmp < t0)
+//	//		t0 = tmp;
+//	//	tmp = tca + thc;
+//	//	if(tmp > t1)
+//	//		if(tmp > t0)
+//	//			t1 = tmp;
+//	//		else
+//	//			t0 = tmp;
+//	//	ret = true;
+//	//	++i;
+//	//}
+//
+//	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+//	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
+//	{
+//		SpotLight sLight = sLights[idx];
+//		float tt0 = 0.0f;
+//		float tt1 = 0.0f;
+//		float tt2 = 0.0f;
+//		vec3 lDir = normalize(sLight.aimD.xyz);
+//		uint cIntersections = IntersectCone(sLight.pos.xyz, lDir, sLight.col.w, rO, rDir, tt0, tt1);
+//		if(cIntersections >= 1)
+//		{
+//			float minim = tt0;
+//			float maxim = 0.0;
+//			if(cIntersections == 2)
+//			{
+//				maxim = tt1;
+//				float h = sLight.radius / sLight.col.w;
+//				float dRadius2 = h*h - sLight.radius * sLight.radius;
+//				if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt2))
+//				{
+//					if(tt2 < minim)
+//					{
+//						minim = tt2;
+//						maxim = tt0;
+//					}
+//					else
+//						maxim = tt2;
+//				}
+//			}
+//			t0 = min(minim, t0);
+//			t1 = max(maxim, t1);
+//			ret = true;
+//		}
+//		++i;
+//	}
+//	return ret;
+//}
 
 layout(local_size_x = 8, local_size_y = 8, local_size_z = 1) in;
 void main()
