@@ -9,7 +9,7 @@
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
 #include "MeshRendererComponent.h"
-
+#include <algorithm> 
 #include "glew.h"
 
 #include "PlayerStats.h"
@@ -522,6 +522,20 @@ GameObject* ModuleScene::Find(const char* name) const
 	}
 
 	return nullptr;
+}
+
+const void ModuleScene::FilterGameObjects(std::string& filter, std::vector<GameObject*>& filteredElements) const
+{
+	std::transform(filter.begin(), filter.end(), filter.begin(), ::toupper);
+	for (GameObject* go : mSceneGO)
+	{
+		std::string name = go->GetName();
+		std::transform(name.begin(), name.end(), name.begin(), ::toupper);
+		if(name.find(filter) != std::string::npos)
+		{
+			filteredElements.push_back(go);
+		}
+	}
 }
 
 GameObject* ModuleScene::Find(unsigned int UID) const

@@ -72,11 +72,15 @@ void ReloadState::Enter()
     mDoRecharge = false;
 
 	mPlayerController->SetSpineAnimation("tReload", 0.1f);
+
+    mPlayerController->EnableLaser(false);
 }
 
 void ReloadState::Exit()
 {
     if(mDoRecharge)	mPlayerController->Reload();
+
+    mPlayerController->EnableLaser(true);
 }
 
 StateType ReloadState::GetType()

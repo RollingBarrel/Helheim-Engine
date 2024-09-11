@@ -77,7 +77,7 @@ void EnemyRobotMelee::Attack()
 void EnemyRobotMelee::TakeDamage(float damage)
 {
     Enemy::TakeDamage(damage);
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotMelee::PlayMeleeAudio()

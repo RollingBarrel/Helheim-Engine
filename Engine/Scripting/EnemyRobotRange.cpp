@@ -85,7 +85,7 @@ void EnemyRobotRange::RangeAttack()
 void EnemyRobotRange::TakeDamage(float damage)
 {
     Enemy::TakeDamage(damage);
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
