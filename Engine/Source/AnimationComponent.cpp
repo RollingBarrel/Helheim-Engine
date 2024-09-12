@@ -1,4 +1,5 @@
 #include "AnimationComponent.h"
+#include "AnimationComponent.h"
 
 #include "Application.h"
 #include "ModuleResource.h"
@@ -164,6 +165,18 @@ void AnimationComponent::OnReset()
 	{
 		ChangeSpineState("Default", 0.0f);
 	}
+}
+
+void AnimationComponent::SetStateMachine(AnimationStateMachine* sm)
+{
+	mStateMachine = sm;
+	ChangeState("Default", 0.0f);
+}
+
+void AnimationComponent::SetSpineStateMachine(AnimationStateMachine* sm)
+{
+	mSpineStateMachine = sm;
+	ChangeSpineState("Default", 0.0f);
 }
 
 void AnimationComponent::SetAnimSpeed(float speed)
