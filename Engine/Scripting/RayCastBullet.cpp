@@ -15,6 +15,8 @@
 CREATE(RayCastBullet)
 {
 	CLASS(owner);
+	MEMBER(MemberType::FLOAT, mDecalLifetime);
+	MEMBER(MemberType::FLOAT, mDecalFadingTime);
 	END_CREATE;
 }
 
@@ -39,7 +41,7 @@ void RayCastBullet::Update()
 		{
 			mBulletTrail->GetOwner()->SetWorldPosition(mHitPoint + mDirection * 0.00001f);
 
-			mHoleDecal->SetEnable(true);
+			mHoleDecal->GetOwner()->SetEnabled(true);
 			//TODO: Set hole decal rotation
 
 			if (mHit.IsValid())
@@ -63,10 +65,26 @@ void RayCastBullet::Update()
 			mHitParticles->GetOwner()->SetEnabled(true);
 		}
 
-		if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime())) //TODO: Change delay to decal lifetime
+		if (mHitTimer.Delay(mDecalLifetime) && !mFadeDecal)
 		{
 			mHit = Hit();
-			//mGameObject->SetEnabled(false);	//TODO: Enable this again
+			mFadeDecal = true;
+		}
+
+		if (mFadeDecal) 
+		{
+			if (mDecalFadingTime > 0) 
+			{
+				mHoleDecal->SetFadeFactor( mHoleDecal->GetFadeFactor() - App->GetDt()/mDecalFadingTime );
+			}
+			if (mHoleDecal->GetFadeFactor() == 0) 
+			{
+				//Reset timer and decal values
+				mHitTimer.Reset();
+				mFadeDecal = false;
+				mHoleDecal->SetFadeFactor(1.0f);
+				mGameObject->SetEnabled(false);
+			}
 		}
 	}
 }

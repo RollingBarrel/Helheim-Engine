@@ -43,6 +43,14 @@ DecalComponent::~DecalComponent()
 	Reset();
 }
 
+void DecalComponent::SetFadeFactor(float fade) 
+{ 
+	if (fade < 0)
+		mFade = 0; 
+	else 
+		mFade = fade; 
+}
+
 unsigned int DecalComponent::GetDiffuseId() const
 {
 	if (mDiffuseTexture)

@@ -32,7 +32,11 @@ private:
 	Hit mHit;
 	ParticleSystemComponent* mHitParticles = nullptr;
 	TrailComponent* mBulletTrail = nullptr;
+
 	DecalComponent* mHoleDecal = nullptr;
+	bool mFadeDecal = false;
+	float mDecalLifetime = 0;
+	float mDecalFadingTime = 0;
 
 	TimerScript mHitTimer;
 
