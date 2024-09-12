@@ -41,11 +41,11 @@ void RayCastBullet::Update()
 		{
 			mBulletTrail->GetOwner()->SetWorldPosition(mHitPoint + mDirection * 0.00001f);
 
-			mHoleDecal->GetOwner()->SetEnabled(true);
-			//TODO: Set hole decal rotation
-
 			if (mHit.IsValid())
 			{
+				mHoleDecal->GetOwner()->SetEnabled(true);
+				//TODO: Set hole decal rotation
+
 				if (mHit.mGameObject->GetTag().compare("Enemy") == 0)
 				{
 					Enemy* enemy = static_cast<Enemy*>(((ScriptComponent*)mHit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -60,15 +60,24 @@ void RayCastBullet::Update()
 	}
 	else
 	{
-		if (mHit.IsValid() && mHitParticles)
+		if (mHit.IsValid()) 
 		{
-			mHitParticles->GetOwner()->SetEnabled(true);
+			if (mHitParticles)
+			{
+				mHitParticles->GetOwner()->SetEnabled(true);
+			}
+			if (mHitTimer.Delay(mDecalLifetime) && !mFadeDecal)
+			{
+				mFadeDecal = true;
+			}
 		}
-
-		if (mHitTimer.Delay(mDecalLifetime) && !mFadeDecal)
+		else 
 		{
-			mHit = Hit();
-			mFadeDecal = true;
+			if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime()))
+			{
+				mHit = Hit();
+				mGameObject->SetEnabled(false);
+			}
 		}
 
 		if (mFadeDecal) 
@@ -80,6 +89,7 @@ void RayCastBullet::Update()
 			if (mHoleDecal->GetFadeFactor() == 0) 
 			{
 				//Reset timer and decal values
+				mHit = Hit();
 				mHitTimer.Reset();
 				mFadeDecal = false;
 				mHoleDecal->SetFadeFactor(1.0f);
