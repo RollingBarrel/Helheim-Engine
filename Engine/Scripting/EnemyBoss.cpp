@@ -93,6 +93,7 @@ void EnemyBoss::Update()
     if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
     float t = HIT_ANIMATION;
     static short phaseChange = 0;
+    Rotate();
 
     if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
     {
@@ -160,6 +161,7 @@ void EnemyBoss::Update()
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
                     mCurrentState = EnemyState::IDLE;
+                    LookAt(mFront, BEAT_TIME);
                     phaseChange = 0;
                 }
                 break;
@@ -489,6 +491,7 @@ void EnemyBoss::UpdatePhase1()
         if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
         {
             mCurrentState = EnemyState::IDLE;
+            LookAt(mFront, BEAT_TIME);
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
             ++sequence;
             sequence %= 3;
@@ -545,6 +548,7 @@ void EnemyBoss::UpdatePhase2()
             if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
             {
                 mCurrentState = EnemyState::IDLE;
+                LookAt(mFront, BEAT_TIME);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 ++sequence;
                 sequence %= 4;
@@ -617,6 +621,7 @@ void EnemyBoss::UpdatePhase3()
             if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
             {
                 mCurrentState = EnemyState::IDLE;
+                LookAt(mFront, BEAT_TIME);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 ++sequence;
                 sequence %= 4;
@@ -631,26 +636,32 @@ void EnemyBoss::LookAt(float3 direction, float time)
 {
     mTargetFront = direction.Normalized();
     mTargetFront.Normalize();
-    float angle = mFront.AngleBetween(mTargetFront);
-    mRotationSpeed = angle / time;
+    float angle = mGameObject->GetFront().AngleBetween(mTargetFront);
+    float3 cross = mGameObject->GetFront().Cross(mTargetFront);
+    if (cross.y > 0) mRotationSpeed = angle / time;
+    else mRotationSpeed = -angle / time;
+    
+    
 }
 
 void EnemyBoss::Rotate()
 {
-    if (mRotationSpeed > 0)
+    if (mRotationSpeed != 0)
     {
         float deltaTime = App->GetDt();
         float angle = mGameObject->GetFront().AngleBetween(mTargetFront);
+
         float rotationAmount = mRotationSpeed * deltaTime;
         float3 currentRotation = mGameObject->GetLocalEulerAngles();
-        if (std::abs(angle) < rotationAmount)
+        if (angle < std::abs(rotationAmount))
         {
-            mGameObject->SetLocalRotation(currentRotation + angle * float3::unitY);
+            if (rotationAmount < 0) angle *= -1;
+            mGameObject->SetLocalRotation(currentRotation + float3::unitY.Mul(angle));
             mRotationSpeed = 0.0f;
         }
         else
         {
-            mGameObject->SetLocalRotation(currentRotation + rotationAmount * float3::unitY);
+            mGameObject->SetLocalRotation(currentRotation + float3::unitY.Mul(rotationAmount));
         }
     }
 }
