@@ -209,7 +209,11 @@ void EnemyBoss::Update()
 
     if (mBulletHell != BulletPattern::NONE)
     {
-        if (mAttackDurationTimer.Delay(mBulletHellDuration)) mBulletHell = BulletPattern::NONE;
+        if (mAttackDurationTimer.Delay(mBulletHellDuration)) 
+        {
+            mBulletHell = BulletPattern::NONE;
+            LookAt(mFront, 2 * BEAT_TIME);
+        }
         else switch (mBulletHell)
         {
         case BulletPattern::CIRCLES:
@@ -235,6 +239,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
     mBulletHell = pattern;
     mBulletsWave = 0;
+    mAttackDurationTimer.Reset();
 }
 
 void EnemyBoss::LaserAttack()
@@ -491,7 +496,6 @@ void EnemyBoss::UpdatePhase1()
         if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
         {
             mCurrentState = EnemyState::IDLE;
-            LookAt(mFront, BEAT_TIME);
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
             ++sequence;
             sequence %= 3;
@@ -548,7 +552,6 @@ void EnemyBoss::UpdatePhase2()
             if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
             {
                 mCurrentState = EnemyState::IDLE;
-                LookAt(mFront, BEAT_TIME);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 ++sequence;
                 sequence %= 4;
@@ -621,7 +624,6 @@ void EnemyBoss::UpdatePhase3()
             if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
             {
                 mCurrentState = EnemyState::IDLE;
-                LookAt(mFront, BEAT_TIME);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
                 ++sequence;
                 sequence %= 4;
