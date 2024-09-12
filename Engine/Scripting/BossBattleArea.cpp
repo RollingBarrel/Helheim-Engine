@@ -65,5 +65,6 @@ void BossBattleArea::EnemyDestroyed(GameObject* enemy)
 inline void BossBattleArea::ActivateArea(bool activate)
 {
 	BattleArea::ActivateArea(activate);
+	mBoss->WakeUp();
 	mNeedsToSpawn = false;
 }

@@ -193,10 +193,11 @@ void EnemyBoss::Update()
             }
             break;
         case EnemyState::DOWN:
-            if (IsPlayerInRange(mBulletRange))
+            if (mWakeUp)
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 GameManager::GetInstance()->SetIsFightingBoss(true);
+                mWakeUp = false;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
                 mCurrentState = EnemyState::WAKE;
             }
