@@ -13,6 +13,7 @@
 #include "BossLaser.h"
 #include "HudController.h"
 #include "MathFunc.h"
+#include "BossBattleArea.h"
 
 #define LASER_WIND_UP 2.625f
 #define BULLETS_ANIMATION 146.0f / 24.0f
@@ -63,8 +64,6 @@ EnemyBoss::EnemyBoss(GameObject* owner) : Enemy(owner)
 
 void EnemyBoss::Start()
 {
-    srand(static_cast<unsigned int>(time(0)));
-
     Enemy::Start();
     mCurrentState = EnemyState::DOWN;
     mFront = mGameObject->GetFront();
@@ -98,6 +97,8 @@ void EnemyBoss::Update()
     {
         //Phase change
         ++mStage;
+        if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
+        else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
         mCurrentState = EnemyState::PHASE;
         mBulletHell = BulletPattern::NONE;
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
@@ -131,15 +132,18 @@ void EnemyBoss::Update()
             case 0:
                 if (mPhaseShiftTimer.Delay(HIT_ANIMATION))
                 {
+                    BossBattleArea* ba = static_cast<BossBattleArea*>(GameManager::GetInstance()->GetActiveBattleArea());
+                    if (ba) ba->SpawnEnemies();
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
                     ++phaseChange;
                 }
                 break;
             case 1:
-                if (mPhaseShiftTimer.Delay(DEATH_ANIMATION + mPhaseShiftTime))
+                if (mWakeUp)
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", 1.0f);
                     ++phaseChange;
+                    mWakeUp = false;
                 }
                 break;
             case 2:
@@ -189,9 +193,11 @@ void EnemyBoss::Update()
             }
             break;
         case EnemyState::DOWN:
-            if (IsPlayerInRange(mBulletRange))
+            if (mWakeUp)
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
+                GameManager::GetInstance()->SetIsFightingBoss(true);
+                mWakeUp = false;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
                 mCurrentState = EnemyState::WAKE;
             }
@@ -264,6 +270,8 @@ void EnemyBoss::Death()
 {
     if (mDeathTimer.Delay(mDeathTime))
     {
+        GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(false);
+        GameManager::GetInstance()->SetIsFightingBoss(false);
         mGameObject->SetEnabled(false);
         GameManager::GetInstance()->Victory();
     }
@@ -274,7 +282,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
     if (mBulletHellTimer.Delay(4 * BEAT_TIME)) //Each pattern will need different rythm
     {
         unsigned int nBullets = 10;
-        float alpha = DegToRad(180 / (nBullets - 1));
+        float alpha = DegToRad(180.0f / (nBullets - 1));
         float offset = 0.0f;
         if (mBulletsWave % 2 == 1)
         {
@@ -618,4 +626,20 @@ void EnemyBoss::LookAt(float3 target)
 {
     mTargetFront = target - mGameObject->GetWorldPosition();
     mTargetFront.Normalize();
+}
+
+void EnemyBoss::TakeDamage(float damage)
+{
+    if (mCurrentState == EnemyState::PHASE) return;
+    if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
+    {
+        ActivateHitEffect();
+        mHealth -= damage;
+
+        if (mHealth <= 0)
+        {
+            // Use Hit2 animation before Death??
+            mCurrentState = EnemyState::DEATH;
+        }
+    }
 }
