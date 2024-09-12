@@ -62,6 +62,11 @@ void ItemDrop::Update()
     {
         mGameObject->SetEnabled(false);
     }
+
+    if (mInteractTimer.Delay(mUIDeactivateTimer))
+    {
+        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
+    }
 }
 
 void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
