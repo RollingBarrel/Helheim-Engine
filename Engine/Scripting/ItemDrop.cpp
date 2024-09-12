@@ -11,6 +11,7 @@
 #include "Math/MathFunc.h"
 #include "Keys.h"
 #include "ModuleInput.h"
+#include "HudController.h"
 
 CREATE(ItemDrop)
 {
@@ -84,9 +85,11 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
             case 2:
                 if (playerScript->GetEnergyType() == EnergyType::RED)
                 {
+                    GameManager::GetInstance()->GetHud()->SetPickupPrompt(true);
                     if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
                         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
                     {
+                        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                         playerScript->RechargeBattery(EnergyType::BLUE);
                         mAlreadyUsed = true;
@@ -95,6 +98,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                 }
                 else
                 {
+                    GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                     playerScript->RechargeBattery(EnergyType::BLUE);
                     mAlreadyUsed = true;
@@ -104,9 +108,11 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
             case 3:             
                 if (playerScript->GetEnergyType() == EnergyType::BLUE)
                 {
+                    GameManager::GetInstance()->GetHud()->SetPickupPrompt(true);
                     if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
                         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
                     {
+                        GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                         playerScript->RechargeBattery(EnergyType::RED);
                         mAlreadyUsed = true;
@@ -115,6 +121,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                 }
                 else
                 {
+                    GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                     playerScript->RechargeBattery(EnergyType::RED);
                     mAlreadyUsed = true;
