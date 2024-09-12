@@ -203,6 +203,39 @@ void Trail::AddFirstTrailPoint(GameObject* mOwner)
     mMinDist = distUV;
 }
 
+void Trail::AddFirstTrailPoint(float3 position)
+{
+    float distUV;
+    if (mPoints.size() > 0)
+    {
+        distUV = mPoints.front().mDistanceUV + (position.Distance(mPoints.front().mPosition));
+    }
+    else
+    {
+        distUV = 0.0f;
+    }
+    mPoints.push_front(TrailPoint({ position, float3::zero, mTrailTime, distUV }));
+
+    const CameraComponent* cam = App->GetCamera()->GetCurrentCamera();
+    float3 norm = cam->GetFrustum().front;
+    float3 direction;
+    mWidth.GetValue().CalculateInitialValue();
+
+    direction = CalculateDirection(position, norm);
+
+    float3 topPointPos = position + direction * (mWidth.GetValue().GetMinValue() * 0.5f);
+    float3 botPointPos = position - direction * (mWidth.GetValue().GetMinValue() * 0.5f);
+
+    float2 topPointTexCoord = float2(mPoints.front().mDistanceUV, 1);
+    float2 botPointTexCoord = float2(mPoints.front().mDistanceUV, 0);
+
+    mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
+    mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
+
+    mLastPointPosition = position;
+    mMinDist = distUV;
+}
+
 void Trail::RemoveLastTrailPoint()
 {
     mPoints.pop_back();
@@ -233,6 +266,21 @@ void Trail::UpdateTrailComponent(GameObject* owner)
         RemoveLastTrailPoint();
     }
 }
+void Trail::UpdateTrailParticle(float3 position)
+{
+    const float dposition = position.DistanceSq(mLastPointPosition);
+    if (dposition >= mMinDistance && mPoints.size() < mMaxPoints)
+    {
+        AddFirstTrailPoint(position);
+    }
+
+    mTrailTime += App->GetDt();
+    if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().mCreationTime) >= mMaxLifeTime)
+    {
+        RemoveLastTrailPoint();
+    }
+}
+
 void Trail::UpdateLineComponent(GameObject* origin, GameObject* final)
 {
     float3 originPos = origin->GetWorldPosition();
