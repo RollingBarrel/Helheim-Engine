@@ -19,7 +19,7 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-layout(binding = 8) uniform isamplerBuffer pointLightList;
+layout(binding = 2) uniform isamplerBuffer pointLightList;
 struct SpotLight
 {
 	vec4 pos; //w intensity
@@ -33,7 +33,7 @@ readonly layout(std430, binding = 1) buffer SpotLights
 	uint numSLights;
 	SpotLight sLights[];
 };
-layout(binding = 11) uniform isamplerBuffer spotLightList;
+layout(binding = 3) uniform isamplerBuffer spotLightList;
 
 struct Shadow
 {

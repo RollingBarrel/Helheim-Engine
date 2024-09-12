@@ -269,6 +269,11 @@ private:
 	unsigned int mPLightListImgBuffer;
 	unsigned int mSLightListImgTex;
 	unsigned int mSLightListImgBuffer;
+
+	unsigned int mVolPLightListImgTex;
+	unsigned int mVolPLightListImgBuffer;
+	unsigned int mVolSLightListImgTex;
+	unsigned int mVolSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;

@@ -401,6 +401,10 @@ bool ModuleOpenGL::Init()
 	glGenBuffers(1, &mPLightListImgBuffer);
 	glGenTextures(1, &mSLightListImgTex);
 	glGenBuffers(1, &mSLightListImgBuffer);
+	glGenTextures(1, &mVolPLightListImgTex);
+	glGenBuffers(1, &mVolPLightListImgBuffer);
+	glGenTextures(1, &mVolSLightListImgTex);
+	glGenBuffers(1, &mVolSLightListImgBuffer);
 	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform1ui(0, CULL_LIST_LIGHTS_SIZE);
@@ -671,6 +675,14 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	glBindBuffer(GL_TEXTURE_BUFFER, mSLightListImgBuffer);
 	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
 	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mSLightListImgBuffer);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mVolPLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mVolPLightListImgBuffer);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mVolSLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mVolSLightListImgBuffer);
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
@@ -1211,6 +1223,8 @@ void ModuleOpenGL::Draw()
 	glUseProgram(mTileLightCullingProgramId);
 	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
 	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
+	glBindImageTexture(2, mVolPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
+	glBindImageTexture(3, mVolSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
 	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
@@ -1485,10 +1499,15 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
 	static float time = App->GetDt();
 	glUniform1f(1, time);
 	time += App->GetDt();
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 

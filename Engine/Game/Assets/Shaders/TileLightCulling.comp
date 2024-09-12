@@ -26,11 +26,16 @@ uniform layout(binding = 1, r32i) writeonly iimageBuffer outSpotLightsList;
 layout(location = 0)uniform uint maxListLights;
 layout(location = 1)uniform uvec2 numPixels;
 
+uniform layout(binding = 2, r32i) writeonly iimageBuffer outVolPointLightsList;
+uniform layout(binding = 3, r32i) writeonly iimageBuffer outVolSpotLightsList;
+
 //uniform layout(binding = 1, r32f) readonly image2D depthImage;
 layout(binding = 0) uniform sampler2D gDepth;
 
 shared uint pointsInTile;
 shared uint spotsInTile;
+shared uint volPointsInTile;
+shared uint volSpotsInTile;
 shared uint minZ;
 shared uint maxZ;
 
@@ -63,6 +68,8 @@ void main()
         maxZ = 0;
 		pointsInTile = 0;
 		spotsInTile = 0;
+		volPointsInTile = 0;
+		volSpotsInTile = 0;
 	}
 	barrier();
 
@@ -96,14 +103,21 @@ void main()
 		dot(viewPos, tileFrustumPlanes[1].xyz) < light.pos.w &&
 		dot(viewPos, tileFrustumPlanes[2].xyz) < light.pos.w &&
 		dot(viewPos, tileFrustumPlanes[3].xyz) < light.pos.w &&
-		(viewMinZ - viewPos.z) > (-light.pos.w) &&
-        (viewMaxZ - viewPos.z) < light.pos.w)
+        (viewMaxZ - viewPos.z) < light.pos.w) 
 		{
-			uint index = atomicAdd(pointsInTile, 1);
+			uint index = atomicAdd(volPointsInTile, 1);
 			if(index < maxListLights)
 	        {
-				imageStore(outPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+				imageStore(outVolPointLightsList, int(tileIndex*maxListLights+index), ivec4(35));
 	        }
+			if((viewMinZ - viewPos.z) > (-light.pos.w))
+			{
+				index = atomicAdd(pointsInTile, 1);
+				if(index < maxListLights)
+				{
+					imageStore(outPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+				}
+			}
 		}
 	}
 
@@ -116,14 +130,21 @@ void main()
 		dot(viewPos, tileFrustumPlanes[1].xyz) < light.w &&
 		dot(viewPos, tileFrustumPlanes[2].xyz) < light.w &&
 		dot(viewPos, tileFrustumPlanes[3].xyz) < light.w &&
-		(viewMinZ - viewPos.z) > (-light.w) &&
         (viewMaxZ - viewPos.z) < light.w)
 		{
-			uint index = atomicAdd(spotsInTile, 1);
+			uint index = atomicAdd(volSpotsInTile, 1);
 			if(index < maxListLights)
 	        {
-				imageStore(outSpotLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+				imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+index), ivec4(35));
 	        }
+			if((viewMinZ - viewPos.z) > (-light.w))
+			{
+				index = atomicAdd(spotsInTile, 1);
+				if(index < maxListLights)
+				{
+					imageStore(outSpotLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+				}
+			}
 		}
 	}
 	
@@ -137,6 +158,14 @@ void main()
 		if(spotsInTile < maxListLights)
 		{
 			imageStore(outSpotLightsList, int(tileIndex*maxListLights+spotsInTile), ivec4(-1));
+		}
+		if(volPointsInTile < maxListLights)
+		{
+			imageStore(outVolPointLightsList, int(tileIndex*maxListLights+volPointsInTile), ivec4(-1));
+		}
+		if(volSpotsInTile < maxListLights)
+		{
+			imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+volSpotsInTile), ivec4(-1));
 		}
 	}
 }
