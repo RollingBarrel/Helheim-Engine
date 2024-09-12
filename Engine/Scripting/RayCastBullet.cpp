@@ -43,9 +43,6 @@ void RayCastBullet::Update()
 
 			if (mHit.IsValid())
 			{
-				mHoleDecal->GetOwner()->SetEnabled(true);
-				//TODO: Set hole decal rotation
-
 				if (mHit.mGameObject->GetTag().compare("Enemy") == 0)
 				{
 					Enemy* enemy = static_cast<Enemy*>(((ScriptComponent*)mHit.mGameObject->GetComponentInParent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -54,6 +51,12 @@ void RayCastBullet::Update()
 						enemy->TakeDamage(mDamage * GameManager::GetInstance()->GetPlayerController()->GetDamageModifier());
 						GameManager::GetInstance()->HitStop();
 					}
+				}
+				else
+				{
+
+					mHoleDecal->GetOwner()->SetEnabled(true);
+					//TODO: Set hole decal rotation
 				}
 			}
 		}
