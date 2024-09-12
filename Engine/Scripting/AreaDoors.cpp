@@ -19,6 +19,11 @@ CREATE(AreaDoors)
 
 	END_CREATE;
 }
+
+AreaDoors::AreaDoors(GameObject* owner) : Script(owner)
+{
+}
+
 void AreaDoors::Start()
 {
 
