@@ -25,7 +25,7 @@ public:
 	void Start() override;
 	void TakeDamage(float damage) override;
 	float GetBombsDelay() const { return mBombsDelay; }
-	void LookAt(float3 target, float time);
+	void LookAt(float3 target, float time) { LookAt(target.xz(), time); }
 	void LookAt(float2 target, float time);
 	void WakeUp() { mWakeUp = true; }
 
