@@ -1503,7 +1503,8 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
-	static float time = App->GetDt();
+	static float time = 0;
+	time += App->GetDt();
 	glUniform1f(1, time);
 	time += App->GetDt();
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
