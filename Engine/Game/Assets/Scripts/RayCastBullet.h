@@ -7,6 +7,7 @@
 
 class ParticleSystemComponent;
 class TrailComponent;
+class DecalComponent;
 class ColorGradient;
 
 
@@ -31,6 +32,7 @@ private:
 	Hit mHit;
 	ParticleSystemComponent* mHitParticles = nullptr;
 	TrailComponent* mBulletTrail = nullptr;
+	DecalComponent* mHoleDecal = nullptr;
 
 	TimerScript mHitTimer;
 

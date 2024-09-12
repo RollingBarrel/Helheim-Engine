@@ -5,6 +5,7 @@
 #include "TrailComponent.h"
 #include "Trail.h"
 #include "ParticleSystemComponent.h"
+#include "DecalComponent.h"
 #include "ScriptComponent.h"
 
 #include "GameManager.h"
@@ -38,6 +39,9 @@ void RayCastBullet::Update()
 		{
 			mBulletTrail->GetOwner()->SetWorldPosition(mHitPoint + mDirection * 0.00001f);
 
+			mHoleDecal->SetEnable(true);
+			//TODO: Set hole decal rotation
+
 			if (mHit.IsValid())
 			{
 				if (mHit.mGameObject->GetTag().compare("Enemy") == 0)
@@ -59,10 +63,10 @@ void RayCastBullet::Update()
 			mHitParticles->GetOwner()->SetEnabled(true);
 		}
 
-		if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime()))
+		if (mHitTimer.Delay(mBulletTrail->GetTrail()->GetLifeTime())) //TODO: Change delay to decal lifetime
 		{
 			mHit = Hit();
-			mGameObject->SetEnabled(false);
+			//mGameObject->SetEnabled(false);	//TODO: Enable this again
 		}
 	}
 }
@@ -85,6 +89,8 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 
 	mHitParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
 	mBulletTrail = static_cast<TrailComponent*>(mGameObject->GetComponentInChildren(ComponentType::TRAIL));
+	mHoleDecal = static_cast<DecalComponent*>(mGameObject->GetComponentInChildren(ComponentType::DECAL));
+
 	if (mBulletTrail)
 	{
 		mBulletTrail->GetOwner()->SetWorldPosition(startposition);
@@ -98,5 +104,10 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 	{
 		mHitParticles->GetOwner()->SetWorldPosition(mHitPoint);
 		mHitParticles->GetOwner()->SetEnabled(false);
+	}
+	if (mHoleDecal) 
+	{
+		mHoleDecal->GetOwner()->SetWorldPosition(mHitPoint);
+		mHoleDecal->GetOwner()->SetEnabled(false);
 	}
 }
