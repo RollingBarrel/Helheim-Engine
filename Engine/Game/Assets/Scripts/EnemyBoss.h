@@ -24,7 +24,7 @@ public:
 	void Start() override;
 	void TakeDamage(float damage) override;
 	float GetBombsDelay() const { return mBombsDelay; }
-	void LookAt(float3 target);
+	void LookAt(float3 target, float time);
 	void WakeUp() { mWakeUp = true; }
 
 private:
@@ -41,6 +41,7 @@ private:
 	void BulletHellPattern6();
 	void LaserAttack();
 	void BombAttack();	
+	void Rotate();	
 
 	void  Death() override;
 

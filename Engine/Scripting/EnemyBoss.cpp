@@ -67,6 +67,7 @@ void EnemyBoss::Start()
     Enemy::Start();
     mCurrentState = EnemyState::DOWN;
     mFront = mGameObject->GetFront();
+    mRotationSpeed = 0.0f;
 
     for (const char* prefab : mTemplateNames)
     {
@@ -330,6 +331,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         {
             direction = target - bulletOriginPosition;
             direction.Normalize();
+            LookAt(direction, 0.25f * BEAT_TIME);
         }
         float3 right = mGameObject->GetUp().Cross(direction);
         
@@ -428,6 +430,7 @@ void EnemyBoss::BulletHellPattern5() //Stream
 
         GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
         float3 direction = float3(mFront.x * cos(alpha) - mFront.z * sin(alpha), mFront.y, mFront.x * sin(alpha) + mFront.z * cos(alpha));
+        LookAt(direction, BEAT_TIME / 8);
         direction.Normalize();
         Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         ColorGradient gradient;
@@ -444,6 +447,7 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
     {
         const unsigned int nBullets = 16;
         float3 target = mPlayer->GetWorldPosition();
+        LookAt(target - mGameObject->GetWorldPosition(), BEAT_TIME);
         float3 front = mPlayer->GetFront();
         for (int i = 0; i < nBullets; i++)
         {
@@ -623,10 +627,32 @@ void EnemyBoss::UpdatePhase3()
     }
 }
 
-void EnemyBoss::LookAt(float3 target)
+void EnemyBoss::LookAt(float3 direction, float time)
 {
-    mTargetFront = target - mGameObject->GetWorldPosition();
+    mTargetFront = direction.Normalized();
     mTargetFront.Normalize();
+    float angle = mFront.AngleBetween(mTargetFront);
+    mRotationSpeed = angle / time;
+}
+
+void EnemyBoss::Rotate()
+{
+    if (mRotationSpeed > 0)
+    {
+        float deltaTime = App->GetDt();
+        float angle = mGameObject->GetFront().AngleBetween(mTargetFront);
+        float rotationAmount = mRotationSpeed * deltaTime;
+        float3 currentRotation = mGameObject->GetLocalEulerAngles();
+        if (std::abs(angle) < rotationAmount)
+        {
+            mGameObject->SetLocalRotation(currentRotation + angle * float3::unitY);
+            mRotationSpeed = 0.0f;
+        }
+        else
+        {
+            mGameObject->SetLocalRotation(currentRotation + rotationAmount * float3::unitY);
+        }
+    }
 }
 
 void EnemyBoss::TakeDamage(float damage)
