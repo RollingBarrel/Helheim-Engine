@@ -73,7 +73,7 @@ void Enemy::Start()
 		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
-			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
+			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
@@ -301,7 +301,6 @@ bool Enemy::IsPlayerReachable()
 
 void Enemy::TakeDamage(float damage)
 {
-	if (mCurrentState == EnemyState::PHASE) return;
 	if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
 	{
 		ActivateHitEffect();
