@@ -198,6 +198,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -302,7 +303,6 @@
     <ClCompile Include="HudController.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
-    <ClCompile Include="AudioTester.cpp" />
     <ClCompile Include="AudioManager.cpp">
       <Filter>Managers</Filter>
     </ClCompile>
@@ -360,5 +360,6 @@
     <ClCompile Include="RotateObject.cpp" />
     <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
+    <ClCompile Include="AreaDoors.cpp" />
   </ItemGroup>
 </Project>

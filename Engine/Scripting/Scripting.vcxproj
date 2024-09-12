@@ -166,6 +166,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyCreatureMelee.cpp" />
