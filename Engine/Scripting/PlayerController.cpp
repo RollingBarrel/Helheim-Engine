@@ -827,7 +827,7 @@ void PlayerController::RechargeShield(float shield)
 void PlayerController::RechargeBattery(EnergyType batteryType)
 {
     if(mEnergyType!= batteryType) mCurrentEnergy = 0;
-    mCurrentEnergy = Clamp(mCurrentEnergy+30,0,100);
+    mCurrentEnergy = Clamp(mCurrentEnergy+50,0,100);
     mEnergyType = batteryType;
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
