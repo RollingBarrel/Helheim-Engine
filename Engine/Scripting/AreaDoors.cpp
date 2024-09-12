@@ -33,6 +33,10 @@ void AreaDoors::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&AreaDoors::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 }
+
+void AreaDoors::Update()
+{
+}
 void AreaDoors::CloseDoors(bool close)
 {
 	std::string trigger = (close) ? "tClose" : "tOpen";
