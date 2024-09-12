@@ -197,7 +197,7 @@ void MeshRendererComponent::Disable()
 		App->GetOpenGL()->BatchRemoveMesh(*this);
 }
 
-void MeshRendererComponent::CreateUiqueMaterial()
+void MeshRendererComponent::CreateUniqueMaterial()
 {
 	assert(mMaterial && mMesh);
 	if (!mUniqueMaterial)
@@ -291,10 +291,14 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 {
 	Component::Load(data, uidPointerMap);
 
-	if(data.HasMember("MeshID"))
-		SetMesh(data.GetInt("MeshID"));
+	if (data.HasMember("MeshID"))
+	{
+		mMesh = static_cast<ResourceMesh*>(App->GetResource()->RequestResource(data.GetInt("MeshID"), Resource::Type::Mesh));
+		const float3* positions = reinterpret_cast<const float3*>((mMesh->GetAttributeData(Attribute::POS)));
+		mOriginalAABB.SetFrom(positions, mMesh->GetNumberVertices());
+	}
 	if(data.HasMember("MaterialID"))
-		SetMaterial(data.GetInt("MaterialID"));
+		mMaterial = static_cast<ResourceMaterial*>(App->GetResource()->RequestResource(data.GetInt("MaterialID"), Resource::Type::Material));
 	if(data.HasMember("HasSkinning"))
 		mHasSkinning = data.GetBool("HasSkinning");
 
@@ -367,6 +371,9 @@ void MeshRendererComponent::Load(const JsonObject& data, const std::unordered_ma
 			}
 		}
 	}
+
+	if (mMesh && mMaterial && IsEnabled())
+		App->GetOpenGL()->BatchAddMesh(*this);
 }
 
 void MeshRendererComponent::UpdatePalette()
@@ -384,6 +391,13 @@ void MeshRendererComponent::SetEnableBaseColorTexture(bool baseColorTex)
 {
 	assert(mMaterial);
 	mMaterial->SetEnableBaseColorTexture(baseColorTex);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}
+
+void MeshRendererComponent::SetEnableEmissiveTexture(bool emissiveTex)
+{
+	assert(mMaterial);
+	mMaterial->SetEnableEmissiveTexture(emissiveTex);
 	App->GetOpenGL()->BatchEditMaterial(*this);
 }
 

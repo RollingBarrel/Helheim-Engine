@@ -67,16 +67,13 @@ layout(binding = 6)uniform samplerCube diffuseIBL;
 layout(binding = 7)uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
-layout(binding = 8) uniform isamplerBuffer pointLightList;
+layout(binding = 10) uniform isamplerBuffer pointLightList;
 layout(binding = 11) uniform isamplerBuffer spotLightList;
 layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
 
-layout(binding = 9)uniform sampler2D bloomTex;
-uniform float bloomIntensity;
-
-layout(binding = 10) uniform sampler2D ambientOcclusion;
+layout(binding = 9) uniform sampler2D ambientOcclusion;
 uniform bool activeAO;
 
 vec3 cDif;
@@ -89,16 +86,6 @@ vec3 V;
 vec3 emissiveCol;
 
 out vec4 outColor;
-
-vec3 ACESFilm(in vec3 x)
-{
-	float a = 2.51f;
-	float b = 0.03f;
-	float c = 2.43f;
-	float d = 0.59f;
-	float e = 0.14f;
-	return clamp((x * (a * x + b)) / (x * (c * x + d) + e), 0.0, 1.0);
-}
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
@@ -159,7 +146,7 @@ void main()
 	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//Point lights
-	int idx = (texelFetch(pointLightList, int(tileIdx * lightListSize))).x;
+	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
 	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	{
 		PointLight pLight = pLights[idx];
@@ -172,7 +159,7 @@ void main()
 	}
 	
 	//Spot lights
-	idx = (texelFetch(spotLightList, int(tileIdx * lightListSize))).x;
+	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
 	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 	{
 		SpotLight sLight = sLights[idx];
@@ -221,22 +208,9 @@ void main()
 	pbrCol += GetAmbientLight() * occlusionFactor;
 	pbrCol += emissiveCol;
 
-	//bloom
-	pbrCol += texture(bloomTex, uv).rgb * bloomIntensity;
-
 	//HDR color  
 	vec3 hdrCol = pbrCol;
 
-
-
-	//LDR color with reinhard tone Mapping
-	//vec3 ldrCol = hdrCol / (hdrCol.rgb + vec3(1.0));
-	//LDR color with ACES filmic tone Mapping
-	vec3 ldrCol = ACESFilm(hdrCol);
-
-	//Gamma correction
-	ldrCol = pow(ldrCol, vec3(1/2.2));
-
 	//Output
-	outColor = vec4(ldrCol, 1.0f );	
+	outColor = vec4(hdrCol, 1.0f);
 }

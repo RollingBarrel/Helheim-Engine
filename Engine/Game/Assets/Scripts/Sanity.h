@@ -8,6 +8,7 @@ class GameObject;
 class TextComponent;
 class ImageComponent;
 class ButtonComponent;
+class Transform2DComponent;
 
 class Buff {
 public:
@@ -43,9 +44,7 @@ public:
 
 private:
     void Controls();
-    std::string GetBuffTitle(const Buff& buff);
     std::string GetBuffDescription(const Buff& buff);
-    unsigned int GetImage(const Buff& buff);
 
     void CardClick();
     void CardHover();
@@ -65,24 +64,24 @@ private:
 
     GameObject* mCard1GO = nullptr;
     ImageComponent* mCard1Image = nullptr;
-    TextComponent* mCard1TitleText = nullptr;
     TextComponent* mCard1Text = nullptr;
-    ImageComponent* mCard1BuffImage = nullptr;
     ButtonComponent* mCard1Btn = nullptr;
+    Transform2DComponent* mCard1Transform = nullptr;
+    bool mCard1Hovered = false;
 
     GameObject* mCard2GO = nullptr;
     ImageComponent* mCard2Image = nullptr;
-    TextComponent* mCard2TitleText = nullptr;
     TextComponent* mCard2Text = nullptr;
-    ImageComponent* mCard2BuffImage = nullptr;
     ButtonComponent* mCard2Btn = nullptr;
+    Transform2DComponent* mCard2Transform = nullptr;
+    bool mCard2Hovered = false;
 
     GameObject* mCard3GO = nullptr;
     ImageComponent* mCard3Image = nullptr;
-    TextComponent* mCard3TitleText = nullptr;
     TextComponent* mCard3Text = nullptr;
-    ImageComponent* mCard3BuffImage = nullptr;
     ButtonComponent* mCard3Btn = nullptr;
+    Transform2DComponent* mCard3Transform = nullptr;
+    bool mCard3Hovered = false;
 
     TimerScript mClickTimout;
     bool mTimeout = false;

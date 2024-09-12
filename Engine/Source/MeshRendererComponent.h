@@ -40,6 +40,7 @@ public:
 	void SetInvBindMatrices(std::vector<std::pair<GameObject*, float4x4>>&& bindMatrices, const MeshRendererComponent* palette = nullptr);
 	void UpdateSkeletonObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
 	void SetEnableBaseColorTexture(bool baseColorTex);
+	void SetEnableEmissiveTexture(bool emissiveTex);
 	void SetBaseColorFactor(const float4& baseColor);
 	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
 	bool HasSkinning() const { return mHasSkinning; };
@@ -47,7 +48,7 @@ public:
 	void Enable() override;
 	void Disable() override;
 
-	void CreateUiqueMaterial();
+	void CreateUniqueMaterial();
 	bool HasUniqueMaterial() const { return mUniqueMaterial; }
 
 
@@ -56,9 +57,6 @@ private:
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
 
 	void UpdatePalette();
-
-	
-
 
 	ResourceMesh* mMesh = nullptr;
 	ResourceMaterial* mMaterial = nullptr;

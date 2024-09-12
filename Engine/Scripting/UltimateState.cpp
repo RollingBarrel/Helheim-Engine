@@ -61,6 +61,9 @@ void UltimateState::Exit()
 	{
 		GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mPlayerController->GetUltimateCooldown());
 	}
+
+	mPlayerController->EnableLaser(true);
+
 }
 
 StateType UltimateState::GetType()
@@ -70,7 +73,7 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown)) return true;
+	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()) return true;
 	return false;
 }
 

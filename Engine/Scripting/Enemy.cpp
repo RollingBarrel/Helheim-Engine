@@ -15,6 +15,7 @@
 #include "Geometry/Ray.h"
 
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PlayerController.h"
 #include "PoolManager.h"
 #include "ItemDrop.h"
@@ -27,6 +28,8 @@ void Enemy::Start()
 	ModuleScene* scene = App->GetScene();
 	mPlayer = GameManager::GetInstance()->GetPlayer();
 	mHealth = mMaxHealth;
+
+
 
     //Hit Effect
 
@@ -65,10 +68,12 @@ void Enemy::Start()
 		⣿⡿⠋⠁⠀⠀⢀⣀⣠⡴⣸⣿⣇⡄⠀⠀⠀⠀⢀⡿⠄⠙⠛⠀⣀⣠⣤⣤⠄
 		*/
 	{
+		//Randn step duration to not sound so mess
+		mStepDuration = 0.4 + static_cast<float>(rand()) / RAND_MAX * (0.7 - 0.4);
 		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
-			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUiqueMaterial();
+			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
@@ -228,6 +233,14 @@ void Enemy::Flee()
 		}
 }
 
+void Enemy::PlayStepAudio()
+{
+	if (mStepTimer.Delay(mStepDuration))
+	{
+		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_FOOTSTEP, mGameObject->GetWorldPosition());
+	}
+}
+
 void Enemy::Charge()
 {
 	if (mChargeDurationTimer.Delay(mChargeDuration))
@@ -333,6 +346,8 @@ void Enemy::Death()
 {
 	if (mDeathTimer.Delay(mDeathTime))
 	{
+		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
+
 		BattleArea* activeBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
 		if (activeBattleArea)
 		{
