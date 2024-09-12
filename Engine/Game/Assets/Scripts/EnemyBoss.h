@@ -1,5 +1,6 @@
 #pragma once
 #include "Enemy.h"
+#include "float2.h"
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -25,6 +26,7 @@ public:
 	void TakeDamage(float damage) override;
 	float GetBombsDelay() const { return mBombsDelay; }
 	void LookAt(float3 target, float time);
+	void LookAt(float2 target, float time);
 	void WakeUp() { mWakeUp = true; }
 
 private:
@@ -47,7 +49,8 @@ private:
 
 	int mLastAttack = -1;
 	float3 mFront = float3::unitX;
-	float3 mTargetFront = float3::unitX;
+	//float3 mTargetFront = float3::unitX;
+	float mTargetRotation = 0.0f;
 	unsigned int mStage = 0;
 	float mPhase1Hp = 0.6f;
 	float mPhase2Hp = 0.3f;

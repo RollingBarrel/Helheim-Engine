@@ -636,14 +636,23 @@ void EnemyBoss::UpdatePhase3()
 
 void EnemyBoss::LookAt(float3 direction, float time)
 {
-    mTargetFront = direction.Normalized();
+    LookAt(direction.xz(), time);
+    /*mTargetFront = direction.Normalized();
     mTargetFront.Normalize();
     float angle = mGameObject->GetFront().AngleBetween(mTargetFront);
     float3 cross = mGameObject->GetFront().Cross(mTargetFront);
     if (cross.y > 0) mRotationSpeed = angle / time;
-    else mRotationSpeed = -angle / time;
-    
-    
+    else mRotationSpeed = -angle / time;   */
+}
+
+void EnemyBoss::LookAt(float2 direction, float time)
+{
+    mTargetRotation = direction.AngleBetweenNorm(float2::unitY);
+    if (direction.x < 0)
+    {
+        mTargetRotation *= -1;
+    }
+    mRotationSpeed = mGameObject->GetFront().xz().AngleBetween(direction) / time;
 }
 
 void EnemyBoss::Rotate()
@@ -651,11 +660,11 @@ void EnemyBoss::Rotate()
     if (mRotationSpeed != 0)
     {
         float deltaTime = App->GetDt();
-        float angle = mGameObject->GetFront().AngleBetween(mTargetFront);
+        float angle = mGameObject->GetLocalEulerAngles().y - mTargetRotation;
 
         float rotationAmount = mRotationSpeed * deltaTime;
         float3 currentRotation = mGameObject->GetLocalEulerAngles();
-        if (angle < std::abs(rotationAmount))
+        if (std::abs(angle) < std::abs(rotationAmount))
         {
             if (rotationAmount < 0) angle *= -1;
             mGameObject->SetLocalRotation(currentRotation + float3::unitY.Mul(angle));
