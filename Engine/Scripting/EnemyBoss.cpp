@@ -634,14 +634,14 @@ void EnemyBoss::UpdatePhase3()
     }
 }
 
-void EnemyBoss::LookAt(float2 direction, float time)
+void EnemyBoss::LookAt(float2 direction, float speed)
 {
     mTargetRotation = direction.AngleBetweenNorm(float2::unitY);
     if (direction.x < 0)
     {
         mTargetRotation *= -1;
     }
-    mRotationSpeed = mGameObject->GetFront().xz().AngleBetween(direction) / time;
+    mRotationSpeed = speed;
 }
 
 void EnemyBoss::Rotate()
