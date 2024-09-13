@@ -301,7 +301,6 @@ bool Enemy::IsPlayerReachable()
 
 void Enemy::TakeDamage(float damage)
 {
-	if (mCurrentState == EnemyState::PHASE) return;
 	if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
 	{
 		ActivateHitEffect();
