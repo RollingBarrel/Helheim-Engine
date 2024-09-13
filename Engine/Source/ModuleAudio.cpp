@@ -1,5 +1,6 @@
 #include "ModuleAudio.h"
-#include "ModuleAudio.h"
+#include "AudioSourceComponent.h"
+
 #include "Globals.h"
 #include "AudioSourceComponent.h"
 #include "fmod_errors.h"
@@ -16,7 +17,8 @@ FMOD_RESULT F_CALLBACK ChannelEndCallback(FMOD_CHANNELCONTROL* channelControl, F
 
 		if (sound)
 		{
-			sound->release();  // Release the sound when playback ends
+			CheckError(channel->stop());
+			CheckError(sound->release());  // Release the sound when playback ends
 		}
 	}
 
@@ -170,6 +172,7 @@ void ModuleAudio::EngineStop()
 			CheckError(instance->release());
 		}
 	}
+
 	if (mOneShotChannelGroup) {
 		int numChannels = 0;
 		mOneShotChannelGroup->getNumChannels(&numChannels);
@@ -277,6 +280,7 @@ FMOD::Channel* ModuleAudio::PlayOneShot(const std::string& fileName)
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
 	channel->setChannelGroup(mOneShotChannelGroup);
+	channel->setMode(FMOD_3D);
 	return channel;
 }
 
@@ -401,10 +405,7 @@ void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 eventPosition)
 	// Add the channel to the global channel group
 	if (channel)
 	{
-		channel->setChannelGroup(mOneShotChannelGroup);
-
-		// To release audio
-		channel->setCallback(ChannelEndCallback);
+		channel->setMode(FMOD_3D);
 
 		FMOD_VECTOR  position = { { 0 } };
 		FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };

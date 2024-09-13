@@ -53,5 +53,6 @@ private:
 	GameObject* mCamera = nullptr;
 	AnimationComponent* mPlayerAnimation = nullptr;
 
+	int mElevatorAudio = -1;
 };
 
