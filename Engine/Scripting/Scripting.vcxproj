@@ -229,6 +229,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="BossBattleArea.h" />
     <ClInclude Include="Keys.h" />
+    <ClInclude Include="LinearMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
@@ -257,6 +258,7 @@
     <ClCompile Include="FirstTutorial.cpp" />
     <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="HealVFX.cpp" />
+    <ClCompile Include="LinearMovement.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="RotateObject.cpp" />

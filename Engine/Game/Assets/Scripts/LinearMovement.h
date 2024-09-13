@@ -1,0 +1,27 @@
+#pragma once
+#include "Script.h"
+#include "Macros.h"
+
+GENERATE_BODY(LinearMovement)
+
+class AnimationComponent;
+
+class LinearMovement : public Script
+{
+	FRIEND(LinearMovement)
+
+public:
+    LinearMovement(GameObject* owner);
+    ~LinearMovement() {}
+
+    void Start() override;
+    void Update() override;
+private:
+
+    AnimationComponent* mAnimationComponent = nullptr;
+    float3 mInitialPosition = float3::zero;
+    float3 mTargetPosition = float3::zero;
+    float mSpeed = 1.0f;
+    bool mReachedTarget = false;
+};
+
