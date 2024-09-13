@@ -1,5 +1,4 @@
 #include "AnimationComponent.h"
-#include "AnimationComponent.h"
 
 #include "Application.h"
 #include "ModuleResource.h"
@@ -396,6 +395,7 @@ void AnimationComponent::ReloadGameObjects()
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
+
 	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine") || current->GetName() == std::string("Spine1")) //This will be changed
 	{
 		if (mOwner->GetTag() == "Player")
@@ -430,6 +430,8 @@ void AnimationComponent::LoadGameObjects(GameObject* current)
 
 void AnimationComponent::LoadSpineChildren(GameObject* current)
 {
+	if (current->GetName() == std::string("RightShoulder") && mOwner->GetTag() == "Player")
+		return;
 	mSpineObjects.push_back(current);
 	for (GameObject* child : current->GetChildren())
 	{

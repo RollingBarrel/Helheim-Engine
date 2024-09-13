@@ -142,19 +142,10 @@ void AnimationController::GetTransform(GameObject* model)
 
 		if (channel->hasRotation)
 		{
-			if (model->GetName() != "Hips")
-			{
-				CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-				model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-				//if (channel->hasTranslation || channel->hasRotation)
-				//	model->SetLocalScale(model->GetLocalScale());
-			}
-			//else
-			//{
-			//	LOG("JUAN");
-			//}
+			model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
 	}
 
