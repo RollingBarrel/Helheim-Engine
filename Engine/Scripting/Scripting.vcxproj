@@ -173,6 +173,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BombBoss.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BossBattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaserEyeBall.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
@@ -228,7 +229,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="BossBattleArea.h" />
     <ClInclude Include="Keys.h" />
   </ItemGroup>
   <ItemGroup>
