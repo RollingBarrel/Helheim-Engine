@@ -30,7 +30,6 @@ public:
 	void WakeUp() { mWakeUp = true; }
 
 private:
-	//void Idle();
 	void UpdatePhase1();
 	void UpdatePhase2();
 	void UpdatePhase3();
@@ -42,14 +41,13 @@ private:
 	void BulletHellPattern5();
 	void BulletHellPattern6();
 	void LaserAttack();
-	void BombAttack();	
-	void Rotate();	
+	void BombAttack();
+	void Rotate();
 
 	void  Death() override;
 
 	int mLastAttack = -1;
 	float3 mFront = float3::unitX;
-	//float3 mTargetFront = float3::unitX;
 	float mTargetRotation = 0.0f;
 	unsigned int mStage = 0;
 	float mPhase1Hp = 0.6f;
@@ -62,7 +60,7 @@ private:
 	TimerScript mPhaseShiftTimer;
 	float mPhaseShiftTime = 5.0f;
 	TimerScript mBulletHellTimer;
-	
+
 	float mAttackSequenceCooldown = 4.0f;
 
 	// Bullet Hell
