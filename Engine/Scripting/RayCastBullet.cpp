@@ -59,13 +59,9 @@ void RayCastBullet::Update()
 
 					mHoleDecal->GetOwner()->SetEnabled(true);
 
-					float3 d = mDirection;
-					float3 y = float3(0.0f, 1.0f, 0.0f);
-					float3 x = d.Cross(y);
-
-					float3 right = d;
-					float3 up = -y;
-					float3 front = x;
+					float3 right = mDirection;
+					float3 up = -float3(0.0f, 1.0f, 0.0f);
+					float3 front = right.Cross(-up);
 
 					float3x3 mat = float3x3(front, right, up);
 
