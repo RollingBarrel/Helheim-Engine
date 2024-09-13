@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1159911824,
+                "UID": 32726964,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -48,8 +48,8 @@
                 ]
             },
             {
-                "UID": 833783158,
-                "ParentUID": 1159911824,
+                "UID": 1845379320,
+                "ParentUID": 32726964,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -118,8 +118,8 @@
                 ]
             },
             {
-                "UID": 519002715,
-                "ParentUID": 1159911824,
+                "UID": 1516744298,
+                "ParentUID": 32726964,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
@@ -310,8 +310,8 @@
                 ]
             },
             {
-                "UID": 187791716,
-                "ParentUID": 519002715,
+                "UID": 1227375520,
+                "ParentUID": 1516744298,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -453,8 +453,8 @@
                 ]
             },
             {
-                "UID": 2003089670,
-                "ParentUID": 1159911824,
+                "UID": 939956130,
+                "ParentUID": 32726964,
                 "Name": "HoleDecal",
                 "Enabled": true,
                 "Active": true,
@@ -467,12 +467,12 @@
                     -1.0,
                     0.0,
                     0.0,
-                    1.9470718370939722e-7
+                    5.52335052361741e-7
                 ],
                 "Scale": [
-                    0.699999988079071,
-                    0.699999988079071,
-                    1.0
+                    0.5,
+                    0.5,
+                    2.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -513,8 +513,8 @@
                 ]
             },
             {
-                "UID": 1672366018,
-                "ParentUID": 2003089670,
+                "UID": 631302335,
+                "ParentUID": 939956130,
                 "Name": "SparkParticles",
                 "Enabled": true,
                 "Active": true,
@@ -830,8 +830,8 @@
                 ]
             },
             {
-                "UID": 1016414889,
-                "ParentUID": 2003089670,
+                "UID": 331351165,
+                "ParentUID": 939956130,
                 "Name": "SmokeParticles",
                 "Enabled": false,
                 "Active": false,
