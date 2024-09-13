@@ -1,0 +1,147 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 522586713,
+                "ParentUID": 1,
+                "Name": "vfx_creature_spawnV2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            3048.0,
+                            3048.0
+                        ],
+                        "Render": 2
+                    }
+                ]
+            },
+            {
+                "UID": 312142394,
+                "ParentUID": 522586713,
+                "Name": "smoke",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 400923988,
+                        "Color": [
+                            0.936274528503418,
+                            0.5369809865951538,
+                            0.5369809865951538
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 8,
+                        "Rows": 8,
+                        "Speed": 72,
+                        "IsPlaying": true
+                    }
+                ]
+            },
+            {
+                "UID": 203233580,
+                "ParentUID": 522586713,
+                "Name": "floorpattern",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.00476183881983161,
+                    0.07969100028276444
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    0.5,
+                    0.5,
+                    0.5
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            2000.0,
+                            2000.0
+                        ],
+                        "Render": 0
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 319823124,
+                        "Color": [
+                            0.8921568393707275,
+                            0.0,
+                            0.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 6,
+                        "Rows": 6,
+                        "Speed": 33,
+                        "IsPlaying": true
+                    }
+                ]
+            }
+        ]
+    }
+}
