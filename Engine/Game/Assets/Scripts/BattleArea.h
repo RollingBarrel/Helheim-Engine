@@ -5,7 +5,6 @@
 struct CollisionData;
 class Spawner;
 class BoxColliderComponent;
-class AreaDoors;
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
 {
@@ -54,7 +53,7 @@ private:
 	GameObject* mTrap4 = nullptr;
 
 	GameObject* mAreaDoorsGO = nullptr;
-	AreaDoors* mAreaDoors = nullptr;
+	
 
 	std::vector<Spawner*> mSpawners;
 	GameObject* mElevator = nullptr;

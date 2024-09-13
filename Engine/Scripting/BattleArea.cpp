@@ -64,10 +64,7 @@ void BattleArea::Start()
 		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		mSpawners.push_back(mEnemySpawner4);
 	};
-	if (mAreaDoors)
-	{
-		mAreaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-	}
+
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
@@ -132,6 +129,12 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	{
 
 		ActivateArea(false);
+		if (mAreaDoorsGO)
+		{
+			AreaDoors* areaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+			areaDoors->CloseDoors(false);
+		}
+
 		mGameObject->SetEnabled(false);
 		return;
 	}
@@ -181,7 +184,6 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
  		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
-		mAreaDoors->CloseDoors(true);
 		//LOG("PLAYER COLLISION");
 	}
 }
