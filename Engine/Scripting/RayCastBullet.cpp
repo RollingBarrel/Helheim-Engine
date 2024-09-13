@@ -12,6 +12,8 @@
 #include "PlayerController.h"
 #include "Enemy.h"
 
+#include "float3x3.h"
+
 CREATE(RayCastBullet)
 {
 	CLASS(owner);
@@ -56,6 +58,23 @@ void RayCastBullet::Update()
 				{
 
 					mHoleDecal->GetOwner()->SetEnabled(true);
+
+					float3 d = mDirection;
+					float3 y = float3(0.0f, 1.0f, 0.0f);
+					float3 x = d.Cross(y);
+
+					float3 right = d;
+					float3 up = -y;
+					float3 front = x;
+
+					float3x3 mat = float3x3(front, right, up);
+
+					float q0 = sqrt(1 + mat[0][0] + mat[1][1] + mat[2][2]) / 2;
+					float q1 = (mat[2][1]-mat[1][2]) / (4 * q0);
+					float q2 = (mat[0][2] - mat[2][0]) / (4 * q0);
+					float q3 = (mat[1][0] - mat[0][1]) / (4 * q0);
+
+					mHoleDecal->GetOwner()->SetWorldRotation(Quat(q0,q1,q2,q3));
 					//TODO: Set hole decal rotation
 				}
 			}

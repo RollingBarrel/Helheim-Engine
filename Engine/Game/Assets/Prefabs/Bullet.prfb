@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1416533943,
+                "UID": 1954011139,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -48,8 +48,8 @@
                 ]
             },
             {
-                "UID": 64307077,
-                "ParentUID": 1416533943,
+                "UID": 1618831743,
+                "ParentUID": 1954011139,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -118,8 +118,8 @@
                 ]
             },
             {
-                "UID": 914634069,
-                "ParentUID": 1416533943,
+                "UID": 1280589023,
+                "ParentUID": 1954011139,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
@@ -310,8 +310,8 @@
                 ]
             },
             {
-                "UID": 1481046623,
-                "ParentUID": 914634069,
+                "UID": 949865371,
+                "ParentUID": 1280589023,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -453,8 +453,8 @@
                 ]
             },
             {
-                "UID": 1879045978,
-                "ParentUID": 1416533943,
+                "UID": 630629184,
+                "ParentUID": 1954011139,
                 "Name": "HoleDecal",
                 "Enabled": true,
                 "Active": true,
@@ -464,15 +464,15 @@
                     0.0
                 ],
                 "Rotation": [
-                    1.0,
+                    -1.0,
                     0.0,
                     0.0,
-                    -4.371138828673793e-8
+                    1.9470718370939722e-7
                 ],
                 "Scale": [
                     0.699999988079071,
                     0.699999988079071,
-                    0.4000000059604645
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -513,8 +513,8 @@
                 ]
             },
             {
-                "UID": 645267409,
-                "ParentUID": 1879045978,
+                "UID": 307633463,
+                "ParentUID": 630629184,
                 "Name": "Particles",
                 "Enabled": true,
                 "Active": true,
