@@ -634,6 +634,11 @@ void EnemyBoss::UpdatePhase3()
     }
 }
 
+void EnemyBoss::LookAt(float3 direction, float time)
+{ 
+    LookAt(direction.xz(), mGameObject->GetFront().AngleBetween(direction) / time); 
+}
+
 void EnemyBoss::LookAt(float2 direction, float speed)
 {
     mTargetRotation = direction.AngleBetweenNorm(float2::unitY);

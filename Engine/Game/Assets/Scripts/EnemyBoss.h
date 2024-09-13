@@ -25,7 +25,7 @@ public:
 	void Start() override;
 	void TakeDamage(float damage) override;
 	float GetBombsDelay() const { return mBombsDelay; }
-	void LookAt(float3 direction, float time) { LookAt(direction.xz(), mGameObject->GetFront().AngleBetween(direction) / time); }
+	inline void LookAt(float3 direction, float time);
 	void LookAtS(float3 direction, float speed) { LookAt(direction.xz(), speed); }
 	void LookAt(float2 direction, float speed);
 	void WakeUp() { mWakeUp = true; }
