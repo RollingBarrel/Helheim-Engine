@@ -199,6 +199,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
+    <ClInclude Include="BossBattleArea.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -361,5 +362,6 @@
     <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
     <ClCompile Include="AreaDoors.cpp" />
+    <ClCompile Include="BossBattleArea.cpp" />
   </ItemGroup>
 </Project>

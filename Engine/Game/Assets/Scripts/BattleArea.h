@@ -15,16 +15,16 @@ public:
 	~BattleArea();
 	void Start() override;
 	void Update() override;
-	void EnemyDestroyed(GameObject* Enemy);
-	void ActivateArea(bool activate);
+	virtual void EnemyDestroyed(GameObject* Enemy);
+	virtual void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
-	int GetCurrentEnemies() { return mCurrentEnemies; }
-	int GetCurrentWave() { return mWavesRounds; }
-	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
+	int GetCurrentEnemies() const { return mCurrentEnemies; }
+	int GetCurrentWave() const { return mWavesRounds; }
+	int GetCurrentExplosiveEnemies() const { return mCurrentExplosiveEnemies; }
 	void SetWaves(int waves) { mWavesRounds = waves; }; 
 	void AddExplosiveEnemy();
 
-private:
+protected:
 
 	void SetTrapState(GameObject* trap, bool enable);
 	void UpdateTrapNumber();
