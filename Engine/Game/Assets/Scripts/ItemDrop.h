@@ -2,6 +2,7 @@
 #include "Script.h"
 #include "Macros.h"
 #include "GameObject.h"
+#include "TimerScript.h"
 
 GENERATE_BODY(ItemDrop);
 
@@ -32,5 +33,8 @@ private:
     BoxColliderComponent* mCollider = nullptr;
 
     float mDespawnTimer = 0.0f;
+
+    TimerScript mInteractTimer;
+    float mUIDeactivateTimer = 3.0f;
     
 };
