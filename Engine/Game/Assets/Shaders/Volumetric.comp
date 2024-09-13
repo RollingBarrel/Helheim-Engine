@@ -111,25 +111,25 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	vec3 li = vec3(0.0f);
 
 	//diractional light
-	li +=  dirCol.rgb * dirCol.w * MieScattering(vDir, dirDir);
+	//li +=  dirCol.rgb * dirCol.w * MieScattering(vDir, dirDir);
 
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//point lights
-	int idx = int(texelFetch(pointLightList, int(tileIdx * lightListSize)).x);
-	for(uint i = 0; i < lightListSize && idx != 255; idx = int((texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x))
-	{
-		PointLight pLight = pLights[idx];
-		vec3 mVector = currPos - pLight.pos.xyz;
-		float dist = length(mVector);
-		vec3 pDir = normalize(mVector);
-		float lAtt = pow(max(1 - pow(dist/ pLight.pos.w,4), 0.0),2) / (dist*dist + 1);
-		li += pLight.col.rgb * pLight.col.w * lAtt * MieScattering(vDir, pDir);
-		++i;
-	}
+	//int idx = int(texelFetch(pointLightList, int(tileIdx * lightListSize)).x);
+	//for(uint i = 0; i < lightListSize && idx != 255; idx = int((texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x))
+	//{
+	//	PointLight pLight = pLights[idx];
+	//	vec3 mVector = currPos - pLight.pos.xyz;
+	//	float dist = length(mVector);
+	//	vec3 pDir = normalize(mVector);
+	//	float lAtt = pow(max(1 - pow(dist/ pLight.pos.w,4), 0.0),2) / (dist*dist + 1);
+	//	li += pLight.col.rgb * pLight.col.w * lAtt * MieScattering(vDir, pDir);
+	//	++i;
+	//}
 
 	//spot lights
-	idx = int(texelFetch(spotLightList, int(tileIdx * lightListSize)).x);
+	uint idx = int(texelFetch(spotLightList, int(tileIdx * lightListSize)).x);
 	for (int i = 0; i < lightListSize && idx != 255; idx = int((texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x))
 	{
 		SpotLight sLight = sLights[idx];
@@ -250,8 +250,8 @@ float sampleIGN(vec2 pixelXY, float frameTime)
 //	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
 //	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 //	//Point Lights
-//	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-//	//for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
+//	//uint idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
+//	//for(uint i = 0; i < lightListSize && idx != 255; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 //	//{
 //	//	vec4 pLight = pLights[idx].pos;
 //	//	vec3 L = pLight.xyz - rO;
@@ -274,8 +274,8 @@ float sampleIGN(vec2 pixelXY, float frameTime)
 //	//	++i;
 //	//}
 //
-//	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-//	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
+//	uint idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+//	for (uint i = 0; i < lightListSize && idx != 255; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
 //	{
 //		SpotLight sLight = sLights[idx];
 //		float tt0 = 0.0f;
@@ -292,7 +292,7 @@ float sampleIGN(vec2 pixelXY, float frameTime)
 //				maxim = tt1;
 //				float h = sLight.radius / sLight.col.w;
 //				float dRadius2 = h*h - sLight.radius * sLight.radius;
-//				if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt2))
+//				if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, lDir, dRadius2, rO, rDir, tt2))
 //				{
 //					if(tt2 < minim)
 //					{
@@ -320,8 +320,8 @@ void main()
 	{
 		const vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(texSize);
 		const vec3 worldPos = GetWorldPos(texture(depthTex, uv).r, uv);
-
 		const vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
+
 		//vec3 rayDir = worldPos - cameraPos;
 		//float maxDist = length(rayDir);
 		//rayDir /= maxDist;
