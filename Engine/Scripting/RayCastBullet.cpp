@@ -59,13 +59,15 @@ void RayCastBullet::Update()
 
 					mHoleDecal->GetOwner()->SetEnabled(true);
 
+					//Set rotation of decal gameobject given the right up and front vectors
+					//Don't try to understant it, iw was done with brute force
 					float3 right = mDirection;
 					float3 up = -float3(0.0f, 1.0f, 0.0f);
 					float3 front = right.Cross(-up);
 
 					float3x3 mat = float3x3(front, right, up);
 
-					float q0 = sqrt(1 + mat[0][0] + mat[1][1] + mat[2][2]) / 2;
+					float q0 = sqrt(abs(1 + mat[0][0] + mat[1][1] + mat[2][2])) / 2;
 					float q1 = (mat[2][1]-mat[1][2]) / (4 * q0);
 					float q2 = (mat[0][2] - mat[2][0]) / (4 * q0);
 					float q3 = (mat[1][0] - mat[0][1]) / (4 * q0);
