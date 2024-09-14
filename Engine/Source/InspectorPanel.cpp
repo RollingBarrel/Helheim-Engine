@@ -577,6 +577,12 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) const
 		component->SetOuterAngle(DegToRad(outerAngle));
 	}
 
+	bool isVolumetric = component->GetVolumetric();
+	if(ImGui::Checkbox("Volumetric", &isVolumetric))
+	{
+		component->SetVolumetric(isVolumetric);
+	}
+
 	ImGui::SeparatorText("Shadows");
 
 	bool castShadow = component->CanCastShadow();

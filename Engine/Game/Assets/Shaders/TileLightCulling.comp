@@ -22,6 +22,10 @@ readonly layout(binding = 2) buffer spotLightSpheres
 	uint numSLights;
 	vec4 sLights[];
 };
+readonly layout(binding = 3) buffer spotLightVol
+{
+	bool sVolumetric[];
+};
 uniform layout(binding = 1, r8ui) writeonly uimageBuffer outSpotLightsList;
 layout(location = 0)uniform uint maxListLights;
 layout(location = 1)uniform uvec2 numPixels;
@@ -132,11 +136,15 @@ void main()
 		dot(viewPos, tileFrustumPlanes[3].xyz) < light.w &&
         (viewMaxZ - viewPos.z) < light.w)
 		{
-			uint index = atomicAdd(volSpotsInTile, 1);
-			if(index < maxListLights)
-	        {
-				imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+index), uvec4(i));
-	        }
+			uint index;
+			if(sVolumetric[i])
+			{
+				index = atomicAdd(volSpotsInTile, 1);
+				if(index < maxListLights)
+				{
+					imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+index), uvec4(i));
+				}
+			}
 			if ((viewMinZ - viewPos.z) > (-light.w))
 			{
 				index = atomicAdd(spotsInTile, 1);

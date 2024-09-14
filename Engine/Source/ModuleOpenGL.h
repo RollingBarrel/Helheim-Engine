@@ -281,6 +281,7 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	OpenGLBuffer* mSpotsBoundingSpheres = nullptr;
+	OpenGLBuffer* mVolSpotsBuffer = nullptr;
 	friend class LightningPanel;
 
 	std::vector<ParticleSystemComponent*> mParticleSystems;

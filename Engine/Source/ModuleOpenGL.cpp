@@ -374,6 +374,7 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 	mSpotsBoundingSpheres = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 2, 16, &numSpotLights);
+	mVolSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 3);
 
 	//SHADOWS
 	glGenFramebuffers(1, &mShadowsFrameBufferId);
@@ -536,6 +537,7 @@ bool ModuleOpenGL::CleanUp()
 	delete mPointsBuffer;
 	delete mSpotsBuffer;
 	delete mSpotsBoundingSpheres;
+	delete mVolSpotsBuffer;
 	delete mDLightUniBuffer;
 
 	glDeleteVertexArrays(1, &mSkyVao);
@@ -1613,6 +1615,8 @@ void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 	mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
+	int isVolumetric = component.GetVolumetric();
+	mVolSpotsBuffer->PushBackData(&isVolumetric, sizeof(isVolumetric));
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
@@ -1625,6 +1629,8 @@ void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 			float boundingSphere[4];
 			cSpotLight.GetBoundingSphere(boundingSphere);
 			mSpotsBoundingSpheres->UpdateData(boundingSphere, sizeof(boundingSphere), 16 + sizeof(boundingSphere) * i);
+			int isVolumetric = static_cast<int>(cSpotLight.GetVolumetric());
+			mVolSpotsBuffer->UpdateData(&isVolumetric, sizeof(isVolumetric), sizeof(isVolumetric) * i);
 			return;
 		}
 	}
@@ -1642,6 +1648,7 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
+			mVolSpotsBuffer->RemoveData(sizeof(int), sizeof(int) * i);
 			return;
 		}
 	}
@@ -1667,10 +1674,10 @@ void OpenGLBuffer::PushBackData(const void* data, unsigned int dataSize)
 {
 	if (mDataCapacity == 0)
 	{
-		glBindBuffer(mType, mIdx);
-		glBufferData(mType, mDataSize, data, mUsage);
 		mDataSize = dataSize;
 		mDataCapacity = dataSize;
+		glBindBuffer(mType, mIdx);
+		glBufferData(mType, mDataSize, data, mUsage);
 		glBindBuffer(mType, 0);
 		return;
 	}

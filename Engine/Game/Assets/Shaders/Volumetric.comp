@@ -336,7 +336,7 @@ void main()
 
 			float d = ceil(t1 - t0);
 			float nSteps = min(d/stepSize, maxSteps); //Uniform constant de stepSize
-			vec3 marchingStep = rayDir* (d / nSteps);
+			vec3 marchingStep = rayDir*(d / nSteps);
 			vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
 		
 			float extCoeff = 0.0;
@@ -349,8 +349,6 @@ void main()
 			}
 			vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
 			pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
-			//pixelCol = vec4(pixelCol.rgb + (accInScattering*exp(-extCoeff) * fogIntensity), pixelCol.a);
-			//pixelCol = vec4(pixelCol.rgb + (accInScattering * fogIntensity), pixelCol.a);
 			imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
 		}
 
