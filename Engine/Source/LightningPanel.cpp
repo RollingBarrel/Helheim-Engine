@@ -132,7 +132,7 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1f(4, openGl->mVolAnisotropy);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.01f, 0.0f, 100.0f))
+	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.01f, 0.0f, 1.1f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
 		glUniform1f(8, openGl->mVolStepSize);
