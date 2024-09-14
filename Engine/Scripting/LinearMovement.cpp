@@ -6,13 +6,12 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 
-#include "MathFunc.h"
-
 CREATE(LinearMovement)
 {
 	CLASS(owner);
 	MEMBER(MemberType::FLOAT3, mTargetPosition);
 	MEMBER(MemberType::FLOAT, mSpeed);
+	MEMBER(MemberType::FLOAT, mReturnIn);
 	END_CREATE;
 }
 
@@ -24,30 +23,35 @@ LinearMovement::LinearMovement(GameObject* owner) : Script (owner)
 void LinearMovement::Start()
 {
 	mInitialPosition = mGameObject->GetWorldPosition();
+	mCurrentPosition = mInitialPosition;
 	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
-	if (mAnimationComponent)
-	{
-		mAnimationComponent->SetIsPlaying(true);
-	}
+
+	if (mAnimationComponent) mAnimationComponent->SetIsPlaying(true);
+
 	mGameObject->LookAt(mTargetPosition);
 }
 
 void LinearMovement::Update()
 {
-	if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN || mStarted)
-	{
-		mStarted = true;
-	
-	if (!mReachedTarget)
-	{
-		mInitialPosition.x = Lerp(mInitialPosition.x, mTargetPosition.x, App->GetDt() * mSpeed);
-		mInitialPosition.z = Lerp(mInitialPosition.z, mTargetPosition.z, App->GetDt() * mSpeed);
-		mGameObject->SetWorldPosition(mInitialPosition);
-		float dif = mTargetPosition.SumOfElements() - mInitialPosition.SumOfElements();
-		if (dif < 1) mReachedTarget = true;
-	}
+	if (!mReachedTarget) Movement(mTargetPosition, mSpeed);
 	else
 	{
-		LOG("REACHED TARGET")
-	}}
+		if (mReturnTimer.Delay(mReturnIn))
+		{
+			mTargetPosition = mInitialPosition;
+			mInitialPosition = mCurrentPosition;
+			mReachedTarget = false;
+		}
+	}
+}
+
+void LinearMovement::Movement(float3 target, float speed)
+{
+	float3 direction = target.Sub(mCurrentPosition).Normalized();
+	float3 velocity = direction * speed;
+	mCurrentPosition = mCurrentPosition + velocity * App->GetDt();
+	
+	mGameObject->SetWorldPosition(mCurrentPosition);
+	float dif = target.Distance(mCurrentPosition);
+	if (dif < 0.1f) mReachedTarget = true;
 }
