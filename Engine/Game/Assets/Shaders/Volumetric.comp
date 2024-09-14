@@ -130,7 +130,7 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	//}
 
 	//spot lights
-	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
 	for (int i = 0; i < lightListSize && idx != -1; idx = texelFetch(spotLightList, int(tileIdx * lightListSize + i)).x)
 	{
 		SpotLight sLight = sLights[idx];
