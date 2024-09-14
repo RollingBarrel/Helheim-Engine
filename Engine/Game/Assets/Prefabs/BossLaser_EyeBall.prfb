@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 470471481,
+                "UID": 1358571758,
                 "ParentUID": 1,
                 "Name": "BossLaser_EyeBall",
                 "Enabled": true,
@@ -40,31 +40,31 @@
                             {
                                 "VariableName": "mLaserOrigin",
                                 "MemberType": 3,
-                                "VariableData": 772417758
+                                "VariableData": 1598346482
                             },
                             {
                                 "VariableName": "mLaserCharge",
                                 "MemberType": 3,
-                                "VariableData": 659910222
+                                "VariableData": 1488832649
                             },
                             {
                                 "VariableName": "mLaserEnd",
                                 "MemberType": 3,
-                                "VariableData": 992559360
+                                "VariableData": 1818209600
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 659910222,
-                "ParentUID": 470471481,
+                "UID": 1488832649,
+                "ParentUID": 1358571758,
                 "Name": "CreatureRange_laser_Charging_V1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.1209036111831665,
-                    -0.13014769554138184,
+                    0.08411312103271485,
+                    -0.09303438663482666,
                     -0.16533952951431275
                 ],
                 "Rotation": [
@@ -166,37 +166,37 @@
                                 {
                                     "Point": [
                                         0.0,
-                                        0.004999995231628418
+                                        0.25
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.29750001430511477,
-                                        0.4300000071525574
+                                        0.2574999928474426,
+                                        0.5049999952316284
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.4074999988079071,
-                                        0.6100000143051148
+                                        0.3774999976158142,
+                                        0.6449999809265137
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.5674999952316284,
-                                        0.8199999928474426
+                                        0.550000011920929,
+                                        0.9850000143051148
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.6949999928474426,
-                                        0.8899999856948853
+                                        0.6850000023841858,
+                                        0.9950000047683716
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.8450000286102295,
-                                        0.9599999785423279
+                                        0.8349999785423279,
+                                        0.9950000047683716
                                     ]
                                 },
                                 {
@@ -294,8 +294,8 @@
                 ]
             },
             {
-                "UID": 772417758,
-                "ParentUID": 470471481,
+                "UID": 1598346482,
+                "ParentUID": 1358571758,
                 "Name": "Laser_Line_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -337,28 +337,52 @@
                         ],
                         "Width": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 0.30000001192092898,
-                                "MaxValue": 1.0
+                                "IsValueRandom": true,
+                                "MinValue": 0.800000011920929,
+                                "MaxValue": 1.5
                             },
                             "IsCurve": true,
                             "CurvePoints": [
                                 {
                                     "Point": [
                                         0.0,
-                                        0.5049999952316284
+                                        0.0899999737739563
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.125,
-                                        0.8600000143051148
+                                        0.019999999552965165,
+                                        0.6000000238418579
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.14000000059604646,
+                                        0.8849999904632568
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7350000143051148,
+                                        0.9950000047683716
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9075000286102295,
+                                        0.8450000286102295
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9900000095367432,
+                                        0.699999988079071
                                     ]
                                 },
                                 {
                                     "Point": [
                                         1.0,
-                                        1.0
+                                        0.19999998807907105
                                     ]
                                 }
                             ]
@@ -380,8 +404,8 @@
                 ]
             },
             {
-                "UID": 882488559,
-                "ParentUID": 772417758,
+                "UID": 1710436292,
+                "ParentUID": 1598346482,
                 "Name": "CreatureRange_laser_Origin_V1 ",
                 "Enabled": true,
                 "Active": true,
@@ -543,15 +567,15 @@
                 ]
             },
             {
-                "UID": 992559360,
-                "ParentUID": 772417758,
+                "UID": 1818209600,
+                "ParentUID": 1598346482,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    3.4800002574920656
+                    5.312229156494141
                 ],
                 "Rotation": [
                     0.0,
@@ -571,8 +595,8 @@
                 "Components": []
             },
             {
-                "UID": 1104927654,
-                "ParentUID": 992559360,
+                "UID": 1929255095,
+                "ParentUID": 1818209600,
                 "Name": "CreatureRange_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -734,8 +758,8 @@
                 ]
             },
             {
-                "UID": 1215694665,
-                "ParentUID": 1104927654,
+                "UID": 2040579074,
+                "ParentUID": 1929255095,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
@@ -766,7 +790,7 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 10.0,
-                        "EmissionRate": 100.0,
+                        "EmissionRate": 120.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -796,7 +820,7 @@
                             "Value": {
                                 "IsValueRandom": true,
                                 "MinValue": 0.5,
-                                "MaxValue": 1.0
+                                "MaxValue": 2.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []

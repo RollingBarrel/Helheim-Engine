@@ -11,8 +11,8 @@
 CREATE(BossLaser)
 {
     CLASS(owner);
-    MEMBER(MemberType::FLOAT, mBossDistance);
-    MEMBER(MemberType::INT, mPoolSize);
+    //MEMBER(MemberType::FLOAT, mBossDistance);
+    //MEMBER(MemberType::INT, mPoolSize);
     END_CREATE;
 }
 
@@ -24,8 +24,8 @@ void BossLaser::Start()
 {
     mCurrentState = LaserState::IDLE;
 
-    for (size_t i = 0; i < mPoolSize; ++i)
-    {
+    //for (size_t i = 0; i < mPoolSize; ++i)
+    //{
         GameObject* eyeBall = App->GetScene()->InstantiatePrefab("BossLaser_EyeBall.prfb",mGameObject);
         if (eyeBall)
         {
@@ -33,7 +33,7 @@ void BossLaser::Start()
             eyeBall->SetLocalScale(float3::one * 0.5f);
             mInactiveEyeBall.push_back(eyeBall);
         }
-    }
+   // }
 }
 
 void BossLaser::Update()
@@ -87,7 +87,7 @@ void BossLaser::Fire()
 {
     mCurrentState = LaserState::FIRING;
     mStateTime = 0.0f;
-    SpawnEyeBalls();
+    SpawnEyeBall();
 }
 
 void BossLaser::Cooldown()
@@ -135,6 +135,29 @@ void BossLaser::SpawnEyeBalls()
 
         mActiveEyeBalls.push_back(eyeBall);
     }
+}
+
+void BossLaser::SpawnEyeBall()
+{
+    if (mInactiveEyeBall.empty())
+        return;  
+
+    GameObject* eyeBall = mInactiveEyeBall[0];  
+
+    float3 bossPosition = mGameObject->GetWorldPosition();
+    float3 bossFront = mGameObject->GetFront();
+
+    eyeBall->SetWorldPosition(bossPosition);
+    eyeBall->SetEnabled(true);
+
+    // Initialize the EyeBall's script
+    BossLaserEyeBall* eyeBallScript = static_cast<BossLaserEyeBall*>(static_cast<ScriptComponent*>(eyeBall->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (eyeBallScript)
+    {
+        eyeBallScript->Init(mDamage, mLaserEnemyDuration, mLaserDistance, mLaserSpeed, -90.0f); 
+    }
+
+    mActiveEyeBalls.push_back(eyeBall);
 }
 
 

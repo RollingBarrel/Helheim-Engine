@@ -33,6 +33,8 @@ private:
     void Fire();
     void Cooldown();
     void SpawnEyeBalls();
+    void SpawnEyeBall();
+
     void ReturnEyeBallsToPool();
 
     LaserState mCurrentState = LaserState::IDLE;
