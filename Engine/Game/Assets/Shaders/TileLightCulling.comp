@@ -29,6 +29,7 @@ readonly layout(binding = 3) buffer spotLightVol
 uniform layout(binding = 1, r32i) writeonly iimageBuffer outSpotLightsList;
 layout(location = 0)uniform uint maxListLights;
 layout(location = 1)uniform uvec2 numPixels;
+uniform layout(binding = 2, r32i) writeonly iimageBuffer outVolPointLightsList;
 uniform layout(binding = 3, r32i) writeonly iimageBuffer outVolSpotLightsList;
 
 //uniform layout(binding = 1, r32f) readonly image2D depthImage;
@@ -36,6 +37,7 @@ layout(binding = 0) uniform sampler2D gDepth;
 
 shared uint pointsInTile;
 shared uint spotsInTile;
+shared uint volPointsInTile;
 shared uint volSpotsInTile;
 shared uint minZ;
 shared uint maxZ;
@@ -69,6 +71,7 @@ void main()
         maxZ = 0;
 		pointsInTile = 0;
 		spotsInTile = 0;
+		volPointsInTile = 0;
 		volSpotsInTile = 0;
 	}
 	barrier();
@@ -106,6 +109,11 @@ void main()
         (viewMaxZ - viewPos.z) < light.pos.w)
 		{
 			uint index;
+			index = atomicAdd(volPointsInTile, 1);
+			if(index < maxListLights)
+			{
+				imageStore(outVolPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+			}
 			if((viewMinZ - viewPos.z) > (-light.pos.w))
 			{
 				index = atomicAdd(pointsInTile, 1);
@@ -158,6 +166,10 @@ void main()
 		if(spotsInTile < maxListLights)
 		{
 			imageStore(outSpotLightsList, int(tileIndex*maxListLights+spotsInTile), ivec4(-1));
+		}
+		if(volPointsInTile < maxListLights)
+		{
+			imageStore(outVolPointLightsList, int(tileIndex*maxListLights+volPointsInTile), ivec4(-1));
 		}
 		if(volSpotsInTile < maxListLights)
 		{
