@@ -67,6 +67,7 @@ void EnemyBoss::Start()
     Enemy::Start();
     mCurrentState = EnemyState::DOWN;
     mFront = mGameObject->GetFront();
+    mRotationSpeed = 0.0f;
 
     for (const char* prefab : mTemplateNames)
     {
@@ -92,6 +93,7 @@ void EnemyBoss::Update()
     if (GameManager::GetInstance()->GetHud()) GameManager::GetInstance()->GetHud()->SetBossHealth(mHealth / mMaxHealth);
     float t = HIT_ANIMATION;
     static short phaseChange = 0;
+    Rotate();
 
     if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
     {
@@ -159,6 +161,7 @@ void EnemyBoss::Update()
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
                     mCurrentState = EnemyState::IDLE;
+                    LookAt(mFront, BEAT_TIME);
                     phaseChange = 0;
                 }
                 break;
@@ -206,7 +209,11 @@ void EnemyBoss::Update()
 
     if (mBulletHell != BulletPattern::NONE)
     {
-        if (mAttackDurationTimer.Delay(mBulletHellDuration)) mBulletHell = BulletPattern::NONE;
+        if (mAttackDurationTimer.Delay(mBulletHellDuration)) 
+        {
+            mBulletHell = BulletPattern::NONE;
+            LookAt(mFront, 2 * BEAT_TIME);
+        }
         else switch (mBulletHell)
         {
         case BulletPattern::CIRCLES:
@@ -232,6 +239,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
     mBulletHell = pattern;
     mBulletsWave = 0;
+    mAttackDurationTimer.Reset();
 }
 
 void EnemyBoss::LaserAttack()
@@ -330,6 +338,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         {
             direction = target - bulletOriginPosition;
             direction.Normalize();
+            LookAt(direction, 0.25f * BEAT_TIME);
         }
         float3 right = mGameObject->GetUp().Cross(direction);
         
@@ -428,6 +437,7 @@ void EnemyBoss::BulletHellPattern5() //Stream
 
         GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
         float3 direction = float3(mFront.x * cos(alpha) - mFront.z * sin(alpha), mFront.y, mFront.x * sin(alpha) + mFront.z * cos(alpha));
+        LookAt(direction, BEAT_TIME / 8);
         direction.Normalize();
         Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         ColorGradient gradient;
@@ -444,6 +454,7 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
     {
         const unsigned int nBullets = 16;
         float3 target = mPlayer->GetWorldPosition();
+        LookAt(target - mGameObject->GetWorldPosition(), BEAT_TIME);
         float3 front = mPlayer->GetFront();
         for (int i = 0; i < nBullets; i++)
         {
@@ -623,10 +634,41 @@ void EnemyBoss::UpdatePhase3()
     }
 }
 
-void EnemyBoss::LookAt(float3 target)
+void EnemyBoss::LookAt(float3 direction, float time)
+{ 
+    LookAt(direction.xz(), mGameObject->GetFront().AngleBetween(direction) / time); 
+}
+
+void EnemyBoss::LookAt(float2 direction, float speed)
 {
-    mTargetFront = target - mGameObject->GetWorldPosition();
-    mTargetFront.Normalize();
+    mTargetRotation = direction.AngleBetweenNorm(float2::unitY);
+    if (direction.x < 0)
+    {
+        mTargetRotation *= -1;
+    }
+    mRotationSpeed = speed;
+}
+
+void EnemyBoss::Rotate()
+{
+    if (mRotationSpeed != 0)
+    {
+        float deltaTime = App->GetDt();
+        float angle = mTargetRotation - mGameObject->GetLocalEulerAngles().y;
+
+        float rotationAmount = mRotationSpeed * deltaTime;
+        float3 currentRotation = mGameObject->GetLocalEulerAngles();
+        if (std::abs(angle) < std::abs(rotationAmount))
+        {
+            mGameObject->SetLocalRotation(currentRotation + float3::unitY.Mul(angle));
+            mRotationSpeed = 0.0f;
+        }
+        else
+        {
+            if (angle < 0) rotationAmount *= -1;
+            mGameObject->SetLocalRotation(currentRotation + float3::unitY.Mul(rotationAmount));
+        }
+    }
 }
 
 void EnemyBoss::TakeDamage(float damage)
