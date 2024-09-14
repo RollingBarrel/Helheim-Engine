@@ -4,7 +4,8 @@
 #include "AnimationComponent.h"
 #include "GameObject.h"
 #include "BattleArea.h"
-
+#include"MeshRendererComponent.h"
+#include"ResourceMaterial.h"
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "HudController.h"
@@ -13,10 +14,14 @@
 CREATE(AreaDoors)
 {
 	CLASS(owner);
-	SEPARATOR("DOORS");
-	MEMBER(MemberType::GAMEOBJECT, mDoor1);
-	MEMBER(MemberType::GAMEOBJECT, mDoor2);
-
+	SEPARATOR("DOOR ENTER");
+	MEMBER(MemberType::GAMEOBJECT, mDoorEnter);
+	MEMBER(MemberType::GAMEOBJECT, mDoorEnterEmiBorder);
+	MEMBER(MemberType::GAMEOBJECT, mDoorEnterEmiTop);
+	SEPARATOR("DOOR EXIT");
+	MEMBER(MemberType::GAMEOBJECT, mDoorExit);
+	MEMBER(MemberType::GAMEOBJECT, mDoorExitEmiBorder);
+	MEMBER(MemberType::GAMEOBJECT, mDoorExitEmiTop);
 	END_CREATE;
 }
 
@@ -32,6 +37,22 @@ void AreaDoors::Start()
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&AreaDoors::OnCollisionEnter, this, std::placeholders::_1)));
 	}
+	if (mDoorEnterEmiBorder)
+	{
+		mBorderRenderEnter = static_cast<MeshRendererComponent*>(mDoorEnterEmiBorder->GetComponent(ComponentType::MESHRENDERER));
+	}
+	if (mDoorEnterEmiTop)
+	{
+		mTopRenderEnter = static_cast<MeshRendererComponent*>(mDoorEnterEmiTop->GetComponent(ComponentType::MESHRENDERER));
+	}
+	if (mDoorExitEmiBorder)
+	{
+		mBorderRenderExit = static_cast<MeshRendererComponent*>(mDoorExitEmiBorder->GetComponent(ComponentType::MESHRENDERER));
+	}
+	if (mDoorExitEmiTop)
+	{
+		mTopRenderExit = static_cast<MeshRendererComponent*>(mDoorExitEmiTop->GetComponent(ComponentType::MESHRENDERER));
+	}
 	CloseDoors(false);
 }
 
@@ -41,12 +62,36 @@ void AreaDoors::Update()
 void AreaDoors::CloseDoors(bool close)
 {
 	std::string trigger = (close) ? "tClose" : "tOpen";
-
-	if (mDoor1)
+	if (close)
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoor1->GetWorldPosition());
+		if (mDoorEnterEmiBorder)
+		{
+			mBorderRenderEnter->SetEmissiveColor(mClosedColor);
+			mTopRenderEnter->SetEmissiveColor(mClosedColor);
+			mBorderRenderExit->SetEmissiveColor(mClosedColor);
+			mTopRenderExit->SetEmissiveColor(mClosedColor);
+		}
 
-		AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
+	}
+	else
+	{
+		if (mDoorEnterEmiBorder)
+		{
+			mBorderRenderEnter->SetEmissiveColor(mOpenColor);
+			mTopRenderEnter->SetEmissiveColor(mOpenColor);
+			mBorderRenderExit->SetEmissiveColor(mOpenColor);
+			mTopRenderExit->SetEmissiveColor(mOpenColor);
+		}
+	}
+
+	if (mDoorEnter)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoorEnter->GetWorldPosition());
+		if (close)
+		{
+
+		}
+		AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoorEnter->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation1)
 		{
 			doorAnimation1->SetIsPlaying(true);
@@ -54,24 +99,24 @@ void AreaDoors::CloseDoors(bool close)
 
 		}
 
-		BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
+		BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoorEnter->GetComponent(ComponentType::BOXCOLLIDER));
 		if (door1Collider)
 		{
 			door1Collider->SetEnable(close);
 		}
 	}
-	if (mDoor2)
+	if (mDoorExit)
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoor2->GetWorldPosition());
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoorExit->GetWorldPosition());
 
-		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
+		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoorExit->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation2)
 		{
 			doorAnimation2->SetIsPlaying(true);
 			doorAnimation2->SendTrigger(trigger, 0.6f);
 		}
 
-		BoxColliderComponent* door2Collider = static_cast<BoxColliderComponent*>(mDoor2->GetComponent(ComponentType::BOXCOLLIDER));
+		BoxColliderComponent* door2Collider = static_cast<BoxColliderComponent*>(mDoorExit->GetComponent(ComponentType::BOXCOLLIDER));
 		if (door2Collider)
 		{
 			door2Collider->SetEnable(close);
