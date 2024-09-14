@@ -1007,6 +1007,54 @@ void ModuleOpenGL::SetMaxFog(float maxFog)
 	glUseProgram(0);
 }
 
+void ModuleOpenGL::SetVolBaseExtCoeff(float extCoeff)
+{
+	mBaseExtCoeff = extCoeff;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(0, mBaseExtCoeff);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolNoiseAmount(float noiseAmount)
+{
+	mNoiseAmount = noiseAmount;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(2, mNoiseAmount);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolIntensity(float volIntensity)
+{
+	mVolIntensity = volIntensity;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(3, mVolIntensity);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolAnisotropy(float volAnisotropy)
+{
+	mVolAnisotropy = volAnisotropy;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(4, mVolAnisotropy);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolStepSize(float volStepSize)
+{
+	mVolStepSize = volStepSize;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(8, mVolStepSize);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolMaxSteps(int volMaxSteps)
+{
+	mVolMaxSteps = volMaxSteps;
+	glUseProgram(mVolLightProgramId);
+	glUniform1ui(9, mVolMaxSteps);
+	glUseProgram(0);
+}
+
 void ModuleOpenGL::InitDecals()
 {
 	float decalsVertices[] = {

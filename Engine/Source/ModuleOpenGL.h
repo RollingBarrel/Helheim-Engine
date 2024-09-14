@@ -164,6 +164,19 @@ public:
 	void SetMaxFog(float maxFog);
 	float GetMaxFog() const { return mMaxFog; }
 
+	float GetVolBaseExtCoeff() const { return mBaseExtCoeff; }
+	void SetVolBaseExtCoeff(float baseExtCoeff);
+	float GetVolNoiseAmount() const { return mNoiseAmount; }
+	void SetVolNoiseAmount(float noiseAmount);
+	float GetVolIntensity() const { return mVolIntensity; }
+	void SetVolIntensity(float volIntensity);
+	float GetVolAnisotropy() const { return mVolAnisotropy; }
+	void SetVolAnisotropy(float volAnisotropy);
+	float GetVolStepSize() const { return mVolStepSize; }
+	void SetVolStepSize(float volStepSize);
+	int GetVolMaxSteps() const { return mVolMaxSteps; }
+	void SetVolMaxSteps(int volMaxSteps);
+
 private:
 	void* context = nullptr;
 
