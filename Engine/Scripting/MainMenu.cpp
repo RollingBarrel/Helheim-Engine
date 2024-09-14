@@ -186,10 +186,8 @@ void MainMenu::Start()
     static_cast<ButtonComponent*>(mEffectsVolumeDown->GetComponent(ComponentType::BUTTON))
         ->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnEffectsDown, this)));
     
-    //TODO: Refactor name - Master instead of General
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
-    //
 
     mMusicVolumeSlider = static_cast<SliderComponent*>(mMusicVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mMusicVolumeFill = static_cast<ImageComponent*>(mMusicVolumeFillGO->GetComponent(ComponentType::IMAGE));
