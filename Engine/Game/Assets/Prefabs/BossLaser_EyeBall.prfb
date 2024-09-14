@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1578982526,
+                "UID": 470471481,
                 "ParentUID": 1,
                 "Name": "BossLaser_EyeBall",
                 "Enabled": true,
@@ -40,38 +40,38 @@
                             {
                                 "VariableName": "mLaserOrigin",
                                 "MemberType": 3,
-                                "VariableData": 1526092383
+                                "VariableData": 772417758
                             },
                             {
                                 "VariableName": "mLaserCharge",
                                 "MemberType": 3,
-                                "VariableData": 1738947682
+                                "VariableData": 659910222
                             },
                             {
                                 "VariableName": "mLaserEnd",
                                 "MemberType": 3,
-                                "VariableData": 1391745670
+                                "VariableData": 992559360
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1738947682,
-                "ParentUID": 1578982526,
+                "UID": 659910222,
+                "ParentUID": 470471481,
                 "Name": "CreatureRange_laser_Charging_V1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    -0.25,
-                    -0.9653647541999817
+                    0.1209036111831665,
+                    -0.13014769554138184,
+                    -0.16533952951431275
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9809144735336304,
-                    -0.19443930685520173
+                    -0.9246452450752258,
+                    0.3805585205554962
                 ],
                 "Scale": [
                     1.0,
@@ -89,11 +89,11 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 2.0,
-                        "EmissionRate": 34.400001525878909,
+                        "EmissionRate": 80.4000015258789,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
-                        "FollowEmitter": true,
+                        "FollowEmitter": false,
                         "SpinSpeed": 9.100000381469727,
                         "StretchedBillboard": true,
                         "StretchedRatio": 1.5,
@@ -131,8 +131,20 @@
                                 },
                                 {
                                     "Point": [
-                                        0.4925000071525574,
-                                        0.5099999904632568
+                                        0.4350000023841858,
+                                        0.8050000071525574
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.762499988079071,
+                                        0.9350000023841858
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9375,
+                                        0.9800000190734863
                                     ]
                                 },
                                 {
@@ -154,19 +166,19 @@
                                 {
                                     "Point": [
                                         0.0,
-                                        0.0
+                                        0.004999995231628418
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.33000001311302187,
-                                        0.550000011920929
+                                        0.29750001430511477,
+                                        0.4300000071525574
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.4925000071525574,
-                                        0.75
+                                        0.4074999988079071,
+                                        0.6100000143051148
                                     ]
                                 },
                                 {
@@ -177,8 +189,14 @@
                                 },
                                 {
                                     "Point": [
-                                        0.6524999737739563,
-                                        0.8849999904632568
+                                        0.6949999928474426,
+                                        0.8899999856948853
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8450000286102295,
+                                        0.9599999785423279
                                     ]
                                 },
                                 {
@@ -244,13 +262,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 1526092383,
-                "ParentUID": 1578982526,
+                "UID": 772417758,
+                "ParentUID": 470471481,
                 "Name": "Laser_Line_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -278,7 +323,7 @@
                     {
                         "ComponentType": 21,
                         "IsEnabled": true,
-                        "Image": 1034913839,
+                        "Image": 563896877,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
                         "MaxLifeTime": 0.0,
@@ -296,8 +341,27 @@
                                 "MinValue": 0.30000001192092898,
                                 "MaxValue": 1.0
                             },
-                            "IsCurve": false,
-                            "CurvePoints": []
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.5049999952316284
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.125,
+                                        0.8600000143051148
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
                         },
                         "Gradient": {
                             "Color Gradient": [
@@ -316,8 +380,8 @@
                 ]
             },
             {
-                "UID": 1621170767,
-                "ParentUID": 1526092383,
+                "UID": 882488559,
+                "ParentUID": 772417758,
                 "Name": "CreatureRange_laser_Origin_V1 ",
                 "Enabled": true,
                 "Active": true,
@@ -348,7 +412,7 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 10.0,
-                        "EmissionRate": 23.200000762939454,
+                        "EmissionRate": 100.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -447,20 +511,47 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 1391745670,
-                "ParentUID": 1526092383,
+                "UID": 992559360,
+                "ParentUID": 772417758,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
-                    3.4800000190734865
+                    3.4800002574920656
                 ],
                 "Rotation": [
                     0.0,
@@ -480,8 +571,8 @@
                 "Components": []
             },
             {
-                "UID": 1366449345,
-                "ParentUID": 1391745670,
+                "UID": 1104927654,
+                "ParentUID": 992559360,
                 "Name": "CreatureRange_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -508,7 +599,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -611,20 +702,47 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 1078333745,
-                "ParentUID": 1366449345,
+                "UID": 1215694665,
+                "ParentUID": 1104927654,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    -0.006151437759399414,
-                    0.00005340576171875
+                    0.02207350730895996,
+                    0.04464149475097656
                 ],
                 "Rotation": [
                     0.0,
@@ -634,7 +752,7 @@
                 ],
                 "Scale": [
                     1.0,
-                    1.0,
+                    1.297063946723938,
                     1.0
                 ],
                 "Tag": "Untagged",
@@ -648,7 +766,7 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 10.0,
-                        "EmissionRate": 77.9000015258789,
+                        "EmissionRate": 100.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -747,7 +865,34 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             }
