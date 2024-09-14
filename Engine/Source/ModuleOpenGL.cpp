@@ -499,6 +499,7 @@ bool ModuleOpenGL::Init()
 	glUniform1f(3, mVolIntensity);
 	glUniform1f(4, mVolAnisotropy);
 	glUniform1f(8, mVolStepSize);
+	glUniform1ui(9, mVolMaxSteps);
 	glUseProgram(0);
 
 	return true;

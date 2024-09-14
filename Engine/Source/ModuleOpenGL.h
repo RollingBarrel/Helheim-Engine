@@ -299,6 +299,7 @@ private:
 	float mVolIntensity = 1.0f;
 	float mVolAnisotropy = 0.35f;
 	float mVolStepSize = 1.0f;
+	int mVolMaxSteps = 32;
 };
 
 #endif /* _MODULEOPENGL_H_ */
