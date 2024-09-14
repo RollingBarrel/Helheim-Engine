@@ -13,6 +13,7 @@
 #include "Enemy.h"
 
 #include "float3x3.h"
+#include "BoxColliderComponent.h"
 
 CREATE(RayCastBullet)
 {
@@ -20,6 +21,16 @@ CREATE(RayCastBullet)
 	MEMBER(MemberType::FLOAT, mDecalLifetime);
 	MEMBER(MemberType::FLOAT, mDecalFadingTime);
 	END_CREATE;
+}
+
+void RayCastBullet::Start()
+{
+	// COLLIDER
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponentInChildren(ComponentType::BOXCOLLIDER));
+	if (mCollider)
+	{
+		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&RayCastBullet::OnCollisionEnter, this, std::placeholders::_1)));
+	}
 }
 
 void RayCastBullet::Update()
@@ -56,23 +67,8 @@ void RayCastBullet::Update()
 				}
 				else
 				{
-
 					mHoleDecal->GetOwner()->SetEnabled(true);
-
-					//Sets rotation of decal gameobject given the right, up and front vectors
-					//Don't try to understand it, iw was done with brute force
-					float3 right = mDirection;
-					float3 up = -float3(0.0f, 1.0f, 0.0f);
-					float3 front = right.Cross(-up);
-
-					float3x3 mat = float3x3(front, right, up);
-
-					float q0 = sqrt(abs(1 + mat[0][0] + mat[1][1] + mat[2][2])) / 2;
-					float q1 = (mat[2][1]-mat[1][2]) / (4 * q0);
-					float q2 = (mat[0][2] - mat[2][0]) / (4 * q0);
-					float q3 = (mat[1][0] - mat[0][1]) / (4 * q0);
-
-					mHoleDecal->GetOwner()->SetWorldRotation(Quat(q0,q1,q2,q3));
+					SetDecalRotation();
 				}
 			}
 		}
@@ -89,6 +85,10 @@ void RayCastBullet::Update()
 			{
 				mFadeDecal = true;
 			}
+			/*if (mDelayDecalTimer.Delay(0.1f)) 
+			{
+				SetDecalRotation();
+			}*/
 		}
 		else 
 		{
@@ -156,5 +156,42 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 	{
 		mHoleDecal->GetOwner()->SetWorldPosition(mHitPoint);
 		mHoleDecal->GetOwner()->SetEnabled(false);
+	}
+}
+
+void RayCastBullet::SetDecalRotation()
+{
+	//Sets rotation of decal gameobject given the right, up and front vectors
+	//Gets the right vector from the collider normal if possible, if not from the bullet direction
+	float3 right;
+	if (mCollisionDirection.LengthSq() != 0)
+	{
+		right = -mCollisionDirection;
+	}
+	else
+	{
+		right = mDirection;
+	}
+	float3 up = -float3(0.0f, 1.0f, 0.0f);
+	float3 front = right.Cross(-up);
+
+	float3x3 mat = float3x3(front, right, up);
+
+	float q0 = sqrt(abs(1 + mat[0][0] + mat[1][1] + mat[2][2])) / 2;
+	float q1 = (mat[2][1] - mat[1][2]) / (4 * q0);
+	float q2 = (mat[0][2] - mat[2][0]) / (4 * q0);
+	float q3 = (mat[1][0] - mat[0][1]) / (4 * q0);
+
+	mHoleDecal->GetOwner()->SetWorldRotation(Quat(q0, q1, q2, q3));
+
+	mCollisionDirection = float3::zero;
+}
+
+void RayCastBullet::OnCollisionEnter(CollisionData* collisionData) 
+{
+	if (collisionData->collidedWith->GetTag() == "Wall")
+	{
+		mCollisionDirection = collisionData->collisionNormal;
+		mCollisionDirection.Normalize();
 	}
 }

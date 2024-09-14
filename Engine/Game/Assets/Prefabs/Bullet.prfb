@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 32726964,
+                "UID": 1673323744,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -48,8 +48,8 @@
                 ]
             },
             {
-                "UID": 1845379320,
-                "ParentUID": 32726964,
+                "UID": 1551045366,
+                "ParentUID": 1673323744,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -114,12 +114,28 @@
                         "Gradient": {
                             "Color Gradient": []
                         }
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.03999999910593033,
+                            0.03999999910593033,
+                            0.03999999910593033
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": true
                     }
                 ]
             },
             {
-                "UID": 1516744298,
-                "ParentUID": 32726964,
+                "UID": 1369589138,
+                "ParentUID": 1673323744,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
@@ -310,8 +326,8 @@
                 ]
             },
             {
-                "UID": 1227375520,
-                "ParentUID": 1516744298,
+                "UID": 1136404507,
+                "ParentUID": 1369589138,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -453,8 +469,8 @@
                 ]
             },
             {
-                "UID": 939956130,
-                "ParentUID": 32726964,
+                "UID": 901757835,
+                "ParentUID": 1673323744,
                 "Name": "HoleDecal",
                 "Enabled": true,
                 "Active": true,
@@ -467,11 +483,11 @@
                     -1.0,
                     0.0,
                     0.0,
-                    5.52335052361741e-7
+                    7.907536314633035e-7
                 ],
                 "Scale": [
-                    0.5,
-                    0.5,
+                    0.4000000059604645,
+                    0.4000000059604645,
                     2.0
                 ],
                 "Tag": "Untagged",
@@ -513,8 +529,8 @@
                 ]
             },
             {
-                "UID": 631302335,
-                "ParentUID": 939956130,
+                "UID": 692522828,
+                "ParentUID": 901757835,
                 "Name": "SparkParticles",
                 "Enabled": true,
                 "Active": true,
@@ -830,8 +846,8 @@
                 ]
             },
             {
-                "UID": 331351165,
-                "ParentUID": 939956130,
+                "UID": 492965140,
+                "ParentUID": 901757835,
                 "Name": "SmokeParticles",
                 "Enabled": false,
                 "Active": false,
