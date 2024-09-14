@@ -1,0 +1,51 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 118284085,
+                "ParentUID": 1672847096,
+                "Name": "BossAreaLimit",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -63.01569366455078,
+                    -1.0,
+                    -45.015560150146487
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            11.350000381469727,
+                            1.0,
+                            11.699999809265137
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            }
+        ]
+    }
+}
