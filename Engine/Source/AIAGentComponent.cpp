@@ -31,6 +31,7 @@ AIAgentComponent::~AIAgentComponent()
 
 void AIAgentComponent::Update()
 {
+	if (App->IsPause()) return;
 	if (mNavPositions.size() > 0 && App->IsPlayMode())
 	{
 		if (mCrowdId != CROWD_OFF_INDEX)

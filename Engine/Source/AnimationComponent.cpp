@@ -12,6 +12,7 @@
 #include "float4x4.h"
 #include "ResourceStateMachine.h"
 
+
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
@@ -83,6 +84,7 @@ void AnimationComponent::StartUp()
 
 void AnimationComponent::Update()
 {
+	if (App->IsPause()) return;
 
 	if (mIsPlaying)
 	{

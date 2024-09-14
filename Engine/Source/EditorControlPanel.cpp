@@ -201,6 +201,7 @@ void EditorControlPanel::Pause()
 		mState = GameState::PLAY_PAUSE;
 		EngineApp->GetEngineScriptManager()->Pause(true);
 		EngineApp->GetAudio()->AudioPause();
+		App->SetPaused(true);
 		break;
 	case GameState::PAUSE:
 		mState = GameState::STOP;
@@ -209,6 +210,7 @@ void EditorControlPanel::Pause()
 		mState = GameState::PLAY;
 		EngineApp->GetEngineScriptManager()->Pause(false);
 		EngineApp->GetAudio()->AudioResume();
+		App->SetPaused(false);
 		break;
 	default:
 		mState = GameState::PAUSE;

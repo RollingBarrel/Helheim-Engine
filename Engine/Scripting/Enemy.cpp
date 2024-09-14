@@ -158,7 +158,7 @@ void Enemy::ActivateEnemy()
 			break;
 		case EnemyState::CHARGE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
-			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
+			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			Charge();
 			break;
 		case EnemyState::ATTACK:

@@ -44,6 +44,8 @@ public:
 
     bool IsPlayMode() { return mIsPlayMode; }
     void Exit() { mExit = true; }
+    bool IsPause() const { return mIsPaused; }
+    void SetPaused(bool state) { mIsPaused = state; }
 
 protected:
     ModuleOpenGL* render = nullptr;
@@ -64,6 +66,7 @@ protected:
     bool mEnableVsync = true;
     bool mIsPlayMode = false;
     bool mExit = false;
+    bool mIsPaused = false;
 };
 
 extern ENGINE_API Application* App;
