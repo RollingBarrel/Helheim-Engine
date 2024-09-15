@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1358571758,
+                "UID": 660774680,
                 "ParentUID": 1,
                 "Name": "BossLaser_EyeBall",
                 "Enabled": true,
@@ -40,25 +40,25 @@
                             {
                                 "VariableName": "mLaserOrigin",
                                 "MemberType": 3,
-                                "VariableData": 1598346482
+                                "VariableData": 945594191
                             },
                             {
                                 "VariableName": "mLaserCharge",
                                 "MemberType": 3,
-                                "VariableData": 1488832649
+                                "VariableData": 829466363
                             },
                             {
                                 "VariableName": "mLaserEnd",
                                 "MemberType": 3,
-                                "VariableData": 1818209600
+                                "VariableData": 1171583957
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1488832649,
-                "ParentUID": 1358571758,
+                "UID": 829466363,
+                "ParentUID": 660774680,
                 "Name": "CreatureRange_laser_Charging_V1",
                 "Enabled": true,
                 "Active": true,
@@ -89,7 +89,7 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 2.0,
-                        "EmissionRate": 80.4000015258789,
+                        "EmissionRate": 83.5999984741211,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -294,8 +294,8 @@
                 ]
             },
             {
-                "UID": 1598346482,
-                "ParentUID": 1358571758,
+                "UID": 945594191,
+                "ParentUID": 660774680,
                 "Name": "Laser_Line_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -339,7 +339,7 @@
                             "Value": {
                                 "IsValueRandom": true,
                                 "MinValue": 0.800000011920929,
-                                "MaxValue": 1.5
+                                "MaxValue": 2.5
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -404,8 +404,8 @@
                 ]
             },
             {
-                "UID": 1710436292,
-                "ParentUID": 1598346482,
+                "UID": 1055316887,
+                "ParentUID": 945594191,
                 "Name": "CreatureRange_laser_Origin_V1 ",
                 "Enabled": true,
                 "Active": true,
@@ -466,7 +466,7 @@
                             "Value": {
                                 "IsValueRandom": true,
                                 "MinValue": 0.5,
-                                "MaxValue": 1.0
+                                "MaxValue": 1.5
                             },
                             "IsCurve": false,
                             "CurvePoints": []
@@ -567,8 +567,8 @@
                 ]
             },
             {
-                "UID": 1818209600,
-                "ParentUID": 1598346482,
+                "UID": 1171583957,
+                "ParentUID": 945594191,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
@@ -595,8 +595,8 @@
                 "Components": []
             },
             {
-                "UID": 1929255095,
-                "ParentUID": 1818209600,
+                "UID": 1295718200,
+                "ParentUID": 1171583957,
                 "Name": "CreatureRange_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -758,15 +758,15 @@
                 ]
             },
             {
-                "UID": 2040579074,
-                "ParentUID": 1929255095,
+                "UID": 1416649877,
+                "ParentUID": 1295718200,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.02207350730895996,
-                    0.04464149475097656
+                    -0.021884918212890626
                 ],
                 "Rotation": [
                     0.0,
@@ -790,7 +790,7 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 10.0,
-                        "EmissionRate": 120.0,
+                        "EmissionRate": 117.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -802,7 +802,7 @@
                         "Lifetime": {
                             "IsValueRandom": true,
                             "MinValue": 0.5,
-                            "MaxValue": 1.0
+                            "MaxValue": 1.5
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.0010000000474974514,
@@ -820,7 +820,7 @@
                             "Value": {
                                 "IsValueRandom": true,
                                 "MinValue": 0.5,
-                                "MaxValue": 2.0
+                                "MaxValue": 2.5
                             },
                             "IsCurve": false,
                             "CurvePoints": []
