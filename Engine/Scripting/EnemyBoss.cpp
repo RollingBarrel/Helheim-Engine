@@ -471,19 +471,33 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
 
 void EnemyBoss::UpdatePhase1()
 {
+    static unsigned int sequence = 0;
     switch (mCurrentState)
     {
     case EnemyState::IDLE:
         if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
         {
-            LaserAttack();
-            mCurrentState = EnemyState::ATTACK;
+            switch (sequence)
+            {
+            case 0:
+                StartBulletAttack(BulletPattern::WAVE);
+                break;
+            case 1:
+                StartBulletAttack(BulletPattern::ARROW);
+                break;
+            case 2:
+                StartBulletAttack(BulletPattern::CIRCLES);
+                break;
+            }
         }
         break;
     case EnemyState::ATTACK:
-        if (mAttackDurationTimer.Delay(mLaserDuration))
+        if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
         {
             mCurrentState = EnemyState::IDLE;
+            if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
+            ++sequence;
+            sequence %= 3;
         }
         break;
     }
@@ -491,41 +505,131 @@ void EnemyBoss::UpdatePhase1()
 
 void EnemyBoss::UpdatePhase2()
 {
+    static unsigned int sequence = 0;
+    static unsigned int attack = 0;
     switch (mCurrentState)
     {
     case EnemyState::IDLE:
         if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
         {
-            LaserAttack();
-            mCurrentState = EnemyState::ATTACK;
+            switch (sequence)
+            {
+            case 0:
+                LaserAttack();
+                break;
+            case 1:
+                StartBulletAttack(BulletPattern::WAVE);
+                break;
+            case 2:
+                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
+                break;
+            case 3:
+                StartBulletAttack(BulletPattern::CIRCLES);
+                break;
+            }
         }
         break;
     case EnemyState::ATTACK:
-        if (mAttackDurationTimer.Delay(mLaserDuration))
+        switch (sequence * 10 + attack)
         {
-            mCurrentState = EnemyState::IDLE;
+        case 0:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::ARROW);
+                attack++;
+            }
+            break;
+        case 10:
+        case 30:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                LaserAttack();
+                attack++;
+            }
+            break;
+        default:
+            if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
+            {
+                mCurrentState = EnemyState::IDLE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
+                ++sequence;
+                sequence %= 4;
+                attack = 0;
+            }
+            break;
         }
-        break;
     }
 }
 
 void EnemyBoss::UpdatePhase3()
 {
+    static int sequence = -1;
+    static unsigned int attack = 0;
     switch (mCurrentState)
     {
     case EnemyState::IDLE:
         if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
         {
-            LaserAttack();
-            mCurrentState = EnemyState::ATTACK;
+            switch (sequence)
+            {
+            case 0:
+                StartBulletAttack(BulletPattern::WAVE);
+                break;
+            case 1:
+                BombAttack();
+                break;
+            case 2:
+                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
+                break;
+            case 3:
+                StartBulletAttack(BulletPattern::CIRCLES);
+                break;
+            case -1:// Start with bombs. Never repeat this sequence
+                BombAttack();
+                break;
+
+            }
         }
         break;
     case EnemyState::ATTACK:
-        if (mAttackDurationTimer.Delay(mLaserDuration))
+        switch (sequence * 10 + attack)
         {
-            mCurrentState = EnemyState::IDLE;
+        case 0:
+        case 11:
+        case 30:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                BombAttack();
+                attack++;
+            }
+            break;
+        case 1:
+        case 10:
+        case 20:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                LaserAttack();
+                attack++;
+            }
+            break;
+        case 31:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::WAVE);
+                attack++;
+            }
+            break;
+        default:
+            if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
+            {
+                mCurrentState = EnemyState::IDLE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
+                ++sequence;
+                sequence %= 4;
+                attack = 0;
+            }
+            break;
         }
-        break;
     }
 }
 
