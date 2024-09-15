@@ -23,6 +23,8 @@ public:
 	unsigned int GetEmisiveId() const;
 	float GetFadeFactor() const { return mFade; }
 
+	void SetFadeFactor(float fade);
+
 	bool HasDiffuse() const { return mDiffuseTexture; };
 	bool HasSpecular() const { return mSpecularTexture; };
 	bool HasNormal() const { return mNormalTexture; };
