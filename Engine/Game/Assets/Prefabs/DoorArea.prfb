@@ -1,0 +1,72 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1178340231,
+                "ParentUID": 1,
+                "Name": "DoorArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    38.60122299194336,
+                    0.20446163415908814,
+                    -10.418145179748536
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoor1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoor2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.2000000476837159,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            1.399999976158142,
+                            1.649999976158142
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            }
+        ]
+    }
+}
