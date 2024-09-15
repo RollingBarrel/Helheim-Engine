@@ -29,6 +29,7 @@ private:
     TimerScript mReturnTimer;
     float mReturnIn;
     float mSpeed = 1.0f;
+    bool mTeleportBack = false;
     bool mReachedTarget = false;
     bool mStarted = false;
 };

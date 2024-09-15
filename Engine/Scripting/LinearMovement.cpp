@@ -3,8 +3,6 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
-#include "ModuleInput.h"
-#include "Keys.h"
 
 CREATE(LinearMovement)
 {
@@ -12,6 +10,7 @@ CREATE(LinearMovement)
 	MEMBER(MemberType::FLOAT3, mTargetPosition);
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mReturnIn);
+	MEMBER(MemberType::BOOL, mTeleportBack);
 	END_CREATE;
 }
 
@@ -38,9 +37,18 @@ void LinearMovement::Update()
 	{
 		if (mReturnTimer.Delay(mReturnIn))
 		{
-			mTargetPosition = mInitialPosition;
-			mInitialPosition = mCurrentPosition;
-			mReachedTarget = false;
+			if (!mTeleportBack)
+			{
+				mTargetPosition = mInitialPosition;
+				mInitialPosition = mCurrentPosition;
+				mReachedTarget = false;
+			}
+			else
+			{
+				mCurrentPosition = mInitialPosition;
+				mGameObject->SetWorldPosition(mInitialPosition);
+				mReachedTarget = false;
+			}
 		}
 	}
 }
