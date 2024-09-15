@@ -42,6 +42,7 @@ public:
 	void SetEnableBaseColorTexture(bool baseColorTex);
 	void SetEnableEmissiveTexture(bool emissiveTex);
 	void SetBaseColorFactor(const float4& baseColor);
+	void SetEmissiveColor(const float3& baseColor);
 	const std::vector<float4x4>& GetPalette() const { return (mPaletteOwner) ? mPaletteOwner->GetPalette() : mPalette; }
 	bool HasSkinning() const { return mHasSkinning; };
 
