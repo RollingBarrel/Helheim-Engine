@@ -109,10 +109,13 @@ void main()
         (viewMaxZ - viewPos.z) < light.pos.w)
 		{
 			uint index;
-			index = atomicAdd(volPointsInTile, 1);
-			if(index < maxListLights)
+			if(-viewPos.z > -light.pos.w)
 			{
-				imageStore(outVolPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+				index = atomicAdd(volPointsInTile, 1);
+				if(index < maxListLights)
+				{
+					imageStore(outVolPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+				}
 			}
 			if((viewMinZ - viewPos.z) > (-light.pos.w))
 			{
@@ -137,7 +140,7 @@ void main()
         (viewMaxZ - viewPos.z) < light.w)
 		{
 			uint index;
-			if(sVolumetric[i])
+			if(sVolumetric[i] && (-viewPos.z > -light.w))
 			{
 				index = atomicAdd(volSpotsInTile, 1);
 				if(index < maxListLights)

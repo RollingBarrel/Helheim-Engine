@@ -323,53 +323,53 @@ void main()
 		const vec3 worldPos = GetWorldPos(texture(depthTex, uv).r, uv);
 		const vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
 
-		vec3 rayDir = worldPos - cameraPos;
-		float maxDist = length(rayDir);
-		rayDir /= maxDist;
-		float t0 = maxDist;
-		float t1 = 0.0f;
-		
-		if(IntersectLightShapes(cameraPos, rayDir, t0, t1))
-		{
-			t0 = max(t0, 0.0);
-			t1 = min(t1, maxDist);
-
-			float d = ceil(t1 - t0);
-			float nSteps = min(d/stepSize, maxSteps); //Uniform constant de stepSize
-			vec3 marchingStep = rayDir*(d / nSteps);
-			vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
-		
-			float extCoeff = 0.0;
-			vec3 accInScattering = vec3(0.0);
-			for(int i = 0; i < nSteps; ++i)
-			{
-				extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
-				accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
-				currPos += marchingStep;
-			}
-			vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
-			pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
-			imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
-		}
+		//vec3 rayDir = worldPos - cameraPos;
+		//float maxDist = length(rayDir);
+		//rayDir /= maxDist;
+		//float t0 = maxDist;
+		//float t1 = 0.0f;
+		//
+		//if(IntersectLightShapes(cameraPos, rayDir, t0, t1))
+		//{
+		//	t0 = max(t0, 0.0);
+		//	t1 = min(t1, maxDist);
+		//
+		//	float d = ceil(t1 - t0);
+		//	float nSteps = min(d/stepSize, maxSteps); //Uniform constant de stepSize
+		//	vec3 marchingStep = rayDir*(d / nSteps);
+		//	vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
+		//
+		//	float extCoeff = 0.0;
+		//	vec3 accInScattering = vec3(0.0);
+		//	for(int i = 0; i < nSteps; ++i)
+		//	{
+		//		extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
+		//		accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
+		//		currPos += marchingStep;
+		//	}
+		//	vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
+		//	pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
+		//	imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
+		//}
 
 		//const uint NUM_STEPS = 32;
-		//vec3 rayDir = worldPos - cameraPos;
-		////vec3 currentPos = cameraPos;
-		//vec3 marchingStep = rayDir/float(NUM_STEPS);
-		//vec3 currentPos = cameraPos + marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
-		//float stepSize = length(marchingStep);
-		//float extCoeff = 0.0;
-		//vec3 accInScattering = vec3(0.0);
-		//for(int i=0; i < NUM_STEPS; ++i) 
-		//{
-		//	extCoeff += CalculateExtinctionCoeff(currentPos)*stepSize;
-		//	vec3 inScattering = CalculateInScattering(currentPos, cameraPos)*stepSize;
-		//	accInScattering += inScattering*exp(-extCoeff);
-		//	currentPos += marchingStep;
-		//}
-		//vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
-		//pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
-		////pixelCol = vec4(pixelCol.rgb + (accInScattering*exp(-extCoeff) * fogIntensity), pixelCol.a);
-		//imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
+		vec3 rayDir = worldPos - cameraPos;
+		//vec3 currentPos = cameraPos;
+		vec3 marchingStep = rayDir/float(maxSteps);
+		vec3 currentPos = cameraPos + marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
+		float stepSize = length(marchingStep);
+		float extCoeff = 0.0;
+		vec3 accInScattering = vec3(0.0);
+		for(int i=0; i < maxSteps; ++i) 
+		{
+			extCoeff += CalculateExtinctionCoeff(currentPos)*stepSize;
+			vec3 inScattering = CalculateInScattering(currentPos, cameraPos)*stepSize;
+			accInScattering += inScattering*exp(-extCoeff);
+			currentPos += marchingStep;
+		}
+		vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
+		pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
+		//pixelCol = vec4(pixelCol.rgb + (accInScattering*exp(-extCoeff) * fogIntensity), pixelCol.a);
+		imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
 	}
 }

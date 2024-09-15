@@ -328,7 +328,7 @@ void ModuleScene::Load(const char* sceneName)
 			App->GetOpenGL()->SetVolIntensity(1.0f);
 			App->GetOpenGL()->SetVolAnisotropy(0.35f);
 			App->GetOpenGL()->SetVolStepSize(1.0f);
-			App->GetOpenGL()->SetVolMaxSteps(32);
+			App->GetOpenGL()->SetVolMaxSteps(16);
 		}
 
 		App->GetScriptManager()->AwakeScripts();
