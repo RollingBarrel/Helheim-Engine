@@ -76,7 +76,7 @@ private:
 	float mLaserDuration = 6.0f;
 	float mLaserDamage = 3.0f;
 	float mLaserSpeed = 2.0f;
-	float mLaserDistance = 20.0f;
+	float mLaserDistance = 15.0f;
 	float mBombsDelay = 1.f;
 	float mBombsDuration = 2.0f;
 
