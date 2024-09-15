@@ -22,11 +22,11 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mDoor1);
 	MEMBER(MemberType::GAMEOBJECT, mDoor2);
 	MEMBER(MemberType::GAMEOBJECT, mElevator);
-	SEPARATOR("TRAPS");
-	MEMBER(MemberType::GAMEOBJECT, mTrap1);
-	MEMBER(MemberType::GAMEOBJECT, mTrap2);
-	MEMBER(MemberType::GAMEOBJECT, mTrap3);
-	MEMBER(MemberType::GAMEOBJECT, mTrap4);
+	SEPARATOR("EXPLOSIVE SPAWNERS");
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn3);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn4);
 	SEPARATOR("TUTORIAL");
 	MEMBER(MemberType::BOOL, mIsTutorialArea);
 	END_CREATE;
@@ -64,13 +64,12 @@ void BattleArea::Start()
 		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		mSpawners.push_back(mEnemySpawner4);
 	};
+
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-
-	UpdateTrapNumber();
 
 	CloseDoors(false);
 }
@@ -96,44 +95,22 @@ void BattleArea::Update()
 
 void BattleArea::EnemyDestroyed(GameObject* enemy)
 {
-	std::string scriptName = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptName();
-
-	if (scriptName == "EnemyExplosiveSpawner")
+	mCurrentEnemies--;
+	if (mCurrentEnemies == 0)
 	{
-		mCurrentTraps--;
-	}
-	//else if (scriptName == "EnemyExplosive")
-	//{
-	//	mCurrentExplosiveEnemies--;
-	//	mCurrentEnemies--;
-	//}
-	else // Any enemy except traps and explosive enemies
-	{
-		mCurrentEnemies--;
-		if (mCurrentEnemies == 0)
+		mWavesRounds--;
+		if (mWavesRounds >= 1)
 		{
-			mWavesRounds--;
-			if (mWavesRounds >= 1)
-			{
-				mNeedsToSpawn = true;
-			}
-
+			mNeedsToSpawn = true;
 		}
-
 	}
 
-	LOG("CURRENT TRAPS: %i", mCurrentTraps);
-	LOG("CURRENT EXPLOSIVE ENEMIES: %i", mCurrentExplosiveEnemies);
-	LOG("CURRENT ENEMIES: %i", mCurrentEnemies);
-
-	if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0 && mCurrentTraps <= 0)
+	if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0)
 	{
-
 		ActivateArea(false);
 		mGameObject->SetEnabled(false);
 		return;
 	}
-	//LOG("REMAINING ENEMIES: %i", mTotalNumEnemies);
 }
 
 inline void BattleArea::ActivateArea(bool activate)
@@ -159,10 +136,10 @@ inline void BattleArea::ActivateArea(bool activate)
 		mEnemySpawner4->Active(activate);
 	}
 	mNeedsToSpawn = activate;
-	SetTrapState(mTrap1, activate);
-	SetTrapState(mTrap2, activate);
-	SetTrapState(mTrap3, activate);
-	SetTrapState(mTrap4, activate);
+	SetTrapState(mExplosiveSpawn1, activate);
+	SetTrapState(mExplosiveSpawn2, activate);
+	SetTrapState(mExplosiveSpawn3, activate);
+	SetTrapState(mExplosiveSpawn4, activate);
 
 	if (!activate)
 	{
@@ -207,19 +184,6 @@ void BattleArea::SetTrapState(GameObject* trap, bool enable)
 			{
 				scriptComponent->Disable();
 			}
-		}
-	}
-}
-
-void BattleArea::UpdateTrapNumber()
-{
-	GameObject* trapsArray[] = { mTrap1, mTrap2, mTrap3, mTrap4 };
-
-	for (GameObject* trap : trapsArray)
-	{
-		if (trap != nullptr)
-		{
-			mCurrentTraps++;
 		}
 	}
 }

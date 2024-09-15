@@ -49,10 +49,10 @@ protected:
 	Spawner* mEnemySpawner3 = nullptr;
 	Spawner* mEnemySpawner4 = nullptr;
 	
-	GameObject* mTrap1 = nullptr;
-	GameObject* mTrap2 = nullptr;
-	GameObject* mTrap3 = nullptr;
-	GameObject* mTrap4 = nullptr;
+	GameObject* mExplosiveSpawn1 = nullptr;
+	GameObject* mExplosiveSpawn2 = nullptr;
+	GameObject* mExplosiveSpawn3 = nullptr;
+	GameObject* mExplosiveSpawn4 = nullptr;
 
 	GameObject* mDoor1 = nullptr;
 	GameObject* mDoor2 = nullptr;
@@ -60,4 +60,3 @@ protected:
 	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 };
-

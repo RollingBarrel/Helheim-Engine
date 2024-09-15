@@ -16,11 +16,11 @@ CREATE(BossBattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mDoor1);
 	MEMBER(MemberType::GAMEOBJECT, mDoor2);
 	MEMBER(MemberType::GAMEOBJECT, mElevator);
-	SEPARATOR("TRAPS");
-	MEMBER(MemberType::GAMEOBJECT, mTrap1);
-	MEMBER(MemberType::GAMEOBJECT, mTrap2);
-	MEMBER(MemberType::GAMEOBJECT, mTrap3);
-	MEMBER(MemberType::GAMEOBJECT, mTrap4);
+	SEPARATOR("EXPLOSIVE SPAWNERS");
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn3);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn4);
 	END_CREATE;
 }
 
