@@ -2,26 +2,26 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1799506963,
-                "ParentUID": 1126901625,
+                "UID": 378818628,
+                "ParentUID": 1,
                 "Name": "ElectricTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    134.052734375,
-                    65.0199966430664,
-                    12.979999542236329
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
-                    0.0,
-                    0.7071068286895752,
-                    0.0,
-                    0.7071068286895752
+                    6.181723932741079e-8,
+                    -0.7072290182113648,
+                    1.0686562745831907e-11,
+                    0.7069845199584961
                 ],
                 "Scale": [
-                    4.0,
                     2.0,
-                    4.0
+                    2.0,
+                    2.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -37,9 +37,9 @@
                             0.0
                         ],
                         "Size": [
-                            2.0,
-                            2.0,
-                            2.0
+                            1.0,
+                            1.0,
+                            1.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -87,8 +87,8 @@
                 ]
             },
             {
-                "UID": 1865786155,
-                "ParentUID": 1799506963,
+                "UID": 1630395345,
+                "ParentUID": 378818628,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -115,8 +115,8 @@
                 "Components": []
             },
             {
-                "UID": 1913128435,
-                "ParentUID": 1865786155,
+                "UID": 430383887,
+                "ParentUID": 1630395345,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,

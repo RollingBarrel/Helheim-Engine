@@ -303,7 +303,7 @@ private:
  
     // DEBUFF
     bool mIsParalyzed = false;
-    const float mParalyzedDuration = 5.0f;
+    const float mParalyzedDuration = 0.5f;
     TimerScript mParalyzedTimerScript;
     float mParalysisSpeedReductionFactor = 1.0f;
 

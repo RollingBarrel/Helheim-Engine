@@ -67,6 +67,8 @@ void Dialog::StartDialog()
     GameManager::GetInstance()->SetPaused(true, false);
     mCurrentDialog = 0;
     mTimeout = true;
+    mProtagonistImage->SetEnable(false);
+    mWifeImage->SetEnable(true);
     UpdateDialog();
     GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, false);
     GameManager::GetInstance()->GetAudio()->SetPosition(SFX::DIALOG, mDialogBGM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -109,20 +111,21 @@ void Dialog::OnClick()
     }
 
     // Swap between Protagonist and Wife images
-    if (!mProtagonistImage->IsEnabled())
-    {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_MALE);
-
-        mProtagonistImage->SetEnable(true);
-        mWifeImage->SetEnable(false);
-    }
-    else
+    if (!mWifeImage->IsEnabled())
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_FEMALE);
 
         mProtagonistImage->SetEnable(false);
         mWifeImage->SetEnable(true);
     }
+    else
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_MALE);
+
+        mProtagonistImage->SetEnable(true);
+        mWifeImage->SetEnable(false);
+    }
+
 
     mCurrentDialog++;
     UpdateDialog();
