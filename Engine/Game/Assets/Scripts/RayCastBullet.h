@@ -28,7 +28,7 @@ public:
 
 private:
 
-	void SetDecalRotation();
+	void InitBulletholeDecal();
 
 	void OnCollisionEnter(CollisionData* collisionData);
 	BoxColliderComponent* mCollider = nullptr;

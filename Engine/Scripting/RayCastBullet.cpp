@@ -41,7 +41,6 @@ void RayCastBullet::Update()
 		return;
 	}
 
-
 	if ((mBulletTrail->GetOwner()->GetWorldPosition() - mHitPoint).Dot(mDirection) < 0.0f)
 	{
 		float3 newPosition = mBulletTrail->GetOwner()->GetWorldPosition() + mDirection * mSpeed * App->GetDt();
@@ -67,8 +66,7 @@ void RayCastBullet::Update()
 				}
 				else
 				{
-					mHoleDecal->GetOwner()->SetEnabled(true);
-					SetDecalRotation();
+					InitBulletholeDecal();
 				}
 			}
 		}
@@ -85,10 +83,6 @@ void RayCastBullet::Update()
 			{
 				mFadeDecal = true;
 			}
-			/*if (mDelayDecalTimer.Delay(0.1f)) 
-			{
-				SetDecalRotation();
-			}*/
 		}
 		else 
 		{
@@ -157,32 +151,24 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 		mHoleDecal->GetOwner()->SetWorldPosition(mHitPoint);
 		mHoleDecal->GetOwner()->SetEnabled(false);
 	}
+	if (mCollider) 
+	{
+		mCollider->GetOwner()->SetWorldPosition(mHitPoint);
+	}
 }
 
-void RayCastBullet::SetDecalRotation()
+void RayCastBullet::InitBulletholeDecal()
 {
-	//Sets rotation of decal gameobject given the right, up and front vectors
-	//Gets the right vector from the collider normal if possible, if not from the bullet direction
-	float3 right;
-	if (mCollisionDirection.LengthSq() != 0)
+	mHoleDecal->GetOwner()->SetEnabled(true);
+
+	//Calculates the angle between the colliders' normal and the decal position in 0 rotation
+	float angleOfDecal = acosf(mCollisionDirection.z);
+	if (mCollisionDirection.x < 0) 
 	{
-		right = -mCollisionDirection;
+		angleOfDecal *= -1;
 	}
-	else
-	{
-		right = mDirection;
-	}
-	float3 up = -float3(0.0f, 1.0f, 0.0f);
-	float3 front = right.Cross(-up);
 
-	float3x3 mat = float3x3(front, right, up);
-
-	float q0 = sqrt(abs(1 + mat[0][0] + mat[1][1] + mat[2][2])) / 2;
-	float q1 = (mat[2][1] - mat[1][2]) / (4 * q0);
-	float q2 = (mat[0][2] - mat[2][0]) / (4 * q0);
-	float q3 = (mat[1][0] - mat[0][1]) / (4 * q0);
-
-	mHoleDecal->GetOwner()->SetWorldRotation(Quat(q0, q1, q2, q3));
+	mHoleDecal->GetOwner()->SetWorldRotation(float3(0, angleOfDecal, 0));
 
 	mCollisionDirection = float3::zero;
 }
@@ -193,5 +179,6 @@ void RayCastBullet::OnCollisionEnter(CollisionData* collisionData)
 	{
 		mCollisionDirection = collisionData->collisionNormal;
 		mCollisionDirection.Normalize();
+		mCollider->SetEnable(false);
 	}
 }
