@@ -260,9 +260,8 @@ void EnemyBoss::BombAttack()
     float3 target = mPlayer->GetWorldPosition();
     int index = rand() % mTemplates.size();
     GameObject* bombGO = mTemplates[index];
-	//LOG("Bomb index: %d", index);
     bombGO->SetWorldPosition(target);
-	float randRotation = static_cast<float>(rand() % 180);
+	float randRotation = static_cast<float>(rand() % 360);
 	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
 	bombGO->SetWorldRotation(bombRotation);
     std::vector<Component*> scriptComponents;
