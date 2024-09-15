@@ -16,7 +16,7 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-uniform layout(binding = 0, r32i) writeonly iimageBuffer outPointLightsList;
+uniform layout(binding = 0, r8ui) writeonly uimageBuffer outPointLightsList;
 readonly layout(binding = 2) buffer spotLightSpheres
 {
 	uint numSLights;
@@ -26,11 +26,11 @@ readonly layout(binding = 3) buffer spotLightVol
 {
 	bool sVolumetric[];
 };
-uniform layout(binding = 1, r32i) writeonly iimageBuffer outSpotLightsList;
+uniform layout(binding = 1, r8ui) writeonly uimageBuffer outSpotLightsList;
 layout(location = 0)uniform uint maxListLights;
 layout(location = 1)uniform uvec2 numPixels;
-uniform layout(binding = 2, r32i) writeonly iimageBuffer outVolPointLightsList;
-uniform layout(binding = 3, r32i) writeonly iimageBuffer outVolSpotLightsList;
+uniform layout(binding = 2, r8ui) writeonly uimageBuffer outVolPointLightsList;
+uniform layout(binding = 3, r8ui) writeonly uimageBuffer outVolSpotLightsList;
 
 //uniform layout(binding = 1, r32f) readonly image2D depthImage;
 layout(binding = 0) uniform sampler2D gDepth;
@@ -114,7 +114,7 @@ void main()
 				index = atomicAdd(volPointsInTile, 1);
 				if(index < maxListLights)
 				{
-					imageStore(outVolPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+					imageStore(outVolPointLightsList, int(tileIndex*maxListLights+index), uvec4(i));
 				}
 			}
 			if((viewMinZ - viewPos.z) > (-light.pos.w))
@@ -122,7 +122,7 @@ void main()
 				index = atomicAdd(pointsInTile, 1);
 				if(index < maxListLights)
 				{
-					imageStore(outPointLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+					imageStore(outPointLightsList, int(tileIndex*maxListLights+index), uvec4(i));
 				}
 			}
 		}
@@ -145,7 +145,7 @@ void main()
 				index = atomicAdd(volSpotsInTile, 1);
 				if(index < maxListLights)
 				{
-					imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+					imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+index), uvec4(i));
 				}
 			}
 			if((viewMinZ - viewPos.z) > (-light.w))
@@ -153,7 +153,7 @@ void main()
 				index = atomicAdd(spotsInTile, 1);
 				if(index < maxListLights)
 				{
-					imageStore(outSpotLightsList, int(tileIndex*maxListLights+index), ivec4(i));
+					imageStore(outSpotLightsList, int(tileIndex*maxListLights+index), uvec4(i));
 				}
 			}
 		}
@@ -164,19 +164,19 @@ void main()
 	{
 		if(pointsInTile < maxListLights)
 		{
-			imageStore(outPointLightsList, int(tileIndex*maxListLights+pointsInTile), ivec4(-1));
+			imageStore(outPointLightsList, int(tileIndex*maxListLights+pointsInTile), uvec4(255));
 		}
 		if(spotsInTile < maxListLights)
 		{
-			imageStore(outSpotLightsList, int(tileIndex*maxListLights+spotsInTile), ivec4(-1));
+			imageStore(outSpotLightsList, int(tileIndex*maxListLights+spotsInTile), uvec4(255));
 		}
 		if(volPointsInTile < maxListLights)
 		{
-			imageStore(outVolPointLightsList, int(tileIndex*maxListLights+volPointsInTile), ivec4(-1));
+			imageStore(outVolPointLightsList, int(tileIndex*maxListLights+volPointsInTile), uvec4(255));
 		}
 		if(volSpotsInTile < maxListLights)
 		{
-			imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+volSpotsInTile), ivec4(-1));
+			imageStore(outVolSpotLightsList, int(tileIndex*maxListLights+volSpotsInTile), uvec4(255));
 		}
 	}
 }
