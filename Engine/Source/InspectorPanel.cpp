@@ -1031,6 +1031,24 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 		{
 			component->SetLoop(loop);
 		}
+		float controllerTime = component->GetControllerTime();
+
+		if (ImGui::DragFloat("Current animation time ", &controllerTime, 0.02f, 0.0f, 50.0f))
+		{
+			component->SetControllerTime(controllerTime);
+		}
+
+		if (component->HasSpine())
+		{
+			float spineControllerTime = component->GetSpineControllerTime();
+
+			if (ImGui::DragFloat("Current spine animation time ", &spineControllerTime, 0.02f, 0.0f, 50.0f))
+			{
+				component->SetSpineControllerTime(spineControllerTime);
+			}
+
+
+		}
 
 		float animSpeed = component->GetAnimSpeed();
 

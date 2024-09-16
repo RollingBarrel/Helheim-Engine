@@ -67,6 +67,13 @@ public:
 
 	void ReloadGameObjects();
 
+
+	void SetControllerTime(float time);
+	float GetControllerTime() const;
+
+	void SetSpineControllerTime(float time);
+	float GetSpineControllerTime() const;
+
 private:
 
 	void LoadGameObjects(GameObject* current);

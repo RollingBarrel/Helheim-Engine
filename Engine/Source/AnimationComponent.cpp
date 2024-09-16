@@ -149,9 +149,18 @@ void AnimationComponent::OnStop()
 void AnimationComponent::OnRestart()
 {
 	mController->Restart();
+	for (GameObject* current : mDefaultObjects)
+	{
+		mController->GetTransform(current);
+	}
 	if (mHasSpine)
 	{
 		mSpineController->Restart();
+
+		for (GameObject* current : mSpineObjects)
+		{
+			mSpineController->GetTransform(current);
+		}
 	}
 }
 
@@ -391,6 +400,40 @@ void AnimationComponent::ReloadGameObjects()
 	mDefaultObjects.clear();
 	mSpineObjects.clear();
 	LoadGameObjects(mOwner);
+}
+
+void AnimationComponent::SetControllerTime(float time)
+{
+	mController->SetAnimationCurrentTime(time);
+
+	for (GameObject* current : mDefaultObjects)
+	{
+		mController->GetTransform(current);
+	}
+}
+
+float AnimationComponent::GetControllerTime() const
+{
+	return mController->GetAnimationCurrentTime();
+}
+
+void AnimationComponent::SetSpineControllerTime(float time)
+{
+	if (mHasSpine)
+	{
+		mSpineController->SetAnimationCurrentTime(time);
+		for (GameObject* current : mSpineObjects)
+		{
+			mSpineController->GetTransform(current);
+		}
+	}
+}
+
+float AnimationComponent::GetSpineControllerTime() const
+{
+	if(mHasSpine)
+		return mSpineController->GetAnimationCurrentTime();
+	return 0.0f;
 }
 
 
