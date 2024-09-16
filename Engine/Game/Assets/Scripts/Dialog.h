@@ -27,6 +27,7 @@ public:
 private:
     void UpdateDialog();
     void OnClick();
+    void OnSkipClick();
     void Controls();
 
     GameObject* mDialogGO = nullptr;
@@ -38,6 +39,9 @@ private:
     GameObject* mTextGO = nullptr;
     TextComponent* mText = nullptr;
     ButtonComponent* mDialogButton = nullptr;
+
+    GameObject* mSkipBtnGO = nullptr;
+    ButtonComponent* mSkipButton = nullptr;
 
     std::vector<std::vector<std::string>> mDialogList = {
         { 

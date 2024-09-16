@@ -22,6 +22,7 @@ CREATE(Dialog)
     MEMBER(MemberType::GAMEOBJECT, mProtagonistGO);
     MEMBER(MemberType::GAMEOBJECT, mWifeGO);
     MEMBER(MemberType::GAMEOBJECT, mTextGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipBtnGO);
     END_CREATE;
 }
 
@@ -35,8 +36,16 @@ Dialog::~Dialog()
 
 void Dialog::Start()
 {
-    if (mDialogGO) mDialogButton = static_cast<ButtonComponent*>(mDialogGO->GetComponent(ComponentType::BUTTON));
-    mDialogButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnClick, this)));
+    if (mDialogGO) 
+    {
+        mDialogButton = static_cast<ButtonComponent*>(mDialogGO->GetComponent(ComponentType::BUTTON));
+        mDialogButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnClick, this)));
+    }
+    if (mSkipBtnGO)
+    {
+        mSkipButton = static_cast<ButtonComponent*>(mSkipBtnGO->GetComponent(ComponentType::BUTTON));
+        mSkipButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnSkipClick, this)));
+    }
     if (mProtagonistGO) mProtagonistImage = static_cast<ImageComponent*>(mProtagonistGO->GetComponent(ComponentType::IMAGE));
     if (mWifeGO) mWifeImage = static_cast<ImageComponent*>(mWifeGO->GetComponent(ComponentType::IMAGE));
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
@@ -171,4 +180,16 @@ void Dialog::OnClick()
 
     mCurrentDialog++;
     UpdateDialog();
+}
+
+void Dialog::OnSkipClick()
+{
+    if (mTimeout) return;
+
+    NextDialogSet();
+    mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
+    if (firstTime) firstTime = false;
+    else GameManager::GetInstance()->GetHud()->SetSanity();
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);
 }

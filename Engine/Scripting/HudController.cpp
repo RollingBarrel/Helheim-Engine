@@ -210,7 +210,7 @@ void HudController::Start()
         mFadeoutScreen->SetEnabled(true);
     }
 
-    GameManager::GetInstance()->GetHud()->SetDialog();
+    SetDialog();
 }
 
 void HudController::Update()
