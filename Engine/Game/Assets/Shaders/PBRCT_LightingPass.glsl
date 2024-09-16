@@ -67,8 +67,8 @@ layout(binding = 6)uniform samplerCube diffuseIBL;
 layout(binding = 7)uniform sampler2D environmentBRDF;
 uniform uint numLevels;
 
-layout(binding = 10) uniform isamplerBuffer pointLightList;
-layout(binding = 11) uniform isamplerBuffer spotLightList;
+layout(binding = 10) uniform usamplerBuffer pointLightList;
+layout(binding = 11) uniform usamplerBuffer spotLightList;
 layout(location = 2) uniform uint lightListSize;
 layout(location = 3) uniform uvec2 numTiles;
 layout(location = 4) uniform uvec2 tileSize;
@@ -146,8 +146,8 @@ void main()
 	const uvec2 currTile = uvec2(gl_FragCoord.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//Point lights
-	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
+	uint idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
+	for (uint i = 0; i < lightListSize && idx != 255; idx = texelFetch(pointLightList, int(tileIdx * lightListSize + i)).x)
 	{
 		PointLight pLight = pLights[idx];
 		vec3 mVector = pos - pLight.pos.xyz;
@@ -160,7 +160,7 @@ void main()
 	
 	//Spot lights
 	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
+	for (uint i = 0; i < lightListSize && idx != 255; idx = texelFetch(spotLightList, int(tileIdx * lightListSize + i)).x)
 	{
 		SpotLight sLight = sLights[idx];
 		//Shadows
