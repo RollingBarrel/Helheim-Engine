@@ -50,6 +50,30 @@ void Dialog::Update()
 {
     if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
     Controls();
+
+    // Check if we are currently typing
+    if (mIsTyping)
+    {
+        // Update the timer
+        mTypingTimer += App->GetDt();
+
+        // If enough time has passed, reveal the next character
+        if (mTypingTimer >= mTypingSpeed && mCurrentCharIndex < mFullText.size())
+        {
+            // Append one character to the text component
+            mText->SetText(*mText->GetText() + mFullText[mCurrentCharIndex]);
+
+            // Move to the next character and reset the timer
+            mCurrentCharIndex++;
+            mTypingTimer = 0.0f;
+        }
+
+        // If we've reached the end of the text, stop typing
+        if (mCurrentCharIndex >= mFullText.size())
+        {
+            mIsTyping = false;
+        }
+    }
 }
 
 void Dialog::Controls()
@@ -86,16 +110,34 @@ void Dialog::NextDialogSet()
 
 void Dialog::UpdateDialog()
 {
+    // Ensure there is text to display and the dialog set is valid
     if (mText && !mDialogList.empty() && mCurrentDialogSet < mDialogList.size() &&
         mCurrentDialog < mDialogList[mCurrentDialogSet].size())
     {
-        mText->SetText(mDialogList[mCurrentDialogSet][mCurrentDialog]);
+        // Store the full text of the current dialog
+        mFullText = mDialogList[mCurrentDialogSet][mCurrentDialog];
+
+        // Reset the typing parameters
+        mCurrentCharIndex = 0;
+        mTypingTimer = 0.0f;
+        mIsTyping = true;
+
+        // Start with an empty text and gradually reveal the full text
+        mText->SetText("");
     }
 }
 
 void Dialog::OnClick()
 {
     if (mTimeout) return;
+
+    // If typing is still in progress, finish the text instantly
+    if (mIsTyping)
+    {
+        mText->SetText(mFullText);
+        mIsTyping = false;
+        return;
+    }
 
     // Check if the current dialog set is over
     if (mCurrentDialog == mDialogList[mCurrentDialogSet].size() - 1)
