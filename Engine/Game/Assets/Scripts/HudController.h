@@ -36,7 +36,6 @@ public:
     void SetBossHealth(float health);
     void SetBossHealthBarEnabled(bool enabled);
     void SetMaxHealth(float health);
-    void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetUltimateCooldown(float cooldown);
     void SetCollectibleText(std::string text);
@@ -46,6 +45,7 @@ public:
     void SetSanity();
     void SetDialog();
     void DisableCollectible();
+    void SetFadein(bool value) { mFadeIn = value; }
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -79,6 +79,8 @@ private:
     void OnCollectibleContinueBtnHoverOn();
     void OnCollectibleContinueBtnHoverOff();
 
+    void FadeIn();
+    void FadeOut();
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
@@ -89,10 +91,14 @@ private:
     ButtonComponent* mOptionsBtn = nullptr;
     ButtonComponent* mMainMenuBtn = nullptr;
     GameObject* mOptionsPanel = nullptr;
+    GameObject* mFadeoutScreen = nullptr;
+    ImageComponent* mFadeoutImage = nullptr;
 
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;
     GameObject* mLoadingScreen = nullptr;
+    GameObject* mLoadingSliderGO = nullptr;
+    SliderComponent* mLoadingSlider = nullptr;
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
     GameObject* mHealthIconGO = nullptr;
@@ -145,6 +151,8 @@ private:
     bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;
+    bool mFadeIn = true;
+    bool mLoadlevel = false;
 
     GameObject* mMenuScript = nullptr;
 

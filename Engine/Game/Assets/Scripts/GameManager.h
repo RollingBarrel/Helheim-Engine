@@ -82,6 +82,8 @@ private:
     GameObject* mFirstTutorial = nullptr;
     GameObject* mSecondTutorial = nullptr;
     TimerScript mHitStopTimer;
+    TimerScript mLoadTimer;
+    TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
 
     bool mPaused = false;

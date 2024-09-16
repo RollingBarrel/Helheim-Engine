@@ -95,9 +95,17 @@ void GameManager::Update()
 {
     if (mLoadLevel)
     {
-        mLoadLevel = false;
-        App->GetScene()->Load(mLevelName);
-        return;
+        if (mLoadTimer.DelayWithoutReset(1.0f)) {
+            if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
+            if (mLoadSecondTimer.Delay(1.0f))
+            {
+                EndAudio();
+                Clean();
+                mLoadLevel = false;
+                App->GetScene()->Load(mLevelName);
+                return;
+            }
+        }
     }
 
     HandleAudio();
@@ -142,11 +150,9 @@ void GameManager::SetPaused(bool value, bool screen)
 
 void GameManager::LoadLevel(const char* LevelName)
 {
-    if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
-    EndAudio();
+    mHudController->SetFadein(false);
     mLoadLevel = true;
     mLevelName = LevelName;
-    Clean();
 }
 
 void GameManager::SetActiveBattleArea(BattleArea* activeArea)

@@ -47,10 +47,12 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mOptionsBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mMainMenuBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mOptionsPanel);
+    MEMBER(MemberType::GAMEOBJECT, mFadeoutScreen);
     SEPARATOR("Screens");
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mTryAgainBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mLoseMenuBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mWinMenuBtnGO);
@@ -126,6 +128,12 @@ void HudController::Start()
         if (mTryAgainBtn) mTryAgainBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOff, this)));
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
+    if (mLoadingSliderGO) 
+    {
+        mLoadingSlider = static_cast<SliderComponent*>(mLoadingSliderGO->GetComponent(ComponentType::SLIDER));
+        mLoadingSlider->SetValue(0.01f);
+    }
+    
 
     if (mCollectibleScreen)
     {
@@ -196,13 +204,21 @@ void HudController::Start()
 
     if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
-
+    if (mFadeoutScreen)
+    {
+        mFadeoutImage = static_cast<ImageComponent*>(mFadeoutScreen->GetComponent(ComponentType::IMAGE));
+        mFadeoutScreen->SetEnabled(true);
+    }
 
     GameManager::GetInstance()->GetHud()->SetDialog();
 }
 
 void HudController::Update()
 {
+    if (mFadeoutImage && mFadeIn) FadeIn();
+    else if (mFadeoutImage && !mFadeIn) FadeOut();
+    if(mLoadlevel == true && mLoadingSlider->GetValue() < 1) mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
+
     Controls();
 
     if (GameManager::GetInstance()->IsPaused()) return;
@@ -279,6 +295,16 @@ void HudController::Update()
             mUltimateCooldown = 0.0f;
         }
     }
+}
+
+void HudController::FadeIn()
+{
+    if (*mFadeoutImage->GetAlpha() >= 0.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() - 0.65f * App->GetDt());
+}
+
+void HudController::FadeOut()
+{
+    if (*mFadeoutImage->GetAlpha() <= 1.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() + 0.65f * App->GetDt());
 }
 
 bool HudController::Delay(float delay)
@@ -506,25 +532,6 @@ void HudController::SetMaxHealth(float health)
     }
 }
 
-void HudController::SwitchWeapon()
-{
-    return;
-
-    /*if (mWeaponMeleeGO->IsEnabled())
-    {
-        mWeaponMeleeGO->SetEnabled(false);
-        mWeaponRangeGO->SetEnabled(true);
-        mSecondWeaponMeleeGO->SetEnabled(true);
-        mSecondWeaponRangeGO->SetEnabled(false);
-    }
-    else
-    {
-        mWeaponMeleeGO->SetEnabled(true);
-        mWeaponRangeGO->SetEnabled(false);
-        mSecondWeaponMeleeGO->SetEnabled(false);
-        mSecondWeaponRangeGO->SetEnabled(true);
-    }*/
-}
 
 void HudController::SetGrenadeCooldown(float cooldown)
 {
@@ -548,6 +555,7 @@ void HudController::SetScreen(SCREEN name, bool active)
     switch (name) {
         case SCREEN::LOAD:
             if (mLoadingScreen) mLoadingScreen->SetEnabled(active);
+            mLoadlevel = true;
             break;
         case SCREEN::LOSE:
             if (mLoseScreen) mLoseScreen->SetEnabled(active);
