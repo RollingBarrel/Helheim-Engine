@@ -31,6 +31,7 @@ CREATE(HudController)
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
+    MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
@@ -140,12 +141,19 @@ void HudController::Start()
     if (mHealthGO)
     {
         mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+        mHealthImage = static_cast<ImageComponent*>(mHealthGO->GetChildren()[1]->GetComponent(ComponentType::IMAGE));
         mHealthSlider->SetValue(1.0f);
+    }
+
+    if (mHealthIconGO)
+    {
+        mHealthIcon = static_cast<ImageComponent*>(mHealthIconGO->GetComponent(ComponentType::IMAGE));
     }
     
     if (mHealthGradualGO) 
     {
         mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
+        mHealthGradualImage = static_cast<ImageComponent*>(mHealthGradualGO->GetChildren()[1]->GetComponent(ComponentType::IMAGE));
         mHealthGradualSlider->SetValue(1.0f);
     }
 
@@ -202,13 +210,28 @@ void HudController::Update()
     // Gradually decrease the gradual health slider
     if (mHealthGradualSlider)
     {
-        if (mHealthGradualSlider->GetValue() > mTargetHealth)
+        float currentGradualValue = mHealthGradualSlider->GetValue();
+
+        // If health is decreasing
+        if (currentGradualValue > mTargetHealth)
         {
-            mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+            mHealthGradualImage->SetColor(float3(254.0f /255.0f, 224.0f /255.0f, 193.0f /255.0f));  // Yellow when decreasing
+            mHealthGradualSlider->SetValue(currentGradualValue - 0.15f * App->GetDt());
+
+            // Update health slider instantly to final value
+            if (mHealthSlider) mHealthSlider->SetValue(mTargetHealth);
         }
-        else if (mHealthGradualSlider->GetValue() < mTargetHealth) 
+        // If health is increasing
+        else if (currentGradualValue < mTargetHealth)
         {
-            mHealthGradualSlider->SetValue(mTargetHealth);
+            mHealthGradualImage->SetColor(float3(231.0f /255.0f, 253.0f /255.0f, 242.0f /255.0f));  // Blue when increasing
+            mHealthGradualSlider->SetValue(currentGradualValue + 0.15f * App->GetDt());
+
+            // Only set health slider value when gradual slider reaches target
+            if (currentGradualValue + 0.15f * App->GetDt() >= mTargetHealth)
+            {
+                if (mHealthSlider) mHealthSlider->SetValue(mTargetHealth);
+            }
         }
     }
     if (mBossHealthGradualSlider && mBossHealthSlider)
@@ -417,7 +440,7 @@ void HudController::SetHealth(float health)
     if (health == 0) 
     {
         health = 0.001f;
-        if (mFeedbackImage) mFeedbackImage->SetAlpha(-1.0f);
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
     }
     else if (health < mHealthSlider->GetValue()) 
     {
@@ -426,16 +449,28 @@ void HudController::SetHealth(float health)
     else
     {
         if (mFeedbackImage) mFeedbackImage->SetAlpha(0.0f);
-        if (mHealthGradualSlider) mHealthGradualSlider->SetValue(health);
     }
 
-    if (mHealthSlider) mHealthSlider->SetValue(health);
+    if (mHealthSlider)
+    {
+        if (health < 0.3f)
+        {
+            mHealthImage->SetColor(float3(233.0f /255.0f, 112.0f /255.0f, 103.0f /255.0f));  // Red
+            mHealthIcon->SetColor(float3(233.0f / 255.0f, 112.0f / 255.0f, 103.0f / 255.0f));
+        }
+        else
+        {
+            mHealthImage->SetColor(float3(59.0f/255.0f, 254.0f/255.0f, 223.0f /255.0f));  // Green
+            mHealthIcon->SetColor(float3(59.0f / 255.0f, 254.0f / 255.0f, 223.0f / 255.0f));
+        }
+    }
+
     mTargetHealth = health;
 }
 
 void HudController::SetMaxHealth(float health)
 {
-    float newWidth = health * 2.8;
+    float newWidth = health * 2.8f;
 
     if (mHealthSlider)
     {

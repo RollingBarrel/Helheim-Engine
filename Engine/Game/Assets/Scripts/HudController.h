@@ -43,8 +43,6 @@ public:
     void SetScreen(SCREEN menu, bool active);
     void SetInteract(bool active);
 
-    SliderComponent* mHealthGradualSlider = nullptr;
-
     void SetSanity();
     void SetDialog();
     void DisableCollectible();
@@ -97,6 +95,7 @@ private:
     GameObject* mLoadingScreen = nullptr;
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
+    GameObject* mHealthIconGO = nullptr;
     GameObject* mAmmoGO = nullptr;
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
@@ -118,6 +117,10 @@ private:
     ButtonComponent* mTryAgainBtn = nullptr;
 
     SliderComponent* mHealthSlider = nullptr;
+    SliderComponent* mHealthGradualSlider = nullptr;
+    ImageComponent* mHealthImage = nullptr;
+    ImageComponent* mHealthIcon = nullptr;
+    ImageComponent* mHealthGradualImage = nullptr;
     TextComponent* mAmmoText = nullptr;
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
