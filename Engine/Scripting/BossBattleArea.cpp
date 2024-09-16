@@ -13,8 +13,7 @@ CREATE(BossBattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
 	SEPARATOR("DOORS");
-	MEMBER(MemberType::GAMEOBJECT, mDoor1);
-	MEMBER(MemberType::GAMEOBJECT, mDoor2);
+	MEMBER(MemberType::GAMEOBJECT, mAreaDoorsGO);
 	MEMBER(MemberType::GAMEOBJECT, mElevator);
 	SEPARATOR("TRAPS");
 	MEMBER(MemberType::GAMEOBJECT, mTrap1);
