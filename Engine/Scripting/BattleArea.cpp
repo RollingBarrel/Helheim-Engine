@@ -82,7 +82,7 @@ void BattleArea::Update()
 		{
 			if (mSpawners[i]->IsActive())
 			{
-				for (size_t y = 0; y < mSpawners[i]->GetWaveRounds(); y++)
+				for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
 				{
 					mSpawners[i]->Spawn();
 					mCurrentEnemies++;
@@ -167,25 +167,6 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 void BattleArea::AddExplosiveEnemy()
 {
 	mCurrentExplosiveEnemies++;
-}
-
-void BattleArea::SetTrapState(GameObject* trap, bool enable)
-{
-	if (trap)
-	{
-		auto scriptComponent = reinterpret_cast<ScriptComponent*>(trap->GetComponent(ComponentType::SCRIPT));
-		if (scriptComponent)
-		{
-			if (enable)
-			{
-				scriptComponent->Enable();
-			}
-			else
-			{
-				scriptComponent->Disable();
-			}
-		}
-	}
 }
 
 void BattleArea::CloseDoors(bool close)
