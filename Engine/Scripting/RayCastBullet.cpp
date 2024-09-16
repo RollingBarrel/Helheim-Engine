@@ -1,3 +1,5 @@
+#include <random>
+
 #include "RayCastBullet.h"
 #include "Application.h"
 
@@ -20,6 +22,7 @@ CREATE(RayCastBullet)
 	CLASS(owner);
 	MEMBER(MemberType::FLOAT, mDecalLifetime);
 	MEMBER(MemberType::FLOAT, mDecalFadingTime);
+	MEMBER(MemberType::FLOAT, mDecalPercentageWithParticles);
 	END_CREATE;
 }
 
@@ -95,6 +98,10 @@ void RayCastBullet::Update()
 
 		if (mFadeDecal) 
 		{
+			if (mDecalParticles) 
+			{
+				mDecalParticles->SetEnable(false);
+			}
 			if (mDecalFadingTime > 0) 
 			{
 				mHoleDecal->SetFadeFactor( mHoleDecal->GetFadeFactor() - App->GetDt()/mDecalFadingTime );
@@ -150,6 +157,7 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 	{
 		mHoleDecal->GetOwner()->SetWorldPosition(mHitPoint);
 		mHoleDecal->GetOwner()->SetEnabled(false);
+		mDecalParticles = static_cast<ParticleSystemComponent*>(mHoleDecal->GetOwner()->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
 	}
 	if (mCollider) 
 	{
@@ -171,6 +179,18 @@ void RayCastBullet::InitBulletholeDecal()
 	mHoleDecal->GetOwner()->SetWorldRotation(float3(0, angleOfDecal, 0));
 
 	mCollisionDirection = float3::zero;
+
+	//Determines if it will have particle system
+	std::random_device rd; 
+	std::mt19937 gen(rd());
+	std::uniform_int_distribution<> distrib(1, 100);
+
+	float random_number = distrib(gen)/100.0f;
+
+	if (random_number > mDecalPercentageWithParticles && mDecalParticles) 
+	{
+		mDecalParticles->SetEnable(false);
+	}
 }
 
 void RayCastBullet::OnCollisionEnter(CollisionData* collisionData) 

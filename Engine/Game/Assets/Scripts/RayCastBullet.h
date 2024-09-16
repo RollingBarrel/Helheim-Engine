@@ -46,12 +46,13 @@ private:
 
 	//Deacls
 	DecalComponent* mHoleDecal = nullptr;
+	ParticleSystemComponent* mDecalParticles = nullptr;
 	bool mFadeDecal = false;
 	float mDecalLifetime = 0;
 	float mDecalFadingTime = 0;
+	float mDecalPercentageWithParticles = 1.0f;
 
 	TimerScript mHitTimer;
-	TimerScript mDelayDecalTimer;
 
 	//Trails WorkAround
 	bool mFirstFrame = true;
