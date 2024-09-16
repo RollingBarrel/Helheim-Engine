@@ -68,6 +68,8 @@ public:
     float3 GetPlayerAimPosition() { return mAimPosition; }
     float3 GetPlayerPosition();
    
+    void EnableLaser(bool enable);
+
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
     void SetAnimationSpeed(float speed);
@@ -301,7 +303,7 @@ private:
  
     // DEBUFF
     bool mIsParalyzed = false;
-    const float mParalyzedDuration = 5.0f;
+    const float mParalyzedDuration = 0.5f;
     TimerScript mParalyzedTimerScript;
     float mParalysisSpeedReductionFactor = 1.0f;
 

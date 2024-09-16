@@ -15,23 +15,26 @@
 
 #include <vector>
 #include <string>
-
+#include <random>
 
 RangeWeapon::RangeWeapon() : Weapon()
 {
 	mType = WeaponType::RANGE;
 }
 
-RangeWeapon::~RangeWeapon()
-{
-}
-
 void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGradient& trailGradient)
 {
-
 	GameManager::GetInstance()->GetPlayerCamera()->ActivateShake(mCameraShakeDuration, mCameraShakeStrengh);
 
-	float3 front = GameManager::GetInstance()->GetPlayer()->GetFront();
+	//float3 front = GameManager::GetInstance()->GetPlayer()->GetFront();
+	//float3 front = GameManager::GetInstance()->GetPlayerController()->GetPlayerAimPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
+
+	GameObject* laserEndPoint = GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetChildren()[0];
+	float3 front;
+	if (laserEndPoint) front = laserEndPoint->GetWorldPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
+	else  front = GameManager::GetInstance()->GetPlayerController()->GetPlayerAimPosition() - GameManager::GetInstance()->GetPlayerController()->GetShootOriginGO()->GetWorldPosition();
+	front.y = 0.0f;
+	front.Normalize();
 	float3 up = GameManager::GetInstance()->GetPlayer()->GetUp();
 	float3 right = GameManager::GetInstance()->GetPlayer()->GetRight();
 	float3 bulletDirection = Spread(front, up, right, maxSpread);
@@ -48,6 +51,8 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 	if (GameManager::GetInstance()->GetPoolManager())
 	{
 		GameObject* bullet = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BULLET);
+		//This line is causing the game to slow down because for some reason it makes the bullets
+		// constantly collide with an enemy activating every frame the enemy hitstop and the hitsound 
 		//bullet->SetWorldRotation(GameManager::GetInstance()->GetPlayer()->GetWorldRotation());
 		RayCastBullet* bulletScript = reinterpret_cast<RayCastBullet*>(reinterpret_cast<ScriptComponent*>(bullet->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		bullet->SetEnabled(false);
@@ -65,14 +70,26 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 
 float3 RangeWeapon::Spread(const float3& front, const float3& up, const float3& right, float maxSpread)
 {
+
+	std::random_device rdev;
+	std::mt19937 rgen(rdev());
+	std::uniform_real_distribution<float> idist(-maxSpread, maxSpread);
+	
+	float upSpread = idist(rgen);
+	float rightSpread = idist(rgen);
+
 	float random = ((float)rand()) / (float)RAND_MAX;
-	float diff = maxSpread - (-maxSpread);
-	float upSpread = random * diff;
-	random = ((float)rand()) / (float)RAND_MAX;
-	float rightSpread = random * diff;
-	random = ((float)rand()) / (float)RAND_MAX;
-	diff = 0.2f;
+	float diff = 0.2f;
 	float r = random * diff;
+
+	//float random = ((float)rand()) / (float)RAND_MAX;
+	//float diff = maxSpread - (-maxSpread);
+	//float upSpread = random * diff;
+	//random = ((float)rand()) / (float)RAND_MAX;
+	//float rightSpread = random * diff;
+	//random = ((float)rand()) / (float)RAND_MAX;
+	//diff = 0.2f;
+	//float r = random * diff;
 
 	float3 spread = float3::zero;
 	spread += up * upSpread;

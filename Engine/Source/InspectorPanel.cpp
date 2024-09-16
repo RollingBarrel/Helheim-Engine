@@ -1727,68 +1727,73 @@ void InspectorPanel::DrawTransform2DComponent(Transform2DComponent* component) c
 
 void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* component) const
 {
-	ImGui::Text("Delay");
-	ImGui::SameLine();
-	ImGui::DragFloat("##Delay", &(component->mDelay), 0.1f, 0.0f);
-
-	ImGui::Text("Looping");
-	ImGui::SameLine(); 
-	ImGui::Checkbox("##Looping", &(component->mLooping));
-	if (!component->mLooping) 
+	if (ImGui::CollapsingHeader("Emitter"))
 	{
-		ImGui::Text("Duration");
-		ImGui::SameLine(); 
-		ImGui::DragFloat("##Duration", &(component->mDuration), 0.1f, 0.0f);
+		ImGui::Text("Delay");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Delay", &(component->mDelay), 0.1f, 0.0f);
+
+		ImGui::Text("Looping");
+		ImGui::SameLine();
+		ImGui::Checkbox("##Looping", &(component->mLooping));
+		if (!component->mLooping)
+		{
+			ImGui::Text("Duration");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Duration", &(component->mDuration), 0.1f, 0.0f);
+		}
+
+		ImGui::Text("Max Particles");
+		ImGui::SameLine();
+		ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0, 200);
+		ImGui::Text("Burst");
+		ImGui::SameLine();
+		ImGui::DragInt("##Burst", &(component->mBurst), 0.1f, 0, 200);
+		ImGui::Text("Emision Rate");
+		ImGui::SameLine();
+		ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
+		DrawRandomFloat(component->mLifetime, "Lifetime");
+		ImGui::Text("Follow Emitter");
+		ImGui::SameLine();
+		ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
+		if (component->mFollowEmitter)
+		{
+			ImGui::SameLine();
+			ImGui::Text("Spin Speed");
+			ImGui::SameLine();
+			ImGui::DragFloat("##SpinSpeed", &(component->mSpinSpeed), 0.1f, 0.0f);
+		}
+		ImGui::Text("Gravity");
+		ImGui::SameLine();
+		ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
 	}
 
-	ImGui::Text("Max Particles");
-	ImGui::SameLine();
-	ImGui::DragInt("##MaxParticles", &(component->mMaxParticles), 0.1f, 0,200);
-	ImGui::Text("Burst");
-	ImGui::SameLine();
-	ImGui::DragInt("##Burst", &(component->mBurst), 0.1f, 0, 200);
-	ImGui::Text("Emision Rate");
-	ImGui::SameLine(); 
-	ImGui::DragFloat("##EmisionRate", &(component->mEmissionRate), 0.1f, 0.0f);
-	DrawRandomFloat(component->mLifetime, "Lifetime");
-	ImGui::Text("Follow Emitter");
-	ImGui::SameLine();
-	ImGui::Checkbox("##FollowEmitter", &(component->mFollowEmitter));
-	if (component->mFollowEmitter)
+	if (ImGui::CollapsingHeader("Speed")) DrawBezierCurve(&(component->mSpeedCurve), "Speed");
+
+	if (ImGui::CollapsingHeader("Size"))
 	{
+		ImGui::Text("Stretched Billboard");
 		ImGui::SameLine();
-		ImGui::Text("Spin Speed");
+		ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
+		ImGui::Text("Stretched Ratio");
 		ImGui::SameLine();
-		ImGui::DragFloat("##SpinSpeed", &(component->mSpinSpeed), 0.1f, 0.0f);
+		ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
+		DrawBezierCurve(&(component->mSizeCurve), "Size");
 	}
-	ImGui::Text("Gravity");
-	ImGui::SameLine();
-	ImGui::DragFloat("##Gravity", &(component->mGravity), 0.1f, 0.0f);
 
-
-	ImGui::Separator();
-	DrawBezierCurve(&(component->mSpeedCurve), "Speed");
-	ImGui::Separator();
-	ImGui::Text("Stretched Billboard");
-	ImGui::SameLine();
-	ImGui::Checkbox("##StretchedBillboard", &(component->mStretchedBillboard));
-	ImGui::Text("Stretched Ratio");
-	ImGui::SameLine();
-	ImGui::DragFloat("##StretchedRatio", &(component->mStretchedRatio), 0.1f, 0.0f);
-
-	DrawBezierCurve(&(component->mSizeCurve), "Size");
-	ImGui::Separator();
-	static const char* items[]{ "Cone","Box","Sphere"};
-	static int Selecteditem = 0;
-	ImGui::Text("Shape");
-	ImGui::SameLine();
-	bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
-	if (check)
+	if (ImGui::CollapsingHeader("Shape"))
 	{
-		component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
-	}	
-	switch(component->mShapeType)
-	{
+		static const char* items[]{ "Cone","Box","Sphere" };
+		static int Selecteditem = 0;
+		ImGui::Text("Shape");
+		ImGui::SameLine();
+		bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
+		if (check)
+		{
+			component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
+		}
+		switch (component->mShapeType)
+		{
 		case ParticleSystemComponent::EmitterType::CONE:
 			ImGui::Text("Angle");
 			ImGui::SameLine();
@@ -1815,67 +1820,180 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
 
 			break;
-	}
-	ImGui::Text("Rand Dir");
-	ImGui::SameLine();
-	ImGui::Checkbox("##FixedDirection", &(component->mIsShapeAngleRand));
-	if (component->mIsShapeAngleRand) 
-	{
+		}
+		ImGui::Text("Rand Dir");
 		ImGui::SameLine();
-		ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
+		ImGui::Checkbox("##IsRandDirection", &(component->mIsShapeAngleRand));
+		if (component->mIsShapeAngleRand)
+		{
+			ImGui::SameLine();
+			ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
+		}
 	}
 
-	DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
-	ImGui::Separator();
-	if (ImGui::CollapsingHeader("Texture & Tint")) 
+
+	if (ImGui::CollapsingHeader("Trail"))
 	{
-		// Drag and drop	
-		ImGui::Columns(2);
-		ImGui::SetColumnWidth(0, 70.0);
+		ImGui::Text("Trails");
+		ImGui::SameLine();
+		ImGui::Checkbox("##Trails", &(component->mHasTrails));
 
-		const ResourceTexture* image = component->GetImage();
-
-		if (image)
+		if (component->mHasTrails)
 		{
-			ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
-			ImGui::Image(imageID, ImVec2(50, 50));
+			ImGui::SeparatorText("Properties");
+			{
+				ImGui::Text("Fixed Direction");
+				ImGui::SameLine();
+				ImGui::Checkbox("##FixedDirection", &(component->mTrail->mFixedDirection));
+
+				if (component->mTrail->mFixedDirection)
+				{
+					ImGui::Text("Trail Direction");
+					ImGui::SameLine();
+					ImGui::DragFloat3("##TrailDirection", component->mTrail->mDirection.ptr());
+				}
+
+				ImGui::Text("Minimum distance");
+				ImGui::SameLine();
+				ImGui::DragFloat("##MinDistance", &(component->mTrail->mMinDistance), 1.0f, 0.0f);
+
+				ImGui::Text("Lifetime");
+				ImGui::SameLine();
+				ImGui::DragFloat("##Lifetime", &(component->mTrail->mMaxLifeTime), 1.0f, 0.0f);
+			}
+
+			ImGui::SeparatorText("Width");
+			DrawBezierCurve(&(component->mTrail->mWidth), "Width");
+		}
+	}
+	if (ImGui::CollapsingHeader("Particles Texture & Color"))
+	{
+		static bool interruptor = true;
+
+		if (ImGui::Button("Particles")) interruptor = true;
+		ImGui::SameLine();
+		if (ImGui::Button("Trails")) interruptor = false;
+
+		if (interruptor)
+		{
+			DrawBlendTypeSelector(component->mBlendMode, "Blend Type");
+			// Drag and drop	
+			ImGui::Columns(2);
+			ImGui::SetColumnWidth(0, 70.0);
+
+			const ResourceTexture* image = component->GetImage();
+
+			if (image)
+			{
+				ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+				ImGui::Image(imageID, ImVec2(50, 50));
+			}
+			else
+			{
+				ImGui::Text("Drop Image");
+			}
+
+			if (ImGui::BeginDragDropTarget())
+			{
+				if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+				{
+					AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+					Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+					if (resource && (resource->GetType() == Resource::Type::Texture))
+					{
+						component->SetImage(resource->GetUID());
+						component->SetFileName(asset->mName);
+					}
+				}
+				ImGui::EndDragDropTarget();
+			}
+			ImGui::NextColumn();
+			if (component->GetFileName() != nullptr)
+			{
+				ImGui::Text(component->GetFileName());
+			}
+
+			if (image)
+			{
+				ImGui::Text("Width:%dpx", image->GetWidth());
+				ImGui::Text("Height:%dpx", image->GetHeight());
+
+			}
+			ImGui::Columns(1);
+			static float draggingMark = -1.0f;
+			static float selectedMark = -1.0f;
+			bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
+			ImGui::CollapsingHeader("Trail Texture & Color", ImGuiTreeNodeFlags_DefaultOpen);
 		}
 		else
 		{
-			ImGui::Text("Drop Image");
-		}
-
-		if (ImGui::BeginDragDropTarget())
-		{
-			if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+			if (component->mHasTrails)
 			{
-				AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
-				Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
-				if (resource && (resource->GetType() == Resource::Type::Texture))
+				// Drag and drop	
+				ImGui::Columns(2);
+				ImGui::SetColumnWidth(0, 70.0);
+
+				ResourceTexture* image = component->mTrail->mImage;
+
+				if (image)
 				{
-					component->SetImage(resource->GetUID());
-					component->SetFileName(asset->mName);
+					ImTextureID imageID = (void*)(intptr_t)image->GetOpenGLId();
+					ImGui::Image(imageID, ImVec2(50, 50));
 				}
+				else
+				{
+					ImGui::Text("Drop Image");
+				}
+
+				if (ImGui::BeginDragDropTarget())
+				{
+					if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("_SCENE"))
+					{
+						AssetDisplay* asset = reinterpret_cast<AssetDisplay*>(payload->Data);
+						Resource* resource = EngineApp->GetResource()->RequestResource(asset->mPath);
+						if (resource && (resource->GetType() == Resource::Type::Texture))
+						{
+							component->mTrail->SetImage(resource->GetUID());
+							component->mTrail->SetFileName(asset->mName);
+						}
+					}
+					ImGui::EndDragDropTarget();
+				}
+				ImGui::NextColumn();
+				if (component->mTrail->GetFileName() != nullptr)
+				{
+					ImGui::Text(component->mTrail->GetFileName());
+				}
+
+				if (image)
+				{
+					ImGui::Text("Width:%dpx", image->GetWidth());
+					ImGui::Text("Height:%dpx", image->GetHeight());
+
+				}
+				if (ImGui::Button(ICON_FA_TRASH_CAN))
+				{
+					component->mTrail->SetImage(148626881);
+				}
+				ImGui::Columns(1);
+
+				ImGui::Text("Tilling");
+				ImGui::SameLine();
+				ImGui::Checkbox("##IsTilled", &(component->mTrail->mIsTilled));
+				if (component->mTrail->mIsTilled)
+				{
+					ImGui::SameLine();
+					ImGui::DragFloat("##Tilling", &(component->mTrail->mTilling), 0.01f, 0.0f);
+				}
+
+				static float draggingMark = -1.0f;
+				static float selectedMark = -1.0f;
+				bool updated = ImGui::GradientEditor(component->mTrail->mGradient, draggingMark, selectedMark);
 			}
-			ImGui::EndDragDropTarget();
+			else ImGui::Text("Activate Trails for this functionality");
 		}
-		ImGui::NextColumn();
-		if (component->GetFileName() != nullptr)
-		{
-			ImGui::Text(component->GetFileName());
-		}
-
-		if (image)
-		{
-			ImGui::Text("Width:%dpx", image->GetWidth());
-			ImGui::Text("Height:%dpx", image->GetHeight());
-
-		}
-		ImGui::Columns(1);
-		static float draggingMark = -1.0f;
-		static float selectedMark = -1.0f;
-		bool updated = ImGui::GradientEditor(component->mColorGradient, draggingMark, selectedMark);
 	}
+
 }
 
 void InspectorPanel::DrawTextComponent(TextComponent* component) const

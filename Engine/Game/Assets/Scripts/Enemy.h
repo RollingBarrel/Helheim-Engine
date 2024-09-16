@@ -22,6 +22,7 @@ enum class EnemyState
 	CHARGING_BULLET_HELL,
 	CHARGING_LASER,
 	WAKE,
+	DOWN,
 	PHASE
 };
 

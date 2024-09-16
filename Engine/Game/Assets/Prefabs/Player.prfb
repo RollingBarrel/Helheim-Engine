@@ -54,12 +54,12 @@
                             {
                                 "VariableName": "mRedBaterryParticles",
                                 "MemberType": 3,
-                                "VariableData": 341239701
+                                "VariableData": 1816767443
                             },
                             {
                                 "VariableName": "mBlueBaterryParticles",
                                 "MemberType": 3,
-                                "VariableData": 1816767443
+                                "VariableData": 341239701
                             },
                             {
                                 "VariableName": "DASH",
@@ -1255,7 +1255,7 @@
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.0,
+                    -0.18000000715255738,
                     0.0
                 ],
                 "Rotation": [
@@ -4115,9 +4115,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.44999998807907107,
-                    0.3499999940395355,
-                    0.10000000149011612
+                    -2.1383056640625,
+                    0.35001182556152346,
+                    0.09955978393554688
                 ],
                 "Rotation": [
                     -1.1903944496793884e-8,
@@ -4131,6 +4131,73 @@
                     0.10000001639127732
                 ],
                 "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 21,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.10000000149011612,
+                        "MaxLifeTime": 0.0,
+                        "UVScroll": 1.0,
+                        "IsFixedDirection": false,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.019999999552965165,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.18346253037452699,
+                                    "Color": [
+                                        1.0,
+                                        0.0,
+                                        0.0,
+                                        0.29411765933036806
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1803992358,
+                "ParentUID": 1529273144,
+                "Name": "FinalPoint",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.00128173828125,
+                    -91.0419921875,
+                    -0.00164794921875
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "LineFinal",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5234,8 +5301,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.19849853217601777,
-                    0.9803616404533386
+                    0.46206846833229067,
+                    0.8872493505477905
                 ],
                 "Scale": [
                     1.0,

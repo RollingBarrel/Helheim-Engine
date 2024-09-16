@@ -5,7 +5,6 @@
 struct CollisionData;
 class Spawner;
 class BoxColliderComponent;
-
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
 {
@@ -16,20 +15,19 @@ public:
 	~BattleArea();
 	void Start() override;
 	void Update() override;
-	void EnemyDestroyed(GameObject* Enemy);
-	void ActivateArea(bool activate);
+	virtual void EnemyDestroyed(GameObject* Enemy);
+	virtual void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
-	int GetCurrentEnemies() { return mCurrentEnemies; }
-	int GetCurrentWave() { return mWavesRounds; }
-	int GetCurrentExplosiveEnemies() { return mCurrentExplosiveEnemies; }
+	int GetCurrentEnemies() const { return mCurrentEnemies; }
+	int GetCurrentWave() const { return mWavesRounds; }
+	int GetCurrentExplosiveEnemies() const { return mCurrentExplosiveEnemies; }
 	void SetWaves(int waves) { mWavesRounds = waves; }; 
 	void AddExplosiveEnemy();
 
-private:
+protected:
 
 	void SetTrapState(GameObject* trap, bool enable);
 	void UpdateTrapNumber();
-	void CloseDoors(bool close);
 
 	int mCurrentEnemies = 0;
 	int mWavesRounds = 0;
@@ -54,8 +52,9 @@ private:
 	GameObject* mTrap3 = nullptr;
 	GameObject* mTrap4 = nullptr;
 
-	GameObject* mDoor1 = nullptr;
-	GameObject* mDoor2 = nullptr;
+	GameObject* mAreaDoorsGO = nullptr;
+	
+
 	std::vector<Spawner*> mSpawners;
 	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
