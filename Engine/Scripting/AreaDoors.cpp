@@ -22,6 +22,8 @@ CREATE(AreaDoors)
 	MEMBER(MemberType::GAMEOBJECT, mDoorExit);
 	MEMBER(MemberType::GAMEOBJECT, mDoorExitEmiBorder);
 	MEMBER(MemberType::GAMEOBJECT, mDoorExitEmiTop);
+	SEPARATOR("ELEVATOR");
+	MEMBER(MemberType::GAMEOBJECT, mElevator);
 	END_CREATE;
 }
 
@@ -121,6 +123,10 @@ void AreaDoors::CloseDoors(bool close)
 		{
 			door2Collider->SetEnable(close);
 		}
+	}
+	if (mElevator)
+	{
+		mElevator->GetComponent(ComponentType::SCRIPT)->SetEnable(!close);
 	}
 }
 void AreaDoors::OnCollisionEnter(CollisionData* collisionData)
