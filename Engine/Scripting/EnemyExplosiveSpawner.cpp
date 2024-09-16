@@ -42,10 +42,9 @@ void EnemyExplosiveSpawner::Update()
 
     if (mSpawnedCounter > 0)
     {
+        if (mSpawnTimer.GetTimePassed() >= (mGateMoves * 2)) mIsOpeningTrap = false;
         if (mSpawnTimer.Delay(mSpawnRate))
         {
-            mAnimationComponent->SendTrigger("tIdle", 0.0f);
-            mAnimationComponent->SendTrigger("tSpawning", 0.0f);
             GameObject* enemy = mPoolManager->Spawn(PoolType::ROBOT_EXPLOSIVE);
             if (enemy) 
             {
@@ -63,6 +62,13 @@ void EnemyExplosiveSpawner::Update()
                 --mSpawnedCounter;
             }
         }
+        //Activates animation to open before the enemy spawns to make it appear when the trap is fully open
+        if (mSpawnedCounter > 0 && mSpawnTimer.GetTimePassed() > mGateMoves && !mIsOpeningTrap)
+		{
+			mAnimationComponent->SendTrigger("tIdle", 0.0f);
+			mAnimationComponent->SendTrigger("tSpawning", 0.0f);
+            mIsOpeningTrap = true;
+		}
 	}
 }
 
@@ -75,51 +81,3 @@ bool EnemyExplosiveSpawner::Spawn()
     }
     return false;
 }
-
-//void EnemyExplosiveSpawner::Idle()
-//{
-//    mAnimationComponent->SendTrigger("tIdle", 0.0f);
-//	mActiveBattleArea = GameManager::GetInstance()->GetActiveBattleArea();
-//
-//    if (mActiveBattleArea)
-//    {
-//        int totalEnemies = mActiveBattleArea->GetCurrentEnemies() + mActiveBattleArea->GetCurrentExplosiveEnemies();
-//		if (mSpawnTimer.DelayWithoutReset(mSpawnRate - 2) && totalEnemies < mMaxActiveEnemies) //Spawn rate - 2 to give time to the trap to open and close
-//        {
-//            mAnimationComponent->SendTrigger("tSpawning", 2.0f);
-//            mCurrentState = EnemyState::SPAWNING;
-//        }
-//    }
-//}
-
-//void EnemyExplosiveSpawner::Spawn()
-//{
-//    //Wait until the trap opens to spawn the ball
-//    if (mOpeningTrap.DelayWithoutReset(mGateMoves))
-//    {
-//        if (!mIsSpawning)
-//        {
-//            GameObject* enemy = mPoolManager->Spawn(PoolType::ROBOT_EXPLOSIVE);
-//            if (enemy)
-//            {
-//                ScriptComponent* script = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
-//                Enemy* enemyScript = reinterpret_cast<Enemy*>(script->GetScriptInstance());
-//                math::float3 pos = mGameObject->GetWorldPosition();
-//                enemy->SetWorldPosition(pos);
-//                enemy->SetEnabled(true);
-//                enemyScript->Init();
-//                mActiveBattleArea->AddExplosiveEnemy();
-//				mIsSpawning = true;
-//            }
-//        }
-//        // Wait until the trap closes
-//        if (mClosingTrap.Delay(mGateMoves*2))
-//        {
-//            LOG("CLOSING TRAP");
-//            mCurrentState = EnemyState::IDLE;
-//            mIsSpawning = false;
-//			mOpeningTrap.Reset();
-//			mSpawnTimer.Reset();
-//        }
-//	}
-//}

@@ -34,9 +34,6 @@ class EnemyExplosiveSpawner : public Enemy
 
 		float mGateMoves = 1.0f;
 		TimerScript mSpawnTimer;
-		TimerScript mOpeningTrap;
-		TimerScript mClosingTrap;
-		BattleArea* mActiveBattleArea = nullptr;
-		bool mIsSpawning = false;
+		bool mIsOpeningTrap = false;
 };
 
