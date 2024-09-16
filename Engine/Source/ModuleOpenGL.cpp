@@ -374,6 +374,7 @@ bool ModuleOpenGL::Init()
 	const uint32_t numSpotLights[4] = { mSpotLights.size(), 0, 0, 0 };
 	mSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 1, 16, &numSpotLights);
 	mSpotsBoundingSpheres = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 2, 16, &numSpotLights);
+	mVolSpotsBuffer = new OpenGLBuffer(GL_SHADER_STORAGE_BUFFER, GL_STATIC_DRAW, 3);
 
 	//SHADOWS
 	glGenFramebuffers(1, &mShadowsFrameBufferId);
@@ -401,6 +402,10 @@ bool ModuleOpenGL::Init()
 	glGenBuffers(1, &mPLightListImgBuffer);
 	glGenTextures(1, &mSLightListImgTex);
 	glGenBuffers(1, &mSLightListImgBuffer);
+	glGenTextures(1, &mVolPLightListImgTex);
+	glGenBuffers(1, &mVolPLightListImgBuffer);
+	glGenTextures(1, &mVolSLightListImgTex);
+	glGenBuffers(1, &mVolSLightListImgBuffer);
 	LightCullingLists(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform1ui(0, CULL_LIST_LIGHTS_SIZE);
@@ -495,6 +500,7 @@ bool ModuleOpenGL::Init()
 	glUniform1f(3, mVolIntensity);
 	glUniform1f(4, mVolAnisotropy);
 	glUniform1f(8, mVolStepSize);
+	glUniform1ui(9, mVolMaxSteps);
 	glUseProgram(0);
 
 	return true;
@@ -531,6 +537,7 @@ bool ModuleOpenGL::CleanUp()
 	delete mPointsBuffer;
 	delete mSpotsBuffer;
 	delete mSpotsBoundingSpheres;
+	delete mVolSpotsBuffer;
 	delete mDLightUniBuffer;
 
 	glDeleteVertexArrays(1, &mSkyVao);
@@ -665,12 +672,20 @@ void ModuleOpenGL::LightCullingLists(unsigned int screenWidth, unsigned int scre
 	const unsigned int numTiles = ((screenWidth + CULL_LIGHT_TILE_SIZEX - 1) / CULL_LIGHT_TILE_SIZEX) * ((screenHeight + CULL_LIGHT_TILE_SIZEY - 1) / CULL_LIGHT_TILE_SIZEY);
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glBindBuffer(GL_TEXTURE_BUFFER, mPLightListImgBuffer);
-	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mPLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mPLightListImgBuffer);
 	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
 	glBindBuffer(GL_TEXTURE_BUFFER, mSLightListImgBuffer);
-	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(int), nullptr, GL_STATIC_DRAW);
-	glTexBuffer(GL_TEXTURE_BUFFER, GL_R32I, mSLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mSLightListImgBuffer);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mVolPLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mVolPLightListImgBuffer);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
+	glBindBuffer(GL_TEXTURE_BUFFER, mVolSLightListImgBuffer);
+	glBufferData(GL_TEXTURE_BUFFER, numTiles * CULL_LIST_LIGHTS_SIZE * sizeof(unsigned char), nullptr, GL_STATIC_DRAW);
+	glTexBuffer(GL_TEXTURE_BUFFER, GL_R8UI, mVolSLightListImgBuffer);
 	glUseProgram(mTileLightCullingProgramId);
 	glUniform2ui(1, screenWidth, screenHeight);
 	glUseProgram(mPbrLightingPassProgramId);
@@ -992,6 +1007,54 @@ void ModuleOpenGL::SetMaxFog(float maxFog)
 	glUseProgram(0);
 }
 
+void ModuleOpenGL::SetVolBaseExtCoeff(float extCoeff)
+{
+	mBaseExtCoeff = extCoeff;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(0, mBaseExtCoeff);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolNoiseAmount(float noiseAmount)
+{
+	mNoiseAmount = noiseAmount;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(2, mNoiseAmount);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolIntensity(float volIntensity)
+{
+	mVolIntensity = volIntensity;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(3, mVolIntensity);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolAnisotropy(float volAnisotropy)
+{
+	mVolAnisotropy = volAnisotropy;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(4, mVolAnisotropy);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolStepSize(float volStepSize)
+{
+	mVolStepSize = volStepSize;
+	glUseProgram(mVolLightProgramId);
+	glUniform1f(8, mVolStepSize);
+	glUseProgram(0);
+}
+
+void ModuleOpenGL::SetVolMaxSteps(int volMaxSteps)
+{
+	mVolMaxSteps = volMaxSteps;
+	glUseProgram(mVolLightProgramId);
+	glUniform1ui(9, mVolMaxSteps);
+	glUseProgram(0);
+}
+
 void ModuleOpenGL::InitDecals()
 {
 	float decalsVertices[] = {
@@ -1209,8 +1272,10 @@ void ModuleOpenGL::Draw()
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Generate light list");
 	//Light lists
 	glUseProgram(mTileLightCullingProgramId);
-	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
-	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R32I);
+	glBindImageTexture(0, mPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
+	glBindImageTexture(1, mSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
+	glBindImageTexture(2, mVolPLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
+	glBindImageTexture(3, mVolSLightListImgTex, 0, GL_FALSE, 0, GL_WRITE_ONLY, GL_R8UI);
 	//glBindImageTexture(1, mGDepth, 0, false, 0, GL_READ_ONLY, GL_R32F);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
@@ -1463,6 +1528,24 @@ void ModuleOpenGL::Draw()
 	glDepthMask(GL_TRUE);
 	glPopDebugGroup();
 
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
+	glUseProgram(mVolLightProgramId);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
+	glActiveTexture(GL_TEXTURE2);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
+	glActiveTexture(GL_TEXTURE3);
+	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
+	static float time = App->GetDt();
+	glUniform1f(1, time);
+	time += App->GetDt();
+	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
+	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
+	glPopDebugGroup();
+
 	//Draw the skybox
 	if (mCurrSkyBox != nullptr)
 	{
@@ -1472,25 +1555,12 @@ void ModuleOpenGL::Draw()
 		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
 		glUseProgram(mSkyBoxProgramId);
 		glBindVertexArray(mSkyVao);
-		glDepthMask(GL_FALSE);
+		//glDepthMask(GL_FALSE);
 		glDrawArrays(GL_TRIANGLES, 0, 36);
-		glDepthMask(GL_TRUE);
+		//glDepthMask(GL_TRUE);
 		glDepthFunc(GL_LESS);
 		glPopDebugGroup();
 	}
-	
-	//glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
-	//glUseProgram(mVolLightProgramId);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, mGDepth);
-	//glActiveTexture(GL_TEXTURE1);
-	//glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	//static float time = App->GetDt();
-	//glUniform1f(1, time);
-	//time += App->GetDt();
-	//glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	//glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	//glPopDebugGroup();
 
 
 	//Fog using render pipeline (NO COMPUTE)
@@ -1593,6 +1663,8 @@ void ModuleOpenGL::AddSpotLight(const SpotLightComponent& component)
 	uint32_t size = mSpotLights.size();
 	mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 	mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
+	int isVolumetric = component.GetVolumetric();
+	mVolSpotsBuffer->PushBackData(&isVolumetric, sizeof(isVolumetric));
 }
 
 void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
@@ -1605,6 +1677,8 @@ void ModuleOpenGL::UpdateSpotLightInfo(const SpotLightComponent& cSpotLight)
 			float boundingSphere[4];
 			cSpotLight.GetBoundingSphere(boundingSphere);
 			mSpotsBoundingSpheres->UpdateData(boundingSphere, sizeof(boundingSphere), 16 + sizeof(boundingSphere) * i);
+			int isVolumetric = static_cast<int>(cSpotLight.GetVolumetric());
+			mVolSpotsBuffer->UpdateData(&isVolumetric, sizeof(isVolumetric), sizeof(isVolumetric) * i);
 			return;
 		}
 	}
@@ -1622,6 +1696,7 @@ void ModuleOpenGL::RemoveSpotLight(const SpotLightComponent& cSpotLight)
 			uint32_t size = mSpotLights.size();
 			mSpotsBuffer->UpdateData(&size, sizeof(size), 0);
 			mSpotsBoundingSpheres->UpdateData(&size, sizeof(size), 0);
+			mVolSpotsBuffer->RemoveData(sizeof(int), sizeof(int) * i);
 			return;
 		}
 	}
@@ -1647,10 +1722,10 @@ void OpenGLBuffer::PushBackData(const void* data, unsigned int dataSize)
 {
 	if (mDataCapacity == 0)
 	{
-		glBindBuffer(mType, mIdx);
-		glBufferData(mType, mDataSize, data, mUsage);
 		mDataSize = dataSize;
 		mDataCapacity = dataSize;
+		glBindBuffer(mType, mIdx);
+		glBufferData(mType, mDataSize, data, mUsage);
 		glBindBuffer(mType, 0);
 		return;
 	}

@@ -19,7 +19,7 @@ readonly layout(std430, binding = 0) buffer PointLights
 	uint numPLights;
 	PointLight pLights[];
 };
-layout(binding = 8) uniform isamplerBuffer pointLightList;
+layout(binding = 2) uniform usamplerBuffer pointLightList;
 struct SpotLight
 {
 	vec4 pos; //w intensity
@@ -33,7 +33,7 @@ readonly layout(std430, binding = 1) buffer SpotLights
 	uint numSLights;
 	SpotLight sLights[];
 };
-layout(binding = 11) uniform isamplerBuffer spotLightList;
+layout(binding = 3) uniform usamplerBuffer spotLightList;
 
 struct Shadow
 {
@@ -68,6 +68,7 @@ layout(location = 6) uniform uvec2 numTiles;
 layout(location = 7) uniform uvec2 tileSize;
 
 layout(location = 8) uniform float stepSize;
+layout(location = 9) uniform uint maxSteps;
 
 float GetLinearZ(float inputDepth)
 {
@@ -84,20 +85,20 @@ vec3 GetWorldPos(float depth, vec2 uvs)
 
 float noise(in vec3 position,in float time)
 {
-	return texture(noiseTexture, position.xy * vec2(position.z+time)).r * 2.0 - 1.0;
+	return texture(noiseTexture, position.xy * vec2(position.z+time)).r * 0.5 + 0.5;
 }
 
 float CalculateExtinctionCoeff(in vec3 currPos)
-{
-	//return baseExtCoeff * noise(currPos, currTime) * noiseAmount;
-	return baseExtCoeff;
+{	
+	return baseExtCoeff * noise(currPos, currTime) * noiseAmount;
+	//return baseExtCoeff;
 }
 
 float MieScattering(vec3 V, vec3 lDir)
 {
 	//Henyey-Greenstein Schlick aproximation
 	float k = 1.55*anisotropy - 0.55*anisotropy*anisotropy*anisotropy;
-	float toSquareTerm = 1+k*dot(V,lDir);
+	float toSquareTerm = 1+k*dot(-V,lDir);
 	return (1.0 - k*k) / (4*PI*toSquareTerm*toSquareTerm);
 }
 
@@ -107,30 +108,30 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	//Irradiance on that point from all lights
 	//vec3 Li = lInt * lAtt * lCol.rgb;
 
-	vec3 vDir = normalize(currPos - cameraPos);
-	vec3 li = vec3(0.0);
+	vec3 vDir = normalize(cameraPos - currPos);
+	vec3 li = vec3(0.0f);
 
 	//diractional light
-	li +=  dirCol.rgb * dirCol.w * MieScattering(vDir, dirDir);
+	//li +=  dirCol.rgb * dirCol.w * MieScattering(vDir, dirDir);
 
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//point lights
-	int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-	for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
-	{
-		PointLight pLight = pLights[idx];
-		vec3 mVector = currPos - pLight.pos.xyz;
-		float dist = length(mVector);
-		vec3 pDir = normalize(mVector);
-		float lAtt = pow(max(1 - pow(dist/ pLight.pos.w,4), 0.0),2) / (dist*dist + 1);
-		li += pLight.col.rgb * pLight.col.w * lAtt * MieScattering(vDir, pDir);
-		++i;
-	}
+	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
+	//for(int i = 0; i < lightListSize && idx != -1; idx = texelFetch(pointLightList, int(tileIdx * lightListSize + i)).x)
+	//{
+	//	PointLight pLight = pLights[idx];
+	//	vec3 mVector = currPos - pLight.pos.xyz;
+	//	float dist = length(mVector);
+	//	vec3 pDir = normalize(mVector);
+	//	float lAtt = pow(max(1 - pow(dist/ pLight.pos.w,4), 0.0),2) / (dist*dist + 1);
+	//	li += pLight.col.rgb * pLight.col.w * lAtt * MieScattering(vDir, pDir);
+	//	++i;
+	//}
 
 	//spot lights
-	idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
+	uint idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+	for (uint i = 0; i < lightListSize && idx != 255; idx = texelFetch(spotLightList, int(tileIdx * lightListSize + i)).x)
 	{
 		SpotLight sLight = sLights[idx];
 		//Shadows
@@ -142,7 +143,7 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
 			float shadowDepth = texture(shadows[sLight.shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLight.shadowIndex].bias;
 			float fragmentDepth = lightNDC.z;
-
+	
 			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
 				lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
 				fragmentDepth < shadowDepth))
@@ -150,7 +151,7 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 					shadowValue = 0.0;
 				}
 		}
-
+	
 		vec3 mVector = currPos - sLight.pos.xyz;
 		vec3 sDir = normalize(mVector);
 		vec3 aimDir = normalize(sLight.aimD.xyz);
@@ -199,7 +200,7 @@ bool IntersectDisk(in vec3 dC, in vec3 dN, float dRadius2, in vec3 rO, in vec3 r
 	return false;
 }
 
-uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in vec3 rO, in vec3 rDir, out float t0, out float t1)
+uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in float cLength, in vec3 rO, in vec3 rDir, out float t0, out float t1)
 {
 	uint ret = 0;
 	float dotDV = dot(rDir, cDir);
@@ -215,27 +216,24 @@ uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in vec3 rO, in vec
 		float detSqrt = sqrt(det);
 		float tmp = (-b-detSqrt) / (2*a);
 		vec3 p = rO + tmp*rDir;
-		if(dot(p - cPos, cDir) > 0.0f)
+		float tmp2 = dot(p - cPos, cDir);
+		if(tmp2 > 0.0f && tmp2 < cLength)
 		{
 			t0 = tmp;
 			++ret;
 		}
 		tmp = (-b + detSqrt) / (2*a);
 		p = rO + tmp*rDir;
-		if(dot(p - cPos, cDir) > 0.0f)
+		tmp2 = dot(p - cPos, cDir);
+		if(tmp2 > 0.0f && tmp2 < cLength)
 		{
-			if(ret == 1)
+			if(tmp < t0)
 			{
-				if(tmp < t0)
-				{
-					t1 = t0;
-					t0 = tmp;
-				}
-				else
-					t1 = tmp;
+				t1 = t0;
+				t0 = tmp;
 			}
 			else
-				t0 = tmp;
+				t1 = tmp;
 			++ret;
 		}
 	}
@@ -243,7 +241,8 @@ uint IntersectCone(in vec3 cPos, in vec3 cDir, in float cCos, in vec3 rO, in vec
 	{
 		t0 = -b / (2*a);
 		vec3 p = rO + t0*rDir;
-		if(dot(p - cPos, cDir) > 0.0f)
+		float tmp2 = dot(p - cPos, cDir);
+		if(tmp2 > 0.0f && tmp2 < cLength)
 			++ret;
 	}
 	return ret;
@@ -255,8 +254,8 @@ bool IntersectLightShapes(in vec3 rO, in vec3 rDir, out float t0, out float t1)
 	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//Point Lights
-	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
-	//for(uint i = 0; i < lightListSize && idx != -1; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
+	//uint idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
+	//for(uint i = 0; i < lightListSize && idx != 255; idx = (texelFetch(pointLightList, int(tileIdx * lightListSize + i))).x)
 	//{
 	//	vec4 pLight = pLights[idx].pos;
 	//	vec3 L = pLight.xyz - rO;
@@ -279,37 +278,38 @@ bool IntersectLightShapes(in vec3 rO, in vec3 rDir, out float t0, out float t1)
 	//	++i;
 	//}
 
-	int idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-	for (int i = 0; i < lightListSize && idx != -1; idx = (texelFetch(spotLightList, int(tileIdx * lightListSize + i))).x)
+	uint idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+	for (uint i = 0; i < lightListSize && idx != 255; idx = texelFetch(spotLightList, int(tileIdx * lightListSize + i)).x)
 	{
 		SpotLight sLight = sLights[idx];
 		float tt0 = 0.0f;
 		float tt1 = 0.0f;
 		float tt2 = 0.0f;
 		vec3 lDir = normalize(sLight.aimD.xyz);
-		uint cIntersections = IntersectCone(sLight.pos.xyz, lDir, sLight.col.w, rO, rDir, tt0, tt1);
-		if(cIntersections > 0)
+		uint cIntersections = IntersectCone(sLight.pos.xyz, lDir, sLight.col.w, sLight.radius, rO, rDir, tt0, tt1);
+		if(cIntersections >= 1)
 		{
-			float h = sLight.radius / sLight.col.w;
-			float dRadius2 = h*h - sLight.radius * sLight.radius;
-			if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, -lDir, dRadius2, rO, rDir, tt2))
-			{
-				if(tt2 > tt0)
-				{
-					tt0 = tt2;
-				}
-			}
-			
 			t0 = min(t0, tt0);
+			t1 = max(t1, tt0);
+
 			if(cIntersections == 2)
 			{
 				t1 = max(t1, tt1);
+			}
+			else
+			{
+				float h = sLight.radius / sLight.col.w;
+				float dRadius2 = h*h - sLight.radius * sLight.radius;
+				if(IntersectDisk(sLight.pos.xyz + lDir * sLight.radius, lDir, dRadius2, rO, rDir, tt2))
+				{
+					t0 = min(t0, tt2);
+					t1 = max(t1, tt2);
+				}
 			}
 			ret = true;
 		}
 		++i;
 	}
-
 	return ret;
 }
 
@@ -321,35 +321,55 @@ void main()
 	{
 		const vec2 uv = vec2(gl_GlobalInvocationID.xy) / vec2(texSize);
 		const vec3 worldPos = GetWorldPos(texture(depthTex, uv).r, uv);
-
 		const vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
+
+		//vec3 rayDir = worldPos - cameraPos;
+		//float maxDist = length(rayDir);
+		//rayDir /= maxDist;
+		//float t0 = maxDist;
+		//float t1 = 0.0f;
+		//
+		//if(IntersectLightShapes(cameraPos, rayDir, t0, t1))
+		//{
+		//	t0 = max(t0, 0.0);
+		//	t1 = min(t1, maxDist);
+		//
+		//	float d = ceil(t1 - t0);
+		//	float nSteps = min(d/stepSize, maxSteps); //Uniform constant de stepSize
+		//	vec3 marchingStep = rayDir*(d / nSteps);
+		//	vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
+		//
+		//	float extCoeff = 0.0;
+		//	vec3 accInScattering = vec3(0.0);
+		//	for(int i = 0; i < nSteps; ++i)
+		//	{
+		//		extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
+		//		accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
+		//		currPos += marchingStep;
+		//	}
+		//	vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
+		//	pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
+		//	imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
+		//}
+
+		//const uint NUM_STEPS = 32;
 		vec3 rayDir = worldPos - cameraPos;
-		float maxDist = length(rayDir);
-		rayDir /= maxDist;
-		float t0 = maxDist;
-		float t1 = 0.0f;
-		
-		if(IntersectLightShapes(cameraPos, rayDir, t0, t1))
+		//vec3 currentPos = cameraPos;
+		vec3 marchingStep = rayDir/float(maxSteps);
+		vec3 currentPos = cameraPos + marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
+		float stepSize = length(marchingStep);
+		float extCoeff = 0.0;
+		vec3 accInScattering = vec3(0.0);
+		for(int i=0; i < maxSteps; ++i) 
 		{
-			t0 = max(t0, 0.0);
-			t1 = min(t1, maxDist);
-		
-			float nSteps = ceil((t1 - t0) / stepSize); //Uniform constant de stepSize
-			vec3 marchingStep = rayDir*stepSize;
-			vec3 currPos = cameraPos + rayDir*t0+marchingStep*sampleIGN(gl_GlobalInvocationID.xy, currTime);
-		
-			float extCoeff = 0.0;
-			vec3 accInScattering = vec3(0.0);
-			for(int i = 0; i < nSteps; ++i)
-			{
-				extCoeff += CalculateExtinctionCoeff(currPos)*stepSize;
-				accInScattering += (CalculateInScattering(currPos, cameraPos)*stepSize)*exp(-extCoeff);
-				currPos += marchingStep;
-			}
-			float transmitance = fogIntensity*exp(-extCoeff);
-			vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
-			pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
-			imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
+			extCoeff += CalculateExtinctionCoeff(currentPos)*stepSize;
+			vec3 inScattering = CalculateInScattering(currentPos, cameraPos)*stepSize;
+			accInScattering += inScattering*exp(-extCoeff);
+			currentPos += marchingStep;
 		}
+		vec4 pixelCol = imageLoad(screenImage, ivec2(gl_GlobalInvocationID.xy));
+		pixelCol = vec4(pixelCol.rgb * (fogIntensity*exp(-extCoeff)) + (accInScattering * fogIntensity), pixelCol.a);
+		//pixelCol = vec4(pixelCol.rgb + (accInScattering*exp(-extCoeff) * fogIntensity), pixelCol.a);
+		imageStore(screenImage, ivec2(gl_GlobalInvocationID.xy), vec4(pixelCol));
 	}
 }
