@@ -64,11 +64,11 @@ void Spawner::Update()
 
 bool Spawner::Spawn()
 {
-		if (mIsActive)
-		{	
-			++mSpawnedCounter;
-			return true;
-		}
+	if (mIsActive)
+	{	
+		++mSpawnedCounter;
+		return true;
+	}
 	return false;
 }
 

@@ -13,33 +13,29 @@ class EnemyExplosiveSpawner : public Enemy
 	FRIEND(EnemyExplosiveSpawner);
 	public:
 		EnemyExplosiveSpawner(GameObject* owner);
-		~EnemyExplosiveSpawner() {}
 
 		void Start() override;
 		void Update() override;
-		void TakeDamage(float damage) override;
-		void PushBack() override;
-		void Death() override;
+
+		bool Spawn();
+		bool IsActive() const { return mIsActive; }
+		int GetEnemiesPerRound() const { return mEnemiesPerRound; }
+		void Active(bool active) { mIsActive = active; }
 
 	private:
-		enum class EnemyState {
-			IDLE,
-			SPAWNING,
-			DEATH
-		};
-		 
-		void Idle();
-		void Spawning();
+		
+		bool mOnlyOnce = false;
+		bool mIsActive = false;
+		int mSpawnedCounter = 0;
+		int mEnemiesPerRound = 2;
+		float mSpawnRate = 2.0f;
 
-		EnemyState mCurrentState = EnemyState::IDLE;
 		PoolManager* mPoolManager = nullptr;
 
-		float mSpawnRate = 2.0f;
 		float mGateMoves = 1.0f;
 		TimerScript mSpawnTimer;
 		TimerScript mOpeningTrap;
 		TimerScript mClosingTrap;
-		int mMaxActiveEnemies = 12;
 		BattleArea* mActiveBattleArea = nullptr;
 		bool mIsSpawning = false;
 };

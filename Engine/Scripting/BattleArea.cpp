@@ -8,6 +8,7 @@
 #include "AudioManager.h"
 #include "HudController.h"
 #include "Spawner.h"
+#include "EnemyExplosiveSpawner.h"
 
 CREATE(BattleArea)
 {
@@ -63,6 +64,26 @@ void BattleArea::Start()
 	{
 		mEnemySpawner4 = static_cast<Spawner*>(static_cast<ScriptComponent*>(mSpawnerGO4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
 		mSpawners.push_back(mEnemySpawner4);
+	}
+	if (mExplosiveSpawn1)
+	{
+		mEnemyExplosiveSpawner1 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn1->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner1);
+	}
+	if (mExplosiveSpawn2)
+	{
+		mEnemyExplosiveSpawner2 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn2->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner2);
+	}
+	if (mExplosiveSpawn3)
+	{
+		mEnemyExplosiveSpawner3 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn3->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner3);
+	}
+	if (mExplosiveSpawn4)
+	{
+		mEnemyExplosiveSpawner4 = static_cast<EnemyExplosiveSpawner*>(static_cast<ScriptComponent*>(mExplosiveSpawn4->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+		mExplosiveSpawners.push_back(mEnemyExplosiveSpawner4);
 	};
 
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -89,6 +110,17 @@ void BattleArea::Update()
 				}
 			}
 		}
+		for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
+		{
+			if (mExplosiveSpawners[i]->IsActive())
+			{
+				for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+				{
+					mExplosiveSpawners[i]->Spawn();
+					mCurrentEnemies++;
+				}
+			}
+		}
 		mNeedsToSpawn = false;
 	}
 }
@@ -105,7 +137,7 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 		}
 	}
 
-	if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0)
+	if (mWavesRounds <= 0)
 	{
 		ActivateArea(false);
 		mGameObject->SetEnabled(false);
@@ -135,11 +167,23 @@ inline void BattleArea::ActivateArea(bool activate)
 	{
 		mEnemySpawner4->Active(activate);
 	}
+	if (mEnemyExplosiveSpawner1)
+	{
+		mEnemyExplosiveSpawner1->Active(activate);
+	}
+	if (mEnemyExplosiveSpawner2)
+	{
+		mEnemyExplosiveSpawner2->Active(activate);
+	}
+	if (mEnemyExplosiveSpawner3)
+	{
+		mEnemyExplosiveSpawner3->Active(activate);
+	}
+	if (mEnemyExplosiveSpawner4)
+	{
+		mEnemyExplosiveSpawner4->Active(activate);
+	}
 	mNeedsToSpawn = activate;
-	SetTrapState(mExplosiveSpawn1, activate);
-	SetTrapState(mExplosiveSpawn2, activate);
-	SetTrapState(mExplosiveSpawn3, activate);
-	SetTrapState(mExplosiveSpawn4, activate);
 
 	if (!activate)
 	{
@@ -162,11 +206,6 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
 	}
-}
-
-void BattleArea::AddExplosiveEnemy()
-{
-	mCurrentExplosiveEnemies++;
 }
 
 void BattleArea::CloseDoors(bool close)

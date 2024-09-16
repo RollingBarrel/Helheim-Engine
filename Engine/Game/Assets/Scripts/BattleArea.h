@@ -4,6 +4,7 @@
 #include "vector"
 struct CollisionData;
 class Spawner;
+class EnemyExplosiveSpawner;
 class BoxColliderComponent;
 
 GENERATE_BODY(BattleArea);
@@ -21,20 +22,14 @@ public:
 	void OnCollisionEnter(CollisionData* collisionData);
 	int GetCurrentEnemies() const { return mCurrentEnemies; }
 	int GetCurrentWave() const { return mWavesRounds; }
-	int GetCurrentExplosiveEnemies() const { return mCurrentExplosiveEnemies; }
 	void SetWaves(int waves) { mWavesRounds = waves; }; 
-	void AddExplosiveEnemy();
 
 protected:
 
-	void SetTrapState(GameObject* trap, bool enable);
-	void UpdateTrapNumber();
 	void CloseDoors(bool close);
 
 	int mCurrentEnemies = 0;
 	int mWavesRounds = 0;
-	int mCurrentExplosiveEnemies = 0;
-	int mCurrentTraps = 0;
 	bool mHasBeenActivated = false;
 	bool mIsTutorialArea = false;
 
@@ -54,9 +49,15 @@ protected:
 	GameObject* mExplosiveSpawn3 = nullptr;
 	GameObject* mExplosiveSpawn4 = nullptr;
 
+	EnemyExplosiveSpawner* mEnemyExplosiveSpawner1 = nullptr;
+	EnemyExplosiveSpawner* mEnemyExplosiveSpawner2 = nullptr;
+	EnemyExplosiveSpawner* mEnemyExplosiveSpawner3 = nullptr;
+	EnemyExplosiveSpawner* mEnemyExplosiveSpawner4= nullptr;
+
 	GameObject* mDoor1 = nullptr;
 	GameObject* mDoor2 = nullptr;
 	std::vector<Spawner*> mSpawners;
+	std::vector<EnemyExplosiveSpawner*> mExplosiveSpawners;
 	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 };

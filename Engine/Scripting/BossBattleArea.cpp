@@ -35,21 +35,11 @@ void BossBattleArea::Start()
 
 void BossBattleArea::EnemyDestroyed(GameObject* enemy)
 {
-	std::string scriptName = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptName();
-
-	if (scriptName == "EnemyExplosiveSpawner")
+	mCurrentEnemies--;
+	if (mCurrentEnemies == 0 && mBoss)
 	{
-		mCurrentTraps--;
-	}
-	else // Any enemy except traps and explosive enemies
-	{
-		mCurrentEnemies--;
-		if (mCurrentEnemies == 0 && mBoss)
-		{
-			//Reactivate Boss
-			mBoss->WakeUp();
-		}
-
+		//Reactivate Boss
+		mBoss->WakeUp();
 	}
 
 	/*if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0 && mCurrentTraps <= 0)
