@@ -53,7 +53,14 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
 	if (!mNavPositions.empty())
 	{
-		App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions.back());
+		if (mNavPositions.size() > 1)
+		{
+			App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions[1]);
+		}
+		else
+		{
+			App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions[0]);
+		}
 	}	
 }
 
