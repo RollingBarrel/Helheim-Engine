@@ -32,6 +32,7 @@ void EnemyExplosiveSpawner::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SendTrigger("tIdle", 0.0f);
     }
 }
 
@@ -43,6 +44,8 @@ void EnemyExplosiveSpawner::Update()
     {
         if (mSpawnTimer.Delay(mSpawnRate))
         {
+            mAnimationComponent->SendTrigger("tIdle", 0.0f);
+            mAnimationComponent->SendTrigger("tSpawning", 0.0f);
             GameObject* enemy = mPoolManager->Spawn(PoolType::ROBOT_EXPLOSIVE);
             if (enemy) 
             {
