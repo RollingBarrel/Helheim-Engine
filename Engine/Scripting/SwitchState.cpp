@@ -53,7 +53,7 @@ void SwitchState::Enter()
 	}
 
 
-	GameManager::GetInstance()->GetHud()->SwitchWeapon();
+	//GameManager::GetInstance()->GetHud()->SwitchWeapon();
 	mPlayerController->SwitchWeapon();
 }
 

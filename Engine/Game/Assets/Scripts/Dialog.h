@@ -27,6 +27,7 @@ public:
 private:
     void UpdateDialog();
     void OnClick();
+    void OnSkipClick();
     void Controls();
 
     GameObject* mDialogGO = nullptr;
@@ -38,6 +39,9 @@ private:
     GameObject* mTextGO = nullptr;
     TextComponent* mText = nullptr;
     ButtonComponent* mDialogButton = nullptr;
+
+    GameObject* mSkipBtnGO = nullptr;
+    ButtonComponent* mSkipButton = nullptr;
 
     std::vector<std::vector<std::string>> mDialogList = {
         { 
@@ -98,10 +102,16 @@ private:
             "...Shit."
         }
     };
-    int mCurrentDialogSet = 0;  // Index of the current dialog set
-    int mCurrentDialog = 0;      // Index of the current dialog within the set
+    int mCurrentDialogSet = 0; 
+    int mCurrentDialog = 0;
 
     int mDialogBGM = -1;
+
+    float mTypingSpeed = 0.02f;  
+    float mTypingTimer = 0.0f;   
+    int mCurrentCharIndex = 0;   
+    bool mIsTyping = false;    
+    std::string mFullText;       
 
     TimerScript mClickTimout;
     bool mTimeout = false;
