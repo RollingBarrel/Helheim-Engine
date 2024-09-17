@@ -17,6 +17,7 @@ CREATE(Grenade)
     MEMBER(MemberType::FLOAT, mTrajectorySpeedFactor);
     MEMBER(MemberType::GAMEOBJECT, mGrenade);
     MEMBER(MemberType::GAMEOBJECT, mExplosionSFX);
+    MEMBER(MemberType::GAMEOBJECT, mScaled);
 	END_CREATE;
 }
 
@@ -66,10 +67,13 @@ void Grenade::MoveToTarget()
 
     if (mElapsedTime >= mFlightTime)
     {
+        mExplosionSFX->SetEnabled(false);
         mExplosionSFX->SetEnabled(true);
+        mScaled->SetEnabled(true);
 
         mState = GRENADE_STATE::EXPLOSION_START;
         mExplosionSFX->SetWorldPosition(mDestination);
+        mScaled->SetWorldPosition(mDestination);
 
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE1, mExplosionSFX->GetWorldPosition());
         GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, false);
@@ -121,8 +125,10 @@ void Grenade::Explosion()
 void Grenade::BlackHole()
 {
     std::vector<GameObject*> affectedEnemies = GetAffectedEnemies();
-
     PullCloser(affectedEnemies);
+    float scaleInTime = (mExplosionTimer.GetTimePassed() - mGrenadeDuration / 2) / (mGrenadeDuration / 2);
+    scaleInTime = - scaleInTime * scaleInTime + 1;
+    mScaled->SetLocalScale(float3(scaleInTime));
 }
 
 void Grenade::PullCloser(std::vector<GameObject*> enemies)
@@ -152,7 +158,6 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
 void Grenade::EndExplosion()
 {
     GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_THROW, mExplosionAudio, true);
-    mExplosionSFX->SetEnabled(false);
     mState = GRENADE_STATE::INACTIVE;
 }
 

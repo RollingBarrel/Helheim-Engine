@@ -64,6 +64,11 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mCollectibleContinueBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mInteractGO);
 
+    SEPARATOR("Weapon Pickups");
+    MEMBER(MemberType::GAMEOBJECT, mPickupControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mPickupKeyboardGO);
+
+
     END_CREATE;
 }
 
@@ -543,6 +548,21 @@ void HudController::SetInteract(bool active)
         mInteractGO->SetEnabled(active);
     }
         
+}
+
+void HudController::SetPickupPrompt(bool active)
+{
+    if (mPickupControllerGO && mPickupKeyboardGO)
+    {
+        if (GameManager::GetInstance()->UsingController()) 
+        {
+            mPickupControllerGO->SetEnabled(active);
+        }
+        else
+        {
+            mPickupKeyboardGO->SetEnabled(active);
+        }
+    }
 }
 
 #pragma region Click Events

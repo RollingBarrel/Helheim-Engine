@@ -6,7 +6,6 @@ struct CollisionData;
 class Spawner;
 class EnemyExplosiveSpawner;
 class BoxColliderComponent;
-
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
 {
@@ -54,8 +53,9 @@ protected:
 	EnemyExplosiveSpawner* mEnemyExplosiveSpawner3 = nullptr;
 	EnemyExplosiveSpawner* mEnemyExplosiveSpawner4= nullptr;
 
-	GameObject* mDoor1 = nullptr;
-	GameObject* mDoor2 = nullptr;
+	GameObject* mAreaDoorsGO = nullptr;
+	
+
 	std::vector<Spawner*> mSpawners;
 	std::vector<EnemyExplosiveSpawner*> mExplosiveSpawners;
 	GameObject* mElevator = nullptr;

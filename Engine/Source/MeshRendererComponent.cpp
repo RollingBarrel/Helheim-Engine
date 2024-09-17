@@ -407,3 +407,10 @@ void MeshRendererComponent::SetBaseColorFactor(const float4& baseColor)
 	mMaterial->SetBaseColorFactor(baseColor);
 	App->GetOpenGL()->BatchEditMaterial(*this);
 }
+
+void MeshRendererComponent::SetEmissiveColor(const float3& baseColor)
+{
+	assert(mMaterial);
+	mMaterial->SetEmissiveFactor(baseColor);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}

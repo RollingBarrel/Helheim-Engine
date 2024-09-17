@@ -3,6 +3,7 @@
 #include "BoxColliderComponent.h"
 #include "AnimationComponent.h"
 #include "GameObject.h"
+#include "AreaDoors.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -20,9 +21,7 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
 	MEMBER(MemberType::INT, mWavesRounds);
 	SEPARATOR("DOORS");
-	MEMBER(MemberType::GAMEOBJECT, mDoor1);
-	MEMBER(MemberType::GAMEOBJECT, mDoor2);
-	MEMBER(MemberType::GAMEOBJECT, mElevator);
+	MEMBER(MemberType::GAMEOBJECT, mAreaDoorsGO);
 	SEPARATOR("EXPLOSIVE SPAWNERS");
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
@@ -91,8 +90,6 @@ void BattleArea::Start()
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-
-	CloseDoors(false);
 }
 
 void BattleArea::Update()
@@ -140,6 +137,12 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	if (mWavesRounds <= 0)
 	{
 		ActivateArea(false);
+		if (mAreaDoorsGO)
+		{
+			AreaDoors* areaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+			areaDoors->CloseDoors(false);
+		}
+
 		mGameObject->SetEnabled(false);
 		return;
 	}
@@ -147,10 +150,6 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 
 inline void BattleArea::ActivateArea(bool activate)
 {
-
-	CloseDoors(activate);
-
-
 	if (mEnemySpawner1)
 	{
 		mEnemySpawner1->Active(activate);
@@ -206,51 +205,4 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
 		ActivateArea(true);
 		//LOG("PLAYER COLLISION");
 	}
-}
-
-void BattleArea::CloseDoors(bool close)
-{
-	std::string trigger = (close) ? "tClose" : "tOpen";
-
-	if (mDoor1)
-	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoor1->GetWorldPosition());
-
-		AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
-		if (doorAnimation1)
-		{
-			doorAnimation1->SetIsPlaying(true);
-			doorAnimation1->SendTrigger(trigger, 0.6f);
-			
-		}
-
-		BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
-		if (door1Collider)
-		{
-			door1Collider->SetEnable(close);
-		}
-	}
-	if (mDoor2)
-	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoor2->GetWorldPosition());
-
-		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoor2->GetComponent(ComponentType::ANIMATION));
-		if (doorAnimation2)
-		{
-			doorAnimation2->SetIsPlaying(true);
-			doorAnimation2->SendTrigger(trigger, 0.6f);
-		}
-
-		BoxColliderComponent* door2Collider = static_cast<BoxColliderComponent*>(mDoor2->GetComponent(ComponentType::BOXCOLLIDER));
-		if (door2Collider)
-		{
-			door2Collider->SetEnable(close);
-		}
-	}
-
-	if (mElevator)
-	{
-		mElevator->GetComponent(ComponentType::SCRIPT)->SetEnable(!close);
-	}
-
 }

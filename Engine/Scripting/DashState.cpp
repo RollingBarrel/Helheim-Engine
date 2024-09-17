@@ -23,34 +23,27 @@ DashState::DashState(PlayerController* player, float cooldown) : State(player, c
     {
         mDashVFX->SetEnabled(true);
 
-        if (mDashVFX->GetChildren().size() == 4) 
+        if (mDashVFX->GetChildren().size() == 3) 
         {
-            mDashTrail = reinterpret_cast<TrailComponent*>(mDashVFX->GetComponentInChildren(ComponentType::TRAIL));
-            mDashParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[1]->GetComponent(ComponentType::PARTICLESYSTEM));
-            mBegginingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[2]->GetComponent(ComponentType::PARTICLESYSTEM));
-            mEndingParticles = reinterpret_cast<ParticleSystemComponent*>(mDashVFX->GetChildren()[3]->GetComponent(ComponentType::PARTICLESYSTEM));
+            mDashParticles = mDashVFX->GetChildren()[0];
+            mBegginingParticles = mDashVFX->GetChildren()[1];
+            mEndingParticles = mDashVFX->GetChildren()[2];
         }
         
-        if (mDashTrail)
-        {
-            mDashTrail->SetEnable(false);
-        }
         if (mDashParticles)
         {
-            mDashParticles->SetEnable(false);
-            mDashParticles->SetLoop(false);
-            mDashParticles->SetDuration(mPlayerController->GetDashDuration());
+            mDashParticles->SetEnabled(false);
+            reinterpret_cast<ParticleSystemComponent*>(mDashParticles->GetComponent(ComponentType::PARTICLESYSTEM))
+                ->SetDuration(mPlayerController->GetDashDuration());
         }
         if (mBegginingParticles)
         {
-            mBegginingParticles->SetEnable(false);
-            mBegginingParticles->SetLoop(false);
+            mBegginingParticles->SetEnabled(false);
             //Duration set from the inspector (the time should be low)
         }
         if (mEndingParticles)
         {
-            mEndingParticles->SetEnable(false);
-            mEndingParticles->SetLoop(false);
+            mEndingParticles->SetEnabled(false);
             //Duration set from the inspector
         }
     }
@@ -115,36 +108,25 @@ void DashState::Enter()
     mDashTimer = 0.0f;
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mDashTrail)
-    {
-        mDashTrail->SetEnable(false);
-        mDashTrail->SetEnable(true);
 
-        mDashTrail->GetTrail()->SetLifeTime(0.3f); //The value is changed manually here
-    }
     if (mDashParticles)
     {
-        mDashParticles->SetEnable(false);
-        mDashParticles->SetEnable(true);
+        mDashParticles->SetEnabled(false);
+        mDashParticles->SetEnabled(true);
     }
     if (mBegginingParticles) 
     {
-        mBegginingParticles->SetEnable(false);
-        mBegginingParticles->SetEnable(true);
+        mBegginingParticles->SetEnabled(false);
+        mBegginingParticles->SetEnabled(true);
     }
 }
 
 void DashState::Exit()
 {
-    if (mDashTrail)
-    {
-        mDashTrail->GetTrail()->SetLifeTime(0.01f); //The lifetime is changed so something very small so it doesn't appear
-    }
-
     if (mEndingParticles)
     {
-        mEndingParticles->SetEnable(false);
-        mEndingParticles->SetEnable(true);
+        mEndingParticles->SetEnabled(false);
+        mEndingParticles->SetEnabled(true);
     }
 }
 
