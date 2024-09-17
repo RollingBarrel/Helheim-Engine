@@ -475,8 +475,10 @@ void AnimationComponent::LoadGameObjects(GameObject* current)
 
 void AnimationComponent::LoadSpineChildren(GameObject* current)
 {
+	/* INFO: This *if* allows to fix the player's right arm wherever placed in the inspector so that you can fix it centered when playing the shooting state. (Oriol)
 	if (current->GetName() == std::string("RightShoulder") && mOwner->GetTag() == "Player")
 		return;
+	*/
 	mSpineObjects.push_back(current);
 	for (GameObject* child : current->GetChildren())
 	{
