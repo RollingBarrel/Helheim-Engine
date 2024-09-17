@@ -147,11 +147,12 @@ void PlayerController::Start()
 {
     //Player Stats
     mPlayerStats = App->GetScene()->GetPlayerStats();
+    mPlayerStats->SetInitLevelStats();
 
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
 
-   mPlayerSpeed = mPlayerStats->GetSpeed();
+    mPlayerSpeed = mPlayerStats->GetSpeed();
 
     // States
     mDashState = new DashState(this, mDashCoolDown);
@@ -639,8 +640,8 @@ void PlayerController::EquipRangedWeapons(bool equip)
 
 void PlayerController::SetMovementSpeedStat(float percentage)
 {
-    mPlayerStats->SetSpeed(mPlayerStats->GetSpeed() * percentage);
-    mPlayerSpeed = mPlayerStats->GetSpeed();
+    mPlayerSpeed = mPlayerStats->GetSpeed() * percentage;
+    mPlayerStats->SetSpeed(mPlayerSpeed);
 }
 
 void PlayerController::SetSpeed(float speed)
@@ -650,14 +651,14 @@ void PlayerController::SetSpeed(float speed)
 
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mPlayerStats->SetDamageModifier(mPlayerStats->GetDamageModifier() * percentage);
-    mDamageModifier = mPlayerStats->GetDamageModifier();
+    mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
+    mPlayerStats->SetDamageModifier(mDamageModifier);
 }
 
 void PlayerController::SetMaxShield(float percentage)
 {
-    mPlayerStats->SetMaxHealth(mPlayerStats->GetMaxHealth() * percentage);
-    mMaxShield = mPlayerStats->GetMaxHealth();
+    mMaxShield = mPlayerStats->GetMaxHealth() * percentage;
+    mPlayerStats->SetMaxHealth(mMaxShield);
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
