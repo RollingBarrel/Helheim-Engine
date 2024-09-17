@@ -1047,7 +1047,7 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
     }
 
-    if (collisionData->collidedWith->GetTag() == "Door")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
     {
         mCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")

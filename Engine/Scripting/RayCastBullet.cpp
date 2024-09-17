@@ -67,7 +67,7 @@ void RayCastBullet::Update()
 						GameManager::GetInstance()->HitStop();
 					}
 				}
-				else if (mHit.mGameObject->GetTag().compare("Wall") == 0)
+				else if (mHit.mGameObject->GetTag().compare("Wall") == 0 || mHit.mGameObject->GetTag().compare("Door") == 0)
 				{
 					InitBulletholeDecal();
 				}
@@ -195,7 +195,7 @@ void RayCastBullet::InitBulletholeDecal()
 
 void RayCastBullet::OnCollisionEnter(CollisionData* collisionData) 
 {
-	if (collisionData->collidedWith->GetTag() == "Wall")
+	if (collisionData->collidedWith->GetTag() == "Wall" || collisionData->collidedWith->GetTag() == "Door")
 	{
 		mCollisionDirection = collisionData->collisionNormal;
 		mCollisionDirection.Normalize();
