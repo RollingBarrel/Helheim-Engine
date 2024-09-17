@@ -67,7 +67,7 @@ void RayCastBullet::Update()
 						GameManager::GetInstance()->HitStop();
 					}
 				}
-				else
+				else if (mHit.mGameObject->GetTag().compare("Wall") == 0)
 				{
 					InitBulletholeDecal();
 				}
@@ -158,6 +158,10 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 		mHoleDecal->GetOwner()->SetWorldPosition(mHitPoint);
 		mHoleDecal->GetOwner()->SetEnabled(false);
 		mDecalParticles = static_cast<ParticleSystemComponent*>(mHoleDecal->GetOwner()->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+		if (mDecalParticles) 
+		{
+			mDecalParticles->SetEnable(false);
+		}
 	}
 	if (mCollider) 
 	{
@@ -199,6 +203,6 @@ void RayCastBullet::OnCollisionEnter(CollisionData* collisionData)
 	{
 		mCollisionDirection = collisionData->collisionNormal;
 		mCollisionDirection.Normalize();
-		mCollider->SetEnable(false);
 	}
+	mCollider->SetEnable(false);
 }

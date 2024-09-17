@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 882187082,
+                "UID": 698622296,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 548400106,
-                "ParentUID": 882187082,
+                "UID": 448728625,
+                "ParentUID": 698622296,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -123,8 +123,8 @@
                 ]
             },
             {
-                "UID": 214821993,
-                "ParentUID": 882187082,
+                "UID": 182334777,
+                "ParentUID": 698622296,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
@@ -315,8 +315,8 @@
                 ]
             },
             {
-                "UID": 2020999596,
-                "ParentUID": 214821993,
+                "UID": 2057715654,
+                "ParentUID": 182334777,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -458,8 +458,8 @@
                 ]
             },
             {
-                "UID": 1698560843,
-                "ParentUID": 882187082,
+                "UID": 1799258600,
+                "ParentUID": 698622296,
                 "Name": "Collider",
                 "Enabled": true,
                 "Active": true,
@@ -479,7 +479,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Bullet",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -503,8 +503,8 @@
                 ]
             },
             {
-                "UID": 1399932472,
-                "ParentUID": 882187082,
+                "UID": 1542263587,
+                "ParentUID": 698622296,
                 "Name": "BulletHole",
                 "Enabled": true,
                 "Active": true,
@@ -563,8 +563,8 @@
                 ]
             },
             {
-                "UID": 1123095474,
-                "ParentUID": 1399932472,
+                "UID": 1310889102,
+                "ParentUID": 1542263587,
                 "Name": "SparkParticles",
                 "Enabled": true,
                 "Active": true,
