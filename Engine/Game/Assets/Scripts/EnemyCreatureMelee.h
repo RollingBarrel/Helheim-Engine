@@ -23,6 +23,7 @@ public:
 private:
 
 	BoxColliderComponent* mCollider = nullptr;
+	GameObject* mDashAttackVFX = nullptr;
 	bool mHit = false;
 };
 

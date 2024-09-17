@@ -27,6 +27,7 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::FLOAT, mAttackDistance);
 	SEPARATOR("VFX");
 	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
+	MEMBER(MemberType::GAMEOBJECT, mDashAttackVFX);
 	END_CREATE;
 }
 
@@ -70,6 +71,7 @@ void EnemyCreatureMelee::Chase()
 					GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, mGameObject->GetWorldPosition());
 
 					mCurrentState = EnemyState::CHARGE;
+					mDashAttackVFX->SetEnabled(true);
 				}
 			}
 			else
@@ -107,6 +109,7 @@ void EnemyCreatureMelee::Attack()
 	{
 		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
+		mDashAttackVFX->SetEnabled(false);
 	}
 	
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
