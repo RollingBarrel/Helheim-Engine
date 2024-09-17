@@ -9,7 +9,8 @@ class Transform2DComponent;
 class ImageComponent;
 class AudioManager;
 
-enum MENU_TYPE {
+enum MENU_TYPE 
+{
     MAIN,
     OPTIONS,
     CREDITS,
@@ -20,18 +21,21 @@ enum MENU_TYPE {
     VIDEO_SETTINGS
 };
 
-enum AUDIO_SETTING_TYPE {
+enum AUDIO_SETTING_TYPE 
+{
     MASTER,
     MUSIC,
     EFFECTS
 };
 
-enum VIDEO_SETTING_TYPE {
+enum VIDEO_SETTING_TYPE 
+{
     VSYNC,
     FULL_SCREEN
 };
 
-enum DIRECTION {
+enum DIRECTION 
+{
     LEFT,
     RIGHT
 };

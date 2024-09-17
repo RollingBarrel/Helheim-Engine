@@ -95,7 +95,8 @@ void GameManager::Update()
 {
     if (mLoadLevel)
     {
-        if (mLoadTimer.DelayWithoutReset(1.0f)) {
+        if (mLoadTimer.DelayWithoutReset(1.0f)) 
+        {
             if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
             if (mLoadSecondTimer.Delay(1.0f))
             {
