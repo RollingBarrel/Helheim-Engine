@@ -53,6 +53,8 @@ public:
 
 
 	float GetAnimationCurrentTime() const { return mCurrentTime; }
+	void SetAnimationCurrentTime(float time) { EndBlending(); mCurrentTime = time; }
+
 	unsigned int GetAnimationUID() const;
 private:
 	float3 Interpolate(const float3& first, const float3& second, float lambda);

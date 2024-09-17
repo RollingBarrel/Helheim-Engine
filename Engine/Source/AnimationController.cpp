@@ -58,9 +58,8 @@ void AnimationController::Update()
 
 void AnimationController::Restart()
 {
-	
-	mCurrentTime = 0.1f;
-	//mCurrentTime = mStartTime;
+	EndBlending();
+	//mCurrentTime = 0.1f;
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda)
@@ -104,6 +103,7 @@ void AnimationController::SetEndTime(float time)
 
 void AnimationController::EndBlending()
 {
+	mTransition = false;
 	mCurrentTime = mClipStartTime;
 	mCurrentTransitionTime = 0.0f;
 
@@ -142,19 +142,10 @@ void AnimationController::GetTransform(GameObject* model)
 
 		if (channel->hasRotation)
 		{
-			if (model->GetName() != "Hips")
-			{
-				CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-				model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
+			CalculateIndexAndLambda(channel, "Rotation", mCurrentTime, keyIndex, lambda);
 
-				//if (channel->hasTranslation || channel->hasRotation)
-				//	model->SetLocalScale(model->GetLocalScale());
-			}
-			//else
-			//{
-			//	LOG("JUAN");
-			//}
+			model->SetLocalRotation(Interpolate(channel->rotations[keyIndex - 1], channel->rotations[keyIndex], lambda));
 		}
 	}
 
