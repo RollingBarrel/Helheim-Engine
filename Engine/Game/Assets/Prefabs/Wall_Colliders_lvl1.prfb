@@ -227,9 +227,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -30.283679962158204,
+                    -30.782459259033204,
                     1.7679252624511719,
-                    -10.926963806152344
+                    -10.929744720458985
                 ],
                 "Rotation": [
                     0.0,
@@ -405,7 +405,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -450,7 +450,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -804,7 +804,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -849,7 +849,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3839,7 +3839,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3884,7 +3884,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -4120,7 +4120,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -4165,7 +4165,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -4220,8 +4220,8 @@
                 "UID": 621620177,
                 "ParentUID": 1884638640,
                 "Name": "Trash",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     38.8941764831543,
                     1.8501787185668946,
@@ -4245,7 +4245,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4355,8 +4355,8 @@
                 "UID": 1125861178,
                 "ParentUID": 1884638640,
                 "Name": "Couches",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -4384,7 +4384,7 @@
                 "ParentUID": 1125861178,
                 "Name": "Set1",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     26.59000015258789,
                     1.699983835220337,
@@ -4412,7 +4412,7 @@
                 "ParentUID": 2013111202,
                 "Name": "Couch1",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -4.998499870300293,
                     0.00011640787124633789,
@@ -4436,7 +4436,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4457,7 +4457,7 @@
                 "ParentUID": 2013111202,
                 "Name": "Couch2",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -1.7365972995758057,
                     0.00011670589447021484,
@@ -4481,7 +4481,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4502,7 +4502,7 @@
                 "ParentUID": 2013111202,
                 "Name": "Table",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -3.368335008621216,
                     -0.000048995018005371097,
@@ -4526,7 +4526,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4547,7 +4547,7 @@
                 "ParentUID": 1125861178,
                 "Name": "Set2",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     26.59000015258789,
                     1.699983835220337,
@@ -4575,7 +4575,7 @@
                 "ParentUID": 1280023889,
                 "Name": "Couch1",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -4.998499870300293,
                     0.00011640787124633789,
@@ -4599,7 +4599,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4620,7 +4620,7 @@
                 "ParentUID": 1280023889,
                 "Name": "Couch2",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -1.7365972995758057,
                     0.00011670589447021484,
@@ -4644,7 +4644,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4665,7 +4665,7 @@
                 "ParentUID": 1280023889,
                 "Name": "Table",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -3.368335008621216,
                     -0.000048995018005371097,
@@ -4689,7 +4689,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4710,7 +4710,7 @@
                 "ParentUID": 1125861178,
                 "Name": "Set3",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     26.59000015258789,
                     1.699983835220337,
@@ -4738,7 +4738,7 @@
                 "ParentUID": 531968061,
                 "Name": "Couch1",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -4.998499870300293,
                     0.00011640787124633789,
@@ -4762,7 +4762,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4783,7 +4783,7 @@
                 "ParentUID": 531968061,
                 "Name": "Couch2",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -1.7365972995758057,
                     0.00011670589447021484,
@@ -4807,7 +4807,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4828,7 +4828,7 @@
                 "ParentUID": 531968061,
                 "Name": "Table",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -3.368335008621216,
                     -0.000048995018005371097,
@@ -4852,7 +4852,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -4948,9 +4948,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    26.371063232421876,
+                    26.377758026123048,
                     2.799503803253174,
-                    -10.592957496643067
+                    -11.702628135681153
                 ],
                 "Rotation": [
                     0.0,
@@ -5263,9 +5263,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    11.488062858581543,
+                    11.2058744430542,
                     1.1627697944641114,
-                    -10.47819709777832
+                    -11.541302680969239
                 ],
                 "Rotation": [
                     0.0,
@@ -5291,8 +5291,8 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.870762825012207,
-                    2.154139757156372,
+                    3.6804113388061525,
+                    2.0833044052124025,
                     7.075674057006836
                 ],
                 "Rotation": [
@@ -5381,9 +5381,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.871936798095703,
-                    2.154139757156372,
-                    -6.920000076293945
+                    -3.2911806106567385,
+                    2.1174614429473879,
+                    -6.1420392990112309
                 ],
                 "Rotation": [
                     0.0,
@@ -5426,9 +5426,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.870762825012207,
-                    2.154139757156372,
-                    -6.924282073974609
+                    3.6907615661621095,
+                    2.08239483833313,
+                    -6.008273124694824
                 ],
                 "Rotation": [
                     0.0,
@@ -5458,124 +5458,6 @@
                             0.44999998807907107,
                             2.200000047683716,
                             0.5
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1519374632,
-                "ParentUID": 1884638640,
-                "Name": "Bridge",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    11.488062858581543,
-                    1.1627697944641114,
-                    -10.47819709777832
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 263944858,
-                "ParentUID": 1519374632,
-                "Name": "Front",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    2.2788705825805666,
-                    0.404397189617157,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            6.599999904632568
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1179669871,
-                "ParentUID": 1519374632,
-                "Name": "Back",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    -2.2276716232299806,
-                    0.40439730882644656,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            6.599999904632568
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5632,7 +5514,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5662,22 +5544,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    -0.6780219078063965,
+                    -0.2265036404132843,
+                    1.543135643005371
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.0837242379784584,
+                    -0.0837242379784584,
+                    0.7021326422691345,
+                    0.7021326422691345
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5722,7 +5604,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5767,7 +5649,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5797,22 +5679,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    1.865283727645874,
+                    -0.21874910593032838,
+                    0.9893593788146973
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.05793927237391472,
+                    0.05793927237391472,
+                    -0.7047290802001953,
+                    0.7047290802001953
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5842,22 +5724,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    -1.8974170684814454,
+                    -0.22637802362442017,
+                    -1.0115065574645997
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.5763823986053467,
+                    -0.5763823986053467,
+                    0.40961360931396487,
+                    0.40961360931396487
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5902,7 +5784,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5932,22 +5814,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    1.9028635025024415,
+                    -0.25199228525161745,
+                    0.6623668670654297
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.6611310839653015,
+                    -0.6611310839653015,
+                    0.2508101165294647,
+                    0.2508101165294647
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5992,7 +5874,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6022,9 +5904,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.97329044342041,
+                    -3.7429165840148927,
                     1.6844589710235596,
-                    -6.201406002044678
+                    -6.148437976837158
                 ],
                 "Rotation": [
                     0.0,
@@ -6037,7 +5919,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6082,7 +5964,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6112,15 +5994,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    0.2004842758178711,
+                    -0.23569756746292115,
+                    -1.6891975402832032
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.08801174908876419,
+                    -0.08801174908876419,
+                    0.7016081213951111,
+                    0.7016081213951111
                 ],
                 "Scale": [
                     1.0,
@@ -6176,24 +6058,7 @@
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.0,
-                            0.6000000238418579,
-                            1.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
+                "Components": []
             },
             {
                 "UID": 1697367457,
@@ -6202,22 +6067,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    0.6140241622924805,
+                    -0.2224598526954651,
+                    0.2692070007324219
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.6772828102111816,
+                    -0.6772828102111816,
+                    0.2031945288181305,
+                    0.2031945288181305
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6247,22 +6112,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    -0.6471500396728516,
+                    -0.2005794644355774,
+                    -1.4877395629882813
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.5940359234809876,
+                    -0.5940359234809876,
+                    0.3835641145706177,
+                    0.3835641145706177
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6292,9 +6157,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -3.0281362533569338,
+                    -3.722440719604492,
                     1.6844592094421387,
-                    -10.96159553527832
+                    -10.992401123046875
                 ],
                 "Rotation": [
                     0.0,
@@ -6307,7 +6172,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6352,7 +6217,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6397,7 +6262,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6427,22 +6292,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.0814450979232789,
-                    1.6628773212432862,
-                    -18.254121780395509
+                    1.0736943483352662,
+                    1.6628775596618653,
+                    -18.81930160522461
                 ],
                 "Rotation": [
                     0.0,
-                    0.6759118437767029,
+                    0.6819983720779419,
                     0.0,
-                    0.7369824647903442
+                    0.7313537001609802
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6487,7 +6352,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6532,7 +6397,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6562,22 +6427,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    5.815316200256348,
-                    1.6628773212432862,
-                    -18.251127243041993
+                    5.890835285186768,
+                    1.773134708404541,
+                    -19.442676544189454
                 ],
                 "Rotation": [
-                    0.0,
-                    0.6759118437767029,
-                    0.0,
-                    0.7369824647903442
+                    0.11440593749284744,
+                    0.4353155791759491,
+                    0.2269773781299591,
+                    0.863650918006897
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6587,12 +6452,12 @@
                         "IsEnabled": true,
                         "Center": [
                             0.0,
-                            0.0,
+                            0.3499999940395355,
                             0.0
                         ],
                         "Size": [
+                            0.20000000298023225,
                             1.0,
-                            0.6000000238418579,
                             1.0
                         ],
                         "ColliderType": 0,
@@ -6607,22 +6472,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    0.3936500549316406,
+                    -0.044869422912597659,
+                    1.683272361755371
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    -0.25460195541381838,
+                    0.9670459628105164
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6652,22 +6517,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    -1.167607307434082,
+                    0.8348541259765625,
+                    -0.861628532409668
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    -0.2533358633518219,
+                    0.9673783779144287
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6712,7 +6577,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6757,7 +6622,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6802,142 +6667,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1307903413,
-                "ParentUID": 2067337621,
-                "Name": "Table10",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -10.00027084350586,
-                    1.6629277467727662,
-                    -19.40223503112793
-                ],
-                "Rotation": [
-                    0.0,
-                    0.17923150956630708,
-                    0.0,
-                    0.9838070273399353
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.0,
-                            0.6000000238418579,
-                            1.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 49062210,
-                "ParentUID": 1307903413,
-                "Name": "Chair1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 938540106,
-                "ParentUID": 1307903413,
-                "Name": "Chair2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6982,7 +6712,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7027,7 +6757,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7072,142 +6802,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 200161597,
-                "ParentUID": 2067337621,
-                "Name": "Table12",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -6.125526428222656,
-                    1.6629281044006348,
-                    -25.88386344909668
-                ],
-                "Rotation": [
-                    0.0,
-                    0.17923150956630708,
-                    0.0,
-                    0.9838070273399353
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.0,
-                            0.6000000238418579,
-                            1.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1111570108,
-                "ParentUID": 200161597,
-                "Name": "Chair1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 2034117979,
-                "ParentUID": 200161597,
-                "Name": "Chair2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7237,9 +6832,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    17.150470733642579,
+                    17.067352294921876,
                     1.6628763675689698,
-                    -18.24918556213379
+                    -19.595518112182618
                 ],
                 "Rotation": [
                     0.0,
@@ -7252,7 +6847,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7297,7 +6892,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7327,157 +6922,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    0.3633155822753906,
+                    -0.22307702898979188,
+                    -1.8326921463012696
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.6615678071975708,
+                    -0.6615678071975708,
+                    0.2496558129787445,
+                    0.2496558129787445
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1312657373,
-                "ParentUID": 2067337621,
-                "Name": "Table14",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    21.90129280090332,
-                    1.6628739833831788,
-                    -18.240419387817384
-                ],
-                "Rotation": [
-                    0.0,
-                    0.6759118437767029,
-                    0.0,
-                    0.7369824647903442
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.0,
-                            0.6000000238418579,
-                            1.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 55487074,
-                "ParentUID": 1312657373,
-                "Name": "Chair1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 943363687,
-                "ParentUID": 1312657373,
-                "Name": "Chair2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7507,9 +6967,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    25.57292366027832,
+                    29.652631759643556,
                     1.6629211902618409,
-                    8.262297630310059
+                    8.298254013061524
                 ],
                 "Rotation": [
                     0.0,
@@ -7522,7 +6982,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7567,7 +7027,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7597,22 +7057,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    -0.9181342124938965,
+                    -0.19558101892471314,
+                    -1.2908992767333985
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.6964177489280701,
+                    -0.6964177489280701,
+                    0.12248390167951584,
+                    0.12248390167951584
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7636,28 +7096,568 @@
                 ]
             },
             {
-                "UID": 211459931,
+                "UID": 2303287,
                 "ParentUID": 2067337621,
-                "Name": "Table16",
+                "Name": "Table10",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    26.517993927001954,
-                    1.6629211902618409,
-                    11.154314994812012
+                    -9.5900297164917,
+                    1.773134708404541,
+                    -19.37798309326172
                 ],
                 "Rotation": [
-                    0.0,
-                    0.5428079962730408,
-                    0.0,
-                    0.8398568034172058
+                    -0.05479803308844566,
+                    -0.2085069864988327,
+                    0.24820280075073243,
+                    0.9444137811660767
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.3499999940395355,
+                            0.0
+                        ],
+                        "Size": [
+                            0.20000000298023225,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 878970919,
+                "ParentUID": 2303287,
+                "Name": "Chair1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.7536211013793945,
+                    -0.2485523223876953,
+                    1.178121566772461
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.25460195541381838,
+                    0.9670459628105164
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1651067809,
+                "ParentUID": 2303287,
+                "Name": "Chair2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.3467035293579102,
+                    0.9355535507202148,
+                    -0.7824068069458008
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.2533358633518219,
+                    0.9673783779144287
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 306488134,
+                "ParentUID": 2067337621,
+                "Name": "Table12",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -5.159999847412109,
+                    1.773134708404541,
+                    -25.989999771118165
+                ],
+                "Rotation": [
+                    -0.12756991386413575,
+                    -0.4854046106338501,
+                    0.21984851360321046,
+                    0.8365254998207092
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.3499999940395355,
+                            0.0
+                        ],
+                        "Size": [
+                            0.20000000298023225,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1124882989,
+                "ParentUID": 306488134,
+                "Name": "Chair1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.0662899017333985,
+                    -0.42531394958496096,
+                    1.0396013259887696
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.25460195541381838,
+                    0.9670459628105164
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1922321923,
+                "ParentUID": 306488134,
+                "Name": "Chair2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.6085758209228516,
+                    1.0828275680541993,
+                    0.775291919708252
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.2533358633518219,
+                    0.9673783779144287
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1348209089,
+                "ParentUID": 2067337621,
+                "Name": "Table14",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    22.040000915527345,
+                    1.7699999809265137,
+                    -20.790000915527345
+                ],
+                "Rotation": [
+                    0.12419769167900086,
+                    0.47257331013679507,
+                    0.2217710167169571,
+                    0.8438406586647034
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.3499999940395355,
+                            0.0
+                        ],
+                        "Size": [
+                            0.20000000298023225,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2120445221,
+                "ParentUID": 1348209089,
+                "Name": "Chair1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.24795913696289063,
+                    0.318328857421875,
+                    1.7508134841918946
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.25460195541381838,
+                    0.9670459628105164
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 719089831,
+                "ParentUID": 1348209089,
+                "Name": "Chair2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.591796875,
+                    1.0733509063720704,
+                    -0.6815910339355469
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.2533358633518219,
+                    0.9673783779144287
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1545676579,
+                "ParentUID": 2067337621,
+                "Name": "Table16",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    26.489999771118165,
+                    1.773134708404541,
+                    10.100000381469727
+                ],
+                "Rotation": [
+                    0.17996744811534882,
+                    0.6847777366638184,
+                    0.17949697375297547,
+                    0.6829875707626343
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.3499999940395355,
+                            0.0
+                        ],
+                        "Size": [
+                            0.20000000298023225,
+                            1.0,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 294981033,
+                "ParentUID": 1545676579,
+                "Name": "Chair1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.37822914123535159,
+                    0.39188623428344729,
+                    -1.5124969482421876
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.25460195541381838,
+                    0.9670459628105164
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1060533549,
+                "ParentUID": 1545676579,
+                "Name": "Chair2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -2.0160627365112306,
+                    0.740602970123291,
+                    0.7880496978759766
+                ],
+                "Rotation": [
+                    -0.7581502199172974,
+                    -0.4521220922470093,
+                    -0.22154945135116578,
+                    -0.41437870264053347
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1004941381,
+                "ParentUID": 2067337621,
+                "Name": "Table0",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.08845669031143189,
+                    1.684518814086914,
+                    4.118405342102051
+                ],
+                "Rotation": [
+                    0.0,
+                    0.3818027079105377,
+                    0.0,
+                    0.9242438673973084
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7681,101 +7681,11 @@
                 ]
             },
             {
-                "UID": 1107760685,
-                "ParentUID": 211459931,
-                "Name": "Chair1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 2009352635,
-                "ParentUID": 211459931,
-                "Name": "Chair2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
                 "UID": 764157148,
                 "ParentUID": 1884638640,
                 "Name": "Counter",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     14.277769088745118,
                     1.159999966621399,
@@ -7803,7 +7713,7 @@
                 "ParentUID": 764157148,
                 "Name": "Part1",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -4.491910934448242,
                     0.5358585715293884,
@@ -7827,7 +7737,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -7848,7 +7758,7 @@
                 "ParentUID": 764157148,
                 "Name": "Part2",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -3.3289365768432619,
                     0.5358608961105347,
@@ -7872,7 +7782,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -7893,7 +7803,7 @@
                 "ParentUID": 764157148,
                 "Name": "Part3",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     -0.5855274200439453,
                     0.5358611941337586,
@@ -7917,7 +7827,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -7938,7 +7848,7 @@
                 "ParentUID": 764157148,
                 "Name": "Part4",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     2.8644638061523439,
                     0.5358594655990601,
@@ -7962,7 +7872,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -7983,7 +7893,7 @@
                 "ParentUID": 764157148,
                 "Name": "Part5",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     5.46479606628418,
                     0.5358597040176392,
@@ -8007,7 +7917,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -8028,7 +7938,7 @@
                 "ParentUID": 764157148,
                 "Name": "Part6",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     6.817041397094727,
                     0.5358598232269287,
@@ -8052,7 +7962,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Center": [
                             0.0,
                             0.0,
@@ -8725,7 +8635,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -8770,7 +8680,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -8815,7 +8725,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -8860,7 +8770,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -8890,22 +8800,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    -0.06245613098144531,
+                    -0.2292047142982483,
+                    1.9459805488586426
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.6848149299621582,
+                    -0.6848149299621582,
+                    0.1761491447687149,
+                    0.1761491447687149
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -8950,7 +8860,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -8980,22 +8890,22 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -14.50727653503418,
-                    1.684516191482544,
-                    1.4348163604736329
+                    -13.97431755065918,
+                    1.9648419618606568,
+                    1.3066730499267579
                 ],
                 "Rotation": [
-                    0.0,
-                    0.5493144989013672,
-                    0.0,
-                    0.8356156945228577
+                    -0.21492379903793336,
+                    0.4803963303565979,
+                    -0.37873798608779909,
+                    0.7613046169281006
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9010,7 +8920,7 @@
                         ],
                         "Size": [
                             1.0,
-                            0.6000000238418579,
+                            0.3499999940395355,
                             1.0
                         ],
                         "ColliderType": 0,
@@ -9019,28 +8929,28 @@
                 ]
             },
             {
-                "UID": 18438277,
-                "ParentUID": 1267950266,
-                "Name": "Chair1",
+                "UID": 912789643,
+                "ParentUID": 1434973130,
+                "Name": "Chair2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
+                    -16.010093688964845,
+                    1.9255716800689698,
+                    0.9885807037353516
                 ],
                 "Rotation": [
                     0.0,
+                    0.5493144989013672,
                     0.0,
-                    0.0,
-                    1.0
+                    0.8356156945228577
                 ],
                 "Scale": [
                     1.0,
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9064,21 +8974,21 @@
                 ]
             },
             {
-                "UID": 912789643,
-                "ParentUID": 1267950266,
-                "Name": "Chair2",
+                "UID": 18438277,
+                "ParentUID": 1434973130,
+                "Name": "Chair1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
+                    -13.546672821044922,
+                    1.4628583192825318,
+                    2.9726524353027345
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    0.21798856556415559,
+                    0.22182677686214448,
+                    0.6661492586135864,
+                    0.6778784394264221
                 ],
                 "Scale": [
                     1.0,
@@ -9158,7 +9068,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9203,7 +9113,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9248,7 +9158,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9293,7 +9203,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9338,7 +9248,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9383,7 +9293,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9428,7 +9338,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9473,7 +9383,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9518,7 +9428,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -9568,141 +9478,6 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
-            },
-            {
-                "UID": 936410894,
-                "ParentUID": 42616496,
-                "Name": "Table1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -14.50727653503418,
-                    1.684516191482544,
-                    1.4348163604736329
-                ],
-                "Rotation": [
-                    0.0,
-                    0.5493144989013672,
-                    0.0,
-                    0.8356156945228577
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.0,
-                            0.6000000238418579,
-                            1.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1827281210,
-                "ParentUID": 936410894,
-                "Name": "Chair1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.046781063079833987,
-                    0.24105554819107057,
-                    1.527015209197998
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 570389395,
-                "ParentUID": 936410894,
-                "Name": "Chair2",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.1862196922302246,
-                    0.24105548858642579,
-                    -1.5565681457519532
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": true,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.3499999940395355,
-                            0.800000011920929,
-                            0.3499999940395355
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
             },
             {
                 "UID": 1459728049,
@@ -9945,6 +9720,141 @@
                     0.0,
                     0.0,
                     1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 936410894,
+                "ParentUID": 42616496,
+                "Name": "Table1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -14.889066696166993,
+                    1.9909682273864747,
+                    1.9799671173095704
+                ],
+                "Rotation": [
+                    0.4748914837837219,
+                    0.07806389778852463,
+                    -0.04234114661812782,
+                    0.8755521178245544
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            0.30000001192092898,
+                            1.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1827281210,
+                "ParentUID": 42616496,
+                "Name": "Chair1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -13.08687973022461,
+                    1.9255716800689698,
+                    1.9973430633544922
+                ],
+                "Rotation": [
+                    0.0,
+                    0.5493144989013672,
+                    0.0,
+                    0.8356156945228577
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            0.800000011920929,
+                            0.3499999940395355
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 570389395,
+                "ParentUID": 42616496,
+                "Name": "Chair2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -16.010093688964845,
+                    1.9255716800689698,
+                    0.9885807037353516
+                ],
+                "Rotation": [
+                    0.0,
+                    0.5493144989013672,
+                    0.0,
+                    0.8356156945228577
                 ],
                 "Scale": [
                     1.0,
@@ -10440,7 +10350,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -10485,7 +10395,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -14440,9 +14350,9 @@
                 ],
                 "Rotation": [
                     0.0,
-                    -0.28610649704933169,
+                    -0.1740778684616089,
                     0.0,
-                    0.958197832107544
+                    0.984731912612915
                 ],
                 "Scale": [
                     1.0,
@@ -14524,15 +14434,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    45.50205993652344,
+                    44.99586486816406,
                     2.162461519241333,
-                    -25.50581169128418
+                    -25.01702880859375
                 ],
                 "Rotation": [
                     0.0,
-                    -0.28610649704933169,
+                    -0.12490033358335495,
                     0.0,
-                    0.958197832107544
+                    0.9921693205833435
                 ],
                 "Scale": [
                     1.0,
@@ -15382,7 +15292,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -15427,7 +15337,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -17015,9 +16925,9 @@
                 ],
                 "Rotation": [
                     0.0,
-                    -0.4935624301433563,
+                    -0.3538829982280731,
                     0.0,
-                    0.869710385799408
+                    0.9352898001670837
                 ],
                 "Scale": [
                     1.0,
@@ -17054,15 +16964,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -17.61328887939453,
+                    -17.91747283935547,
                     2.089223623275757,
-                    -16.887779235839845
+                    -17.26218605041504
                 ],
                 "Rotation": [
                     0.0,
-                    -0.4935624301433563,
+                    -0.4186597466468811,
                     0.0,
-                    0.869710385799408
+                    0.908143162727356
                 ],
                 "Scale": [
                     1.0,
@@ -18904,9 +18814,9 @@
                 ],
                 "Rotation": [
                     0.0,
+                    -0.4289351999759674,
                     0.0,
-                    0.0,
-                    1.0
+                    0.9033353924751282
                 ],
                 "Scale": [
                     1.0,
@@ -19014,7 +18924,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -19059,7 +18969,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,

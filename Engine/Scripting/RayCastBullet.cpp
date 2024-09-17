@@ -158,10 +158,6 @@ void RayCastBullet::Init(const float3& startposition, const float3& endPosition,
 		mHoleDecal->GetOwner()->SetWorldPosition(mHitPoint);
 		mHoleDecal->GetOwner()->SetEnabled(false);
 		mDecalParticles = static_cast<ParticleSystemComponent*>(mHoleDecal->GetOwner()->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
-		if (mDecalParticles) 
-		{
-			mDecalParticles->SetEnable(false);
-		}
 	}
 	if (mCollider) 
 	{
