@@ -240,6 +240,7 @@ private:
     GameObject* mShootOrigin = nullptr;
     GameObject* mRedBaterryParticles = nullptr;
     GameObject* mBlueBaterryParticles = nullptr;
+    float mLaserLenght = 5.0f;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;
@@ -300,7 +301,6 @@ private:
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
     std::vector<unsigned int> mMaterialIds;
-    bool Delay(float delay);
 
     std::vector<float4> mPlayerOgColor;
  
@@ -319,4 +319,7 @@ private:
 
     // Elevator
     bool mIsInElevator = false;
+
+    //DEBUG
+    GameObject* mDebugCube = nullptr;
 };

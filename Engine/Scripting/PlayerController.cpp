@@ -58,10 +58,6 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    //SEPARATOR("STATS");
-    //MEMBER(MemberType::FLOAT, mMaxShield);
-    //MEMBER(MemberType::FLOAT, mPlayerSpeed);
-
     SEPARATOR("SHIELD");
     MEMBER(MemberType::GAMEOBJECT, mHealParticles);
     MEMBER(MemberType::GAMEOBJECT, mShieldSpriteSheet);
@@ -78,6 +74,7 @@ CREATE(PlayerController)
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
+    MEMBER(MemberType::FLOAT, mLaserLenght);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
@@ -111,6 +108,7 @@ CREATE(PlayerController)
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
+    MEMBER(MemberType::GAMEOBJECT, mDebugCube);
 
     END_CREATE;
 }
@@ -145,6 +143,7 @@ PlayerController::~PlayerController()
 
 void PlayerController::Start()
 {
+    mDebugCube->SetEnabled(false);
     //Player Stats
     mPlayerStats = App->GetScene()->GetPlayerStats();
 
@@ -444,48 +443,35 @@ void PlayerController::HandleRotation()
         position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
-
-        GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-        float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
-        laserDirection.y = 0;
-        laserDirection.Normalize();
-        if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
-
     }
     else
     {
         Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-        float3 planePoint = float3(mGameObject->GetWorldPosition().x ,mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
+        float3 planePoint = float3(mGameObject->GetWorldPosition().x, mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
         Plane plane(planePoint, float3::unitY);
 
         float distance;
         if (plane.Intersects(ray, &distance))
-        {      
+        {
             float3 rayPoint = ray.GetPoint(distance);
             mAimPosition = rayPoint;
-            if (mGameObject->GetWorldPosition().Distance(rayPoint) > 2.5f)
-            {
-                
-
-                GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-                float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
-                laserDirection.y = 0;
-                laserDirection.Normalize();
-                if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
-                //if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mAimPosition);
-
-                
-            } 
-
+            if (mDebugCube) mDebugCube->SetWorldPosition(rayPoint);
             mAimPosition.y = mGameObject->GetWorldPosition().y;
-
-        }
-       
+            
+        }    
     }
+
     if (mUpperStateType != StateType::ULTIMATE)
+    {
         mGameObject->LookAt(mAimPosition);
+        GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+        if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
+    }   
     else
+    {
         UltimateInterpolateLookAt(mAimPosition);
+    }
+        
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
