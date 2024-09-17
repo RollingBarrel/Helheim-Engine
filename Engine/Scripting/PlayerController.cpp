@@ -280,6 +280,11 @@ void PlayerController::Start()
     //{
     //    mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
     //}
+
+    //LASER
+    GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+    if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
+
 }
 
 void PlayerController::Update()
@@ -465,13 +470,29 @@ void PlayerController::HandleRotation()
         {
             InterpolateLookAt(mAimPosition, mControllerAimSpeed);
         }
-        GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-        if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
+        HandleLaser();
     }   
     else
     {
         InterpolateLookAt(mAimPosition, mUltimateAimSpeed);
     }      
+}
+
+void PlayerController::HandleLaser()
+{
+    GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+    if (laserFinalPoint)
+    {
+        Hit hit;
+        Ray ray;
+        ray.pos = mShootOrigin->GetWorldPosition();
+        ray.dir = mGameObject->GetFront();
+        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
+        Physics::Raycast(hit, ray, mLaserLenght, &ignoreTags);
+
+        float rayLenght = (hit.IsValid()) ? hit.mDistance : mLaserLenght;
+        laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * rayLenght);
+    }  
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
