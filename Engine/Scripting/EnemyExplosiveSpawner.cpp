@@ -42,7 +42,14 @@ void EnemyExplosiveSpawner::Update()
 
     if (mSpawnedCounter > 0)
     {
-        if (mSpawnTimer.GetTimePassed() >= (mGateMoves * 2)) mIsOpeningTrap = false;
+        //Activates animation to open before the enemy spawns to make it appear when the trap is fully open
+        if (mSpawnTimer.GetTimePassed() > (mSpawnRate - mGateMoves) && !mIsOpeningTrap)
+        {
+            mAnimationComponent->SendTrigger("tIdle", 0.0f);
+            mAnimationComponent->SendTrigger("tSpawning", 0.0f);
+            mIsOpeningTrap = true;
+        }
+
         if (mSpawnTimer.Delay(mSpawnRate))
         {
             GameObject* enemy = mPoolManager->Spawn(PoolType::ROBOT_EXPLOSIVE);
@@ -60,15 +67,9 @@ void EnemyExplosiveSpawner::Update()
                     return;
                 }
                 --mSpawnedCounter;
+                mIsOpeningTrap = false;
             }
         }
-        //Activates animation to open before the enemy spawns to make it appear when the trap is fully open
-        if (mSpawnedCounter > 0 && mSpawnTimer.GetTimePassed() > mGateMoves && !mIsOpeningTrap)
-		{
-			mAnimationComponent->SendTrigger("tIdle", 0.0f);
-			mAnimationComponent->SendTrigger("tSpawning", 0.0f);
-            mIsOpeningTrap = true;
-		}
 	}
 }
 
