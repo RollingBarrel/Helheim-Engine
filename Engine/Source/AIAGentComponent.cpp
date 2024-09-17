@@ -40,6 +40,11 @@ void AIAgentComponent::Update()
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
 			mDirection = owner_pos - mOwner->GetWorldPosition();
 			mOwner->SetWorldPosition(owner_pos);
+			float3 destination = mNavPositions.size() > 1 ? mNavPositions[1] : mNavPositions[0];
+			if (owner_pos.Equals(destination, 0.5f) && mNavPositions.size() > 2)
+			{
+				SetNavigationPath(mNavPositions.back());
+			}
 		}
 	}
 }
