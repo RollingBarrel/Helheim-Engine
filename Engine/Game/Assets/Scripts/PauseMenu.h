@@ -13,6 +13,7 @@ enum MENU_TYPE {
     MAIN,
     OPTIONS,
     CREDITS,
+    QUIT,
     KEYBOARD,
     CONTROLS,
     AUDIO_SETTINGS,
@@ -106,7 +107,7 @@ private:
     void OnEffectsDown();
 
     int mMainOption = 0;
-    int mOptionsOption = 7;
+    int mOptionsOption = 4;
     int mVideoSettingOption = 0;
     int mAudioSettingOption = 0;
 

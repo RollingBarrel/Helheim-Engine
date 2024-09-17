@@ -16,6 +16,7 @@
 #include "Timer.h"
 #include "ModuleWindow.h"
 #include "AudioManager.h"
+#include "GameManager.h"
 
 CREATE(PauseMenu)
 {
@@ -217,7 +218,6 @@ void PauseMenu::Start()
 
 void PauseMenu::Update()
 {
-
     Controls();
 
     /*if (mIsScrolling)
@@ -248,15 +248,13 @@ void PauseMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-
-
-            if (mOptionsOption > 7)
+            if (mOptionsOption > 4)
             {
                 mOptionsOption--;
             }
             else
             {
-                mOptionsOption = 10;
+                mOptionsOption = 4;
             }
             HoverMenu(static_cast<MENU_TYPE>(mOptionsOption));
         }
@@ -304,14 +302,14 @@ void PauseMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
-            if (mOptionsOption < 10)
+            if (mOptionsOption < 7)
 
             {
                 mOptionsOption++;
             }
             else
             {
-                mOptionsOption = 7;
+                mOptionsOption = 4;
             }
             HoverMenu(static_cast<MENU_TYPE>(mOptionsOption));
         }
@@ -363,27 +361,14 @@ void PauseMenu::Controls()
         {
             if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
             {
-                if (App->GetCurrentClock()->GetVsyncStatus())
-                {
-                    OnVSyncButtonOffClick();
-                }
-                else
-                {
-                    OnVSyncButtonOnClick();
-                }
+                if (App->GetCurrentClock()->GetVsyncStatus()) OnVSyncButtonOffClick();
+                else OnVSyncButtonOnClick();
             }
             else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
             {
-                if (App->GetWindow()->IsWindowFullscreen())
-                {
-                    OnFullscreenButtonOffClick();
-                }
-                else
-                {
-                    OnFullscreenButtonOnClick();
-                }
+                if (App->GetWindow()->IsWindowFullscreen()) OnFullscreenButtonOffClick();
+                else OnFullscreenButtonOnClick();
             }
-
         }
     }
 
@@ -391,42 +376,29 @@ void PauseMenu::Controls()
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
     {
         if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.01f);
-        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
     {
         if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.01f);
-        }
-
     }
 
     if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
     {
         if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.1f);
-        }
-
     }
 
     if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
     {
         if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
-        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.1f);
-        }
-
     }
 
-
-
-    if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
+    if (App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
@@ -434,26 +406,26 @@ void PauseMenu::Controls()
         {
             if (mCurrentMenu == MENU_TYPE::KEYBOARD)
             {
-                mOptionsOption = 7;
+                mOptionsOption = 4;
                 mKeyboardClicked->SetEnabled(false);
                 OnKeyboardButtonHover();
             }
             else if (mCurrentMenu == MENU_TYPE::CONTROLS)
             {
-                mOptionsOption = 8;
+                mOptionsOption = 5;
                 mControllerClicked->SetEnabled(false);
                 OnControllerButtonHover();
             }
             else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
             {
                 mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
-                mOptionsOption = 9;
+                mOptionsOption = 6;
                 mAudioClicked->SetEnabled(false);
             }
             else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
-                mOptionsOption = 10;
+                mOptionsOption = 7;
                 mSettingsClicked->SetEnabled(false);
             }
 
@@ -469,7 +441,6 @@ void PauseMenu::Controls()
 }
 
 // MENUS
-
 void PauseMenu::OpenMenu(MENU_TYPE type)
 {
     mCurrentMenu = type;
@@ -548,16 +519,20 @@ void PauseMenu::OpenMenu(MENU_TYPE type)
 
 void PauseMenu::ClickMenu(MENU_TYPE type)
 {
-    switch (type) {
-    case MENU_TYPE::MAIN:
-        OnPlayButtonClick();
-        break;
-    case MENU_TYPE::OPTIONS:
-        OnOptionsButtonClick();
-        break;
-    case MENU_TYPE::CREDITS:
-        OnCreditsButtonClick();
-        break;
+    switch (type) 
+    {
+        case MENU_TYPE::MAIN:
+            OnPlayButtonClick();
+            break;
+        case MENU_TYPE::OPTIONS:
+            OnOptionsButtonClick();
+            break;
+        case MENU_TYPE::CREDITS:
+            OnCreditsButtonClick();
+            break;
+        case MENU_TYPE::QUIT:
+            OnQuitButtonClick();
+            break;
     }
 }
 
@@ -566,9 +541,9 @@ void PauseMenu::OnMainButtonClick()
     OpenMenu(MENU_TYPE::MAIN);
 }
 
-void PauseMenu::OnQuitButtonClick() {
-    App->Exit();
-    exit(0);
+void PauseMenu::OnQuitButtonClick() 
+{
+    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
 void PauseMenu::OnOptionsButtonClick()
@@ -583,7 +558,7 @@ void PauseMenu::OnCreditsButtonClick()
 
 void PauseMenu::OnPlayButtonClick()
 {
-    // TODO Deactivate pausemenu
+    GameManager::GetInstance()->SetPaused(false, true);
 }
 
 void PauseMenu::OnControllerButtonClick()
@@ -761,6 +736,9 @@ void PauseMenu::HoverMenu(MENU_TYPE type)
         break;
     case MENU_TYPE::CREDITS:
         OnCreditsButtonHover();
+        break;
+    case MENU_TYPE::QUIT:
+        OnQuitButtonHover();
         break;
     case MENU_TYPE::CONTROLS:
         OnControllerButtonHover();

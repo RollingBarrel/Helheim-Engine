@@ -51,7 +51,6 @@ private:
     ~HudController();
 
     void Controls();
-    void ButtonHover();
     void ButtonClick();
     bool Delay(float delay);
 
@@ -63,18 +62,6 @@ private:
     void OnLoseButtonHoverOn();
     void OnLoseButtonHoverOff();
 
-    void OnContinueBtnClick();
-    void OnContinueBtnHoverOn();
-    void OnContinueBtnHoverOff();
-
-    void OnOptionsBtnClick();
-    void OnOptionsBtnHoverOn();
-    void OnOptionsBtnHoverOff();
-
-    void OnMainMenuBtnClick();
-    void OnMainMenuBtnHoverOn();
-    void OnMainMenuBtnHoverOff();
-
     void OnCollectibleContinueBtnClick();
     void OnCollectibleContinueBtnHoverOn();
     void OnCollectibleContinueBtnHoverOff();
@@ -84,13 +71,6 @@ private:
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
-    GameObject* mContinueBtnGO = nullptr;
-    GameObject* mOptionsBtnGO = nullptr;
-    GameObject* mMainMenuBtnGO = nullptr;
-    ButtonComponent* mContinueBtn = nullptr;
-    ButtonComponent* mOptionsBtn = nullptr;
-    ButtonComponent* mMainMenuBtn = nullptr;
-    GameObject* mOptionsPanel = nullptr;
     GameObject* mFadeoutScreen = nullptr;
     ImageComponent* mFadeoutImage = nullptr;
 
@@ -137,7 +117,6 @@ private:
     TextComponent* mInteractText = nullptr;
     ButtonComponent* mCollectibleContinueBtn = nullptr;
 
-
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;
     GameObject* mBossHealthGradualGO = nullptr;
@@ -147,7 +126,6 @@ private:
 
     float mTargetHealth = 1;
 
-    //bool mLoading = false;
     bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;
