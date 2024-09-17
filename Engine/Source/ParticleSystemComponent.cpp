@@ -214,7 +214,7 @@ void ParticleSystemComponent::Draw()
 
 void ParticleSystemComponent::Update()
 {
-    if (IsEnabled())
+    if (IsEnabled() and !App->IsPause())
     {
         mEmitterTime += App->GetDt();
         mEmitterDeltaTime += App->GetDt();
