@@ -132,10 +132,16 @@ void LightningPanel::Draw(int windowFlags)
 		glUniform1f(4, openGl->mVolAnisotropy);
 		glUseProgram(0);
 	}
-	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.01f, 0.0f, 1.1f))
+	if (ImGui::DragFloat("StepSize", &openGl->mVolStepSize, 0.01f, 0.0f, 100.0f))
 	{
 		glUseProgram(openGl->mVolLightProgramId);
 		glUniform1f(8, openGl->mVolStepSize);
+		glUseProgram(0);
+	}
+	if (ImGui::InputInt("MaxSteps", &openGl->mVolMaxSteps, 0, 64))
+	{
+		glUseProgram(openGl->mVolLightProgramId);
+		glUniform1ui(9, openGl->mVolMaxSteps);
 		glUseProgram(0);
 	}
 

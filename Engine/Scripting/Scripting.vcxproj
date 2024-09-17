@@ -166,12 +166,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BombBoss.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BossBattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaserEyeBall.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
@@ -236,11 +238,13 @@
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="BombBoss.cpp" />
+    <ClCompile Include="BossBattleArea.cpp" />
     <ClCompile Include="BossLaser.cpp" />
     <ClCompile Include="BossLaserEyeBall.cpp" />
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyCreatureMelee.cpp" />

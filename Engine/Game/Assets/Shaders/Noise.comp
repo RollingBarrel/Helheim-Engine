@@ -41,20 +41,22 @@ void main()
 	ivec2 texSize = imageSize(resultImage);
 	if(gl_GlobalInvocationID.x < texSize.x && gl_GlobalInvocationID.y < texSize.y)
 	{
-		float noise = 0.0;
-		float freq = 0.007;
-		float maxAmp = 0.0;
-		float amp = 1.0;
-
-		for (uint i = 0; i<16; ++i)
-		{
-			noise += snoise(vec2(float(gl_GlobalInvocationID.x) * freq, float(gl_GlobalInvocationID.y) * freq)) * amp;
-			maxAmp += amp;
-			amp *= 0.5;
-			freq *= 2.0;
-		}
-		noise /= maxAmp;
-		noise = noise * 0.5 + 0.5;
+		//float noise = 0.0;
+		//float freq = 0.007;
+		//float maxAmp = 0.0;
+		//float amp = 1.0;
+		//
+		//for (uint i = 0; i<16; ++i)
+		//{
+		//	noise += snoise(vec2(float(gl_GlobalInvocationID.x) * freq, float(gl_GlobalInvocationID.y) * freq)) * amp;
+		//	maxAmp += amp;
+		//	amp *= 0.5;
+		//	freq *= 2.0;
+		//}
+		//noise /= maxAmp;
+		//noise = noise * 0.5 + 0.5;
+		
+		float noise = snoise(vec2(gl_GlobalInvocationID.xy));
 		imageStore(resultImage, ivec2(gl_GlobalInvocationID.xy), vec4(noise));
 	}
 }

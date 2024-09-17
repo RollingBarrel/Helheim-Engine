@@ -37,7 +37,7 @@ public:
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
     PoolManager* GetPoolManager() const; 
 
-    bool IsPaused() { return mPaused; }
+    bool IsPaused() const { return mPaused; }
     void SetPaused(bool value, bool screen);
 
     void LoadLevel(const char* LevelName);
@@ -48,12 +48,14 @@ public:
     void HitStopTime(float time);
     void HitStop();
     void HitStop(float duration);
-    bool IsStopped() { return mStopActive; };
+    bool IsStopped() const { return mStopActive; };
 
     void ActivateSecondTutorial();
     void UnlockSecondary();
     void UnlockUltimate(bool unlock);
     void UnlockGrenade(bool unlock);
+    
+    void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
 
 private:
     void PrepareAudio();
@@ -98,4 +100,6 @@ private:
 
     bool mLoadLevel = false;
     const char* mLevelName = nullptr;
+
+    bool mIsFightingBoss = false;
 };
