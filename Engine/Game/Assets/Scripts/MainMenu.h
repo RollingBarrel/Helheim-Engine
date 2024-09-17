@@ -19,16 +19,19 @@ enum MENU_TYPE {
     STUDIO,
     KEYBOARD,
     CONTROLS,
-    AUDIO,
-    SETTINGS
+    AUDIO_SETTINGS,
+    VIDEO_SETTINGS,
 };
 
-enum SETTING_TYPE {
-	GENERAL_VOLUME,
-	MUSIC_VOLUME,
-	EFFECTS_VOLUME,
-	VSYNC,
-	FULL_SCREEN // Using underscore to avoid conflict with fullscreen macro
+enum AUDIO_SETTING_TYPE {
+    MASTER,
+    MUSIC,
+    EFFECTS
+};
+
+enum VIDEO_SETTING_TYPE {
+    VSYNC,
+    FULL_SCREEN
 };
 
 enum DIRECTION {
@@ -51,8 +54,8 @@ private:
     void Controls();
 
     void HoverMenu(MENU_TYPE type);
-    void HoverSubMenu(MENU_TYPE type);
-	void HoverSubSubMenu(SETTING_TYPE type);
+	void HoverVideoMenu(VIDEO_SETTING_TYPE type);
+	void HoverAudioMenu(AUDIO_SETTING_TYPE type);
     void ClickMenu(MENU_TYPE type);
     void OpenMenu(MENU_TYPE type);
 
@@ -71,7 +74,7 @@ private:
     void OnVSyncButtonOffClick();
     void OnFullscreenButtonOnClick();
     void OnFullscreenButtonOffClick();
-	void OnSlide(SETTING_TYPE type, DIRECTION direction, float step); // step is the increment/decrement amount, usually 0.01f (1%) or 0.1f (10%)
+	void OnVolumeSlide(AUDIO_SETTING_TYPE type, DIRECTION direction, float step); // step is the increment/decrement amount, usually 0.01f (1%) or 0.1f (10%)
 
 
     void OnQuitButtonHover();
@@ -80,13 +83,13 @@ private:
     void OnPlayButtonHover();
     void OnControllerButtonHover();
     void OnKeyboardButtonHover();
-    void OnAudioButtonHover();
-    void OnSettingsButtonHover();
+    void OnAudioSettingsButtonHover();
+    void OnVideoSettingsButtonHover();
 	void OnGeneralVolumeHover();
     void OnMusicVolumeHover();
     void OnEffectsVolumeHover();
-    //void OnVSyncButtonHover();
-    //void OnFullscreenButtonHover();
+    void OnVSyncButtonHover();
+    void OnFullscreenButtonHover();
 
     void OnQuitButtonHoverOff();
     void OnOptionsButtonHoverOff();
@@ -94,8 +97,8 @@ private:
     void OnPlayButtonHoverOff();
     void OnControllerButtonHoverOff();
     void OnKeyboardButtonHoverOff();
-    void OnAudioButtonHoverOff();
-    void OnSettingsButtonHoverOff();
+    void OnAudioSettingsButtonHoverOff();
+    void OnVideoSettingsButtonHoverOff();
     void OnGeneralVolumeHoverOff();
     void OnMusicVolumeHoverOff();
     void OnEffectsVolumeHoverOff();
@@ -109,18 +112,20 @@ private:
     void OnEffectsUp();
     void OnEffectsDown();
     
-    int mOption = 0;
-    int mSettingOption = 7;
-    int mSubsettingOption = 0;
+    int mMainOption = 0;
+    int mOptionsOption = 7;
+    int mVideoSettingOption = 0;
+    int mAudioSettingOption = 0;
 
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;
 
     MENU_TYPE mCurrentMenu;
-	SETTING_TYPE mCurrentSetting;
+	AUDIO_SETTING_TYPE mCurrentAudioSetting;
+	VIDEO_SETTING_TYPE mCurrentVideoSetting;
 
-    float mGeneralVolumeValue = .75f;
+    float mMasterVolumeValue = .75f;
     float mMusicVolumeValue = .75f;
     float mEffectsVolumeValue = .75f;
 
