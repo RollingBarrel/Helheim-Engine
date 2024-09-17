@@ -32,6 +32,8 @@ private:
 	GameObject* mDoorExitEmiTop = nullptr;
 	MeshRendererComponent* mTopRenderExit = nullptr;
 
+	GameObject* mElevator = nullptr;
+
 	BoxColliderComponent* mCollider = nullptr;
 	bool mHasEntered = false;
 
