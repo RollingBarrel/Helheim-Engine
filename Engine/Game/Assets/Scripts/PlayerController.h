@@ -176,6 +176,7 @@ private:
     void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
+    void HandleLaser();
     void CheckDebugOptions();
     void OnCollisionEnter(CollisionData* collisionData);
 
