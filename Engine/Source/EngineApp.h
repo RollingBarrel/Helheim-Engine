@@ -36,6 +36,7 @@ public:
 	float GetRealDt() const;
 	float GetGameDt() const;
 
+
 private:
 	ModuleDebugDraw* debugDraw = nullptr;
 	ModuleEngineCamera* engineCamera = nullptr;
@@ -44,7 +45,6 @@ private:
 	ModuleEngineInput* engineInput = nullptr;
 	ModuleEngineScriptManager* engineScriptManager = nullptr;
 	NavMeshController* mNavMeshController;
-
 
 #define NUM_MODULES 15
 	Module* modules[NUM_MODULES];

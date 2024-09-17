@@ -44,7 +44,7 @@ void TrailComponent::Draw() const
 
 void TrailComponent::Update()
 {
-    if (IsEnabled())
+    if (IsEnabled() and !App->IsPause())
     {
         mTrail->UpdateTrailComponent(mOwner);
     }

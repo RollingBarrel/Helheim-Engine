@@ -154,7 +154,7 @@ public:
     void SetUltimateResource(int resource) { mUltimateResource = resource; }
     void EnableUltimate(bool enable);
     void EnableChargeUltimate(bool enable);
-    void UltimateInterpolateLookAt(const float3& target); 
+    void InterpolateLookAt(const float3& target, float speed); 
 
     // States
     DashState* GetDashState() { return mDashState; }
@@ -168,11 +168,15 @@ public:
     ReloadState* GetReloadState() { return mReloadState; }
     UltimateState* GetUltimateState() { return mUltimateState; }
 
+    // Elevator
+    void SetIsInElevator(bool state) { mIsInElevator = state; }
+
 private:
     void CheckInput();
     void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
+    void HandleLaser();
     void CheckDebugOptions();
     void OnCollisionEnter(CollisionData* collisionData);
 
@@ -237,6 +241,8 @@ private:
     GameObject* mShootOrigin = nullptr;
     GameObject* mRedBaterryParticles = nullptr;
     GameObject* mBlueBaterryParticles = nullptr;
+    float mLaserLenght = 5.0f;
+    float mControllerAimSpeed = 15.0f;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;
@@ -297,7 +303,6 @@ private:
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
     std::vector<unsigned int> mMaterialIds;
-    bool Delay(float delay);
 
     std::vector<float4> mPlayerOgColor;
  
@@ -313,4 +318,7 @@ private:
     //UNLOCKED ABILITIES
     bool mGrenadeUnlocked = true;
     bool mUltimateUnlocked = true;
+
+    // Elevator
+    bool mIsInElevator = false;
 };

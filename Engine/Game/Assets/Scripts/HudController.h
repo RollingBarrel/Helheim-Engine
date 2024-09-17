@@ -41,6 +41,7 @@ public:
     void SetCollectibleText(std::string text);
     void SetScreen(SCREEN menu, bool active);
     void SetInteract(bool active);
+    void SetPickupPrompt(bool active);
 
     void SetSanity();
     void SetDialog();
@@ -94,6 +95,8 @@ private:
     GameObject* mCollectibleImageGO = nullptr;
     GameObject* mCollectibleContinueBtnGO = nullptr;
     GameObject* mInteractGO = nullptr;
+    GameObject* mPickupControllerGO = nullptr;
+    GameObject* mPickupKeyboardGO = nullptr;
 
     GameObject* mTryAgainBtnGO = nullptr;
     GameObject* mLoseMenuBtnGO = nullptr;
