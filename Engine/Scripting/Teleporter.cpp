@@ -7,6 +7,7 @@
 #include "AnimationComponent.h"
 #include "PlayerCamera.h"
 #include "GameManager.h"
+#include "PlayerController.h"
 
 
 CREATE(Teleporter)
@@ -39,6 +40,8 @@ void Teleporter::Start()
     }
     mPlayerCamera = GameManager::GetInstance()->GetPlayerCamera();
     mOriginalCameraDist = mPlayerCamera->GetDistanceToPlayer();
+
+    mPlayerController = GameManager::GetInstance()->GetPlayerController();
     
 }
 
@@ -147,7 +150,7 @@ void Teleporter::Update()
             }
             mIsExiting = false;
             mCurrentTime = 0.0f;
-            mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
+            mPlayerController->SetIsInElevator(false);
             mIsAtStart = !mIsAtStart;
 
         }
@@ -198,7 +201,7 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 
         }
 
-        mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
+        mPlayerController->SetIsInElevator(true);
 
                 
 

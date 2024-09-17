@@ -7,6 +7,7 @@
 class BoxColliderComponent;
 class AnimationComponent;
 class PlayerCamera;
+class PlayerController;
 struct CollisionData;
 
 GENERATE_BODY(Teleporter);
@@ -53,6 +54,8 @@ private:
 	PlayerCamera* mPlayerCamera = nullptr;
 	float mOriginalCameraDist = 0.0f;
 	float mCameraDif;
+
+	PlayerController* mPlayerController = nullptr;
 
 };
 

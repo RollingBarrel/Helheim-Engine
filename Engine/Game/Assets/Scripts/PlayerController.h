@@ -168,6 +168,9 @@ public:
     ReloadState* GetReloadState() { return mReloadState; }
     UltimateState* GetUltimateState() { return mUltimateState; }
 
+    // Elevator
+    void SetIsInElevator(bool state) { mIsInElevator = state; }
+
 private:
     void CheckInput();
     void CheckHitEffect();
@@ -313,4 +316,7 @@ private:
     //UNLOCKED ABILITIES
     bool mGrenadeUnlocked = true;
     bool mUltimateUnlocked = true;
+
+    // Elevator
+    bool mIsInElevator = false;
 };
