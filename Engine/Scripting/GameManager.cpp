@@ -138,6 +138,7 @@ void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
+    App->SetPaused(value);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
