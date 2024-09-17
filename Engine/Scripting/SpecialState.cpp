@@ -72,7 +72,7 @@ bool SpecialState::IsReady()
 
 
 	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
-		App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+		App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN)
 	{
 		mPressedSpecialAttackTimer.Reset();
 		if (timerReady && mPlayerController->GetEnergyType() != EnergyType::NONE)
@@ -82,7 +82,7 @@ bool SpecialState::IsReady()
 		}
 	}
 	else if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT ||
-		App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_REPEAT) &&
+		App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_REPEAT) &&
 		mPressedSpecialAttackTimer.DelayWithoutReset(specialPressedCoolDown))
 	{
 		if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE && mPlayerController->GetEnergyType() != EnergyType::NONE)
