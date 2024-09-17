@@ -98,7 +98,7 @@ void Teleporter::Update()
         float3 positon = LerpPosition(mEnterDuration, mFirstPlayerPos);
         mPlayer->SetWorldPosition(positon);
 
-        float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (mEnterDuration / mCurrentTime);
+        float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (mCurrentTime / mEnterDuration);
         mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
         
 
@@ -136,7 +136,7 @@ void Teleporter::Update()
         float3 positon = LerpPosition(mEnterDuration, mIsAtStart ? mEndPos : mStartPos);
         mPlayer->SetWorldPosition(positon);
 
-        float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (1-(mEnterDuration / mCurrentTime));
+        float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (1-(mCurrentTime / mEnterDuration));
         mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
 
         
