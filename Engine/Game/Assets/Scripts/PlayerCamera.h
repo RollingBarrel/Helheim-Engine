@@ -16,6 +16,9 @@ public:
     void Update() override;
     void ActivateShake(float duration, float positionOffsetStrength);
 
+    void SetDistanceToPlayer(float dist) { mDistanceToPlayer = dist; }
+    float GetDistanceToPlayer() const { return mDistanceToPlayer; }
+
 private:
     void Shake();
     

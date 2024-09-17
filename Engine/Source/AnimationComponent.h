@@ -36,8 +36,8 @@ public:
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }
 
-	void SetStateMachine(AnimationStateMachine* sm) { mStateMachine = sm; }
-	void SetSpineStateMachine(AnimationStateMachine* sm) { mSpineStateMachine = sm; }
+	void SetStateMachine(AnimationStateMachine* sm);
+	void SetSpineStateMachine(AnimationStateMachine* sm);
 
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
@@ -66,6 +66,13 @@ public:
 	void SetSMUID(unsigned int uid);
 
 	void ReloadGameObjects();
+
+
+	void SetControllerTime(float time);
+	float GetControllerTime() const;
+
+	void SetSpineControllerTime(float time);
+	float GetSpineControllerTime() const;
 
 private:
 
