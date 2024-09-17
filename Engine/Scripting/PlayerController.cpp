@@ -1050,7 +1050,12 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "WinArea")
     {
-        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+        if(App->GetScene()->GetName() == "Level1Scene")
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");  
+        else if(App->GetScene()->GetName() == "Level2Scene")
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level3Scene");
+
+        return;
     }
 
     if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
