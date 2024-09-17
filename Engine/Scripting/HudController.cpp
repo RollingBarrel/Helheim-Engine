@@ -667,11 +667,7 @@ void HudController::SetBossHealthBarEnabled(bool enabled)
 
 void HudController::SetBossHealth(float health)
 {
-    if (health <= 0)
-    {
-        SetBossHealthBarEnabled(false);
-    }
-    else if (mBossHealthSlider)
+    if (mBossHealthSlider)
     {
         mBossHealthSlider->SetValue(health);
     }

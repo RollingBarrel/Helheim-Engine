@@ -197,7 +197,7 @@ void MeshRendererComponent::Disable()
 		App->GetOpenGL()->BatchRemoveMesh(*this);
 }
 
-void MeshRendererComponent::CreateUiqueMaterial()
+void MeshRendererComponent::CreateUniqueMaterial()
 {
 	assert(mMaterial && mMesh);
 	if (!mUniqueMaterial)
@@ -394,9 +394,23 @@ void MeshRendererComponent::SetEnableBaseColorTexture(bool baseColorTex)
 	App->GetOpenGL()->BatchEditMaterial(*this);
 }
 
+void MeshRendererComponent::SetEnableEmissiveTexture(bool emissiveTex)
+{
+	assert(mMaterial);
+	mMaterial->SetEnableEmissiveTexture(emissiveTex);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}
+
 void MeshRendererComponent::SetBaseColorFactor(const float4& baseColor)
 { 
 	assert(mMaterial);
 	mMaterial->SetBaseColorFactor(baseColor);
+	App->GetOpenGL()->BatchEditMaterial(*this);
+}
+
+void MeshRendererComponent::SetEmissiveColor(const float3& baseColor)
+{
+	assert(mMaterial);
+	mMaterial->SetEmissiveFactor(baseColor);
 	App->GetOpenGL()->BatchEditMaterial(*this);
 }

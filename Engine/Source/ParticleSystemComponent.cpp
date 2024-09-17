@@ -10,6 +10,7 @@
 #include "ModuleResource.h"
 #include "ResourceTexture.h"
 #include "Math/MathAll.h"
+#include "Trail.h"
 
 #define MATRICES_LOCATION 2
 #define COLOR_LOCATION 1
@@ -20,6 +21,7 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* ownerGameObject) : 
     mImage = (ResourceTexture*)App->GetResource()->RequestResource(148626881, Resource::Type::Texture);
     mColorGradient.AddColorGradientMark(0.5f, float4(1.0f, 0.0f, 0.0f, 1.0f));
     Init();
+    mTrail = new Trail();
 }
 
 ParticleSystemComponent::ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner) :  
@@ -28,7 +30,9 @@ mSpeedCurve(original.mSpeedCurve), mSizeCurve(original.mSizeCurve), mEmissionRat
 mLooping(original.mLooping), mShapeType(original.mShapeType), mColorGradient(original.mColorGradient), 
 mShapeAngle(original.mShapeAngle), mShapeRadius(original.mShapeRadius), mShapeSize(original.mShapeSize), mBlendMode(original.mBlendMode), 
 mShapeRandAngle(original.mShapeRandAngle), mIsShapeAngleRand(original.mIsShapeAngleRand), mShapeInverseDir(original.mShapeInverseDir),
-mFollowEmitter(original.mFollowEmitter), mSpinSpeed(original.mSpinSpeed), mBurst(original.mBurst), mGravity(original.mGravity)
+mFollowEmitter(original.mFollowEmitter), mSpinSpeed(original.mSpinSpeed), mBurst(original.mBurst), mGravity(original.mGravity),
+mHasTrails(original.mHasTrails), mTrail(new Trail(*original.mTrail))
+
 {
     if (original.mImage)
         mImage = (ResourceTexture*)App->GetResource()->RequestResource(original.mImage->GetUID(), Resource::Type::Texture);
@@ -49,6 +53,7 @@ ParticleSystemComponent::~ParticleSystemComponent()
         delete particle;
     }
     mParticles.clear();
+    delete mTrail;
 }
 
 Component* ParticleSystemComponent::Clone(GameObject* owner) const
@@ -155,6 +160,10 @@ void ParticleSystemComponent::Draw()
                 transform.Transpose();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
+                //if (mHasTrails)
+                //{
+                //    mParticles[i]->DrawTrail();
+                //}
             }
             glUnmapBuffer(GL_ARRAY_BUFFER);
             glBindVertexArray(mVAO);
@@ -176,7 +185,7 @@ void ParticleSystemComponent::Draw()
     {
         for (int i = 0; i < mParticles.size(); i++)
         {
-            float dt = mParticles[i]->Update(App->GetDt(), mGravity);
+            float dt = mParticles[i]->Update(App->GetDt(), mGravity, mOwner);
             if (dt >= 1)
             {
                 delete mParticles[i];
@@ -213,7 +222,7 @@ void ParticleSystemComponent::Update()
 
         for (int i = 0; i < mParticles.size(); i++)
         {
-            float dt = mParticles[i]->Update(App->GetDt(), mGravity);
+            float dt = mParticles[i]->Update(App->GetDt(), mGravity, mOwner);
             if (dt >= 1)
             {
                 delete mParticles[i];
@@ -277,7 +286,9 @@ void ParticleSystemComponent::CreateNewParticle()
     float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
 
     // Create the particle and sets its speed and size considering if they are linear or curve
-    Particle* particle = new Particle(emitionPosition, emitionDirection, mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom());
+    Particle* particle = new Particle(emitionPosition, emitionDirection, 
+        mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom(),
+        mHasTrails, mTrail, mFollowEmitter);
     particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
     particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
 
@@ -333,7 +344,9 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     JsonObject speed = obj.AddNewJsonObject("SpeedCurve");
     mSpeedCurve.Save(speed);
     mColorGradient.Save(obj);
-
+    obj.AddBool("HasTrails", mHasTrails);
+    JsonObject trail = obj.AddNewJsonObject("Trail");
+    mTrail->Save(trail);
 }
 
 void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -384,7 +397,13 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
         JsonObject speedObj = data.GetJsonObject("SpeedCurve");
         mSpeedCurve.Load(speedObj);
     }
-    mColorGradient.Load(data);  
+    mColorGradient.Load(data);
+    if (data.HasMember("HasTrails")) mHasTrails = data.GetBool("HasTrails");
+    if (data.HasMember("Trail"))
+    {
+        JsonObject trailObj = data.GetJsonObject("Trail");
+        mTrail->Load(trailObj);
+    }
 }
 
 void ParticleSystemComponent::Enable()

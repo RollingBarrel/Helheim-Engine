@@ -51,8 +51,11 @@ public:
     bool IsMetallicRoughnessEnabled() const { return mEnableMetallicRoughnessTexture; }
     bool IsNormalMapEnabled() const { return mEnableNormalMap; }
     bool IsEmissiveEnabled() const { return mEnableEmissiveTexture; }
+
     void SetEnableBaseColorTexture(const bool baseColorTex) { mEnableBaseColorTexture = baseColorTex; };
+    void SetEnableEmissiveTexture(const bool emissiveTex) { mEnableEmissiveTexture = emissiveTex; };
     void SetBaseColorFactor(const float4& baseColor) { mBaseColorFactor = baseColor; }
+    void SetEmissiveFactor(const float3& emissiveFactor) { mEmissiveFactor = emissiveFactor; };
     const char* GetName() const { return mName; }
     void SetName(const char* newName);
 

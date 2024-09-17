@@ -2,6 +2,7 @@
 #include "Panel.h"
 #include <unordered_set>
 #include <vector>
+#include <set>
 #define HIERARCHYPANEL "Hierarchy##"
 
 class GameObject;
@@ -25,6 +26,7 @@ private:
 	void OnRightClickNode(GameObject* node);
 	void OnLeftClickNode(GameObject* node);
 	void ShiftClick(GameObject* node, bool selected, bool click = false);
+	void FilterGameObjects(std::string filter);
 
 	std::unordered_set<GameObject*> mMarked;
 	std::unordered_set<unsigned int> mNodesToOpen;
@@ -34,4 +36,5 @@ private:
 	int mShiftClicked = 0;
 	int mLastMarkSeen = 0;
 	bool mUnmarkFlag = false;
+	std::set<GameObject*> mFilteredGameObjects;
 };

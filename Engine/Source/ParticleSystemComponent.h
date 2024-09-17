@@ -9,6 +9,7 @@
 
 class ResourceTexture;
 class Particle;
+class Trail;
 //class EmitterShape;
 
 class ENGINE_API ParticleSystemComponent : public Component
@@ -100,4 +101,8 @@ private:
 
 	// Renderizado
 	int mBlendMode = 0;
+
+	// Trails
+	bool mHasTrails = false;
+	Trail* mTrail = nullptr;
 };

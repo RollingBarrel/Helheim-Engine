@@ -52,6 +52,8 @@ public:
 	void SetBias(float bias);
 	int GetIndex() const { return mData.shadowIndex; }
 	void SetShadowIndex(int index);
+	bool GetVolumetric() const { return mVolumetric; }
+	void SetVolumetric(bool newValue);
 
 	const Frustum& GetFrustum() const { return mShadowFrustum; }
 
@@ -64,6 +66,7 @@ private:
 
 	bool mCastShadow = false;
 	float mBias;
+	bool mVolumetric = false;
 };
 
 #endif //_COMPONENT_SPOTLIGHT_H_
