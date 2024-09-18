@@ -58,10 +58,6 @@ CREATE(PlayerController)
 {
     CLASS(owner);
 
-    //SEPARATOR("STATS");
-    //MEMBER(MemberType::FLOAT, mMaxShield);
-    //MEMBER(MemberType::FLOAT, mPlayerSpeed);
-
     SEPARATOR("SHIELD");
     MEMBER(MemberType::GAMEOBJECT, mHealParticles);
     MEMBER(MemberType::GAMEOBJECT, mShieldSpriteSheet);
@@ -78,6 +74,8 @@ CREATE(PlayerController)
 
     SEPARATOR("RANGE");
     MEMBER(MemberType::GAMEOBJECT, mShootOrigin);
+    MEMBER(MemberType::FLOAT, mLaserLenght);
+    MEMBER(MemberType::FLOAT, mControllerAimSpeed);
 
     SEPARATOR("MELEE");
     MEMBER(MemberType::GAMEOBJECT, mEquippedMeleeGO);
@@ -283,6 +281,11 @@ void PlayerController::Start()
     //{
     //    mGameObject->SetWorldPosition(float3(163.02f, 65.72f, 12.90f));
     //}
+
+    //LASER
+    GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+    if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
+
 }
 
 void PlayerController::Update()
@@ -427,66 +430,70 @@ void PlayerController::CheckInput()
 
 void PlayerController::HandleRotation()
 {
-    if (mLowerState->GetType() == StateType::DASH)
-        return;
+    if (mLowerState->GetType() == StateType::DASH) return;
 
-    GameManager* gameManager = GameManager::GetInstance();
-    bool controller = gameManager->UsingController();
-
-    if (controller)
+     
+    bool isUsingController = GameManager::GetInstance()->UsingController();
+    if (isUsingController)
     {
         float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
         float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
 
         if (Abs(rightX) < 0.1f && Abs(rightY) < 0.1f) return;
 
-        //float3 position = mGameObject->GetWorldPosition();
         float3 position = mShootOrigin->GetWorldPosition();
         position.y = mGameObject->GetWorldPosition().y;
         float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
         mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
-
-        GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-        float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
-        laserDirection.y = 0;
-        laserDirection.Normalize();
-        if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
-
     }
     else
     {
         Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
-        float3 planePoint = float3(mGameObject->GetWorldPosition().x ,mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
+        float3 planePoint = float3(mGameObject->GetWorldPosition().x, mShootOrigin->GetWorldPosition().y, mGameObject->GetWorldPosition().z);
         Plane plane(planePoint, float3::unitY);
 
         float distance;
         if (plane.Intersects(ray, &distance))
-        {      
+        {
             float3 rayPoint = ray.GetPoint(distance);
             mAimPosition = rayPoint;
-            if (mGameObject->GetWorldPosition().Distance(rayPoint) > 2.5f)
-            {
-                
-
-                GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
-                float3 laserDirection = mAimPosition - mShootOrigin->GetWorldPosition();
-                laserDirection.y = 0;
-                laserDirection.Normalize();
-                if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + laserDirection * 5.0f);
-                //if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mAimPosition);
-
-                
-            } 
-
-            mAimPosition.y = mGameObject->GetWorldPosition().y;
-
-        }
-       
+            mAimPosition.y = mGameObject->GetWorldPosition().y; 
+        }    
     }
+
     if (mUpperStateType != StateType::ULTIMATE)
-        mGameObject->LookAt(mAimPosition);
+    {
+        if (!isUsingController)
+        {
+            mGameObject->LookAt(mAimPosition);
+        }
+        else
+        {
+            InterpolateLookAt(mAimPosition, mControllerAimSpeed);
+        }
+        HandleLaser();
+    }   
     else
-        UltimateInterpolateLookAt(mAimPosition);
+    {
+        InterpolateLookAt(mAimPosition, mUltimateAimSpeed);
+    }      
+}
+
+void PlayerController::HandleLaser()
+{
+    GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
+    if (laserFinalPoint)
+    {
+        Hit hit;
+        Ray ray;
+        ray.pos = mShootOrigin->GetWorldPosition();
+        ray.dir = mGameObject->GetFront();
+        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
+        Physics::Raycast(hit, ray, mLaserLenght, &ignoreTags);
+
+        float rayLenght = (hit.IsValid()) ? hit.mDistance : mLaserLenght;
+        laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * rayLenght);
+    }  
 }
 
 void PlayerController::SetAnimation(std::string trigger, float transitionTime)
@@ -800,6 +807,10 @@ void PlayerController::CheckDebugOptions()
     else if (input->GetKey(Keys::Keys_F9) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }    
+    else if (input->GetKey(Keys::Keys_F10) == KeyState::KEY_DOWN)
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level3Scene");
     }
     
 }
@@ -933,8 +944,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
     }
 }
 
-
-void PlayerController::UltimateInterpolateLookAt(const float3& target)
+void PlayerController::InterpolateLookAt(const float3& target, float speed)
 {
     float3 currentForward = mGameObject->GetFront().Normalized();
 
@@ -962,7 +972,7 @@ void PlayerController::UltimateInterpolateLookAt(const float3& target)
 
     Quat targetRotation = Quat(targetRotationMatrix);
 
-    Quat interpolatedRotation = Quat::Slerp(currentRotation, targetRotation, App->GetDt()*mUltimateAimSpeed);
+    Quat interpolatedRotation = Quat::Slerp(currentRotation, targetRotation, App->GetDt()*speed);
 
     // Apply the interpolated rotation to the game object
     mGameObject->SetLocalRotation(interpolatedRotation);
@@ -1045,10 +1055,15 @@ void PlayerController::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "WinArea")
     {
-        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+        if(App->GetScene()->GetName() == "Level1Scene")
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");  
+        else if(App->GetScene()->GetName() == "Level2Scene")
+            GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level3Scene");
+
+        return;
     }
 
-    if (collisionData->collidedWith->GetTag() == "Door")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
     {
         mCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")

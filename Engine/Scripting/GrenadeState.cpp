@@ -45,9 +45,7 @@ StateType GrenadeState::HandleInput()
     //    return StateType::SWITCH;
     //}
 
-    if (mPlayerController->GetReloadState()->IsReady() &&
-        (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetReloadState()->IsReady())
     {
         mPlayerController->GetReloadState()->ResetCooldown();
         return StateType::RELOAD;
@@ -93,8 +91,14 @@ void GrenadeState::Exit()
 
 bool GrenadeState::IsReady()
 {
-    if (mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsGrenadeUnlocked()) return true; 
-    return false;
+    if (mStateTimer.DelayWithoutReset(mStateCooldown)
+        && mPlayerController->IsGrenadeUnlocked()
+        && (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
+    {
+        return true;
+    }
+        return false;
 }
 
 StateType GrenadeState::GetType()

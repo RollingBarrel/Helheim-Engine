@@ -8,6 +8,8 @@
         "Trap",
         "Drop",
         "LineFinal",
-        "DoorArea"
+        "DoorArea",
+        "Bridge",
+        "Collectible"
     ]
 }
