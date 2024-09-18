@@ -339,7 +339,7 @@ void Enemy::Init()
 
 	if (mAnimationComponent)
 	{
-		mAnimationComponent->OnReset();
+		mAnimationComponent->RestartStateAnimation();
 		mAnimationComponent->SendTrigger("tIdle", 0.0f);
 	}
 	if (mAiAgentComponent)

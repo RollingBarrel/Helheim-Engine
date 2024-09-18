@@ -1028,9 +1028,60 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 			ImGui::Text("PAUSED");
 		}
 
-		if (ImGui::Button("Restart"))
+		if (ImGui::Button("Restart current state"))
 		{
-			component->OnRestart();
+			component->RestartStateAnimation();
+		}
+
+		if (ImGui::Button("Reset Component"))
+		{
+			component->ResetAnimationComponent();
+		}
+
+		std::vector<std::string> state_names = component->GetSMStateNames();
+		std::string currentState = component->GetCurrentStateName();
+		ImGui::Text("Select current state:");
+		if (ImGui::BeginCombo("##DefaultState", currentState.c_str()))
+		{
+
+			for (int n = 0; n < state_names.size(); n++)
+			{
+				bool is_selected = (currentState == state_names[n]);
+				if (ImGui::Selectable(state_names[n].c_str(), is_selected))
+				{
+					currentState = state_names[n].c_str();
+					component->ChangeState(state_names[n], 0.01f);
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if (component->HasSpine())
+		{
+			std::vector<std::string> spine_state_names = component->GetSpineSMStateNames();
+			std::string currentSpineState = component->GetCurrentSpineStateName();
+			ImGui::Text("Select current spine state:");
+			if (ImGui::BeginCombo("##DefaultState", currentSpineState.c_str()))
+			{
+
+				for (int n = 0; n < spine_state_names.size(); n++)
+				{
+					bool is_selected = (currentSpineState == spine_state_names[n]);
+					if (ImGui::Selectable(spine_state_names[n].c_str(), is_selected))
+					{
+						currentSpineState = spine_state_names[n].c_str();
+						component->ChangeSpineState(spine_state_names[n], 0.01f);
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
 		}
 
 		if (ImGui::Checkbox("Loop", &loop))
