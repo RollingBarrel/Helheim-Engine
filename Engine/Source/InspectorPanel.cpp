@@ -741,7 +741,7 @@ void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderCompon
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
-		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
+		if (ImGui::ColorPicker4("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
