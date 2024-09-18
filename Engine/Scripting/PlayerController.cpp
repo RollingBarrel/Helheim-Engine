@@ -691,44 +691,15 @@ void PlayerController::UpdateGrenadeVisuals()
 
             float2 rightStickVector = float2(rightX, rightY);
             float lenght = rightStickVector.Length();
-            lenght = (lenght > 1.0) ? 1.0f : lenght;
+            lenght = Min(1.0f, lenght);
 
             float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
             float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
-            float3 grenadeDirection = ((cameraFront * -rightY) + (cameraRight * -rightX)).Normalized();
+            float3 grenadeDirection = ((cameraFront * -rightStickVector.y) + (cameraRight * -rightStickVector.x)).Normalized();
 
             float3 initialPosition = mGameObject->GetWorldPosition();
 
             mGrenadePosition = initialPosition + grenadeDirection * (mGrenadeRange * lenght);
-
-            //if (!(std::abs(rightX) < 0.2f && std::abs(rightY) < 0.2f))
-            //{
-            //    float3 position = mGameObject->GetWorldPosition();
-            //
-            //    float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
-            //    float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
-            //
-            //    float3 throwDirection = (cameraFront * rightY + cameraRight * rightX).Normalized();
-            //
-            //    float3 movement = throwDirection * mGrenadeCursorSpeed * App->GetDt();
-            //    mGrenadePosition += movement;
-            //
-            //    mGrenadePosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)) * (-mGrenadeRange);
-            //}
-           
-
-           // float3 diff = mGrenadePosition - mGameObject->GetWorldPosition();
-           //
-           // float distanceSquared = diff.LengthSq();
-           // float radiusSquared = mGrenadeRange * mGrenadeRange;
-           // if (distanceSquared > radiusSquared)
-           // {
-           //     diff.Normalize();
-           //     mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
-           // }
-
-            //mAimPosition = position + ((cameraFront * -rightY) + (float3::unitY.Cross(cameraFront) * -rightX)).Normalized();
-            
         }
 
         else
