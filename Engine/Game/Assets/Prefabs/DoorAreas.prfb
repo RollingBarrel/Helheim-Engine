@@ -1,0 +1,394 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1873443763,
+                "ParentUID": 417909503,
+                "Name": "DoorAreas",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1307015596,
+                "ParentUID": 1873443763,
+                "Name": "DoorArea1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    72.99703979492188,
+                    0.0,
+                    4.662117004394531
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOOR ENTER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 1148983579
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 345579056
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 100456207
+                            },
+                            {
+                                "VariableName": "DOOR EXIT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1796980057
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 1414782584
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 1276354897
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.25,
+                            2.950000047683716,
+                            1.2999999523162842
+                        ],
+                        "ColliderType": 1,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1178340231,
+                "ParentUID": 1873443763,
+                "Name": "DoorArea2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    38.60122299194336,
+                    0.20446163415908814,
+                    -10.418145179748536
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOOR ENTER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 2091091607
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 1693531795
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 440462538
+                            },
+                            {
+                                "VariableName": "DOOR EXIT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1129216232
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 726504466
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 821058940
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.2000000476837159,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            1.399999976158142,
+                            1.649999976158142
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1406952880,
+                "ParentUID": 1873443763,
+                "Name": "DoorArea3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -26.816303253173829,
+                    0.20446163415908814,
+                    -19.166637420654298
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOOR ENTER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 50424046
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 613564413
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 101602475
+                            },
+                            {
+                                "VariableName": "DOOR EXIT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 988451168
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 593397712
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 1147848069
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.2000000476837159,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            1.399999976158142,
+                            1.649999976158142
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1501822785,
+                "ParentUID": 1873443763,
+                "Name": "DoorArea4",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -63.81440353393555,
+                    0.20446163415908814,
+                    6.155316352844238
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOOR ENTER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 988451168
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 593397712
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 1147848069
+                            },
+                            {
+                                "VariableName": "DOOR EXIT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": 1103256430
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": 698595276
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiTop",
+                                "MemberType": 3,
+                                "VariableData": 234977517
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            1.2000000476837159,
+                            0.0
+                        ],
+                        "Size": [
+                            0.3499999940395355,
+                            1.399999976158142,
+                            1.9500000476837159
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            }
+        ]
+    }
+}

@@ -104,8 +104,8 @@ void BossLaserEyeBall::RotateLaser()
 
     mCurrentRotation += rotationAmount;
 
-    float maxRotation = mInitRotation + 1.f;
-    float minRotation = mInitRotation - 1.f;
+    float maxRotation = mInitRotation + 4.1f;
+    float minRotation = mInitRotation - 4.1f;
 
     if (mCurrentRotation > maxRotation)
     {
