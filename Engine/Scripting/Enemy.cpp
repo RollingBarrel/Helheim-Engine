@@ -159,7 +159,7 @@ void Enemy::Chase()
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			float3 dir = mAiAgentComponent->GetDirection();
-			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + float3(dir.x, 0.0f, dir.z));
 		}
 		
 		if (IsPlayerReachable())
@@ -322,6 +322,11 @@ void Enemy::Death()
 		ResetEnemyColor();
 		mGameObject->SetEnabled(false);
 		DropItem();
+
+		if (mAnimationComponent)
+		{
+			mAnimationComponent->ResetAnimationComponent();
+		}
 	}
 }
 
