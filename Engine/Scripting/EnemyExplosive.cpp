@@ -21,7 +21,6 @@ CREATE(EnemyExplosive)
     MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
     MEMBER(MemberType::GAMEOBJECT, mExplosionParticle);
 
-
     END_CREATE;
 }
 
@@ -43,7 +42,6 @@ void EnemyExplosive::Start()
     {
         mExplosionParticle->SetEnabled(false);
     }
-
 }
 
 
@@ -65,7 +63,6 @@ void EnemyExplosive::Attack()
     {
         mExplosionParticle->SetEnabled(true);  
     }
-
 
     if (IsPlayerInRange(mExplosionRadius))
     {
