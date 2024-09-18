@@ -1,5 +1,7 @@
 #pragma once
-class PlayerStats
+#include "Globals.h"
+
+class ENGINE_API PlayerStats
 {
 public:
 
@@ -13,26 +15,11 @@ public:
 	void SetDamageModifier(float damageModifier) { mDamageModifier = damageModifier; }
 	void SetDialogIndex(int index) { mDialogIndex = index; }
 
-	void SetInitLevelStats() {
-		mIniHealth = mMaxHealth;
-		mIniSpeed = mSpeed;
-		mIniDamage = mDamageModifier;
-		mIniDialogIdx = mDialogIndex;
-	}
+	void SetInitLevelStats();
 
-	void TryAgainStats() {
-		mMaxHealth = mIniHealth;
-		mSpeed = mIniSpeed;
-		mDamageModifier = mIniDamage;
-		mDialogIndex = mIniDialogIdx;
-	}
+	void TryAgainStats();
 
-	void ResetStats() {
-		mMaxHealth = 100.0f;
-		mSpeed = 5.5f;
-		mDamageModifier = 1.0f;
-		mDialogIndex = 0;
-	}
+	void ResetStats();
 
 private:
 	float mMaxHealth = 100.0f;
