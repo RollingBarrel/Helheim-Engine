@@ -510,6 +510,7 @@ void HudController::SetPickupPrompt(bool active)
 void HudController::OnWinButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    App->GetScene()->GetPlayerStats()->ResetStats();
 }
 
 void HudController::OnLoseButtonClick()

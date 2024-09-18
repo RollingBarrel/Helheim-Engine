@@ -799,18 +799,22 @@ void PlayerController::CheckDebugOptions()
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+        App->GetScene()->GetPlayerStats()->ResetStats();
     }
     else if (input->GetKey(Keys::Keys_F8) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+        App->GetScene()->GetPlayerStats()->ResetStats();
     }
     else if (input->GetKey(Keys::Keys_F9) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+        App->GetScene()->GetPlayerStats()->TryAgainStats();
     }    
     else if (input->GetKey(Keys::Keys_F10) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level3Scene");
+        App->GetScene()->GetPlayerStats()->TryAgainStats();
     }
     
 }
