@@ -13,18 +13,21 @@
 CREATE(Grenade)
 {
 	CLASS(owner);
-    MEMBER(MemberType::FLOAT, mGrenadeDPS);
-    MEMBER(MemberType::FLOAT, mGrenadeDuration);
+    MEMBER(MemberType::FLOAT, mGrenadeDamage);
+    MEMBER(MemberType::FLOAT, mBlackHoleDuration);
+    MEMBER(MemberType::FLOAT, mExplosionDuration);
     MEMBER(MemberType::FLOAT, mGrenadeRadius);
     MEMBER(MemberType::FLOAT, mTrajectorySpeedFactor);
     MEMBER(MemberType::GAMEOBJECT, mTrail);
     MEMBER(MemberType::GAMEOBJECT, mExplosionSFX);
+    MEMBER(MemberType::GAMEOBJECT, mBlackHoleSFX);
     MEMBER(MemberType::GAMEOBJECT, mSphere);
 	END_CREATE;
 }
 
 void Grenade::Start()
 {
+    mExplosionSFX->SetEnabled(false);
     mExplosionSFX->SetEnabled(false);
     mTrail->SetEnabled(false);
     mSphere->SetEnabled(false);
@@ -37,15 +40,14 @@ void Grenade::Update()
 {   
     switch (mState)
     {
-    case GRENADE_STATE::INACTIVE:
-        break;
     case GRENADE_STATE::MOVE:
         MoveToTarget();
         break;
     case GRENADE_STATE::BLACK_HOLE:
-        Explosion();
+        BlackHole();
         break;
     case GRENADE_STATE::EXPLOSION:
+        Explosion();
         break;
     default:
         break;
@@ -65,11 +67,13 @@ void Grenade::MoveToTarget()
 
     if (mElapsedTime >= mFlightTime)
     {
-        mExplosionSFX->SetEnabled(false);
-        mExplosionSFX->SetEnabled(true);
+        mBlackHoleSFX->SetEnabled(false);
+        mBlackHoleSFX->SetEnabled(true);
+        mTrail->SetEnabled(false);
         mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
+        mBlackHoleSFX->SetWorldPosition(mDestination);
         mExplosionSFX->SetWorldPosition(mDestination);
         mSphere->SetWorldPosition(mDestination);
 
@@ -110,14 +114,14 @@ float3 Grenade::CalculatePositionAtTime(float t)
 
 void Grenade::Explosion()
 {
-    if (!mExplosionTimer.Delay(mGrenadeDuration))
+    if (mExplosionTimer.Delay(mExplosionDuration)) 
     {
-        BlackHole();
-    }
-    else 
-    {
+
         EndExplosion();
     }
+
+    mExplosionSFX->SetEnabled(true);
+    //mSphere->SetLocalScale(float3(10.0f));
 }
 
 void Grenade::BlackHole()
@@ -125,9 +129,27 @@ void Grenade::BlackHole()
     std::vector<GameObject*> affectedEnemies;
     GetAffectedEnemies(affectedEnemies);
     PullCloser(affectedEnemies);
-    float scaleInTime = (mExplosionTimer.GetTimePassed() - mGrenadeDuration / 2.0f) / (mGrenadeDuration / 2.0f);
+
+    if (mBlackHoleTimer.Delay(mBlackHoleDuration))
+    {
+        mState = GRENADE_STATE::EXPLOSION;
+        MakeDamage(affectedEnemies);
+
+    }
+
+    float scaleInTime = (mBlackHoleTimer.GetTimePassed() - mBlackHoleDuration / 2.0f) / (mBlackHoleDuration / 2.0f);
     scaleInTime = - scaleInTime * scaleInTime + 1.0f;
     mSphere->SetLocalScale(float3(scaleInTime));
+}
+
+void Grenade::MakeDamage(std::vector<GameObject*> enemies)
+{
+    for (GameObject* enemy : enemies)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
+        Enemy* target = static_cast<Enemy*>(script->GetScriptInstance());
+        target->TakeDamage(mGrenadeDamage);
+    }
 }
 
 void Grenade::PullCloser(std::vector<GameObject*> enemies)
@@ -142,12 +164,12 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
             float pullStrength = 3.0f * App->GetDt();
             enemy->SetWorldPosition(enemy->GetWorldPosition() + normalizedDirection * pullStrength);
 
-            ScriptComponent* script = (ScriptComponent*)enemy->GetComponent(ComponentType::SCRIPT);
-            Enemy* target = (Enemy*)script->GetScriptInstance();
+            ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
+            Enemy* target = static_cast<Enemy*>(script->GetScriptInstance());
 
-            if (target != nullptr)
+            if (target)
             {
-                target->TakeDamage(mGrenadeDPS * App->GetDt());
+                //target->TakeDamage(mGrenadeDPS * App->GetDt());
                 target->SetAttracted(true);
             }
         }
@@ -157,7 +179,9 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
 void Grenade::EndExplosion()
 {
     GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_THROW, mExplosionAudio, true);
-    mState = GRENADE_STATE::INACTIVE;
+    mState = GRENADE_STATE::NONE;
+    mExplosionSFX->SetEnabled(false);
+    mSphere->SetEnabled(false);
 }
 
 void Grenade::GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) const
@@ -179,6 +203,9 @@ void Grenade::GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) cons
 void Grenade::ThrowGrenade(float3 initialPosition, float3 destination)
 {
     mTrail->SetEnabled(true);
+    mSphere->SetEnabled(false);
+    mBlackHoleSFX->SetEnabled(false);
+    mExplosionSFX->SetEnabled(false);
 
     mState = GRENADE_STATE::MOVE;
     mTrail->SetWorldPosition(initialPosition);

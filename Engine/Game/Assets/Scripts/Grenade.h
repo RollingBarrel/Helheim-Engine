@@ -11,10 +11,10 @@ class GameObject;
 
 enum class GRENADE_STATE
 {
-	INACTIVE,
 	MOVE,
 	BLACK_HOLE,
-	EXPLOSION
+	EXPLOSION,
+	NONE
 };
 
 class Grenade : public Script
@@ -36,15 +36,18 @@ private:
 	float3  CalculatePositionAtTime(float t);
 	void Explosion();
 	void BlackHole();
+	void MakeDamage(std::vector<GameObject*> enemies);
 	void PullCloser(std::vector<GameObject*> enemies);
 	void EndExplosion();
 	void GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) const;
 
-	GRENADE_STATE mState = GRENADE_STATE::INACTIVE;
+	GRENADE_STATE mState = GRENADE_STATE::NONE;
 	// Player-depends status
-	float mGrenadeDPS = 1.0f;
-	float mGrenadeDuration = 4.0f;
+	float mGrenadeDamage = 50.0f;
+	TimerScript mBlackHoleTimer; 
 	TimerScript mExplosionTimer;
+	float mExplosionDuration = 2.0f;
+	float mBlackHoleDuration = 2.0f;
 	float mGrenadeRadius = 5.0f; // Explosion area
 
 	// Before explotion
@@ -64,6 +67,7 @@ private:
 
 
 	GameObject* mTrail = nullptr;
+	GameObject* mBlackHoleSFX = nullptr;
 	GameObject* mExplosionSFX = nullptr;
 	GameObject* mSphere = nullptr;
 
