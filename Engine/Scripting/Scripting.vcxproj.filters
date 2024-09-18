@@ -115,7 +115,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Hammer.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
@@ -161,7 +160,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
       <Filter>Enemies</Filter>
@@ -201,6 +199,12 @@
     <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossBattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
@@ -288,7 +292,6 @@
     <ClCompile Include="Spawner.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Sanity.cpp" />
     <ClCompile Include="Machinegun.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
@@ -330,7 +333,6 @@
     <ClCompile Include="EnemyCreatureMelee.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="BombBoss.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -367,6 +369,12 @@
     <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="BossBattleArea.cpp" />
     <ClCompile Include="PauseMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Sanity.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp">
       <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>

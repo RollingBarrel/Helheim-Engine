@@ -267,12 +267,12 @@ void MainMenu::Update()
 
     Controls();
         
-    /*if (mIsScrolling)
+    if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
-        if (currentPosition.y > 3400.0f) mTextTransform->SetPosition(float3(currentPosition.x, -500.0f, currentPosition.z));
-        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
-    }*/
+        if (currentPosition.y > 3800.0f) mTextTransform->SetPosition(float3(currentPosition.x, -700.0f, currentPosition.z));
+        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+    }
 
     if (mLoadlevel == true && mTimer.Delay(1.25f))
     {
@@ -565,7 +565,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
             mIsScrolling = true;
-            //mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
+            mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
             mOptionsClicked->SetEnabled(false);
             mCreditsClicked->SetEnabled(true);
             break;
