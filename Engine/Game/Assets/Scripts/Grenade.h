@@ -65,6 +65,7 @@ private:
 
 	GameObject* mGrenade = nullptr;
 	GameObject* mExplosionSFX = nullptr;
-	
+	GameObject* mScaled = nullptr;
+
 	int mExplosionAudio = -1;
 };

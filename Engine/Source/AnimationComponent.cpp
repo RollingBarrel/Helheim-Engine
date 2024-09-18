@@ -154,8 +154,6 @@ void AnimationComponent::RestartStateAnimation()
 	{
 		mController->GetTransform(current);
 	}
-
-
 	if (mHasSpine)
 	{
 		mSpineController->Restart();
@@ -164,7 +162,6 @@ void AnimationComponent::RestartStateAnimation()
 		{
 			mSpineController->GetTransform(current);
 		}
-
 	}
 }
 
