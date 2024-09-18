@@ -510,16 +510,33 @@ void HudController::SetPickupPrompt(bool active)
 void HudController::OnWinButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    App->GetScene()->GetPlayerStats()->ResetStats();
 }
 
 void HudController::OnLoseButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    App->GetScene()->GetPlayerStats()->ResetStats();
 }
 
 void HudController::OnTryAgainButtonClick()
 {
-    GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+    if (App->GetScene()->GetName() == "Level1Scene")
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+    }
+
+    if (App->GetScene()->GetName() == "Level2Scene")
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }
+
+    if (App->GetScene()->GetName() == "Level3Scene")
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level3Scene");
+    }
+
+    App->GetScene()->GetPlayerStats()->TryAgainStats();
 }
 
 void HudController::OnTryAgainButtonHoverOn()
