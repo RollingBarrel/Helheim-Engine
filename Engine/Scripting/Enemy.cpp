@@ -20,7 +20,8 @@
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
-
+#include <cmath>
+#include <iostream>
 #include "Math/MathFunc.h"
 
 void Enemy::Start()
@@ -28,7 +29,7 @@ void Enemy::Start()
 	ModuleScene* scene = App->GetScene();
 	mPlayer = GameManager::GetInstance()->GetPlayer();
 	mHealth = mMaxHealth;
-
+	mVanishingTime = 0.0f;
     //Hit Effect
 
 	if (mGameObject->GetName() != "FinalBoss") 
@@ -38,8 +39,8 @@ void Enemy::Start()
 		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
-			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
+			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
 	}
@@ -310,6 +311,18 @@ void Enemy::ActivateUltVFX()
 
 void Enemy::Death()
 {
+	mVanishingTime += 1.0f * App->GetDt();
+	for (size_t i = 0; i < mMeshComponents.size(); i++)
+	{
+		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+		const ResourceMaterial* material = meshRender->GetResourceMaterial();
+		float4 baseColor = material->GetBaseColorFactor();
+		float4 endColor = material->GetBaseColorFactor();
+		endColor.w = 0.0f;
+		baseColor.Lerp(endColor, mVanishingTime);
+		meshRender->SetBaseColorFactor(baseColor);
+	}
+
 	if (mDeathTimer.Delay(mDeathTime))
 	{
 		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
