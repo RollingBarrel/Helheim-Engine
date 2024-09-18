@@ -25,7 +25,7 @@ CREATE(AreaDoors)
 	SEPARATOR("ELEVATOR");
 	MEMBER(MemberType::GAMEOBJECT, mElevator);
 	SEPARATOR("TUTORIAL");
-	MEMBER(MemberType::GAMEOBJECT, mIsStartingArea);
+	MEMBER(MemberType::BOOL, mIsStartingArea);
 	END_CREATE;
 }
 
