@@ -217,7 +217,7 @@ private:
     float mDashRange = 5.0f;
 
     // Speed
-    float mPlayerSpeed;
+    float mPlayerSpeed = 1.0f;
     float mBaseSpeed = 5.5f;
 
     // Shield

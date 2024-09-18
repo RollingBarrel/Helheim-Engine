@@ -2,8 +2,8 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
-#include <vector>
 #include "TimerScript.h"
+#include <vector>
 
 GENERATE_BODY(Grenade);
 
@@ -12,21 +12,22 @@ class GameObject;
 enum class GRENADE_STATE
 {
 	INACTIVE,
-	MOVEMENT,
-	EXPLOSION_START,
+	MOVE,
+	BLACK_HOLE,
+	EXPLOSION
 };
 
 class Grenade : public Script
 {
 	FRIEND(Grenade)
 public:
-	Grenade(GameObject* owner);
-	~Grenade();
+	Grenade(GameObject* owner) : Script(owner) {}
+	~Grenade() {}
 
 	void Start() override;
 	void Update() override;
 
-	void SetPositionDestination(float3 initialPosition, float3 destination);
+	void ThrowGrenade(float3 initialPosition, float3 destination);
 
 	float GetGrenadeRadius();
 private:
@@ -37,8 +38,7 @@ private:
 	void BlackHole();
 	void PullCloser(std::vector<GameObject*> enemies);
 	void EndExplosion();
-
-	std::vector<GameObject*> GetAffectedEnemies();
+	void GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) const;
 
 	GRENADE_STATE mState = GRENADE_STATE::INACTIVE;
 	// Player-depends status
@@ -52,7 +52,7 @@ private:
 	float3 mDestination = float3(0, 0, 0);
 	float3 mCurrentPosition;
 
-	float mTotalDistance;
+	float mTotalDistance = 0.0f;
 	float mCurrentDistance = 0.0f;
 	float3 mVelocity;
 

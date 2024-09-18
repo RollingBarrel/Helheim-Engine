@@ -1,26 +1,17 @@
 #include "GrenadeState.h"
+#include "Application.h"
+#include "ModuleInput.h"
 
 #include "GameManager.h"
 #include "HudController.h"
-#include "Application.h"
-#include "ModuleInput.h"
 #include "PlayerController.h"
-#include "Keys.h"
-#include "ScriptComponent.h"
-#include "Grenade.h"
+
 #include "AttackState.h"
 #include "SpecialState.h"
-#include "SwitchState.h"
 #include "ReloadState.h"
-#include "UltimateState.h"
 
-GrenadeState::GrenadeState(PlayerController* player, float cooldown) : State(player, cooldown)
-{
-}
+#include "Keys.h"
 
-GrenadeState::~GrenadeState()
-{
-}
 
 StateType GrenadeState::HandleInput()
 {

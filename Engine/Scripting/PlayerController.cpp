@@ -734,13 +734,12 @@ void PlayerController::ThrowGrenade()
 
     if (mGrenade)
     {
-        mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
+        mGrenade->ThrowGrenade(mGameObject->GetWorldPosition(), mGrenadePosition);
     }  
 }
 
 void PlayerController::CheckOtherTimers()
 {
-
     // Paralizys
     if (mIsParalyzed)
     {
