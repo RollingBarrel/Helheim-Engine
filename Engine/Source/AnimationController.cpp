@@ -59,7 +59,7 @@ void AnimationController::Update()
 void AnimationController::Restart()
 {
 	EndBlending();
-	//mCurrentTime = 0.1f;
+	mCurrentTime = 0.024f;
 }
 
 float3 AnimationController::Interpolate(const float3& first, const float3& second, float lambda)
