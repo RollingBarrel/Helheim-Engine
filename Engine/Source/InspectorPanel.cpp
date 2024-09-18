@@ -688,6 +688,19 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 			ImGui::EndPopup();
 		}
 	}
+	//SetMaterial
+	std::vector<std::string>matFiles;
+	EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_MATERIAL_PATH, ".mat", matFiles);
+	std::string matName;
+	if (ImGui::BeginCombo("SelectMaterialCombo", "SELECT MATERIAL", ImGuiComboFlags_PopupAlignLeft))
+	{
+		for (const std::string& file : matFiles)
+		{
+			EngineApp->GetFileSystem()->SplitPath(file.c_str(), &matName);
+			ImGui::Selectable(matName.c_str(), false);
+		}
+		ImGui::EndCombo();
+	}
 }
 
 void InspectorPanel::DrawAIAgentComponent(AIAgentComponent* component) const
