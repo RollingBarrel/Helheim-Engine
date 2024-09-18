@@ -24,9 +24,7 @@ StateType AimState::HandleInput()
 {
     if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::DASH;
     if (mPlayerController->GetWeapon()->GetCurrentAmmo()== 0) return StateType::RELOAD;
-    if (mPlayerController->GetGrenadeState()->IsReady() &&
-       (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN || 
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetGrenadeState()->IsReady())
     {
         return StateType::GRENADE;
     }
@@ -40,12 +38,10 @@ StateType AimState::HandleInput()
     }
     else 
     {
-
         if (mPlayerController->GetAttackState()->IsReady())
         {
             return StateType::ATTACK;
         }
-
     }
 
     //if (mPlayerController->GetSwitchState()->IsReady() &&
@@ -56,17 +52,13 @@ StateType AimState::HandleInput()
     //    return StateType::SWITCH;
     //}
 
-    if (mPlayerController->GetReloadState()->IsReady() &&
-       (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetReloadState()->IsReady())
     {
         mPlayerController->GetReloadState()->ResetCooldown();
         return StateType::RELOAD;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady() && (
-        (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady())
     {
         mPlayerController->GetUltimateState()->ResetCooldown();
         return StateType::ULTIMATE_CHARGE;

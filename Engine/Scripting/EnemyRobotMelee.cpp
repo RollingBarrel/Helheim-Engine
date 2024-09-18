@@ -54,7 +54,7 @@ void EnemyRobotMelee::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
     {
-        mAnimationComponent->OnRestart();
+        mAnimationComponent->RestartStateAnimation();
         PlayMeleeAudio();
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
