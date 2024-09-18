@@ -59,7 +59,7 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        mAnimationComponent->OnRestart();
+        mAnimationComponent->RestartStateAnimation();
         RangeAttack();
         if (IsPlayerInRange(mAttackDistance / 2.0f))
         {

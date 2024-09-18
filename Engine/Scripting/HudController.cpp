@@ -31,6 +31,7 @@ CREATE(HudController)
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
+    MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
@@ -42,14 +43,12 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGradualGO);
     SEPARATOR("Pause Screen");
     MEMBER(MemberType::GAMEOBJECT, mPauseScreen);
-    MEMBER(MemberType::GAMEOBJECT, mContinueBtnGO);
-    MEMBER(MemberType::GAMEOBJECT, mOptionsBtnGO);
-    MEMBER(MemberType::GAMEOBJECT, mMainMenuBtnGO);
-    MEMBER(MemberType::GAMEOBJECT, mOptionsPanel);
+    MEMBER(MemberType::GAMEOBJECT, mFadeoutScreen);
     SEPARATOR("Screens");
     MEMBER(MemberType::GAMEOBJECT, mWinScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoseScreen);
     MEMBER(MemberType::GAMEOBJECT, mLoadingScreen);
+    MEMBER(MemberType::GAMEOBJECT, mLoadingSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mTryAgainBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mLoseMenuBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mWinMenuBtnGO);
@@ -82,34 +81,7 @@ HudController::~HudController()
 
 void HudController::Start()
 {
-    if (mPauseScreen) 
-    {
-        mPauseScreen->SetEnabled(false);
-        if (mContinueBtnGO)
-        {
-            mContinueBtn = static_cast<ButtonComponent*>(mContinueBtnGO->GetComponent(ComponentType::BUTTON));
-            mContinueBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnContinueBtnClick, this)));
-            mContinueBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnContinueBtnHoverOn, this)));
-            mContinueBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnContinueBtnHoverOff, this)));
-            OnContinueBtnHoverOn();
-        }
-        if (mOptionsBtnGO)
-        {
-            mOptionsBtn = static_cast<ButtonComponent*>(mOptionsBtnGO->GetComponent(ComponentType::BUTTON));
-            mOptionsBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnOptionsBtnClick, this)));
-            mOptionsBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnOptionsBtnHoverOn, this)));
-            mOptionsBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnOptionsBtnHoverOff, this)));
-        }
-        if (mMainMenuBtnGO)
-        {
-            mMainMenuBtn = static_cast<ButtonComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::BUTTON));
-            mMainMenuBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnMainMenuBtnClick, this)));
-            mMainMenuBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnMainMenuBtnHoverOn, this)));
-            mMainMenuBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnMainMenuBtnHoverOff, this)));
-        }
-        if (mOptionsPanel) mOptionsPanel->SetEnabled(false);
-    }
-
+    if (mPauseScreen) mPauseScreen->SetEnabled(false);
 
     if (mWinScreen) 
     {
@@ -130,6 +102,12 @@ void HudController::Start()
         if (mTryAgainBtn) mTryAgainBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOff, this)));
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
+    if (mLoadingSliderGO) 
+    {
+        mLoadingSlider = static_cast<SliderComponent*>(mLoadingSliderGO->GetComponent(ComponentType::SLIDER));
+        mLoadingSlider->SetValue(0.01f);
+    }
+    
 
     if (mCollectibleScreen)
     {
@@ -145,12 +123,19 @@ void HudController::Start()
     if (mHealthGO)
     {
         mHealthSlider = static_cast<SliderComponent*>(mHealthGO->GetComponent(ComponentType::SLIDER));
+        mHealthImage = static_cast<ImageComponent*>(mHealthGO->GetChildren()[1]->GetComponent(ComponentType::IMAGE));
         mHealthSlider->SetValue(1.0f);
+    }
+
+    if (mHealthIconGO)
+    {
+        mHealthIcon = static_cast<ImageComponent*>(mHealthIconGO->GetComponent(ComponentType::IMAGE));
     }
     
     if (mHealthGradualGO) 
     {
         mHealthGradualSlider = static_cast<SliderComponent*>(mHealthGradualGO->GetComponent(ComponentType::SLIDER));
+        mHealthGradualImage = static_cast<ImageComponent*>(mHealthGradualGO->GetChildren()[1]->GetComponent(ComponentType::IMAGE));
         mHealthGradualSlider->SetValue(1.0f);
     }
 
@@ -193,13 +178,21 @@ void HudController::Start()
 
     if (mSanityGO) mSanity = static_cast<Sanity*>(static_cast<ScriptComponent*>(mSanityGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     if (mDialogGO) mDialog = static_cast<Dialog*>(static_cast<ScriptComponent*>(mDialogGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (mFadeoutScreen)
+    {
+        mFadeoutImage = static_cast<ImageComponent*>(mFadeoutScreen->GetComponent(ComponentType::IMAGE));
+        mFadeoutScreen->SetEnabled(true);
+    }
 
-
-    GameManager::GetInstance()->GetHud()->SetDialog();
+    SetDialog();
 }
 
 void HudController::Update()
 {
+    if (mFadeoutImage && mFadeIn) FadeIn();
+    else if (mFadeoutImage && !mFadeIn) FadeOut();
+    if(mLoadlevel == true && mLoadingSlider->GetValue() < 1) mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
+
     Controls();
 
     if (GameManager::GetInstance()->IsPaused()) return;
@@ -207,13 +200,28 @@ void HudController::Update()
     // Gradually decrease the gradual health slider
     if (mHealthGradualSlider)
     {
-        if (mHealthGradualSlider->GetValue() > mTargetHealth)
+        float currentGradualValue = mHealthGradualSlider->GetValue();
+
+        // If health is decreasing
+        if (currentGradualValue > mTargetHealth)
         {
-            mHealthGradualSlider->SetValue(mHealthGradualSlider->GetValue() - 0.15f * App->GetDt());
+            mHealthGradualImage->SetColor(float3(254.0f /255.0f, 224.0f /255.0f, 193.0f /255.0f));  // Yellow when decreasing
+            mHealthGradualSlider->SetValue(currentGradualValue - 0.15f * App->GetDt());
+
+            // Update health slider instantly to final value
+            if (mHealthSlider) mHealthSlider->SetValue(mTargetHealth);
         }
-        else if (mHealthGradualSlider->GetValue() < mTargetHealth) 
+        // If health is increasing
+        else if (currentGradualValue < mTargetHealth)
         {
-            mHealthGradualSlider->SetValue(mTargetHealth);
+            mHealthGradualImage->SetColor(float3(231.0f /255.0f, 253.0f /255.0f, 242.0f /255.0f));  // Blue when increasing
+            mHealthGradualSlider->SetValue(currentGradualValue + 0.15f * App->GetDt());
+
+            // Only set health slider value when gradual slider reaches target
+            if (currentGradualValue + 0.15f * App->GetDt() >= mTargetHealth)
+            {
+                if (mHealthSlider) mHealthSlider->SetValue(mTargetHealth);
+            }
         }
     }
     if (mBossHealthGradualSlider && mBossHealthSlider)
@@ -263,6 +271,16 @@ void HudController::Update()
     }
 }
 
+void HudController::FadeIn()
+{
+    if (*mFadeoutImage->GetAlpha() >= 0.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() - 0.65f * App->GetDt());
+}
+
+void HudController::FadeOut()
+{
+    if (*mFadeoutImage->GetAlpha() <= 1.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() + 0.65f * App->GetDt());
+}
+
 bool HudController::Delay(float delay)
 {
     mTimePassed += App->GetDt();
@@ -280,41 +298,6 @@ void HudController::Controls()
     if (!GameManager::GetInstance()->IsPaused()) return;
 
     GameManager::GetInstance()->GetPlayerController()->SetIdleState();
-
-    if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
-    {
-        if (mCurrentOption > 1)
-        {
-            mCurrentOption = 0;
-        }
-        else
-        {
-            mCurrentOption++;
-        }
-        ButtonHover();
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN)
-    {
-        if (mCurrentOption == 0)
-        {
-            mCurrentOption = 2;
-        }
-        else
-        {
-            mCurrentOption--;
-        }
-        ButtonHover();
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
-    {
-        ButtonClick();
-    }
 }
 
 void HudController::ButtonClick()
@@ -328,43 +311,6 @@ void HudController::ButtonClick()
     {
         OnLoseButtonClick();
         return;
-    }
-        
-    switch (mCurrentOption)
-    {
-    case 0:
-        OnContinueBtnClick();
-        break;
-    case 1:
-        OnOptionsBtnClick();
-        break;
-    case 2:
-        OnMainMenuBtnClick();
-        break;
-    default:
-        break;
-    }
-}
-
-void HudController::ButtonHover()
-{
-    OnContinueBtnHoverOff();
-    OnOptionsBtnHoverOff();
-    OnMainMenuBtnHoverOff();
-
-    switch (mCurrentOption)
-    {
-    case 0:
-        OnContinueBtnHoverOn();
-        break;
-    case 1:
-        OnOptionsBtnHoverOn();
-        break;
-    case 2:
-        OnMainMenuBtnHoverOn();
-        break;
-    default:
-        break;
     }
 }
 
@@ -422,7 +368,7 @@ void HudController::SetHealth(float health)
     if (health == 0) 
     {
         health = 0.001f;
-        if (mFeedbackImage) mFeedbackImage->SetAlpha(-1.0f);
+        if (mFeedbackImage) mFeedbackImage->SetAlpha(1.0f);
     }
     else if (health < mHealthSlider->GetValue()) 
     {
@@ -431,16 +377,28 @@ void HudController::SetHealth(float health)
     else
     {
         if (mFeedbackImage) mFeedbackImage->SetAlpha(0.0f);
-        if (mHealthGradualSlider) mHealthGradualSlider->SetValue(health);
     }
 
-    if (mHealthSlider) mHealthSlider->SetValue(health);
+    if (mHealthSlider)
+    {
+        if (health < 0.3f)
+        {
+            mHealthImage->SetColor(float3(233.0f /255.0f, 112.0f /255.0f, 103.0f /255.0f));  // Red
+            mHealthIcon->SetColor(float3(233.0f / 255.0f, 112.0f / 255.0f, 103.0f / 255.0f));
+        }
+        else
+        {
+            mHealthImage->SetColor(float3(59.0f/255.0f, 254.0f/255.0f, 223.0f /255.0f));  // Green
+            mHealthIcon->SetColor(float3(59.0f / 255.0f, 254.0f / 255.0f, 223.0f / 255.0f));
+        }
+    }
+
     mTargetHealth = health;
 }
 
 void HudController::SetMaxHealth(float health)
 {
-    float newWidth = health * 2.8;
+    float newWidth = health * 2.8f;
 
     if (mHealthSlider)
     {
@@ -476,25 +434,6 @@ void HudController::SetMaxHealth(float health)
     }
 }
 
-void HudController::SwitchWeapon()
-{
-    return;
-
-    /*if (mWeaponMeleeGO->IsEnabled())
-    {
-        mWeaponMeleeGO->SetEnabled(false);
-        mWeaponRangeGO->SetEnabled(true);
-        mSecondWeaponMeleeGO->SetEnabled(true);
-        mSecondWeaponRangeGO->SetEnabled(false);
-    }
-    else
-    {
-        mWeaponMeleeGO->SetEnabled(true);
-        mWeaponRangeGO->SetEnabled(false);
-        mSecondWeaponMeleeGO->SetEnabled(false);
-        mSecondWeaponRangeGO->SetEnabled(true);
-    }*/
-}
 
 void HudController::SetGrenadeCooldown(float cooldown)
 {
@@ -518,6 +457,7 @@ void HudController::SetScreen(SCREEN name, bool active)
     switch (name) {
         case SCREEN::LOAD:
             if (mLoadingScreen) mLoadingScreen->SetEnabled(active);
+            mLoadlevel = true;
             break;
         case SCREEN::LOSE:
             if (mLoseScreen) mLoseScreen->SetEnabled(active);
@@ -570,16 +510,33 @@ void HudController::SetPickupPrompt(bool active)
 void HudController::OnWinButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    App->GetScene()->GetPlayerStats()->ResetStats();
 }
 
 void HudController::OnLoseButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
+    App->GetScene()->GetPlayerStats()->ResetStats();
 }
 
 void HudController::OnTryAgainButtonClick()
 {
-    GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+    if (App->GetScene()->GetName() == "Level1Scene")
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level1Scene");
+    }
+
+    if (App->GetScene()->GetName() == "Level2Scene")
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level2Scene");
+    }
+
+    if (App->GetScene()->GetName() == "Level3Scene")
+    {
+        GameManager::GetInstance()->LoadLevel("Assets/Scenes/Level3Scene");
+    }
+
+    App->GetScene()->GetPlayerStats()->TryAgainStats();
 }
 
 void HudController::OnTryAgainButtonHoverOn()
@@ -609,57 +566,6 @@ void HudController::OnLoseButtonHoverOff()
 #pragma endregion
 
 #pragma region Btn Events
-
-void HudController::OnContinueBtnClick()
-{
-    GameManager::GetInstance()->SetPaused(false, true);
-}
-
-void HudController::OnContinueBtnHoverOn()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mContinueBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.25f);
-}
-
-void HudController::OnContinueBtnHoverOff()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mContinueBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
-}
-
-void HudController::OnOptionsBtnClick()
-{
-    mOptionsPanel->SetEnabled(true);
-}
-
-void HudController::OnOptionsBtnHoverOn()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mOptionsBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.25f);
-}
-
-void HudController::OnOptionsBtnHoverOff()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mOptionsBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
-}
-
-void HudController::OnMainMenuBtnClick()
-{
-    GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
-}
-
-void HudController::OnMainMenuBtnHoverOn()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.25f);
-}
-
-void HudController::OnMainMenuBtnHoverOff()
-{
-    ImageComponent* image = static_cast<ImageComponent*>(mMainMenuBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
-}
 
 void HudController::OnCollectibleContinueBtnClick()
 {

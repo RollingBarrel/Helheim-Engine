@@ -30,8 +30,11 @@ public:
 
 	void StartUp();
 	void OnStop();
-	void OnRestart();
-	void OnReset();
+	void RestartStateAnimation();
+	void ResetAnimationComponent();
+
+	const std::vector<std::string> GetSMStateNames() const;
+	const std::vector<std::string> GetSpineSMStateNames() const;
 
 	AnimationStateMachine* GetStateMachine() const { return mStateMachine; }
 	AnimationStateMachine* GetSpineStateMachine() const { return mSpineStateMachine; }
@@ -78,6 +81,7 @@ private:
 
 	void LoadGameObjects(GameObject* current);
 	void LoadSpineChildren(GameObject* current);
+	void OnResetGameObjects();
 
 	AnimationController* mController;
 	AnimationStateMachine* mStateMachine;
