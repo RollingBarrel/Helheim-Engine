@@ -5,6 +5,10 @@
 #include "Application.h"
 #include "ModuleDetourNavigation.h"
 #include "AnimationComponent.h"
+#include "PlayerCamera.h"
+#include "GameManager.h"
+#include "PlayerController.h"
+
 
 CREATE(Teleporter)
 {
@@ -12,8 +16,7 @@ CREATE(Teleporter)
     MEMBER(MemberType::FLOAT3, mStartPos);
     MEMBER(MemberType::FLOAT3, mEndPos);
     MEMBER(MemberType::FLOAT, mDuration);
-    MEMBER(MemberType::GAMEOBJECT, mCamera);
-    MEMBER(MemberType::FLOAT3, mCameraDif);
+    MEMBER(MemberType::FLOAT, mCameraDif);
     END_CREATE;
 }
 
@@ -35,6 +38,10 @@ void Teleporter::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Teleporter::OnCollisionEnter, this, std::placeholders::_1)));
     }
+    mPlayerCamera = GameManager::GetInstance()->GetPlayerCamera();
+    mOriginalCameraDist = mPlayerCamera->GetDistanceToPlayer();
+
+    mPlayerController = GameManager::GetInstance()->GetPlayerController();
     
 }
 
@@ -48,9 +55,6 @@ void Teleporter::Update()
         mPlayer->SetWorldPosition(position);
         mGameObject->SetWorldPosition(position);
 
-
-        mCamera->SetWorldPosition(position + mDeltaCamera + mCameraDif);
-        mCamera->GetWorldPosition();
 
         if (mCurrentTime > mDuration)
         {
@@ -94,9 +98,9 @@ void Teleporter::Update()
         float3 positon = LerpPosition(mEnterDuration, mFirstPlayerPos);
         mPlayer->SetWorldPosition(positon);
 
-        mCamera->SetWorldPosition(mDeltaCamera + positon + mCameraDif * mCurrentTime / mEnterDuration);
-        mCamera->GetWorldPosition();
-
+        float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (mCurrentTime / mEnterDuration);
+        mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
+        
 
         if (mCurrentTime > mEnterDuration)
         {
@@ -132,8 +136,8 @@ void Teleporter::Update()
         float3 positon = LerpPosition(mEnterDuration, mIsAtStart ? mEndPos : mStartPos);
         mPlayer->SetWorldPosition(positon);
 
-        mCamera->SetWorldPosition(mDeltaCamera + positon + mCameraDif * (mEnterDuration - mCurrentTime) / mEnterDuration);
-        mCamera->GetWorldPosition();
+        float lerp_cam_dist = mOriginalCameraDist + mCameraDif * (1-(mCurrentTime / mEnterDuration));
+        mPlayerCamera->SetDistanceToPlayer(lerp_cam_dist);
 
         
         if (mCurrentTime > mEnterDuration)
@@ -146,9 +150,8 @@ void Teleporter::Update()
             }
             mIsExiting = false;
             mCurrentTime = 0.0f;
-            mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
+            mPlayerController->SetIsInElevator(false);
             mIsAtStart = !mIsAtStart;
-            mCamera->GetComponent(ComponentType::SCRIPT)->SetEnable(true);
 
         }
     }
@@ -198,12 +201,9 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
 
         }
 
-        mPlayer->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
+        mPlayerController->SetIsInElevator(true);
 
-        mCamera->GetComponent(ComponentType::SCRIPT)->SetEnable(false);
-
-        mDeltaCamera = mCamera->GetWorldPosition() - mPlayer->GetWorldPosition();
-        
+                
 
     }
 }

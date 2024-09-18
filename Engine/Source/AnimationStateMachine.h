@@ -55,6 +55,8 @@ public:
 	void SetStateLoop(int index, bool loop);
 	void DeleteState(int index);
 
+	const std::vector<std::string> GetStateNames() const;
+
 	//Transitions
 	void AddTransition(const std::string& sourceName, const std::string& targetName, const std::string& trigger);
 	void RemoveTransition(int index);

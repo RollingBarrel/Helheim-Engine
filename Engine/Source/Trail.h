@@ -38,11 +38,13 @@ public:
 	void Update();
 	void UpdateTrailComponent(GameObject* owner);
 	void UpdateLineComponent(GameObject* origin, GameObject* final);
+	void UpdateTrailParticle(float3 position);
 	void Draw() const;
 	void Enable();
 	void Disable();
 
 	void AddFirstTrailPoint(GameObject* mOwner);
+	void AddFirstTrailPoint(float3 position);
 	void RemoveLastTrailPoint();
 
 	void Save(JsonObject& archive) const;

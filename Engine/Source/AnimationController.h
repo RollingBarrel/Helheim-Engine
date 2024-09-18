@@ -43,7 +43,7 @@ public:
 	void SetCurrentAnimation(ResourceAnimation* animation) { mCurrentAnimation = animation; }
 
 	//Blending
-	void SetTransitionDuration(float time) { mTransitionDuration = time; }
+	void SetTransitionDuration(float time) { mTransitionDuration = time > 0.0f ? time : 0.01f; }
 	void ActivateTransition() { mTransition = true; mStartTransitionTime = mCurrentTime; }
 	void SetClipStartTime(float time) { mClipStartTime = time; }
 	bool GetIsInTransition() const { return mTransition; }
@@ -53,6 +53,8 @@ public:
 
 
 	float GetAnimationCurrentTime() const { return mCurrentTime; }
+	void SetAnimationCurrentTime(float time) { EndBlending(); mCurrentTime = time; }
+
 	unsigned int GetAnimationUID() const;
 private:
 	float3 Interpolate(const float3& first, const float3& second, float lambda);

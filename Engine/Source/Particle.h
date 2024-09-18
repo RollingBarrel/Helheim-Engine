@@ -1,14 +1,18 @@
 #pragma once
 #include "ColorGradient.h"
 
+class Trail;
+class GameObject;
+
 class Particle
 {
 public:
     Particle();
-    Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime);
+    Particle(float3 position, float3 direction, float4 color, float rotation, float lifeTime, bool hasTrail, const Trail* trail, bool followEmitter);
     ~Particle();
 
-    float Update(float deltaTime, float gravity);
+    float Update(float deltaTime, float gravity, GameObject* owner);
+    void DrawTrail();
 
     const float3& GetPosition() const { return mPosition; }
     const float3& GetDirection() const { return mDirection; }
@@ -44,4 +48,8 @@ private:
 
     float mLifeTime = 0.0f;
     const float mMaxLifeTime = 3.0f;
+
+    bool mHasTrail = false;
+    Trail* mTrail = nullptr;
+    bool mFollowEmitter = false;
 };
