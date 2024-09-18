@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include "AnimationComponent.h"
 #include "BoxColliderComponent.h"
+#include "MeshRendererComponent.h"
 #include "Keys.h"
 
 CREATE(FirstTutorial)
@@ -19,6 +20,8 @@ CREATE(FirstTutorial)
     MEMBER(MemberType::GAMEOBJECT, mDashTutorial);
     SEPARATOR("DOOR");
     MEMBER(MemberType::GAMEOBJECT, mDoor1);
+    MEMBER(MemberType::GAMEOBJECT, mDoorEmissiveTop);
+    MEMBER(MemberType::GAMEOBJECT, mDoorEmissiveBorder);
     END_CREATE;
 }
 
@@ -48,6 +51,38 @@ void FirstTutorial::Start()
             mCurrentStep = 1;
         }    
     }
+
+    if (mDoor1)
+    {
+        AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
+        if (doorAnimation1)
+        {
+            doorAnimation1->SetIsPlaying(true);
+            doorAnimation1->SendTrigger("tClose", 0.6f);
+
+        }
+
+        BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
+        if (door1Collider)
+        {
+            door1Collider->SetEnable(true);
+        }
+    }
+
+    if (mDoorEmissiveTop)
+    {
+        mTopRender = static_cast<MeshRendererComponent*>(mDoorEmissiveTop->GetComponent(ComponentType::MESHRENDERER));
+    }
+    if (mDoorEmissiveBorder)
+    {
+        mBorderEnter = static_cast<MeshRendererComponent*>(mDoorEmissiveBorder->GetComponent(ComponentType::MESHRENDERER));
+    }
+
+    if (mBorderEnter && mTopRender)
+    {
+        mTopRender->SetEmissiveColor(float3(255.0f, 37.0f, 0.0f));
+        mBorderEnter->SetEmissiveColor(float3(255.0f, 37.0f, 0.0f));
+    }
 }
 
 void FirstTutorial::Update()
@@ -55,22 +90,7 @@ void FirstTutorial::Update()
     if (!mCompleted)
     {
         Tutorial();
-        if (mDoor1)
-        {
-            AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
-            if (doorAnimation1)
-            {
-                doorAnimation1->SetIsPlaying(true);
-                doorAnimation1->SendTrigger("tClose", 0.6f);
-
-            }
-
-            BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
-            if (door1Collider)
-            {
-                door1Collider->SetEnable(true);
-            }
-        }
+        
     }
     else 
     {
