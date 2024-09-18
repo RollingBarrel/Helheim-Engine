@@ -79,10 +79,13 @@ void AreaDoors::CloseDoors(bool close)
 	}
 	else
 	{
-		if (mDoorEnterEmiBorder && !mIsStartingArea)
+		if (mDoorEnterEmiBorder)
 		{
-			mBorderRenderEnter->SetEmissiveColor(mOpenColor);
-			mTopRenderEnter->SetEmissiveColor(mOpenColor);
+			if (!mIsStartingArea)
+			{
+				mBorderRenderEnter->SetEmissiveColor(mOpenColor);
+				mTopRenderEnter->SetEmissiveColor(mOpenColor);
+			}
 			mBorderRenderExit->SetEmissiveColor(mOpenColor);
 			mTopRenderExit->SetEmissiveColor(mOpenColor);
 		}
