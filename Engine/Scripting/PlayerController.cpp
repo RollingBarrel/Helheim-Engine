@@ -668,22 +668,23 @@ void PlayerController::SetMaxShield(float percentage)
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
-void PlayerController::SetGrenadeVisuals(bool value)
+void PlayerController::EnableGrenadeAim(bool value)
 {
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
-        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
+        if (value)
+        {
+            mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
+            mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
+        }  
     }
 }
 
-void PlayerController::UpdateGrenadeVisuals()
+void PlayerController::GrenadeAim()
 {
     if (mGrenadeExplotionPreviewAreaGO)
     {
-        float3 diff;
-
         if (GameManager::GetInstance()->UsingController())
         {
             float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
@@ -704,22 +705,25 @@ void PlayerController::UpdateGrenadeVisuals()
 
         else
         {
-            diff = mAimPosition - mGameObject->GetWorldPosition();
-            float distanceSquared = diff.LengthSq();
-            float radiusSquared = mGrenadeRange * mGrenadeRange;
+            Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+            float3 planePoint = mGameObject->GetWorldPosition();
+            Plane plane(planePoint, float3::unitY);
 
-            if (distanceSquared <= radiusSquared)
+            float distance;
+            if (plane.Intersects(ray, &distance))
             {
-                mGrenadePosition = mAimPosition;
-            }
-            else
-            {
-                diff.Normalize();
-                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+                float3 rayPoint = ray.GetPoint(distance);
+                float3 initialPosition = mGameObject->GetWorldPosition();
+                float3 aimDirection = rayPoint - mGameObject->GetWorldPosition();
+                float distanceSquared = aimDirection.LengthSq();
+                float radiusSquared = mGrenadeRange * mGrenadeRange;
+                aimDirection.Normalize();
+
+                mGrenadePosition = (distanceSquared < radiusSquared) ? rayPoint : initialPosition + aimDirection.Normalized() * mGrenadeRange;
             }
         }
 
-        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, mGameObject->GetWorldPosition().y, mGrenadePosition.z));
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGrenadePosition);
     }
 }
 

@@ -64,20 +64,20 @@ StateType GrenadeState::HandleInput()
 
 void GrenadeState::Update()
 {
-    mPlayerController->UpdateGrenadeVisuals();
+    mPlayerController->GrenadeAim();
 }
 
 void GrenadeState::Enter()
 {
     mThrowGrenade = false;
 
-    mPlayerController->SetGrenadeVisuals(true);
+    mPlayerController->EnableGrenadeAim(true);
     mPlayerController->SetSpineAnimation("tGrenade", 0.3f);
 }
 
 void GrenadeState::Exit()
 {
-    mPlayerController->SetGrenadeVisuals(false);
+    mPlayerController->EnableGrenadeAim(false);
     
     if (mThrowGrenade) 
     {

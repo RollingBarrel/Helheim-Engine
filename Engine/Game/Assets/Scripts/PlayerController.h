@@ -117,8 +117,8 @@ public:
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
     void SetGrenadeRange(float value) { mGrenadeRange = value; }
-    void SetGrenadeVisuals(bool value);
-    void UpdateGrenadeVisuals();
+    void EnableGrenadeAim(bool value);
+    void GrenadeAim();
     void ThrowGrenade();
 
     void CheckOtherTimers();
