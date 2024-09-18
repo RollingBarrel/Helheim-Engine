@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 
 #include "MathFunc.h"
 #include "BossLaserEyeBall.h"
@@ -131,6 +132,9 @@ void BossLaser::SpawnEyeBalls()
         if (eyeBallScript)
         {
             eyeBallScript->Init(mDamage, mLaserEnemyDuration, mLaserDistance, mLaserSpeed, angle);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER, eyeBall->GetWorldPosition());
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER2, eyeBall->GetWorldPosition());
         }
 
         mActiveEyeBalls.push_back(eyeBall);
@@ -140,6 +144,8 @@ void BossLaser::SpawnEyeBalls()
 
 void BossLaser::ReturnEyeBallsToPool()
 {
+    //GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, true);
+
     for (GameObject* eyeBall : mActiveEyeBalls)
     {
         eyeBall->SetEnabled(false);

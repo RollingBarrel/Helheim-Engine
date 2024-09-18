@@ -229,6 +229,31 @@ void GameManager::UnlockGrenade(bool unlock)
     mPlayerController->UnlockGrenade(unlock);
 }
 
+void GameManager::HandleBossAudio(int stage)
+{
+    if (mIsFightingBoss && stage >= 0)
+    {
+        if (mLastAudioID != 2 && stage == 2)
+        {
+            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 2);
+            mLastAudioID = 2;
+        }
+        else if (mLastAudioID != 1 && stage == 1)
+        {
+            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 1);
+            mLastAudioID = 1;
+        }
+        else if (mLastAudioID != 0 && stage == 0)
+        {
+            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, true);
+            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
+
+            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 0);
+            mLastAudioID = 0;
+        }
+    }
+}
+
 void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -258,6 +283,11 @@ void GameManager::PrepareAudio()
     {
         mAudioManager->AddAudioToASComponent(BGM::LEVEL2);
     }
+    else if (sceneName == "BossTestingRoom")
+    {
+        mAudioManager->AddAudioToASComponent(BGM::BOSS_ROOM);
+        mAudioManager->AddAudioToASComponent(BGM::BOSS);
+    }
 }
 
 void GameManager::StartAudio()
@@ -272,6 +302,13 @@ void GameManager::StartAudio()
     else if (sceneName == "Level2Scene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL2);
+    }
+    else if (sceneName == "BossTestingRoom")
+    {
+        mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
+        mBackgroundAudioID2 = mAudioManager->Play(BGM::BOSS_ROOM);
+
+        mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, true);
     }
 }
 
@@ -291,6 +328,10 @@ void GameManager::HandleAudio()
     else if (sceneName == "Level2Scene")
     {
         HandleLevel2Audio();
+    }
+    else if (sceneName == "BossTestingRoom")
+    {
+        HandleBossAudio(-1);
     }
 }
 

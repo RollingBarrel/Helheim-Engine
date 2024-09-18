@@ -40,7 +40,8 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
-	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
+	FMOD::Studio::System* GetFMODSystem() { return mSystem; };
+	FMOD::System* GetFMODCoreSystem() {return mCoreSystem;};
 	std::vector<const char*> GetEventsNames();
 
 	void AudioPause();

@@ -280,7 +280,6 @@ FMOD::Channel* ModuleAudio::PlayOneShot(const std::string& fileName)
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
 	channel->setChannelGroup(mOneShotChannelGroup);
-	channel->setMode(FMOD_3D);
 	return channel;
 }
 
@@ -400,8 +399,13 @@ void ModuleAudio::SetEventPosition(const FMOD::Studio::EventDescription* eventDe
 	eventInstance->set3DAttributes(&attributes);
 }
 
-void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 eventPosition)
+void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 audioPosition)
 {
+	if(audioPosition.Distance(float3(0,0,0)) == 0)
+	{
+		return;
+	}
+
 	// Add the channel to the global channel group
 	if (channel)
 	{
@@ -410,9 +414,9 @@ void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 eventPosition)
 		FMOD_VECTOR  position = { { 0 } };
 		FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };
 
-		position.x = eventPosition.x;
-		position.y = eventPosition.y;
-		position.z = eventPosition.z;
+		position.x = audioPosition.x;
+		position.y = audioPosition.y;
+		position.z = audioPosition.z;
 
 		channel->set3DAttributes(&position, &velocity);
 	}

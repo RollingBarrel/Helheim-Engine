@@ -49,4 +49,6 @@ private:
     int mPoolSize = 6; 
     std::vector<GameObject*> mActiveEyeBalls;      
     std::vector<GameObject*> mInactiveEyeBall;   
+
+    int mLaserSound = -1;
 };

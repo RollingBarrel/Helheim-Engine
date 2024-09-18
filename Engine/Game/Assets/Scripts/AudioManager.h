@@ -13,10 +13,13 @@ enum class BGM
 	LEVEL1,
 	LEVEL2,
 
+	BOSS_ROOM,
+	BOSS,
+
 	GAMEOVER
 };
 
-enum class SFX 
+enum class SFX
 {
 	// MAIN MENU
 	MAINMENU_SELECT,
@@ -73,6 +76,16 @@ enum class SFX
 	ENEMY_EXPLOSIVE_STEPS,
 	ENEMY_EXPLOSIVE_PREEXPLOSION,
 	ENEMY_EXPLOSIVE_EXPLOSION,
+
+	BOSS_SCREAM,
+	BOSS_AWAKE,
+	BOSS_LASER,
+	BOSS_LASER2,
+	BOSS_ERUPTION,
+	BOSS_ROAR_BULLET,
+	BOSS_ROAR_ERUPTION,
+	BOSS_ROAR_LASER,
+	BOSS_HIT,
 };
 
 namespace FMOD 
@@ -158,6 +171,9 @@ private:
 		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
 		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"},
 
+		{BGM::BOSS_ROOM, "event:/MC/main/Theme"},
+		{BGM::BOSS, "event:/MC/lvl1/mc_lvl1"},
+
 		{BGM::GAMEOVER, "Assets/FMOD/Audios/bgm/die.mp3"},
 
 	};
@@ -195,7 +211,6 @@ private:
 		{SFX::PLAYER_DEATH1, "Assets/FMOD/Audios/sfx/die.wav"},
 		{SFX::PLAYER_DEATH2, "Assets/FMOD/Audios/sfx/die2.wav"},
 
-
 		// DIALOG
 		{SFX::DIALOG, "Assets/FMOD/Audios/bgm/dialog2.wav"},
 		{SFX::DIALOG_FEMALE, "Assets/FMOD/Audios/sfx/female.wav"}, // [X]
@@ -217,5 +232,17 @@ private:
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
 		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion.wav"},
+
+		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
+		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},
+		{SFX::BOSS_LASER, "Assets/FMOD/Audios/sfx/bosslasersound.wav"},
+		{SFX::BOSS_LASER2, "Assets/FMOD/Audios/sfx/bosslasersound2.wav"},
+		{SFX::BOSS_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruptionsound.wav"},
+
+		{SFX::BOSS_ROAR_BULLET, "Assets/FMOD/Audios/sfx/bossbullet.wav"},
+		{SFX::BOSS_ROAR_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruption.wav"},
+		{SFX::BOSS_ROAR_LASER, "Assets/FMOD/Audios/sfx/bosslaser.wav"},
+		{SFX::BOSS_HIT, "Assets/FMOD/Audios/sfx/bosshit.wav"},
+
 	};
 };
