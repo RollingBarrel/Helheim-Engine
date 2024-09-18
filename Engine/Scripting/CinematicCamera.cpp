@@ -168,7 +168,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
 
             InitAnimation(animState);
 
-            GameManager::GetInstance()->SetPaused(true, false);
+            //GameManager::GetInstance()->SetPaused(true, false);
                     
             mFadeOn = true;
         }
@@ -448,7 +448,10 @@ void CinematicCamera::InitAnimation(int animState)
 
     if (mAnimationComponent)
     {
-        mAnimationComponent->OnReset();
+        //mAnimationComponent->OnReset();
+
+        mAnimationComponent->RestartStateAnimation();
+        //mAnimationComponent->ResetAnimationComponent();
         mAnimationComponent->SendTrigger(trigger, 0.0f);
     }
 }
