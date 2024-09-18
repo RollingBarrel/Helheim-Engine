@@ -39,14 +39,6 @@ public:
 
     bool IsPaused() const { return mPaused; }
     void SetPaused(bool value, bool screen);
-
-    /*
-    MG:
-
-    void SetPaused(bool value, bool pauseMenu);
-    
-    */
-
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea);
 

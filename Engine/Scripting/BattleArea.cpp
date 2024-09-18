@@ -128,6 +128,9 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	{
 
 		ActivateArea(false);
+
+		mHasBeenActivated = false;
+
 		if (mAreaDoorsGO)
 		{
 			AreaDoors* areaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());

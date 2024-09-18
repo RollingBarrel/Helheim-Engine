@@ -18,6 +18,7 @@ public:
 	virtual void EnemyDestroyed(GameObject* Enemy);
 	virtual void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
+	bool IsAreaActive() { return mHasBeenActivated; }
 	int GetCurrentEnemies() const { return mCurrentEnemies; }
 	int GetCurrentWave() const { return mWavesRounds; }
 	int GetCurrentExplosiveEnemies() const { return mCurrentExplosiveEnemies; }
