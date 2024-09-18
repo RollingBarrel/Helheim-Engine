@@ -78,15 +78,6 @@ void EnemyExplosive::Attack()
     TakeDamage(mMaxHealth);
 }
 
-void EnemyExplosive::Death()
-{
-	Enemy::Death();
-
-    float3 newScale = float3(1, 1, 1);
-    mExplosionWarningGO->SetWorldScale(newScale);
-	mExplosionWarningGO->SetEnabled(false);
-}
-
 void EnemyExplosive::ChargeWarningArea()
 {
     if (mExplosionWarningGO)
@@ -106,4 +97,3 @@ void EnemyExplosive::ChargeWarningArea()
         mExplosionWarningGO->SetWorldScale(newScale);
     }
 }
-
