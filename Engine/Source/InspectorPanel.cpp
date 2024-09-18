@@ -1005,7 +1005,60 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 
 	if (component->GetAnimationUid() != 0)
 	{
+		//Draw selectable state machines
+		std::vector<std::string> assets;
+		GetStateMachineAssets(component, false, assets);
+		const char* smName = component->GetStateMachine()->GetName().c_str();
+		ImGui::Text("Select default state machine:");
+		if (ImGui::BeginCombo("##DefaultSM", smName))
+		{
 
+			for (int n = 0; n < assets.size(); n++)
+			{
+				bool is_selected = (smName == assets[n]);
+				if (ImGui::Selectable(assets[n].c_str(), is_selected))
+				{
+					smName = assets[n].c_str();
+					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
+					ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+					component->SetStateMachine(newSM->GetStateMachine());
+					component->SetSMUID(newSM->GetUID());
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+
+		if (component->HasSpine())
+		{
+			ImGui::Text("Select spine state machine:");
+			const char* spineSMName = component->GetSpineStateMachine()->GetName().c_str();
+			if (ImGui::BeginCombo("##SpineSM", spineSMName))
+			{
+
+				for (int n = 0; n < assets.size(); n++)
+				{
+					bool is_selected = (spineSMName == assets[n]);
+					if (ImGui::Selectable(assets[n].c_str(), is_selected))
+					{
+						spineSMName = assets[n].c_str();
+						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
+						ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
+						component->SetSpineStateMachine(newSM->GetStateMachine());
+						component->SetSpineSMUID(newSM->GetUID());
+
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
 		if (ImGui::Button("Play/Pause"))
 		{
 			//component->OnStart();
@@ -1051,6 +1104,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 				{
 					currentState = state_names[n].c_str();
 					component->ChangeState(state_names[n], 0.01f);
+					component->RestartStateAnimation();
 				}
 				if (is_selected)
 				{
@@ -1074,6 +1128,8 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 					{
 						currentSpineState = spine_state_names[n].c_str();
 						component->ChangeSpineState(spine_state_names[n], 0.01f);
+						component->RestartStateAnimation();
+
 					}
 					if (is_selected)
 					{
@@ -1121,60 +1177,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 			panel->Open();
 		}
 
-		//Draw selectable state machines
-		std::vector<std::string> assets;
-		GetStateMachineAssets(component, false, assets);
-		const char* smName = component->GetStateMachine()->GetName().c_str();
-		ImGui::Text("Select default state machine:");
-		if (ImGui::BeginCombo("##DefaultSM", smName))
-		{
-
-			for (int n = 0; n < assets.size(); n++)
-			{
-				bool is_selected = (smName == assets[n]);
-				if (ImGui::Selectable(assets[n].c_str(), is_selected))
-				{
-					smName = assets[n].c_str();
-					std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
-					ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
-					component->SetStateMachine(newSM->GetStateMachine());
-					component->SetSMUID(newSM->GetUID());
-				}
-				if (is_selected)
-				{
-					ImGui::SetItemDefaultFocus();
-				}
-			}
-			ImGui::EndCombo();
-		}
 		
-		if (component->HasSpine())
-		{
-			ImGui::Text("Select spine state machine:");
-			const char* spineSMName = component->GetSpineStateMachine()->GetName().c_str();
-			if (ImGui::BeginCombo("##SpineSM", spineSMName))
-			{
-
-				for (int n = 0; n < assets.size(); n++)
-				{
-					bool is_selected = (spineSMName == assets[n]);
-					if (ImGui::Selectable(assets[n].c_str(), is_selected))
-					{
-						spineSMName = assets[n].c_str();
-						std::string path = std::string("Assets/StateMachines/" + assets[n] + ".smbin");
-						ResourceStateMachine* newSM = static_cast<ResourceStateMachine*>(EngineApp->GetResource()->RequestResource(path.c_str()));
-						component->SetSpineStateMachine(newSM->GetStateMachine());
-						component->SetSpineSMUID(newSM->GetUID());
-
-					}
-					if (is_selected)
-					{
-						ImGui::SetItemDefaultFocus();
-					}
-				}
-				ImGui::EndCombo();
-			}
-		}
 	}
 }
 
