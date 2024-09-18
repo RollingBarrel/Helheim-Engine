@@ -630,9 +630,34 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 	MaterialVariables(component);
 
 	ImGui::Separator();
+
+	std::vector<std::string>matFiles;
+	EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_MATERIAL_PATH, ".mat", matFiles);
+	std::string matName;
+	std::string selectedName = (rMat.GetName() != nullptr) ? rMat.GetName() : "SELECT MATERIAL";
+	if (ImGui::BeginCombo("Select Material", selectedName.c_str(), ImGuiComboFlags_PopupAlignLeft))
+	{
+		for (const std::string& file : matFiles)
+		{
+			EngineApp->GetFileSystem()->SplitPath(file.c_str(), &matName);
+			bool selectedMat = (rMat.GetName() != nullptr) && strcmp(matName.c_str(), rMat.GetName());
+			if (ImGui::Selectable(matName.c_str(), selectedMat))
+			{
+				matName = file + ".emeta";
+				char* fileBuffer = nullptr;
+				assert(EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer) && "Not able to open .emeta file");
+				rapidjson::Document document;
+				assert(document.Parse(fileBuffer) != 0 && "Not able to load .emeta file");
+				assert(document.HasMember("uid") && "Meta has no uid");
+				component.SetMaterial(document["uid"].GetInt());
+				break;
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 	if (rMat.GetName() != nullptr)
 	{
-		ImGui::Text(rMat.GetName());
 		if (ImGui::Button("Save Material"))
 		{
 			//Just save the resource material
@@ -640,11 +665,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 			Importer::Material::Save(&rMat);
 		}
 	}
-
-	//if (ImGui::Button("Set Material"))
-	//{
-	// chose a material from the assets material foler and set it
-	//}
 
 	if (ImGui::Button("Create New Material"))
 	{
@@ -668,8 +688,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 					if (!App->GetFileSystem()->Exists(assetName.c_str()))
 					{
 						Importer::Material::SaveMatFile(rMat, userInputName);
-						unsigned int newUid = EngineApp->GetEngineResource()->ImportFile(assetName.c_str());
-						component.SetMaterial(newUid);
+						component.SetMaterial(EngineApp->GetEngineResource()->ImportFile(assetName.c_str()));
 					}
 					else
 					{
@@ -687,19 +706,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 			}
 			ImGui::EndPopup();
 		}
-	}
-	//SetMaterial
-	std::vector<std::string>matFiles;
-	EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_MATERIAL_PATH, ".mat", matFiles);
-	std::string matName;
-	if (ImGui::BeginCombo("SelectMaterialCombo", "SELECT MATERIAL", ImGuiComboFlags_PopupAlignLeft))
-	{
-		for (const std::string& file : matFiles)
-		{
-			EngineApp->GetFileSystem()->SplitPath(file.c_str(), &matName);
-			ImGui::Selectable(matName.c_str(), false);
-		}
-		ImGui::EndCombo();
 	}
 }
 
