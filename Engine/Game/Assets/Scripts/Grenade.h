@@ -63,9 +63,9 @@ private:
 	float mElapsedTime = 0.0f;
 
 
-	GameObject* mGrenade = nullptr;
+	GameObject* mTrail = nullptr;
 	GameObject* mExplosionSFX = nullptr;
-	GameObject* mScaled = nullptr;
+	GameObject* mSphere = nullptr;
 
 	int mExplosionAudio = -1;
 };

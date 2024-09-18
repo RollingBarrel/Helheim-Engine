@@ -17,16 +17,17 @@ CREATE(Grenade)
     MEMBER(MemberType::FLOAT, mGrenadeDuration);
     MEMBER(MemberType::FLOAT, mGrenadeRadius);
     MEMBER(MemberType::FLOAT, mTrajectorySpeedFactor);
-    MEMBER(MemberType::GAMEOBJECT, mGrenade);
+    MEMBER(MemberType::GAMEOBJECT, mTrail);
     MEMBER(MemberType::GAMEOBJECT, mExplosionSFX);
-    MEMBER(MemberType::GAMEOBJECT, mScaled);
+    MEMBER(MemberType::GAMEOBJECT, mSphere);
 	END_CREATE;
 }
 
 void Grenade::Start()
 {
     mExplosionSFX->SetEnabled(false);
-    mGrenade->SetEnabled(false);
+    mTrail->SetEnabled(false);
+    mSphere->SetEnabled(false);
 
     mExplosionAudio = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2,mExplosionAudio, true);
@@ -60,17 +61,17 @@ void Grenade::MoveToTarget()
     if (mElapsedTime > mFlightTime) mElapsedTime = mFlightTime;
 
     mCurrentPosition = CalculatePositionAtTime(mElapsedTime);
-    mGrenade->SetWorldPosition(mCurrentPosition);
+    mTrail->SetWorldPosition(mCurrentPosition);
 
     if (mElapsedTime >= mFlightTime)
     {
         mExplosionSFX->SetEnabled(false);
         mExplosionSFX->SetEnabled(true);
-        mScaled->SetEnabled(true);
+        mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
         mExplosionSFX->SetWorldPosition(mDestination);
-        mScaled->SetWorldPosition(mDestination);
+        mSphere->SetWorldPosition(mDestination);
 
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE1, mExplosionSFX->GetWorldPosition());
         GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, false);
@@ -82,12 +83,12 @@ void Grenade::CalculateTrajectory()
 {
     float3 displacement = mDestination - mInitialPosition;
 
-    float horizontalDistance = float3(displacement.x, 0, displacement.z).Length();
+    float horizontalDistance = float3(displacement.x, 0.0f, displacement.z).Length();
     float verticalDistance = displacement.y;
 
-    mFlightTime = 2 * horizontalDistance / 9.81f;
+    mFlightTime = 2.0f * horizontalDistance / 9.81f;
 
-    float vy = (verticalDistance + 9.81f * mFlightTime * mFlightTime / 2) / mFlightTime;
+    float vy = (verticalDistance + 9.81f * mFlightTime * mFlightTime / 2.0f) / mFlightTime;
 
     float vx = displacement.x / mFlightTime;
     float vz = displacement.z / mFlightTime;
@@ -95,7 +96,7 @@ void Grenade::CalculateTrajectory()
     mVelocity = float3(vx, vy, vz);
 
     // Reset elapsed time
-    mElapsedTime = 0;
+    mElapsedTime = 0.0f;
 }
 
 float3 Grenade::CalculatePositionAtTime(float t)
@@ -124,9 +125,9 @@ void Grenade::BlackHole()
     std::vector<GameObject*> affectedEnemies;
     GetAffectedEnemies(affectedEnemies);
     PullCloser(affectedEnemies);
-    float scaleInTime = (mExplosionTimer.GetTimePassed() - mGrenadeDuration / 2) / (mGrenadeDuration / 2);
-    scaleInTime = - scaleInTime * scaleInTime + 1;
-    mScaled->SetLocalScale(float3(scaleInTime));
+    float scaleInTime = (mExplosionTimer.GetTimePassed() - mGrenadeDuration / 2.0f) / (mGrenadeDuration / 2.0f);
+    scaleInTime = - scaleInTime * scaleInTime + 1.0f;
+    mSphere->SetLocalScale(float3(scaleInTime));
 }
 
 void Grenade::PullCloser(std::vector<GameObject*> enemies)
@@ -177,10 +178,10 @@ void Grenade::GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) cons
 
 void Grenade::ThrowGrenade(float3 initialPosition, float3 destination)
 {
-    mGrenade->SetEnabled(true);
+    mTrail->SetEnabled(true);
 
     mState = GRENADE_STATE::MOVE;
-    mGrenade->SetWorldPosition(initialPosition);
+    mTrail->SetWorldPosition(initialPosition);
     
     mInitialPosition = initialPosition;
     mDestination = destination;
