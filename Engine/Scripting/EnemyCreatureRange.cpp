@@ -90,6 +90,7 @@ void EnemyCreatureRange::Charge()
 void EnemyCreatureRange::Attack()
 {
 	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
+	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
 
 	Enemy::Attack();
 	Rotate();
