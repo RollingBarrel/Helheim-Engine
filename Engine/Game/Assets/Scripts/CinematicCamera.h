@@ -23,41 +23,42 @@ private:
     void DeActivateCameras();
     void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
+    void UpdateCinematic(GameObject* camera);
     void EndCinematic(GameObject* camera);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ResetParameters(bool CinematicStarted);
  
-    GameObject* mPlayerCamera = nullptr;
-    GameObject* mCinematicCamera1 = nullptr;
-    GameObject* mCinematicCamera2 = nullptr;
-    GameObject* mCinematicCamera3 = nullptr;
-    GameObject* mCinematicCamera4 = nullptr;
+    GameObject* mPlayerCameraGO = nullptr;
+    GameObject* mCinematicCameraGO1 = nullptr;
+    GameObject* mCinematicCameraGO2 = nullptr;
+    GameObject* mCinematicCameraGO3 = nullptr;
+    GameObject* mCinematicCameraGO4 = nullptr;
 
-    GameObject* mEnemy1 = nullptr;
-    GameObject* mEnemy2 = nullptr;
-    GameObject* mEnemy3 = nullptr;
-    GameObject* mEnemy4 = nullptr;
+    GameObject* mEnemyGO1 = nullptr;
+    GameObject* mEnemyGO2 = nullptr;
+    GameObject* mEnemyGO3 = nullptr;
+    GameObject* mEnemyGO4 = nullptr;
 
-    GameObject* mBattleArea1 = nullptr;
-    GameObject* mBattleArea2 = nullptr;
-    GameObject* mBattleArea3 = nullptr;
-    GameObject* mBattleArea4 = nullptr;
+    GameObject* mBattleAreaGO1 = nullptr;
+    GameObject* mBattleAreaGO2 = nullptr;
+    GameObject* mBattleAreaGO3 = nullptr;
+    GameObject* mBattleAreaGO4 = nullptr;
 
-    GameObject* mPlayer = nullptr;
-    GameObject* mFade = nullptr;
+    GameObject* mPlayerGO = nullptr;
+    GameObject* mFadeGO = nullptr;
 
-    BattleArea* mBArea1 = nullptr;
-    BattleArea* mBArea2 = nullptr;
-    BattleArea* mBArea3 = nullptr;
-    BattleArea* mBArea4 = nullptr;
+    BattleArea* mBattleArea1 = nullptr;
+    BattleArea* mBattleArea2 = nullptr;
+    BattleArea* mBattleArea3 = nullptr;
+    BattleArea* mBattleArea4 = nullptr;
 
     TimerScript mTimer;
 
-    int mEnemy1_AnimState = 1;
-    int mEnemy2_AnimState = 1;
-    int mEnemy3_AnimState = 1;
-    int mEnemy4_AnimState = 1;
+    int mEnemy1AnimState = 1;
+    int mEnemy2AnimState = 1;
+    int mEnemy3AnimState = 1;
+    int mEnemy4AnimState = 1;
     
     float mDistanceToEnemy = 4.0f;
     float mYawAngle = 45.0f;

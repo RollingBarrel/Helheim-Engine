@@ -23,30 +23,30 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT, mSpeedFactor);
     MEMBER(MemberType::FLOAT, mAnimationTime);
     SEPARATOR("CAMERAS");
-    MEMBER(MemberType::GAMEOBJECT, mPlayerCamera);
-    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera1);
-    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera2);
-    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera3);
-    MEMBER(MemberType::GAMEOBJECT, mCinematicCamera4);
+    MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO1);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO2);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO3);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO4);
     SEPARATOR("ENEMIES");
     SEPARATOR("Idle = 1 | Chase = 2 | Charge = 3 | Attack = 4");
-    MEMBER(MemberType::GAMEOBJECT, mEnemy1);
-    MEMBER(MemberType::INT, mEnemy1_AnimState);
-    MEMBER(MemberType::GAMEOBJECT, mEnemy2);
-    MEMBER(MemberType::INT, mEnemy2_AnimState);
-    MEMBER(MemberType::GAMEOBJECT, mEnemy3);
-    MEMBER(MemberType::INT, mEnemy3_AnimState);
-    MEMBER(MemberType::GAMEOBJECT, mEnemy4);
-    MEMBER(MemberType::INT, mEnemy4_AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyGO1);
+    MEMBER(MemberType::INT, mEnemy1AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyGO2);
+    MEMBER(MemberType::INT, mEnemy2AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyGO3);
+    MEMBER(MemberType::INT, mEnemy3AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mEnemyGO4);
+    MEMBER(MemberType::INT, mEnemy4AnimState);
     SEPARATOR("BATTLE AREAS");
-    MEMBER(MemberType::GAMEOBJECT, mBattleArea1);
-    MEMBER(MemberType::GAMEOBJECT, mBattleArea2);
-    MEMBER(MemberType::GAMEOBJECT, mBattleArea3);
-    MEMBER(MemberType::GAMEOBJECT, mBattleArea4);
+    MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO1);
+    MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO2);
+    MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO3);
+    MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO4);
     SEPARATOR("PLAYER");
-    MEMBER(MemberType::GAMEOBJECT, mPlayer);
+    MEMBER(MemberType::GAMEOBJECT, mPlayerGO);
     SEPARATOR("FADE SCREEN");
-    MEMBER(MemberType::GAMEOBJECT, mFade);
+    MEMBER(MemberType::GAMEOBJECT, mFadeGO);
     MEMBER(MemberType::FLOAT3, mColor);
     MEMBER(MemberType::FLOAT, mFadeSpeed);
     END_CREATE;
@@ -64,75 +64,75 @@ void CinematicCamera::Start()
 {
     DeActivateCameras();
 
-    if (mFade)
+    if (mFadeGO)
     {
-        mImage = static_cast<ImageComponent*>(mFade->GetComponent(ComponentType::IMAGE));
+        mImage = static_cast<ImageComponent*>(mFadeGO->GetComponent(ComponentType::IMAGE));
     }
 
-    if (mBattleArea1)
+    if (mBattleAreaGO1)
     {
-        ScriptComponent* script = (ScriptComponent*)mBattleArea1->GetComponent(ComponentType::SCRIPT);
-        mBArea1 = (BattleArea*)script->GetScriptInstance();
+        ScriptComponent* script = (ScriptComponent*)mBattleAreaGO1->GetComponent(ComponentType::SCRIPT);
+        mBattleArea1 = (BattleArea*)script->GetScriptInstance();
     }
 
-    if (mBattleArea2)
+    if (mBattleAreaGO2)
     {
-        ScriptComponent* script = (ScriptComponent*)mBattleArea2->GetComponent(ComponentType::SCRIPT);
-        mBArea2 = (BattleArea*)script->GetScriptInstance();
+        ScriptComponent* script = (ScriptComponent*)mBattleAreaGO2->GetComponent(ComponentType::SCRIPT);
+        mBattleArea2 = (BattleArea*)script->GetScriptInstance();
     }
 
-    if (mBattleArea3)
+    if (mBattleAreaGO3)
     {
-        ScriptComponent* script = (ScriptComponent*)mBattleArea3->GetComponent(ComponentType::SCRIPT);
-        mBArea3 = (BattleArea*)script->GetScriptInstance();
+        ScriptComponent* script = (ScriptComponent*)mBattleAreaGO3->GetComponent(ComponentType::SCRIPT);
+        mBattleArea3 = (BattleArea*)script->GetScriptInstance();
     }
 
-    if (mBattleArea4)
+    if (mBattleAreaGO4)
     {
-        ScriptComponent* script = (ScriptComponent*)mBattleArea4->GetComponent(ComponentType::SCRIPT);
-        mBArea4 = (BattleArea*)script->GetScriptInstance();
+        ScriptComponent* script = (ScriptComponent*)mBattleAreaGO4->GetComponent(ComponentType::SCRIPT);
+        mBattleArea4 = (BattleArea*)script->GetScriptInstance();
     }
 }
 
 void CinematicCamera::Update()
 {
-    if (mBattleArea1)
+    if (mBattleAreaGO1)
     {
-        if (mBArea1->IsAreaActive())
+        if (mBattleArea1->IsAreaActive())
         {
-            StartCinematic(mCinematicCamera1, mEnemy1, mEnemy1_AnimState);
+            StartCinematic(mCinematicCameraGO1, mEnemyGO1, mEnemy1AnimState);
         }
     }
     
-    if (mBattleArea2)
+    if (mBattleAreaGO2)
     {
-        if (mBArea2->IsAreaActive())
+        if (mBattleArea2->IsAreaActive())
         {
             if (!mCinematicStarted)
             {
                 ResetParameters(true);
             }
 
-            StartCinematic(mCinematicCamera2, mEnemy2, mEnemy2_AnimState);
+            StartCinematic(mCinematicCameraGO2, mEnemyGO2, mEnemy2AnimState);
         }
     }
     
-    if (mBattleArea3)
+    if (mBattleAreaGO3)
     {
-        if (mBArea3->IsAreaActive())
+        if (mBattleArea3->IsAreaActive())
         {
             if (mCinematicStarted)
             {
                 ResetParameters(false);
             }
 
-            StartCinematic(mCinematicCamera3, mEnemy3, mEnemy3_AnimState);
+            StartCinematic(mCinematicCameraGO3, mEnemyGO3, mEnemy3AnimState);
         }
     }
     
-    if (mBattleArea4)
+    if (mBattleAreaGO4)
     {
-        if (mBArea4->IsAreaActive())
+        if (mBattleArea4->IsAreaActive())
         {
             if (!mCinematicStarted)
             {
@@ -144,7 +144,7 @@ void CinematicCamera::Update()
                 mDistanceToEnemy = mDistanceToEnemy + 4.5f; //Boss enemy is bigger than other enemies and needs more distance for the camera
             }
 
-            StartCinematic(mCinematicCamera4, mEnemy4, mEnemy4_AnimState);
+            StartCinematic(mCinematicCameraGO4, mEnemyGO4, mEnemy4AnimState);
         }
     }
 }
@@ -174,114 +174,119 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
             mFadeOn = true;
         }
 
-        if (mPlayingCinematic)
+        UpdateCinematic(camera);
+    }
+}
+
+void CinematicCamera::UpdateCinematic(GameObject* camera)
+{
+    if (mPlayingCinematic)
+    {
+        if (mTravelling)
         {
-            if (mTravelling)
+            if (mFadeOn)
             {
-                if (mFadeOn)
+                if (Fade(true))
                 {
-                    if (Fade(true))
+                    if (mPlayerCameraGO)
                     {
-                        if (mPlayerCamera)
-                        {
-                            ActivateCamera(camera);
-                            mPlayerCamera->SetEnabled(false);
-                        }
-
-                        mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
-                        mActiveCinematicCamera = true;
-                        App->GetCamera()->ActivateFirstCamera();
-
-                        mFadeOn = false;
-                    }
-                }
-                else
-                {
-                    Fade(false);
-
-                    float deltaTime = App->GetDt();
-
-                    if (!mMoveCompleted)
-                    {
-                        float3 currentPosition = camera->GetWorldPosition();
-                        float3 direction = mTargetPosition - currentPosition;
-                        float distance = direction.Length();
-                        direction.Normalize();
-
-                        float step = mSpeedFactor * deltaTime;
-
-                        if (step >= distance)
-                        {
-                            camera->SetWorldPosition(mTargetPosition);
-                            mMoveCompleted = true;
-                        }
-                        else
-                        {
-                            float3 newPosition = Lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
-
-                            if (newPosition.y < currentPosition.y)
-                            {
-                                newPosition.y = currentPosition.y;
-                            }
-
-                            camera->SetWorldPosition(newPosition);
-                        }
-                    }
-                }
-
-                if (mTimer.Delay(mAnimationTime))
-                {
-                    if (mAnimationComponent)
-                    {
-                        mAnimationComponent->SetIsPlaying(false);
+                        ActivateCamera(camera);
+                        mPlayerCameraGO->SetEnabled(false);
                     }
 
-                    mTravelling = false;
-                    mFadeOn = true;
+                    mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+                    mActiveCinematicCamera = true;
+                    App->GetCamera()->ActivateFirstCamera();
+
+                    mFadeOn = false;
                 }
             }
             else
             {
-                if (mFadeOn)
+                Fade(false);
+
+                float deltaTime = App->GetDt();
+
+                if (!mMoveCompleted)
                 {
-                    if (Fade(true))
+                    float3 currentPosition = camera->GetWorldPosition();
+                    float3 direction = mTargetPosition - currentPosition;
+                    float distance = direction.Length();
+                    direction.Normalize();
+
+                    float step = mSpeedFactor * deltaTime;
+
+                    if (step >= distance)
                     {
-                        EndCinematic(camera);
-                        mFadeOn = false;
+                        camera->SetWorldPosition(mTargetPosition);
+                        mMoveCompleted = true;
+                    }
+                    else
+                    {
+                        float3 newPosition = Lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
+
+                        if (newPosition.y < currentPosition.y)
+                        {
+                            newPosition.y = currentPosition.y;
+                        }
+
+                        camera->SetWorldPosition(newPosition);
                     }
                 }
-                else
-                {
-                    if (Fade(false))
-                    {
-                        mTravelling = true;
-                        mPlayingCinematic = false;
-                    }                   
-                }
-            }   
-            
-            if (!mEscape)
+            }
+
+            if (mTimer.Delay(mAnimationTime))
             {
-                if ((App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT) || 
-                    (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_REPEAT))
+                if (mAnimationComponent)
                 {
-                    mEscape = true;
+                    mAnimationComponent->SetIsPlaying(false);
+                }
+
+                mTravelling = false;
+                mFadeOn = true;
+            }
+        }
+        else
+        {
+            if (mFadeOn)
+            {
+                if (Fade(true))
+                {
+                    EndCinematic(camera);
+                    mFadeOn = false;
+                }
+            }
+            else
+            {
+                if (Fade(false))
+                {
                     mTravelling = true;
                     mPlayingCinematic = false;
-                    mFadeStart = false;
-
-                    mTimer.Reset();
-                    EndCinematic(camera);
                 }
             }
         }
 
-        if (mEscape)
+        if (!mEscape)
         {
-            if (Fade(false))
+            if ((App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT) ||
+                (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_REPEAT))
             {
-                mEscape = false;
+                mEscape = true;
+                mTravelling = true;
+                mPlayingCinematic = false;
+                mFadeStart = false;
+
+                mTimer.Reset();
+                EndCinematic(camera);
             }
+        }
+    }
+
+    if (mEscape)
+    {
+        if (Fade(false))
+        {
+            mEscape = false;
         }
     }
 }
@@ -292,43 +297,44 @@ void CinematicCamera::EndCinematic(GameObject* camera)
     {
         mActiveCinematicCamera = false;
         App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
-        mPlayerCamera->SetEnabled(true);
+        DeActivateCameras();
+        mPlayerCameraGO->SetEnabled(true);
         App->GetCamera()->ActivateFirstCamera();
     }
     
     //GameManager::GetInstance()->SetPaused(false, false);
 
-    if (mBattleArea1)
+    if (mBattleAreaGO1)
     {
-        if (mBArea1->IsAreaActive())
+        if (mBattleArea1->IsAreaActive())
         {
-            mEnemy1->SetEnabled(false);
+            mEnemyGO1->SetEnabled(false);
         }
     }
 
-    if (mBattleArea2)
+    if (mBattleAreaGO2)
     {
-        if (mBArea2->IsAreaActive())
+        if (mBattleArea2->IsAreaActive())
         {
-            mEnemy2->SetEnabled(false);
+            mEnemyGO2->SetEnabled(false);
         }
     }
 
-    if (mBattleArea3)
+    if (mBattleAreaGO3)
     {
-        if (mBArea3->IsAreaActive())
+        if (mBattleArea3->IsAreaActive())
         {
-            mEnemy3->SetEnabled(false);
+            mEnemyGO3->SetEnabled(false);
         }
     }
 
-    if (mBattleArea4)
+    if (mBattleAreaGO4)
     {
-        if (mBArea4->IsAreaActive())
+        if (mBattleArea4->IsAreaActive())
         {
             if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
             {
-                mEnemy4->SetEnabled(false);
+                mEnemyGO4->SetEnabled(false);
             }
             else
             {
@@ -339,87 +345,44 @@ void CinematicCamera::EndCinematic(GameObject* camera)
 
     if (mLevel1)
     {
-        if (mPlayer)
+        if (mPlayerGO)
         {
             //Locates the player in a correct position behind the doors
-            float3 position = mPlayer->GetWorldPosition();
+            float3 position = mPlayerGO->GetWorldPosition();
             position.x -= 2.6f;
-            mPlayer->SetWorldPosition(position);
+            mPlayerGO->SetWorldPosition(position);
         }
     }
 }
 
 void CinematicCamera::DeActivateCameras()
 {
-    if (mCinematicCamera1)
+    if (mCinematicCameraGO1)
     {
-        mCinematicCamera1->SetEnabled(false);
+        mCinematicCameraGO1->SetEnabled(false);
     }
 
-    if (mCinematicCamera2)
+    if (mCinematicCameraGO2)
     {
-        mCinematicCamera2->SetEnabled(false);
+        mCinematicCameraGO2->SetEnabled(false);
     }
 
-    if (mCinematicCamera3)
+    if (mCinematicCameraGO3)
     {
-        mCinematicCamera3->SetEnabled(false);
+        mCinematicCameraGO3->SetEnabled(false);
     }
 
-    if (mCinematicCamera4)
+    if (mCinematicCameraGO4)
     {
-        mCinematicCamera4->SetEnabled(false);
+        mCinematicCameraGO4->SetEnabled(false);
     }
 }
 
 void CinematicCamera::ActivateCamera(GameObject* cinematicCamera)
 {
-    if (mCinematicCamera1)
+    if (cinematicCamera)
     {
-        if (cinematicCamera == mCinematicCamera1)
-        {
-            mCinematicCamera1->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera1->SetEnabled(false);
-        }
-    }
-
-    if (mCinematicCamera2)
-    {
-        if (cinematicCamera == mCinematicCamera2)
-        {
-            mCinematicCamera2->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera2->SetEnabled(false);
-        }
-    }
-
-    if (mCinematicCamera3)
-    {
-        if (cinematicCamera == mCinematicCamera3)
-        {
-            mCinematicCamera3->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera3->SetEnabled(false);
-        }
-    }
-
-    if (mCinematicCamera4)
-    {
-        if (cinematicCamera == mCinematicCamera4)
-        {
-            mCinematicCamera4->SetEnabled(true);
-        }
-        else
-        {
-            mCinematicCamera4->SetEnabled(false);
-        }
+        cinematicCamera->SetEnabled(true);
     }
 }
 
@@ -433,16 +396,12 @@ void CinematicCamera::InitAnimation(int animState)
         case 2: trigger = "tChase"; break;
         case 3: trigger = "tCharge"; break;
         case 4: trigger = "tAttack"; break;
-        //case 5: trigger = "tDeath"; break;
 
         default: trigger = "tIdle"; break;
     }
 
     if (mAnimationComponent)
     {
-            //mAnimationComponent->OnReset();
-
-        //mAnimationComponent->RestartStateAnimation();
         mAnimationComponent->ResetAnimationComponent();
         mAnimationComponent->SendTrigger(trigger, 0.0f);
     }
@@ -450,7 +409,7 @@ void CinematicCamera::InitAnimation(int animState)
 
 bool CinematicCamera::Fade(bool fadeOut)
 {
-    if (mFade)
+    if (mFadeGO)
     {
         mImage->SetColor(mColor);
 
