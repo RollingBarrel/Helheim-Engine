@@ -319,7 +319,7 @@ void Enemy::Death()
 		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
 		const ResourceMaterial* material = meshRender->GetResourceMaterial();
 		float4 baseColor = material->GetBaseColorFactor();
-		float4 endColor = material->GetBaseColorFactor();
+		float4 endColor = baseColor;
 		endColor.w = 0.0f;
 		meshRender->SetBaseColorFactor(baseColor.Lerp(endColor, mVanishingTime /(mDeathTime*10)));
 	}

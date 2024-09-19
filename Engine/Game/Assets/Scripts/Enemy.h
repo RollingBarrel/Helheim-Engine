@@ -92,15 +92,14 @@ protected:
 	float mAttackCoolDown = 1.0f;
 	TimerScript mDisengageTimer;
 	float mDisengageTime = 1.0f;
-	TimerScript mDeathTimer;
-	float mDeathTime = 1.4f;
+
 	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
 	float mFleeToAttackTime = 1.0f;
-	TimerScript mVanishingTimer;
-	float mVanishingTime = 0.0f;
 
+	float mVanishingTime = 0.0f;
+	float mDeathTime = 1.4f;
 	//Transition Times
 	float mIdleTransitionDuration = 0.2f;
 	float mChaseTransitionDuration = 0.2f;
