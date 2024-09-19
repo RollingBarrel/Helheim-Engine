@@ -741,7 +741,7 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mGrenade) mGrenade->ThrowGrenade(mGameObject->GetWorldPosition(), mGrenadePosition);
+    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition);
     mGrenadeAimTimer.Reset();
 }
 
