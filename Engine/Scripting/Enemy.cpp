@@ -29,7 +29,7 @@ void Enemy::Start()
 	ModuleScene* scene = App->GetScene();
 	mPlayer = GameManager::GetInstance()->GetPlayer();
 	mHealth = mMaxHealth;
-	mVanishingTime = 0.0f;
+
     //Hit Effect
 
 	if (mGameObject->GetName() != "FinalBoss") 
@@ -311,7 +311,9 @@ void Enemy::ActivateUltVFX()
 
 void Enemy::Death()
 {
-	mVanishingTime += 1.0f * App->GetDt();
+	mVanishingTime += App->GetDt();
+	if (mVanishingTime >= mDeathTime*0.75)
+	{
 	for (size_t i = 0; i < mMeshComponents.size(); i++)
 	{
 		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
@@ -319,11 +321,10 @@ void Enemy::Death()
 		float4 baseColor = material->GetBaseColorFactor();
 		float4 endColor = material->GetBaseColorFactor();
 		endColor.w = 0.0f;
-		baseColor.Lerp(endColor, mVanishingTime);
-		meshRender->SetBaseColorFactor(baseColor);
+		meshRender->SetBaseColorFactor(baseColor.Lerp(endColor, mVanishingTime /(mDeathTime*10)));
 	}
-
-	if (mDeathTimer.Delay(mDeathTime))
+	}
+	if (mVanishingTime>=mDeathTime)
 	{
 		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
 
@@ -333,6 +334,7 @@ void Enemy::Death()
 			activeBattleArea->EnemyDestroyed(mGameObject);
 		}
 		ResetEnemyColor();
+		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();
 	}
