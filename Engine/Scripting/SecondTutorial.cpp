@@ -87,20 +87,13 @@ void SecondTutorial::Tutorial()
             mShootTutorial->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
-            if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN)
-                mSecondaryUsed = true;
             break;
         case 4:
-            if (mSecondaryUsed)
-            {
-                mSecondaryTutorial->SetEnabled(false);
-                mGrenadeTutorial->SetEnabled(true);
-                GameManager::GetInstance()->UnlockGrenade(true);
-                if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
-                    mGrenadeUsed = true;
-            }
-            else
-                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
+            mSecondaryTutorial->SetEnabled(false);
+            mGrenadeTutorial->SetEnabled(true);
+            GameManager::GetInstance()->UnlockGrenade(true);
+            if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
+                mGrenadeUsed = true;
             break;
         case 3:
             if (mGrenadeUsed)
@@ -129,31 +122,19 @@ void SecondTutorial::Tutorial()
     }
     else
     {
-        if (mSkipTutorialCon)
-        {
-            mSkipTutorialCon->SetEnabled(true);
-            if (mSkipTutorial) mSkipTutorial->SetEnabled(false);
-        }
         switch (mCurrentStep)
         {
         case 5:
             mShootTutorialCon->SetEnabled(false);
             mSecondaryTutorialCon->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
-            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
-                mSecondaryUsed = true;
             break;
         case 4:
-            if (mSecondaryUsed)
-            {
-                mSecondaryTutorialCon->SetEnabled(false);
-                mGrenadeTutorialCon->SetEnabled(true);
-                GameManager::GetInstance()->UnlockGrenade(true);
-                if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
-                    mGrenadeUsed = true;
-            }
-            else
-                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
+            mSecondaryTutorialCon->SetEnabled(false);
+            mGrenadeTutorialCon->SetEnabled(true);
+            GameManager::GetInstance()->UnlockGrenade(true);
+            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
+                mGrenadeUsed = true;
             break;
         case 3:
             if (mGrenadeUsed)
@@ -161,7 +142,7 @@ void SecondTutorial::Tutorial()
                 mGrenadeTutorialCon->SetEnabled(false);
                 mUltimateTutorialCon->SetEnabled(true);
                 GameManager::GetInstance()->UnlockUltimate(true);
-                if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
+                if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
                     mUltimateUsed = true;
             }
             else
