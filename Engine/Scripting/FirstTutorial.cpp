@@ -189,7 +189,7 @@ void FirstTutorial::Tutorial()
             }
             break;
         case 2:
-            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
             {
                 //mDashTutorialCon->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(false);

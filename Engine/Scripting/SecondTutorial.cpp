@@ -83,19 +83,19 @@ void SecondTutorial::Tutorial()
     {
         switch (mCurrentStep)
         {
-        case 5:
+        case 3:
             mShootTutorial->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
-        case 4:
+        case 2:
             mSecondaryTutorial->SetEnabled(false);
             mGrenadeTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockGrenade(true);
             if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
                 mGrenadeUsed = true;
             break;
-        case 3:
+        case 1:
             if (mGrenadeUsed)
             {
                 mGrenadeTutorial->SetEnabled(false);
@@ -107,7 +107,7 @@ void SecondTutorial::Tutorial()
             else
                 mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
-        case 2:
+        case 0:
             if (mUltimateUsed)
             {
                 mUltimateTutorial->SetEnabled(false);
@@ -124,19 +124,19 @@ void SecondTutorial::Tutorial()
     {
         switch (mCurrentStep)
         {
-        case 5:
+        case 3:
             mShootTutorialCon->SetEnabled(false);
             mSecondaryTutorialCon->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
-        case 4:
+        case 2:
             mSecondaryTutorialCon->SetEnabled(false);
             mGrenadeTutorialCon->SetEnabled(true);
             GameManager::GetInstance()->UnlockGrenade(true);
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
                 mGrenadeUsed = true;
             break;
-        case 3:
+        case 1:
             if (mGrenadeUsed)
             {
                 mGrenadeTutorialCon->SetEnabled(false);
@@ -148,7 +148,7 @@ void SecondTutorial::Tutorial()
             else
                 mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
             break;
-        case 2:
+        case 0:
             if (mUltimateUsed)
             {
                 mUltimateTutorialCon->SetEnabled(false);
