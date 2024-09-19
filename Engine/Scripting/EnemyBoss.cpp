@@ -72,12 +72,15 @@ void EnemyBoss::Start()
 
     for (const char* prefab : mTemplateNames)
     {
-        GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
-        if (bombTemplate)
-        {
-            bombTemplate->SetEnabled(false);
-            mTemplates.push_back(bombTemplate);
-        }
+		for (int i = 0; i < 3; i++)
+		{
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+            if (bombTemplate)
+            {
+                bombTemplate->SetEnabled(false);
+                mTemplates.push_back(bombTemplate);
+            }
+		}
     }
 
     mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
@@ -85,6 +88,12 @@ void EnemyBoss::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
         mAnimationComponent->SetLoop(false);
+    }
+
+    for (int i = 0; i < std::size(mAreas); ++i) {
+        if (mAreas[i]) {
+            mAreaPositions.push_back(mAreas[i]->GetWorldPosition());
+        }
     }
 }
 
@@ -264,22 +273,24 @@ void EnemyBoss::LaserAttack()
 void EnemyBoss::BombAttack()
 {
     mCurrentState = EnemyState::ATTACK;
-    if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
     float3 target = mPlayer->GetWorldPosition();
-    int index = rand() % mTemplates.size();
-    GameObject* bombGO = mTemplates[index];
-    bombGO->SetWorldPosition(target);
-	float randRotation = static_cast<float>(rand() % 360);
-	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
-	bombGO->SetWorldRotation(bombRotation);
-    std::vector<Component*> scriptComponents;
-    bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-    bombGO->SetEnabled(true);
-    for (Component* scriptComponent : scriptComponents)
-    {
-        BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
-    }
+    if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
+    //int index = rand() % mTemplates.size();
+    int index = 0;
+    for (int i = 0; i < mAreaPositions.size(); i++)
+	{
+        int templateIndex = index * 3 + i;
+        GameObject* bombGO = mTemplates[templateIndex];
+        bombGO->SetWorldPosition(mAreaPositions[i]);
+        std::vector<Component*> scriptComponents;
+        bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+        bombGO->SetEnabled(true);
+        for (Component* scriptComponent : scriptComponents)
+        {
+            BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+            bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+        }
+	}
 }
 
 void EnemyBoss::Death()

@@ -84,6 +84,7 @@ private:
 	float mBombDamage = 5.0f;
 
 	GameObject* mAreas[3] = { nullptr, nullptr, nullptr};
+	std::vector<float3> mAreaPositions;
 	const char* mTemplateNames[4] = { "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb"};
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
