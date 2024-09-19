@@ -244,7 +244,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.5882352590560914,
+                        "AspectRatio": 1.8318670988082886,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -1212,7 +1212,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    77.55000305175781,
+                    24.642505645751954,
                     0.0,
                     -0.05000000074505806
                 ],

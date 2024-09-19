@@ -111,7 +111,8 @@ void EnemyBoss::Update()
         case EnemyState::IDLE:
         case EnemyState::ATTACK:
 
-            switch (mStage)
+            //switch (mStage)
+            switch (2) //TEST
             {
             case 0:
                 UpdatePhase1();
@@ -595,7 +596,8 @@ void EnemyBoss::UpdatePhase3()
         }
         break;
     case EnemyState::ATTACK:
-        switch (sequence * 10 + attack)
+        //switch (sequence * 10 + attack)
+        switch(30) //TEST
         {
         case 0:
         case 11:
