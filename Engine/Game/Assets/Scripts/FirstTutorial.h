@@ -5,6 +5,7 @@
 GENERATE_BODY(FirstTutorial);
 
 class GameObject;
+class MeshRendererComponent;
 
 class FirstTutorial : public Script 
 {
@@ -27,6 +28,10 @@ private:
 	GameObject* mDashTutorialCon = nullptr;
 
 	GameObject* mDoor1 = nullptr;
+	GameObject* mDoorEmissiveTop = nullptr;
+	MeshRendererComponent* mTopRender = nullptr;
+	GameObject* mDoorEmissiveBorder = nullptr;
+	MeshRendererComponent* mBorderEnter = nullptr;
 
 	int mCurrentStep = 0;
 
