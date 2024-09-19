@@ -19,6 +19,8 @@ public:
 	void Enter() override;
 	void Exit() override;
 
+	bool IsReady() override;
+
 	StateType GetType() override;
 
 private:

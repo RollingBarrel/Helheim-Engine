@@ -22,6 +22,7 @@ CREATE(Dialog)
     MEMBER(MemberType::GAMEOBJECT, mProtagonistGO);
     MEMBER(MemberType::GAMEOBJECT, mWifeGO);
     MEMBER(MemberType::GAMEOBJECT, mTextGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipBtnGO);
     END_CREATE;
 }
 
@@ -35,8 +36,16 @@ Dialog::~Dialog()
 
 void Dialog::Start()
 {
-    if (mDialogGO) mDialogButton = static_cast<ButtonComponent*>(mDialogGO->GetComponent(ComponentType::BUTTON));
-    mDialogButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnClick, this)));
+    if (mDialogGO) 
+    {
+        mDialogButton = static_cast<ButtonComponent*>(mDialogGO->GetComponent(ComponentType::BUTTON));
+        mDialogButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnClick, this)));
+    }
+    if (mSkipBtnGO)
+    {
+        mSkipButton = static_cast<ButtonComponent*>(mSkipBtnGO->GetComponent(ComponentType::BUTTON));
+        mSkipButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnSkipClick, this)));
+    }
     if (mProtagonistGO) mProtagonistImage = static_cast<ImageComponent*>(mProtagonistGO->GetComponent(ComponentType::IMAGE));
     if (mWifeGO) mWifeImage = static_cast<ImageComponent*>(mWifeGO->GetComponent(ComponentType::IMAGE));
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
@@ -50,6 +59,30 @@ void Dialog::Update()
 {
     if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
     Controls();
+
+    // Check if we are currently typing
+    if (mIsTyping)
+    {
+        // Update the timer
+        mTypingTimer += App->GetDt();
+
+        // If enough time has passed, reveal the next character
+        if (mTypingTimer >= mTypingSpeed && mCurrentCharIndex < mFullText.size())
+        {
+            // Append one character to the text component
+            mText->SetText(*mText->GetText() + mFullText[mCurrentCharIndex]);
+
+            // Move to the next character and reset the timer
+            mCurrentCharIndex++;
+            mTypingTimer = 0.0f;
+        }
+
+        // If we've reached the end of the text, stop typing
+        if (mCurrentCharIndex >= mFullText.size())
+        {
+            mIsTyping = false;
+        }
+    }
 }
 
 void Dialog::Controls()
@@ -86,16 +119,34 @@ void Dialog::NextDialogSet()
 
 void Dialog::UpdateDialog()
 {
+    // Ensure there is text to display and the dialog set is valid
     if (mText && !mDialogList.empty() && mCurrentDialogSet < mDialogList.size() &&
         mCurrentDialog < mDialogList[mCurrentDialogSet].size())
     {
-        mText->SetText(mDialogList[mCurrentDialogSet][mCurrentDialog]);
+        // Store the full text of the current dialog
+        mFullText = mDialogList[mCurrentDialogSet][mCurrentDialog];
+
+        // Reset the typing parameters
+        mCurrentCharIndex = 0;
+        mTypingTimer = 0.0f;
+        mIsTyping = true;
+
+        // Start with an empty text and gradually reveal the full text
+        mText->SetText("");
     }
 }
 
 void Dialog::OnClick()
 {
     if (mTimeout) return;
+
+    // If typing is still in progress, finish the text instantly
+    if (mIsTyping)
+    {
+        mText->SetText(mFullText);
+        mIsTyping = false;
+        return;
+    }
 
     // Check if the current dialog set is over
     if (mCurrentDialog == mDialogList[mCurrentDialogSet].size() - 1)
@@ -129,4 +180,16 @@ void Dialog::OnClick()
 
     mCurrentDialog++;
     UpdateDialog();
+}
+
+void Dialog::OnSkipClick()
+{
+    if (mTimeout) return;
+
+    NextDialogSet();
+    mGameObject->SetEnabled(false);
+    GameManager::GetInstance()->SetPaused(false, false);
+    if (firstTime) firstTime = false;
+    else GameManager::GetInstance()->GetHud()->SetSanity();
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);
 }
