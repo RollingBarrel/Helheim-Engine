@@ -2,13 +2,16 @@
 #include "Application.h"
 #include "GameObject.h"
 
-#include "Component.h"
+#include "SpotLightComponent.h"
 #include "ScriptComponent.h"
 #include "BoxColliderComponent.h"
 
 CREATE(SecurityCameraFollower)
 {
 	CLASS(owner);
+	MEMBER(MemberType::FLOAT, mTurningLightOnTime);
+	MEMBER(MemberType::FLOAT, mMaxLightIntesity);
+	MEMBER(MemberType::FLOAT, mMaxLightRange);
 	END_CREATE;
 }
 
@@ -16,7 +19,7 @@ SecurityCameraFollower::SecurityCameraFollower(GameObject* owner) : Script(owner
 
 void SecurityCameraFollower::Start()
 {
-	mCameraLight = mGameObject->GetComponentInChildren(ComponentType::SPOTLIGHT);
+	mCameraLight = static_cast<SpotLightComponent*>(mGameObject->GetComponentInChildren(ComponentType::SPOTLIGHT));
 	if (mCameraLight)
 	{
 		mCameraLight->SetEnable(false);
@@ -34,9 +37,25 @@ void SecurityCameraFollower::Update()
 {
 	if (mTarget)
 	{
-		float3 playerFacePos = mTarget->GetWorldPosition() + float3(0, 1, 0);
-		mGameObject->LookAt(mGameObject->GetWorldPosition()+mGameObject->GetWorldPosition()-playerFacePos);
-		//mGameObject->SetLocalRotation(mGameObject->GetLocalEulerAngles()-float3(mGameObject->GetLocalEulerAngles().x,0,0));
+		//Light turns on gradually
+		float timeLeftTurningLightOn = mTurningLightOnTime - mTurningLightOnTimer;
+
+		if (timeLeftTurningLightOn <= 0 || mTurningLightOnTime == 0)
+		{
+			mCameraLight->SetIntensity(mMaxLightIntesity);
+			mCameraLight->SetRange(mMaxLightRange);
+		}
+		else
+		{
+			mCameraLight->SetIntensity(mMaxLightIntesity * (1 - timeLeftTurningLightOn / mTurningLightOnTime));
+			mCameraLight->SetRange(mMaxLightRange * (1 - timeLeftTurningLightOn / mTurningLightOnTime));
+
+			mTurningLightOnTimer += App->GetDt();
+		}
+
+		//Rotates security camera to player
+		float3 playerFacePosition = mTarget->GetWorldPosition() + float3(0, 1, 0);
+		mGameObject->LookAt(mGameObject->GetWorldPosition()+mGameObject->GetWorldPosition()-playerFacePosition);
 	}
 }
 
@@ -50,6 +69,10 @@ void SecurityCameraFollower::OnCollisionEnter(CollisionData* collisionData)
 		if (mCameraLight)
 		{
 			mCameraLight->SetEnable(true);
+			mCameraLight->SetIntensity(0);
+			mCameraLight->SetRange(0);
+
+			mTurningLightOnTimer = 0;
 		}
 	}
 }

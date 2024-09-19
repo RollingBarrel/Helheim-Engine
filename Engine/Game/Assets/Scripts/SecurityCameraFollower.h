@@ -4,7 +4,7 @@
 
 GENERATE_BODY(SecurityCameraFollower);
 
-class Component;
+class SpotLightComponent;
 class GameObject;
 class BoxColliderComponent;
 
@@ -26,7 +26,14 @@ public:
 
 private:
 
-	Component* mCameraLight = nullptr;
+	SpotLightComponent* mCameraLight = nullptr;
+	float mMaxLightIntesity = 20.0f;
+	float mMaxLightRange = 10.0f;
+
+	float mTurningLightOnTimer = 0.0f;
+	float mTurningLightOnTime = 5.0f;
+
+
 	GameObject* mTarget = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 

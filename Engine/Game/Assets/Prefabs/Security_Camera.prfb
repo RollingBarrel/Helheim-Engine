@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 331623453,
+                "UID": 919976389,
                 "ParentUID": 1,
                 "Name": "Security_Camera",
                 "Enabled": true,
@@ -47,8 +47,8 @@
                 ]
             },
             {
-                "UID": 17539220,
-                "ParentUID": 331623453,
+                "UID": 640563414,
+                "ParentUID": 919976389,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -75,8 +75,8 @@
                 "Components": []
             },
             {
-                "UID": 1852748780,
-                "ParentUID": 17539220,
+                "UID": 324599414,
+                "ParentUID": 640563414,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -113,8 +113,8 @@
                 ]
             },
             {
-                "UID": 1567835746,
-                "ParentUID": 331623453,
+                "UID": 2139201158,
+                "ParentUID": 919976389,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -143,13 +143,29 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "SecurityCameraFollower",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTurningLightOnTime",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mMaxLightIntesity",
+                                "MemberType": 1,
+                                "VariableData": 20.0
+                            },
+                            {
+                                "VariableName": "mMaxLightRange",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1265587083,
-                "ParentUID": 1567835746,
+                "UID": 1790167183,
+                "ParentUID": 2139201158,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -176,8 +192,8 @@
                 "Components": []
             },
             {
-                "UID": 977262620,
-                "ParentUID": 1265587083,
+                "UID": 1452551052,
+                "ParentUID": 1790167183,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -214,8 +230,8 @@
                 ]
             },
             {
-                "UID": 863895730,
-                "ParentUID": 1265587083,
+                "UID": 1109643725,
+                "ParentUID": 1790167183,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -242,7 +258,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             149.46524047851563,
                             68.56082153320313,
