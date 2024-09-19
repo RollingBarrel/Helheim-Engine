@@ -90,27 +90,14 @@ void BombBoss::Update()
 
 void BombBoss::Init(float3 bombOrigin, float damage)
 {
-	// Check with a raycast if there's floor under the bomb
-	Ray ray;
-	ray.pos = mGameObject->GetWorldPosition() + float3(0, 10, 0);
-	ray.dir = float3(0, -1, 0);
-	Hit hit;
-
-	if (hit.IsValid())
+	mGameObject->SetEnabled(true);
+	mHasExploded = false;
+	mTimePassed = 0.0f;
+	mBombOrigin = bombOrigin;
+	mDamage = damage;
+	for (Component* particlecomponent : mExplosionParticles)
 	{
-		mGameObject->SetEnabled(true);
-		mHasExploded = false;
-		mTimePassed = 0.0f;
-		mBombOrigin = bombOrigin;
-		mDamage = damage;
-		for (Component* particlecomponent : mExplosionParticles)
-		{
-			particlecomponent->GetOwner()->SetEnabled(false);
-		}
-		mGameObject->SetWorldScale(float3(mRadius * 2));
+		particlecomponent->GetOwner()->SetEnabled(false);
 	}
-	else
-	{
-		mGameObject->SetEnabled(false);
-	}
+	mGameObject->SetWorldScale(float3(mRadius * 2));
 }

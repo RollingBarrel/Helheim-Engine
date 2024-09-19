@@ -38,6 +38,10 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mPhase1Hp);
     MEMBER(MemberType::FLOAT, mPhase2Hp);
     MEMBER(MemberType::FLOAT, mDeathTime);
+    SEPARATOR("AREA POSITIONS");
+    MEMBER(MemberType::GAMEOBJECT, mAreas[0]);
+    MEMBER(MemberType::GAMEOBJECT, mAreas[1]);
+    MEMBER(MemberType::GAMEOBJECT, mAreas[2]);
     SEPARATOR("BULLET HELL");
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
@@ -591,7 +595,6 @@ void EnemyBoss::UpdatePhase3()
             case -1:// Start with bombs. Never repeat this sequence
                 BombAttack();
                 break;
-
             }
         }
         break;

@@ -244,7 +244,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8318670988082886,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -40818,6 +40818,25 @@
                                 "VariableData": 4.25
                             },
                             {
+                                "VariableName": "AREA POSITIONS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreas[0]",
+                                "MemberType": 3,
+                                "VariableData": 1091442033
+                            },
+                            {
+                                "VariableName": "mAreas[1]",
+                                "MemberType": 3,
+                                "VariableData": 1213905372
+                            },
+                            {
+                                "VariableName": "mAreas[2]",
+                                "MemberType": 3,
+                                "VariableData": 1336716816
+                            },
+                            {
                                 "VariableName": "BULLET HELL",
                                 "MemberType": 5
                             },
@@ -44216,13 +44235,13 @@
                 ]
             },
             {
-                "UID": 63943797,
+                "UID": 464713791,
                 "ParentUID": 1,
                 "Name": "BossBattleArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    5.350286960601807,
+                    5.349999904632568,
                     0.0,
                     0.0
                 ],
@@ -44271,12 +44290,12 @@
                             {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
-                                "VariableData": 296477937
+                                "VariableData": 598246869
                             },
                             {
                                 "VariableName": "mSpawnerGO2",
                                 "MemberType": 3,
-                                "VariableData": 700627842
+                                "VariableData": 845331798
                             },
                             {
                                 "VariableName": "mSpawnerGO3",
@@ -44317,8 +44336,8 @@
                 ]
             },
             {
-                "UID": 296477937,
-                "ParentUID": 63943797,
+                "UID": 598246869,
+                "ParentUID": 464713791,
                 "Name": "SpawnerArea1",
                 "Enabled": true,
                 "Active": true,
@@ -44378,8 +44397,8 @@
                 ]
             },
             {
-                "UID": 493087641,
-                "ParentUID": 296477937,
+                "UID": 721684902,
+                "ParentUID": 598246869,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
                 "Active": false,
@@ -44496,8 +44515,8 @@
                 ]
             },
             {
-                "UID": 700627842,
-                "ParentUID": 63943797,
+                "UID": 845331798,
+                "ParentUID": 464713791,
                 "Name": "SpawnerArea2",
                 "Enabled": true,
                 "Active": true,
@@ -44557,8 +44576,8 @@
                 ]
             },
             {
-                "UID": 896680578,
-                "ParentUID": 700627842,
+                "UID": 968073621,
+                "ParentUID": 845331798,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
                 "Active": false,
@@ -44673,6 +44692,90 @@
                         }
                     }
                 ]
+            },
+            {
+                "UID": 1091442033,
+                "ParentUID": 464713791,
+                "Name": "Area1Center",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -2.515254497528076,
+                    0.0,
+                    9.130834579467774
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1213905372,
+                "ParentUID": 464713791,
+                "Name": "Area2Center",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    2.8169236183166506,
+                    0.0,
+                    -0.09442907571792603
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1336716816,
+                "ParentUID": 464713791,
+                "Name": "Area3Center",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -2.4777820110321047,
+                    -0.0029970109462738039,
+                    -9.201944351196289
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             }
         ],
         "NavMeshResource": 127010870,
