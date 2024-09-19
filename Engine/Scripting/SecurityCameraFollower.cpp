@@ -54,7 +54,7 @@ void SecurityCameraFollower::Update()
 		}
 
 		//Rotates security camera to player
-		float3 playerFacePosition = mTarget->GetWorldPosition() + float3(0, 1, 0);
+		float3 playerFacePosition = mTarget->GetWorldPosition() + float3(0, 0.5f, 0);
 		mGameObject->LookAt(mGameObject->GetWorldPosition()+mGameObject->GetWorldPosition()-playerFacePosition);
 	}
 }
