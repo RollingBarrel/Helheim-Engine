@@ -123,7 +123,7 @@ void Enemy::ActivateEnemy()
 			break;
 		case EnemyState::CHARGE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
-			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Charge();
 			break;
 		case EnemyState::ATTACK:
@@ -159,7 +159,7 @@ void Enemy::Chase()
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			float3 dir = mAiAgentComponent->GetDirection();
-			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + float3(dir.x, 0.0f, dir.z));
 		}
 		
 		if (IsPlayerReachable())
@@ -322,6 +322,11 @@ void Enemy::Death()
 		ResetEnemyColor();
 		mGameObject->SetEnabled(false);
 		DropItem();
+
+		if (mAnimationComponent)
+		{
+			mAnimationComponent->ResetAnimationComponent();
+		}
 	}
 }
 
