@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1038267305,
-                "ParentUID": 1735689159,
+                "UID": 1045091180,
+                "ParentUID": 1367333558,
                 "Name": "Base_Tutorial",
                 "Enabled": false,
                 "Active": false,
@@ -32,7 +32,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -481.1499938964844,
+                            0.0,
                             250.0,
                             0.0
                         ],
@@ -71,12 +71,12 @@
                             {
                                 "VariableName": "mMoveTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 471249979
+                                "VariableData": 604992937
                             },
                             {
                                 "VariableName": "mDashTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 1783999653
+                                "VariableData": 546672356
                             },
                             {
                                 "VariableName": "KEYBOARD",
@@ -85,12 +85,12 @@
                             {
                                 "VariableName": "mMoveTutorial",
                                 "MemberType": 3,
-                                "VariableData": 642563358
+                                "VariableData": 1514567400
                             },
                             {
                                 "VariableName": "mDashTutorial",
                                 "MemberType": 3,
-                                "VariableData": 1638306802
+                                "VariableData": 247604442
                             },
                             {
                                 "VariableName": "DOOR",
@@ -100,14 +100,24 @@
                                 "VariableName": "mDoor1",
                                 "MemberType": 3,
                                 "VariableData": 1148983579
+                            },
+                            {
+                                "VariableName": "mDoorEmissiveTop",
+                                "MemberType": 3,
+                                "VariableData": 345579056
+                            },
+                            {
+                                "VariableName": "mDoorEmissiveBorder",
+                                "MemberType": 3,
+                                "VariableData": 100456207
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 471249979,
-                "ParentUID": 1038267305,
+                "UID": 604992937,
+                "ParentUID": 1045091180,
                 "Name": "Move_Con",
                 "Enabled": false,
                 "Active": false,
@@ -136,7 +146,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -328.54998779296877,
+                            0.0,
                             0.0,
                             0.0
                         ],
@@ -147,8 +157,8 @@
                             1.0
                         ],
                         "Size": [
-                            157.0,
-                            48.0
+                            585.0,
+                            150.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -166,7 +176,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1730986441,
+                        "ImageID": 1392363910,
                         "Color": [
                             1.0,
                             1.0,
@@ -184,8 +194,8 @@
                 ]
             },
             {
-                "UID": 1638306802,
-                "ParentUID": 1038267305,
+                "UID": 247604442,
+                "ParentUID": 1045091180,
                 "Name": "Dash",
                 "Enabled": false,
                 "Active": false,
@@ -214,7 +224,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -258.95001220703127,
+                            0.0,
                             0.0,
                             0.0
                         ],
@@ -225,8 +235,8 @@
                             1.0
                         ],
                         "Size": [
-                            300.0,
-                            48.0
+                            585.0,
+                            150.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -244,7 +254,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 131372401,
+                        "ImageID": 165593129,
                         "Color": [
                             1.0,
                             1.0,
@@ -262,8 +272,8 @@
                 ]
             },
             {
-                "UID": 642563358,
-                "ParentUID": 1038267305,
+                "UID": 1514567400,
+                "ParentUID": 1045091180,
                 "Name": "Move",
                 "Enabled": false,
                 "Active": false,
@@ -292,7 +302,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -275.6499938964844,
+                            0.0,
                             0.0,
                             0.0
                         ],
@@ -303,8 +313,8 @@
                             1.0
                         ],
                         "Size": [
-                            264.0,
-                            48.0
+                            585.0,
+                            150.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -322,7 +332,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1548096461,
+                        "ImageID": 255389431,
                         "Color": [
                             1.0,
                             1.0,
@@ -340,8 +350,8 @@
                 ]
             },
             {
-                "UID": 1783999653,
-                "ParentUID": 1038267305,
+                "UID": 546672356,
+                "ParentUID": 1045091180,
                 "Name": "Dash_Con",
                 "Enabled": false,
                 "Active": false,
@@ -370,7 +380,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -276.5,
+                            0.0,
                             0.0,
                             0.0
                         ],
@@ -381,8 +391,8 @@
                             1.0
                         ],
                         "Size": [
-                            267.0,
-                            48.0
+                            585.0,
+                            150.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -400,7 +410,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1157376262,
+                        "ImageID": 2016321643,
                         "Color": [
                             1.0,
                             1.0,
