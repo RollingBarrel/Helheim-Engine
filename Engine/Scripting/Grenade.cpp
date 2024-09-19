@@ -69,7 +69,7 @@ void Grenade::MoveToTarget()
     {
         mBlackHoleSFX->SetEnabled(false);
         mBlackHoleSFX->SetEnabled(true);
-        mTrail->SetEnabled(false);
+        //mTrail->SetEnabled(false);
         mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
