@@ -21,7 +21,6 @@ CREATE(EnemyExplosive)
     MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
     MEMBER(MemberType::GAMEOBJECT, mExplosionParticle);
 
-
     END_CREATE;
 }
 
@@ -43,7 +42,6 @@ void EnemyExplosive::Start()
     {
         mExplosionParticle->SetEnabled(false);
     }
-
 }
 
 
@@ -66,7 +64,6 @@ void EnemyExplosive::Attack()
         mExplosionParticle->SetEnabled(true);  
     }
 
-
     if (IsPlayerInRange(mExplosionRadius))
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mPlayer->GetComponent(ComponentType::SCRIPT));
@@ -79,6 +76,15 @@ void EnemyExplosive::Attack()
     }
 
     TakeDamage(mMaxHealth);
+}
+
+void EnemyExplosive::Death()
+{
+	Enemy::Death();
+
+    float3 newScale = float3(1, 1, 1);
+    mExplosionWarningGO->SetWorldScale(newScale);
+	mExplosionWarningGO->SetEnabled(false);
 }
 
 void EnemyExplosive::ChargeWarningArea()
