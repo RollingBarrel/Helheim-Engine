@@ -9,6 +9,7 @@
 #include "AttackState.h"
 #include "SpecialState.h"
 #include "ReloadState.h"
+#include "UltimateState.h"
 
 #include "Keys.h"
 
@@ -48,6 +49,12 @@ StateType GrenadeState::HandleInput()
         mPlayerController->GetGrenadeState()->ResetCooldown();
         mThrowGrenade = true;
         return StateType::AIM;
+    }
+
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady())
+    {
+        mPlayerController->GetUltimateState()->ResetCooldown();
+        return StateType::ULTIMATE_CHARGE;
     }
 
     return StateType::GRENADE;
