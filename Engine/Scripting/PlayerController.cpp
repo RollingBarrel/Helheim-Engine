@@ -687,28 +687,38 @@ void PlayerController::GrenadeAim()
     {
         if (GameManager::GetInstance()->UsingController())
         {
-            float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
-            float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
-
-            float2 rightStickVector = float2(rightX, rightY);
-            float lenght = rightStickVector.Length();
-            lenght = Min(1.0f, lenght);
-
-            float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
-            float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
-            float3 grenadeDirection = ((cameraFront * -rightStickVector.y) + (cameraRight * -rightStickVector.x)).Normalized();
-
-            float3 initialPosition = mGameObject->GetWorldPosition();
-
-            mGrenadePosition = initialPosition + grenadeDirection * (mGrenadeRange * lenght);
+            if (mGrenadeAimTimer.DelayWithoutReset(0.15f))
+            {
+                mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+                float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+                float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+    
+                float2 rightStickVector = float2(rightX, rightY);
+                float lenght = rightStickVector.Length();
+                lenght = Min(1.0f, lenght);
+    
+                float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
+                float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
+                float3 grenadeDirection = ((cameraFront * -rightStickVector.y) + (cameraRight * -rightStickVector.x)).Normalized();
+    
+                float3 initialPosition = mGameObject->GetWorldPosition();
+    
+                mGrenadePosition = initialPosition + grenadeDirection * (mGrenadeRange * lenght);
+            }
+            else
+            {
+                mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
+                mGrenadePosition = mGameObject->GetWorldPosition() + mGameObject->GetFront() * mGrenadeRange;
+                //mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGrenadePosition);
+            }
         }
-
+    
         else
         {
             Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
             float3 planePoint = mGameObject->GetWorldPosition();
             Plane plane(planePoint, float3::unitY);
-
+    
             float distance;
             if (plane.Intersects(ray, &distance))
             {
@@ -718,13 +728,12 @@ void PlayerController::GrenadeAim()
                 float distanceSquared = aimDirection.LengthSq();
                 float radiusSquared = mGrenadeRange * mGrenadeRange;
                 aimDirection.Normalize();
-
+    
                 mGrenadePosition = (distanceSquared < radiusSquared) ? rayPoint : initialPosition + aimDirection.Normalized() * mGrenadeRange;
             }
         }
-
         mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGrenadePosition);
-    }
+    } 
 }
 
 void PlayerController::ThrowGrenade()
@@ -732,10 +741,8 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mGrenade)
-    {
-        mGrenade->ThrowGrenade(mGameObject->GetWorldPosition(), mGrenadePosition);
-    }  
+    if (mGrenade) mGrenade->ThrowGrenade(mGameObject->GetWorldPosition(), mGrenadePosition);
+    mGrenadeAimTimer.Reset();
 }
 
 void PlayerController::CheckOtherTimers()
