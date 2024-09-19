@@ -24,7 +24,6 @@ private:
     void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
     void EndCinematic(GameObject* camera);
-    float3 lerp(const float3& start, const float3& end, float t);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ResetParameters(bool CinematicStarted);

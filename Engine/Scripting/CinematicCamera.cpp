@@ -9,6 +9,7 @@
 #include "ImageComponent.h"
 #include "ModuleInput.h"
 #include "Keys.h"
+#include "math/float3.h"
 
 CREATE(CinematicCamera)
 {
@@ -216,7 +217,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                         }
                         else
                         {
-                            float3 newPosition = lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
+                            float3 newPosition = Lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
 
                             if (newPosition.y < currentPosition.y)
                             {
@@ -295,7 +296,7 @@ void CinematicCamera::EndCinematic(GameObject* camera)
         App->GetCamera()->ActivateFirstCamera();
     }
     
-    GameManager::GetInstance()->SetPaused(false, false);
+    //GameManager::GetInstance()->SetPaused(false, false);
 
     if (mBattleArea1)
     {
@@ -422,15 +423,6 @@ void CinematicCamera::ActivateCamera(GameObject* cinematicCamera)
     }
 }
 
-float3 CinematicCamera::lerp(const float3& start, const float3& end, float t)
-{
-    return float3{
-        start.x + t * (end.x - start.x),
-        start.y + t * (end.y - start.y),
-        start.z + t * (end.z - start.z)
-    };
-}
-
 void CinematicCamera::InitAnimation(int animState)
 {
     std::string trigger;
@@ -448,10 +440,10 @@ void CinematicCamera::InitAnimation(int animState)
 
     if (mAnimationComponent)
     {
-        //mAnimationComponent->OnReset();
+            //mAnimationComponent->OnReset();
 
-        mAnimationComponent->RestartStateAnimation();
-        //mAnimationComponent->ResetAnimationComponent();
+        //mAnimationComponent->RestartStateAnimation();
+        mAnimationComponent->ResetAnimationComponent();
         mAnimationComponent->SendTrigger(trigger, 0.0f);
     }
 }
