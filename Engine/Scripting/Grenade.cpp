@@ -27,7 +27,7 @@ CREATE(Grenade)
 
 void Grenade::Start()
 {
-    mExplosionSFX->SetEnabled(false);
+    mBlackHoleSFX->SetEnabled(false);
     mExplosionSFX->SetEnabled(false);
     mTrail->SetEnabled(false);
     mSphere->SetEnabled(false);
@@ -73,9 +73,9 @@ void Grenade::MoveToTarget()
         mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
-        mBlackHoleSFX->SetWorldPosition(mDestination);
-        mExplosionSFX->SetWorldPosition(mDestination);
-        mSphere->SetWorldPosition(mDestination);
+        //mBlackHoleSFX->SetWorldPosition(mDestination + float3(0, 0.8, 0) );
+        mExplosionSFX->SetWorldPosition(mDestination + float3(0, 0.8, 0));
+        mSphere->SetWorldPosition(mDestination + float3(0, 0.8, 0));
 
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE1, mExplosionSFX->GetWorldPosition());
         GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, false);
@@ -116,11 +116,9 @@ void Grenade::Explosion()
 {
     if (mExplosionTimer.Delay(mExplosionDuration)) 
     {
-
         EndExplosion();
     }
-
-    mExplosionSFX->SetEnabled(true);
+    else mExplosionSFX->SetEnabled(true);
     //mSphere->SetLocalScale(float3(10.0f));
 }
 
@@ -180,7 +178,6 @@ void Grenade::EndExplosion()
 {
     GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_THROW, mExplosionAudio, true);
     mState = GRENADE_STATE::NONE;
-    mExplosionSFX->SetEnabled(false);
     mSphere->SetEnabled(false);
 }
 
