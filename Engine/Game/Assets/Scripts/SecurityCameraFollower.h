@@ -38,5 +38,4 @@ private:
 	GameObject* mTarget = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
 
-
 };
