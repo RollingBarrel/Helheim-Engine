@@ -34,16 +34,6 @@ void AudioListenerComponent::Update()
 
 	// For channels
 	FMOD::System* core = App->GetAudio()->GetFMODCoreSystem();
-
-	//FMOD_VECTOR pos = { gameobjectPosition.x, gameobjectPosition.y, gameobjectPosition.z };
-	//FMOD_VECTOR forward = { 0.0f, 0.0f, 1.0f };
-	//FMOD_VECTOR up = { 0.0f, 1.0f, 0.0f };
-	//FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
-
-	//pos.x = gameobjectPosition.x;
-
-
-	//core->set3DListenerAttributes(0, &pos, &vel, &forward, &up);
 	core->set3DListenerAttributes(0, &attributes.position, &attributes.velocity, &attributes.forward, &attributes.up);
 }
 

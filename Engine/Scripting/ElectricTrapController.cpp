@@ -43,20 +43,25 @@ void ElectricTrapController::Start()
 
 void ElectricTrapController::Update()
 {
-    if (mIsActive)
+    // Don't be working if player is far
+    float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
+    if (distance <= 30)
     {
-        if (mActivationDurationTimer.Delay(mActivationDuration))
+        if (mIsActive)
         {
-            mIsActive = false;
-            ActiveTrap(false);
+            if (mActivationDurationTimer.Delay(mActivationDuration))
+            {
+                mIsActive = false;
+                ActiveTrap(false);
+            }
         }
-    }
-    else
-    {
-        if (mActivationIntervalTimer.Delay(mActivationInterval))
+        else
         {
-            mIsActive = true;
-            ActiveTrap(true);
+            if (mActivationIntervalTimer.Delay(mActivationInterval))
+            {
+                mIsActive = true;
+                ActiveTrap(true);
+            }
         }
     }
 }
