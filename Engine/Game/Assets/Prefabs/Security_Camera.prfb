@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1250111909,
+                "UID": 1619718676,
                 "ParentUID": 1,
                 "Name": "Security_Camera",
                 "Enabled": true,
@@ -23,7 +23,7 @@
                     0.20000000298023225,
                     0.20000000298023225
                 ],
-                "Tag": "Untagged",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -47,8 +47,8 @@
                 ]
             },
             {
-                "UID": 949464529,
-                "ParentUID": 1250111909,
+                "UID": 1246943940,
+                "ParentUID": 1619718676,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -75,8 +75,8 @@
                 "Components": []
             },
             {
-                "UID": 634475223,
-                "ParentUID": 949464529,
+                "UID": 1012854236,
+                "ParentUID": 1246943940,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -113,8 +113,8 @@
                 ]
             },
             {
-                "UID": 307859210,
-                "ParentUID": 1250111909,
+                "UID": 667370932,
+                "ParentUID": 1619718676,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -169,8 +169,8 @@
                 ]
             },
             {
-                "UID": 2407981,
-                "ParentUID": 307859210,
+                "UID": 315343254,
+                "ParentUID": 667370932,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -197,8 +197,8 @@
                 "Components": []
             },
             {
-                "UID": 1842630253,
-                "ParentUID": 2407981,
+                "UID": 2135166573,
+                "ParentUID": 315343254,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -235,8 +235,8 @@
                 ]
             },
             {
-                "UID": 1540242348,
-                "ParentUID": 2407981,
+                "UID": 1801588460,
+                "ParentUID": 315343254,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
