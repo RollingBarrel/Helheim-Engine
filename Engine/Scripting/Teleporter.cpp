@@ -7,6 +7,7 @@
 #include "AnimationComponent.h"
 #include "PlayerCamera.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PlayerController.h"
 
 
@@ -43,6 +44,8 @@ void Teleporter::Start()
 
     mPlayerController = GameManager::GetInstance()->GetPlayerController();
     
+    mElevatorAudio = GameManager::GetInstance()->GetAudio()->Play(SFX::ELEVATOR, mElevatorAudio);
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, true);
 }
 
 void Teleporter::Update()
@@ -152,7 +155,9 @@ void Teleporter::Update()
             mCurrentTime = 0.0f;
             mPlayerController->SetIsInElevator(false);
             mIsAtStart = !mIsAtStart;
-
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE);
+            GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, true);
+            GameManager::GetInstance()->GetAudio()->Release(SFX::ELEVATOR, mElevatorAudio);
         }
     }
 }
@@ -202,8 +207,8 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         }
 
         mPlayerController->SetIsInElevator(true);
-
-                
+        GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, false);
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE); 
 
     }
 }

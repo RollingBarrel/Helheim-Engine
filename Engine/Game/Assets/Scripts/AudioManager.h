@@ -62,6 +62,7 @@ enum class SFX
 
 	// SCEENE
 	DOOR,
+	ELECTRICAL_TRAP,
 	ELEVATOR_OPEN_CLOSE,
 	ELEVATOR,
 
@@ -220,6 +221,7 @@ private:
 
 		// SCENE
 		{SFX::DOOR, "Assets/FMOD/Audios/sfx/door.wav"},
+		{SFX::ELECTRICAL_TRAP, "Assets/FMOD/Audios/sfx/electric.wav"},
 		{SFX::ELEVATOR, "Assets/FMOD/Audios/sfx/elevator.wav"},
 		{SFX::ELEVATOR_OPEN_CLOSE, "Assets/FMOD/Audios/sfx/elevatorstop.wav"},
 

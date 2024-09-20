@@ -28,18 +28,23 @@ void AudioListenerComponent::Update()
 
 	attributes.position.x = gameobjectPosition.x;
 	attributes.position.z = gameobjectPosition.z;
-	attributes.forward.z = 1.0f;
+	attributes.forward.z = -1.0f;
 	attributes.up.y = 1.0f;
 	system->setListenerAttributes(0, &attributes);
 
 	// For channels
 	FMOD::System* core = App->GetAudio()->GetFMODCoreSystem();
 
-	FMOD_VECTOR pos = { gameobjectPosition.x, gameobjectPosition.y, gameobjectPosition.z };
-	FMOD_VECTOR forward = { 0.0f, 0.0f, 1.0f };
-	FMOD_VECTOR up = { 0.0f, 1.0f, 0.0f };
-	FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
-	core->set3DListenerAttributes(0, &pos, &vel, &forward, &up);
+	//FMOD_VECTOR pos = { gameobjectPosition.x, gameobjectPosition.y, gameobjectPosition.z };
+	//FMOD_VECTOR forward = { 0.0f, 0.0f, 1.0f };
+	//FMOD_VECTOR up = { 0.0f, 1.0f, 0.0f };
+	//FMOD_VECTOR vel = { 0.0f, 0.0f, 0.0f };
+
+	//pos.x = gameobjectPosition.x;
+
+
+	//core->set3DListenerAttributes(0, &pos, &vel, &forward, &up);
+	core->set3DListenerAttributes(0, &attributes.position, &attributes.velocity, &attributes.forward, &attributes.up);
 }
 
 Component* AudioListenerComponent::Clone(GameObject* owner) const

@@ -413,14 +413,23 @@ void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 audioPosition)
 	{
 		channel->setMode(FMOD_3D);
 
-		FMOD_VECTOR  position = { { 0 } };
-		FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };
+		//FMOD_VECTOR  position = { { 0 } };
+		//FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };
 
-		position.x = audioPosition.x;
-		position.y = audioPosition.y;
-		position.z = audioPosition.z;
+		//position.x = audioPosition.x;
+		//position.y = audioPosition.y;
+		//position.z = audioPosition.z;
 
-		channel->set3DAttributes(&position, &velocity);
+
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
+
+		attributes.position.x = audioPosition.x;
+		attributes.position.z = audioPosition.z;
+
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		channel->set3DAttributes(&attributes.position, &attributes.velocity);
 	}
 }
 
