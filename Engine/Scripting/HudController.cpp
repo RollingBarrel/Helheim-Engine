@@ -430,16 +430,16 @@ void HudController::SetEnergy(int energy, EnergyType type)
     switch (type)
     {
     case EnergyType::NONE:
-        color = float3(100.0f,100.0f,100.0f);
+        color = float3(100.0f / 255.0f,100.0f / 255.0f,100.0f / 255.0f);
         break;
     case EnergyType::BLUE:
-        color = float3(0.0f, 0.0f, 200.0f);
+        color = float3(0.0f / 255.0f, 0.0f / 255.0f, 200.0f / 255.0f);
         break;
     case EnergyType::RED:
-        color = float3(200.0f, 0.0f, 0.0f);
+        color = float3(200.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f);
         break;
     default:
-        color = float3(100.0f, 100.0f, 100.0f);
+        color = float3(100.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f);
         break;
     }
 

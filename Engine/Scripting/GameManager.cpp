@@ -89,6 +89,8 @@ void GameManager::Start()
         UnlockUltimate(false);
     }
     mGameTimer = App->GetCurrentClock();
+
+    mPlayerController->ResetEnergy();
 }
 
 void GameManager::Update()
@@ -224,6 +226,7 @@ void GameManager::ActivateSecondTutorial()
 
 void GameManager::UnlockSecondary()
 {
+    if (mPlayerController->GetCurrentEnergy() == 0)
     mPlayerController->RechargeBattery(EnergyType::RED);
 }
 

@@ -133,6 +133,7 @@ public:
 
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
+    void ResetEnergy();
 
     void UnlockGrenade(bool unlock) { mGrenadeUnlocked = unlock; }
     void UnlockUltimate(bool unlock) { mUltimateUnlocked = unlock; }
