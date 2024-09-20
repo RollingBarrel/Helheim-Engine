@@ -217,13 +217,10 @@ void Enemy::Charge()
 
 void Enemy::Attack()
 {
-	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
 	bool playerReachable = IsPlayerReachable();
 	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
-		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
-		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 	}
 	else if (mAttackDurationTimer.Delay(mAttackDuration))
 	{
@@ -242,9 +239,10 @@ bool Enemy::IsPlayerInRange(float range)
 bool Enemy::IsPlayerReachable()
 {
 	bool reachable = false;
-
+	
 	if (IsPlayerInRange(mAttackDistance))
 	{
+		
 		Hit hit;
 		Ray ray;
 
@@ -261,6 +259,7 @@ bool Enemy::IsPlayerReachable()
 
 		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
 		{
+			mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			reachable = true;
 		}
 	}

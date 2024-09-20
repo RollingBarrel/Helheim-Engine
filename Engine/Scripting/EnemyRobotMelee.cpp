@@ -32,30 +32,37 @@ void EnemyRobotMelee::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.1f;
+    mChargeDuration = 1.2f;
+    mAttackTransitionDuration = 0.01f;
     mSwordTrail->SetEnabled(false);
 }
 
 void EnemyRobotMelee::Charge()
 {
-    Enemy::Charge();
+   	if (mFirstAttack || mChargeDurationTimer.Delay(mChargeDuration))
+	{
+        mFirstAttack = false;
+ 		mCurrentState = EnemyState::ATTACK;
+	}
     mGameObject->LookAt(mPlayer->GetWorldPosition());
 }
 
 void EnemyRobotMelee::Attack()
 {
-    Enemy::Attack();
-    if (mCurrentState == EnemyState::CHARGE) 
+    mAttackTime += App->GetDt();
+    float currentAnim = mAnimationComponent->GetControllerTime();
+    if (!IsPlayerReachable() && mDisengageTimer.Delay(mDisengageTime))
     {
-        mSwordTrail->SetEnabled(true);
-    }    
-    if (mCurrentState == EnemyState::CHASE) 
-    {
+        mCurrentState = EnemyState::CHASE;
         mSwordTrail->SetEnabled(false);
+        mFirstAttack = true;
+        return;
+       
     }
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
+   static bool attack = true ;
+    if ( attack && mAttackTime>=mAttackCoolDown)
     {
-        mAnimationComponent->RestartStateAnimation();
-        PlayMeleeAudio();
+        attack = false;
         float3 playerPosition = mPlayer->GetWorldPosition();
         float distanceToEnemy = (playerPosition - mGameObject->GetWorldPosition()).Length();
         float3 enemyFrontNormalized = mGameObject->GetFront().Normalized();
@@ -67,10 +74,19 @@ void EnemyRobotMelee::Attack()
             PlayerController* playerScript = (PlayerController*)((ScriptComponent*)mPlayer->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
             if (playerScript != nullptr)
             {
+                PlayMeleeAudio();
                 playerScript->TakeDamage(mMeeleDamage);
                 GameManager::GetInstance()->HitStop();
             }
         }
+    }
+    if (!attack && mAttackTime >= mAttackCoolDown+0.1f)
+    {
+        attack = true;
+        mCurrentState = EnemyState::CHARGE;
+        mSwordTrail->SetEnabled(true);
+        mAttackTime = 0.0f;
+        mAnimationComponent->RestartStateAnimation();
     }
 }
 
