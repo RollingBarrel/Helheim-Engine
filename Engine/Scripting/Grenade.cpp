@@ -74,8 +74,8 @@ void Grenade::MoveToTarget()
 
         mState = GRENADE_STATE::BLACK_HOLE;
         //mBlackHoleSFX->SetWorldPosition(mDestination + float3(0, 0.8, 0) );
-        mExplosionSFX->SetWorldPosition(mDestination + float3(0, 0.8, 0));
-        mSphere->SetWorldPosition(mDestination + float3(0, 0.8, 0));
+        mExplosionSFX->SetWorldPosition(mDestination);
+        mSphere->SetWorldPosition(mDestination);
 
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE1, mExplosionSFX->GetWorldPosition());
         GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, false);

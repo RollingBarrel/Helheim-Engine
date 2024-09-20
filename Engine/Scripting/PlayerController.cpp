@@ -675,7 +675,7 @@ void PlayerController::EnableGrenadeAim(bool value)
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
         if (value)
         {
-            mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
+            mGrenadeGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 1.0f, mGrenade->GetGrenadeRadius()));
             mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
         }  
     }
@@ -741,7 +741,7 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition);
+    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition + float3(0, 0.8, 0));
     mGrenadeAimTimer.Reset();
 }
 
