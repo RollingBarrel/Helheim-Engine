@@ -154,7 +154,7 @@ ResourceMaterial* Importer::Material::ImportDefault()
     ResourceMaterial* rMaterial = nullptr;
     if (!App->GetFileSystem()->Exists("Library/99/999999999"))
     {
-        float baseColorFactor[4] = { 1.f };
+        float baseColorFactor[4] = { 1.f, 1.f, 1.f, 1.f };
         float metalicFactor = 0.5f;
         float roughnessFactor = 0.5f;
         unsigned int baseColorTex = 0;
