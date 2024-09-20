@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1250111909,
+                "UID": 1348776380,
                 "ParentUID": 1,
-                "Name": "Security_Camera",
+                "Name": "Security_Camera_2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    149.930908203125,
+                    150.59425354003907,
                     68.15875244140625,
-                    14.732792854309082
+                    13.94808578491211
                 ],
                 "Rotation": [
                     0.0,
@@ -47,21 +47,21 @@
                 ]
             },
             {
-                "UID": 949464529,
-                "ParentUID": 1250111909,
+                "UID": 1110370174,
+                "ParentUID": 1348776380,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0946044921875,
-                    -0.2451171875,
-                    1.271881103515625
+                    -0.74114990234375,
+                    -0.294677734375,
+                    0.46700286865234377
                 ],
                 "Rotation": [
                     0.0,
-                    0.7071068286895752,
                     0.0,
-                    0.7071068286895752
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
@@ -75,8 +75,8 @@
                 "Components": []
             },
             {
-                "UID": 634475223,
-                "ParentUID": 949464529,
+                "UID": 797121393,
+                "ParentUID": 1110370174,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -113,8 +113,8 @@
                 ]
             },
             {
-                "UID": 307859210,
-                "ParentUID": 1250111909,
+                "UID": 490208123,
+                "ParentUID": 1348776380,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -125,9 +125,9 @@
                 ],
                 "Rotation": [
                     0.0,
+                    -0.7071068286895752,
                     0.0,
-                    0.0,
-                    1.0
+                    0.7071068286895752
                 ],
                 "Scale": [
                     1.0,
@@ -169,8 +169,8 @@
                 ]
             },
             {
-                "UID": 2407981,
-                "ParentUID": 307859210,
+                "UID": 175288438,
+                "ParentUID": 490208123,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -197,8 +197,8 @@
                 "Components": []
             },
             {
-                "UID": 1842630253,
-                "ParentUID": 2407981,
+                "UID": 2022542431,
+                "ParentUID": 175288438,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -235,8 +235,8 @@
                 ]
             },
             {
-                "UID": 1540242348,
-                "ParentUID": 2407981,
+                "UID": 1718065896,
+                "ParentUID": 175288438,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -265,15 +265,15 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            149.95045471191407,
+                            151.2493896484375,
                             68.27804565429688,
-                            14.189475059509278,
+                            14.040437698364258,
                             20.0
                         ],
                         "Direction": [
-                            -2.384185791015625e-7,
+                            1.0,
                             0.0,
-                            -1.0,
+                            -1.1920927533992654e-7,
                             0.9396926164627075
                         ],
                         "Color": [
