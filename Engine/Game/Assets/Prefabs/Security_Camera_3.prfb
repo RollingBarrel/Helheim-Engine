@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 58987137,
-                "ParentUID": 1,
+                "UID": 49419855,
+                "ParentUID": 592143622,
                 "Name": "Security_Camera_3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    149.930908203125,
-                    68.15875244140625,
-                    12.275737762451172
+                    114.81656646728516,
+                    68.5,
+                    -2.0576648712158205
                 ],
                 "Rotation": [
                     0.0,
@@ -23,7 +23,7 @@
                     0.20000000298023225,
                     0.20000000298023225
                 ],
-                "Tag": "Bridge",
+                "Tag": "DoorArea",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -47,8 +47,8 @@
                 ]
             },
             {
-                "UID": 981743871,
-                "ParentUID": 58987137,
+                "UID": 1887483876,
+                "ParentUID": 49419855,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -75,8 +75,8 @@
                 "Components": []
             },
             {
-                "UID": 1875259785,
-                "ParentUID": 981743871,
+                "UID": 1561633694,
+                "ParentUID": 1887483876,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -113,8 +113,8 @@
                 ]
             },
             {
-                "UID": 846794471,
-                "ParentUID": 58987137,
+                "UID": 1255486255,
+                "ParentUID": 49419855,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -152,7 +152,7 @@
                             {
                                 "VariableName": "mTurningLightOnTime",
                                 "MemberType": 1,
-                                "VariableData": 5.0
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mMaxLightIntesity",
@@ -169,8 +169,8 @@
                 ]
             },
             {
-                "UID": 32065627,
-                "ParentUID": 846794471,
+                "UID": 939870360,
+                "ParentUID": 1255486255,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -197,8 +197,8 @@
                 "Components": []
             },
             {
-                "UID": 1228015165,
-                "ParentUID": 32065627,
+                "UID": 615134114,
+                "ParentUID": 939870360,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -235,8 +235,8 @@
                 ]
             },
             {
-                "UID": 168429264,
-                "ParentUID": 32065627,
+                "UID": 291929530,
+                "ParentUID": 939870360,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -265,9 +265,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            149.95037841796876,
-                            68.27804565429688,
-                            13.00424575805664,
+                            114.8360366821289,
+                            68.61929321289063,
+                            -1.3291568756103516,
                             20.0
                         ],
                         "Direction": [
