@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
+                    5.0,
                     1.0,
-                    1.0,
-                    1.0
+                    5.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -41,17 +41,17 @@
                             {
                                 "VariableName": "mBlackHoleDuration",
                                 "MemberType": 1,
-                                "VariableData": 2.0
+                                "VariableData": 3.0
                             },
                             {
                                 "VariableName": "mExplosionDuration",
                                 "MemberType": 1,
-                                "VariableData": 2.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mGrenadeRadius",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 5.0
                             },
                             {
                                 "VariableName": "mTrajectorySpeedFactor",
@@ -227,8 +227,8 @@
                 "UID": 883176878,
                 "ParentUID": 786473309,
                 "Name": "Sphere",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -252,7 +252,7 @@
                 "Components": [
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "RotateObject",
                         "ScriptVariables": [
                             {
@@ -278,7 +278,7 @@
                 "ParentUID": 883176878,
                 "Name": "Implosion",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -306,17 +306,17 @@
                 "ParentUID": 826435763,
                 "Name": "Laser_impact",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
-                    0.0,
+                    0.30000001192092898,
                     0.0026083379052579405
                 ],
                 "Rotation": [
-                    0.6776721477508545,
-                    -0.22393667697906495,
-                    0.22344402968883515,
-                    0.67636638879776
+                    -0.7099286317825317,
+                    -0.07150815427303314,
+                    0.07021190226078034,
+                    -0.6970592141151428
                 ],
                 "Scale": [
                     1.0,
@@ -330,10 +330,10 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 1.600000023841858,
+                        "Duration": 3.0,
                         "EmissionRate": 200.0,
                         "MaxParticles": 100,
                         "Burst": 0,
@@ -468,17 +468,17 @@
                 "ParentUID": 840081479,
                 "Name": "Laser_impact (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     -1.1641532182693482e-10,
                     0.0,
-                    0.0
+                    -0.10000000149011612
                 ],
                 "Rotation": [
-                    -4.533353206714885e-11,
-                    3.6968296479589216e-11,
-                    -0.6351397037506104,
-                    -0.7788159251213074
+                    -1.4664188266455548e-11,
+                    5.693779475679506e-11,
+                    -0.9683895111083984,
+                    -0.24938058853149415
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -492,10 +492,10 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 1.7999999523162842,
+                        "Duration": 3.0,
                         "EmissionRate": 200.0,
                         "MaxParticles": 100,
                         "Burst": 0,
@@ -630,7 +630,7 @@
                 "ParentUID": 883176878,
                 "Name": "Aura",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -654,7 +654,7 @@
                 "Components": [
                     {
                         "ComponentType": 7,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Size": [
                             1920.0,
                             1080.0
@@ -663,7 +663,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 139304812,
                         "Color": [
                             1.0,
@@ -686,7 +686,7 @@
                 "ParentUID": 883176878,
                 "Name": "Sphere",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -714,7 +714,7 @@
                 "ParentUID": 899885918,
                 "Name": "Sphere",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -742,7 +742,7 @@
                 "ParentUID": 906987260,
                 "Name": "Sphere",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -766,7 +766,7 @@
                 "Components": [
                     {
                         "ComponentType": 0,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "MeshID": 81892183,
                         "MaterialID": 25069168,
                         "HasSkinning": false,
@@ -815,10 +815,10 @@
                     0.0026083379052579405
                 ],
                 "Rotation": [
-                    -0.5872213840484619,
-                    -0.4051707684993744,
-                    0.40442129969596865,
-                    -0.586067259311676
+                    -0.04453308880329132,
+                    -0.7120236754417419,
+                    0.7106537818908691,
+                    -0.044408053159713748
                 ],
                 "Scale": [
                     1.0,
@@ -835,13 +835,13 @@
                         "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 0.699999988079071,
+                        "Duration": 0.20000000298023225,
                         "EmissionRate": 200.0,
                         "MaxParticles": 100,
-                        "Burst": 0,
+                        "Burst": 50,
                         "Looping": false,
                         "FollowEmitter": true,
-                        "SpinSpeed": -7.0,
+                        "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
@@ -874,7 +874,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.0,
+                                "MinValue": 10.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -882,25 +882,61 @@
                                 {
                                     "Point": [
                                         0.0,
-                                        1.0
+                                        0.0
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.32499998807907107,
-                                        0.7950000166893005
+                                        0.1111111119389534,
+                                        0.20987653732299806
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.7074999809265137,
-                                        0.42000001668930056
+                                        0.2222222238779068,
+                                        0.395061731338501
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.5555555820465088
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.6913580298423767
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.8024691343307495
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.8888888955116272
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.9506173133850098
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.9876543283462524
                                     ]
                                 },
                                 {
                                     "Point": [
                                         1.0,
-                                        0.0
+                                        1.0
                                     ]
                                 }
                             ]
@@ -977,10 +1013,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -1.19819883181993e-11,
-                    -5.724471591195268e-11,
-                    0.9834474325180054,
-                    -0.20588335394859315
+                    -2.3312752769899526e-11,
+                    5.3628039509145967e-11,
+                    -0.9213367104530335,
+                    -0.40047863125801089
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -997,19 +1033,19 @@
                         "IsEnabled": true,
                         "Image": 148626881,
                         "Delay": 0.0,
-                        "Duration": 0.8999999761581421,
+                        "Duration": 0.30000001192092898,
                         "EmissionRate": 200.0,
                         "MaxParticles": 100,
                         "Burst": 0,
                         "Looping": false,
                         "FollowEmitter": true,
-                        "SpinSpeed": 6.0,
+                        "SpinSpeed": 16.700000762939454,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 0.10000000149011612,
+                            "MinValue": 0.5,
                             "MaxValue": 1.0
                         },
                         "ShapeType": 3,
@@ -1036,7 +1072,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 6.0,
+                                "MinValue": 0.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -1083,7 +1119,7 @@
                             "Image": 148626881,
                             "MaxPoints": 1000,
                             "MinDistance": 0.009999999776482582,
-                            "MaxLifeTime": 0.30000001192092898,
+                            "MaxLifeTime": 0.20000000298023225,
                             "UVScroll": 1.0,
                             "IsFixedDirection": false,
                             "IsUVScrolling": true,
