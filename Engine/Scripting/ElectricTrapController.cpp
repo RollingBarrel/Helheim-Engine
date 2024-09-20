@@ -1,5 +1,6 @@
 #include "ElectricTrapController.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
@@ -82,6 +83,7 @@ void ElectricTrapController::ActiveTrap(bool active)
         {
             mSfx->SetEnabled(true);
         }
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
         // Reserved for effects, perticle, sounds...
     }
     else
