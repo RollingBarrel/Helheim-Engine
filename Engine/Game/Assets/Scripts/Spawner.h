@@ -18,15 +18,14 @@ public:
 
 	bool IsActive() const { return mIsActive; }
 	PoolType GetEnemyType() const { return mPoolType; }
-	int GetWaveRounds() const { return mWaveRounds; }
+	int GetEnemiesPerRound() const { return mEnemiesPerRound; }
 	void Active(bool active) { mIsActive = active; }
-
 
 private:
 	bool mOnlyOnce = false;
 	bool mIsActive = false;
 	int mSpawnedCounter = 0;
-	int mWaveRounds = 1;
+	int mEnemiesPerRound = 1;
 	TimerScript mSpawnDelayTimer;
 	float mSpawnDelay = 1.25f;
 

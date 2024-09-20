@@ -121,7 +121,7 @@ void HierarchyPanel::OnLeftClickNode(GameObject* node)
             if (mLastMarkSeen != node->GetID()) 
 			{
                 mShiftClicked = node->GetID();
-                if (mLastMarkSeen != 0) 
+                if (mLastMarkSeen != 0)
 				{
                     mShiftMarking[0] = mLastMarkSeen;
                     mShiftMarking[1] = mShiftClicked;

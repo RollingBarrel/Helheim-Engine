@@ -37,6 +37,8 @@ private:
 	BoxColliderComponent* mCollider = nullptr;
 	bool mHasEntered = false;
 
+	bool mIsStartingArea = false;
+
 	float3 mClosedColor = float3(255.0f, 37.0f, 0.0f);
 	float3 mOpenColor = float3(0.0f, 255.0f, 0.0f);
 };
