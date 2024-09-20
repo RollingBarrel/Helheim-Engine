@@ -87,6 +87,8 @@ void GrenadeState::Exit()
             GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
         }
     }
+    mPlayerController->SetSpineAnimation("tIdleRanged", 0.3f);
+
 }
 
 bool GrenadeState::IsReady()
