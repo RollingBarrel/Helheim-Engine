@@ -45,6 +45,15 @@ void EnemyCreatureMelee::Start()
 	mDeathTime = 2.20f;
 }
 
+void EnemyCreatureMelee::Update()
+{
+	Enemy::Update();
+	if (mCurrentState == EnemyState::ATTACK)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, mGameObject->GetWorldPosition());
+	}
+}
+
 void EnemyCreatureMelee::Chase()
 {
 	PlayStepAudio();
@@ -110,7 +119,6 @@ void EnemyCreatureMelee::Attack()
 	}
 	
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
-	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, mGameObject->GetWorldPosition());
 	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
 }
 

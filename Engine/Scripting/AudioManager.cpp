@@ -360,7 +360,6 @@ bool AudioManager::IsPlayeble(SFX sfx)
     switch (sfx) 
     {
         case SFX::PLAYER_PISTOL:
-        case SFX::PLAYER_DASH:
         case SFX::PLAYER_SHOTGUN:
         case SFX::PLAYER_MACHINEGUN:
         case SFX::PLAYER_MEELEE:

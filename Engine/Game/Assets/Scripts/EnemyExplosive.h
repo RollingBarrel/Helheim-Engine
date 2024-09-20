@@ -13,6 +13,7 @@ public:
 	EnemyExplosive(GameObject* owner) : Enemy(owner) {}
 	~EnemyExplosive() {}
 
+	void Update() override;
 	void Start() override;
 	void Charge() override;
 	void Attack() override;
@@ -31,5 +32,6 @@ private:
 
 	int mChargeSound = -1;
 	int mAttackSound = -1;
+	int mStepSound = -1;
 
 };

@@ -14,6 +14,7 @@ public:
 	~EnemyCreatureMelee() {}
 
 	void Start() override;
+	void Update() override;
 	void Chase() override;
 	void Charge() override;
 	void Attack() override;

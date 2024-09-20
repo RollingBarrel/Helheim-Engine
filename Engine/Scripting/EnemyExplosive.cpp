@@ -48,12 +48,20 @@ void EnemyExplosive::Start()
 
     mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
     mAttackSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_EXPLOSION);
+    mStepSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_STEPS);
 
     GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, true);
     GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound, true);
-
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound, true);
 }
 
+void EnemyExplosive::Update()
+{
+    Enemy::Update();
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound, false);
+
+    GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound, mGameObject->GetWorldPosition());
+}
 
 void EnemyExplosive::Charge()
 {
@@ -94,18 +102,22 @@ void EnemyExplosive::Attack()
 
 void EnemyExplosive::Death()
 {
-    Enemy::Death();
+    if (mStepSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound);
+    }
 
     if (mChargeSound != -1)
     {
         GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound);
-
     }
 
     if (mAttackSound != -1)
     {
         GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound);
     }
+
+    Enemy::Death();
 }
 
 void EnemyExplosive::PlayStepAudio()

@@ -66,6 +66,7 @@ void AreaDoors::CloseDoors(bool close)
 	std::string trigger = (close) ? "tClose" : "tOpen";
 	if (close)
 	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
 		if (mDoorEnterEmiBorder)
 		{
 			mBorderRenderEnter->SetEmissiveColor(mClosedColor);
@@ -88,7 +89,7 @@ void AreaDoors::CloseDoors(bool close)
 
 	if (mDoorEnter)
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoorEnter->GetWorldPosition());
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
 		if (close)
 		{
 
@@ -109,7 +110,7 @@ void AreaDoors::CloseDoors(bool close)
 	}
 	if (mDoorExit)
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR, mDoorExit->GetWorldPosition());
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
 
 		AnimationComponent* doorAnimation2 = static_cast<AnimationComponent*>(mDoorExit->GetComponent(ComponentType::ANIMATION));
 		if (doorAnimation2)

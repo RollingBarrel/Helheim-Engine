@@ -62,6 +62,8 @@ enum class SFX
 
 	// SCEENE
 	DOOR,
+	ELEVATOR_OPEN_CLOSE,
+	ELEVATOR,
 
 	// ENEMY
 	ENEMY_DEATH,
@@ -218,6 +220,8 @@ private:
 
 		// SCENE
 		{SFX::DOOR, "Assets/FMOD/Audios/sfx/door.wav"},
+		{SFX::ELEVATOR, "Assets/FMOD/Audios/sfx/elevator.wav"},
+		{SFX::ELEVATOR_OPEN_CLOSE, "Assets/FMOD/Audios/sfx/elevatorstop.wav"},
 
 		// ENEMY
 		{SFX::ENEMY_DEATH, "Assets/FMOD/Audios/sfx/generalenemydeath.wav"}, // [X]
