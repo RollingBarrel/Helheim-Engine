@@ -183,56 +183,10 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
     if (mPlayingCinematic)
     {
         if (mTravelling)
-        {
-            if (mFadeOn)
+        {   
+            if (HandleFadeIn(camera))
             {
-                if (Fade(true))
-                {
-                    if (mPlayerCameraGO)
-                    {
-                        ActivateCamera(camera);
-                        mPlayerCameraGO->SetEnabled(false);
-                    }
-
-                    mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
-                    mActiveCinematicCamera = true;
-                    App->GetCamera()->ActivateFirstCamera();
-
-                    mFadeOn = false;
-                }
-            }
-            else
-            {
-                Fade(false);
-
-                float deltaTime = App->GetDt();
-
-                if (!mMoveCompleted)
-                {
-                    float3 currentPosition = camera->GetWorldPosition();
-                    float3 direction = mTargetPosition - currentPosition;
-                    float distance = direction.Length();
-                    direction.Normalize();
-
-                    float step = mSpeedFactor * deltaTime;
-
-                    if (step >= distance)
-                    {
-                        camera->SetWorldPosition(mTargetPosition);
-                        mMoveCompleted = true;
-                    }
-                    else
-                    {
-                        float3 newPosition = Lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
-
-                        if (newPosition.y < currentPosition.y)
-                        {
-                            newPosition.y = currentPosition.y;
-                        }
-
-                        camera->SetWorldPosition(newPosition);
-                    }
-                }
+                HandleCameraMovement(camera);
             }
 
             if (mTimer.Delay(mAnimationTime))
@@ -248,37 +202,109 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         }
         else
         {
-            if (mFadeOn)
+            if (HandleFadeOut(camera))
             {
-                if (Fade(true))
-                {
-                    EndCinematic(camera);
-                    mFadeOn = false;
-                }
-            }
-            else
-            {
-                if (Fade(false))
-                {
-                    mTravelling = true;
-                    mPlayingCinematic = false;
-                }
+                mTravelling = true;
+                mPlayingCinematic = false;
             }
         }
 
-        if (!mEscape)
-        {
-            if ((App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_REPEAT) ||
-                (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_REPEAT))
-            {
-                mEscape = true;
-                mTravelling = true;
-                mPlayingCinematic = false;
-                mFadeStart = false;
+        HandleEscape();     
+    }
+}
 
-                mTimer.Reset();
-                EndCinematic(camera);
+bool CinematicCamera::HandleFadeIn(GameObject* camera)
+{
+    if (mFadeOn)
+    {
+        if (Fade(true))
+        {
+            if (mPlayerCameraGO)
+            {
+                ActivateCamera(camera);
+                mPlayerCameraGO->SetEnabled(false);
             }
+
+            mCinematicCamera = (CameraComponent*)camera->GetComponent(ComponentType::CAMERA);
+            mActiveCinematicCamera = true;
+            App->GetCamera()->ActivateFirstCamera();
+
+            mFadeOn = false;
+        }
+
+        return false;
+    }
+    else
+    {
+        Fade(false);
+        return true;
+    }
+}
+
+void CinematicCamera::HandleCameraMovement(GameObject* camera)
+{
+    float deltaTime = App->GetDt();
+
+    if (!mMoveCompleted)
+    {
+        float3 currentPosition = camera->GetWorldPosition();
+        float3 direction = mTargetPosition - currentPosition;
+        float distance = direction.Length();
+        direction.Normalize();
+
+        float step = mSpeedFactor * deltaTime;
+
+        if (step >= distance)
+        {
+            camera->SetWorldPosition(mTargetPosition);
+            mMoveCompleted = true;
+        }
+        else
+        {
+            float3 newPosition = Lerp(currentPosition, mTargetPosition, mSpeedFactor * deltaTime);
+
+            if (newPosition.y < currentPosition.y)
+            {
+                newPosition.y = currentPosition.y;
+            }
+
+            camera->SetWorldPosition(newPosition);
+        }
+    }
+}
+
+bool CinematicCamera::HandleFadeOut(GameObject* camera)
+{
+    if (mFadeOn)
+    {
+        if (Fade(true))
+        {
+            EndCinematic();
+            mFadeOn = false;
+        }
+
+        return false;
+    }
+    else
+    {
+        if (Fade(false))
+        {
+            return true;
+        }
+    }
+}
+
+void CinematicCamera::HandleEscape()
+{
+    if (!mEscape)
+    {
+        if ((App->GetInput()->GetKey(Keys::Keys_M) == KeyState::KEY_REPEAT) ||
+            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_REPEAT))
+        {
+            mEscape = true;
+            mFadeStart = false;
+            mTimer.Reset();
+            EndCinematic();
         }
     }
 
@@ -287,11 +313,13 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         if (Fade(false))
         {
             mEscape = false;
+            mTravelling = true;
+            mPlayingCinematic = false;
         }
     }
 }
 
-void CinematicCamera::EndCinematic(GameObject* camera)
+void CinematicCamera::EndCinematic()
 {
     if (mActiveCinematicCamera)
     {

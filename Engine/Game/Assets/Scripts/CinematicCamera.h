@@ -24,7 +24,11 @@ private:
     void ActivateCamera(GameObject* cinematicCamera);
     void StartCinematic(GameObject* camera, GameObject* target, int animState);
     void UpdateCinematic(GameObject* camera);
-    void EndCinematic(GameObject* camera);
+    bool HandleFadeIn(GameObject* camera);
+    void HandleCameraMovement(GameObject* camera);
+    bool HandleFadeOut(GameObject* camera);
+    void HandleEscape();
+    void EndCinematic();
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ResetParameters(bool CinematicStarted);
