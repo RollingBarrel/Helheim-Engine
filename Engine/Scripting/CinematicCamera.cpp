@@ -96,55 +96,52 @@ void CinematicCamera::Start()
 
 void CinematicCamera::Update()
 {
-    if (mBattleAreaGO1)
+    if (mBattleArea1)
     {
         if (mBattleArea1->IsAreaActive())
         {
-            StartCinematic(mCinematicCameraGO1, mEnemyGO1, mEnemy1AnimState);
+            if (mCinematicIndex == 1)
+            {
+                StartCinematic(mCinematicCameraGO1, mEnemyGO1, mEnemy1AnimState);
+            }    
         }
     }
     
-    if (mBattleAreaGO2)
+    if (mBattleArea2)
     {
         if (mBattleArea2->IsAreaActive())
         {
-            if (!mCinematicStarted)
+            if (mCinematicIndex == 2)
             {
-                ResetParameters(true);
-            }
-
-            StartCinematic(mCinematicCameraGO2, mEnemyGO2, mEnemy2AnimState);
+                StartCinematic(mCinematicCameraGO2, mEnemyGO2, mEnemy2AnimState);
+            }            
         }
     }
     
-    if (mBattleAreaGO3)
+    if (mBattleArea3)
     {
         if (mBattleArea3->IsAreaActive())
         {
-            if (mCinematicStarted)
+            if (mCinematicIndex == 3)
             {
-                ResetParameters(false);
+                StartCinematic(mCinematicCameraGO3, mEnemyGO3, mEnemy3AnimState);
             }
-
-            StartCinematic(mCinematicCameraGO3, mEnemyGO3, mEnemy3AnimState);
         }
     }
     
-    if (mBattleAreaGO4)
+    if (mBattleArea4)
     {
         if (mBattleArea4->IsAreaActive())
         {
-            if (!mCinematicStarted)
-            {
-                ResetParameters(true);
-            }
-
             if (!mLevel1)
             {
                 mDistanceToEnemy = mDistanceToEnemy + 4.5f; //Boss enemy is bigger than other enemies and needs more distance for the camera
             }
 
-            StartCinematic(mCinematicCameraGO4, mEnemyGO4, mEnemy4AnimState);
+            if (mCinematicIndex == 4)
+            {
+                StartCinematic(mCinematicCameraGO4, mEnemyGO4, mEnemy4AnimState);
+            }
         }
     }
 }
@@ -156,7 +153,7 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
         if (!mStartParameters)
         {
             mStartParameters = true;
-
+            
             mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
 
@@ -210,6 +207,12 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         }
 
         HandleEscape();     
+    }
+    else
+    {
+        mCinematicIndex++;
+        mStartParameters = false;
+        mPlayingCinematic = true;
     }
 }
 
@@ -298,8 +301,8 @@ void CinematicCamera::HandleEscape()
 {
     if (!mEscape)
     {
-        if ((App->GetInput()->GetKey(Keys::Keys_M) == KeyState::KEY_REPEAT) ||
-            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_REPEAT))
+        if ((App->GetInput()->GetKey(Keys::Keys_B) == KeyState::KEY_REPEAT) ||
+            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_REPEAT))
         {
             mEscape = true;
             mFadeStart = false;
@@ -332,7 +335,7 @@ void CinematicCamera::EndCinematic()
     
     //GameManager::GetInstance()->SetPaused(false, false);
 
-    if (mBattleAreaGO1)
+    if (mBattleArea1)
     {
         if (mBattleArea1->IsAreaActive())
         {
@@ -340,7 +343,7 @@ void CinematicCamera::EndCinematic()
         }
     }
 
-    if (mBattleAreaGO2)
+    if (mBattleArea2)
     {
         if (mBattleArea2->IsAreaActive())
         {
@@ -348,7 +351,7 @@ void CinematicCamera::EndCinematic()
         }
     }
 
-    if (mBattleAreaGO3)
+    if (mBattleArea3)
     {
         if (mBattleArea3->IsAreaActive())
         {
@@ -356,7 +359,7 @@ void CinematicCamera::EndCinematic()
         }
     }
 
-    if (mBattleAreaGO4)
+    if (mBattleArea4)
     {
         if (mBattleArea4->IsAreaActive())
         {
@@ -477,11 +480,4 @@ bool CinematicCamera::Fade(bool fadeOut)
             else return true;      
         }
     }
-}
-
-void CinematicCamera::ResetParameters(bool CinematicStarted)
-{
-    mCinematicStarted = CinematicStarted;
-    mStartParameters = false;
-    mPlayingCinematic = true;
 }

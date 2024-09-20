@@ -31,7 +31,6 @@ private:
     void EndCinematic();
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
-    void ResetParameters(bool CinematicStarted);
  
     GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO1 = nullptr;
@@ -63,7 +62,8 @@ private:
     int mEnemy2AnimState = 1;
     int mEnemy3AnimState = 1;
     int mEnemy4AnimState = 1;
-    
+    int mCinematicIndex = 1;
+ 
     float mDistanceToEnemy = 4.0f;
     float mYawAngle = 45.0f;
     float mPitchAngle = -45.0f;
@@ -78,7 +78,6 @@ private:
     bool mMoveCompleted = false;
     bool mPlayingCinematic = true;
     bool mTravelling = true;
-    bool mCinematicStarted = false;
     bool mStartParameters = false;
     bool mLevel1 = false;
     bool mFadeStart = false;
