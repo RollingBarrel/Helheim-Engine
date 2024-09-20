@@ -68,6 +68,9 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mCreditsHover);
     MEMBER(MemberType::GAMEOBJECT, mCreditsClicked);
 
+    SEPARATOR("Back Btn");
+    MEMBER(MemberType::GAMEOBJECT, mBackGO);
+
     SEPARATOR("Quit Btn");
     MEMBER(MemberType::GAMEOBJECT, mQuitGO);
     MEMBER(MemberType::GAMEOBJECT, mQuitText);
@@ -136,6 +139,9 @@ void MainMenu::Start()
     mOptionsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonClick, this)));
     mOptionsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHover, this)));
     mOptionsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHoverOff, this)));
+
+    mBackButton = static_cast<ButtonComponent*>(mBackGO->GetComponent(ComponentType::BUTTON));
+    mBackButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnBackButtonClick, this)));
 
     mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
     mCreditsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonClick, this)));
@@ -509,12 +515,14 @@ void MainMenu::Controls()
 				mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
                 mOptionsOption = 9;
                 mAudioClicked->SetEnabled(false);
+                OnAudioSettingsButtonHover();
             }
 			else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
                 mOptionsOption = 10;
                 mSettingsClicked->SetEnabled(false);
+                OnVideoSettingsButtonHover();
             }
 
             OpenMenu(MENU_TYPE::OPTIONS);
@@ -666,6 +674,13 @@ void MainMenu::OnOptionsButtonClick()
 void MainMenu::OnCreditsButtonClick() 
 {
     OpenMenu(MENU_TYPE::CREDITS);
+}
+
+void MainMenu::OnBackButtonClick()
+{
+    mOptionsClicked->SetEnabled(false);
+    mCreditsClicked->SetEnabled(false);
+    OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnPlayButtonClick() 

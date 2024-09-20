@@ -67,6 +67,21 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mPickupControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mPickupKeyboardGO);
 
+    SEPARATOR("Lose Animations");
+    MEMBER(MemberType::GAMEOBJECT, mLoseFade);
+    MEMBER(MemberType::GAMEOBJECT, mLoseBackText);
+    MEMBER(MemberType::GAMEOBJECT, mLoseText);
+    MEMBER(MemberType::GAMEOBJECT, mLoseLineRight);
+    MEMBER(MemberType::GAMEOBJECT, mLoseLineLeft); 
+    MEMBER(MemberType::GAMEOBJECT, mLoseMenuBtnClicked);
+    MEMBER(MemberType::GAMEOBJECT, mTryAgainBtnClicked);
+
+    SEPARATOR("Win Animations");
+    MEMBER(MemberType::GAMEOBJECT, mWinFade);
+    MEMBER(MemberType::GAMEOBJECT, mWinBackText);
+    MEMBER(MemberType::GAMEOBJECT, mWinText);
+    MEMBER(MemberType::GAMEOBJECT, mWinLineRight);
+    MEMBER(MemberType::GAMEOBJECT, mWinLineLeft);
 
     END_CREATE;
 }
@@ -88,6 +103,12 @@ void HudController::Start()
         mWinScreen->SetEnabled(false);
         if (mWinMenuBtnGO) mWinBtn = static_cast<ButtonComponent*>(mWinMenuBtnGO->GetComponent(ComponentType::BUTTON));
         if (mWinBtn) mWinBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnWinButtonClick, this)));
+
+        mWinBackImage = static_cast<ImageComponent*>(mWinBackText->GetComponent(ComponentType::IMAGE));
+        mWinFadeImage = static_cast<ImageComponent*>(mWinFade->GetComponent(ComponentType::IMAGE));
+        mWinTextImage = static_cast<ImageComponent*>(mWinText->GetComponent(ComponentType::IMAGE));
+        mWinLineRightTransfrom = static_cast<Transform2DComponent*>(mWinLineRight->GetComponent(ComponentType::TRANSFORM2D));
+        mWinLineLeftTransfrom = static_cast<Transform2DComponent*>(mWinLineLeft->GetComponent(ComponentType::TRANSFORM2D));
     }
     if (mLoseScreen)
     {
@@ -100,6 +121,13 @@ void HudController::Start()
         if (mTryAgainBtn) mTryAgainBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonClick, this)));
         if (mTryAgainBtn) mTryAgainBtn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOn, this)));
         if (mTryAgainBtn) mTryAgainBtn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&HudController::OnTryAgainButtonHoverOff, this)));
+    
+        mLoseBackImage = static_cast<ImageComponent*>(mLoseBackText->GetComponent(ComponentType::IMAGE));
+        mLoseFadeImage = static_cast<ImageComponent*>(mLoseFade->GetComponent(ComponentType::IMAGE));
+        mLoseTextImage = static_cast<ImageComponent*>(mLoseText->GetComponent(ComponentType::IMAGE));
+        mLoseLineRightTransfrom = static_cast<Transform2DComponent*>(mLoseLineRight->GetComponent(ComponentType::TRANSFORM2D));
+        mLoseLineLeftTransfrom = static_cast<Transform2DComponent*>(mLoseLineLeft->GetComponent(ComponentType::TRANSFORM2D));
+    
     }
     if (mLoadingScreen) mLoadingScreen->SetEnabled(false);
     if (mLoadingSliderGO) 
@@ -195,6 +223,9 @@ void HudController::Update()
 
     Controls();
 
+    if (mLoseFlag == true) LoseUpdate();
+    if (mWinFlag == true) WinUpdate();
+
     if (GameManager::GetInstance()->IsPaused()) return;
 
     // Gradually decrease the gradual health slider
@@ -271,6 +302,48 @@ void HudController::Update()
     }
 }
 
+void HudController::LoseUpdate()
+{
+    if (*mLoseFadeImage->GetAlpha() < 1.0f) mLoseFadeImage->SetAlpha(*mLoseFadeImage->GetAlpha() + 0.30f * App->GetDt());
+
+    if (mLoseAnimationTimer.DelayWithoutReset(0.5f))
+    {
+        if (*mLoseBackImage->GetAlpha() < 1.0f) mLoseBackImage->SetAlpha(*mLoseBackImage->GetAlpha() + 0.30f * App->GetDt());
+    }
+    if (mLoseAnimationTimer.DelayWithoutReset(1.0f))
+    {
+        if (*mLoseTextImage->GetAlpha() < 0.8f) mLoseTextImage->SetAlpha(*mLoseTextImage->GetAlpha() + 0.30f * App->GetDt());
+    }
+    if (mLoseAnimationTimer.DelayWithoutReset(1.5f))
+    {
+        if (mLoseLineRightTransfrom->GetPosition().x > 300)
+            mLoseLineRightTransfrom->SetPosition(mLoseLineRightTransfrom->GetPosition() - float3(400.0f, 0.0f, 0.0f) * App->GetDt());
+        if (mLoseLineLeftTransfrom->GetPosition().x < -300)
+            mLoseLineLeftTransfrom->SetPosition(mLoseLineLeftTransfrom->GetPosition() + float3(400.0f, 0.0f, 0.0f) * App->GetDt());
+    }
+}
+
+void HudController::WinUpdate()
+{
+    if (*mWinFadeImage->GetAlpha() < 1.0f) mWinFadeImage->SetAlpha(*mWinFadeImage->GetAlpha() + 0.30f * App->GetDt());
+
+    if (mWinAnimationTimer.DelayWithoutReset(0.5f))
+    {
+        if (*mWinBackImage->GetAlpha() < 1.0f) mWinBackImage->SetAlpha(*mWinBackImage->GetAlpha() + 0.30f * App->GetDt());
+    }
+    if (mWinAnimationTimer.DelayWithoutReset(1.0f))
+    {
+        if (*mWinTextImage->GetAlpha() < 0.8f) mWinTextImage->SetAlpha(*mWinTextImage->GetAlpha() + 0.30f * App->GetDt());
+    }
+    if (mWinAnimationTimer.DelayWithoutReset(1.5f))
+    {
+        if (mWinLineRightTransfrom->GetPosition().x > 300)
+            mWinLineRightTransfrom->SetPosition(mWinLineRightTransfrom->GetPosition() - float3(400.0f, 0.0f, 0.0f) * App->GetDt());
+        if (mWinLineLeftTransfrom->GetPosition().x < -300)
+            mWinLineLeftTransfrom->SetPosition(mWinLineLeftTransfrom->GetPosition() + float3(400.0f, 0.0f, 0.0f) * App->GetDt());
+    }
+}
+
 void HudController::FadeIn()
 {
     if (*mFadeoutImage->GetAlpha() >= 0.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() - 0.65f * App->GetDt());
@@ -279,6 +352,32 @@ void HudController::FadeIn()
 void HudController::FadeOut()
 {
     if (*mFadeoutImage->GetAlpha() <= 1.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() + 0.65f * App->GetDt());
+}
+
+void HudController::LoseAnimation()
+{
+    mLoseFlag = true;
+    mLoseAnimationTimer.Reset();
+
+    mLoseBackImage->SetAlpha(0.0f);
+    mLoseFadeImage->SetAlpha(0.0f);
+    mLoseTextImage->SetAlpha(0.0f);
+
+    mLoseLineRightTransfrom->SetPosition(float3(950.0f, 0.0f, 0.0f));
+    mLoseLineLeftTransfrom->SetPosition(float3(-950.0f, 0.0f, 0.0f));
+}
+
+void HudController::WinAnimation()
+{
+    mWinFlag = true;
+    mWinAnimationTimer.Reset();
+
+    mWinBackImage->SetAlpha(0.0f);
+    mWinFadeImage->SetAlpha(0.0f);
+    mWinTextImage->SetAlpha(0.0f);
+
+    mWinLineRightTransfrom->SetPosition(float3(950.0f, 0.0f, 0.0f));
+    mWinLineLeftTransfrom->SetPosition(float3(-950.0f, 0.0f, 0.0f));
 }
 
 bool HudController::Delay(float delay)
@@ -298,20 +397,6 @@ void HudController::Controls()
     if (!GameManager::GetInstance()->IsPaused()) return;
 
     GameManager::GetInstance()->GetPlayerController()->SetIdleState();
-}
-
-void HudController::ButtonClick()
-{
-    if (mWinScreen->IsActive())
-    {
-        OnWinButtonClick();
-        return;
-    }
-    if (mLoseScreen->IsActive())
-    {
-        OnLoseButtonClick();
-        return;
-    }
 }
 
 void HudController::SetSanity()
@@ -460,7 +545,11 @@ void HudController::SetScreen(SCREEN name, bool active)
             mLoadlevel = true;
             break;
         case SCREEN::LOSE:
-            if (mLoseScreen) mLoseScreen->SetEnabled(active);
+            if (mLoseScreen)
+            {
+                mLoseScreen->SetEnabled(active);
+                LoseAnimation();
+            }
             break;
         case SCREEN::WIN:
             if (mWinScreen) mWinScreen->SetEnabled(active);
@@ -541,26 +630,22 @@ void HudController::OnTryAgainButtonClick()
 
 void HudController::OnTryAgainButtonHoverOn()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.25f);
+    mTryAgainBtnClicked->SetEnabled(true);
 }
 
 void HudController::OnTryAgainButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mTryAgainBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mTryAgainBtnClicked->SetEnabled(false);
 }
 
 void HudController::OnLoseButtonHoverOn() 
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.25f);
+    mLoseMenuBtnClicked->SetEnabled(true);
 }
 
 void HudController::OnLoseButtonHoverOff() 
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mLoseMenuBtnGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.0f);
+    mLoseMenuBtnClicked->SetEnabled(false);
 }
 
 #pragma endregion
