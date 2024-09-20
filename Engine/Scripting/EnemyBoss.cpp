@@ -276,7 +276,7 @@ void EnemyBoss::BombAttack()
     float3 target = mPlayer->GetWorldPosition();
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
     //int index = rand() % mTemplates.size();
-    int index = 0;
+    int index = 1;
     for (int i = 0; i < mAreaPositions.size(); i++)
 	{
         int templateIndex = index * 3 + i;
