@@ -9,6 +9,7 @@
 CREATE(SecurityCameraFollower)
 {
 	CLASS(owner);
+	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mMaxDistance);
 	MEMBER(MemberType::FLOAT, mTurningLightOnTime);
 	MEMBER(MemberType::FLOAT, mMaxLightIntesity);
@@ -24,6 +25,8 @@ void SecurityCameraFollower::Start()
 	if (mCameraLight)
 	{
 		mCameraLight->SetEnable(false);
+		mCameraLight->SetIntensity(0);
+		mCameraLight->SetRange(0);
 	}
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponentInParent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
@@ -32,6 +35,8 @@ void SecurityCameraFollower::Start()
 		//mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_EXIT, new std::function<void(CollisionData*)>(std::bind(&SecurityCameraFollower::OnCollisionExit, this, std::placeholders::_1)));
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
+
+	mLookingAtLocation = mGameObject->GetWorldPosition()- float3(0.0f,5.0f,0.0f);
 }
 
 void SecurityCameraFollower::Update()
@@ -55,16 +60,25 @@ void SecurityCameraFollower::Update()
 		}
 
 		//Rotates security camera to player
-		float3 playerFacePosition = mTarget->GetWorldPosition() + float3(0, 0.5f, 0);
-		mGameObject->LookAt(mGameObject->GetWorldPosition()+mGameObject->GetWorldPosition()-playerFacePosition);
+		float3 playerPosition = mTarget->GetWorldPosition() + float3(0, 0.5f, 0);
+		float3 rotationDirection = playerPosition - mLookingAtLocation;
+		if (rotationDirection.LengthSq() > 0.01)
+		{
+			rotationDirection.Normalize();
+
+			mLookingAtLocation += rotationDirection * App->GetDt() * mSpeed;
+			mGameObject->LookAt(mGameObject->GetWorldPosition() + mGameObject->GetWorldPosition() - mLookingAtLocation);
+		}
 
 		//Workaround since OnCollisionExit is not implemented
 		if (mTarget->GetWorldPosition().DistanceSq(mGameObject->GetWorldPosition()) > mMaxDistance * mMaxDistance)
 		{
 			mTarget = nullptr;
-			if (mCameraLight) 
+			if (mCameraLight)
 			{
 				mCameraLight->SetEnable(false);
+				mCameraLight->SetIntensity(0);
+				mCameraLight->SetRange(0);
 			}
 		}
 	}
