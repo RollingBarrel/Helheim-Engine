@@ -34,4 +34,7 @@ private:
 	int mAttackSound = -1;
 	int mStepSound = -1;
 
+	bool mChargePlaying = false;
+	bool mExplosionPlaying = false;
+
 };
