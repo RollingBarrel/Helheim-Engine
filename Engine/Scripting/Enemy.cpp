@@ -257,7 +257,7 @@ bool Enemy::IsPlayerReachable()
 		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
 		Physics::Raycast(hit, ray, distance, &ignoreTags);
 
-		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0 || distance>0.1f)
 		{
 			mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			reachable = true;

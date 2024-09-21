@@ -83,11 +83,11 @@ void AIAgentComponent::StartCrowdNavigation()
 		agentParams.maxSpeed = mMaxSpeed;
 
 		//Crowd fixed params
-		agentParams.collisionQueryRange = agentParams.radius * 12.0f;
+		agentParams.collisionQueryRange = agentParams.radius * 2.0f;
 		agentParams.pathOptimizationRange = agentParams.radius * 30.0f;
 		agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE | DT_CROWD_OPTIMIZE_VIS | DT_CROWD_OPTIMIZE_TOPO | DT_CROWD_SEPARATION;
 		agentParams.obstacleAvoidanceType = (unsigned char)3.0f;
-		agentParams.separationWeight = 2.0f;
+		agentParams.separationWeight = 1.0f;
 
 		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition(), agentParams);
 	}

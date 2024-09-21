@@ -33,15 +33,21 @@ void EnemyRobotMelee::Start()
     Enemy::Start();
     mDisengageTime = 0.1f;
     mChargeDuration = 1.2f;
-    mAttackTransitionDuration = 0.01f;
     mSwordTrail->SetEnabled(false);
 }
 
 void EnemyRobotMelee::Charge()
 {
-   	if (mFirstAttack || mChargeDurationTimer.Delay(mChargeDuration))
-	{
+    mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
+    mAnimationComponent->RestartStateAnimation();
+    if (mFirstAttack &&  mFirstAttackTimer.Delay(mFirstAttackTime))
+    {
         mFirstAttack = false;
+        mCurrentState = EnemyState::ATTACK;
+    }
+    else if (!mFirstAttack && mChargeDurationTimer.Delay(mChargeDuration))
+	{
+        
  		mCurrentState = EnemyState::ATTACK;
 	}
     mGameObject->LookAt(mPlayer->GetWorldPosition());
@@ -49,18 +55,21 @@ void EnemyRobotMelee::Charge()
 
 void EnemyRobotMelee::Attack()
 {
+
+    mAnimationComponent->SetIsPlaying(true);
     mAttackTime += App->GetDt();
-    float currentAnim = mAnimationComponent->GetControllerTime();
     if (!IsPlayerReachable() && mDisengageTimer.Delay(mDisengageTime))
     {
+        
         mCurrentState = EnemyState::CHASE;
         mSwordTrail->SetEnabled(false);
         mFirstAttack = true;
+
         return;
        
     }
    static bool attack = true ;
-    if ( attack && mAttackTime>=mAttackCoolDown)
+    if ( attack && mAttackTime>=0.2f)
     {
         attack = false;
         float3 playerPosition = mPlayer->GetWorldPosition();
@@ -80,13 +89,13 @@ void EnemyRobotMelee::Attack()
             }
         }
     }
-    if (!attack && mAttackTime >= mAttackCoolDown+0.1f)
+    if (!attack && mAttackTime >= 0.5f)
     {
         attack = true;
         mCurrentState = EnemyState::CHARGE;
         mSwordTrail->SetEnabled(true);
         mAttackTime = 0.0f;
-        mAnimationComponent->RestartStateAnimation();
+        
     }
 }
 
