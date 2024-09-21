@@ -36,7 +36,8 @@ private:
 	float mMaxLightRange = 10.0f;
 
 	float mTurningLightOnTimer = 0.0f;
-	float mTurningLightOnTime = 5.0f;
+	float mTurningOnOffTime = 3.0f;
+	bool mOutOfReach = true;
 
 	GameObject* mTarget = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
