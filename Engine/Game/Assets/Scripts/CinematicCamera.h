@@ -18,6 +18,7 @@ public:
     void Awake() override;
     void Start() override;
     void Update() override;
+    bool GetIsPlayingCinematic() { return mPlayingCinematic; }
 
 private:
     void DeActivateCameras();

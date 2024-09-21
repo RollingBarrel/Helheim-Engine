@@ -10,6 +10,7 @@
 #include "HudController.h"
 #include "Spawner.h"
 #include "EnemyExplosiveSpawner.h"
+#include "CinematicCamera.h"
 
 CREATE(BattleArea)
 {
@@ -29,6 +30,8 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn4);
 	SEPARATOR("TUTORIAL");
 	MEMBER(MemberType::BOOL, mIsTutorialArea);
+	SEPARATOR("CINEMATIC MANAGER");
+	MEMBER(MemberType::GAMEOBJECT, mCinematicManagerGO);
 	END_CREATE;
 }
 
@@ -90,35 +93,61 @@ void BattleArea::Start()
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
+
+	if (mCinematicManagerGO)
+	{
+		ScriptComponent* script = (ScriptComponent*)mCinematicManagerGO->GetComponent(ComponentType::SCRIPT);
+		mCinematicCamera = (CinematicCamera*)script->GetScriptInstance();
+	}
 }
 
 void BattleArea::Update()
 {
-	if (mHasBeenActivated && mNeedsToSpawn)
+	if(mCinematicCamera)
 	{
-		for (size_t i = 0; i < mSpawners.size(); i++)
+		if (!mCinematicCamera->GetIsPlayingCinematic())
 		{
-			if (mSpawners[i]->IsActive())
+			mSpawnEnemies = true;
+		}
+	}
+	else
+	{
+		mSpawnEnemies = true;
+	}
+
+	if(mSpawnEnemies)
+	{
+		if (mHasBeenActivated && mNeedsToSpawn)
+		{
+			for (size_t i = 0; i < mSpawners.size(); i++)
 			{
-				for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
+				if (mSpawners[i]->IsActive())
 				{
-					mSpawners[i]->Spawn();
-					mCurrentEnemies++;
+					for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
+					{
+						mSpawners[i]->Spawn();
+						mCurrentEnemies++;
+					}
 				}
 			}
-		}
-		for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
-		{
-			if (mExplosiveSpawners[i]->IsActive())
+			for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
 			{
-				for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+				if (mExplosiveSpawners[i]->IsActive())
 				{
-					mExplosiveSpawners[i]->Spawn();
-					mCurrentEnemies++;
+					for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+					{
+						mExplosiveSpawners[i]->Spawn();
+						mCurrentEnemies++;
+					}
 				}
 			}
+			mNeedsToSpawn = false;
 		}
-		mNeedsToSpawn = false;
+	}
+
+	if (!mHasBeenActivated)
+	{
+		mSpawnEnemies = false;
 	}
 }
 

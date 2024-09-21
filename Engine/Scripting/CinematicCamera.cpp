@@ -98,7 +98,7 @@ void CinematicCamera::Update()
 {
     if (mBattleArea1)
     {
-        if (mBattleArea1->IsAreaActive())
+        if (mBattleArea1->GetIsAreaActive())
         {
             if (mCinematicIndex == 1)
             {
@@ -106,10 +106,10 @@ void CinematicCamera::Update()
             }    
         }
     }
-    
+
     if (mBattleArea2)
     {
-        if (mBattleArea2->IsAreaActive())
+        if (mBattleArea2->GetIsAreaActive())
         {
             if (mCinematicIndex == 2)
             {
@@ -120,7 +120,7 @@ void CinematicCamera::Update()
     
     if (mBattleArea3)
     {
-        if (mBattleArea3->IsAreaActive())
+        if (mBattleArea3->GetIsAreaActive())
         {
             if (mCinematicIndex == 3)
             {
@@ -131,7 +131,7 @@ void CinematicCamera::Update()
     
     if (mBattleArea4)
     {
-        if (mBattleArea4->IsAreaActive())
+        if (mBattleArea4->GetIsAreaActive())
         {
             if (!mLevel1)
             {
@@ -337,7 +337,7 @@ void CinematicCamera::EndCinematic()
 
     if (mBattleArea1)
     {
-        if (mBattleArea1->IsAreaActive())
+        if (mBattleArea1->GetIsAreaActive())
         {
             mEnemyGO1->SetEnabled(false);
         }
@@ -345,7 +345,7 @@ void CinematicCamera::EndCinematic()
 
     if (mBattleArea2)
     {
-        if (mBattleArea2->IsAreaActive())
+        if (mBattleArea2->GetIsAreaActive())
         {
             mEnemyGO2->SetEnabled(false);
         }
@@ -353,7 +353,7 @@ void CinematicCamera::EndCinematic()
 
     if (mBattleArea3)
     {
-        if (mBattleArea3->IsAreaActive())
+        if (mBattleArea3->GetIsAreaActive())
         {
             mEnemyGO3->SetEnabled(false);
         }
@@ -361,7 +361,7 @@ void CinematicCamera::EndCinematic()
 
     if (mBattleArea4)
     {
-        if (mBattleArea4->IsAreaActive())
+        if (mBattleArea4->GetIsAreaActive())
         {
             if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
             {
