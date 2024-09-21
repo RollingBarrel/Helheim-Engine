@@ -1,26 +1,18 @@
 #include "GrenadeState.h"
+#include "Application.h"
+#include "ModuleInput.h"
 
 #include "GameManager.h"
 #include "HudController.h"
-#include "Application.h"
-#include "ModuleInput.h"
 #include "PlayerController.h"
-#include "Keys.h"
-#include "ScriptComponent.h"
-#include "Grenade.h"
+
 #include "AttackState.h"
 #include "SpecialState.h"
-#include "SwitchState.h"
 #include "ReloadState.h"
 #include "UltimateState.h"
 
-GrenadeState::GrenadeState(PlayerController* player, float cooldown) : State(player, cooldown)
-{
-}
+#include "Keys.h"
 
-GrenadeState::~GrenadeState()
-{
-}
 
 StateType GrenadeState::HandleInput()
 {
@@ -59,25 +51,31 @@ StateType GrenadeState::HandleInput()
         return StateType::AIM;
     }
 
+    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady())
+    {
+        mPlayerController->GetUltimateState()->ResetCooldown();
+        return StateType::ULTIMATE_CHARGE;
+    }
+
     return StateType::GRENADE;
 }
 
 void GrenadeState::Update()
 {
-    mPlayerController->UpdateGrenadeVisuals();
+    mPlayerController->GrenadeAim();
 }
 
 void GrenadeState::Enter()
 {
     mThrowGrenade = false;
 
-    mPlayerController->SetGrenadeVisuals(true);
+    mPlayerController->EnableGrenadeAim(true);
     mPlayerController->SetSpineAnimation("tGrenade", 0.3f);
 }
 
 void GrenadeState::Exit()
 {
-    mPlayerController->SetGrenadeVisuals(false);
+    mPlayerController->EnableGrenadeAim(false);
     
     if (mThrowGrenade) 
     {
