@@ -43,7 +43,7 @@ void UltimateState::Enter()
 	mUltimateScript->mInterval = mPlayerController->GetUltimateDamageInterval();
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
 	mPlayerController->EnableUltimate(true);
-	mPlayerController->SetSpeed(2.5f);
+	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed()*mPlayerController->GetUltimateSlow());
 }
 
 void UltimateState::Exit()

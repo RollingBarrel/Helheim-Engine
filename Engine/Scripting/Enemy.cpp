@@ -20,7 +20,8 @@
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
-
+#include <cmath>
+#include <iostream>
 #include "Math/MathFunc.h"
 
 void Enemy::Start()
@@ -38,8 +39,8 @@ void Enemy::Start()
 		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
-			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
+			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
 	}
@@ -123,7 +124,7 @@ void Enemy::ActivateEnemy()
 			break;
 		case EnemyState::CHARGE:
 			if (mAnimationComponent) mAnimationComponent->SendTrigger("tCharge", mChargeTransitionDuration);
-			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+			if (mAiAgentComponent) mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			Charge();
 			break;
 		case EnemyState::ATTACK:
@@ -159,7 +160,7 @@ void Enemy::Chase()
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			float3 dir = mAiAgentComponent->GetDirection();
-			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + float3(dir.x, 0.0f, dir.z));
 		}
 		
 		if (IsPlayerReachable())
@@ -310,7 +311,20 @@ void Enemy::ActivateUltVFX()
 
 void Enemy::Death()
 {
-	if (mDeathTimer.Delay(mDeathTime))
+	mVanishingTime += App->GetDt();
+	if (mVanishingTime >= mDeathTime*0.75)
+	{
+		for (size_t i = 0; i < mMeshComponents.size(); i++)
+		{
+		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+		const ResourceMaterial* material = meshRender->GetResourceMaterial();
+		float4 baseColor = material->GetBaseColorFactor();
+		float4 endColor = baseColor;
+		endColor.w = 0.0f;
+		meshRender->SetBaseColorFactor(baseColor.Lerp(endColor, mVanishingTime /(mDeathTime*10)));
+		}
+	}
+	if (mVanishingTime>=mDeathTime)
 	{
 		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
 
@@ -320,8 +334,14 @@ void Enemy::Death()
 			activeBattleArea->EnemyDestroyed(mGameObject);
 		}
 		ResetEnemyColor();
+		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();
+
+		if (mAnimationComponent)
+		{
+			mAnimationComponent->ResetAnimationComponent();
+		}
 	}
 }
 
