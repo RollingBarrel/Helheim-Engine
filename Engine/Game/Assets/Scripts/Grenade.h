@@ -2,8 +2,8 @@
 #include "Script.h"
 #include "Macros.h"
 #include "float3.h"
-#include <vector>
 #include "TimerScript.h"
+#include <vector>
 
 GENERATE_BODY(Grenade);
 
@@ -11,22 +11,23 @@ class GameObject;
 
 enum class GRENADE_STATE
 {
-	INACTIVE,
-	MOVEMENT,
-	EXPLOSION_START,
+	MOVE,
+	BLACK_HOLE,
+	EXPLOSION,
+	NONE
 };
 
 class Grenade : public Script
 {
 	FRIEND(Grenade)
 public:
-	Grenade(GameObject* owner);
-	~Grenade();
+	Grenade(GameObject* owner) : Script(owner) {}
+	~Grenade() {}
 
 	void Start() override;
 	void Update() override;
 
-	void SetPositionDestination(float3 initialPosition, float3 destination);
+	void ThrowGrenade(float3 initialPosition, float3 destination);
 
 	float GetGrenadeRadius();
 private:
@@ -35,16 +36,18 @@ private:
 	float3  CalculatePositionAtTime(float t);
 	void Explosion();
 	void BlackHole();
+	void MakeDamage(std::vector<GameObject*> enemies);
 	void PullCloser(std::vector<GameObject*> enemies);
 	void EndExplosion();
+	void GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) const;
 
-	std::vector<GameObject*> GetAffectedEnemies();
-
-	GRENADE_STATE mState = GRENADE_STATE::INACTIVE;
+	GRENADE_STATE mState = GRENADE_STATE::NONE;
 	// Player-depends status
-	float mGrenadeDPS = 1.0f;
-	float mGrenadeDuration = 4.0f;
+	float mGrenadeDamage = 50.0f;
+	TimerScript mBlackHoleTimer; 
 	TimerScript mExplosionTimer;
+	float mExplosionDuration = 2.0f;
+	float mBlackHoleDuration = 2.0f;
 	float mGrenadeRadius = 5.0f; // Explosion area
 
 	// Before explotion
@@ -52,7 +55,7 @@ private:
 	float3 mDestination = float3(0, 0, 0);
 	float3 mCurrentPosition;
 
-	float mTotalDistance;
+	float mTotalDistance = 0.0f;
 	float mCurrentDistance = 0.0f;
 	float3 mVelocity;
 
@@ -63,9 +66,10 @@ private:
 	float mElapsedTime = 0.0f;
 
 
-	GameObject* mGrenade = nullptr;
+	GameObject* mTrail = nullptr;
+	GameObject* mBlackHoleSFX = nullptr;
 	GameObject* mExplosionSFX = nullptr;
-	GameObject* mScaled = nullptr;
+	GameObject* mSphere = nullptr;
 
 	int mExplosionAudio = -1;
 };
