@@ -135,6 +135,12 @@ void Teleporter::Update()
     }
     else if (mIsExiting)
     {
+
+        if (!mCloseAudioPlayed)
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE);
+            mCloseAudioPlayed = true;
+        }
         mCurrentTime += App->GetDt();
         float3 positon = LerpPosition(mEnterDuration, mIsAtStart ? mEndPos : mStartPos);
         mPlayer->SetWorldPosition(positon);
@@ -155,7 +161,8 @@ void Teleporter::Update()
             mCurrentTime = 0.0f;
             mPlayerController->SetIsInElevator(false);
             mIsAtStart = !mIsAtStart;
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE);
+            //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE);
+            mCloseAudioPlayed = false;
             GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, true);
             GameManager::GetInstance()->GetAudio()->Release(SFX::ELEVATOR, mElevatorAudio);
         }
@@ -207,7 +214,7 @@ void Teleporter::OnCollisionEnter(CollisionData* collisionData)
         }
 
         mPlayerController->SetIsInElevator(true);
-        GameManager::GetInstance()->GetAudio()->Pause(SFX::ELEVATOR, mElevatorAudio, false);
+        mElevatorAudio = GameManager::GetInstance()->GetAudio()->Play(SFX::ELEVATOR, mElevatorAudio);
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELEVATOR_OPEN_CLOSE); 
 
     }
