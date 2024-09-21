@@ -48,9 +48,14 @@ void EnemyCreatureMelee::Start()
 void EnemyCreatureMelee::Update()
 {
 	Enemy::Update();
-	if (mCurrentState == EnemyState::ATTACK)
+	if (mCurrentState == EnemyState::ATTACK && !mAudioPlayed)
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_DASH, mGameObject->GetWorldPosition());
+		mAudioPlayed = true;
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, mGameObject->GetWorldPosition());
+	}
+	else
+	{
+		mAudioPlayed = false;
 	}
 }
 
@@ -116,6 +121,11 @@ void EnemyCreatureMelee::Attack()
 	{
 		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
+	}
+
+	if (mAttackDurationTimer.DelayWithoutReset(4.0f))
+	{
+		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, mGameObject->GetWorldPosition());
 	}
 	
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;

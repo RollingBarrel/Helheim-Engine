@@ -66,9 +66,9 @@ void EnemyExplosive::Update()
 void EnemyExplosive::Charge()
 {
     Enemy::Charge();
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, false);
     if (mExplosionWarningGO)
     {
-        GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, false);
         mExplosionWarningGO->SetEnabled(true);
         ChargeWarningArea();
     }

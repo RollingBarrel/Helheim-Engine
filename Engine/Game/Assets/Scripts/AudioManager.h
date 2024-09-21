@@ -9,7 +9,7 @@
 
 enum class BGM 
 {
-	MAINMENU,
+	MAINMENU,                                                                        
 	LEVEL1,
 	LEVEL2,
 
@@ -74,6 +74,7 @@ enum class SFX
 	ENEMY_ROBOT_HIT,
 
 	ENEMY_CREATURE_CHARGE,
+	ENEMY_CREATURE_CHARGE_ATTACK,
 	ENEMY_CREATURE_LASER,
 
 	ENEMY_EXPLOSIVE_STEPS,
@@ -233,6 +234,7 @@ private:
 		{SFX::ENEMY_ROBOT_HIT, "Assets/FMOD/Audios/sfx/enemyrobothit.wav"}, // [X]
 
 		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
+		{SFX::ENEMY_CREATURE_CHARGE_ATTACK, "Assets/FMOD/Audios/sfx/creaturechargeattack.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
 
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
