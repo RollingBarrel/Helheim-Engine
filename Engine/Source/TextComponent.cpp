@@ -383,6 +383,7 @@ void TextComponent::Draw()
 
         }
         glEnable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
     }
     else //World Mode
     {
@@ -392,6 +393,7 @@ void TextComponent::Draw()
         model = GetOwner()->GetWorldTransform();
         view = camera->GetViewMatrix();
         glDisable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
     }
 
     glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
