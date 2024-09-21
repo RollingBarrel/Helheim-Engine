@@ -3,9 +3,8 @@
 #include "GameObject.h"
 #include "GameManager.h"
 
-#include "ScriptComponent.h"
-
 #include "Component.h"
+#include "ScriptComponent.h"
 #include "MeshRendererComponent.h"
 
 CREATE(FlickeringLight)
