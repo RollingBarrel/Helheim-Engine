@@ -34,6 +34,7 @@ public:
 
 	const char* GetName() { return mName.c_str(); }
 
+	bool IsPlaying() { return mIsPlaying; }
 	bool GetLoop() { return mLoop; }
 	void SetLoop(bool loop) { mLoop = loop; }
 
