@@ -44,9 +44,10 @@ void SecurityCameraFollower::Update()
 {
 	if (mTarget)
 	{
-		//Light turns on gradually
+		//Light turns on/off gradually
 		float timeLeftTurningLightOn = mTurningOnOffTime - mTurningLightOnTimer;
 
+		//Fading in of the light
 		if (timeLeftTurningLightOn <= 0 || mTurningOnOffTime == 0)
 		{
 			mCameraLight->SetIntensity(mMaxLightIntesity);
