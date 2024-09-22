@@ -241,7 +241,7 @@ private:
 
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
-		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
+		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion .wav"},
 
 		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
 		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},
