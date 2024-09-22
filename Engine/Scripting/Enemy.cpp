@@ -178,19 +178,10 @@ void Enemy::Flee()
 		return;
 	}
 	PlayStepAudio();	
-		if (mAiAgentComponent)
-		{
-			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
-			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
-			if (collisionDotProduct < 0.0f)
-			{
-				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
-			}
-			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
-			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+ 		if (mAiAgentComponent)
+		{		
+			mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition());
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
-		
 		}
 
 		if (!IsPlayerInRange(mAttackDistance))

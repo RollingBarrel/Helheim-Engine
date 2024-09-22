@@ -63,7 +63,6 @@ void EnemyRobotRange::Attack()
         RangeAttack();
         if (IsPlayerInRange(mAttackDistance / 2.0f))
         {
-            if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
             mCurrentState = EnemyState::FLEE;
         }
     }

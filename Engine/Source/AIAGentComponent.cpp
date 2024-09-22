@@ -3,7 +3,8 @@
 #include "ModuleDetourNavigation.h"
 #include "GameObject.h"
 #include "DetourCrowd.h"
-
+#include "DetourCommon.h"
+#include "MathConstants.h"
 AIAgentComponent::AIAgentComponent(GameObject* ownerGameObject)
  : Component(ownerGameObject, ComponentType::AIAGENT)
 {
@@ -111,6 +112,65 @@ void AIAgentComponent::PauseCrowdNavigation()
 		mCrowdId = CROWD_OFF_INDEX;
 		
 	}
+}
+
+void AIAgentComponent::FleeFromTarget(const float3& target)
+{
+	float3 ownerPos = mOwner->GetWorldPosition();
+	float3 fleeDirection = ownerPos - target;
+	fleeDirection.Normalize();
+
+
+	float fleeDistance = 5.0f;
+	float3 fleeTarget = float3::zero;
+	dtVmad(&fleeTarget[0], &ownerPos[0], &fleeDirection[0], fleeDistance);
+
+	dtPolyRef targetPoly = 0;
+	float3 nearestPoint = float3::zero;
+	dtQueryFilter queryFilter;
+	float3 queryAreaSize = float3(5.0f);
+
+	App->GetNavigation()->GetCrowd()->getNavMeshQuery()->findNearestPoly(&fleeTarget[0], &queryAreaSize[0], &queryFilter, &targetPoly, &nearestPoint[0]);
+
+	if (targetPoly)
+	{
+		App->GetNavigation()->GetCrowd()->requestMoveTarget(mCrowdId, targetPoly, &nearestPoint[0]);
+	}
+	else
+	{
+		const int numDirections = 8;
+		float3 bestFleeTarget = float3::zero;
+		dtPolyRef bestTargetPoly = 0;
+		float3 bestNearestPoint = float3::zero;
+		float bestDistance = 0.0f;
+		for (int i = 0; i < numDirections; ++i)
+		{
+			float angle = (i / (float)numDirections) * (2 * pi);
+			float3 rotatedDirection = float3::zero;
+			rotatedDirection[0] = fleeDirection[0] * cos(angle) - fleeDirection[2] * sin(angle);
+			rotatedDirection[1] = fleeDirection[1];
+			rotatedDirection[2] = fleeDirection[0] * sin(angle) + fleeDirection[2] * cos(angle);
+			dtVmad(&fleeTarget[0], &ownerPos[0], &rotatedDirection[0], fleeDistance);
+
+			App->GetNavigation()->GetCrowd()->getNavMeshQuery()->findNearestPoly(&fleeTarget[0], &queryAreaSize[0], &queryFilter, &targetPoly, &nearestPoint[0]);
+			if (targetPoly)
+			{
+				float distanceToFleePoint =  dtVdist(&ownerPos[0], &nearestPoint[0]);
+				if (bestTargetPoly == 0 || distanceToFleePoint > bestDistance)
+				{
+					bestTargetPoly = targetPoly;
+					bestNearestPoint = nearestPoint;
+					bestDistance = distanceToFleePoint;
+				}
+			}
+		}
+		if (bestTargetPoly) 
+		{
+			App->GetNavigation()->GetCrowd()->requestMoveTarget(mCrowdId, bestTargetPoly, &bestNearestPoint[0]);
+		}
+	}
+
+	
 }
 
 
