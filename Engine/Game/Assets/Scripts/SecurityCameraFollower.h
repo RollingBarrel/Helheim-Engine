@@ -26,11 +26,11 @@ public:
 
 private:
 
-	float3 mLookingAtLocation = float3::zero;
-
 	float mMaxDistance = 15.0f;
 	float mSpeed = 3.0f;
 
+	float3 mLookingAtLocation = float3::zero;
+	
 	SpotLightComponent* mCameraLight = nullptr;
 	float mMaxLightIntesity = 20.0f;
 	float mMaxLightRange = 10.0f;

@@ -36,7 +36,8 @@ void SecurityCameraFollower::Start()
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
 	
-	mLookingAtLocation = mGameObject->GetWorldPosition() - float3(0.0f,5.0f,0.0f);
+	mLookingAtLocation = mGameObject->GetWorldPosition() - (float3(0.0f,2.0f,0.0f) + mGameObject->GetFront().Normalized());
+	mGameObject->LookAt(mGameObject->GetWorldPosition() + mGameObject->GetWorldPosition() - mLookingAtLocation);
 	
 }
 
