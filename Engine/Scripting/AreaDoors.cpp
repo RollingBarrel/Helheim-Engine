@@ -24,6 +24,8 @@ CREATE(AreaDoors)
 	MEMBER(MemberType::GAMEOBJECT, mDoorExitEmiTop);
 	SEPARATOR("ELEVATOR");
 	MEMBER(MemberType::GAMEOBJECT, mElevator);
+	SEPARATOR("TUTORIAL");
+	MEMBER(MemberType::BOOL, mIsStartingArea);
 	END_CREATE;
 }
 
@@ -80,8 +82,11 @@ void AreaDoors::CloseDoors(bool close)
 	{
 		if (mDoorEnterEmiBorder)
 		{
-			mBorderRenderEnter->SetEmissiveColor(mOpenColor);
-			mTopRenderEnter->SetEmissiveColor(mOpenColor);
+			if (!mIsStartingArea)
+			{
+				mBorderRenderEnter->SetEmissiveColor(mOpenColor);
+				mTopRenderEnter->SetEmissiveColor(mOpenColor);
+			}
 			mBorderRenderExit->SetEmissiveColor(mOpenColor);
 			mTopRenderExit->SetEmissiveColor(mOpenColor);
 		}

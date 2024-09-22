@@ -79,7 +79,7 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
-        StartAudio();
+        //StartAudio();
     }
 
     if (mFirstTutorial) 

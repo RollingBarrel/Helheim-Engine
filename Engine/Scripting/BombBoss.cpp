@@ -98,7 +98,7 @@ void BombBoss::Init(float3 bombOrigin, float damage)
 	ray.pos = mGameObject->GetWorldPosition() + float3(0, 10, 0);
 	ray.dir = float3(0, -1, 0);
 	Hit hit;
-
+	Physics::Raycast(hit, ray, 15);
 	if (hit.IsValid())
 	{
 		mGameObject->SetEnabled(true);
