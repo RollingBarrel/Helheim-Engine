@@ -214,6 +214,18 @@ void AudioManager::SetPosition(const FMOD::Studio::EventDescription* description
     App->GetAudio()->SetEventPosition(description, id, position);
 }
 
+void AudioManager::SetLoop(BGM bgm, int id, bool isLoop)
+{
+    // Is loop by default
+    const FMOD::Studio::EventDescription* description = GetEventDescription(bgm);
+    if (description == nullptr)
+    {
+        FMOD::Channel* channel = mStreamAudios[id];
+        App->GetAudio()->SetLoop(channel, isLoop);
+        return;
+    }
+}
+
 void AudioManager::AddAudioToASComponent(BGM bgm)
 {
     mAudioSources->AddNewAudioByName(GetBGMName(bgm).c_str());

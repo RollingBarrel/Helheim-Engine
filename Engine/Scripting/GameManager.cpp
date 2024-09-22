@@ -79,7 +79,7 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
-        //StartAudio();
+        StartAudio();
     }
 
     if (mFirstTutorial) 
@@ -235,6 +235,22 @@ void GameManager::UnlockUltimate(bool unlock)
 void GameManager::UnlockGrenade(bool unlock)
 {
     mPlayerController->UnlockGrenade(unlock);
+}
+
+void GameManager::PauseBackgroundAudio(bool pause)
+{
+    std::string sceneName = App->GetScene()->GetName();
+    if (mBackgroundAudioID != -1)
+    {
+        if (sceneName == "Level1Scene" || sceneName == "TestAudio")
+        {
+            mAudioManager->Pause(BGM::LEVEL1, mBackgroundAudioID, pause);
+        }
+        else if (sceneName == "Level2Scene")
+        {
+            mAudioManager->Pause(BGM::LEVEL2, mBackgroundAudioID, pause);
+        }
+    }
 }
 
 void GameManager::PrepareAudio()
