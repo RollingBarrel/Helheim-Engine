@@ -173,14 +173,18 @@ void ModuleAudio::EngineStop()
 		}
 	}
 
-	if (mOneShotChannelGroup) {
+	if (mOneShotChannelGroup) 
+	{
 		int numChannels = 0;
 		mOneShotChannelGroup->getNumChannels(&numChannels);
-		for (int i = 0; i < numChannels; ++i) {
+		for (int i = 0; i < numChannels; ++i) 
+		{
 			FMOD::Channel* channel = nullptr;
-			if (mOneShotChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) {
+			if (mOneShotChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) 
+			{
 				FMOD::Sound* sound = nullptr;
-				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
+				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) 
+				{
 					CheckError(channel->stop());
 					CheckError(sound->release());
 				}
@@ -188,14 +192,18 @@ void ModuleAudio::EngineStop()
 		}
 	}
 
-	if (mAudioChannelGroup) {
+	if (mAudioChannelGroup) 
+	{
 		int numChannels = 0;
 		mAudioChannelGroup->getNumChannels(&numChannels);
-		for (int i = 0; i < numChannels; ++i) {
+		for (int i = 0; i < numChannels; ++i) 
+		{
 			FMOD::Channel* channel = nullptr;
-			if (mAudioChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) {
+			if (mAudioChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) 
+			{
 				FMOD::Sound* sound = nullptr;
-				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
+				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) 
+				{
 					CheckError(channel->stop());
 					CheckError(sound->release());
 				}
