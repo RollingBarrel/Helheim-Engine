@@ -6,13 +6,19 @@ Particle::Particle()
 {
 }
 
-Particle::Particle(float3 position, float3 direction, float4 color, 
+Particle::Particle(
+    float3 position, float3 direction, float4 color, 
     float rotation, float lifeTime, 
+    float initialSize, float size, float initialSpeed, float speed, 
     bool hasTrail, const Trail* trail, bool followEmitter)
     : mPosition(position), 
     mDirection(direction),
     mRotation(rotation),
     mMaxLifeTime(lifeTime),
+    mInitialSize(initialSize),
+    mSize(size),
+    mInitialSpeed(initialSpeed),
+    mSpeed(speed),
     mColor(color),
     mHasTrail(hasTrail),
     mFollowEmitter(followEmitter)
