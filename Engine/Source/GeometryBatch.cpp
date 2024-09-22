@@ -48,6 +48,8 @@ GeometryBatch::GeometryBatch(const MeshRendererComponent& cMesh)
 	unsigned int startValue = 0;
 	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(startValue), &startValue, GL_DYNAMIC_DRAW);
 
+	glGenBuffers(1, &mCommandsBuffer);
+
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 15, mPaletteSsbo);
 	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 20, mSkinSsbo);
 
@@ -251,16 +253,18 @@ void GeometryBatch::RecreatePersistentSsbos()
 
 unsigned int GeometryBatch::GetCommandsSsbo() const
 {
-	unsigned int ret;
-	glGenBuffers(1, &ret);
-	glBindBuffer(GL_SHADER_STORAGE_BUFFER, ret);
-	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mCommandsBuffer);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, mMeshComponents.size() * sizeof(Command), nullptr, GL_STREAM_DRAW);
+
+	//glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
+	//unsigned int startValue = 0;
+	//glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(startValue), &startValue);
 
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mParameterBuffer);
 	unsigned int startValue = 0;
-	glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(startValue), &startValue);
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(startValue), &startValue, GL_DYNAMIC_DRAW);
 
-	return ret;
+	return mCommandsBuffer;
 }
 
 void GeometryBatch::ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum)
@@ -541,8 +545,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 		return;
 
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Batch Draw Call");
-	unsigned int ibo = GetCommandsSsbo();
-	ComputeCommands(ibo, frustum);
+	ComputeCommands(GetCommandsSsbo(), frustum);
 
 	if (mSkinningApplied)
 	{
@@ -568,7 +571,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 
 	glUseProgram(programId);
 	glBindVertexArray(mVao);
-	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, ibo);
+	glBindBuffer(GL_DRAW_INDIRECT_BUFFER, mCommandsBuffer);
 	glBindBuffer(GL_PARAMETER_BUFFER, mParameterBuffer);
 
 	unsigned int structSize = ALIGNED_STRUCT_SIZE(sizeof(float) * 16, mSsboAligment);
@@ -580,7 +583,7 @@ void GeometryBatch::Draw(unsigned int programId, const math::Frustum& frustum)
 
 	//CleanUp
 	glBindVertexArray(0);
-	glDeleteBuffers(1, &ibo);
+	//glDeleteBuffers(1, &ibo);
 	glPopDebugGroup();
 }
 
