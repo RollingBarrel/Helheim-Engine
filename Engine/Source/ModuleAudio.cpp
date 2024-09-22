@@ -429,6 +429,18 @@ void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 audioPosition)
 	}
 }
 
+void ModuleAudio::SetLoop(FMOD::Channel* channel, bool loop)
+{
+	if (loop)
+	{
+		CheckError(channel->setMode(FMOD_LOOP_NORMAL));
+	}
+	else
+	{
+		CheckError(channel->setMode(FMOD_LOOP_OFF));
+	}
+}
+
 int ModuleAudio::GetMemoryUsage() const
 {
 	int currentAllocated, maxAllocated;
