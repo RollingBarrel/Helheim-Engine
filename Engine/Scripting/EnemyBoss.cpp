@@ -73,6 +73,17 @@ void EnemyBoss::Start()
 
     for (const char* prefab : mTemplateNames)
     {
+        if (prefab == "BombingTemplateSingle.prfb")
+        {
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+            if (bombTemplate)
+            {
+                bombTemplate->SetEnabled(false);
+                mTemplates.push_back(bombTemplate);
+            }
+			break;
+        }
+
 		for (int i = 0; i < 3; i++)
 		{
             GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
@@ -274,10 +285,10 @@ void EnemyBoss::LaserAttack()
 void EnemyBoss::BombAttack()
 {
     mCurrentState = EnemyState::ATTACK;
-    float3 target = mPlayer->GetWorldPosition();
+
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-    //int index = rand() % mTemplates.size();
-    int index = 2;
+    int index = rand() % (std::size(mTemplateNames) - 1);
+
     if (index == 2)
     {
         for (int i = 0; i < mAreaPositions.size(); i++)
@@ -285,11 +296,13 @@ void EnemyBoss::BombAttack()
 			float playerAreaDistance = mPlayer->GetWorldPosition().Distance(mAreaPositions[i]);
             mPlayerAreaDistances[playerAreaDistance] = i;
         }
+
 		int playerZone = mPlayerAreaDistances.begin()->second;
 		int freeZone = 0;
+
+		//If the player is in the middle, the free are will be the hardest to reach for the player
 		if (playerZone == 1) freeZone = mPlayerAreaDistances.rbegin()->second;
 		else freeZone = mPlayerAreaDistances.at(std::next(mPlayerAreaDistances.begin(), 1)->first);
-        //int templateIndex = index * 3 + playerZone;
 
         for (int i = 0; i < mAreaPositions.size(); i++)
         {
@@ -311,6 +324,19 @@ void EnemyBoss::BombAttack()
     }
     else
     {
+		//Bomb in player position
+        GameObject* playerBombGO = mTemplates[9];
+        playerBombGO->SetWorldPosition(mPlayer->GetWorldPosition());
+        std::vector<Component*> scriptComponents;
+        playerBombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+        playerBombGO->SetEnabled(true);
+        for (Component* scriptComponent : scriptComponents)
+        {
+            BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+            bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+        }
+
+		//Bombs in area positions
         for (int i = 0; i < mAreaPositions.size(); i++)
         {
             int templateIndex = index * 3 + i;
