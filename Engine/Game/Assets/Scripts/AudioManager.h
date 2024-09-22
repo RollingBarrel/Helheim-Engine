@@ -16,7 +16,9 @@ enum class BGM
 	BOSS_ROOM,
 	BOSS,
 
-	GAMEOVER
+	GAMEOVER,
+
+	INTRO_VIDEO
 };
 
 enum class SFX
@@ -140,6 +142,8 @@ public:
 	void SetPosition(SFX sfx, int id, float3 position);
 	void SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position);
 
+	void SetLoop(BGM bgm, int id, bool isLoop);
+
 	void AddAudioToASComponent(BGM bgm);
 	void AddAudioToASComponent(SFX sfx);
 	void AddAudioToASComponent();
@@ -180,6 +184,8 @@ private:
 		{BGM::BOSS, "event:/MC/lvl1/mc_lvl1"},
 
 		{BGM::GAMEOVER, "Assets/FMOD/Audios/bgm/die.mp3"},
+
+		{BGM::INTRO_VIDEO, "Assets/FMOD/Audios/bgm/introvideo.mp3"},
 
 	};
 

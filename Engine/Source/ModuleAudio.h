@@ -64,7 +64,8 @@ public:
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
 	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
-	void SetAudioPosition(FMOD::Channel* eventDescription, float3 eventPosition);
+	void SetAudioPosition(FMOD::Channel* channel, float3 eventPosition);
+	void SetLoop(FMOD::Channel* channel, bool loop);
 
 	int GetMemoryUsage() const;
 	void GetInstances(std::map<std::string, int>& instances) const;
