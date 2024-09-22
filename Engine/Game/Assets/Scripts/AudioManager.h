@@ -13,7 +13,9 @@ enum class BGM
 	LEVEL1,
 	LEVEL2,
 
-	GAMEOVER
+	GAMEOVER,
+
+	INTRO_VIDEO
 };
 
 enum class SFX 
@@ -114,6 +116,8 @@ public:
 	void SetPosition(SFX sfx, int id, float3 position);
 	void SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position);
 
+	void SetLoop(BGM bgm, int id, bool isLoop);
+
 	void AddAudioToASComponent(BGM bgm);
 	void AddAudioToASComponent(SFX sfx);
 	void AddAudioToASComponent();
@@ -149,6 +153,8 @@ private:
 		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"},
 
 		{BGM::GAMEOVER, "Assets/FMOD/Audios/bgm/die.mp3"},
+
+		{BGM::INTRO_VIDEO, "Assets/FMOD/Audios/bgm/introvideo.mp3"},
 
 	};
 
