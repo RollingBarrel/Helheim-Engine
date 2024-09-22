@@ -18,6 +18,7 @@ public:
 	void Chase() override;
 	void Charge() override;
 	void Attack() override;
+	void TakeDamage(float damage) override;
 
 	void OnCollisionEnter(CollisionData* collisionData);
 

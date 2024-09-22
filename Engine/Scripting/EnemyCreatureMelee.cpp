@@ -128,6 +128,12 @@ void EnemyCreatureMelee::Attack()
 	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
 }
 
+void EnemyCreatureMelee::TakeDamage(float damage)
+{
+	Enemy::TakeDamage(damage);
+	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
+}
+
 
 void EnemyCreatureMelee::OnCollisionEnter(CollisionData* collisionData)
 {
