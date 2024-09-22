@@ -203,6 +203,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -369,5 +370,6 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="SecurityCameraFollower.cpp" />
   </ItemGroup>
 </Project>

@@ -6,6 +6,7 @@
 #include "GameManager.h"
 #include "AnimationComponent.h"
 #include "BoxColliderComponent.h"
+#include "MeshRendererComponent.h"
 #include "Keys.h"
 
 CREATE(FirstTutorial)
@@ -19,6 +20,8 @@ CREATE(FirstTutorial)
     MEMBER(MemberType::GAMEOBJECT, mDashTutorial);
     SEPARATOR("DOOR");
     MEMBER(MemberType::GAMEOBJECT, mDoor1);
+    MEMBER(MemberType::GAMEOBJECT, mDoorEmissiveTop);
+    MEMBER(MemberType::GAMEOBJECT, mDoorEmissiveBorder);
     END_CREATE;
 }
 
@@ -70,6 +73,21 @@ void FirstTutorial::Update()
             {
                 door1Collider->SetEnable(true);
             }
+        }
+
+        if (mDoorEmissiveTop)
+        {
+            mTopRender = static_cast<MeshRendererComponent*>(mDoorEmissiveTop->GetComponent(ComponentType::MESHRENDERER));
+        }
+        if (mDoorEmissiveBorder)
+        {
+            mBorderEnter = static_cast<MeshRendererComponent*>(mDoorEmissiveBorder->GetComponent(ComponentType::MESHRENDERER));
+        }
+
+        if (mBorderEnter && mTopRender)
+        {
+            mTopRender->SetEmissiveColor(float3(255.0f, 37.0f, 0.0f));
+            mBorderEnter->SetEmissiveColor(float3(255.0f, 37.0f, 0.0f));
         }
     }
     else 
@@ -139,7 +157,7 @@ void FirstTutorial::Tutorial()
             }
             break;
         case 2:
-            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+            if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
             {
                 //mDashTutorialCon->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(false);
