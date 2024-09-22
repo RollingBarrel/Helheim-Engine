@@ -22,6 +22,8 @@ enum class PoolType
 	CREATURE_RANGE,		//9
 	ROBOT_EXPLOSIVE,	//10
 
+	BOSS_BULLET,		//11
+
 	LAST
 };
 

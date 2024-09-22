@@ -95,10 +95,10 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 		{
 			mHitParticles->SetEnable(false);
 		}
-		if (gradient)
-		{
-			mBulletTrail->GetTrail()->SetColorGradient(*gradient);
-		}
+		//if (gradient)
+		//{
+		//	mBulletTrail->GetTrail()->SetColorGradient(*gradient);
+		//}
 	}
 
 }
