@@ -120,7 +120,8 @@ private:
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;
-    const float inputDelay = 0.2f; // 200 ms delaytime
+    const float mDebounceTime = 0.2f; // 200 ms delay time
+
     MENU_TYPE mCurrentMenu;
 	AUDIO_SETTING_TYPE mCurrentAudioSetting;
 	VIDEO_SETTING_TYPE mCurrentVideoSetting;
