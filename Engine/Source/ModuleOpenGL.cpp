@@ -1266,6 +1266,8 @@ void ModuleOpenGL::Draw()
 	//glStencilFunc(GL_ALWAYS, 1, 0xFF);
 	//glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
 	//glStencilMask(0xFF);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
 	mBatchManager.Draw(mPbrGeoPassProgramId, App->GetCamera()->GetCurrentCamera()->GetFrustum());
 	glPopDebugGroup();
 

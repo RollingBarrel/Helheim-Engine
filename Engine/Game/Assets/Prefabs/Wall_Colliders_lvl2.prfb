@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 451086128,
+                "UID": 822861041,
                 "ParentUID": 1,
                 "Name": "Wall_Colliders_lvl2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 240389080,
-                "ParentUID": 451086128,
+                "UID": 749108500,
+                "ParentUID": 822861041,
                 "Name": "Section_1_1",
                 "Enabled": true,
                 "Active": true,
@@ -58,8 +58,8 @@
                 "Components": []
             },
             {
-                "UID": 2104421734,
-                "ParentUID": 240389080,
+                "UID": 392137731,
+                "ParentUID": 749108500,
                 "Name": "Left_wall",
                 "Enabled": true,
                 "Active": true,
@@ -86,8 +86,8 @@
                 "Components": []
             },
             {
-                "UID": 1826818905,
-                "ParentUID": 2104421734,
+                "UID": 30989702,
+                "ParentUID": 392137731,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -131,8 +131,8 @@
                 ]
             },
             {
-                "UID": 1569475787,
-                "ParentUID": 2104421734,
+                "UID": 1825192493,
+                "ParentUID": 392137731,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -176,8 +176,8 @@
                 ]
             },
             {
-                "UID": 1316797276,
-                "ParentUID": 2104421734,
+                "UID": 1461816592,
+                "ParentUID": 392137731,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -221,8 +221,8 @@
                 ]
             },
             {
-                "UID": 1089251946,
-                "ParentUID": 2104421734,
+                "UID": 1099972353,
+                "ParentUID": 392137731,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -266,8 +266,8 @@
                 ]
             },
             {
-                "UID": 806914889,
-                "ParentUID": 240389080,
+                "UID": 764723336,
+                "ParentUID": 749108500,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -294,8 +294,8 @@
                 "Components": []
             },
             {
-                "UID": 534533635,
-                "ParentUID": 806914889,
+                "UID": 424391986,
+                "ParentUID": 764723336,
                 "Name": "Battery",
                 "Enabled": true,
                 "Active": true,
@@ -315,7 +315,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -339,8 +339,8 @@
                 ]
             },
             {
-                "UID": 252126957,
-                "ParentUID": 806914889,
+                "UID": 75984600,
+                "ParentUID": 764723336,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -367,8 +367,8 @@
                 "Components": []
             },
             {
-                "UID": 10030838,
-                "ParentUID": 252126957,
+                "UID": 1866706341,
+                "ParentUID": 75984600,
                 "Name": "SmallBox",
                 "Enabled": true,
                 "Active": true,
@@ -412,8 +412,8 @@
                 ]
             },
             {
-                "UID": 1879424309,
-                "ParentUID": 252126957,
+                "UID": 1514817905,
+                "ParentUID": 75984600,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -433,7 +433,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -457,8 +457,8 @@
                 ]
             },
             {
-                "UID": 1604954425,
-                "ParentUID": 252126957,
+                "UID": 1158404104,
+                "ParentUID": 75984600,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -478,7 +478,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -502,8 +502,8 @@
                 ]
             },
             {
-                "UID": 1356731658,
-                "ParentUID": 806914889,
+                "UID": 813965115,
+                "ParentUID": 764723336,
                 "Name": "Servers",
                 "Enabled": true,
                 "Active": true,
@@ -547,8 +547,8 @@
                 ]
             },
             {
-                "UID": 1075160432,
-                "ParentUID": 806914889,
+                "UID": 475861637,
+                "ParentUID": 764723336,
                 "Name": "Computer",
                 "Enabled": true,
                 "Active": true,
@@ -568,7 +568,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -579,12 +579,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            0.4000000059604645
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.800000011920929,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -592,8 +592,8 @@
                 ]
             },
             {
-                "UID": 842045422,
-                "ParentUID": 1075160432,
+                "UID": 118542763,
+                "ParentUID": 475861637,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -637,8 +637,8 @@
                 ]
             },
             {
-                "UID": 592360614,
-                "ParentUID": 240389080,
+                "UID": 1912815175,
+                "ParentUID": 749108500,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -665,8 +665,8 @@
                 "Components": []
             },
             {
-                "UID": 306681749,
-                "ParentUID": 592360614,
+                "UID": 1556192511,
+                "ParentUID": 1912815175,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -710,8 +710,8 @@
                 ]
             },
             {
-                "UID": 39939796,
-                "ParentUID": 592360614,
+                "UID": 1202285066,
+                "ParentUID": 1912815175,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -755,8 +755,8 @@
                 ]
             },
             {
-                "UID": 1937877877,
-                "ParentUID": 592360614,
+                "UID": 864460072,
+                "ParentUID": 1912815175,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -800,8 +800,8 @@
                 ]
             },
             {
-                "UID": 1664452308,
-                "ParentUID": 592360614,
+                "UID": 520229946,
+                "ParentUID": 1912815175,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -845,8 +845,8 @@
                 ]
             },
             {
-                "UID": 1429875257,
-                "ParentUID": 451086128,
+                "UID": 160056611,
+                "ParentUID": 822861041,
                 "Name": "Section_1_2",
                 "Enabled": true,
                 "Active": true,
@@ -873,8 +873,8 @@
                 "Components": []
             },
             {
-                "UID": 1171696687,
-                "ParentUID": 1429875257,
+                "UID": 1957322726,
+                "ParentUID": 160056611,
                 "Name": "Left_wall",
                 "Enabled": true,
                 "Active": true,
@@ -901,8 +901,8 @@
                 "Components": []
             },
             {
-                "UID": 919366281,
-                "ParentUID": 1171696687,
+                "UID": 1611909043,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -946,8 +946,8 @@
                 ]
             },
             {
-                "UID": 635358320,
-                "ParentUID": 1171696687,
+                "UID": 1261900374,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -991,8 +991,8 @@
                 ]
             },
             {
-                "UID": 390129256,
-                "ParentUID": 1171696687,
+                "UID": 971417660,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -1036,8 +1036,8 @@
                 ]
             },
             {
-                "UID": 119488527,
-                "ParentUID": 1171696687,
+                "UID": 619946950,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -1081,8 +1081,8 @@
                 ]
             },
             {
-                "UID": 2008097394,
-                "ParentUID": 1171696687,
+                "UID": 266317989,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -1126,8 +1126,8 @@
                 ]
             },
             {
-                "UID": 1722557771,
-                "ParentUID": 1171696687,
+                "UID": 2051470050,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -1171,8 +1171,8 @@
                 ]
             },
             {
-                "UID": 1451777800,
-                "ParentUID": 1171696687,
+                "UID": 1692897998,
+                "ParentUID": 1957322726,
                 "Name": "Wall_P7",
                 "Enabled": true,
                 "Active": true,
@@ -1216,8 +1216,8 @@
                 ]
             },
             {
-                "UID": 1197706869,
-                "ParentUID": 1429875257,
+                "UID": 1347275452,
+                "ParentUID": 160056611,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -1244,15 +1244,15 @@
                 "Components": []
             },
             {
-                "UID": 965009585,
-                "ParentUID": 1197706869,
+                "UID": 1018083462,
+                "ParentUID": 1347275452,
                 "Name": "Computer",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -25.480667114257814,
+                    -25.827102661132814,
                     0.90057373046875,
-                    3.8381576538085939
+                    4.270155906677246
                 ],
                 "Rotation": [
                     0.0,
@@ -1265,7 +1265,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1279,9 +1279,9 @@
                             0.0
                         ],
                         "Size": [
-                            1.5499999523162842,
+                            1.649999976158142,
                             0.8799999952316284,
-                            0.800000011920929
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -1289,8 +1289,8 @@
                 ]
             },
             {
-                "UID": 677868679,
-                "ParentUID": 1197706869,
+                "UID": 676359692,
+                "ParentUID": 1347275452,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -1317,8 +1317,8 @@
                 "Components": []
             },
             {
-                "UID": 507621432,
-                "ParentUID": 677868679,
+                "UID": 327604201,
+                "ParentUID": 676359692,
                 "Name": "SmallBox",
                 "Enabled": true,
                 "Active": true,
@@ -1362,8 +1362,8 @@
                 ]
             },
             {
-                "UID": 321709460,
-                "ParentUID": 677868679,
+                "UID": 2123756380,
+                "ParentUID": 676359692,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -1383,7 +1383,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1407,8 +1407,8 @@
                 ]
             },
             {
-                "UID": 29416600,
-                "ParentUID": 677868679,
+                "UID": 1773399606,
+                "ParentUID": 676359692,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -1428,7 +1428,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1452,8 +1452,8 @@
                 ]
             },
             {
-                "UID": 1878968086,
-                "ParentUID": 677868679,
+                "UID": 1428473270,
+                "ParentUID": 676359692,
                 "Name": "Box3",
                 "Enabled": true,
                 "Active": true,
@@ -1497,8 +1497,8 @@
                 ]
             },
             {
-                "UID": 1601156394,
-                "ParentUID": 1197706869,
+                "UID": 1091135623,
+                "ParentUID": 1347275452,
                 "Name": "BrokenPods",
                 "Enabled": true,
                 "Active": true,
@@ -1525,8 +1525,8 @@
                 "Components": []
             },
             {
-                "UID": 1325711816,
-                "ParentUID": 1601156394,
+                "UID": 737785146,
+                "ParentUID": 1091135623,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -1570,8 +1570,8 @@
                 ]
             },
             {
-                "UID": 1067950972,
-                "ParentUID": 1601156394,
+                "UID": 394320851,
+                "ParentUID": 1091135623,
                 "Name": "Pod3",
                 "Enabled": true,
                 "Active": true,
@@ -1615,8 +1615,8 @@
                 ]
             },
             {
-                "UID": 772177062,
-                "ParentUID": 1601156394,
+                "UID": 41945068,
+                "ParentUID": 1091135623,
                 "Name": "Pod1 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1660,8 +1660,8 @@
                 ]
             },
             {
-                "UID": 503276858,
-                "ParentUID": 1197706869,
+                "UID": 1842274507,
+                "ParentUID": 1347275452,
                 "Name": "Battery",
                 "Enabled": true,
                 "Active": true,
@@ -1681,7 +1681,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -1705,8 +1705,8 @@
                 ]
             },
             {
-                "UID": 236883010,
-                "ParentUID": 1197706869,
+                "UID": 1497487413,
+                "ParentUID": 1347275452,
                 "Name": "RestrictedArea1",
                 "Enabled": true,
                 "Active": true,
@@ -1733,8 +1733,8 @@
                 "Components": []
             },
             {
-                "UID": 2134055260,
-                "ParentUID": 236883010,
+                "UID": 1163213090,
+                "ParentUID": 1497487413,
                 "Name": "MechanicalArm",
                 "Enabled": true,
                 "Active": true,
@@ -1778,8 +1778,8 @@
                 ]
             },
             {
-                "UID": 1874484270,
-                "ParentUID": 2134055260,
+                "UID": 813065179,
+                "ParentUID": 1163213090,
                 "Name": "Arm",
                 "Enabled": true,
                 "Active": true,
@@ -1823,8 +1823,8 @@
                 ]
             },
             {
-                "UID": 1625495672,
-                "ParentUID": 236883010,
+                "UID": 464031204,
+                "ParentUID": 1497487413,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -1868,8 +1868,8 @@
                 ]
             },
             {
-                "UID": 1350190336,
-                "ParentUID": 236883010,
+                "UID": 114857987,
+                "ParentUID": 1497487413,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -1913,8 +1913,8 @@
                 ]
             },
             {
-                "UID": 1079619228,
-                "ParentUID": 236883010,
+                "UID": 1914491216,
+                "ParentUID": 1497487413,
                 "Name": "Battery3",
                 "Enabled": true,
                 "Active": true,
@@ -1958,8 +1958,8 @@
                 ]
             },
             {
-                "UID": 824573603,
-                "ParentUID": 236883010,
+                "UID": 1566780040,
+                "ParentUID": 1497487413,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -2003,8 +2003,8 @@
                 ]
             },
             {
-                "UID": 330843288,
-                "ParentUID": 1197706869,
+                "UID": 1245524844,
+                "ParentUID": 1347275452,
                 "Name": "RestrictedArea2",
                 "Enabled": true,
                 "Active": true,
@@ -2031,8 +2031,8 @@
                 "Components": []
             },
             {
-                "UID": 87285128,
-                "ParentUID": 330843288,
+                "UID": 898509878,
+                "ParentUID": 1245524844,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -2076,8 +2076,8 @@
                 ]
             },
             {
-                "UID": 1967817959,
-                "ParentUID": 330843288,
+                "UID": 552469606,
+                "ParentUID": 1245524844,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -2121,8 +2121,8 @@
                 ]
             },
             {
-                "UID": 1692303760,
-                "ParentUID": 330843288,
+                "UID": 199884960,
+                "ParentUID": 1245524844,
                 "Name": "Battery3",
                 "Enabled": true,
                 "Active": true,
@@ -2166,8 +2166,8 @@
                 ]
             },
             {
-                "UID": 1438580934,
-                "ParentUID": 330843288,
+                "UID": 2000353641,
+                "ParentUID": 1245524844,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -2211,8 +2211,8 @@
                 ]
             },
             {
-                "UID": 1166060438,
-                "ParentUID": 330843288,
+                "UID": 1667541359,
+                "ParentUID": 1245524844,
                 "Name": "Cryotube",
                 "Enabled": true,
                 "Active": true,
@@ -2256,8 +2256,8 @@
                 ]
             },
             {
-                "UID": 663488256,
-                "ParentUID": 1429875257,
+                "UID": 1339393684,
+                "ParentUID": 160056611,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -2284,8 +2284,8 @@
                 "Components": []
             },
             {
-                "UID": 400366595,
-                "ParentUID": 663488256,
+                "UID": 988271079,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -2329,8 +2329,8 @@
                 ]
             },
             {
-                "UID": 147618463,
-                "ParentUID": 663488256,
+                "UID": 646686551,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P7",
                 "Enabled": true,
                 "Active": true,
@@ -2374,8 +2374,8 @@
                 ]
             },
             {
-                "UID": 2047854037,
-                "ParentUID": 663488256,
+                "UID": 298279165,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -2419,8 +2419,8 @@
                 ]
             },
             {
-                "UID": 1785637449,
-                "ParentUID": 663488256,
+                "UID": 2099026330,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -2464,8 +2464,8 @@
                 ]
             },
             {
-                "UID": 1841379968,
-                "ParentUID": 663488256,
+                "UID": 1766283669,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -2509,8 +2509,8 @@
                 ]
             },
             {
-                "UID": 97465356,
-                "ParentUID": 663488256,
+                "UID": 1438762583,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -2554,8 +2554,8 @@
                 ]
             },
             {
-                "UID": 2009397258,
-                "ParentUID": 663488256,
+                "UID": 1095994498,
+                "ParentUID": 1339393684,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -2599,8 +2599,8 @@
                 ]
             },
             {
-                "UID": 1949540845,
-                "ParentUID": 1429875257,
+                "UID": 752182098,
+                "ParentUID": 160056611,
                 "Name": "CircularFence",
                 "Enabled": true,
                 "Active": true,
@@ -2627,53 +2627,8 @@
                 "Components": []
             },
             {
-                "UID": 1726938606,
-                "ParentUID": 1949540845,
-                "Name": "0",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.22719955444335938,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0980171412229538,
-                    0.0,
-                    0.9951847195625305
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            7.400000095367432,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.9500000476837159,
-                            2.0,
-                            1.899999976158142
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1504057883,
-                "ParentUID": 1949540845,
+                "UID": 96722200,
+                "ParentUID": 752182098,
                 "Name": "1",
                 "Enabled": true,
                 "Active": true,
@@ -2693,7 +2648,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2717,8 +2672,8 @@
                 ]
             },
             {
-                "UID": 1237664035,
-                "ParentUID": 1949540845,
+                "UID": 1907425168,
+                "ParentUID": 752182098,
                 "Name": "2",
                 "Enabled": true,
                 "Active": true,
@@ -2738,7 +2693,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2762,8 +2717,8 @@
                 ]
             },
             {
-                "UID": 982339926,
-                "ParentUID": 1949540845,
+                "UID": 1767184572,
+                "ParentUID": 752182098,
                 "Name": "2 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -2783,7 +2738,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2807,8 +2762,8 @@
                 ]
             },
             {
-                "UID": 745604624,
-                "ParentUID": 1949540845,
+                "UID": 456451822,
+                "ParentUID": 752182098,
                 "Name": "2 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -2828,7 +2783,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2852,8 +2807,8 @@
                 ]
             },
             {
-                "UID": 532122736,
-                "ParentUID": 1949540845,
+                "UID": 1371456723,
+                "ParentUID": 752182098,
                 "Name": "2 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -2873,7 +2828,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2897,8 +2852,8 @@
                 ]
             },
             {
-                "UID": 268304865,
-                "ParentUID": 1949540845,
+                "UID": 77084908,
+                "ParentUID": 752182098,
                 "Name": "2 (4)",
                 "Enabled": true,
                 "Active": true,
@@ -2918,7 +2873,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -2942,98 +2897,8 @@
                 ]
             },
             {
-                "UID": 42639302,
-                "ParentUID": 1949540845,
-                "Name": "2 (5)",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.22719955444335938,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.9951847195625305,
-                    0.0,
-                    0.0980171337723732
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            7.400000095367432,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.9500000476837159,
-                            2.0,
-                            1.899999976158142
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1964944733,
-                "ParentUID": 1949540845,
-                "Name": "2 (6)",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.22719955444335938,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.9951847195625305,
-                    0.0,
-                    -0.09801710397005081
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            7.400000095367432,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.9500000476837159,
-                            2.0,
-                            1.899999976158142
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1714424473,
-                "ParentUID": 1949540845,
+                "UID": 1200511181,
+                "ParentUID": 752182098,
                 "Name": "2 (7)",
                 "Enabled": true,
                 "Active": true,
@@ -3053,7 +2918,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3077,8 +2942,8 @@
                 ]
             },
             {
-                "UID": 1502961594,
-                "ParentUID": 1949540845,
+                "UID": 852939247,
+                "ParentUID": 752182098,
                 "Name": "2 (8)",
                 "Enabled": true,
                 "Active": true,
@@ -3098,7 +2963,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3122,8 +2987,8 @@
                 ]
             },
             {
-                "UID": 1260308507,
-                "ParentUID": 1949540845,
+                "UID": 508917984,
+                "ParentUID": 752182098,
                 "Name": "2 (9)",
                 "Enabled": true,
                 "Active": true,
@@ -3143,7 +3008,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3167,8 +3032,8 @@
                 ]
             },
             {
-                "UID": 1040421487,
-                "ParentUID": 1949540845,
+                "UID": 163504301,
+                "ParentUID": 752182098,
                 "Name": "2 (10)",
                 "Enabled": true,
                 "Active": true,
@@ -3188,7 +3053,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3212,8 +3077,8 @@
                 ]
             },
             {
-                "UID": 785236620,
-                "ParentUID": 1949540845,
+                "UID": 1986112460,
+                "ParentUID": 752182098,
                 "Name": "2 (11)",
                 "Enabled": true,
                 "Active": true,
@@ -3233,7 +3098,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3257,8 +3122,8 @@
                 ]
             },
             {
-                "UID": 534577118,
-                "ParentUID": 1949540845,
+                "UID": 1638192421,
+                "ParentUID": 752182098,
                 "Name": "2 (12)",
                 "Enabled": true,
                 "Active": true,
@@ -3278,7 +3143,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -3302,53 +3167,8 @@
                 ]
             },
             {
-                "UID": 274449160,
-                "ParentUID": 1949540845,
-                "Name": "2 (13)",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.22719955444335938,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.08932889252901077,
-                    0.0,
-                    -0.996002197265625
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            7.400000095367432,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.9500000476837159,
-                            2.0,
-                            1.899999976158142
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 28802370,
-                "ParentUID": 451086128,
+                "UID": 939637124,
+                "ParentUID": 822861041,
                 "Name": "Section_2_1",
                 "Enabled": true,
                 "Active": true,
@@ -3375,8 +3195,8 @@
                 "Components": []
             },
             {
-                "UID": 1909683306,
-                "ParentUID": 28802370,
+                "UID": 589419592,
+                "ParentUID": 939637124,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -3403,8 +3223,8 @@
                 "Components": []
             },
             {
-                "UID": 1687777277,
-                "ParentUID": 1909683306,
+                "UID": 243797046,
+                "ParentUID": 589419592,
                 "Name": "Computers",
                 "Enabled": true,
                 "Active": true,
@@ -3431,8 +3251,8 @@
                 "Components": []
             },
             {
-                "UID": 1447003957,
-                "ParentUID": 1687777277,
+                "UID": 2048442987,
+                "ParentUID": 243797046,
                 "Name": "Computer1",
                 "Enabled": true,
                 "Active": true,
@@ -3463,12 +3283,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            0.20000000298023225
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.3499999940395355
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -3476,8 +3296,8 @@
                 ]
             },
             {
-                "UID": 1210477518,
-                "ParentUID": 1447003957,
+                "UID": 1708598984,
+                "ParentUID": 2048442987,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -3521,13 +3341,13 @@
                 ]
             },
             {
-                "UID": 963716792,
-                "ParentUID": 1687777277,
+                "UID": 1361027050,
+                "ParentUID": 243797046,
                 "Name": "Computer2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -4.907985687255859,
+                    -5.080097198486328,
                     0.7933387756347656,
                     8.189712524414063
                 ],
@@ -3558,7 +3378,7 @@
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.3499999940395355
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -3566,8 +3386,8 @@
                 ]
             },
             {
-                "UID": 732551170,
-                "ParentUID": 1687777277,
+                "UID": 1016866545,
+                "ParentUID": 243797046,
                 "Name": "Computer3",
                 "Enabled": true,
                 "Active": true,
@@ -3598,12 +3418,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.4000000059604645
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.3499999940395355
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -3611,8 +3431,8 @@
                 ]
             },
             {
-                "UID": 506607123,
-                "ParentUID": 732551170,
+                "UID": 672845282,
+                "ParentUID": 1016866545,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -3656,8 +3476,8 @@
                 ]
             },
             {
-                "UID": 270289547,
-                "ParentUID": 1909683306,
+                "UID": 325621453,
+                "ParentUID": 589419592,
                 "Name": "Batteries",
                 "Enabled": true,
                 "Active": true,
@@ -3684,8 +3504,8 @@
                 "Components": []
             },
             {
-                "UID": 17123689,
-                "ParentUID": 270289547,
+                "UID": 2126020513,
+                "ParentUID": 325621453,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -3729,8 +3549,8 @@
                 ]
             },
             {
-                "UID": 1931074600,
-                "ParentUID": 270289547,
+                "UID": 1793904441,
+                "ParentUID": 325621453,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -3774,8 +3594,8 @@
                 ]
             },
             {
-                "UID": 1684592358,
-                "ParentUID": 1909683306,
+                "UID": 1447933790,
+                "ParentUID": 589419592,
                 "Name": "Pods",
                 "Enabled": true,
                 "Active": true,
@@ -3802,8 +3622,8 @@
                 "Components": []
             },
             {
-                "UID": 1453705220,
-                "ParentUID": 1684592358,
+                "UID": 1104678358,
+                "ParentUID": 1447933790,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -3847,8 +3667,8 @@
                 ]
             },
             {
-                "UID": 1203254581,
-                "ParentUID": 1684592358,
+                "UID": 763998903,
+                "ParentUID": 1447933790,
                 "Name": "Pod2",
                 "Enabled": true,
                 "Active": true,
@@ -3892,8 +3712,8 @@
                 ]
             },
             {
-                "UID": 946816536,
-                "ParentUID": 1684592358,
+                "UID": 416357348,
+                "ParentUID": 1447933790,
                 "Name": "Pod2 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -3937,8 +3757,8 @@
                 ]
             },
             {
-                "UID": 703467239,
-                "ParentUID": 1684592358,
+                "UID": 73658884,
+                "ParentUID": 1447933790,
                 "Name": "Pod2 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -3982,8 +3802,8 @@
                 ]
             },
             {
-                "UID": 454339399,
-                "ParentUID": 28802370,
+                "UID": 1889513806,
+                "ParentUID": 939637124,
                 "Name": "Left_Wall",
                 "Enabled": true,
                 "Active": true,
@@ -4010,8 +3830,8 @@
                 "Components": []
             },
             {
-                "UID": 188920245,
-                "ParentUID": 454339399,
+                "UID": 1546745721,
+                "ParentUID": 1889513806,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -4055,8 +3875,8 @@
                 ]
             },
             {
-                "UID": 2129953725,
-                "ParentUID": 454339399,
+                "UID": 1200566207,
+                "ParentUID": 1889513806,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -4100,8 +3920,8 @@
                 ]
             },
             {
-                "UID": 1846433111,
-                "ParentUID": 454339399,
+                "UID": 863228560,
+                "ParentUID": 1889513806,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -4145,8 +3965,8 @@
                 ]
             },
             {
-                "UID": 1610115535,
-                "ParentUID": 454339399,
+                "UID": 520599717,
+                "ParentUID": 1889513806,
                 "Name": "Door",
                 "Enabled": true,
                 "Active": true,
@@ -4190,8 +4010,8 @@
                 ]
             },
             {
-                "UID": 1369063731,
-                "ParentUID": 454339399,
+                "UID": 175882244,
+                "ParentUID": 1889513806,
                 "Name": "Small_Wall",
                 "Enabled": false,
                 "Active": false,
@@ -4235,8 +4055,8 @@
                 ]
             },
             {
-                "UID": 1098631865,
-                "ParentUID": 28802370,
+                "UID": 2005522124,
+                "ParentUID": 939637124,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -4263,8 +4083,8 @@
                 "Components": []
             },
             {
-                "UID": 875263795,
-                "ParentUID": 1098631865,
+                "UID": 1656697012,
+                "ParentUID": 2005522124,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -4308,8 +4128,8 @@
                 ]
             },
             {
-                "UID": 619452339,
-                "ParentUID": 1098631865,
+                "UID": 1310239014,
+                "ParentUID": 2005522124,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -4353,8 +4173,8 @@
                 ]
             },
             {
-                "UID": 368653595,
-                "ParentUID": 1098631865,
+                "UID": 967540550,
+                "ParentUID": 2005522124,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -4398,8 +4218,8 @@
                 ]
             },
             {
-                "UID": 124747330,
-                "ParentUID": 451086128,
+                "UID": 623449666,
+                "ParentUID": 822861041,
                 "Name": "Section_2_2",
                 "Enabled": true,
                 "Active": true,
@@ -4426,11 +4246,11 @@
                 "Components": []
             },
             {
-                "UID": 2026584187,
-                "ParentUID": 124747330,
+                "UID": 276782805,
+                "ParentUID": 623449666,
                 "Name": "Railing",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -7.317995071411133,
                     0.0,
@@ -4454,11 +4274,11 @@
                 "Components": []
             },
             {
-                "UID": 1763392905,
-                "ParentUID": 2026584187,
+                "UID": 2090131371,
+                "ParentUID": 276782805,
                 "Name": "Fence2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -4482,11 +4302,11 @@
                 "Components": []
             },
             {
-                "UID": 1557012359,
-                "ParentUID": 1763392905,
+                "UID": 1744648067,
+                "ParentUID": 2090131371,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     7.8343963623046879,
                     0.5699996948242188,
@@ -4510,7 +4330,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4527,11 +4347,11 @@
                 ]
             },
             {
-                "UID": 1296814780,
-                "ParentUID": 2026584187,
+                "UID": 1404804064,
+                "ParentUID": 276782805,
                 "Name": "Fence1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     13.739999771118164,
                     0.00006103515625,
@@ -4555,11 +4375,11 @@
                 "Components": []
             },
             {
-                "UID": 1043718543,
-                "ParentUID": 1296814780,
+                "UID": 1058624550,
+                "ParentUID": 1404804064,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.049068450927735,
                     1.3338356018066407,
@@ -4583,7 +4403,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4600,11 +4420,11 @@
                 ]
             },
             {
-                "UID": 798976826,
-                "ParentUID": 2026584187,
+                "UID": 716204570,
+                "ParentUID": 276782805,
                 "Name": "Fence3",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     -16.209999084472658,
                     0.00006103515625,
@@ -4628,11 +4448,11 @@
                 "Components": []
             },
             {
-                "UID": 540241288,
-                "ParentUID": 798976826,
+                "UID": 368702257,
+                "ParentUID": 716204570,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.085803985595704,
                     1.2138290405273438,
@@ -4656,7 +4476,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4673,11 +4493,11 @@
                 ]
             },
             {
-                "UID": 291670416,
-                "ParentUID": 2026584187,
+                "UID": 30181053,
+                "ParentUID": 276782805,
                 "Name": "Fence2 (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -4701,11 +4521,11 @@
                 "Components": []
             },
             {
-                "UID": 87448121,
-                "ParentUID": 291670416,
+                "UID": 1832459880,
+                "ParentUID": 30181053,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     7.982624053955078,
                     0.5699996948242188,
@@ -4729,7 +4549,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4746,11 +4566,11 @@
                 ]
             },
             {
-                "UID": 1992278681,
-                "ParentUID": 2026584187,
+                "UID": 1494634886,
+                "ParentUID": 276782805,
                 "Name": "Fence1 (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     13.739999771118164,
                     0.00006103515625,
@@ -4774,11 +4594,11 @@
                 "Components": []
             },
             {
-                "UID": 1761739648,
-                "ParentUID": 1992278681,
+                "UID": 1150822486,
+                "ParentUID": 1494634886,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.049068450927735,
                     1.3338356018066407,
@@ -4802,7 +4622,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4819,11 +4639,11 @@
                 ]
             },
             {
-                "UID": 1520061255,
-                "ParentUID": 2026584187,
+                "UID": 807149328,
+                "ParentUID": 276782805,
                 "Name": "Fence3 (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     -16.209999084472658,
                     0.00006103515625,
@@ -4847,11 +4667,11 @@
                 "Components": []
             },
             {
-                "UID": 1273230908,
-                "ParentUID": 1520061255,
+                "UID": 462153371,
+                "ParentUID": 807149328,
                 "Name": "Railing1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     8.085803985595704,
                     1.2138290405273438,
@@ -4875,7 +4695,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.0,
                             0.0,
@@ -4892,8 +4712,8 @@
                 ]
             },
             {
-                "UID": 1034963944,
-                "ParentUID": 124747330,
+                "UID": 158373046,
+                "ParentUID": 623449666,
                 "Name": "Left_Wall",
                 "Enabled": true,
                 "Active": true,
@@ -4920,8 +4740,8 @@
                 "Components": []
             },
             {
-                "UID": 789874122,
-                "ParentUID": 1034963944,
+                "UID": 1963088608,
+                "ParentUID": 158373046,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -4965,8 +4785,8 @@
                 ]
             },
             {
-                "UID": 536499401,
-                "ParentUID": 1034963944,
+                "UID": 1624358541,
+                "ParentUID": 158373046,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -5010,53 +4830,8 @@
                 ]
             },
             {
-                "UID": 281732260,
-                "ParentUID": 1034963944,
-                "Name": "Small_Wall",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    8.822542190551758,
-                    -0.12111282348632813,
-                    0.000324249267578125
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.4000000059604645,
-                            1.0,
-                            2.0999999046325685
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 30237306,
-                "ParentUID": 1034963944,
+                "UID": 934784353,
+                "ParentUID": 158373046,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -5100,8 +4875,8 @@
                 ]
             },
             {
-                "UID": 1946485710,
-                "ParentUID": 1034963944,
+                "UID": 594104898,
+                "ParentUID": 158373046,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -5145,8 +4920,8 @@
                 ]
             },
             {
-                "UID": 1694155304,
-                "ParentUID": 1034963944,
+                "UID": 272014250,
+                "ParentUID": 158373046,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -5190,8 +4965,8 @@
                 ]
             },
             {
-                "UID": 1447951546,
-                "ParentUID": 1034963944,
+                "UID": 2076660191,
+                "ParentUID": 158373046,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -5235,8 +5010,8 @@
                 ]
             },
             {
-                "UID": 1196247729,
-                "ParentUID": 1034963944,
+                "UID": 1728392047,
+                "ParentUID": 158373046,
                 "Name": "Wall_P5 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -5280,8 +5055,8 @@
                 ]
             },
             {
-                "UID": 947537615,
-                "ParentUID": 124747330,
+                "UID": 1381864428,
+                "ParentUID": 623449666,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -5308,8 +5083,8 @@
                 "Components": []
             },
             {
-                "UID": 687618520,
-                "ParentUID": 947537615,
+                "UID": 1035684914,
+                "ParentUID": 1381864428,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -5336,8 +5111,8 @@
                 "Components": []
             },
             {
-                "UID": 470446719,
-                "ParentUID": 687618520,
+                "UID": 691663651,
+                "ParentUID": 1035684914,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -5381,8 +5156,8 @@
                 ]
             },
             {
-                "UID": 234755732,
-                "ParentUID": 687618520,
+                "UID": 361079241,
+                "ParentUID": 1035684914,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -5426,98 +5201,8 @@
                 ]
             },
             {
-                "UID": 7419265,
-                "ParentUID": 687618520,
-                "Name": "Box3",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    -18.42213249206543,
-                    0.5359840393066406,
-                    -57.497825622558597
-                ],
-                "Rotation": [
-                    0.0,
-                    -0.5814326405525208,
-                    0.0,
-                    0.8135945200920105
-                ],
-                "Scale": [
-                    0.9999999403953552,
-                    1.0,
-                    0.9999999403953552
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.0,
-                            0.5,
-                            0.5
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1894357228,
-                "ParentUID": 687618520,
-                "Name": "SmallBox",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    -18.534076690673829,
-                    0.40746307373046877,
-                    -52.537559509277347
-                ],
-                "Rotation": [
-                    0.0,
-                    0.9234458208084106,
-                    0.0,
-                    -0.3837288022041321
-                ],
-                "Scale": [
-                    0.9999999403953552,
-                    1.0,
-                    0.9999999403953552
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.699999988079071,
-                            0.4000000059604645,
-                            0.44999998807907107
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1646134461,
-                "ParentUID": 947537615,
+                "UID": 1497246157,
+                "ParentUID": 1381864428,
                 "Name": "Computers",
                 "Enabled": true,
                 "Active": true,
@@ -5544,13 +5229,13 @@
                 "Components": []
             },
             {
-                "UID": 1396728137,
-                "ParentUID": 1646134461,
+                "UID": 1152180579,
+                "ParentUID": 1497246157,
                 "Name": "Computer4",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    8.190324783325196,
+                    9.059961318969727,
                     0.7933692932128906,
                     0.07636356353759766
                 ],
@@ -5565,7 +5250,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5576,12 +5261,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5589,15 +5274,15 @@
                 ]
             },
             {
-                "UID": 1149967411,
-                "ParentUID": 1646134461,
+                "UID": 805444097,
+                "ParentUID": 1497246157,
                 "Name": "Computer3",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -7.286664009094238,
+                    -6.729737281799316,
                     0.7933692932128906,
-                    -0.27504634857177737
+                    0.0287322998046875
                 ],
                 "Rotation": [
                     0.0,
@@ -5610,7 +5295,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5621,12 +5306,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5634,8 +5319,8 @@
                 ]
             },
             {
-                "UID": 915599223,
-                "ParentUID": 1646134461,
+                "UID": 476391349,
+                "ParentUID": 1497246157,
                 "Name": "Computer2",
                 "Enabled": true,
                 "Active": true,
@@ -5655,7 +5340,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5666,12 +5351,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5679,15 +5364,15 @@
                 ]
             },
             {
-                "UID": 673085378,
-                "ParentUID": 1646134461,
+                "UID": 144344898,
+                "ParentUID": 1497246157,
                 "Name": "Computer1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.6584510803222656,
                     0.79339599609375,
-                    10.095376968383789
+                    11.361948013305664
                 ],
                 "Rotation": [
                     0.0,
@@ -5700,7 +5385,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5711,12 +5396,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5724,13 +5409,13 @@
                 ]
             },
             {
-                "UID": 419362552,
-                "ParentUID": 1646134461,
+                "UID": 1953585825,
+                "ParentUID": 1497246157,
                 "Name": "Computer5",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    19.180782318115236,
+                    20.28687286376953,
                     0.7933692932128906,
                     10.37656021118164
                 ],
@@ -5745,7 +5430,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5756,12 +5441,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5769,15 +5454,15 @@
                 ]
             },
             {
-                "UID": 177684159,
-                "ParentUID": 1646134461,
+                "UID": 1609982288,
+                "ParentUID": 1497246157,
                 "Name": "Computer6",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    19.180782318115236,
+                    20.24654769897461,
                     0.7933692932128906,
-                    -10.345453262329102
+                    -10.104604721069336
                 ],
                 "Rotation": [
                     0.0,
@@ -5790,7 +5475,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5801,12 +5486,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5814,8 +5499,8 @@
                 ]
             },
             {
-                "UID": 2069286729,
-                "ParentUID": 1646134461,
+                "UID": 1266587614,
+                "ParentUID": 1497246157,
                 "Name": "Computer7",
                 "Enabled": true,
                 "Active": true,
@@ -5835,7 +5520,7 @@
                     1.0,
                     0.9999999403953552
                 ],
-                "Tag": "Door",
+                "Tag": "Wall",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -5846,12 +5531,12 @@
                         "Center": [
                             0.0,
                             0.0,
-                            0.0
+                            -0.6000000238418579
                         ],
                         "Size": [
                             1.4500000476837159,
                             0.7799999713897705,
-                            0.699999988079071
+                            0.30000001192092898
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -5859,8 +5544,8 @@
                 ]
             },
             {
-                "UID": 1847589563,
-                "ParentUID": 947537615,
+                "UID": 923958771,
+                "ParentUID": 1381864428,
                 "Name": "BrokenPods",
                 "Enabled": true,
                 "Active": true,
@@ -5887,8 +5572,8 @@
                 "Components": []
             },
             {
-                "UID": 1611480850,
-                "ParentUID": 1847589563,
+                "UID": 586829987,
+                "ParentUID": 923958771,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -5932,8 +5617,8 @@
                 ]
             },
             {
-                "UID": 1374118959,
-                "ParentUID": 1847589563,
+                "UID": 262163362,
+                "ParentUID": 923958771,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -5977,8 +5662,8 @@
                 ]
             },
             {
-                "UID": 1128263306,
-                "ParentUID": 1847589563,
+                "UID": 2069733385,
+                "ParentUID": 923958771,
                 "Name": "Pod2",
                 "Enabled": true,
                 "Active": true,
@@ -6022,8 +5707,8 @@
                 ]
             },
             {
-                "UID": 882198790,
-                "ParentUID": 1847589563,
+                "UID": 1727939994,
+                "ParentUID": 923958771,
                 "Name": "Pod3",
                 "Enabled": true,
                 "Active": true,
@@ -6067,8 +5752,8 @@
                 ]
             },
             {
-                "UID": 640033050,
-                "ParentUID": 1847589563,
+                "UID": 1389001064,
+                "ParentUID": 923958771,
                 "Name": "Pod4",
                 "Enabled": true,
                 "Active": true,
@@ -6112,8 +5797,8 @@
                 ]
             },
             {
-                "UID": 403645853,
-                "ParentUID": 1847589563,
+                "UID": 1044005107,
+                "ParentUID": 923958771,
                 "Name": "Pod3 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -6157,8 +5842,8 @@
                 ]
             },
             {
-                "UID": 148530607,
-                "ParentUID": 1847589563,
+                "UID": 697825593,
+                "ParentUID": 923958771,
                 "Name": "Pod3 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -6202,8 +5887,8 @@
                 ]
             },
             {
-                "UID": 2043823090,
-                "ParentUID": 1847589563,
+                "UID": 376570397,
+                "ParentUID": 923958771,
                 "Name": "Pod3 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -6247,8 +5932,8 @@
                 ]
             },
             {
-                "UID": 1796644638,
-                "ParentUID": 1847589563,
+                "UID": 34011175,
+                "ParentUID": 923958771,
                 "Name": "Pod3 (4)",
                 "Enabled": true,
                 "Active": true,
@@ -6292,8 +5977,8 @@
                 ]
             },
             {
-                "UID": 1572998084,
-                "ParentUID": 1847589563,
+                "UID": 1835245687,
+                "ParentUID": 923958771,
                 "Name": "Pod3 (5)",
                 "Enabled": true,
                 "Active": true,
@@ -6337,8 +6022,8 @@
                 ]
             },
             {
-                "UID": 1326515842,
-                "ParentUID": 1847589563,
+                "UID": 1493800401,
+                "ParentUID": 923958771,
                 "Name": "Pod (1)",
                 "Enabled": true,
                 "Active": true,
@@ -6382,8 +6067,8 @@
                 ]
             },
             {
-                "UID": 1115192205,
-                "ParentUID": 1847589563,
+                "UID": 1150823453,
+                "ParentUID": 923958771,
                 "Name": "Pod (2)",
                 "Enabled": true,
                 "Active": true,
@@ -6427,8 +6112,8 @@
                 ]
             },
             {
-                "UID": 868013753,
-                "ParentUID": 1847589563,
+                "UID": 817106098,
+                "ParentUID": 923958771,
                 "Name": "Pod (3)",
                 "Enabled": true,
                 "Active": true,
@@ -6472,8 +6157,8 @@
                 ]
             },
             {
-                "UID": 621949237,
-                "ParentUID": 947537615,
+                "UID": 483876090,
+                "ParentUID": 1381864428,
                 "Name": "Batteries",
                 "Enabled": true,
                 "Active": true,
@@ -6500,8 +6185,8 @@
                 "Components": []
             },
             {
-                "UID": 389112711,
-                "ParentUID": 621949237,
+                "UID": 143614361,
+                "ParentUID": 483876090,
                 "Name": "SmallBattery",
                 "Enabled": true,
                 "Active": true,
@@ -6545,8 +6230,8 @@
                 ]
             },
             {
-                "UID": 135181022,
-                "ParentUID": 621949237,
+                "UID": 1947703334,
+                "ParentUID": 483876090,
                 "Name": "BigBattery",
                 "Enabled": true,
                 "Active": true,
@@ -6590,8 +6275,8 @@
                 ]
             },
             {
-                "UID": 2039454614,
-                "ParentUID": 621949237,
+                "UID": 1607441605,
+                "ParentUID": 483876090,
                 "Name": "BigBattery (1)",
                 "Enabled": true,
                 "Active": true,
@@ -6635,8 +6320,8 @@
                 ]
             },
             {
-                "UID": 1803137038,
-                "ParentUID": 621949237,
+                "UID": 1269198885,
+                "ParentUID": 483876090,
                 "Name": "BigBattery (2)",
                 "Enabled": true,
                 "Active": true,
@@ -6680,8 +6365,8 @@
                 ]
             },
             {
-                "UID": 1563477654,
-                "ParentUID": 621949237,
+                "UID": 932696690,
+                "ParentUID": 483876090,
                 "Name": "BigBattery (3)",
                 "Enabled": true,
                 "Active": true,
@@ -6725,8 +6410,8 @@
                 ]
             },
             {
-                "UID": 1331476580,
-                "ParentUID": 621949237,
+                "UID": 604549015,
+                "ParentUID": 483876090,
                 "Name": "BigBattery (4)",
                 "Enabled": true,
                 "Active": true,
@@ -6770,8 +6455,8 @@
                 ]
             },
             {
-                "UID": 1096829908,
-                "ParentUID": 947537615,
+                "UID": 263382213,
+                "ParentUID": 1381864428,
                 "Name": "CircularFence",
                 "Enabled": true,
                 "Active": true,
@@ -6798,8 +6483,8 @@
                 "Components": []
             },
             {
-                "UID": 850695771,
-                "ParentUID": 1096829908,
+                "UID": 2070325647,
+                "ParentUID": 263382213,
                 "Name": "0",
                 "Enabled": true,
                 "Active": true,
@@ -6819,7 +6504,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6843,8 +6528,8 @@
                 ]
             },
             {
-                "UID": 604631255,
-                "ParentUID": 1096829908,
+                "UID": 1728114530,
+                "ParentUID": 263382213,
                 "Name": "1",
                 "Enabled": true,
                 "Active": true,
@@ -6864,7 +6549,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6888,8 +6573,8 @@
                 ]
             },
             {
-                "UID": 388155664,
-                "ParentUID": 1096829908,
+                "UID": 1383188194,
+                "ParentUID": 263382213,
                 "Name": "2",
                 "Enabled": true,
                 "Active": true,
@@ -6909,7 +6594,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6933,8 +6618,8 @@
                 ]
             },
             {
-                "UID": 147730449,
-                "ParentUID": 1096829908,
+                "UID": 1051280985,
+                "ParentUID": 263382213,
                 "Name": "2 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -6954,7 +6639,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -6978,8 +6663,8 @@
                 ]
             },
             {
-                "UID": 2059940835,
-                "ParentUID": 1096829908,
+                "UID": 719095292,
+                "ParentUID": 263382213,
                 "Name": "2 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -6999,7 +6684,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7023,8 +6708,8 @@
                 ]
             },
             {
-                "UID": 1807262324,
-                "ParentUID": 1096829908,
+                "UID": 380086741,
+                "ParentUID": 263382213,
                 "Name": "2 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -7044,7 +6729,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7068,8 +6753,8 @@
                 ]
             },
             {
-                "UID": 1555349644,
-                "ParentUID": 1096829908,
+                "UID": 40173117,
+                "ParentUID": 263382213,
                 "Name": "2 (4)",
                 "Enabled": true,
                 "Active": true,
@@ -7089,7 +6774,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7113,8 +6798,8 @@
                 ]
             },
             {
-                "UID": 1314645945,
-                "ParentUID": 1096829908,
+                "UID": 1847186172,
+                "ParentUID": 263382213,
                 "Name": "2 (5)",
                 "Enabled": true,
                 "Active": true,
@@ -7134,7 +6819,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7158,8 +6843,8 @@
                 ]
             },
             {
-                "UID": 1055005334,
-                "ParentUID": 1096829908,
+                "UID": 1502607941,
+                "ParentUID": 263382213,
                 "Name": "2 (6)",
                 "Enabled": true,
                 "Active": true,
@@ -7179,7 +6864,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7203,8 +6888,8 @@
                 ]
             },
             {
-                "UID": 810472480,
-                "ParentUID": 1096829908,
+                "UID": 1158377815,
+                "ParentUID": 263382213,
                 "Name": "2 (7)",
                 "Enabled": true,
                 "Active": true,
@@ -7224,7 +6909,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7248,8 +6933,8 @@
                 ]
             },
             {
-                "UID": 576800502,
-                "ParentUID": 1096829908,
+                "UID": 827236437,
+                "ParentUID": 263382213,
                 "Name": "2 (8)",
                 "Enabled": true,
                 "Active": true,
@@ -7269,7 +6954,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7293,8 +6978,8 @@
                 ]
             },
             {
-                "UID": 323704265,
-                "ParentUID": 1096829908,
+                "UID": 485164562,
+                "ParentUID": 263382213,
                 "Name": "2 (9)",
                 "Enabled": true,
                 "Active": true,
@@ -7314,7 +6999,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7338,8 +7023,8 @@
                 ]
             },
             {
-                "UID": 76108087,
-                "ParentUID": 1096829908,
+                "UID": 142953445,
+                "ParentUID": 263382213,
                 "Name": "2 (10)",
                 "Enabled": true,
                 "Active": true,
@@ -7359,7 +7044,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7383,8 +7068,8 @@
                 ]
             },
             {
-                "UID": 1989919756,
-                "ParentUID": 1096829908,
+                "UID": 1946137345,
+                "ParentUID": 263382213,
                 "Name": "2 (11)",
                 "Enabled": true,
                 "Active": true,
@@ -7404,7 +7089,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7428,8 +7113,8 @@
                 ]
             },
             {
-                "UID": 1749494541,
-                "ParentUID": 1096829908,
+                "UID": 1603090776,
+                "ParentUID": 263382213,
                 "Name": "2 (12)",
                 "Enabled": true,
                 "Active": true,
@@ -7449,7 +7134,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7473,8 +7158,8 @@
                 ]
             },
             {
-                "UID": 1498069208,
-                "ParentUID": 1096829908,
+                "UID": 1269373421,
+                "ParentUID": 263382213,
                 "Name": "2 (13)",
                 "Enabled": true,
                 "Active": true,
@@ -7494,7 +7179,7 @@
                     1.0,
                     1.0
                 ],
-                "Tag": "Door",
+                "Tag": "Bridge",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -7518,8 +7203,8 @@
                 ]
             },
             {
-                "UID": 1249428715,
-                "ParentUID": 124747330,
+                "UID": 938789011,
+                "ParentUID": 623449666,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -7546,8 +7231,8 @@
                 "Components": []
             },
             {
-                "UID": 1010744025,
-                "ParentUID": 1249428715,
+                "UID": 598318419,
+                "ParentUID": 938789011,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -7591,8 +7276,8 @@
                 ]
             },
             {
-                "UID": 766489655,
-                "ParentUID": 1249428715,
+                "UID": 254366777,
+                "ParentUID": 938789011,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -7636,8 +7321,8 @@
                 ]
             },
             {
-                "UID": 991550446,
-                "ParentUID": 1249428715,
+                "UID": 2057759540,
+                "ParentUID": 938789011,
                 "Name": "Door",
                 "Enabled": true,
                 "Active": true,
@@ -7681,8 +7366,8 @@
                 ]
             },
             {
-                "UID": 817543665,
-                "ParentUID": 1249428715,
+                "UID": 1724947258,
+                "ParentUID": 938789011,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -7726,8 +7411,8 @@
                 ]
             },
             {
-                "UID": 572314601,
-                "ParentUID": 1249428715,
+                "UID": 1381622205,
+                "ParentUID": 938789011,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -7771,53 +7456,8 @@
                 ]
             },
             {
-                "UID": 329661514,
-                "ParentUID": 1249428715,
-                "Name": "Wall_P5",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    -18.83174705505371,
-                    2.0106544494628908,
-                    -59.931175231933597
-                ],
-                "Rotation": [
-                    0.0,
-                    0.2583582103252411,
-                    0.0,
-                    0.9660491943359375
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.25,
-                            2.0,
-                            2.200000047683716
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 82970409,
-                "ParentUID": 1249428715,
+                "UID": 704719039,
+                "ParentUID": 938789011,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -7861,8 +7501,8 @@
                 ]
             },
             {
-                "UID": 2015301264,
-                "ParentUID": 1249428715,
+                "UID": 361533228,
+                "ParentUID": 938789011,
                 "Name": "Wall_P8",
                 "Enabled": true,
                 "Active": true,
@@ -7906,53 +7546,8 @@
                 ]
             },
             {
-                "UID": 1773622871,
-                "ParentUID": 1249428715,
-                "Name": "Wall_P7",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    -18.847898483276368,
-                    2.0106544494628908,
-                    -51.244224548339847
-                ],
-                "Rotation": [
-                    0.0,
-                    -0.3791682720184326,
-                    0.0,
-                    0.9253277778625488
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Wall",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            0.25,
-                            2.0,
-                            2.0
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1549071244,
-                "ParentUID": 1249428715,
+                "UID": 1820138897,
+                "ParentUID": 938789011,
                 "Name": "Wall_P9",
                 "Enabled": true,
                 "Active": true,
@@ -7992,185 +7587,6 @@
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1302519381,
-                "ParentUID": 451086128,
-                "Name": "Spawner",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    66.49987030029297,
-                    0.0,
-                    -1.4934715032577515
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "Spawner",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mPoolType",
-                                "MemberType": 0,
-                                "VariableData": 6
-                            },
-                            {
-                                "VariableName": "mParticlesTime",
-                                "MemberType": 1,
-                                "VariableData": 0.5
-                            },
-                            {
-                                "VariableName": "mParticlesGO",
-                                "MemberType": 3,
-                                "VariableData": 1060353641
-                            },
-                            {
-                                "VariableName": "mOnlyOnce",
-                                "MemberType": 2,
-                                "VariableData": false
-                            },
-                            {
-                                "VariableName": "mWaveRounds",
-                                "MemberType": 0,
-                                "VariableData": 1
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1060353641,
-                "ParentUID": 1302519381,
-                "Name": "SpawnerParticle",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": false,
-                        "Image": 148626881,
-                        "Delay": 0.0,
-                        "Duration": 5.0,
-                        "EmissionRate": 172.3000030517578,
-                        "MaxParticles": 1000,
-                        "Burst": 0,
-                        "Looping": true,
-                        "FollowEmitter": false,
-                        "SpinSpeed": 0.0,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Gravity": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.0,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 3,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
-                        "ShapeSize": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": false,
-                        "BlendMode": 0,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 6.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
-                                "Color": [
-                                    0.0786239355802536,
-                                    0.5609157681465149,
-                                    0.7559999823570252,
-                                    1.0
-                                ]
-                            }
-                        ],
-                        "HasTrails": false,
-                        "Trail": {
-                            "Image": 148626881,
-                            "MaxPoints": 1000,
-                            "MinDistance": 0.10000000149011612,
-                            "MaxLifeTime": 0.0,
-                            "UVScroll": 1.0,
-                            "IsFixedDirection": false,
-                            "IsUVScrolling": true,
-                            "Direction": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ],
-                            "Width": {
-                                "Value": {
-                                    "IsValueRandom": false,
-                                    "MinValue": 1.0,
-                                    "MaxValue": 1.0
-                                },
-                                "IsCurve": false,
-                                "CurvePoints": []
-                            },
-                            "Gradient": {
-                                "Color Gradient": []
-                            }
-                        }
                     }
                 ]
             }

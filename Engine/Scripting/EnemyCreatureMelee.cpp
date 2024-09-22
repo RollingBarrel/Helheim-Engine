@@ -56,7 +56,7 @@ void EnemyCreatureMelee::Chase()
 			if (IsPlayerInRange(mAttackDistance))
 			{	
 				//TODO: CHANGE WITH GOOD ROTATION BEHAVIOUR
-				mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
+				mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 				float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
 				direction.y = 0;
 				direction.Normalize();

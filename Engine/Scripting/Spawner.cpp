@@ -12,7 +12,7 @@ CREATE(Spawner)
 	MEMBER(MemberType::FLOAT, mParticlesTime);
 	MEMBER(MemberType::GAMEOBJECT, mParticlesGO);
 	MEMBER(MemberType::BOOL, mOnlyOnce);
-	MEMBER(MemberType::INT, mWaveRounds);
+	MEMBER(MemberType::INT, mEnemiesPerRound);
 	END_CREATE;
 }
 
@@ -64,11 +64,11 @@ void Spawner::Update()
 
 bool Spawner::Spawn()
 {
-		if (mIsActive)
-		{	
-			++mSpawnedCounter;
-			return true;
-		}
+	if (mIsActive)
+	{	
+		++mSpawnedCounter;
+		return true;
+	}
 	return false;
 }
 
