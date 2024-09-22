@@ -286,7 +286,9 @@ void EnemyBoss::BombAttack()
             mPlayerAreaDistances[playerAreaDistance] = i;
         }
 		int playerZone = mPlayerAreaDistances.begin()->second;
-		int freeZone = mPlayerAreaDistances.at(std::next(mPlayerAreaDistances.begin(), 1)->first);
+		int freeZone = 0;
+		if (playerZone == 1) freeZone = mPlayerAreaDistances.rbegin()->second;
+		else freeZone = mPlayerAreaDistances.at(std::next(mPlayerAreaDistances.begin(), 1)->first);
         //int templateIndex = index * 3 + playerZone;
 
         for (int i = 0; i < mAreaPositions.size(); i++)
