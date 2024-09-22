@@ -14,6 +14,7 @@
 #include "HudController.h"
 #include "MathFunc.h"
 #include "BossBattleArea.h"
+#include <algorithm>
 
 #define LASER_WIND_UP 2.625f
 #define BULLETS_ANIMATION 146.0f / 24.0f
@@ -276,21 +277,53 @@ void EnemyBoss::BombAttack()
     float3 target = mPlayer->GetWorldPosition();
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
     //int index = rand() % mTemplates.size();
-    int index = 1;
-    for (int i = 0; i < mAreaPositions.size(); i++)
-	{
-        int templateIndex = index * 3 + i;
-        GameObject* bombGO = mTemplates[templateIndex];
-        bombGO->SetWorldPosition(mAreaPositions[i]);
-        std::vector<Component*> scriptComponents;
-        bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-        bombGO->SetEnabled(true);
-        for (Component* scriptComponent : scriptComponents)
+    int index = 2;
+    if (index == 2)
+    {
+        for (int i = 0; i < mAreaPositions.size(); i++)
         {
-            BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-            bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+			float playerAreaDistance = mPlayer->GetWorldPosition().Distance(mAreaPositions[i]);
+            mPlayerAreaDistances[playerAreaDistance] = i;
         }
-	}
+		int playerZone = mPlayerAreaDistances.begin()->second;
+		int freeZone = mPlayerAreaDistances.at(std::next(mPlayerAreaDistances.begin(), 1)->first);
+        //int templateIndex = index * 3 + playerZone;
+
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+            int templateIndex = index * 3 + i;
+			if (i == freeZone) continue;
+
+            GameObject* bombGO = mTemplates[templateIndex];
+            bombGO->SetWorldPosition(mAreaPositions[i]);
+            std::vector<Component*> scriptComponents;
+            bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+            bombGO->SetEnabled(true);
+            for (Component* scriptComponent : scriptComponents)
+            {
+                BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+                bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+            }
+        }
+		mPlayerAreaDistances.clear();
+    }
+    else
+    {
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+            int templateIndex = index * 3 + i;
+            GameObject* bombGO = mTemplates[templateIndex];
+            bombGO->SetWorldPosition(mAreaPositions[i]);
+            std::vector<Component*> scriptComponents;
+            bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+            bombGO->SetEnabled(true);
+            for (Component* scriptComponent : scriptComponents)
+            {
+                BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+                bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+            }
+        }
+    }
 }
 
 void EnemyBoss::Death()
