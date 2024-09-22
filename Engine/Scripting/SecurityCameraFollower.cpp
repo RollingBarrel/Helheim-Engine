@@ -46,18 +46,18 @@ void SecurityCameraFollower::Update()
 	if (mTarget)
 	{
 		//Light turns on/off gradually
-		float timeLeftTurningLightOn = mTurningOnOffTime - mTurningLightOnTimer;
+		float percentageTurningOn = 1 - (mTurningOnOffTime - mTurningLightOnTimer) / mTurningOnOffTime;
 
 		//Fading in of the light
-		if (timeLeftTurningLightOn <= 0 || mTurningOnOffTime == 0)
+		if (mTurningOnOffTime <= mTurningLightOnTimer || mTurningOnOffTime == 0)
 		{
 			mCameraLight->SetIntensity(mMaxLightIntesity);
 			mCameraLight->SetRange(mMaxLightRange);
 		}
 		else if(!mOutOfReach)
 		{
-			mCameraLight->SetIntensity(mMaxLightIntesity * (1 - timeLeftTurningLightOn / mTurningOnOffTime));
-			mCameraLight->SetRange(mMaxLightRange * (1 - timeLeftTurningLightOn / mTurningOnOffTime));
+			mCameraLight->SetIntensity(mMaxLightIntesity * percentageTurningOn);
+			mCameraLight->SetRange(mMaxLightRange * percentageTurningOn);
 
 			mTurningLightOnTimer += App->GetDt();
 		}
@@ -71,19 +71,19 @@ void SecurityCameraFollower::Update()
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mGameObject->GetWorldPosition() - mLookingAtLocation);
 		}
 
+		//Fading out of the light
 		//Workaround since OnCollisionExit is not implemented
 		if (mTarget->GetWorldPosition().DistanceSq(mGameObject->GetWorldPosition()) > mMaxDistance * mMaxDistance)
 		{
 			mOutOfReach = true;
 		}
 
-		//Fading out of the light
 		if (mCameraLight->IsEnabled() && mOutOfReach)
 		{
 			mOutOfReach = true;
 
-			mCameraLight->SetIntensity(mMaxLightIntesity * (1 - timeLeftTurningLightOn / mTurningOnOffTime));
-			mCameraLight->SetRange(mMaxLightRange * (1 - timeLeftTurningLightOn / mTurningOnOffTime));
+			mCameraLight->SetIntensity(mMaxLightIntesity * percentageTurningOn);
+			mCameraLight->SetRange(mMaxLightRange * percentageTurningOn);
 
 			mTurningLightOnTimer -= App->GetDt();
 			if (mTurningLightOnTimer <= 0)
@@ -110,17 +110,3 @@ void SecurityCameraFollower::OnCollisionEnter(CollisionData* collisionData)
 		}
 	}
 }
-
-//void SecurityCameraFollower::OnCollisionExit(CollisionData* collisionData)
-//{
-//	GameObject* CollisionGO = collisionData->collidedWith;
-//
-//	if (CollisionGO->GetTag() == "Player")
-//	{
-//		mTarget = nullptr;
-//		if (mCameraLight) 
-//		{
-//			mCameraLight->SetEnable(false);
-//		}
-//	}
-//}
