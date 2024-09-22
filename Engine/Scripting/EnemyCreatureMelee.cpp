@@ -51,7 +51,7 @@ void EnemyCreatureMelee::Update()
 	if (mCurrentState == EnemyState::ATTACK && !mAudioPlayed)
 	{
 		mAudioPlayed = true;
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, mGameObject->GetWorldPosition());
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
 	}
 	else
 	{
@@ -81,7 +81,7 @@ void EnemyCreatureMelee::Chase()
 				}
 				if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
 				{
-					GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, mGameObject->GetWorldPosition());
+					GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
 
 					mCurrentState = EnemyState::CHARGE;
 				}
@@ -111,6 +111,7 @@ void EnemyCreatureMelee::Chase()
 void EnemyCreatureMelee::Charge()
 {
 	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
+
 	Enemy::Charge();
 	mHit = false;
 }
@@ -121,11 +122,6 @@ void EnemyCreatureMelee::Attack()
 	{
 		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
-	}
-
-	if (mAttackDurationTimer.DelayWithoutReset(4.0f))
-	{
-		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, mGameObject->GetWorldPosition());
 	}
 	
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
