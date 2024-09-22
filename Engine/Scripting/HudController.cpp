@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "ButtonComponent.h"
 #include "ImageComponent.h"
+#include "VideoComponent.h"
 #include "TextComponent.h"
 #include "Transform2DComponent.h"
 #include "SliderComponent.h"
@@ -21,8 +22,6 @@
 #include "Keys.h"
 #include "Dialog.h"
 #include "Sanity.h"
-
-
 
 
 CREATE(HudController)
@@ -67,6 +66,8 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mPickupControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mPickupKeyboardGO);
 
+    SEPARATOR("Video");
+    MEMBER(MemberType::GAMEOBJECT, mVideoGO);
 
     END_CREATE;
 }
@@ -184,13 +185,42 @@ void HudController::Start()
         mFadeoutScreen->SetEnabled(true);
     }
 
-    SetDialog();
+    //SetDialog();
+
+    if (mVideoGO)
+    {
+        mVideoComponent = static_cast<VideoComponent*>(mVideoGO->GetComponent(ComponentType::VIDEO));
+        mVideoGO->SetEnabled(true);
+    }
+    if (mVideoComponent)
+    {
+        mVideoComponent->Play();
+        GameManager::GetInstance()->SetPaused(true, false);
+        mIsVideoPlaying = true;
+    }
+    else GameManager::GetInstance()->StartAudio();
 }
 
 void HudController::Update()
 {
-    if (mFadeoutImage && mFadeIn) FadeIn();
-    else if (mFadeoutImage && !mFadeIn) FadeOut();
+    if (mIsVideoPlaying && mVideoComponent)
+    {
+        bool stopVideo = false;
+        if (!mVideoComponent->IsPlaying()) stopVideo = true;
+        else if(App->GetInput()->GetKey(KeyboardKeys_ESCAPE) == KeyState::KEY_REPEAT) stopVideo = true;
+
+        if (stopVideo)
+        {
+            mVideoGO->SetEnabled(false);
+            mVideoComponent->Stop();
+            mIsVideoPlaying = false;
+            SetDialog();
+            GameManager::GetInstance()->StartAudio();
+        }
+    }
+
+    if (mFadeoutImage && mFadeIn && !mIsVideoPlaying) FadeIn();
+    else if (mFadeoutImage && !mFadeIn && !mIsVideoPlaying) FadeOut();
     if(mLoadlevel == true && mLoadingSlider->GetValue() < 1) mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
 
     Controls();

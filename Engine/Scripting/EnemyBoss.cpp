@@ -23,6 +23,8 @@
 #define PHASE_ANIMATION 5.0f
 #define DEATH_ANIMATION 4.4583f
 #define WAKEUP_ANIMATION 2.5f
+#define DEFENSE_START_ANIMATION 1.791f
+#define DEFENSE_END_ANIMATION 1.2f
 #define HIT_ANIMATION 1.25f
 #define BEAT_TIME 0.428571435f
 
@@ -31,7 +33,6 @@ CREATE(EnemyBoss) {
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
-    MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::FLOAT, mAttackSequenceCooldown);
@@ -132,29 +133,36 @@ void EnemyBoss::Update()
             case 0:
                 if (mPhaseShiftTimer.Delay(HIT_ANIMATION))
                 {
-                    BossBattleArea* ba = static_cast<BossBattleArea*>(GameManager::GetInstance()->GetActiveBattleArea());
-                    if (ba) ba->SpawnEnemies();
-                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseStart", mDeathTransitionDuration);
                     ++phaseChange;
                 }
                 break;
             case 1:
+                if (mPhaseShiftTimer.Delay(DEFENSE_START_ANIMATION))
+                {
+                    BossBattleArea* ba = static_cast<BossBattleArea*>(GameManager::GetInstance()->GetActiveBattleArea());
+                    if (ba) ba->SpawnEnemies();
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseLoop", mDeathTransitionDuration);
+                    ++phaseChange;
+                }
+                break;
+            case 2:
                 if (mWakeUp)
                 {
-                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", 1.0f);
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseEnd", 1.0f);
                     ++phaseChange;
                     mWakeUp = false;
                 }
                 break;
-            case 2:
-                if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
+            case 3:
+                if (mPhaseShiftTimer.Delay(DEFENSE_END_ANIMATION))
                 {
 
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
                     ++phaseChange;
                 }
                 break;
-            case 3:
+            case 4:
                 if (mPhaseShiftTimer.Delay(PHASE_ANIMATION))
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
