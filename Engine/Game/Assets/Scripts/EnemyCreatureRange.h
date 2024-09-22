@@ -17,6 +17,8 @@ public:
 	void Charge() override;
 	void Attack() override;
 
+	void TakeDamage(float damage) override;
+
 private:
 	void Rotate();
 

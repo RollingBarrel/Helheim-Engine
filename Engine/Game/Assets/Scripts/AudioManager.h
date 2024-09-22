@@ -76,6 +76,7 @@ enum class SFX
 	ENEMY_CREATURE_CHARGE,
 	ENEMY_CREATURE_CHARGE_ATTACK,
 	ENEMY_CREATURE_LASER,
+	ENEMY_CREATURE_HIT,
 
 	ENEMY_EXPLOSIVE_STEPS,
 	ENEMY_EXPLOSIVE_PREEXPLOSION,
@@ -236,10 +237,11 @@ private:
 		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
 		{SFX::ENEMY_CREATURE_CHARGE_ATTACK, "Assets/FMOD/Audios/sfx/creaturechargeattack.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
+		{SFX::ENEMY_CREATURE_HIT, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
 
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
-		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion.wav"},
+		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
 
 		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
 		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},

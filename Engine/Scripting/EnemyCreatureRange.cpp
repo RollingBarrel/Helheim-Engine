@@ -130,6 +130,12 @@ void EnemyCreatureRange::Attack()
 	}
 }
 
+void EnemyCreatureRange::TakeDamage(float damage)
+{
+	Enemy::TakeDamage(damage);
+	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
+}
+
 void EnemyCreatureRange::Rotate()
 {
 	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
