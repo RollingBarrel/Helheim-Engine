@@ -18,11 +18,13 @@ private:
 	void Start() override;
 	void Charge() override;
 	void Attack() override;
+	void Death() override;
 
 	void TakeDamage(float damage) override;
 	void PlayMeleeAudio();
 
 	float mMeeleDamage = 10.0f;
 	GameObject* mSwordTrail = nullptr;
+
 };
 

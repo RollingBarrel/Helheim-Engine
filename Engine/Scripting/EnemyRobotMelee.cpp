@@ -33,6 +33,7 @@ void EnemyRobotMelee::Start()
     Enemy::Start();
     mDisengageTime = 0.1f;
     mSwordTrail->SetEnabled(false);
+    mDeathAudioPlayed = false;
 }
 
 void EnemyRobotMelee::Charge()
@@ -74,10 +75,20 @@ void EnemyRobotMelee::Attack()
     }
 }
 
+void EnemyRobotMelee::Death()
+{
+    Enemy::Death(); 
+    if (!mDeathAudioPlayed)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_DEATH, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
+        mDeathAudioPlayed = true;
+    }
+}
+
 void EnemyRobotMelee::TakeDamage(float damage)
 {
     Enemy::TakeDamage(damage);
-    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyRobotMelee::PlayMeleeAudio()

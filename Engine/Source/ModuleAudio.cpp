@@ -1,4 +1,6 @@
 #include "ModuleAudio.h"
+#include "AudioSourceComponent.h"
+
 #include "Globals.h"
 #include "AudioSourceComponent.h"
 #include "fmod_errors.h"
@@ -15,7 +17,8 @@ FMOD_RESULT F_CALLBACK ChannelEndCallback(FMOD_CHANNELCONTROL* channelControl, F
 
 		if (sound)
 		{
-			sound->release();  // Release the sound when playback ends
+			CheckError(channel->stop());
+			CheckError(sound->release());  // Release the sound when playback ends
 		}
 	}
 
@@ -162,10 +165,49 @@ void ModuleAudio::EngineStop()
 		int count = 0;
 		CheckError(eventDescription->getInstanceList(instances.data(), capacity, &count));
 
-		for (const auto& instance : instances)
+		for (int j = 0; j < count; ++j)
 		{
-			instance->stop(FMOD_STUDIO_STOP_IMMEDIATE);
-			instance->release();
+			auto instance = instances[j];
+			CheckError(instance->stop(FMOD_STUDIO_STOP_IMMEDIATE));
+			CheckError(instance->release());
+		}
+	}
+
+	if (mOneShotChannelGroup) 
+	{
+		int numChannels = 0;
+		mOneShotChannelGroup->getNumChannels(&numChannels);
+		for (int i = 0; i < numChannels; ++i) 
+		{
+			FMOD::Channel* channel = nullptr;
+			if (mOneShotChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) 
+			{
+				FMOD::Sound* sound = nullptr;
+				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) 
+				{
+					CheckError(channel->stop());
+					CheckError(sound->release());
+				}
+			}
+		}
+	}
+
+	if (mAudioChannelGroup) 
+	{
+		int numChannels = 0;
+		mAudioChannelGroup->getNumChannels(&numChannels);
+		for (int i = 0; i < numChannels; ++i) 
+		{
+			FMOD::Channel* channel = nullptr;
+			if (mAudioChannelGroup->getChannel(i, &channel) == FMOD_OK && channel) 
+			{
+				FMOD::Sound* sound = nullptr;
+				if (channel->getCurrentSound(&sound) == FMOD_OK && sound) 
+				{
+					CheckError(channel->stop());
+					CheckError(sound->release());
+				}
+			}
 		}
 	}
 }
@@ -222,7 +264,7 @@ FMOD::Channel* ModuleAudio::Play(const std::string& fileName)
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
-
+	//sound->set3DMinMaxDistance(0.5f, 100.0f);
 	channel->setMode(FMOD_LOOP_NORMAL);
 	channel->setChannelGroup(mAudioChannelGroup);
 	return channel;
@@ -244,6 +286,7 @@ FMOD::Channel* ModuleAudio::PlayOneShot(const std::string& fileName)
 
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
+
 	CheckError(result);
 	channel->setChannelGroup(mOneShotChannelGroup);
 	return channel;
@@ -286,6 +329,36 @@ void ModuleAudio::Release(const FMOD::Studio::EventDescription* eventDescription
 	{
 		LOG("Cannot release event");
 	}
+}
+
+void ModuleAudio::ReleaseAllAudio()
+{
+	for (FMOD::Studio::EventDescription* eventDescription : mActiveEvent) 
+	{
+		if (eventDescription) 
+		{
+			int instanceCount = 0;
+			eventDescription->getInstanceCount(&instanceCount);
+
+			if (instanceCount > 0) 
+			{
+				std::vector<FMOD::Studio::EventInstance*> instances(instanceCount);
+				eventDescription->getInstanceList(instances.data(), instanceCount, &instanceCount);
+
+				for (FMOD::Studio::EventInstance* instance : instances) 
+				{
+					if (instance) 
+					{
+						instance->release();
+					}
+				}
+			}
+		}
+	}
+
+	mActiveEvent.clear();
+	//mOneShotChannelGroup->release();
+	//mAudioChannelGroup->release();
 }
 
 void ModuleAudio::GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values)
@@ -335,24 +408,44 @@ void ModuleAudio::SetEventPosition(const FMOD::Studio::EventDescription* eventDe
 	eventInstance->set3DAttributes(&attributes);
 }
 
-void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 eventPosition)
+void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 audioPosition)
 {
+	if(audioPosition.Distance(float3(0,0,0)) == 0)
+	{
+		return;
+	}
+
 	// Add the channel to the global channel group
 	if (channel)
 	{
-		channel->setChannelGroup(mOneShotChannelGroup);
+		channel->setMode(FMOD_3D);
 
-		// To release audio
-		channel->setCallback(ChannelEndCallback);
+		FMOD::Sound* sound = nullptr;
+		if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
+			sound->set3DMinMaxDistance(0.5f, 100.0f);
+		}
 
-		FMOD_VECTOR  position = { { 0 } };
-		FMOD_VECTOR velocity = { 0.0f, 0.0f, 0.0f };
+		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 
-		position.x = eventPosition.x;
-		position.y = eventPosition.y;
-		position.z = eventPosition.z;
+		attributes.position.x = audioPosition.x;
+		attributes.position.z = audioPosition.z;
 
-		channel->set3DAttributes(&position, &velocity);
+		attributes.forward.z = 1.0f;
+		attributes.up.y = 1.0f;
+
+		channel->set3DAttributes(&attributes.position, &attributes.velocity);
+	}
+}
+
+void ModuleAudio::SetLoop(FMOD::Channel* channel, bool loop)
+{
+	if (loop)
+	{
+		CheckError(channel->setMode(FMOD_LOOP_NORMAL));
+	}
+	else
+	{
+		CheckError(channel->setMode(FMOD_LOOP_OFF));
 	}
 }
 
@@ -455,10 +548,65 @@ void ModuleAudio::AddIntoEventList(const FMOD::Studio::EventDescription* eventDe
 
 bool ModuleAudio::CleanUp()
 {
-	mOneShotChannelGroup->release();
-	mAudioChannelGroup->release();
-	mSystem->unloadAll();
-	mSystem->release();
+	// Unload all loaded banks
+	if (mUiBank)
+	{
+		mUiBank->unload();
+		mUiBank = nullptr;
+	}
+	if (mAmbBank)
+	{
+		mAmbBank->unload();
+		mAmbBank = nullptr;
+	}
+	if (mMusicBank)
+	{
+		mMusicBank->unload();
+		mMusicBank = nullptr;
+	}
+	if (mSFXBank)
+	{
+		mSFXBank->unload();
+		mSFXBank = nullptr;
+	}
+	if (mMasterBank)
+	{
+		mMasterBank->unload();
+		mMasterBank = nullptr;
+	}
+	if (mStringBank)
+	{
+		mStringBank->unload();
+		mStringBank = nullptr;
+	}
+
+	// Release channel groups
+	if (mOneShotChannelGroup)
+	{
+		mOneShotChannelGroup->release();
+		mOneShotChannelGroup = nullptr;
+	}
+	if (mAudioChannelGroup)
+	{
+		mAudioChannelGroup->release();
+		mAudioChannelGroup = nullptr;
+	}
+
+	// Release the Studio System and Core System
+	if (mSystem)
+	{
+		// Release the Studio System object
+		mSystem->release();
+		mSystem = nullptr;
+	}
+
+	if (mCoreSystem)
+	{
+		// Release the Studio System object
+		mCoreSystem->release();
+		mCoreSystem = nullptr;
+	}
+
 
     return true;
 }

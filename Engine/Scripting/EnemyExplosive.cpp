@@ -4,6 +4,8 @@
 #include "ScriptComponent.h"
 #include "PlayerController.h"
 #include "ParticleSystemComponent.h"
+#include "AudioManager.h"
+#include "GameManager.h"
 
 
 CREATE(EnemyExplosive)
@@ -20,6 +22,7 @@ CREATE(EnemyExplosive)
     SEPARATOR("GAMEOBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mExplosionWarningGO);
     MEMBER(MemberType::GAMEOBJECT, mExplosionParticle);
+
 
     END_CREATE;
 }
@@ -42,12 +45,38 @@ void EnemyExplosive::Start()
     {
         mExplosionParticle->SetEnabled(false);
     }
+
+    mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
+    mAttackSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_EXPLOSION);
+    mStepSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_STEPS);
+
+    mExplosionPlaying = false;
+    mChargePlaying = false;
+
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, true);
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound, true);
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound, true);
 }
 
+void EnemyExplosive::Update()
+{
+    Enemy::Update();
+    GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound, false);
+
+    GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound, mGameObject->GetWorldPosition());
+}
 
 void EnemyExplosive::Charge()
 {
     Enemy::Charge();
+    if (!mChargePlaying)
+    {
+        mExplosionPlaying = false;
+        mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
+        mChargePlaying = true;
+    }
+
+    //
     if (mExplosionWarningGO)
     {
         mExplosionWarningGO->SetEnabled(true);
@@ -57,12 +86,21 @@ void EnemyExplosive::Charge()
 
 void EnemyExplosive::Attack()
 {
+    if (!mExplosionPlaying)
+    {
+        mChargePlaying = false;
+        GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, false);
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mGameObject->GetWorldPosition());
+        mExplosionPlaying = true;
+    }
+
     mExplosionWarningGO->SetWorldScale(float3(0.1f));
 
     if (mExplosionParticle)
     {
         mExplosionParticle->SetEnabled(true);  
     }
+
 
     if (IsPlayerInRange(mExplosionRadius))
     {
@@ -80,11 +118,31 @@ void EnemyExplosive::Attack()
 
 void EnemyExplosive::Death()
 {
-	Enemy::Death();
+    if (mStepSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_STEPS, mStepSound);
+    }
+
+    if (mChargeSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound);
+    }
+
+    if (mAttackSound != -1)
+    {
+        GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound);
+    }
+
+    Enemy::Death();
 
     float3 newScale = float3(1, 1, 1);
     mExplosionWarningGO->SetWorldScale(newScale);
-	mExplosionWarningGO->SetEnabled(false);
+    mExplosionWarningGO->SetEnabled(false);
+}
+
+void EnemyExplosive::PlayStepAudio()
+{
+    // Do not play step audio
 }
 
 void EnemyExplosive::ChargeWarningArea()

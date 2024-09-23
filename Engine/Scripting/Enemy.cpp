@@ -64,6 +64,8 @@ void Enemy::Update()
 			Paralyzed(mParalysisSeverityLevel, false);
 		}
 	}
+
+	if (mDeathAudioPlayed && mCurrentState!= EnemyState::DEATH) mDeathAudioPlayed = false;
 	ActivateEnemy();
 
     //Hit Effect

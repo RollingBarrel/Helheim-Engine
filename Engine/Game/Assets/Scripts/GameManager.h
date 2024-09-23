@@ -56,10 +56,13 @@ public:
     void UnlockGrenade(bool unlock);
     
     void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
-    void StartAudio();
+    void PauseBackgroundAudio(bool pause);
+
+    void HandleBossAudio(int stage);
 
 private:
     void PrepareAudio();
+    void StartAudio();
     void HandleAudio();
     void EndAudio();
 
@@ -97,6 +100,8 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
+    int mBackgroundAudioID2 = -1;
+
     int mGameOverAudio = -1;
     int mLastAudioID = -1;
 
