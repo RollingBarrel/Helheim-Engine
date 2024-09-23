@@ -232,7 +232,7 @@ namespace ImGui
         {
             float pos = (ImGui::GetIO().MousePos.x - bar_pos.x) / maxWidth;
 
-            float newMarkCol[4]{};
+            float newMarkCol[4];
             float4 newMark = gradient.CalculateColor(pos);
 
             gradient.AddColorGradientMark(pos, newMark);

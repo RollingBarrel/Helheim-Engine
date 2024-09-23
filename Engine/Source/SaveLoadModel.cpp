@@ -334,7 +334,7 @@ ResourceModel* Importer::Model::Load(const char* fileName, unsigned int uid)
             cursor += bytes;
             rModel->mInvBindMatrices.emplace_back();
             rModel->mInvBindMatrices[j].reserve(numInvBindMat);
-            for (unsigned int i = 0; i < numInvBindMat; ++i)
+            for (int i = 0; i < numInvBindMat; ++i)
             {
                 unsigned int gltfId;
                 bytes = sizeof(unsigned int);

@@ -158,7 +158,6 @@ void ImageComponent::Draw()
 
 			}
 			glEnable(GL_CULL_FACE);
-			glDisable(GL_DEPTH_TEST);
 			break;
 		}
 		case RenderSpace::World: //World Mode
@@ -169,7 +168,6 @@ void ImageComponent::Draw()
 			model = GetOwner()->GetWorldTransform();
 			view = camera->GetViewMatrix();
 			glDisable(GL_CULL_FACE);
-			glEnable(GL_DEPTH_TEST);
 			break;
 		}
 		case RenderSpace::Billboard: //World Mode aligned to the camera
@@ -193,7 +191,6 @@ void ImageComponent::Draw()
 			//model.Transpose();
 
 			glDisable(GL_CULL_FACE);
-			glEnable(GL_DEPTH_TEST);
 			break;
 		}
 		case RenderSpace::WorldAxisBillboard: //World Mode aligned to the camera
@@ -218,7 +215,6 @@ void ImageComponent::Draw()
 			//model.Transpose();
 
 			glDisable(GL_CULL_FACE);
-			glEnable(GL_DEPTH_TEST);
 			break;
 		}
 		}

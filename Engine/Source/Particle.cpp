@@ -35,7 +35,7 @@ float Particle::Update(float DeltaTime, float gravity, GameObject* owner)
 {
     mLifeTime += DeltaTime;
     float dt01 = mLifeTime / mMaxLifeTime;
-    mPosition = mPosition + mDirection * mSpeed * DeltaTime + float3(0, 1, 0) * DeltaTime * mLifeTime * -9.81f * gravity;
+    mPosition = mPosition + mDirection * mSpeed * DeltaTime + float3(0, 1, 0) * DeltaTime * mLifeTime * -9.81 * gravity;
     //if (mHasTrail) mTrail->UpdateTrailParticle(owner->GetLocalRotation().Transform(mPosition));
     if (mHasTrail and !mFollowEmitter) mTrail->UpdateTrailParticle(mPosition);
     else if (mHasTrail and mFollowEmitter) mTrail->UpdateTrailParticle((owner->GetWorldTransform() * float4(mPosition,1)).Float3Part());

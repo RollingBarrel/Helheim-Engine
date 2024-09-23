@@ -25,7 +25,6 @@ private:
 		{".bmp", Resource::Type::Texture},
 		{".dds", Resource::Type::Texture},
 		{".tga", Resource::Type::Texture},
-		{".ico", Resource::Type::Texture},
 		{".gltf", Resource::Type::Model},
 		{".scn", Resource::Type::Scene},
 		{".prfb", Resource::Type::Prefab},

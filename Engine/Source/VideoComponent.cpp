@@ -78,7 +78,6 @@ void VideoComponent::Draw()
 		float4x4 view = float4x4::identity;
 		
 		glEnable(GL_CULL_FACE);
-		glDisable(GL_DEPTH_TEST);
 
 		glBindVertexArray(mQuadVAO);
 		glUniform4fv(glGetUniformLocation(mUIProgramID, "inputColor"), 1, float4(1.0f, 1.0f, 1.0f, 1.0f).ptr());

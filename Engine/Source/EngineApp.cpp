@@ -124,6 +124,7 @@ bool EngineApplication::CleanUp()
 void EngineApplication::Start()
 {
 	mIsPlayMode = true;
+
 	SetCurrentClock(EngineApp->GetGameClock());
 	scene->Save(std::string("InternalAssets/Scenes/" + std::string("TemporalScene")).c_str());	//TODO: Change to Importfile
 	engineScriptManager->StartScripts();

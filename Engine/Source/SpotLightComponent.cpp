@@ -43,7 +43,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 
 
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
-	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias), mVolumetric(original->mVolumetric)
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias)
 {
 	if (IsEnabled())
 	{

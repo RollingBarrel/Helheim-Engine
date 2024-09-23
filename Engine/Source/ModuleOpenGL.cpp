@@ -1530,22 +1530,6 @@ void ModuleOpenGL::Draw()
 	glDepthMask(GL_TRUE);
 	glPopDebugGroup();
 
-	//Draw the skybox
-	if (mCurrSkyBox != nullptr)
-	{
-		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
-		glDepthFunc(GL_LEQUAL);
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
-		glUseProgram(mSkyBoxProgramId);
-		glBindVertexArray(mSkyVao);
-		//glDepthMask(GL_FALSE);
-		glDrawArrays(GL_TRIANGLES, 0, 36);
-		//glDepthMask(GL_TRUE);
-		glDepthFunc(GL_LESS);
-		glPopDebugGroup();
-	}
-
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Volumetric lighting");
 	glUseProgram(mVolLightProgramId);
 	glActiveTexture(GL_TEXTURE0);
@@ -1563,6 +1547,22 @@ void ModuleOpenGL::Draw()
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
+
+	//Draw the skybox
+	if (mCurrSkyBox != nullptr)
+	{
+		glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Skybox");
+		glDepthFunc(GL_LEQUAL);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_CUBE_MAP, mCurrSkyBox->GetEnvironmentTextureId());
+		glUseProgram(mSkyBoxProgramId);
+		glBindVertexArray(mSkyVao);
+		//glDepthMask(GL_FALSE);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		//glDepthMask(GL_TRUE);
+		glDepthFunc(GL_LESS);
+		glPopDebugGroup();
+	}
 
 
 	//Fog using render pipeline (NO COMPUTE)

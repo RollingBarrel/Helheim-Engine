@@ -4,7 +4,6 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
-#include "ModuleWindow.h"
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
@@ -58,8 +57,6 @@ void GameManager::Awake()
 
 void GameManager::Start()
 {
-    //App->GetWindow()->SetCursor(857248271, 50, 50);
-
     if (mHudControllerGO)
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
