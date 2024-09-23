@@ -8,6 +8,7 @@
 #include "PoolManager.h"
 #include "AudioManager.h"
 #include "Bullet.h"
+#include "PlayerController.h"
 
 #include "ColorGradient.h"
 
@@ -40,7 +41,7 @@ void EnemyRobotRange::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyRobotRange::OnCollisionEnter, this, std::placeholders::_1)));
     }
-
+    mDeathAudioPlayed = false;
 }
 
 void EnemyRobotRange::Attack()
@@ -86,7 +87,17 @@ void EnemyRobotRange::RangeAttack()
 void EnemyRobotRange::TakeDamage(float damage)
 {
     Enemy::TakeDamage(damage);
-    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_HIT, mGameObject->GetWorldPosition());
+}
+
+void EnemyRobotRange::Death()
+{
+    Enemy::Death(); 
+    if (!mDeathAudioPlayed)
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_DEATH, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
+        mDeathAudioPlayed = true;
+    }
 }
 
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)

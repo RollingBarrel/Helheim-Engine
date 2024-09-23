@@ -9,14 +9,19 @@
 
 enum class BGM 
 {
-	MAINMENU,
+	MAINMENU,                                                                        
 	LEVEL1,
 	LEVEL2,
 
-	GAMEOVER
+	BOSS_ROOM,
+	BOSS,
+
+	GAMEOVER,
+
+	INTRO_VIDEO
 };
 
-enum class SFX 
+enum class SFX
 {
 	// MAIN MENU
 	MAINMENU_SELECT,
@@ -32,6 +37,8 @@ enum class SFX
 	PLAYER_SHOTGUN,
 
 	PLAYER_MEELEE,
+	PLAYER_KATANA,
+	PLAYER_HAMMER,
 
 	PLAYER_ULTIMATE,
 
@@ -57,6 +64,9 @@ enum class SFX
 
 	// SCEENE
 	DOOR,
+	ELECTRICAL_TRAP,
+	ELEVATOR_OPEN_CLOSE,
+	ELEVATOR,
 
 	// ENEMY
 	ENEMY_DEATH,
@@ -64,9 +74,27 @@ enum class SFX
 	ENEMY_ROBOT_GUNFIRE,
 	ENEMY_ROBOT_SLASH,
 	ENEMY_ROBOT_HIT,
+	ENEMY_ROBOT_DEATH,
 
 	ENEMY_CREATURE_CHARGE,
-	ENEMY_CREATURE_LASER
+	ENEMY_CREATURE_CHARGE_ATTACK,
+	ENEMY_CREATURE_LASER,
+	ENEMY_CREATURE_HIT,
+	ENEMY_CREATURE_DEATH,
+
+	ENEMY_EXPLOSIVE_STEPS,
+	ENEMY_EXPLOSIVE_PREEXPLOSION,
+	ENEMY_EXPLOSIVE_EXPLOSION,
+
+	BOSS_SCREAM,
+	BOSS_AWAKE,
+	BOSS_LASER,
+	BOSS_LASER2,
+	BOSS_ERUPTION,
+	BOSS_ROAR_BULLET,
+	BOSS_ROAR_ERUPTION,
+	BOSS_ROAR_LASER,
+	BOSS_HIT,
 };
 
 namespace FMOD 
@@ -108,11 +136,15 @@ public:
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
 
+	void ReleaseAllAudio();
+
 	void UpdateParameterValueByName(BGM bgm, int id, const char* name, const float value);
 	void UpdateParameterValueByName(SFX sfx, int id, const char* name, const float value);
 
 	void SetPosition(SFX sfx, int id, float3 position);
 	void SetPosition(const FMOD::Studio::EventDescription* description, int id, float3 position);
+
+	void SetLoop(BGM bgm, int id, bool isLoop);
 
 	void AddAudioToASComponent(BGM bgm);
 	void AddAudioToASComponent(SFX sfx);
@@ -125,6 +157,8 @@ private:
 
 	const FMOD::Studio::EventDescription* GetEventDescription(BGM bgm);
 	const FMOD::Studio::EventDescription* GetEventDescription(SFX sfx);
+
+	bool IsPlayeble(SFX sfx);
 
 	// Handle Custom Audio
 	int PlayBGM(const std::string& fileName);
@@ -148,7 +182,12 @@ private:
 		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
 		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"},
 
+		{BGM::BOSS_ROOM, "event:/MC/main/Theme"},
+		{BGM::BOSS, "event:/MC/lvl1/mc_lvl1"},
+
 		{BGM::GAMEOVER, "Assets/FMOD/Audios/bgm/die.mp3"},
+
+		{BGM::INTRO_VIDEO, "Assets/FMOD/Audios/bgm/introvideo.mp3"},
 
 	};
 
@@ -185,7 +224,6 @@ private:
 		{SFX::PLAYER_DEATH1, "Assets/FMOD/Audios/sfx/die.wav"},
 		{SFX::PLAYER_DEATH2, "Assets/FMOD/Audios/sfx/die2.wav"},
 
-
 		// DIALOG
 		{SFX::DIALOG, "Assets/FMOD/Audios/bgm/dialog2.wav"},
 		{SFX::DIALOG_FEMALE, "Assets/FMOD/Audios/sfx/female.wav"}, // [X]
@@ -193,6 +231,9 @@ private:
 
 		// SCENE
 		{SFX::DOOR, "Assets/FMOD/Audios/sfx/door.wav"},
+		{SFX::ELECTRICAL_TRAP, "Assets/FMOD/Audios/sfx/electric.wav"},
+		{SFX::ELEVATOR, "Assets/FMOD/Audios/sfx/elevator.wav"},
+		{SFX::ELEVATOR_OPEN_CLOSE, "Assets/FMOD/Audios/sfx/elevatorstop.wav"},
 
 		// ENEMY
 		{SFX::ENEMY_DEATH, "Assets/FMOD/Audios/sfx/generalenemydeath.wav"}, // [X]
@@ -200,8 +241,28 @@ private:
 		{SFX::ENEMY_ROBOT_GUNFIRE, "event:/SFX/NPC/robot_distance"},
 		{SFX::ENEMY_ROBOT_SLASH, "Assets/FMOD/Audios/sfx/slash.wav"},
 		{SFX::ENEMY_ROBOT_HIT, "Assets/FMOD/Audios/sfx/enemyrobothit.wav"},
+		{SFX::ENEMY_ROBOT_DEATH, "Assets/FMOD/Audios/sfx/robotdeath.wav"}, // [X]
 
 		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
+		{SFX::ENEMY_CREATURE_CHARGE_ATTACK, "Assets/FMOD/Audios/sfx/creaturechargeattack.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
+		{SFX::ENEMY_CREATURE_HIT, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
+		{SFX::ENEMY_CREATURE_DEATH, "Assets/FMOD/Audios/sfx/creaturedeath.wav"},
+
+		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
+		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
+		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion.wav"},
+
+		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
+		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},
+		{SFX::BOSS_LASER, "Assets/FMOD/Audios/sfx/bosslasersound.wav"},
+		{SFX::BOSS_LASER2, "Assets/FMOD/Audios/sfx/bosslasersound2.wav"},
+		{SFX::BOSS_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruptionsound.wav"},
+
+		{SFX::BOSS_ROAR_BULLET, "Assets/FMOD/Audios/sfx/bossbullet.wav"},
+		{SFX::BOSS_ROAR_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruption.wav"},
+		{SFX::BOSS_ROAR_LASER, "Assets/FMOD/Audios/sfx/bosslaser.wav"},
+		{SFX::BOSS_HIT, "Assets/FMOD/Audios/sfx/bosshit.wav"},
+
 	};
 };

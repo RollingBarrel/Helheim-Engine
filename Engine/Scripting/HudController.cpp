@@ -195,14 +195,12 @@ void HudController::Start()
     if (mVideoComponent)
     {
         mVideoComponent->Play();
+        PlayVideoAssociatedAudio();
         GameManager::GetInstance()->SetPaused(true, false);
+        GameManager::GetInstance()->PauseBackgroundAudio(true);
         mIsVideoPlaying = true;
     }
-    else
-    {
-        GameManager::GetInstance()->StartAudio();
-        SetDialog();
-    }
+    else SetDialog();
 }
 
 void HudController::Update()
@@ -219,7 +217,9 @@ void HudController::Update()
             mVideoComponent->Stop();
             mIsVideoPlaying = false;
             SetDialog();
-            GameManager::GetInstance()->StartAudio();
+            ReleaseVideoAssociatedAudio();
+
+            GameManager::GetInstance()->PauseBackgroundAudio(false);
         }
     }
 
@@ -313,6 +313,28 @@ void HudController::FadeIn()
 void HudController::FadeOut()
 {
     if (*mFadeoutImage->GetAlpha() <= 1.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() + 0.65f * App->GetDt());
+}
+
+void HudController::PlayVideoAssociatedAudio()
+{
+    const char* videoName = mVideoComponent->GetName();
+    bool isVideoLoop = mVideoComponent->GetLoop();
+
+    if (strcmp(videoName, "Chrysalis_intro.mp4") == 0)
+    {
+        mVideoAudio = GameManager::GetInstance()->GetAudio()->Play(BGM::INTRO_VIDEO);
+        GameManager::GetInstance()->GetAudio()->SetLoop(BGM::INTRO_VIDEO, mVideoAudio, isVideoLoop);
+    }
+}
+
+void HudController::ReleaseVideoAssociatedAudio()
+{
+    const char* videoName = mVideoComponent->GetName();
+
+    if (strcmp(videoName, "Chrysalis_intro.mp4") == 0)
+    {
+        mVideoAudio = GameManager::GetInstance()->GetAudio()->Release(BGM::INTRO_VIDEO, mVideoAudio);
+    }
 }
 
 bool HudController::Delay(float delay)
