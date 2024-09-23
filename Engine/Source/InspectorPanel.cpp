@@ -1880,14 +1880,14 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 	if (ImGui::CollapsingHeader("Shape"))
 	{
-		static const char* items[]{ "Cone","Box","Sphere" };
-		static int Selecteditem = 0;
+		static const char* items[]{ "None", "Cone","Box","Sphere" };
+		static int selectedItem = static_cast<int>(component->mShapeType);
 		ImGui::Text("Shape");
 		ImGui::SameLine();
-		bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
+		bool check = ImGui::Combo("##Shape", &selectedItem, items, IM_ARRAYSIZE(items));
 		if (check)
 		{
-			component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
+			component->mShapeType = (ParticleSystemComponent::EmitterType)(selectedItem);
 		}
 		switch (component->mShapeType)
 		{
@@ -1916,6 +1916,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
 
+			break;
+		default:
+			ImGui::Text("NONE");
 			break;
 		}
 		ImGui::Text("Rand Dir");

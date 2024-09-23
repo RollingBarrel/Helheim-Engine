@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 240324807,
-                "ParentUID": 592143622,
+                "UID": 708252620,
+                "ParentUID": 1,
                 "Name": "Security_Camera_2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -7.31666898727417,
-                    39.5,
-                    17.598209381103517
+                    0.0,
+                    3.5999999046325685,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -47,8 +47,8 @@
                 ]
             },
             {
-                "UID": 2034736461,
-                "ParentUID": 240324807,
+                "UID": 1673826269,
+                "ParentUID": 708252620,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -75,8 +75,8 @@
                 "Components": []
             },
             {
-                "UID": 1686259454,
-                "ParentUID": 2034736461,
+                "UID": 473954053,
+                "ParentUID": 1673826269,
                 "Name": "OB_security_camera_arm",
                 "Enabled": true,
                 "Active": true,
@@ -113,8 +113,8 @@
                 ]
             },
             {
-                "UID": 1361940934,
-                "ParentUID": 240324807,
+                "UID": 1407919768,
+                "ParentUID": 708252620,
                 "Name": "Pivot",
                 "Enabled": true,
                 "Active": true,
@@ -145,14 +145,19 @@
                         "ScriptName": "SecurityCameraFollower",
                         "ScriptVariables": [
                             {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
                                 "VariableName": "mMaxDistance",
                                 "MemberType": 1,
                                 "VariableData": 15.0
                             },
                             {
-                                "VariableName": "mTurningLightOnTime",
+                                "VariableName": "mTurningOnOffTime",
                                 "MemberType": 1,
-                                "VariableData": 2.0
+                                "VariableData": 3.0
                             },
                             {
                                 "VariableName": "mMaxLightIntesity",
@@ -169,8 +174,8 @@
                 ]
             },
             {
-                "UID": 1041312327,
-                "ParentUID": 1361940934,
+                "UID": 202965219,
+                "ParentUID": 1407919768,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -197,8 +202,8 @@
                 "Components": []
             },
             {
-                "UID": 709196255,
-                "ParentUID": 1041312327,
+                "UID": 1151829828,
+                "ParentUID": 202965219,
                 "Name": "OB_security_camera",
                 "Enabled": true,
                 "Active": true,
@@ -235,8 +240,8 @@
                 ]
             },
             {
-                "UID": 374434585,
-                "ParentUID": 1041312327,
+                "UID": 2114966742,
+                "ParentUID": 202965219,
                 "Name": "Light",
                 "Enabled": true,
                 "Active": true,
@@ -265,9 +270,9 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            -6.66152811050415,
-                            39.619293212890628,
-                            17.690561294555665,
+                            0.6551408171653748,
+                            3.7192931175231935,
+                            0.09235236048698425,
                             20.0
                         ],
                         "Direction": [

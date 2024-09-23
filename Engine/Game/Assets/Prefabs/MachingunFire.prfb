@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1418741121,
+                "UID": 1007087871,
                 "ParentUID": 1,
                 "Name": "MachingunFire",
                 "Enabled": true,
@@ -13,15 +13,15 @@
                     0.0
                 ],
                 "Rotation": [
+                    0.7071068286895752,
                     0.0,
-                    -0.7071068286895752,
                     0.0,
-                    0.7071068286895752
+                    0.7071067094802856
                 ],
                 "Scale": [
                     1.0,
                     1.0,
-                    1.0
+                    2.4000000953674318
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1843846947,
-                "ParentUID": 1418741121,
+                "UID": 1037303385,
+                "ParentUID": 1007087871,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": true,
@@ -62,19 +62,19 @@
                         "Image": 1578356902,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
-                        "EmissionRate": 20.0,
-                        "MaxParticles": 10,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 100,
                         "Burst": 10,
                         "Looping": false,
-                        "FollowEmitter": false,
+                        "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 0.30000001192092898,
-                            "MaxValue": 0.5
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 0.20000000298023225
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.009999999776482582,
@@ -181,13 +181,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 139431344,
-                "ParentUID": 1418741121,
+                "UID": 1043638896,
+                "ParentUID": 1007087871,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": true,
@@ -218,11 +245,11 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
-                        "EmissionRate": 10.0,
-                        "MaxParticles": 10,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 100,
                         "Burst": 10,
                         "Looping": false,
-                        "FollowEmitter": false,
+                        "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
@@ -349,13 +376,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 581663936,
-                "ParentUID": 1418741121,
+                "UID": 1049765544,
+                "ParentUID": 1007087871,
                 "Name": "Flash",
                 "Enabled": true,
                 "Active": true,
@@ -386,11 +440,11 @@
                         "Image": 317624299,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
-                        "EmissionRate": 10.0,
-                        "MaxParticles": 8,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 100,
                         "Burst": 8,
                         "Looping": false,
-                        "FollowEmitter": false,
+                        "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
@@ -508,13 +562,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 1009693844,
-                "ParentUID": 1418741121,
+                "UID": 1055752950,
+                "ParentUID": 1007087871,
                 "Name": "Spark Short",
                 "Enabled": true,
                 "Active": true,
@@ -545,11 +626,11 @@
                         "Image": 801896237,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
-                        "EmissionRate": 20.0,
-                        "MaxParticles": 20,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 100,
                         "Burst": 20,
                         "Looping": false,
-                        "FollowEmitter": false,
+                        "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
@@ -574,7 +655,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.0,
+                                "MinValue": 4.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -655,13 +736,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 1439325035,
-                "ParentUID": 1418741121,
+                "UID": 1061740356,
+                "ParentUID": 1007087871,
                 "Name": "Spark Long",
                 "Enabled": true,
                 "Active": true,
@@ -692,11 +800,11 @@
                         "Image": 801896237,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
-                        "EmissionRate": 20.0,
-                        "MaxParticles": 20,
+                        "EmissionRate": 0.0,
+                        "MaxParticles": 100,
                         "Burst": 20,
                         "Looping": false,
-                        "FollowEmitter": false,
+                        "FollowEmitter": true,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": false,
                         "StretchedRatio": 0.0,
@@ -721,7 +829,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 2.0,
+                                "MinValue": 4.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -802,7 +910,34 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             }
