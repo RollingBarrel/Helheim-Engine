@@ -25,14 +25,13 @@ void SecurityCameraFollower::Start()
 	if (mCameraLight)
 	{
 		mCameraLight->SetEnable(false);
-		mCameraLight->SetIntensity(0);
-		mCameraLight->SetRange(0);
+		mCameraLight->SetIntensity(0.0f);
+		mCameraLight->SetRange(0.0f);
 	}
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponentInParent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&SecurityCameraFollower::OnCollisionEnter, this, std::placeholders::_1)));
-		//mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_EXIT, new std::function<void(CollisionData*)>(std::bind(&SecurityCameraFollower::OnCollisionExit, this, std::placeholders::_1)));
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
 	
@@ -46,10 +45,10 @@ void SecurityCameraFollower::Update()
 	if (mTarget)
 	{
 		//Light turns on/off gradually
-		float percentageTurningOn = 1 - (mTurningOnOffTime - mTurningLightOnTimer) / mTurningOnOffTime;
+		float percentageTurningOn = 1.0f - (mTurningOnOffTime - mTurningLightOnTimer) / mTurningOnOffTime;
 
 		//Fading in of the light
-		if (mTurningOnOffTime <= mTurningLightOnTimer || mTurningOnOffTime == 0)
+		if (mTurningOnOffTime <= mTurningLightOnTimer || mTurningOnOffTime == 0.0f)
 		{
 			mCameraLight->SetIntensity(mMaxLightIntesity);
 			mCameraLight->SetRange(mMaxLightRange);
@@ -63,9 +62,9 @@ void SecurityCameraFollower::Update()
 		}
 
 		//Rotates security camera to player
-		float3 playerPosition = mTarget->GetWorldPosition() + float3(0, 0.5f, 0);
+		float3 playerPosition = mTarget->GetWorldPosition() + float3(0.0f, 0.5f, 0.0f);
 		float3 rotationDirection = playerPosition - mLookingAtLocation;
-		if (rotationDirection.LengthSq() > 0.01)
+		if (rotationDirection.LengthSq() > 0.01f)
 		{
 			mLookingAtLocation += rotationDirection * App->GetDt() * mSpeed;
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mGameObject->GetWorldPosition() - mLookingAtLocation);
@@ -86,7 +85,7 @@ void SecurityCameraFollower::Update()
 			mCameraLight->SetRange(mMaxLightRange * percentageTurningOn);
 
 			mTurningLightOnTimer -= App->GetDt();
-			if (mTurningLightOnTimer <= 0)
+			if (mTurningLightOnTimer <= 0.0f)
 			{
 				mTarget = nullptr;
 				mCameraLight->SetEnable(false);
