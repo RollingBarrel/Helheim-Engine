@@ -6,6 +6,7 @@
 
 struct SDL_Window;
 struct SDL_Surface;
+struct SDL_Cursor;
 
 class ENGINE_API ModuleWindow : public Module
 {
@@ -34,8 +35,11 @@ public:
 	void WindowFullscreen(bool value);
 	bool IsWindowFullscreen();
 
+	void SetCursor(unsigned int resourceID, unsigned int cursorWidth = 32, unsigned int cursorHeight = 32, unsigned int hotPointX = 0, unsigned int hotPointY = 0);
+
 	SDL_Window* mWindow = nullptr;
 	SDL_Surface* mScreenSurface = nullptr;
+	SDL_Cursor* mCursor = nullptr;
 
 private:
 	int mWidth = 0;

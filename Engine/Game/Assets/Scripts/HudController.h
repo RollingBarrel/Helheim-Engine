@@ -79,6 +79,9 @@ private:
 
     void LoseAnimation();
     void WinAnimation();
+    
+    void PlayVideoAssociatedAudio();
+    void ReleaseVideoAssociatedAudio();
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
@@ -200,4 +203,5 @@ private:
     bool mIsVideoPlaying = false;
     GameObject* mVideoBtnGO = nullptr;
     ButtonComponent* mVideoBtn = nullptr;
+    int mVideoAudio = -1;
 };

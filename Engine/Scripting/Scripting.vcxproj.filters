@@ -210,6 +210,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h">
       <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -367,6 +368,7 @@
     <ClCompile Include="SecondTutorial.cpp" />
     <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="BossBattleArea.cpp" />
+    <ClCompile Include="LinearMovement.cpp" />
     <ClCompile Include="PauseMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
