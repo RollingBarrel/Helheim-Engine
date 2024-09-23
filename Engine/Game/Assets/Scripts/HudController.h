@@ -204,4 +204,12 @@ private:
     GameObject* mVideoBtnGO = nullptr;
     ButtonComponent* mVideoBtn = nullptr;
     int mVideoAudio = -1;
+
+    //Highlights
+    bool mGrenadeHL = false;
+    TimerScript mGrenadeHLTimer;
+    GameObject* mGrenadeHLGO = nullptr;
+    bool mUltimateHL = false;
+    TimerScript mUltimateHLTimer;
+    GameObject* mUltimateHLGO = nullptr;
 };

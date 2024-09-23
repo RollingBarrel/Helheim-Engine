@@ -33,7 +33,9 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
     MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeHLGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltimateHLGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
     MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
@@ -309,6 +311,11 @@ void HudController::Update()
     }
 
     // Grenade cooldown update
+    if (mGrenadeHL && mGrenadeHLTimer.DelayWithoutReset(0.25f))
+    {
+        mGrenadeHLGO->SetEnabled(false);
+        mGrenadeHL = false;
+    }
     if (mGrenadeSlider != nullptr && mGrenadeCooldown != 0.0f) 
     {
         if (mGrenadeTimer <= mGrenadeCooldown) 
@@ -318,11 +325,19 @@ void HudController::Update()
         }
         else
         {
+            mGrenadeHL = true;
+            mGrenadeHLGO->SetEnabled(true);
+            mGrenadeHLTimer.Reset();
             mGrenadeCooldown = 0.0f;
         }
     }
 
     // Ultimate cooldown update
+    if (mUltimateHL && mUltimateHLTimer.DelayWithoutReset(0.25f))
+    {
+        mUltimateHLGO->SetEnabled(false);
+        mUltimateHL = false;
+    }
     if (mUltimateSlider != nullptr && mUltimateCooldown != 0.0f)
     {
         if (mUltimateTimer <= mUltimateCooldown)
@@ -332,6 +347,9 @@ void HudController::Update()
         }
         else
         {
+            mUltimateHL = true;
+            mUltimateHLGO->SetEnabled(true);
+            mUltimateHLTimer.Reset();
             mUltimateCooldown = 0.0f;
         }
     }
