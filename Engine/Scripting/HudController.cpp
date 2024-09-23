@@ -198,7 +198,11 @@ void HudController::Start()
         GameManager::GetInstance()->SetPaused(true, false);
         mIsVideoPlaying = true;
     }
-    else GameManager::GetInstance()->StartAudio();
+    else
+    {
+        GameManager::GetInstance()->StartAudio();
+        SetDialog();
+    }
 }
 
 void HudController::Update()
