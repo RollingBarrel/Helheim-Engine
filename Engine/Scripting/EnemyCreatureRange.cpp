@@ -110,7 +110,8 @@ void EnemyCreatureRange::Attack()
 	ray.dir = mGameObject->GetFront();
 	ray.pos = mLaserOrigin->GetWorldPosition();
 
-	Physics::Raycast(hit, ray, mAttackDistance);
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
+	Physics::Raycast(hit, ray, mAttackDistance, &ignoreTags);
 	if (hit.IsValid())
 	{
 		if (hit.mGameObject->GetTag().compare("Player") == 0 && mDoDamage)

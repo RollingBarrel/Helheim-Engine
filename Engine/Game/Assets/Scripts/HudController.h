@@ -10,6 +10,7 @@ class ButtonComponent;
 class SliderComponent;
 class TextComponent;
 class ImageComponent;
+class VideoComponent;
 class PlayerController;
 class Sanity;
 class Dialog;
@@ -49,6 +50,8 @@ public:
     void SetDialog();
     void DisableCollectible();
     void SetFadein(bool value) { mFadeIn = value; }
+
+
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -190,4 +193,9 @@ private:
     Transform2DComponent* mWinLineRightTransfrom = nullptr;
     GameObject* mWinLineLeft = nullptr;
     Transform2DComponent* mWinLineLeftTransfrom = nullptr;
+    
+    // Video
+    GameObject* mVideoGO = nullptr;
+    VideoComponent* mVideoComponent = nullptr;
+    bool mIsVideoPlaying = false;
 };

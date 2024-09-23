@@ -62,7 +62,7 @@
                             {
                                 "VariableName": "mMaxHealth",
                                 "MemberType": 1,
-                                "VariableData": 2000.0
+                                "VariableData": 500.0
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -88,6 +88,11 @@
                                 "VariableName": "mAttackSequenceCooldown",
                                 "MemberType": 1,
                                 "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mPhaseShiftTime",
+                                "MemberType": 1,
+                                "VariableData": 5.0
                             },
                             {
                                 "VariableName": "mPhase1Hp",
@@ -157,19 +162,9 @@
                                 "VariableData": 176499953
                             },
                             {
-                                "VariableName": "mLaserDuration",
-                                "MemberType": 1,
-                                "VariableData": 3.25
-                            },
-                            {
                                 "VariableName": "mLaserDamage",
                                 "MemberType": 1,
                                 "VariableData": 2.0
-                            },
-                            {
-                                "VariableName": "mLaserDistance",
-                                "MemberType": 1,
-                                "VariableData": 10.0
                             },
                             {
                                 "VariableName": "mLaserSpeed",
@@ -3508,18 +3503,7 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "BossLaser",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mBossDistance",
-                                "MemberType": 1,
-                                "VariableData": 5.0
-                            },
-                            {
-                                "VariableName": "mPoolSize",
-                                "MemberType": 0,
-                                "VariableData": 6
-                            }
-                        ]
+                        "ScriptVariables": []
                     }
                 ]
             }
