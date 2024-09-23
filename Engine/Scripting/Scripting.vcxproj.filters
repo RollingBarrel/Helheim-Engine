@@ -200,6 +200,12 @@
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
     <ClInclude Include="BossBattleArea.h" />
     <ClInclude Include="LinearMovement.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BossBattleArea.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -361,7 +367,12 @@
     <ClCompile Include="RotateObject.cpp" />
     <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
+    <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="BossBattleArea.cpp" />
     <ClCompile Include="LinearMovement.cpp" />
+    <ClCompile Include="PauseMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SecurityCameraFollower.cpp" />
   </ItemGroup>
 </Project>

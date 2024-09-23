@@ -79,7 +79,7 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
-        StartAudio();
+        //StartAudio();
     }
 
     if (mFirstTutorial) 
@@ -95,9 +95,18 @@ void GameManager::Update()
 {
     if (mLoadLevel)
     {
-        mLoadLevel = false;
-        App->GetScene()->Load(mLevelName);
-        return;
+        if (mLoadTimer.DelayWithoutReset(1.0f)) 
+        {
+            if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
+            if (mLoadSecondTimer.Delay(1.0f))
+            {
+                EndAudio();
+                Clean();
+                mLoadLevel = false;
+                App->GetScene()->Load(mLevelName);
+                return;
+            }
+        }
     }
 
     HandleAudio();
@@ -138,15 +147,14 @@ void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
+    App->SetPaused(value);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
 {
-    if (mHudController) mHudController->SetScreen(SCREEN::LOAD, true);
-    EndAudio();
+    mHudController->SetFadein(false);
     mLoadLevel = true;
     mLevelName = LevelName;
-    Clean();
 }
 
 void GameManager::SetActiveBattleArea(BattleArea* activeArea)

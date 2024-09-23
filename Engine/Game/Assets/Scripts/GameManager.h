@@ -56,10 +56,10 @@ public:
     void UnlockGrenade(bool unlock);
     
     void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
+    void StartAudio();
 
 private:
     void PrepareAudio();
-    void StartAudio();
     void HandleAudio();
     void EndAudio();
 
@@ -82,6 +82,8 @@ private:
     GameObject* mFirstTutorial = nullptr;
     GameObject* mSecondTutorial = nullptr;
     TimerScript mHitStopTimer;
+    TimerScript mLoadTimer;
+    TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
 
     bool mPaused = false;

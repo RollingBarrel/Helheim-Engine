@@ -25,7 +25,7 @@ public:
 };
 
 typedef struct Material {
-	float baseColor[4] = {1.f}; //Ultim es de padding
+	float baseColor[4] = {1.f}; //Ultim es el alpha per el clipping
 	uint64_t baseColorTex;
 	uint64_t metalRoughTex;
 	uint64_t normalTex;
@@ -35,7 +35,7 @@ typedef struct Material {
 	float metalness;
 	float roughness;
 	uint32_t hasEmissiveTex;
-	float emissiveFactor[4] = {0.f}; //Ultim es de padding
+	float emissiveFactor[3] = {0.f};
 	uint64_t emissiveTex;
 }Material;
 
@@ -136,6 +136,8 @@ private:
 	float* mSsboObbsData[NUM_BUFFERS];
 	GLsync mSync[NUM_BUFFERS];
 	unsigned int mParameterBuffer = 0;
+
+	unsigned int mCommandsBuffer = 0;
 
 	unsigned int mSsboMaterials = 0;
 

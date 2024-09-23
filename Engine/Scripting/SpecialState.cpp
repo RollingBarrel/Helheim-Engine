@@ -18,16 +18,16 @@ SpecialState::~SpecialState()
 
 StateType SpecialState::HandleInput()
 {
-    if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
+	if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
-    mSpecialAttackTimer += App->GetDt();
-    if (mSpecialAttackTimer < mSpecialWeapon->GetAttackDuration())
-    {
+	mSpecialAttackTimer += App->GetDt();
+	if (mSpecialAttackTimer < mSpecialWeapon->GetAttackDuration())
+	{
 		mPlayerController->SetSpineAnimation("tSpecial", 0.3f);
-        return StateType::SPECIAL;
-    }
+		return StateType::SPECIAL;
+	}
 
-    return StateType::AIM;
+	return StateType::AIM;
 }
 
 void SpecialState::Update()
@@ -38,13 +38,13 @@ void SpecialState::Update()
 void SpecialState::Enter()
 {
 	mSpecialAttackTimer = 0.0f;
-	
+
 	mSpecialWeapon = mPlayerController->GetSpecialWeapon();
 	if (mSpecialWeapon)
 	{
 		mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
 		mSpecialWeapon->Enter();
-	}	
+	}
 }
 
 void SpecialState::Exit()
@@ -71,18 +71,18 @@ bool SpecialState::IsReady()
 	float specialPressedCoolDown = (mPlayerController->GetEnergyType() == EnergyType::RED) ? mRedSpecialAttackPressedCoolDown : mBlueSpecialAttackPressedCoolDown;
 
 
-	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_DOWN ||
-		App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+	if (App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_DOWN ||
+		App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_DOWN)
 	{
 		mPressedSpecialAttackTimer.Reset();
 		if (timerReady && mPlayerController->GetEnergyType() != EnergyType::NONE)
 		{
-				mStateTimer.Reset();
-				return true;
+			mStateTimer.Reset();
+			return true;
 		}
 	}
-	else if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_RIGHT) == KeyState::KEY_REPEAT ||
-		App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_REPEAT) &&
+	else if ((App->GetInput()->GetMouseKey(MouseKey::BUTTON_LEFT) == KeyState::KEY_REPEAT ||
+		App->GetInput()->GetGameControllerTrigger(RIGHT_TRIGGER) == ButtonState::BUTTON_REPEAT) &&
 		mPressedSpecialAttackTimer.DelayWithoutReset(specialPressedCoolDown))
 	{
 		if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE && mPlayerController->GetEnergyType() != EnergyType::NONE)

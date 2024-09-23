@@ -28,12 +28,8 @@ UltimateState::~UltimateState()
 StateType UltimateState::HandleInput()
 {
 	//Keep returning ultimate until timer reaches end 
-	if (!mTimer.Delay(mUltimateDuration))
-		return StateType::ULTIMATE;
-	else 
-		return StateType::AIM; 
-	//}
-	
+	if (!mTimer.Delay(mUltimateDuration)) return StateType::ULTIMATE;
+	else return StateType::AIM;
 }
 
 void UltimateState::Update()
@@ -46,9 +42,8 @@ void UltimateState::Enter()
 	mUltimateScript->mDamageTick = mPlayerController->GetUltimateDamageTick();
 	mUltimateScript->mInterval = mPlayerController->GetUltimateDamageInterval();
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
-	//mPlayerController->SetUltimateResource(0);
 	mPlayerController->EnableUltimate(true);
-	mPlayerController->SetSpeed(2.5f);
+	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed()*mPlayerController->GetUltimateSlow());
 }
 
 void UltimateState::Exit()
@@ -73,7 +68,13 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()) return true;
+	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()
+		&& (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN ||
+			App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+		)
+	{
+		return true;
+	}
 	return false;
 }
 

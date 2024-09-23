@@ -12,15 +12,11 @@ CREATE(BossBattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO2);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
-	SEPARATOR("DOORS");
-	MEMBER(MemberType::GAMEOBJECT, mDoor1);
-	MEMBER(MemberType::GAMEOBJECT, mDoor2);
-	MEMBER(MemberType::GAMEOBJECT, mElevator);
-	SEPARATOR("TRAPS");
-	MEMBER(MemberType::GAMEOBJECT, mTrap1);
-	MEMBER(MemberType::GAMEOBJECT, mTrap2);
-	MEMBER(MemberType::GAMEOBJECT, mTrap3);
-	MEMBER(MemberType::GAMEOBJECT, mTrap4);
+	SEPARATOR("EXPLOSIVE SPAWNERS");
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn3);
+	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn4);
 	END_CREATE;
 }
 
@@ -35,21 +31,11 @@ void BossBattleArea::Start()
 
 void BossBattleArea::EnemyDestroyed(GameObject* enemy)
 {
-	std::string scriptName = reinterpret_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptName();
-
-	if (scriptName == "EnemyExplosiveSpawner")
+	mCurrentEnemies--;
+	if (mCurrentEnemies == 0 && mBoss)
 	{
-		mCurrentTraps--;
-	}
-	else // Any enemy except traps and explosive enemies
-	{
-		mCurrentEnemies--;
-		if (mCurrentEnemies == 0 && mBoss)
-		{
-			//Reactivate Boss
-			mBoss->WakeUp();
-		}
-
+		//Reactivate Boss
+		mBoss->WakeUp();
 	}
 
 	/*if (mWavesRounds <= 0 && mCurrentExplosiveEnemies <= 0 && mCurrentTraps <= 0)

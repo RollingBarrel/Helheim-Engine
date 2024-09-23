@@ -59,10 +59,11 @@ void EnemyRobotRange::Attack()
     }
     if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
-        mAnimationComponent->OnRestart();
+        mAnimationComponent->RestartStateAnimation();
         RangeAttack();
         if (IsPlayerInRange(mAttackDistance / 2.0f))
         {
+            if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
             mCurrentState = EnemyState::FLEE;
         }
     }
@@ -90,7 +91,7 @@ void EnemyRobotRange::TakeDamage(float damage)
 
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetTag() == "Door")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
     {
         mEnemyCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")

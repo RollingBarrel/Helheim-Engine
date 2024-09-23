@@ -12,6 +12,7 @@
 #include "float4x4.h"
 #include "ResourceStateMachine.h"
 
+
 AnimationComponent::AnimationComponent(GameObject* owner) : Component(owner, ComponentType::ANIMATION),  mController(nullptr), mSpineController(nullptr), mSpineStateMachine(nullptr)
 {
 	mStateMachine = nullptr;
@@ -83,6 +84,7 @@ void AnimationComponent::StartUp()
 
 void AnimationComponent::Update()
 {
+	if (App->IsPause()) return;
 
 	if (mIsPlaying)
 	{
@@ -144,16 +146,52 @@ void AnimationComponent::OnStop()
 
 }
 
-void AnimationComponent::OnRestart()
+void AnimationComponent::RestartStateAnimation()
 {
+
 	mController->Restart();
+	for (GameObject* current : mDefaultObjects)
+	{
+		mController->GetTransform(current);
+	}
 	if (mHasSpine)
 	{
 		mSpineController->Restart();
+
+		for (GameObject* current : mSpineObjects)
+		{
+			mSpineController->GetTransform(current);
+		}
 	}
 }
 
-void AnimationComponent::OnReset()
+void AnimationComponent::ResetAnimationComponent()
+{
+	ChangeState("Default", 0.0f);
+	if (mHasSpine)
+	{
+		ChangeSpineState("Default", 0.0f);
+	}
+
+	RestartStateAnimation();
+
+}
+
+const std::vector<std::string> AnimationComponent::GetSMStateNames() const
+{
+	return mStateMachine->GetStateNames();
+}
+
+const std::vector<std::string> AnimationComponent::GetSpineSMStateNames() const
+{
+	if(mHasSpine)
+		return mSpineStateMachine->GetStateNames();
+	std::vector<std::string> empty;
+	return empty;
+}
+
+
+void AnimationComponent::OnResetGameObjects()
 {
 	if (mDefaultObjects.size() == 0)
 	{
@@ -164,6 +202,18 @@ void AnimationComponent::OnReset()
 	{
 		ChangeSpineState("Default", 0.0f);
 	}
+}
+
+void AnimationComponent::SetStateMachine(AnimationStateMachine* sm)
+{
+	mStateMachine = sm;
+	ChangeState("Default", 0.0f);
+}
+
+void AnimationComponent::SetSpineStateMachine(AnimationStateMachine* sm)
+{
+	mSpineStateMachine = sm;
+	ChangeSpineState("Default", 0.0f);
 }
 
 void AnimationComponent::SetAnimSpeed(float speed)
@@ -379,10 +429,45 @@ void AnimationComponent::ReloadGameObjects()
 	LoadGameObjects(mOwner);
 }
 
+void AnimationComponent::SetControllerTime(float time)
+{
+	mController->SetAnimationCurrentTime(time);
+
+	for (GameObject* current : mDefaultObjects)
+	{
+		mController->GetTransform(current);
+	}
+}
+
+float AnimationComponent::GetControllerTime() const
+{
+	return mController->GetAnimationCurrentTime();
+}
+
+void AnimationComponent::SetSpineControllerTime(float time)
+{
+	if (mHasSpine)
+	{
+		mSpineController->SetAnimationCurrentTime(time);
+		for (GameObject* current : mSpineObjects)
+		{
+			mSpineController->GetTransform(current);
+		}
+	}
+}
+
+float AnimationComponent::GetSpineControllerTime() const
+{
+	if(mHasSpine)
+		return mSpineController->GetAnimationCurrentTime();
+	return 0.0f;
+}
+
 
 
 void AnimationComponent::LoadGameObjects(GameObject* current)
 {
+
 	if (current->GetName() == std::string("Spine") || current->GetName() == std::string("mixamorig:Spine") || current->GetName() == std::string("Spine1")) //This will be changed
 	{
 		if (mOwner->GetTag() == "Player")
@@ -417,6 +502,10 @@ void AnimationComponent::LoadGameObjects(GameObject* current)
 
 void AnimationComponent::LoadSpineChildren(GameObject* current)
 {
+	/* INFO: This *if* allows to fix the player's right arm wherever placed in the inspector so that you can fix it centered when playing the shooting state. (Oriol)
+	if (current->GetName() == std::string("RightShoulder") && mOwner->GetTag() == "Player")
+		return;
+	*/
 	mSpineObjects.push_back(current);
 	for (GameObject* child : current->GetChildren())
 	{

@@ -164,6 +164,19 @@ public:
 	void SetMaxFog(float maxFog);
 	float GetMaxFog() const { return mMaxFog; }
 
+	float GetVolBaseExtCoeff() const { return mBaseExtCoeff; }
+	void SetVolBaseExtCoeff(float baseExtCoeff);
+	float GetVolNoiseAmount() const { return mNoiseAmount; }
+	void SetVolNoiseAmount(float noiseAmount);
+	float GetVolIntensity() const { return mVolIntensity; }
+	void SetVolIntensity(float volIntensity);
+	float GetVolAnisotropy() const { return mVolAnisotropy; }
+	void SetVolAnisotropy(float volAnisotropy);
+	float GetVolStepSize() const { return mVolStepSize; }
+	void SetVolStepSize(float volStepSize);
+	int GetVolMaxSteps() const { return mVolMaxSteps; }
+	void SetVolMaxSteps(int volMaxSteps);
+
 private:
 	void* context = nullptr;
 
@@ -269,6 +282,10 @@ private:
 	unsigned int mPLightListImgBuffer;
 	unsigned int mSLightListImgTex;
 	unsigned int mSLightListImgBuffer;
+	unsigned int mVolPLightListImgTex;
+	unsigned int mVolPLightListImgBuffer;
+	unsigned int mVolSLightListImgTex;
+	unsigned int mVolSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
 	OpenGLBuffer* mDLightUniBuffer = nullptr;
 	DirectionalLight mDirLight;
@@ -277,6 +294,7 @@ private:
 	std::vector<const SpotLightComponent*>mSpotLights;
 	OpenGLBuffer* mSpotsBuffer = nullptr;
 	OpenGLBuffer* mSpotsBoundingSpheres = nullptr;
+	OpenGLBuffer* mVolSpotsBuffer = nullptr;
 	friend class LightningPanel;
 
 	std::vector<ParticleSystemComponent*> mParticleSystems;
@@ -295,6 +313,7 @@ private:
 	float mVolIntensity = 1.0f;
 	float mVolAnisotropy = 0.35f;
 	float mVolStepSize = 1.0f;
+	int mVolMaxSteps = 16;
 };
 
 #endif /* _MODULEOPENGL_H_ */
