@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 464713791,
-                "ParentUID": 1,
+                "UID": 598285739,
+                "ParentUID": 1807015073,
                 "Name": "BossBattleArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    5.349999904632568,
+                    -107.9083023071289,
                     0.0,
-                    0.0
+                    -45.0
                 ],
                 "Rotation": [
                     0.0,
@@ -39,7 +39,7 @@
                         "Size": [
                             8.0,
                             8.0,
-                            15.0
+                            10.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -52,17 +52,17 @@
                             {
                                 "VariableName": "mBossGO",
                                 "MemberType": 3,
-                                "VariableData": 1090974464
+                                "VariableData": 896417734
                             },
                             {
                                 "VariableName": "mSpawnerGO1",
                                 "MemberType": 3,
-                                "VariableData": 598246869
+                                "VariableData": 1026518534
                             },
                             {
                                 "VariableName": "mSpawnerGO2",
                                 "MemberType": 3,
-                                "VariableData": 845331798
+                                "VariableData": 19259344
                             },
                             {
                                 "VariableName": "mSpawnerGO3",
@@ -103,8 +103,8 @@
                 ]
             },
             {
-                "UID": 598246869,
-                "ParentUID": 464713791,
+                "UID": 1026518534,
+                "ParentUID": 598285739,
                 "Name": "SpawnerArea1",
                 "Enabled": true,
                 "Active": true,
@@ -147,7 +147,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 214629874
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -164,8 +164,8 @@
                 ]
             },
             {
-                "UID": 721684902,
-                "ParentUID": 598246869,
+                "UID": 1353876476,
+                "ParentUID": 1026518534,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
                 "Active": false,
@@ -282,8 +282,8 @@
                 ]
             },
             {
-                "UID": 845331798,
-                "ParentUID": 464713791,
+                "UID": 19259344,
+                "ParentUID": 598285739,
                 "Name": "SpawnerArea2",
                 "Enabled": true,
                 "Active": true,
@@ -326,7 +326,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 214629874
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -343,8 +343,8 @@
                 ]
             },
             {
-                "UID": 968073621,
-                "ParentUID": 845331798,
+                "UID": 351003409,
+                "ParentUID": 19259344,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
                 "Active": false,
@@ -459,90 +459,6 @@
                         }
                     }
                 ]
-            },
-            {
-                "UID": 1091442033,
-                "ParentUID": 464713791,
-                "Name": "Area1Center",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -2.700000047683716,
-                    0.0,
-                    9.130834579467774
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1213905372,
-                "ParentUID": 464713791,
-                "Name": "Area2Center",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    2.5999999046325685,
-                    0.0,
-                    -0.09442907571792603
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1336716816,
-                "ParentUID": 464713791,
-                "Name": "Area3Center",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -2.700000047683716,
-                    -0.0029970109462738039,
-                    -9.201944351196289
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
             }
         ]
     }
