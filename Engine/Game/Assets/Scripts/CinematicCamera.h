@@ -21,17 +21,18 @@ public:
 
 private:
     void DeActivateCameras();
-    void ActivateCamera(GameObject* cinematicCamera);
-    void StartCinematic(GameObject* camera, GameObject* target, int animState);
-    void UpdateCinematic(GameObject* camera);
+    void ActivateCamera(GameObject* cinematicCamera, bool state);
+    void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState);
+    void UpdateCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea);
     bool HandleFadeIn(GameObject* camera);
     void HandleCameraMovement(GameObject* camera);
-    bool HandleFadeOut(GameObject* camera);
-    void HandleEscape();
-    void EndCinematic();
+    bool HandleFadeOut(GameObject* dummy, BattleArea* battleArea);
+    void HandleEscape(GameObject* dummy, BattleArea* battleArea);
+    void EndCinematic(GameObject* dummy, BattleArea* battleArea);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
-    void ActivateBattleArea(bool state);
+    void ActivateBattleArea(BattleArea* battleArea, bool state);
+    void ActivateDummy(GameObject* dummy, bool state);
  
     GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO1 = nullptr;
@@ -39,10 +40,10 @@ private:
     GameObject* mCinematicCameraGO3 = nullptr;
     GameObject* mCinematicCameraGO4 = nullptr;
 
-    GameObject* mEnemyGO1 = nullptr;
-    GameObject* mEnemyGO2 = nullptr;
-    GameObject* mEnemyGO3 = nullptr;
-    GameObject* mEnemyGO4 = nullptr;
+    GameObject* mDummyGO1 = nullptr;
+    GameObject* mDummyGO2 = nullptr;
+    GameObject* mDummyGO3 = nullptr;
+    GameObject* mDummyGO4 = nullptr;
 
     GameObject* mBattleAreaGO1 = nullptr;
     GameObject* mBattleAreaGO2 = nullptr;
@@ -60,10 +61,10 @@ private:
 
     TimerScript mTimer;
 
-    int mEnemy1AnimState = 1;
-    int mEnemy2AnimState = 1;
-    int mEnemy3AnimState = 1;
-    int mEnemy4AnimState = 1;
+    int mDummy1AnimState = 1;
+    int mDummy2AnimState = 1;
+    int mDummy3AnimState = 1;
+    int mDummy4AnimState = 1;
     int mCinematicIndex = 1;
  
     float mDistanceToEnemy = 4.0f;
@@ -71,7 +72,7 @@ private:
     float mPitchAngle = -45.0f;
     float3 mTargetPosition;
     float mSpeedFactor = 1.0f;
-    float mAnimationTime = 7.3f;
+    float mAnimationTime = 8.3f;
 
     float mCounter = 0.0f;
     float3 mColor = float3(0.0f, 0.0f, 0.0f);

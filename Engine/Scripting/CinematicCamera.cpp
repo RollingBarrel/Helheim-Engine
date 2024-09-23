@@ -30,14 +30,14 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO4);
     SEPARATOR("ENEMIES");
     SEPARATOR("Idle = 1 | Chase = 2 | Charge = 3 | Attack = 4");
-    MEMBER(MemberType::GAMEOBJECT, mEnemyGO1);
-    MEMBER(MemberType::INT, mEnemy1AnimState);
-    MEMBER(MemberType::GAMEOBJECT, mEnemyGO2);
-    MEMBER(MemberType::INT, mEnemy2AnimState);
-    MEMBER(MemberType::GAMEOBJECT, mEnemyGO3);
-    MEMBER(MemberType::INT, mEnemy3AnimState);
-    MEMBER(MemberType::GAMEOBJECT, mEnemyGO4);
-    MEMBER(MemberType::INT, mEnemy4AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mDummyGO1);
+    MEMBER(MemberType::INT, mDummy1AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mDummyGO2);
+    MEMBER(MemberType::INT, mDummy2AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mDummyGO3);
+    MEMBER(MemberType::INT, mDummy3AnimState);
+    MEMBER(MemberType::GAMEOBJECT, mDummyGO4);
+    MEMBER(MemberType::INT, mDummy4AnimState);
     SEPARATOR("BATTLE AREAS");
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO1);
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO2);
@@ -75,24 +75,32 @@ void CinematicCamera::Start()
     {
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO1->GetComponent(ComponentType::SCRIPT);
         mBattleArea1 = (BattleArea*)script->GetScriptInstance();
+
+        ActivateDummy(mDummyGO1, false);
     }
 
     if (mBattleAreaGO2)
     {
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO2->GetComponent(ComponentType::SCRIPT);
         mBattleArea2 = (BattleArea*)script->GetScriptInstance();
+
+        ActivateDummy(mDummyGO2, false);
     }
 
     if (mBattleAreaGO3)
     {
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO3->GetComponent(ComponentType::SCRIPT);
         mBattleArea3 = (BattleArea*)script->GetScriptInstance();
+
+        ActivateDummy(mDummyGO3, false);
     }
 
     if (mBattleAreaGO4)
     {
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO4->GetComponent(ComponentType::SCRIPT);
         mBattleArea4 = (BattleArea*)script->GetScriptInstance();
+
+        ActivateDummy(mDummyGO4, false);
     }
 }
 
@@ -104,7 +112,7 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
-                StartCinematic(mCinematicCameraGO1, mEnemyGO1, mEnemy1AnimState);
+                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState);
             }    
         }
     }
@@ -115,7 +123,7 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
-                StartCinematic(mCinematicCameraGO2, mEnemyGO2, mEnemy2AnimState);
+                StartCinematic(mCinematicCameraGO2, mDummyGO2, mBattleArea2, mDummy2AnimState);
             }            
         }
     }
@@ -126,7 +134,7 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
-                StartCinematic(mCinematicCameraGO3, mEnemyGO3, mEnemy3AnimState);
+                StartCinematic(mCinematicCameraGO3, mDummyGO3, mBattleArea3, mDummy3AnimState);
             }
         }
     }
@@ -142,24 +150,24 @@ void CinematicCamera::Update()
 
             if (mCinematicIndex == 4)
             {
-                StartCinematic(mCinematicCameraGO4, mEnemyGO4, mEnemy4AnimState);
+                StartCinematic(mCinematicCameraGO4, mDummyGO4, mBattleArea4, mDummy4AnimState);
             }
         }
     }
 }
 
-void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int animState)
+void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState)
 {
-    if ((target) && (camera))
+    if ((dummy) && (camera))
     {
         if (!mStartParameters)
         {
             mStartParameters = true;
             
-            mTargetPosition = ((target->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
+            mTargetPosition = ((dummy->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
 
-            mAnimationComponent = static_cast<AnimationComponent*>(target->GetComponent(ComponentType::ANIMATION));
+            mAnimationComponent = static_cast<AnimationComponent*>(dummy->GetComponent(ComponentType::ANIMATION));
 
             if (mAnimationComponent)
             {
@@ -172,14 +180,14 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
                     
             mFadeOn = true;
             mHudGO->SetEnabled(false);
-            ActivateBattleArea(false);
+            ActivateBattleArea(battleArea, false);
         }
 
-        UpdateCinematic(camera);
+        UpdateCinematic(camera, dummy, battleArea);
     }
 }
 
-void CinematicCamera::UpdateCinematic(GameObject* camera)
+void CinematicCamera::UpdateCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea)
 {
     if (mPlayingCinematic)
     {
@@ -187,6 +195,7 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         {   
             if (HandleFadeIn(camera))
             {
+                ActivateDummy(dummy, true);
                 HandleCameraMovement(camera);
             }
 
@@ -203,14 +212,14 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         }
         else
         {
-            if (HandleFadeOut(camera))
+            if (HandleFadeOut(dummy, battleArea))
             {
                 mTravelling = true;
                 mPlayingCinematic = false;
             }
         }
 
-        HandleEscape();     
+        HandleEscape(dummy, battleArea);
     }
     else
     {
@@ -218,7 +227,7 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         mStartParameters = false;
         mPlayingCinematic = true;
         mHudGO->SetEnabled(true);
-        ActivateBattleArea(true);
+        ActivateBattleArea(battleArea, true);
     }
 }
 
@@ -230,7 +239,7 @@ bool CinematicCamera::HandleFadeIn(GameObject* camera)
         {
             if (mPlayerCameraGO)
             {
-                ActivateCamera(camera);
+                ActivateCamera(camera, true);
                 mPlayerCameraGO->SetEnabled(false);
             }
 
@@ -282,13 +291,13 @@ void CinematicCamera::HandleCameraMovement(GameObject* camera)
     }
 }
 
-bool CinematicCamera::HandleFadeOut(GameObject* camera)
+bool CinematicCamera::HandleFadeOut(GameObject* dummy, BattleArea* battleArea)
 {
     if (mFadeOn)
     {
         if (Fade(true))
         {
-            EndCinematic();
+            EndCinematic(dummy, battleArea);
             mFadeOn = false;
         }
 
@@ -303,7 +312,7 @@ bool CinematicCamera::HandleFadeOut(GameObject* camera)
     }
 }
 
-void CinematicCamera::HandleEscape()
+void CinematicCamera::HandleEscape(GameObject* dummy, BattleArea* battleArea)
 {
     if (!mEscape)
     {
@@ -312,8 +321,9 @@ void CinematicCamera::HandleEscape()
         {
             mEscape = true;
             mFadeStart = false;
+            mTravelling = false;
             mTimer.Reset();
-            EndCinematic();
+            EndCinematic(dummy, battleArea);
         }
     }
 
@@ -328,7 +338,7 @@ void CinematicCamera::HandleEscape()
     }
 }
 
-void CinematicCamera::EndCinematic()
+void CinematicCamera::EndCinematic(GameObject* dummy, BattleArea* battleArea)
 {
     if (mActiveCinematicCamera)
     {
@@ -341,44 +351,7 @@ void CinematicCamera::EndCinematic()
     
     //GameManager::GetInstance()->SetPaused(false, false);
 
-    if (mBattleArea1)
-    {
-        if (mBattleArea1->GetIsAreaActive())
-        {
-            mEnemyGO1->SetEnabled(false);
-        }
-    }
-
-    if (mBattleArea2)
-    {
-        if (mBattleArea2->GetIsAreaActive())
-        {
-            mEnemyGO2->SetEnabled(false);
-        }
-    }
-
-    if (mBattleArea3)
-    {
-        if (mBattleArea3->GetIsAreaActive())
-        {
-            mEnemyGO3->SetEnabled(false);
-        }
-    }
-
-    if (mBattleArea4)
-    {
-        if (mBattleArea4->GetIsAreaActive())
-        {
-            if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
-            {
-                mEnemyGO4->SetEnabled(false);
-            }
-            else
-            {
-                mAnimationComponent->SetIsPlaying(true);
-            }
-        }
-    }
+    ActivateDummy(dummy, false);
 
     if (mLevel1)
     {
@@ -394,32 +367,17 @@ void CinematicCamera::EndCinematic()
 
 void CinematicCamera::DeActivateCameras()
 {
-    if (mCinematicCameraGO1)
-    {
-        mCinematicCameraGO1->SetEnabled(false);
-    }
-
-    if (mCinematicCameraGO2)
-    {
-        mCinematicCameraGO2->SetEnabled(false);
-    }
-
-    if (mCinematicCameraGO3)
-    {
-        mCinematicCameraGO3->SetEnabled(false);
-    }
-
-    if (mCinematicCameraGO4)
-    {
-        mCinematicCameraGO4->SetEnabled(false);
-    }
+    ActivateCamera(mCinematicCameraGO1, false);
+    ActivateCamera(mCinematicCameraGO2, false);
+    ActivateCamera(mCinematicCameraGO3, false);
+    ActivateCamera(mCinematicCameraGO4, false);
 }
 
-void CinematicCamera::ActivateCamera(GameObject* cinematicCamera)
+void CinematicCamera::ActivateCamera(GameObject* cinematicCamera, bool state)
 {
     if (cinematicCamera)
     {
-        cinematicCamera->SetEnabled(true);
+        cinematicCamera->SetEnabled(state);
     }
 }
 
@@ -488,25 +446,38 @@ bool CinematicCamera::Fade(bool fadeOut)
     }
 }
 
-void CinematicCamera::ActivateBattleArea(bool state)
+void CinematicCamera::ActivateBattleArea(BattleArea* battleArea, bool state)
 {
-    if (mBattleArea1)
+    if (battleArea)
     {
-        mBattleArea1->SetSpawnEnemies(state);
-    }
-    
-    if (mBattleArea2)
-    {
-        mBattleArea2->SetSpawnEnemies(state);
-    }
-
-    if (mBattleArea3)
-    {
-        mBattleArea3->SetSpawnEnemies(state);
-    }
-
-    if (mBattleArea4)
-    {
-        mBattleArea4->SetSpawnEnemies(state);
+        battleArea->SetSpawnEnemies(state);
     }
 }
+
+void CinematicCamera::ActivateDummy(GameObject* dummy, bool state)
+{
+    if (dummy)
+    {
+        dummy->SetEnabled(state);
+    }  
+}
+
+
+
+/*
+    if (mBattleArea4)
+    {
+        if (mBattleArea4->GetIsAreaActive())
+        {
+            if (mLevel1) //In Level 1 you need a dummy, in Level 2 you need to use the Final Boss asset
+            {
+                mEnemyGO4->SetEnabled(false);
+            }
+            else
+            {
+                mAnimationComponent->SetIsPlaying(true);
+            }
+        }
+    }
+}
+*/
