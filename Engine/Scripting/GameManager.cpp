@@ -257,10 +257,10 @@ void GameManager::HandleBossAudio(int stage)
             mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
 
             mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 0);
+            mLastAudioID = 0;
         }
     }
 }
-            mLastAudioID = 0;
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();

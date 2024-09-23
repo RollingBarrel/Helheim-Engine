@@ -128,5 +128,5 @@ protected:
 	float mParalysisSeverityLevel = 1.0f;
 
 
-
+	bool mDeathAudioPlayed = false;
 };

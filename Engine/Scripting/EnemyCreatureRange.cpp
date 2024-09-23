@@ -51,7 +51,7 @@ void EnemyCreatureRange::Start()
 		mLaserCharge->SetEnabled(false);
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
-
+	mDeathAudioPlayed = false;
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
 	mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
@@ -127,6 +127,16 @@ void EnemyCreatureRange::Attack()
 	{
 		float3 originPosition = mLaserOrigin->GetLocalPosition();
 		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
+	}
+}
+
+void EnemyCreatureRange::Death()
+{
+	Enemy::Death(); 
+	if (!mDeathAudioPlayed)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
+		mDeathAudioPlayed = true;
 	}
 }
 

@@ -16,6 +16,7 @@ public:
 	void Update() override;
 	void Charge() override;
 	void Attack() override;
+	void Death() override;
 
 	void TakeDamage(float damage) override;
 

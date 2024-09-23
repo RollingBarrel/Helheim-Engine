@@ -71,6 +71,7 @@ void EnemyExplosive::Charge()
     Enemy::Charge();
     if (!mChargePlaying)
     {
+        mExplosionPlaying = false;
         mChargeSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION);
         mChargePlaying = true;
     }
@@ -85,8 +86,9 @@ void EnemyExplosive::Charge()
 
 void EnemyExplosive::Attack()
 {
-    if (!mExplosionPlaying )
+    if (!mExplosionPlaying)
     {
+        mChargePlaying = false;
         GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mChargeSound, false);
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mGameObject->GetWorldPosition());
         mExplosionPlaying = true;

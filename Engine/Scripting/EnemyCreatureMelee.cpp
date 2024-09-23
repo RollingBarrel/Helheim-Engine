@@ -41,6 +41,8 @@ void EnemyCreatureMelee::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyCreatureMelee::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
+	mAudioPlayed = false;
+	mDeathAudioPlayed = false;
 	mDisengageTime = 0.0f;
 	mDeathTime = 2.20f;
 }
@@ -132,6 +134,16 @@ void EnemyCreatureMelee::TakeDamage(float damage)
 {
 	Enemy::TakeDamage(damage);
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
+}
+
+void EnemyCreatureMelee::Death()
+{
+	Enemy::Death();
+	if (!mDeathAudioPlayed)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
+		mDeathAudioPlayed = true;
+	}
 }
 
 

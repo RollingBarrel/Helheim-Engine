@@ -19,6 +19,7 @@ public:
 	void Charge() override;
 	void Attack() override;
 	void TakeDamage(float damage) override;
+	void Death() override;
 
 	void OnCollisionEnter(CollisionData* collisionData);
 

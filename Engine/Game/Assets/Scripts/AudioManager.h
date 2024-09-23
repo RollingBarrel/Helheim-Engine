@@ -74,11 +74,13 @@ enum class SFX
 	ENEMY_ROBOT_GUNFIRE,
 	ENEMY_ROBOT_SLASH,
 	ENEMY_ROBOT_HIT,
+	ENEMY_ROBOT_DEATH,
 
 	ENEMY_CREATURE_CHARGE,
 	ENEMY_CREATURE_CHARGE_ATTACK,
 	ENEMY_CREATURE_LASER,
 	ENEMY_CREATURE_HIT,
+	ENEMY_CREATURE_DEATH,
 
 	ENEMY_EXPLOSIVE_STEPS,
 	ENEMY_EXPLOSIVE_PREEXPLOSION,
@@ -238,16 +240,18 @@ private:
 		{SFX::ENEMY_ROBOT_FOOTSTEP, "Assets/FMOD/Audios/sfx/robotfootstep.wav"}, // [X]
 		{SFX::ENEMY_ROBOT_GUNFIRE, "event:/SFX/NPC/robot_distance"},
 		{SFX::ENEMY_ROBOT_SLASH, "Assets/FMOD/Audios/sfx/slash.wav"},
-		{SFX::ENEMY_ROBOT_HIT, "Assets/FMOD/Audios/sfx/enemyrobothit.wav"}, // [X]
+		{SFX::ENEMY_ROBOT_HIT, "Assets/FMOD/Audios/sfx/enemyrobothit.wav"},
+		{SFX::ENEMY_ROBOT_DEATH, "Assets/FMOD/Audios/sfx/robotdeath.wav"}, // [X]
 
 		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
 		{SFX::ENEMY_CREATURE_CHARGE_ATTACK, "Assets/FMOD/Audios/sfx/creaturechargeattack.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
 		{SFX::ENEMY_CREATURE_HIT, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
+		{SFX::ENEMY_CREATURE_DEATH, "Assets/FMOD/Audios/sfx/creaturedeath.wav"},
 
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
-		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion .wav"},
+		{SFX::ENEMY_EXPLOSIVE_EXPLOSION, "Assets/FMOD/Audios/sfx/explosiveexplosion.wav"},
 
 		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
 		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},
