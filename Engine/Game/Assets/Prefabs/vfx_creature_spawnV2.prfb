@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1856654496,
+                "UID": 941051788,
                 "ParentUID": 1,
                 "Name": "vfx_creature_spawnV2",
                 "Enabled": true,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 1975358301,
-                "ParentUID": 1856654496,
+                "UID": 988951036,
+                "ParentUID": 941051788,
                 "Name": "floorpattern",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
                     0.00476183881983161,
-                    0.07969100028276444
+                    0.0
                 ],
                 "Rotation": [
                     0.7071068286895752,
@@ -70,9 +70,9 @@
                         "IsEnabled": true,
                         "ImageID": 319823124,
                         "Color": [
-                            0.8921568393707275,
                             0.0,
-                            0.0
+                            0.41176486015319826,
+                            1.0
                         ],
                         "Alpha": 1.0,
                         "ShouldDraw": true,
@@ -86,8 +86,8 @@
                 ]
             },
             {
-                "UID": 1103098512,
-                "ParentUID": 1856654496,
+                "UID": 995982757,
+                "ParentUID": 941051788,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -97,10 +97,10 @@
                     0.0
                 ],
                 "Rotation": [
+                    0.7071068286895752,
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    0.7071068286895752
                 ],
                 "Scale": [
                     1.0,
@@ -119,7 +119,7 @@
                             1920.0,
                             1080.0
                         ],
-                        "Render": 1
+                        "Render": 0
                     },
                     {
                         "ComponentType": 8,
