@@ -28,7 +28,7 @@ layout(location = 2) uniform float bias;
 
 mat3 CreateTangentSpace(const vec3 normal, const vec3 up)
 {
-	vec3 tangent = normalize(up-normal*dot(normal, up)); // Gram-Schmidt
+	vec3 tangent = normalize(up-(normal*dot(normal, up))); // Gram-Schmidt
 	vec3 bitangent = normalize(cross(tangent, normal));
 	return mat3(bitangent, tangent, normal);
 }
@@ -49,23 +49,23 @@ float GetSceneDepthAtSamplePos(in vec3 samplePos)
 
 void main()
 {
-//RECUERDA DE CAMBIAR EL OPENGL A SOLO UN COLOR
 	vec3 position = (view * vec4(texture(positions, uv).xyz,1.0)).xyz;
-	vec3 normal = mat3(view)*normalize(texture(normals, uv).xyz * 2.0 - 1.0);
+	vec3 normal = mat3(view)*(texture(normals, uv).xyz * 2.0 - 1.0);
+	normal = normalize(normal);
 	mat3 tangentSpace = CreateTangentSpace(normal, GetRandomTangent());
-	float occlusion = 0;
+	float occlusion = 0.0f;
 
 	for(int i=0; i< KERNEL_SIZE; ++i)
 	{
 		vec3 samplePos = position+tangentSpace*kernelSamples[i];
 		float samplePosDepth= GetSceneDepthAtSamplePos(samplePos);
-		if(samplePosDepth + bias > samplePos.z &&  abs(samplePosDepth-position.z) < range)
+		if((samplePosDepth + bias) > samplePos.z &&  abs(samplePosDepth-position.z) < range)
 		{
 			float rangeCheck = smoothstep(0.0, 1.0, 1 / abs(position.z - samplePosDepth));
-			occlusion += (samplePosDepth >= samplePos.z + bias ? 1.0 : 0.0) * rangeCheck;
+			occlusion += ((samplePosDepth >= samplePos.z + bias) ? 1.0 : 0.0) * rangeCheck;
 		}			
 	}
 
 	//vec3 occlusionFactor = vec3(texture(ambientOcclusion,uv).r);
-	color = 1.0 - occlusion / float(KERNEL_SIZE);
+	color = 1.0f - occlusion / float(KERNEL_SIZE);
 }
