@@ -60,7 +60,7 @@ void UltimateState::Exit()
 	}
 
 	mPlayerController->EnableLaser(true);
-	mPlayerController->SetSpineAnimation("tIdleRanged", 0.3f);
+	mPlayerController->SetSpineAnimation("tAim", 0.3f);
 
 
 }

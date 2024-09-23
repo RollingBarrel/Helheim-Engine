@@ -69,6 +69,26 @@ StateType AimState::HandleInput()
 
 void AimState::Update()
 {
+    if (!mIsIdle)
+    {
+        mIdleAnimTimer += App->GetDt();
+        if (mIdleAnimTimer >= mWaitTimeForIdle && mPlayerController->GetPlayerLowerState()->GetType() == StateType::IDLE)
+        {
+            mPlayerController->SetSpineAnimation("tIdleRanged", 0.2f);
+            mIsIdle = true;
+        }
+    }
+    else
+    {
+        mIdleAnimTimer = 0.0f;
+        if (mPlayerController->GetPlayerLowerState()->GetType() != StateType::IDLE)
+        {
+            mIsIdle = false;
+            mPlayerController->SetSpineAnimation("tAim", 0.2f);
+        }
+    }
+    
+
 }
 
 void AimState::Enter()
@@ -84,6 +104,7 @@ void AimState::Enter()
             mPlayerController->SetSpineAnimation("tIdleMelee", 0.3f);
     }
     */
+    mIdleAnimTimer = 0.0f;
     
 }
 
