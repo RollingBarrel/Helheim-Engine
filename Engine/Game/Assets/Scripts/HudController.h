@@ -57,13 +57,13 @@ private:
     ~HudController();
 
     void Controls();
-    //void ButtonClick();
     bool Delay(float delay);
     void LoseUpdate();
     void WinUpdate();
 
     void OnWinButtonClick();
     void OnTryAgainButtonClick();
+    void OnVideoBackClick();
     void OnTryAgainButtonHoverOn();
     void OnTryAgainButtonHoverOff();
     void OnLoseButtonClick();
@@ -198,4 +198,6 @@ private:
     GameObject* mVideoGO = nullptr;
     VideoComponent* mVideoComponent = nullptr;
     bool mIsVideoPlaying = false;
+    GameObject* mVideoBtnGO = nullptr;
+    ButtonComponent* mVideoBtn = nullptr;
 };

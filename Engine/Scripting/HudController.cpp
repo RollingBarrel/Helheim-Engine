@@ -84,6 +84,7 @@ CREATE(HudController)
     
     SEPARATOR("Video");
     MEMBER(MemberType::GAMEOBJECT, mVideoGO);
+    MEMBER(MemberType::GAMEOBJECT, mVideoBtnGO);
 
     END_CREATE;
 }
@@ -220,6 +221,8 @@ void HudController::Start()
     {
         mVideoComponent = static_cast<VideoComponent*>(mVideoGO->GetComponent(ComponentType::VIDEO));
         mVideoGO->SetEnabled(true);
+        mVideoBtn = static_cast<ButtonComponent*>(mVideoBtnGO->GetComponent(ComponentType::BUTTON));
+        mVideoBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&HudController::OnVideoBackClick, this)));
     }
     if (mVideoComponent)
     {
@@ -240,15 +243,14 @@ void HudController::Update()
     {
         bool stopVideo = false;
         if (!mVideoComponent->IsPlaying()) stopVideo = true;
-        else if(App->GetInput()->GetKey(KeyboardKeys_ESCAPE) == KeyState::KEY_REPEAT) stopVideo = true;
+        else if(App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN) 
+            stopVideo = true;
 
         if (stopVideo)
         {
-            mVideoGO->SetEnabled(false);
-            mVideoComponent->Stop();
-            mIsVideoPlaying = false;
-            SetDialog();
-            GameManager::GetInstance()->StartAudio();
+            OnVideoBackClick();
         }
     }
 
@@ -661,6 +663,15 @@ void HudController::OnTryAgainButtonClick()
     }
 
     App->GetScene()->GetPlayerStats()->TryAgainStats();
+}
+
+void HudController::OnVideoBackClick()
+{
+    mVideoGO->SetEnabled(false);
+    mVideoComponent->Stop();
+    mIsVideoPlaying = false;
+    SetDialog();
+    GameManager::GetInstance()->StartAudio();
 }
 
 void HudController::OnTryAgainButtonHoverOn()
