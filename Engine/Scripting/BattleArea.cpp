@@ -30,8 +30,6 @@ CREATE(BattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn4);
 	SEPARATOR("TUTORIAL");
 	MEMBER(MemberType::BOOL, mIsTutorialArea);
-	SEPARATOR("CINEMATIC MANAGER");
-	MEMBER(MemberType::GAMEOBJECT, mCinematicManagerGO);
 	END_CREATE;
 }
 
@@ -93,28 +91,10 @@ void BattleArea::Start()
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&BattleArea::OnCollisionEnter, this, std::placeholders::_1)));
 	}
-
-	if (mCinematicManagerGO)
-	{
-		ScriptComponent* script = (ScriptComponent*)mCinematicManagerGO->GetComponent(ComponentType::SCRIPT);
-		mCinematicCamera = (CinematicCamera*)script->GetScriptInstance();
-	}
 }
 
 void BattleArea::Update()
 {
-	if(mCinematicCamera)
-	{
-		if (!mCinematicCamera->GetIsPlayingCinematic())
-		{
-			mSpawnEnemies = true;
-		}
-	}
-	else
-	{
-		mSpawnEnemies = true;
-	}
-
 	if(mSpawnEnemies)
 	{
 		if (mHasBeenActivated && mNeedsToSpawn)
@@ -143,11 +123,6 @@ void BattleArea::Update()
 			}
 			mNeedsToSpawn = false;
 		}
-	}
-
-	if (!mHasBeenActivated)
-	{
-		mSpawnEnemies = false;
 	}
 }
 

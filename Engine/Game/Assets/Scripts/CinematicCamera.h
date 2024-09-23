@@ -18,7 +18,6 @@ public:
     void Awake() override;
     void Start() override;
     void Update() override;
-    bool GetIsPlayingCinematic() { return mPlayingCinematic; }
 
 private:
     void DeActivateCameras();
@@ -32,6 +31,7 @@ private:
     void EndCinematic();
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
+    void ActivateBattleArea(bool state);
  
     GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO1 = nullptr;
@@ -51,6 +51,7 @@ private:
 
     GameObject* mPlayerGO = nullptr;
     GameObject* mFadeGO = nullptr;
+    GameObject* mHudGO = nullptr;
 
     BattleArea* mBattleArea1 = nullptr;
     BattleArea* mBattleArea2 = nullptr;

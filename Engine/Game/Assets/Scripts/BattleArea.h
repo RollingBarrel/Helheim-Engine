@@ -24,7 +24,8 @@ public:
 	bool GetIsAreaActive() { return mHasBeenActivated; }
 	int GetCurrentEnemies() const { return mCurrentEnemies; }
 	int GetCurrentWave() const { return mWavesRounds; }
-	void SetWaves(int waves) { mWavesRounds = waves; }; 
+	void SetWaves(int waves) { mWavesRounds = waves; }
+	void SetSpawnEnemies(bool state) { mSpawnEnemies = state; }
 
 protected:
 	void CloseDoors(bool close);
@@ -34,7 +35,7 @@ protected:
 	bool mHasBeenActivated = false;
 	bool mIsTutorialArea = false;
 	bool mNeedsToSpawn = false;
-	bool mSpawnEnemies = false;
+	bool mSpawnEnemies = true;
 
 	GameObject* mSpawnerGO1 = nullptr;
 	GameObject* mSpawnerGO2 = nullptr;
@@ -62,7 +63,4 @@ protected:
 	std::vector<EnemyExplosiveSpawner*> mExplosiveSpawners;
 	GameObject* mElevator = nullptr;
 	BoxColliderComponent* mCollider = nullptr;
-
-	GameObject* mCinematicManagerGO = nullptr;
-	CinematicCamera* mCinematicCamera = nullptr;
 };

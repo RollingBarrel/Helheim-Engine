@@ -49,6 +49,8 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mFadeGO);
     MEMBER(MemberType::FLOAT3, mColor);
     MEMBER(MemberType::FLOAT, mFadeSpeed);
+    SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHudGO);
     END_CREATE;
 }
 
@@ -169,6 +171,8 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* target, int
             //GameManager::GetInstance()->SetPaused(true, false);
                     
             mFadeOn = true;
+            mHudGO->SetEnabled(false);
+            ActivateBattleArea(false);
         }
 
         UpdateCinematic(camera);
@@ -213,6 +217,8 @@ void CinematicCamera::UpdateCinematic(GameObject* camera)
         mCinematicIndex++;
         mStartParameters = false;
         mPlayingCinematic = true;
+        mHudGO->SetEnabled(true);
+        ActivateBattleArea(true);
     }
 }
 
@@ -479,5 +485,28 @@ bool CinematicCamera::Fade(bool fadeOut)
             }
             else return true;      
         }
+    }
+}
+
+void CinematicCamera::ActivateBattleArea(bool state)
+{
+    if (mBattleArea1)
+    {
+        mBattleArea1->SetSpawnEnemies(state);
+    }
+    
+    if (mBattleArea2)
+    {
+        mBattleArea2->SetSpawnEnemies(state);
+    }
+
+    if (mBattleArea3)
+    {
+        mBattleArea3->SetSpawnEnemies(state);
+    }
+
+    if (mBattleArea4)
+    {
+        mBattleArea4->SetSpawnEnemies(state);
     }
 }
