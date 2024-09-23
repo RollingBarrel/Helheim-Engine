@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleScene.h"
 #include "ModuleInput.h"
+#include "ModuleWindow.h"
 
 #include "GameObject.h"
 #include "ScriptComponent.h"
@@ -57,6 +58,8 @@ void GameManager::Awake()
 
 void GameManager::Start()
 {
+    //App->GetWindow()->SetCursor(857248271, 50, 50);
+
     if (mHudControllerGO)
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mHudControllerGO->GetComponent(ComponentType::SCRIPT));
@@ -79,7 +82,7 @@ void GameManager::Start()
     {
         ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
         mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
-        //StartAudio();
+        StartAudio();
     }
 
     if (mFirstTutorial) 
@@ -237,6 +240,46 @@ void GameManager::UnlockGrenade(bool unlock)
     mPlayerController->UnlockGrenade(unlock);
 }
 
+void GameManager::HandleBossAudio(int stage)
+{
+    if (mIsFightingBoss && stage >= 0)
+    {
+        if (mLastAudioID != 2 && stage == 2)
+        {
+            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 2);
+            mLastAudioID = 2;
+        }
+        else if (mLastAudioID != 1 && stage == 1)
+        {
+            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 1);
+            mLastAudioID = 1;
+        }
+        else if (mLastAudioID != 0 && stage == 0)
+        {
+            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, true);
+            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
+
+            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 0);
+            mLastAudioID = 0;
+        }
+    }
+}
+void GameManager::PauseBackgroundAudio(bool pause)
+{
+    std::string sceneName = App->GetScene()->GetName();
+    if (mBackgroundAudioID != -1)
+    {
+        if (sceneName == "Level1Scene" || sceneName == "TestAudio")
+        {
+            mAudioManager->Pause(BGM::LEVEL1, mBackgroundAudioID, pause);
+        }
+        else if (sceneName == "Level2Scene")
+        {
+            mAudioManager->Pause(BGM::LEVEL2, mBackgroundAudioID, pause);
+        }
+    }
+}
+
 void GameManager::PrepareAudio()
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -246,16 +289,17 @@ void GameManager::PrepareAudio()
 
     // Player
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
+    mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
+    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
+    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
+    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
-    mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    //mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -265,6 +309,11 @@ void GameManager::PrepareAudio()
     else if (sceneName == "Level2Scene")
     {
         mAudioManager->AddAudioToASComponent(BGM::LEVEL2);
+    }
+    else if (sceneName == "BossTestingRoom")
+    {
+        mAudioManager->AddAudioToASComponent(BGM::BOSS_ROOM);
+        mAudioManager->AddAudioToASComponent(BGM::BOSS);
     }
 }
 
@@ -280,6 +329,13 @@ void GameManager::StartAudio()
     else if (sceneName == "Level2Scene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL2);
+    }
+    else if (sceneName == "BossTestingRoom")
+    {
+        mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
+        mBackgroundAudioID2 = mAudioManager->Play(BGM::BOSS_ROOM);
+
+        mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, true);
     }
 }
 
@@ -299,6 +355,10 @@ void GameManager::HandleAudio()
     else if (sceneName == "Level2Scene")
     {
         HandleLevel2Audio();
+    }
+    else if (sceneName == "BossTestingRoom")
+    {
+        HandleBossAudio(-1);
     }
 }
 
@@ -322,6 +382,8 @@ void GameManager::EndAudio()
     {
         mGameOverAudio = mAudioManager->Release(BGM::GAMEOVER, mGameOverAudio);
     }
+
+    mAudioManager->ReleaseAllAudio();
 }
 
 void GameManager::HandleLevel1Audio()

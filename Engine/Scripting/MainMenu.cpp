@@ -122,6 +122,8 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
+    //App->GetWindow()->SetCursor(857248271, 50, 50);
+
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
 
@@ -221,7 +223,6 @@ void MainMenu::Start()
     mMusicVolumeSlider->SetValue(mMusicVolumeValue);
     App->GetAudio()->SetVolume("bus:/sfx", mEffectsVolumeValue);
     mEffectsVolumeSlider->SetValue(mEffectsVolumeValue);
-
 
     OpenMenu(MENU_TYPE::STUDIO);
 }
