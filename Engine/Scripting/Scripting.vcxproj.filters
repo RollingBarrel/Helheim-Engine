@@ -198,14 +198,13 @@
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
-    <ClInclude Include="BossBattleArea.h" />
-    <ClInclude Include="LinearMovement.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossBattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
