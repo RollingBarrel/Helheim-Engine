@@ -9,6 +9,7 @@ class ButtonComponent;
 class SliderComponent;
 class TextComponent;
 class ImageComponent;
+class VideoComponent;
 class PlayerController;
 class Sanity;
 class Dialog;
@@ -36,24 +37,24 @@ public:
     void SetBossHealth(float health);
     void SetBossHealthBarEnabled(bool enabled);
     void SetMaxHealth(float health);
-    void SwitchWeapon();
     void SetGrenadeCooldown(float cooldown);
     void SetUltimateCooldown(float cooldown);
     void SetCollectibleText(std::string text);
     void SetScreen(SCREEN menu, bool active);
     void SetInteract(bool active);
-
-    SliderComponent* mHealthGradualSlider = nullptr;
+    void SetPickupPrompt(bool active);
 
     void SetSanity();
     void SetDialog();
     void DisableCollectible();
+    void SetFadein(bool value) { mFadeIn = value; }
+
+
 private:
     HudController(GameObject* owner);
     ~HudController();
 
     void Controls();
-    void ButtonHover();
     void ButtonClick();
     bool Delay(float delay);
 
@@ -65,38 +66,26 @@ private:
     void OnLoseButtonHoverOn();
     void OnLoseButtonHoverOff();
 
-    void OnContinueBtnClick();
-    void OnContinueBtnHoverOn();
-    void OnContinueBtnHoverOff();
-
-    void OnOptionsBtnClick();
-    void OnOptionsBtnHoverOn();
-    void OnOptionsBtnHoverOff();
-
-    void OnMainMenuBtnClick();
-    void OnMainMenuBtnHoverOn();
-    void OnMainMenuBtnHoverOff();
-
     void OnCollectibleContinueBtnClick();
     void OnCollectibleContinueBtnHoverOn();
     void OnCollectibleContinueBtnHoverOff();
 
+    void FadeIn();
+    void FadeOut();
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
-    GameObject* mContinueBtnGO = nullptr;
-    GameObject* mOptionsBtnGO = nullptr;
-    GameObject* mMainMenuBtnGO = nullptr;
-    ButtonComponent* mContinueBtn = nullptr;
-    ButtonComponent* mOptionsBtn = nullptr;
-    ButtonComponent* mMainMenuBtn = nullptr;
-    GameObject* mOptionsPanel = nullptr;
+    GameObject* mFadeoutScreen = nullptr;
+    ImageComponent* mFadeoutImage = nullptr;
 
     GameObject* mWinScreen = nullptr;
     GameObject* mLoseScreen = nullptr;
     GameObject* mLoadingScreen = nullptr;
+    GameObject* mLoadingSliderGO = nullptr;
+    SliderComponent* mLoadingSlider = nullptr;
     GameObject* mHealthGO = nullptr;
     GameObject* mHealthGradualGO = nullptr;
+    GameObject* mHealthIconGO = nullptr;
     GameObject* mAmmoGO = nullptr;
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
@@ -109,6 +98,8 @@ private:
     GameObject* mCollectibleImageGO = nullptr;
     GameObject* mCollectibleContinueBtnGO = nullptr;
     GameObject* mInteractGO = nullptr;
+    GameObject* mPickupControllerGO = nullptr;
+    GameObject* mPickupKeyboardGO = nullptr;
 
     GameObject* mTryAgainBtnGO = nullptr;
     GameObject* mLoseMenuBtnGO = nullptr;
@@ -118,6 +109,10 @@ private:
     ButtonComponent* mTryAgainBtn = nullptr;
 
     SliderComponent* mHealthSlider = nullptr;
+    SliderComponent* mHealthGradualSlider = nullptr;
+    ImageComponent* mHealthImage = nullptr;
+    ImageComponent* mHealthIcon = nullptr;
+    ImageComponent* mHealthGradualImage = nullptr;
     TextComponent* mAmmoText = nullptr;
     TextComponent* mEnergyText = nullptr;
     ImageComponent* mEnergyImage = nullptr;
@@ -128,7 +123,6 @@ private:
     TextComponent* mInteractText = nullptr;
     ButtonComponent* mCollectibleContinueBtn = nullptr;
 
-
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;
     GameObject* mBossHealthGradualGO = nullptr;
@@ -138,10 +132,11 @@ private:
 
     float mTargetHealth = 1;
 
-    //bool mLoading = false;
     bool mPaused = false;
     float mTimeScreen = 5.0f;
     float mTimePassed = 0.0f;
+    bool mFadeIn = true;
+    bool mLoadlevel = false;
 
     GameObject* mMenuScript = nullptr;
 
@@ -161,4 +156,9 @@ private:
     int mArenaCounter = 0;
 
     int mCurrentOption = 0;
+
+    // Video
+    GameObject* mVideoGO = nullptr;
+    VideoComponent* mVideoComponent = nullptr;
+    bool mIsVideoPlaying = false;
 };

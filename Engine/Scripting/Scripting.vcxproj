@@ -194,6 +194,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
@@ -230,6 +231,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
     <ClInclude Include="Keys.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
@@ -260,9 +262,11 @@
     <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="HealVFX.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="RotateObject.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
+    <ClCompile Include="SecurityCameraFollower.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GrenadeState.cpp" />

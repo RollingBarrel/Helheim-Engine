@@ -117,8 +117,8 @@ public:
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
     void SetGrenadeRange(float value) { mGrenadeRange = value; }
-    void SetGrenadeVisuals(bool value);
-    void UpdateGrenadeVisuals();
+    void EnableGrenadeAim(bool value);
+    void GrenadeAim();
     void ThrowGrenade();
 
     void CheckOtherTimers();
@@ -154,7 +154,7 @@ public:
     void SetUltimateResource(int resource) { mUltimateResource = resource; }
     void EnableUltimate(bool enable);
     void EnableChargeUltimate(bool enable);
-    void UltimateInterpolateLookAt(const float3& target); 
+    void InterpolateLookAt(const float3& target, float speed); 
 
     // States
     DashState* GetDashState() { return mDashState; }
@@ -176,6 +176,7 @@ private:
     void CheckHitEffect();
     void StateMachine();
     void HandleRotation();
+    void HandleLaser();
     void CheckDebugOptions();
     void OnCollisionEnter(CollisionData* collisionData);
 
@@ -216,7 +217,7 @@ private:
     float mDashRange = 5.0f;
 
     // Speed
-    float mPlayerSpeed;
+    float mPlayerSpeed = 1.0f;
     float mBaseSpeed = 5.5f;
 
     // Shield
@@ -240,6 +241,8 @@ private:
     GameObject* mShootOrigin = nullptr;
     GameObject* mRedBaterryParticles = nullptr;
     GameObject* mBlueBaterryParticles = nullptr;
+    float mLaserLenght = 5.0f;
+    float mControllerAimSpeed = 15.0f;
 
     // MELEE
     MeleeWeapon* mBat = nullptr;
@@ -271,6 +274,7 @@ private:
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+    TimerScript mGrenadeAimTimer;
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;
@@ -300,7 +304,6 @@ private:
     bool mHit = false;
     std::vector<Component*> mMeshComponents;
     std::vector<unsigned int> mMaterialIds;
-    bool Delay(float delay);
 
     std::vector<float4> mPlayerOgColor;
  

@@ -146,8 +146,9 @@ void AnimationComponent::OnStop()
 
 }
 
-void AnimationComponent::OnRestart()
+void AnimationComponent::RestartStateAnimation()
 {
+
 	mController->Restart();
 	for (GameObject* current : mDefaultObjects)
 	{
@@ -164,7 +165,33 @@ void AnimationComponent::OnRestart()
 	}
 }
 
-void AnimationComponent::OnReset()
+void AnimationComponent::ResetAnimationComponent()
+{
+	ChangeState("Default", 0.0f);
+	if (mHasSpine)
+	{
+		ChangeSpineState("Default", 0.0f);
+	}
+
+	RestartStateAnimation();
+
+}
+
+const std::vector<std::string> AnimationComponent::GetSMStateNames() const
+{
+	return mStateMachine->GetStateNames();
+}
+
+const std::vector<std::string> AnimationComponent::GetSpineSMStateNames() const
+{
+	if(mHasSpine)
+		return mSpineStateMachine->GetStateNames();
+	std::vector<std::string> empty;
+	return empty;
+}
+
+
+void AnimationComponent::OnResetGameObjects()
 {
 	if (mDefaultObjects.size() == 0)
 	{

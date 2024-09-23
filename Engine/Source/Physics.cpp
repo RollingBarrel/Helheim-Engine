@@ -58,7 +58,7 @@ Ray Physics::ScreenPointToRay(float2 mouseGlobalPosition)
 	const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
 	if (camera)
 	{
-		LineSegment raySegment = App->GetCamera()->GetCurrentCamera()->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
+		LineSegment raySegment = camera->GetFrustum().UnProjectLineSegment(normalizedX, normalizedY);
 		ray.pos = raySegment.a;
 		ray.dir = (raySegment.b - raySegment.a).Normalized();
 
