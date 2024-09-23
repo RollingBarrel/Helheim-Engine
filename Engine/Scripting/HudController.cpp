@@ -200,6 +200,7 @@ void HudController::Start()
         GameManager::GetInstance()->PauseBackgroundAudio(true);
         mIsVideoPlaying = true;
     }
+    else SetDialog();
 }
 
 void HudController::Update()

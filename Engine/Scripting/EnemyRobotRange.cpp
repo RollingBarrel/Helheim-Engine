@@ -102,7 +102,7 @@ void EnemyRobotRange::Death()
 
 void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
 {
-    if (collisionData->collidedWith->GetTag() == "Door")
+    if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
     {
         mEnemyCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")
