@@ -12,6 +12,7 @@
 #include "EnemyBoss.h"
 #include "Physics.h"
 #include "Geometry/Ray.h"
+#include <cmath>
 
 
 CREATE(BombBoss)
@@ -33,6 +34,7 @@ BombBoss::~BombBoss()
 void BombBoss::Start()
 {
 	mGameObject->GetComponentsInChildren(ComponentType::PARTICLESYSTEM, mExplosionParticles);
+	decal = static_cast<DecalComponent*>(mGameObject->GetComponent(ComponentType::DECAL));
 	for (GameObject* go : mGameObject->GetChildren())
 	{
 		if (go->GetName() == "Bomb")
@@ -58,19 +60,14 @@ void BombBoss::Update()
 	if (GameManager::GetInstance()->IsPaused()) return;
 	
 	mTimePassed += App->GetDt();
-	if (mHasExploded)
+	//log decal fade
+	LOG("Decal fade: %f", decal->GetFadeFactor());
+
+	if (mTimePassed < mTimeDelay)
 	{
-		bool finishedExploding = true;
-		for (Component* particlecomponent : mExplosionParticles)
-		{
-			finishedExploding = static_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
-		}
-		if (finishedExploding)
-		{
-			mGameObject->SetEnabled(false);
-		}
+		decal->SetFadeFactor(mTimePassed / mTimeDelay);
 	}
-	else if (mTimePassed >= mTimeDelay)
+	else if (mTimePassed >= mTimeDelay && !mHasExploded)
 	{
 		GameObject* player = GameManager::GetInstance()->GetPlayer();
 		float3 playerPosition = player->GetWorldPosition();
@@ -85,6 +82,22 @@ void BombBoss::Update()
 			playerScript->TakeDamage(mDamage);
 		}
 		mHasExploded = true;
+	}
+	else if (mTimePassed >= mTimeDelay && mHasExploded)
+	{
+		bool finishedExploding = true;
+		for (Component* particlecomponent : mExplosionParticles)
+		{
+			finishedExploding = static_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
+		}
+		if (finishedExploding)
+		{
+			decal->SetFadeFactor(1.0f - (mTimePassed - (mTimeDelay + 2)));
+			if (decal->GetFadeFactor() <= 0.f)
+			{
+				mGameObject->SetEnabled(false);
+			}
+		}
 	}
 }
 
