@@ -1431,7 +1431,7 @@ void ModuleOpenGL::Draw()
 		//glDisable(GL_STENCIL_TEST);
 		glDepthMask(0x00);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mGPosition);
+		glBindTexture(GL_TEXTURE_2D, mGDepth);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, mGNormals);
 		glBindVertexArray(mEmptyVAO);
