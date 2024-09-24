@@ -149,9 +149,9 @@ void PlayerController::Start()
 
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
-
+    mGodMode = mPlayerStats->GetGodMode();
     mPlayerSpeed = mPlayerStats->GetSpeed();
-
+    mDamageModifier = mPlayerStats->GetDamageModifier();
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -664,8 +664,10 @@ void PlayerController::SetSpeed(float speed)
 
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
-    mPlayerStats->SetDamageModifier(mDamageModifier);
+    if (mDamageModifier < 5000.0f) {
+        mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
+        mPlayerStats->SetDamageModifier(mDamageModifier);
+    }
 }
 
 void PlayerController::SetMaxShield(float percentage)
@@ -782,15 +784,18 @@ void PlayerController::CheckDebugOptions()
     if (input->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN)
     {
         mGodMode = !mGodMode;
+        App->GetScene()->GetPlayerStats()->SetGodMode(mGodMode);
     }
     if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
     {
         if (mDamageModifier != 99999.0f)
         {
             mDamageModifier = 99999.0f;
+            App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
         }
         else
         {
+            App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
             mDamageModifier = 1.0f;
         }
      }
