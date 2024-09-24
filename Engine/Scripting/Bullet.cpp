@@ -89,16 +89,19 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	{
 		mHitParticles = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
 		mTrialParticles = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
-		if (mHitParticles)
+		if (mBullet)
 		{
-			mHitParticles->SetEnable(false);
+			mBullet->SetEnable(false);
 		}
 		if (mTrialParticles)
 		{
-			mTrialParticles->SetEnable(true);
+			mTrialParticles->SetEnable(false);
+		}
+		if (mHitParticles)
+		{
+			mHitParticles->SetEnable(true);
 		}
 	}
-
 }
 
 
@@ -111,9 +114,16 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
 			{
 				//LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
+				if(mBullet)
+				{ 
+					mBullet->SetEnable(false);
+				}
+				if(mTrialParticles)
+				{ 
+					mTrialParticles->SetEnable(false);
+				}
 				if (mHitParticles)
 				{
-					mBullet->SetEnable(false);
 					mHitParticles->SetEnable(true);
 				}
 				mHasCollided = true;
@@ -129,9 +139,16 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 				PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
 				player->TakeDamage(mDamage);
 				mDamage = 0.0f;
-				if (mHitParticles)
+				if (mBullet)
 				{
 					mBullet->SetEnable(false);
+				}
+				if (mTrialParticles)
+				{
+					mTrialParticles->SetEnable(false);
+				}
+				if (mHitParticles)
+				{
 					mHitParticles->SetEnable(true);
 				}
 				GameManager::GetInstance()->HitStop();
@@ -142,9 +159,16 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
 		{
 			//LOG("Collided with WALL");
-			if (mHitParticles)
+			if (mBullet)
 			{
 				mBullet->SetEnable(false);
+			}
+			if (mTrialParticles)
+			{
+				mTrialParticles->SetEnable(false);
+			}
+			if (mHitParticles)
+			{
 				mHitParticles->SetEnable(true);
 			}
 			mHasCollided = true;
