@@ -51,7 +51,7 @@ StateType GrenadeState::HandleInput()
         return StateType::AIM;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady())
+    if (mPlayerController->GetUltimateState()->IsReady())
     {
         mPlayerController->GetUltimateState()->ResetCooldown();
         return StateType::ULTIMATE_CHARGE;

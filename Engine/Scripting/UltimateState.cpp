@@ -58,7 +58,7 @@ void UltimateState::Exit()
 	}
 
 	mPlayerController->EnableLaser(true);
-
+	mPlayerController->UseUltimateResource();
 }
 
 StateType UltimateState::GetType()
@@ -68,9 +68,8 @@ StateType UltimateState::GetType()
 
 bool UltimateState::IsReady()
 {
-	if (mPlayerController->GetUltimateGO() && mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsUltimateUnlocked()
-		&& (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN ||
-			App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
+	if (mPlayerController->GetUltimateGO() && mPlayerController->IsUltimateUnlocked() && mPlayerController->GetUltimateResource() >= 100
+		&& (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
 		)
 	{
 		return true;

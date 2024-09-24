@@ -927,7 +927,7 @@ void PlayerController::UseEnergy(int energy)
 void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100) 
-        mUltimateResource += 10;
+        mUltimateResource += 20;
     else return;
 }
 
@@ -1035,6 +1035,12 @@ void PlayerController::ActivateHitEffect()
         meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
     }   
         mHit = true;    
+}
+
+void PlayerController::AddKill()
+{
+    mKillCount++;
+    if (mUpperStateType != StateType::ULTIMATE) AddUltimateResource();
 }
 
 void PlayerController::CheckHitEffect()

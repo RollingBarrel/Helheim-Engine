@@ -140,6 +140,8 @@ public:
     bool IsUltimateUnlocked() const { return mUltimateUnlocked; }
     //Hit Effect
     void ActivateHitEffect();
+
+    void AddKill();
     
     //Ultimate
     GameObject* GetUltimateGO() const{ return mUltimateGO; };
@@ -151,7 +153,7 @@ public:
     float GetUltimateChargeDuration() const { return mUltimateChargeDuration; }
     float GetUltimateDamageInterval() const { return mUltimateDamageInterval; };
     float GetUltimateDamageTick() const { return mUltimateDamageTick; };
-    void SetUltimateResource(int resource) { mUltimateResource = resource; }
+    void UseUltimateResource() { mUltimateResource = 0; }
     void EnableUltimate(bool enable);
     void EnableChargeUltimate(bool enable);
     void InterpolateLookAt(const float3& target, float speed); 
@@ -231,7 +233,7 @@ private:
     Weapon* mSpecialWeapon = nullptr;
     int mCurrentEnergy = 100;
     EnergyType mEnergyType = EnergyType::NONE;
-    int mUltimateResource = 100;
+    int mUltimateResource = 0;
     float mDamageModifier = 1.0f;
 
     // RANGED
@@ -322,4 +324,6 @@ private:
 
     // Elevator
     bool mIsInElevator = false;
+
+    int mKillCount = 0;
 };
