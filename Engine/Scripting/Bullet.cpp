@@ -95,7 +95,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 		}
 		if (mTrialParticles)
 		{
-			mTrialParticles->SetEnable(false);
+			mTrialParticles->SetEnable(true);
 		}
 		if (mHitParticles)
 		{
