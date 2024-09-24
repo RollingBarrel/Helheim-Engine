@@ -254,6 +254,10 @@ void PlayerController::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
+        mAnimationComponent->SendTrigger("tAim", 0.1f);
+
+        mAnimationComponent->SetIsPlaying(true);
     }
     // Add Audio Listener
     if (mGameObject->GetComponent(ComponentType::AUDIOLISTENER) == nullptr)
