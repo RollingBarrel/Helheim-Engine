@@ -104,8 +104,10 @@ void EnemyBoss::Start()
         mAnimationComponent->SetLoop(false);
     }
 
-    for (int i = 0; i < std::size(mAreas); ++i) {
-        if (mAreas[i]) {
+    for (int i = 0; i < std::size(mAreas); ++i) 
+    {
+        if (mAreas[i]) 
+        {
             mAreaPositions.push_back(mAreas[i]->GetWorldPosition());
         }
     }
