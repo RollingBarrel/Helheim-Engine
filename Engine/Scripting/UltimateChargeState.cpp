@@ -35,6 +35,7 @@ void UltimateChargeState::Enter()
 	mPlayerController->SetSpeed(1.0f);
 
 	mPlayerController->EnableLaser(false);
+	mPlayerController->SetSpineAnimation("tSpecial", 0.3f);
 
 }
 
