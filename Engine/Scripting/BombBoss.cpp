@@ -61,7 +61,6 @@ void BombBoss::Update()
 	
 	mTimePassed += App->GetDt();
 	//log decal fade
-	LOG("Decal fade: %f", decal->GetFadeFactor());
 
 	if (mTimePassed < mTimeDelay)
 	{
