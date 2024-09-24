@@ -15,6 +15,7 @@ CREATE(Bullet)
 {
 	CLASS(owner);
 	MEMBER(MemberType::BOOL, mShooterIsPlayer);
+
 	END_CREATE;
 }
 
@@ -81,24 +82,16 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	mRange = range;
 
 	mGameObject->SetEnabled(true);
+	mBullet = static_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
 
 	GameObject* firstChild = *(mGameObject->GetChildren().begin());
 	if (firstChild)
 	{
 		mHitParticles = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
-		mBulletTrail = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
-		if (mBulletTrail)
-		{
-			mBulletTrail->SetEnable(true);
-		}
 		if (mHitParticles)
 		{
 			mHitParticles->SetEnable(false);
 		}
-		//if (gradient)
-		//{
-		//	mBulletTrail->GetTrail()->SetColorGradient(*gradient);
-		//}
 	}
 
 }
@@ -115,6 +108,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 				//LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
 				if (mHitParticles)
 				{
+					mBullet->SetEnable(false);
 					mHitParticles->SetEnable(true);
 				}
 				mHasCollided = true;
@@ -132,6 +126,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 				mDamage = 0.0f;
 				if (mHitParticles)
 				{
+					mBullet->SetEnable(false);
 					mHitParticles->SetEnable(true);
 				}
 				GameManager::GetInstance()->HitStop();
@@ -144,6 +139,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			//LOG("Collided with WALL");
 			if (mHitParticles)
 			{
+				mBullet->SetEnable(false);
 				mHitParticles->SetEnable(true);
 			}
 			mHasCollided = true;
