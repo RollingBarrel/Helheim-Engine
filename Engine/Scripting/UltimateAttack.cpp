@@ -68,7 +68,7 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
             }
         }
     }
-    else if (collisionGO->GetTag() != "Player" && collisionGO->GetTag() != "Drop" && collisionGO->GetTag() != "Trap")
+    else if (collisionGO->GetTag() != "Player" && collisionGO->GetTag() != "Drop" && collisionGO->GetTag() != "Trap" && collisionGO->GetTag() != "DoorArea")
     {
         float3 currentScale = mGameObject->GetLocalScale();
 

@@ -807,6 +807,10 @@ void PlayerController::CheckDebugOptions()
     {
         RechargeBattery(EnergyType::RED);
     }
+    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    {
+        mUltimateResource = 100;
+    }
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
