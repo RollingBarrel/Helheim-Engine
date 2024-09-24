@@ -54,6 +54,10 @@
 #include "Grenade.h"
 #include <LineComponent.h>
 
+//***************************
+#include <CinematicCamera.h>
+//***************************
+
 CREATE(PlayerController)
 {
     CLASS(owner);

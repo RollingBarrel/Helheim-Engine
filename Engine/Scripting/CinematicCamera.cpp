@@ -10,6 +10,7 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "math/float3.h"
+#include "MathFunc.h"
 
 CREATE(CinematicCamera)
 {
@@ -113,7 +114,7 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 1)
             {
                 //StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState);
-                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
+                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);  
             }    
         }
     }
@@ -125,7 +126,7 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 2)
             {
                 //StartCinematic(mCinematicCameraGO2, mDummyGO2, mBattleArea2, mDummy2AnimState);
-                StartCinematic(mCinematicCameraGO1, mDummyGO2, mBattleArea2, mDummy2AnimState, 12.77f, 1.50f, -22.54f, 0.00f, -45.50f, 0.00f);
+                StartCinematic(mCinematicCameraGO1, mDummyGO2, mBattleArea2, mDummy2AnimState, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
             }            
         }
     }
@@ -137,7 +138,7 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 3)
             {
                 //StartCinematic(mCinematicCameraGO3, mDummyGO3, mBattleArea3, mDummy3AnimState);
-                StartCinematic(mCinematicCameraGO1, mDummyGO3, mBattleArea3, mDummy3AnimState, -38.75f, 1.50f, -17.11f, 0.00f, -45.50f, 0.00f);
+                StartCinematic(mCinematicCameraGO1, mDummyGO3, mBattleArea3, mDummy3AnimState, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
             }
         }
     }
@@ -154,7 +155,7 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 4)
             {
                 //StartCinematic(mCinematicCameraGO4, mDummyGO4, mBattleArea4, mDummy4AnimState);
-                StartCinematic(mCinematicCameraGO1, mDummyGO4, mBattleArea4, mDummy4AnimState, -113.00f, 1.50f, 1.45f, 0.00f, 330.00f, 0.00f);
+                StartCinematic(mCinematicCameraGO1, mDummyGO4, mBattleArea4, mDummy4AnimState, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
             }
         }
     }
@@ -202,13 +203,8 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, Batt
         {
             mStartParameters = true;
 
-            mTargetPosition = ((dummy->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));          
-            
-            //****************************************************
-            camera->SetWorldPosition(float3(posX, posY, posZ));
-            camera->SetWorldRotation(float3(rotX, rotY, rotZ));
-
-            //****************************************************
+            LocateCamera(camera, posX, posY, posZ, rotX, rotY, rotZ);
+            mTargetPosition = ((dummy->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));      
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
 
             mAnimationComponent = static_cast<AnimationComponent*>(dummy->GetComponent(ComponentType::ANIMATION));
@@ -229,6 +225,16 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, Batt
 
         UpdateCinematic(camera, dummy, battleArea);
     }
+}
+
+void CinematicCamera::LocateCamera(GameObject* camera, float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+{
+    float rotXRad = DegToRad(rotX);
+    float rotYRad = DegToRad(rotY);
+    float rotZRad = DegToRad(rotZ);
+
+    camera->SetWorldPosition(float3(posX, posY, posZ));
+    camera->SetWorldRotation(float3(rotXRad, rotYRad, rotZRad));
 }
 
 void CinematicCamera::UpdateCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea)
@@ -363,8 +369,8 @@ void CinematicCamera::HandleEscape(GameObject* dummy, BattleArea* battleArea)
 {
     if (!mEscape)
     {
-        if ((App->GetInput()->GetKey(Keys::Keys_B) == KeyState::KEY_REPEAT) ||
-            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_REPEAT))
+        if ((App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_REPEAT) ||
+            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_REPEAT))
         {
             mEscape = true;
             mFadeStart = false;

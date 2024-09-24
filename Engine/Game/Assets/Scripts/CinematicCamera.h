@@ -18,6 +18,7 @@ public:
     void Awake() override;
     void Start() override;
     void Update() override;
+    bool GetPlayingCinematic() { return mPlayingCinematic; }
 
 private:
     void DeActivateCameras();
@@ -25,6 +26,7 @@ private:
 
     //void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState);
     void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void LocateCamera(GameObject* camera, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
 
     void UpdateCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea);
     bool HandleFadeIn(GameObject* camera);

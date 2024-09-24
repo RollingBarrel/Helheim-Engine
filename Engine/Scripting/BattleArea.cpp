@@ -10,7 +10,6 @@
 #include "HudController.h"
 #include "Spawner.h"
 #include "EnemyExplosiveSpawner.h"
-#include "CinematicCamera.h"
 
 CREATE(BattleArea)
 {

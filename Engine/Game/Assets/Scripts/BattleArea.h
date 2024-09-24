@@ -6,7 +6,6 @@ struct CollisionData;
 class Spawner;
 class EnemyExplosiveSpawner;
 class BoxColliderComponent;
-class CinematicCamera;
 
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
