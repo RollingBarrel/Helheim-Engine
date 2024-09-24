@@ -73,6 +73,9 @@ private:
     void FadeIn();
     void FadeOut();
 
+    void PlayVideoAssociatedAudio();
+    void ReleaseVideoAssociatedAudio();
+
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
     GameObject* mFadeoutScreen = nullptr;
@@ -161,4 +164,5 @@ private:
     GameObject* mVideoGO = nullptr;
     VideoComponent* mVideoComponent = nullptr;
     bool mIsVideoPlaying = false;
+    int mVideoAudio = -1;
 };

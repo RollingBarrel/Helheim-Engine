@@ -156,7 +156,7 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			}
 		}
 
-		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
+		if (collisionData->collidedWith->GetTag().compare("Wall") == 0 || collisionData->collidedWith->GetTag().compare("Door") == 0)
 		{
 			//LOG("Collided with WALL");
 			if (mBullet)

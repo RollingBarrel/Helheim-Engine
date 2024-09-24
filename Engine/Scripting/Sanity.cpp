@@ -9,6 +9,7 @@
 #include "ButtonComponent.h"
 #include "GameManager.h"
 #include "PlayerController.h"
+#include "AudioManager.h"
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "Transform2DComponent.h"
@@ -89,6 +90,8 @@ void Sanity::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
         if (mCurrentBuff > 1)
         {
             mCurrentBuff = 0;
@@ -103,6 +106,8 @@ void Sanity::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
         if (mCurrentBuff == 0)
         {
             mCurrentBuff = 2;
@@ -118,6 +123,8 @@ void Sanity::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
         CardClick();
     }
 }

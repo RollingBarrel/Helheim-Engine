@@ -9,7 +9,7 @@ class ParticleSystemComponent;
 class TrailComponent;
 class DecalComponent;
 class ColorGradient;
-class CollisionData;
+struct CollisionData;
 class BoxColliderComponent;
 
 GENERATE_BODY(RayCastBullet);
