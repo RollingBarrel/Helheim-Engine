@@ -300,7 +300,8 @@ void ModuleAudio::Release(FMOD::Channel* channel)
 
 	if (sound)
 	{
-		sound->release();  // Release the sound when playback ends
+		channel->stop();
+		sound->release();
 	}
 }
 
