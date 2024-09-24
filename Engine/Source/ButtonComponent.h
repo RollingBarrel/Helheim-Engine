@@ -4,13 +4,17 @@
 #include <functional>
 #include <vector>
 
+class ImageComponent;
+class Transform2DComponent;
+
 enum class EventType 
 {
     CLICK,
     HOVER,
     HOVEROFF,
     PRESS,
-    COUNT
+    COUNT,
+    NONE,
 };
 
 class ENGINE_API ButtonComponent : public Component
@@ -22,11 +26,8 @@ public:
     ~ButtonComponent();
 
     void Reset() override {}
-    void Update() override {}
+    void Update();
     Component* Clone(GameObject* owner) const override;
-
-    bool GetHovered() { return mHovered; }
-    void SetHovered(bool hovered) { mHovered = hovered; }
 
     void Save(JsonObject& obj) const override;
     void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
@@ -36,5 +37,9 @@ public:
 
 private:
     std::vector<std::function<void()>*> mEventHandlers[(int)EventType::COUNT];
-    bool mHovered = false;
+
+    EventType mCurrentEvent = EventType::NONE;
+
+    ImageComponent* mImage = nullptr;
+    Transform2DComponent* mTransform2D = nullptr;
 };
