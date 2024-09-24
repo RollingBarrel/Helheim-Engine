@@ -926,8 +926,7 @@ void PlayerController::UseEnergy(int energy)
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100) 
-        mUltimateResource += 20;
+    if (mUltimateResource != 100) mUltimateResource += 20;
     else return;
 }
 
@@ -1040,7 +1039,7 @@ void PlayerController::ActivateHitEffect()
 void PlayerController::AddKill()
 {
     mKillCount++;
-    if (mUpperStateType != StateType::ULTIMATE) AddUltimateResource();
+    if (mUpperStateType != StateType::ULTIMATE && mUltimateUnlocked) AddUltimateResource(); 
 }
 
 void PlayerController::CheckHitEffect()

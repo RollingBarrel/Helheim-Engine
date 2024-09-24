@@ -18,6 +18,7 @@ public:
 	void Update() override;
 
 	void Tutorial();
+	void UltTutorial();
 
 private:
 	//KEYBOARD
@@ -40,7 +41,8 @@ private:
 
 	int mCurrentStep = 0;
 
-	bool mCompleted = false;
+	bool mPart1Completed = false;\
+	bool mPart2Completed = false;
 	bool mActiveCon = false;
 	bool mController = false;
 	bool mKeyBoard = true;
@@ -48,5 +50,7 @@ private:
 	bool mSecondaryUsed = false;
 	bool mGrenadeUsed = false;
 	bool mUltimateUsed = false;
+
+	bool mUltTutorialStarted = false;
 };
 
