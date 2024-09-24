@@ -64,6 +64,7 @@ private:
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
+    void OnBackButtonClick();
     void OnPlayButtonClick();
     void OnSplashButtonClick();
     void OnControllerButtonClick();
@@ -120,6 +121,7 @@ private:
     bool mLoadlevel = false;
 
     float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
 
     MENU_TYPE mCurrentMenu;
 	AUDIO_SETTING_TYPE mCurrentAudioSetting;
@@ -172,6 +174,10 @@ private:
     GameObject* mCreditsHover = nullptr;
     GameObject* mCreditsClicked = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+
+    // Back Button
+    GameObject* mBackGO = nullptr;
+    ButtonComponent* mBackButton = nullptr;
 
     // OPTIONS Button
     GameObject* mQuitGO = nullptr;

@@ -264,7 +264,7 @@ FMOD::Channel* ModuleAudio::Play(const std::string& fileName)
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
 	CheckError(result);
-	//sound->set3DMinMaxDistance(0.5f, 100.0f);
+	sound->set3DMinMaxDistance(5.0f, 30.0f);
 	channel->setMode(FMOD_LOOP_NORMAL);
 	channel->setChannelGroup(mAudioChannelGroup);
 	return channel;
@@ -283,6 +283,7 @@ FMOD::Channel* ModuleAudio::PlayOneShot(const std::string& fileName)
 	// Create the sound using the FMOD system
 	FMOD_RESULT result = mCoreSystem->createSound(fileName.c_str(), FMOD_DEFAULT, nullptr, &sound);
 	CheckError(result);
+	sound->set3DMinMaxDistance(5.0f, 30.0f);
 
 	// Play the sound on a new channel
 	result = mCoreSystem->playSound(sound, nullptr, false, &channel);
@@ -421,9 +422,6 @@ void ModuleAudio::SetAudioPosition(FMOD::Channel* channel, float3 audioPosition)
 		channel->setMode(FMOD_3D);
 
 		FMOD::Sound* sound = nullptr;
-		if (channel->getCurrentSound(&sound) == FMOD_OK && sound) {
-			sound->set3DMinMaxDistance(0.5f, 100.0f);
-		}
 
 		FMOD_3D_ATTRIBUTES attributes = { { 0 } };
 

@@ -69,6 +69,9 @@ CREATE(PauseMenu)
     MEMBER(MemberType::GAMEOBJECT, mQuitHover);
     MEMBER(MemberType::GAMEOBJECT, mQuitClicked);
 
+    SEPARATOR("Back Btn");
+    MEMBER(MemberType::GAMEOBJECT, mBackGO);
+
     SEPARATOR("Keyboard Btn");
     MEMBER(MemberType::GAMEOBJECT, mKeyboardGO);
     MEMBER(MemberType::GAMEOBJECT, mKeyboardText);
@@ -138,6 +141,9 @@ void PauseMenu::Start()
     mQuitButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnQuitButtonClick, this)));
     mQuitButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&PauseMenu::OnQuitButtonHover, this)));
     mQuitButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&PauseMenu::OnQuitButtonHoverOff, this)));
+
+    mBackButton = static_cast<ButtonComponent*>(mBackGO->GetComponent(ComponentType::BUTTON));
+    mBackButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnBackButtonClick, this)));
 
     // Options buttons
 
@@ -220,12 +226,12 @@ void PauseMenu::Update()
 {
     Controls();
 
-    /*if (mIsScrolling)
+    if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
-        if (currentPosition.y > 3400.0f) mTextTransform->SetPosition(float3(currentPosition.x, -500.0f, currentPosition.z));
-        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
-    }*/
+        if (currentPosition.y > 3800.0f) mTextTransform->SetPosition(float3(currentPosition.x, -700.0f, currentPosition.z));
+        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+    }
 }
 
 void PauseMenu::Controls()
@@ -469,8 +475,8 @@ void PauseMenu::OpenMenu(MENU_TYPE type)
         break;
     case MENU_TYPE::CREDITS:
         mCreditsMenu->SetEnabled(true);
-        //mIsScrolling = true;
-        //mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
+        mIsScrolling = true;
+        mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
         mOptionsClicked->SetEnabled(false);
         mCreditsClicked->SetEnabled(true);
         break;
@@ -554,6 +560,13 @@ void PauseMenu::OnOptionsButtonClick()
 void PauseMenu::OnCreditsButtonClick()
 {
     OpenMenu(MENU_TYPE::CREDITS);
+}
+
+void PauseMenu::OnBackButtonClick()
+{
+    mOptionsClicked->SetEnabled(false);
+    mCreditsClicked->SetEnabled(false);
+    OpenMenu(MENU_TYPE::MAIN);
 }
 
 void PauseMenu::OnPlayButtonClick()
