@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 851128283,
+                "UID": 2113944827,
                 "ParentUID": 1,
                 "Name": "BombingTemplate3",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 987794306,
-                "ParentUID": 851128283,
+                "UID": 98532217,
+                "ParentUID": 2113944827,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 1122580562,
-                "ParentUID": 987794306,
+                "UID": 224198122,
+                "ParentUID": 98532217,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -139,8 +139,8 @@
                         "Image": 440589114,
                         "Delay": 0.0,
                         "Duration": 1.5,
-                        "EmissionRate": 500.0,
-                        "MaxParticles": 500,
+                        "EmissionRate": 2000.0,
+                        "MaxParticles": 2000,
                         "Burst": 0,
                         "Looping": false,
                         "FollowEmitter": false,
@@ -154,7 +154,7 @@
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeRadius": 0.20000000298023225,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -168,8 +168,8 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.10000000149011612,
-                                "MaxValue": 1.0
+                                "MinValue": 0.30000001192092898,
+                                "MaxValue": 1.5
                             },
                             "IsCurve": false,
                             "CurvePoints": []
@@ -177,8 +177,8 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 6.0,
-                                "MaxValue": 10.0
+                                "MinValue": 8.0,
+                                "MaxValue": 13.0
                             },
                             "IsCurve": false,
                             "CurvePoints": []
@@ -243,8 +243,8 @@
                 ]
             },
             {
-                "UID": 1743388480,
-                "ParentUID": 987794306,
+                "UID": 348053881,
+                "ParentUID": 98532217,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,

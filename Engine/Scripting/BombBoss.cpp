@@ -92,7 +92,7 @@ void BombBoss::Update()
 		}
 		if (finishedExploding)
 		{
-			decal->SetFadeFactor(1.0f - (mTimePassed - (mTimeDelay + 2)));
+			decal->SetFadeFactor(1.0f - ((mTimePassed - (mTimeDelay + 2)))*1.5);
 			if (decal->GetFadeFactor() <= 0.f)
 			{
 				mGameObject->SetEnabled(false);
