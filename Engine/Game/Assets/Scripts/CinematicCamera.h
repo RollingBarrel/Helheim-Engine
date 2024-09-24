@@ -22,7 +22,10 @@ public:
 private:
     void DeActivateCameras();
     void ActivateCamera(GameObject* cinematicCamera, bool state);
-    void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState);
+
+    //void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState);
+    void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+
     void UpdateCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea);
     bool HandleFadeIn(GameObject* camera);
     void HandleCameraMovement(GameObject* camera);

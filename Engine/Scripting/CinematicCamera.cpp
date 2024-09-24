@@ -112,7 +112,8 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
-                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState);
+                //StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState);
+                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState, 67.21f, 1.50f, 7.83f, 0.00f, -45.50f, 0.00f);
             }    
         }
     }
@@ -123,7 +124,8 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
-                StartCinematic(mCinematicCameraGO2, mDummyGO2, mBattleArea2, mDummy2AnimState);
+                //StartCinematic(mCinematicCameraGO2, mDummyGO2, mBattleArea2, mDummy2AnimState);
+                StartCinematic(mCinematicCameraGO1, mDummyGO2, mBattleArea2, mDummy2AnimState, 12.77f, 1.50f, -22.54f, 0.00f, -45.50f, 0.00f);
             }            
         }
     }
@@ -134,7 +136,8 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
-                StartCinematic(mCinematicCameraGO3, mDummyGO3, mBattleArea3, mDummy3AnimState);
+                //StartCinematic(mCinematicCameraGO3, mDummyGO3, mBattleArea3, mDummy3AnimState);
+                StartCinematic(mCinematicCameraGO1, mDummyGO3, mBattleArea3, mDummy3AnimState, -38.75f, 1.50f, -17.11f, 0.00f, -45.50f, 0.00f);
             }
         }
     }
@@ -150,12 +153,14 @@ void CinematicCamera::Update()
 
             if (mCinematicIndex == 4)
             {
-                StartCinematic(mCinematicCameraGO4, mDummyGO4, mBattleArea4, mDummy4AnimState);
+                //StartCinematic(mCinematicCameraGO4, mDummyGO4, mBattleArea4, mDummy4AnimState);
+                StartCinematic(mCinematicCameraGO1, mDummyGO4, mBattleArea4, mDummy4AnimState, -113.00f, 1.50f, 1.45f, 0.00f, 330.00f, 0.00f);
             }
         }
     }
 }
 
+/*
 void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState)
 {
     if ((dummy) && (camera))
@@ -178,6 +183,48 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, Batt
 
             //GameManager::GetInstance()->SetPaused(true, false);
                     
+            mFadeOn = true;
+            mHudGO->SetEnabled(false);
+            ActivateBattleArea(battleArea, false);
+        }
+
+        UpdateCinematic(camera, dummy, battleArea);
+    }
+}
+*/
+
+void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState, 
+    float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+{
+    if ((dummy) && (camera))
+    {
+        if (!mStartParameters)
+        {
+            mStartParameters = true;
+
+            mTargetPosition = ((dummy->GetWorldPosition()) - ((camera->GetFront()) * mDistanceToEnemy));          
+            
+            //****************************************************
+            camera->SetWorldPosition(float3(posX, posY, posZ));
+            camera->SetWorldRotation(float3(rotX, rotY, rotZ));
+            
+            //camera->SetLocalPosition(float3(posX, posY, posZ));
+            //camera->SetLocalRotation(float3(rotX, rotY, rotZ));
+
+            //****************************************************
+            camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
+
+            mAnimationComponent = static_cast<AnimationComponent*>(dummy->GetComponent(ComponentType::ANIMATION));
+
+            if (mAnimationComponent)
+            {
+                mAnimationComponent->SetIsPlaying(true);
+            }
+
+            InitAnimation(animState);
+
+            //GameManager::GetInstance()->SetPaused(true, false);
+
             mFadeOn = true;
             mHudGO->SetEnabled(false);
             ActivateBattleArea(battleArea, false);
