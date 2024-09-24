@@ -44,6 +44,7 @@ void UltimateState::Enter()
 	mUltimateDuration = mPlayerController->GetUltimateDuration();
 	mPlayerController->EnableUltimate(true);
 	mPlayerController->SetSpeed(App->GetScene()->GetPlayerStats()->GetSpeed()*mPlayerController->GetUltimateSlow());
+
 }
 
 void UltimateState::Exit()
@@ -58,6 +59,8 @@ void UltimateState::Exit()
 	}
 
 	mPlayerController->EnableLaser(true);
+	mPlayerController->SetSpineAnimation("tAim", 0.3f);
+
 
 }
 

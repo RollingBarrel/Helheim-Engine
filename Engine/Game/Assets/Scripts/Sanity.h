@@ -63,24 +63,24 @@ private:
     std::vector<Buff> mCurrentBuffs;
 
     GameObject* mCard1GO = nullptr;
-    ImageComponent* mCard1Image = nullptr;
     TextComponent* mCard1Text = nullptr;
     ButtonComponent* mCard1Btn = nullptr;
     Transform2DComponent* mCard1Transform = nullptr;
+    Transform2DComponent* mCard1TextTransform = nullptr;
     bool mCard1Hovered = false;
 
     GameObject* mCard2GO = nullptr;
-    ImageComponent* mCard2Image = nullptr;
     TextComponent* mCard2Text = nullptr;
     ButtonComponent* mCard2Btn = nullptr;
     Transform2DComponent* mCard2Transform = nullptr;
+    Transform2DComponent* mCard2TextTransform = nullptr;
     bool mCard2Hovered = false;
 
     GameObject* mCard3GO = nullptr;
-    ImageComponent* mCard3Image = nullptr;
     TextComponent* mCard3Text = nullptr;
     ButtonComponent* mCard3Btn = nullptr;
     Transform2DComponent* mCard3Transform = nullptr;
+    Transform2DComponent* mCard3TextTransform = nullptr;
     bool mCard3Hovered = false;
 
     TimerScript mClickTimout;

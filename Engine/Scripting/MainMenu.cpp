@@ -68,6 +68,9 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mCreditsHover);
     MEMBER(MemberType::GAMEOBJECT, mCreditsClicked);
 
+    SEPARATOR("Back Btn");
+    MEMBER(MemberType::GAMEOBJECT, mBackGO);
+
     SEPARATOR("Quit Btn");
     MEMBER(MemberType::GAMEOBJECT, mQuitGO);
     MEMBER(MemberType::GAMEOBJECT, mQuitText);
@@ -122,6 +125,8 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
+    //App->GetWindow()->SetCursor(857248271, 50, 50);
+
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
 
@@ -136,6 +141,9 @@ void MainMenu::Start()
     mOptionsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonClick, this)));
     mOptionsButton->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHover, this)));
     mOptionsButton->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&MainMenu::OnOptionsButtonHoverOff, this)));
+
+    mBackButton = static_cast<ButtonComponent*>(mBackGO->GetComponent(ComponentType::BUTTON));
+    mBackButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnBackButtonClick, this)));
 
     mCreditsButton = static_cast<ButtonComponent*>(mCreditsGO->GetComponent(ComponentType::BUTTON));
     mCreditsButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnCreditsButtonClick, this)));
@@ -222,7 +230,6 @@ void MainMenu::Start()
     App->GetAudio()->SetVolume("bus:/sfx", mEffectsVolumeValue);
     mEffectsVolumeSlider->SetValue(mEffectsVolumeValue);
 
-
     OpenMenu(MENU_TYPE::STUDIO);
 }
 
@@ -267,12 +274,12 @@ void MainMenu::Update()
 
     Controls();
         
-    /*if (mIsScrolling)
+    if (mIsScrolling)
     {
         float3 currentPosition = mTextTransform->GetPosition();
-        if (currentPosition.y > 3400.0f) mTextTransform->SetPosition(float3(currentPosition.x, -500.0f, currentPosition.z));
-        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 200 * App->GetDt(), currentPosition.z));
-    }*/
+        if (currentPosition.y > 3800.0f) mTextTransform->SetPosition(float3(currentPosition.x, -700.0f, currentPosition.z));
+        else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+    }
 
     if (mLoadlevel == true && mTimer.Delay(1.25f))
     {
@@ -285,13 +292,15 @@ void MainMenu::Update()
         mLoadingSlider->SetValue(mLoadingSlider->GetValue() + 0.01);
     }
 
+    mTimePassed += App->GetDt();
 }
 
 void MainMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN) 
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) < -0.9f && mTimePassed >= mDebounceTime)))
     {
+        mTimePassed = 0.0f; // Restart debounce timer
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         { 
@@ -346,9 +355,11 @@ void MainMenu::Controls()
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) > 0.9f && mTimePassed >= mDebounceTime)))
     {
+        mTimePassed = 0.0f; // Restart debounce timer
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
+
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         {
             if (mMainOption < 3)
@@ -509,12 +520,14 @@ void MainMenu::Controls()
 				mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
                 mOptionsOption = 9;
                 mAudioClicked->SetEnabled(false);
+                OnAudioSettingsButtonHover();
             }
 			else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
                 mOptionsOption = 10;
                 mSettingsClicked->SetEnabled(false);
+                OnVideoSettingsButtonHover();
             }
 
             OpenMenu(MENU_TYPE::OPTIONS);
@@ -565,7 +578,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
         case MENU_TYPE::CREDITS:
             mCreditsMenu->SetEnabled(true);
             mIsScrolling = true;
-            //mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
+            mTextTransform->SetPosition(float3(mTextTransform->GetPosition().x, 0, mTextTransform->GetPosition().z));
             mOptionsClicked->SetEnabled(false);
             mCreditsClicked->SetEnabled(true);
             break;
@@ -666,6 +679,13 @@ void MainMenu::OnOptionsButtonClick()
 void MainMenu::OnCreditsButtonClick() 
 {
     OpenMenu(MENU_TYPE::CREDITS);
+}
+
+void MainMenu::OnBackButtonClick()
+{
+    mOptionsClicked->SetEnabled(false);
+    mCreditsClicked->SetEnabled(false);
+    OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnPlayButtonClick() 

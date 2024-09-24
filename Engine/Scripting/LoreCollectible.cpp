@@ -18,6 +18,8 @@ CREATE(LoreCollectible)
 {
 	CLASS(owner);
 	MEMBER(MemberType::GAMEOBJECT, mMeshGO);
+	MEMBER(MemberType::GAMEOBJECT, mTitleTextGO);
+	MEMBER(MemberType::GAMEOBJECT, mSubtitleTextGO);
 	END_CREATE;
 }
 
@@ -41,7 +43,9 @@ void LoreCollectible::Start()
 
 	if (mMeshGO && mMeshGO->GetComponent(ComponentType::MESHRENDERER)) 
 		mMesh = static_cast<MeshRendererComponent*>(mMeshGO->GetComponent(ComponentType::MESHRENDERER));
-	
+
+	if (mTitleTextGO) mTitleText = static_cast<TextComponent*>(mTitleTextGO->GetComponent(ComponentType::TEXT))->GetText();
+	if (mSubtitleTextGO) mSubtitleText = static_cast<TextComponent*>(mSubtitleTextGO->GetComponent(ComponentType::TEXT))->GetText();
 }
 
 void LoreCollectible::Update()

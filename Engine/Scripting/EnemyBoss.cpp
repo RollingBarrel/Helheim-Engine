@@ -6,6 +6,7 @@
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PoolManager.h"
 #include "BombBoss.h"
 #include "ColorGradient.h"
@@ -162,6 +163,7 @@ void EnemyBoss::Update()
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseStart", mDeathTransitionDuration);
                     ++phaseChange;
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                 }
                 break;
             case 1:
@@ -187,6 +189,9 @@ void EnemyBoss::Update()
 
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
                     ++phaseChange;
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_AWAKE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+                    //GameManager::GetInstance()->HandleBossAudio(mStage);
                 }
                 break;
             case 4:
@@ -268,6 +273,7 @@ void EnemyBoss::Update()
 
 void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_BULLET);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
     mBulletHell = pattern;
@@ -277,6 +283,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 
 void EnemyBoss::LaserAttack()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_LASER);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
 
@@ -294,6 +301,7 @@ void EnemyBoss::LaserAttack()
 
 void EnemyBoss::BombAttack()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_ERUPTION);
     mCurrentState = EnemyState::ATTACK;
 
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
@@ -368,6 +376,8 @@ void EnemyBoss::Death()
 {
     if (mDeathTimer.Delay(mDeathTime))
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM);
+
         GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(false);
         GameManager::GetInstance()->SetIsFightingBoss(false);
         mGameObject->SetEnabled(false);
@@ -394,7 +404,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
         {
             // Give bullet random directon
             float angle = (-pi / 2) + offset + i * alpha;
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             bulletGO->SetWorldPosition(bulletOriginPosition);
 
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
@@ -403,6 +413,8 @@ void EnemyBoss::BulletHellPattern1() //Circular
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
     }
@@ -434,13 +446,15 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * space * (mBulletsWave % nBullets) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+
         }
         mBulletsWave++;
     }
@@ -459,7 +473,7 @@ void EnemyBoss::BulletHellPattern3() //Two streams
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float angle = alpha * i;
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
             direction.Normalize();
@@ -467,6 +481,8 @@ void EnemyBoss::BulletHellPattern3() //Two streams
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
     }
@@ -498,13 +514,15 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * width * sin((pi*3/4)* (mBulletsWave % nBullets) / (nBullets - 1)) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
     }
@@ -524,7 +542,7 @@ void EnemyBoss::BulletHellPattern5() //Stream
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
 
-        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
         float3 direction = float3(mFront.x * cos(alpha) - mFront.z * sin(alpha), mFront.y, mFront.x * sin(alpha) + mFront.z * cos(alpha));
         LookAt(direction, BEAT_TIME / 8);
         direction.Normalize();
@@ -533,6 +551,8 @@ void EnemyBoss::BulletHellPattern5() //Stream
         gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
         bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         mBulletsWave++;
+
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
     }
 }
 
@@ -550,17 +570,20 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
             float alpha = 2 * pi * i / nBullets;
             float3 direction = float3(front.x * cos(alpha) - front.z * sin(alpha), front.y, front.x * sin(alpha) + front.z * cos(alpha));
             direction.Normalize();
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(target - direction*radius, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
     }
 }
 
 void EnemyBoss::UpdatePhase1()
 {
+    GameManager::GetInstance()->HandleBossAudio(mStage);
     static unsigned int sequence = 0;
     switch (mCurrentState)
     {
@@ -595,6 +618,7 @@ void EnemyBoss::UpdatePhase1()
 
 void EnemyBoss::UpdatePhase2()
 {
+    GameManager::GetInstance()->HandleBossAudio(mStage);
     static unsigned int sequence = 0;
     static unsigned int attack = 0;
     switch (mCurrentState)
@@ -653,6 +677,7 @@ void EnemyBoss::UpdatePhase2()
 
 void EnemyBoss::UpdatePhase3()
 {
+    GameManager::GetInstance()->HandleBossAudio(mStage);
     static int sequence = -1;
     static unsigned int attack = 0;
     switch (mCurrentState)
@@ -764,6 +789,8 @@ void EnemyBoss::TakeDamage(float damage)
     if (mCurrentState == EnemyState::PHASE) return;
     if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_HIT);
+
         ActivateHitEffect();
         mHealth -= damage;
 

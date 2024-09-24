@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "DecalComponent.h"
@@ -80,6 +81,8 @@ void BombBoss::Update()
 			PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
 			playerScript->TakeDamage(mDamage);
 		}
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ERUPTION, mGameObject->GetWorldPosition());
+
 		mHasExploded = true;
 	}
 	else if (mTimePassed >= mTimeDelay && mHasExploded)

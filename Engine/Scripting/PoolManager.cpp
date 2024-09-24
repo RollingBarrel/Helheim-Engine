@@ -26,6 +26,7 @@ void PoolManager::Start()
 	GameObject* RedEnergy = new GameObject("RedEnergy_Pool", mGameObject);
 	GameObject* Bullet = new GameObject("Bullet_Pool", mGameObject);
 	GameObject* EnemyBullet = new GameObject("EnemyBullet_Pool", mGameObject);
+	GameObject* BossBullet = new GameObject("BossBullet_Pool", mGameObject);
 
 	//Enemies
 	GameObject* EnemyRobotMelee = new GameObject("EnemyRobotMelee_Pool", mGameObject);
@@ -44,6 +45,7 @@ void PoolManager::Start()
 		{PoolType::RED_ENERGY, ObjectPool("Item_Red_Battery.prfb", numItems, RedEnergy)},
 		{PoolType::BULLET, ObjectPool("Bullet.prfb", numBullets, Bullet)},
 		{PoolType::ENEMY_BULLET, ObjectPool("EnemyBullet.prfb", numBullets, EnemyBullet)},
+		{PoolType::BOSS_BULLET, ObjectPool("BossBullet.prfb", numBullets, BossBullet)},
 
 		//ENEMIES
 		{ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) },

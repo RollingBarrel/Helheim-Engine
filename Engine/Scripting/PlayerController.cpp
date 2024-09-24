@@ -149,9 +149,9 @@ void PlayerController::Start()
 
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
-
+    mGodMode = mPlayerStats->GetGodMode();
     mPlayerSpeed = mPlayerStats->GetSpeed();
-
+    mDamageModifier = mPlayerStats->GetDamageModifier();
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -253,6 +253,10 @@ void PlayerController::Start()
     mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
+        mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
+        mAnimationComponent->SendSpineTrigger("tAim", 0.1f);
+
         mAnimationComponent->SetIsPlaying(true);
     }
     // Add Audio Listener
@@ -367,10 +371,12 @@ void PlayerController::CheckInput()
             case StateType::IDLE:
                 if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
                 {
+                    /*
                     if (GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
                         SetSpineAnimation("tIdleRanged", 0.3f);
                     else
                         SetSpineAnimation("tIdleMelee", 0.3f);
+                    */
                 }
                 mLowerState = mIdleState;
                 break;
@@ -658,8 +664,10 @@ void PlayerController::SetSpeed(float speed)
 
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
-    mPlayerStats->SetDamageModifier(mDamageModifier);
+    if (mDamageModifier < 5000.0f) {
+        mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
+        mPlayerStats->SetDamageModifier(mDamageModifier);
+    }
 }
 
 void PlayerController::SetMaxShield(float percentage)
@@ -742,7 +750,7 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition + float3(0, 0.8, 0));
+    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition + float3(0.0f, 0.8f, 0.0f));
     mGrenadeAimTimer.Reset();
 }
 
@@ -776,15 +784,18 @@ void PlayerController::CheckDebugOptions()
     if (input->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN)
     {
         mGodMode = !mGodMode;
+        App->GetScene()->GetPlayerStats()->SetGodMode(mGodMode);
     }
     if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
     {
         if (mDamageModifier != 99999.0f)
         {
             mDamageModifier = 99999.0f;
+            App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
         }
         else
         {
+            App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
             mDamageModifier = 1.0f;
         }
      }
@@ -924,6 +935,12 @@ void PlayerController::UseEnergy(int energy)
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
+void PlayerController::ResetEnergy()
+{
+    mCurrentEnergy = 0;
+    mEnergyType = EnergyType::NONE;
+}
+
 void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100) 
@@ -984,7 +1001,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 
 void PlayerController::TakeDamage(float damage)
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;
