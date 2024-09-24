@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "ObjectPool.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "BoxColliderComponent.h"
 #include "ParticleSystemComponent.h"
 #include "DecalComponent.h"
@@ -84,6 +85,8 @@ void BombBoss::Update()
 			PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
 			playerScript->TakeDamage(mDamage);
 		}
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ERUPTION, mGameObject->GetWorldPosition());
+
 		mHasExploded = true;
 	}
 }
@@ -95,7 +98,7 @@ void BombBoss::Init(float3 bombOrigin, float damage)
 	ray.pos = mGameObject->GetWorldPosition() + float3(0, 10, 0);
 	ray.dir = float3(0, -1, 0);
 	Hit hit;
-
+	Physics::Raycast(hit, ray, 15);
 	if (hit.IsValid())
 	{
 		mGameObject->SetEnabled(true);

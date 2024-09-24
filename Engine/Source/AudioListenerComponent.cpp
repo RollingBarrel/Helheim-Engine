@@ -20,6 +20,7 @@ AudioListenerComponent::~AudioListenerComponent()
 
 void AudioListenerComponent::Update()
 {
+	// For events
 	float3 gameobjectPosition = GetOwner()->GetWorldPosition();
 
 	FMOD::Studio::System* system = App->GetAudio()->GetFMODSystem();
@@ -27,9 +28,13 @@ void AudioListenerComponent::Update()
 
 	attributes.position.x = gameobjectPosition.x;
 	attributes.position.z = gameobjectPosition.z;
-	attributes.forward.z = 1.0f;
+	attributes.forward.z = -1.0f;
 	attributes.up.y = 1.0f;
 	system->setListenerAttributes(0, &attributes);
+
+	// For channels
+	FMOD::System* core = App->GetAudio()->GetFMODCoreSystem();
+	core->set3DListenerAttributes(0, &attributes.position, &attributes.velocity, &attributes.forward, &attributes.up);
 }
 
 Component* AudioListenerComponent::Clone(GameObject* owner) const

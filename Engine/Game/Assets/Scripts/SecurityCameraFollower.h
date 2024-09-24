@@ -21,19 +21,22 @@ public:
 	void Update() override;
 
 	void OnCollisionEnter(CollisionData* collisionData);
-	//void OnCollisionExit(CollisionData* collisionData);
 	
 
 private:
 
 	float mMaxDistance = 15.0f;
+	float mSpeed = 3.0f;
 
+	float3 mLookingAtLocation = float3::zero;
+	
 	SpotLightComponent* mCameraLight = nullptr;
 	float mMaxLightIntesity = 20.0f;
 	float mMaxLightRange = 10.0f;
 
 	float mTurningLightOnTimer = 0.0f;
-	float mTurningLightOnTime = 5.0f;
+	float mTurningOnOffTime = 3.0f;
+	bool mOutOfReach = true;
 
 	GameObject* mTarget = nullptr;
 	BoxColliderComponent* mCollider = nullptr;

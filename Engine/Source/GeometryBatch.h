@@ -137,6 +137,8 @@ private:
 	GLsync mSync[NUM_BUFFERS];
 	unsigned int mParameterBuffer = 0;
 
+	unsigned int mCommandsBuffer = 0;
+
 	unsigned int mSsboMaterials = 0;
 
 	unsigned int mFrustumsSsbo = 0;

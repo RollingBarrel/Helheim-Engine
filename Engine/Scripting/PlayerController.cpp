@@ -669,69 +669,72 @@ void PlayerController::SetMaxShield(float percentage)
     GameManager::GetInstance()->GetHud()->SetMaxHealth(mMaxShield);
 }
 
-void PlayerController::SetGrenadeVisuals(bool value)
+void PlayerController::EnableGrenadeAim(bool value)
 {
     if (mGrenadeExplotionPreviewAreaGO)
     {
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
-        mGrenadeExplotionPreviewAreaGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), mGrenade->GetGrenadeRadius(), 1.5f));
+        if (value)
+        {
+            mGrenadeGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 1.0f, mGrenade->GetGrenadeRadius()));
+            mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
+        }  
     }
 }
 
-void PlayerController::UpdateGrenadeVisuals()
+void PlayerController::GrenadeAim()
 {
     if (mGrenadeExplotionPreviewAreaGO)
     {
-        float3 diff;
-
         if (GameManager::GetInstance()->UsingController())
         {
-            float rightX = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
-            float rightY = - App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
-
-            if (!(std::abs(rightX) < 0.2f && std::abs(rightY) < 0.2f))
+            if (mGrenadeAimTimer.DelayWithoutReset(0.15f))
             {
-                float3 position = mGameObject->GetWorldPosition();
-
+                mGrenadeExplotionPreviewAreaGO->SetEnabled(true);
+                float rightX = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTX);
+                float rightY = App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_RIGHTY);
+    
+                float2 rightStickVector = float2(rightX, rightY);
+                float lenght = rightStickVector.Length();
+                lenght = Min(1.0f, lenght);
+    
                 float3 cameraFront = App->GetCamera()->GetCurrentCamera()->GetOwner()->GetRight().Cross(float3::unitY).Normalized();
                 float3 cameraRight = float3::unitY.Cross(cameraFront).Normalized();
-
-                float3 throwDirection = (cameraFront * rightY + cameraRight * rightX).Normalized();
-
-                float3 movement = throwDirection * mGrenadeCursorSpeed * App->GetDt();
-                mGrenadePosition += movement;
-            }
-
-            float3 diff = mGrenadePosition - mGameObject->GetWorldPosition();
-
-            float distanceSquared = diff.LengthSq();
-            float radiusSquared = mGrenadeRange * mGrenadeRange;
-            if (distanceSquared > radiusSquared)
-            {
-                diff.Normalize();
-                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
-            }
-        }
-
-        else
-        {
-            diff = mAimPosition - mGameObject->GetWorldPosition();
-            float distanceSquared = diff.LengthSq();
-            float radiusSquared = mGrenadeRange * mGrenadeRange;
-
-            if (distanceSquared <= radiusSquared)
-            {
-                mGrenadePosition = mAimPosition;
+                float3 grenadeDirection = ((cameraFront * -rightStickVector.y) + (cameraRight * -rightStickVector.x)).Normalized();
+    
+                float3 initialPosition = mGameObject->GetWorldPosition();
+    
+                mGrenadePosition = initialPosition + grenadeDirection * (mGrenadeRange * lenght);
             }
             else
             {
-                diff.Normalize();
-                mGrenadePosition = mGameObject->GetWorldPosition() + diff * mGrenadeRange;
+                mGrenadeExplotionPreviewAreaGO->SetEnabled(false);
+                mGrenadePosition = mGameObject->GetWorldPosition() + mGameObject->GetFront() * mGrenadeRange;
+                //mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGrenadePosition);
             }
         }
-
-        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(float3(mGrenadePosition.x, mGameObject->GetWorldPosition().y, mGrenadePosition.z));
-    }
+    
+        else
+        {
+            Ray ray = Physics::ScreenPointToRay(App->GetInput()->GetGlobalMousePosition());
+            float3 planePoint = mGameObject->GetWorldPosition();
+            Plane plane(planePoint, float3::unitY);
+    
+            float distance;
+            if (plane.Intersects(ray, &distance))
+            {
+                float3 rayPoint = ray.GetPoint(distance);
+                float3 initialPosition = mGameObject->GetWorldPosition();
+                float3 aimDirection = rayPoint - mGameObject->GetWorldPosition();
+                float distanceSquared = aimDirection.LengthSq();
+                float radiusSquared = mGrenadeRange * mGrenadeRange;
+                aimDirection.Normalize();
+    
+                mGrenadePosition = (distanceSquared < radiusSquared) ? rayPoint : initialPosition + aimDirection.Normalized() * mGrenadeRange;
+            }
+        }
+        mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGrenadePosition);
+    } 
 }
 
 void PlayerController::ThrowGrenade()
@@ -739,15 +742,12 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mGrenade)
-    {
-        mGrenade->SetPositionDestination(mGameObject->GetWorldPosition(), mGrenadePosition);
-    }  
+    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition + float3(0.0f, 0.8f, 0.0f));
+    mGrenadeAimTimer.Reset();
 }
 
 void PlayerController::CheckOtherTimers()
 {
-
     // Paralizys
     if (mIsParalyzed)
     {
@@ -924,6 +924,12 @@ void PlayerController::UseEnergy(int energy)
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
+void PlayerController::ResetEnergy()
+{
+    mCurrentEnergy = 0;
+    mEnergyType = EnergyType::NONE;
+}
+
 void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100) 
@@ -984,7 +990,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 
 void PlayerController::TakeDamage(float damage)
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;

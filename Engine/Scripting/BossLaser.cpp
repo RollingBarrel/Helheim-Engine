@@ -4,6 +4,7 @@
 #include "ModuleScene.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "BossLaserEyeBall.h"
 
 CREATE(BossLaser)
@@ -89,6 +90,8 @@ void BossLaser::Fire()
         if (eyeBallScript)
         {
             eyeBallScript->Init(mDamage, mLaserDuration, mLaserDistance, mLaserSpeed, -90.0f);
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER, mLaserEyeBall->GetWorldPosition());
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER2, mLaserEyeBall->GetWorldPosition());
         }
     }
 }

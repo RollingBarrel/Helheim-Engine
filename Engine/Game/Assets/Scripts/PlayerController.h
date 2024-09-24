@@ -117,8 +117,8 @@ public:
     // Grenade
     void SetGrenadeCooldown(float value) { mGrenadeCoolDown = value; }
     void SetGrenadeRange(float value) { mGrenadeRange = value; }
-    void SetGrenadeVisuals(bool value);
-    void UpdateGrenadeVisuals();
+    void EnableGrenadeAim(bool value);
+    void GrenadeAim();
     void ThrowGrenade();
 
     void CheckOtherTimers();
@@ -133,6 +133,7 @@ public:
 
     void RechargeBattery(EnergyType batteryType);
     void UseEnergy(int energy);
+    void ResetEnergy();
 
     void UnlockGrenade(bool unlock) { mGrenadeUnlocked = unlock; }
     void UnlockUltimate(bool unlock) { mUltimateUnlocked = unlock; }
@@ -217,7 +218,7 @@ private:
     float mDashRange = 5.0f;
 
     // Speed
-    float mPlayerSpeed;
+    float mPlayerSpeed = 1.0f;
     float mBaseSpeed = 5.5f;
 
     // Shield
@@ -274,6 +275,7 @@ private:
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+    TimerScript mGrenadeAimTimer;
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;

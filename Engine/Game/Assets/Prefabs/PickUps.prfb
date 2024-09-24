@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 362632390,
-                "ParentUID": 2088664639,
+                "UID": 1402739944,
+                "ParentUID": 1,
                 "Name": "PickUps",
                 "Enabled": true,
                 "Active": true,
@@ -62,8 +62,8 @@
                 ]
             },
             {
-                "UID": 991401621,
-                "ParentUID": 362632390,
+                "UID": 461092017,
+                "ParentUID": 1402739944,
                 "Name": "Controller",
                 "Enabled": false,
                 "Active": false,
@@ -140,8 +140,8 @@
                 ]
             },
             {
-                "UID": 1229744595,
-                "ParentUID": 362632390,
+                "UID": 1361082684,
+                "ParentUID": 1402739944,
                 "Name": "Keyboard",
                 "Enabled": false,
                 "Active": false,

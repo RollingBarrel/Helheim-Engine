@@ -6,6 +6,7 @@
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "PoolManager.h"
 #include "BombBoss.h"
 #include "ColorGradient.h"
@@ -23,6 +24,8 @@
 #define PHASE_ANIMATION 5.0f
 #define DEATH_ANIMATION 4.4583f
 #define WAKEUP_ANIMATION 2.5f
+#define DEFENSE_START_ANIMATION 1.791f
+#define DEFENSE_END_ANIMATION 1.2f
 #define HIT_ANIMATION 1.25f
 #define BEAT_TIME 0.428571435f
 
@@ -31,7 +34,6 @@ CREATE(EnemyBoss) {
     SEPARATOR("STATS");
     MEMBER(MemberType::FLOAT, mMaxHealth);
     MEMBER(MemberType::FLOAT, mSpeed);
-    MEMBER(MemberType::FLOAT, mRotationSpeed);
     MEMBER(MemberType::FLOAT, mAttackDistance);
     MEMBER(MemberType::FLOAT, mAttackCoolDown);
     MEMBER(MemberType::FLOAT, mAttackSequenceCooldown);
@@ -132,29 +134,40 @@ void EnemyBoss::Update()
             case 0:
                 if (mPhaseShiftTimer.Delay(HIT_ANIMATION))
                 {
-                    BossBattleArea* ba = static_cast<BossBattleArea*>(GameManager::GetInstance()->GetActiveBattleArea());
-                    if (ba) ba->SpawnEnemies();
-                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseStart", mDeathTransitionDuration);
                     ++phaseChange;
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                 }
                 break;
             case 1:
+                if (mPhaseShiftTimer.Delay(DEFENSE_START_ANIMATION))
+                {
+                    BossBattleArea* ba = static_cast<BossBattleArea*>(GameManager::GetInstance()->GetActiveBattleArea());
+                    if (ba) ba->SpawnEnemies();
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseLoop", mDeathTransitionDuration);
+                    ++phaseChange;
+                }
+                break;
+            case 2:
                 if (mWakeUp)
                 {
-                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", 1.0f);
+                    if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseEnd", 1.0f);
                     ++phaseChange;
                     mWakeUp = false;
                 }
                 break;
-            case 2:
-                if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
+            case 3:
+                if (mPhaseShiftTimer.Delay(DEFENSE_END_ANIMATION))
                 {
 
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tPhase", mDeathTransitionDuration);
                     ++phaseChange;
+                    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_AWAKE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+
+                    //GameManager::GetInstance()->HandleBossAudio(mStage);
                 }
                 break;
-            case 3:
+            case 4:
                 if (mPhaseShiftTimer.Delay(PHASE_ANIMATION))
                 {
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
@@ -233,6 +246,7 @@ void EnemyBoss::Update()
 
 void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_BULLET);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
     mBulletHell = pattern;
@@ -242,6 +256,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 
 void EnemyBoss::LaserAttack()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_LASER);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
 
@@ -259,6 +274,7 @@ void EnemyBoss::LaserAttack()
 
 void EnemyBoss::BombAttack()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_ERUPTION);
     mCurrentState = EnemyState::ATTACK;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
     float3 target = mPlayer->GetWorldPosition();
@@ -282,6 +298,8 @@ void EnemyBoss::Death()
 {
     if (mDeathTimer.Delay(mDeathTime))
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM);
+
         GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(false);
         GameManager::GetInstance()->SetIsFightingBoss(false);
         mGameObject->SetEnabled(false);
@@ -317,6 +335,8 @@ void EnemyBoss::BulletHellPattern1() //Circular
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
     }
@@ -355,6 +375,8 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+
         }
         mBulletsWave++;
     }
@@ -381,6 +403,8 @@ void EnemyBoss::BulletHellPattern3() //Two streams
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
     }
@@ -419,6 +443,8 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
     }
@@ -447,6 +473,8 @@ void EnemyBoss::BulletHellPattern5() //Stream
         gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
         bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         mBulletsWave++;
+
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
     }
 }
 
@@ -469,12 +497,15 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(target - direction*radius, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
+
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
     }
 }
 
 void EnemyBoss::UpdatePhase1()
 {
+    GameManager::GetInstance()->HandleBossAudio(mStage);
     static unsigned int sequence = 0;
     switch (mCurrentState)
     {
@@ -509,6 +540,7 @@ void EnemyBoss::UpdatePhase1()
 
 void EnemyBoss::UpdatePhase2()
 {
+    GameManager::GetInstance()->HandleBossAudio(mStage);
     static unsigned int sequence = 0;
     static unsigned int attack = 0;
     switch (mCurrentState)
@@ -567,6 +599,7 @@ void EnemyBoss::UpdatePhase2()
 
 void EnemyBoss::UpdatePhase3()
 {
+    GameManager::GetInstance()->HandleBossAudio(mStage);
     static int sequence = -1;
     static unsigned int attack = 0;
     switch (mCurrentState)
@@ -679,6 +712,8 @@ void EnemyBoss::TakeDamage(float damage)
     if (mCurrentState == EnemyState::PHASE) return;
     if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_HIT);
+
         ActivateHitEffect();
         mHealth -= damage;
 
