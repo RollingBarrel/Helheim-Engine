@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1674828877,
+                "UID": 84419292,
                 "ParentUID": 1,
                 "Name": "Canvas Menu",
                 "Enabled": true,
@@ -49,52 +49,52 @@
                             {
                                 "VariableName": "mSplashScreen",
                                 "MemberType": 3,
-                                "VariableData": 470409709
+                                "VariableData": 894851366
                             },
                             {
                                 "VariableName": "mStudioScreen",
                                 "MemberType": 3,
-                                "VariableData": 221169527
+                                "VariableData": 1024973015
                             },
                             {
                                 "VariableName": "mEngineScreen",
                                 "MemberType": 3,
-                                "VariableData": 731314054
+                                "VariableData": 959668517
                             },
                             {
                                 "VariableName": "mLoadingScreen",
                                 "MemberType": 3,
-                                "VariableData": 397302865
+                                "VariableData": 1090207892
                             },
                             {
                                 "VariableName": "mLoadingSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 1373202265
+                                "VariableData": 1155721253
                             },
                             {
                                 "VariableName": "mMainMenu",
                                 "MemberType": 3,
-                                "VariableData": 1385711187
+                                "VariableData": 144641457
                             },
                             {
                                 "VariableName": "mOptionsMenu",
                                 "MemberType": 3,
-                                "VariableData": 597757094
+                                "VariableData": 1437851532
                             },
                             {
                                 "VariableName": "mCreditsMenu",
                                 "MemberType": 3,
-                                "VariableData": 1098789503
+                                "VariableData": 1200163353
                             },
                             {
                                 "VariableName": "mCreditsListText",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1261151349
                             },
                             {
                                 "VariableName": "mOptionsContainerGO",
                                 "MemberType": 3,
-                                "VariableData": 1936926760
+                                "VariableData": 602862977
                             },
                             {
                                 "VariableName": "SETTINGS",
@@ -103,72 +103,72 @@
                             {
                                 "VariableName": "mGeneralVolumeSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 1603273687
+                                "VariableData": 303144572
                             },
                             {
                                 "VariableName": "mGeneralVolumeFillGO",
                                 "MemberType": 3,
-                                "VariableData": 1643257206
+                                "VariableData": 403120328
                             },
                             {
                                 "VariableName": "mMusicVolumeSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 1552416303
+                                "VariableData": 8647742
                             },
                             {
                                 "VariableName": "mMusicVolumeFillGO",
                                 "MemberType": 3,
-                                "VariableData": 104302619
+                                "VariableData": 105977900
                             },
                             {
                                 "VariableName": "mEffectsVolumeSliderGO",
                                 "MemberType": 3,
-                                "VariableData": 1652551155
+                                "VariableData": 1721417865
                             },
                             {
                                 "VariableName": "mEffectsVolumeFillGO",
                                 "MemberType": 3,
-                                "VariableData": 1236365584
+                                "VariableData": 1817634087
                             },
                             {
                                 "VariableName": "mVSyncButtonOffGO",
                                 "MemberType": 3,
-                                "VariableData": 323646839
+                                "VariableData": 354407445
                             },
                             {
                                 "VariableName": "mVSyncButtonOnGO",
                                 "MemberType": 3,
-                                "VariableData": 1506037091
+                                "VariableData": 533681520
                             },
                             {
                                 "VariableName": "mVSyncImageOn_On",
                                 "MemberType": 3,
-                                "VariableData": 1617500312
+                                "VariableData": 652872672
                             },
                             {
                                 "VariableName": "mVSyncImageOff_On",
                                 "MemberType": 3,
-                                "VariableData": 43646981
+                                "VariableData": 473737839
                             },
                             {
                                 "VariableName": "mFullscreenButtonOnGO",
                                 "MemberType": 3,
-                                "VariableData": 935381240
+                                "VariableData": 773943591
                             },
                             {
                                 "VariableName": "mFullscreenButtonOffGO",
                                 "MemberType": 3,
-                                "VariableData": 1949195049
+                                "VariableData": 956629095
                             },
                             {
                                 "VariableName": "mFullscreenImageOn_On",
                                 "MemberType": 3,
-                                "VariableData": 1285783733
+                                "VariableData": 895292994
                             },
                             {
                                 "VariableName": "mFullscreenImageOff_On",
                                 "MemberType": 3,
-                                "VariableData": 20251721
+                                "VariableData": 1078187361
                             },
                             {
                                 "VariableName": "Play Btn",
@@ -177,22 +177,22 @@
                             {
                                 "VariableName": "mPlayGO",
                                 "MemberType": 3,
-                                "VariableData": 532651538
+                                "VariableData": 275459316
                             },
                             {
                                 "VariableName": "mPlayText",
                                 "MemberType": 3,
-                                "VariableData": 240586312
+                                "VariableData": 319042062
                             },
                             {
                                 "VariableName": "mPlayHover",
                                 "MemberType": 3,
-                                "VariableData": 848403066
+                                "VariableData": 362415945
                             },
                             {
                                 "VariableName": "mPlayClicked",
                                 "MemberType": 3,
-                                "VariableData": 2031559607
+                                "VariableData": 452435898
                             },
                             {
                                 "VariableName": "Options Btn",
@@ -201,22 +201,22 @@
                             {
                                 "VariableName": "mOptionsGO",
                                 "MemberType": 3,
-                                "VariableData": 1520039135
+                                "VariableData": 817876527
                             },
                             {
                                 "VariableName": "mOptionsText",
                                 "MemberType": 3,
-                                "VariableData": 1539393773
+                                "VariableData": 862782072
                             },
                             {
                                 "VariableName": "mOptionsHover",
                                 "MemberType": 3,
-                                "VariableData": 171711045
+                                "VariableData": 907896480
                             },
                             {
                                 "VariableName": "mOptionsClicked",
                                 "MemberType": 3,
-                                "VariableData": 946429631
+                                "VariableData": 999030369
                             },
                             {
                                 "VariableName": "Credits Btn",
@@ -225,22 +225,31 @@
                             {
                                 "VariableName": "mCreditsGO",
                                 "MemberType": 3,
-                                "VariableData": 1603845487
+                                "VariableData": 549278709
                             },
                             {
                                 "VariableName": "mCreditsText",
                                 "MemberType": 3,
-                                "VariableData": 1623339367
+                                "VariableData": 593836149
                             },
                             {
                                 "VariableName": "mCreditsHover",
                                 "MemberType": 3,
-                                "VariableData": 278004980
+                                "VariableData": 639020178
                             },
                             {
                                 "VariableName": "mCreditsClicked",
                                 "MemberType": 3,
-                                "VariableData": 959501047
+                                "VariableData": 728204679
+                            },
+                            {
+                                "VariableName": "Back Btn",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBackGO",
+                                "MemberType": 3,
+                                "VariableData": 571392200
                             },
                             {
                                 "VariableName": "Quit Btn",
@@ -249,22 +258,22 @@
                             {
                                 "VariableName": "mQuitGO",
                                 "MemberType": 3,
-                                "VariableData": 779516268
+                                "VariableData": 1097752947
                             },
                             {
                                 "VariableName": "mQuitText",
                                 "MemberType": 3,
-                                "VariableData": 797200002
+                                "VariableData": 1143633186
                             },
                             {
                                 "VariableName": "mQuitHover",
                                 "MemberType": 3,
-                                "VariableData": 1652818190
+                                "VariableData": 1189583046
                             },
                             {
                                 "VariableName": "mQuitClicked",
                                 "MemberType": 3,
-                                "VariableData": 166779762
+                                "VariableData": 1345116360
                             },
                             {
                                 "VariableName": "Keyboard Btn",
@@ -273,22 +282,22 @@
                             {
                                 "VariableName": "mKeyboardGO",
                                 "MemberType": 3,
-                                "VariableData": 1770784992
+                                "VariableData": 703883048
                             },
                             {
                                 "VariableName": "mKeyboardText",
                                 "MemberType": 3,
-                                "VariableData": 1818266514
+                                "VariableData": 754427894
                             },
                             {
                                 "VariableName": "mKeyboardHover",
                                 "MemberType": 3,
-                                "VariableData": 377064010
+                                "VariableData": 805181603
                             },
                             {
                                 "VariableName": "mKeyboardClicked",
                                 "MemberType": 3,
-                                "VariableData": 1045192845
+                                "VariableData": 907245989
                             },
                             {
                                 "VariableName": "Controller Btn",
@@ -297,22 +306,22 @@
                             {
                                 "VariableName": "mControllerGO",
                                 "MemberType": 3,
-                                "VariableData": 1587681491
+                                "VariableData": 1009797722
                             },
                             {
                                 "VariableName": "mControllerText",
                                 "MemberType": 3,
-                                "VariableData": 1628549018
+                                "VariableData": 1062152714
                             },
                             {
                                 "VariableName": "mControllerHover",
                                 "MemberType": 3,
-                                "VariableData": 244157250
+                                "VariableData": 1206894773
                             },
                             {
                                 "VariableName": "mControllerClicked",
                                 "MemberType": 3,
-                                "VariableData": 894323867
+                                "VariableData": 1312718693
                             },
                             {
                                 "VariableName": "Audio Btn",
@@ -321,22 +330,22 @@
                             {
                                 "VariableName": "mAudioGO",
                                 "MemberType": 3,
-                                "VariableData": 592768026
+                                "VariableData": 1447574570
                             },
                             {
                                 "VariableName": "mAudioText",
                                 "MemberType": 3,
-                                "VariableData": 638648265
+                                "VariableData": 1499720699
                             },
                             {
                                 "VariableName": "mAudioHover",
                                 "MemberType": 3,
-                                "VariableData": 1439265863
+                                "VariableData": 1551936449
                             },
                             {
                                 "VariableName": "mAudioClicked",
                                 "MemberType": 3,
-                                "VariableData": 239787471
+                                "VariableData": 1656855296
                             },
                             {
                                 "VariableName": "Settings Btn",
@@ -345,22 +354,22 @@
                             {
                                 "VariableName": "mSettingsGO",
                                 "MemberType": 3,
-                                "VariableData": 145355469
+                                "VariableData": 1863142319
                             },
                             {
                                 "VariableName": "mSettingsText",
                                 "MemberType": 3,
-                                "VariableData": 185317923
+                                "VariableData": 1942440638
                             },
                             {
                                 "VariableName": "mSettingsHover",
                                 "MemberType": 3,
-                                "VariableData": 985657037
+                                "VariableData": 1996466534
                             },
                             {
                                 "VariableName": "mSettingsClicked",
                                 "MemberType": 3,
-                                "VariableData": 1696324303
+                                "VariableData": 2103125906
                             },
                             {
                                 "VariableName": "Options Screens",
@@ -369,22 +378,22 @@
                             {
                                 "VariableName": "mControlsScreenGO",
                                 "MemberType": 3,
-                                "VariableData": 144484387
+                                "VariableData": 62649736
                             },
                             {
                                 "VariableName": "mSettingsScreenGO",
                                 "MemberType": 3,
-                                "VariableData": 2138220133
+                                "VariableData": 112404849
                             },
                             {
                                 "VariableName": "mAudioScreenGO",
                                 "MemberType": 3,
-                                "VariableData": 13224123
+                                "VariableData": 1484706465
                             },
                             {
                                 "VariableName": "mKeyboardScreenGO",
                                 "MemberType": 3,
-                                "VariableData": 1852538699
+                                "VariableData": 661529578
                             },
                             {
                                 "VariableName": "Audio buttons",
@@ -393,32 +402,32 @@
                             {
                                 "VariableName": "mGeneralVolumeUp",
                                 "MemberType": 3,
-                                "VariableData": 751985981
+                                "VariableData": 502817600
                             },
                             {
                                 "VariableName": "mGeneralVolumeDown",
                                 "MemberType": 3,
-                                "VariableData": 1948142558
+                                "VariableData": 452899343
                             },
                             {
                                 "VariableName": "mMusicVolumeUp",
                                 "MemberType": 3,
-                                "VariableData": 804164626
+                                "VariableData": 2010553878
                             },
                             {
                                 "VariableName": "mMusicVolumeDown",
                                 "MemberType": 3,
-                                "VariableData": 1650039829
+                                "VariableData": 2058731610
                             },
                             {
                                 "VariableName": "mEffectsVolumeUp",
                                 "MemberType": 3,
-                                "VariableData": 662247507
+                                "VariableData": 1579182162
                             },
                             {
                                 "VariableName": "mEffectsVolumeDown",
                                 "MemberType": 3,
-                                "VariableData": 1138375249
+                                "VariableData": 1626176337
                             },
                             {
                                 "VariableName": "OTHERS",
@@ -427,15 +436,15 @@
                             {
                                 "VariableName": "mAudioManagerGO",
                                 "MemberType": 3,
-                                "VariableData": 1044790463
+                                "VariableData": -1
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1385711187,
-                "ParentUID": 1674828877,
+                "UID": 144641457,
+                "ParentUID": 84419292,
                 "Name": "MainMenu",
                 "Enabled": true,
                 "Active": true,
@@ -494,7 +503,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": true,
-                        "ImageID": 1269833389,
+                        "ImageID": 974477698,
                         "Color": [
                             1.0,
                             1.0,
@@ -512,8 +521,8 @@
                 ]
             },
             {
-                "UID": 1474242776,
-                "ParentUID": 1385711187,
+                "UID": 188293824,
+                "ParentUID": 144641457,
                 "Name": "Buttons",
                 "Enabled": true,
                 "Active": true,
@@ -572,8 +581,86 @@
                 ]
             },
             {
-                "UID": 532651538,
-                "ParentUID": 1474242776,
+                "UID": 231737328,
+                "ParentUID": 188293824,
+                "Name": "VerticalBars",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            150.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            2.0,
+                            300.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 572889098,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 275459316,
+                "ParentUID": 188293824,
                 "Name": "PlayBtn",
                 "Enabled": true,
                 "Active": true,
@@ -654,8 +741,8 @@
                 ]
             },
             {
-                "UID": 240586312,
-                "ParentUID": 532651538,
+                "UID": 319042062,
+                "ParentUID": 275459316,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -730,8 +817,8 @@
                 ]
             },
             {
-                "UID": 848403066,
-                "ParentUID": 532651538,
+                "UID": 362415945,
+                "ParentUID": 275459316,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -808,8 +895,8 @@
                 ]
             },
             {
-                "UID": 1436620839,
-                "ParentUID": 848403066,
+                "UID": 408505047,
+                "ParentUID": 362415945,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -878,14 +965,14 @@
                         "LineWidth": 0,
                         "LineSpacing": 0,
                         "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
                         "FontSize": 30
                     }
                 ]
             },
             {
-                "UID": 2031559607,
-                "ParentUID": 532651538,
+                "UID": 452435898,
+                "ParentUID": 275459316,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -962,8 +1049,8 @@
                 ]
             },
             {
-                "UID": 1472744309,
-                "ParentUID": 2031559607,
+                "UID": 504721269,
+                "ParentUID": 452435898,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -1038,8 +1125,8 @@
                 ]
             },
             {
-                "UID": 1603845487,
-                "ParentUID": 1474242776,
+                "UID": 549278709,
+                "ParentUID": 188293824,
                 "Name": "CreditsBtn",
                 "Enabled": true,
                 "Active": true,
@@ -1069,7 +1156,7 @@
                         "IsEnabled": true,
                         "Position": [
                             0.0,
-                            -125.0,
+                            -25.0,
                             0.0
                         ],
                         "Rotation": [
@@ -1120,8 +1207,8 @@
                 ]
             },
             {
-                "UID": 1623339367,
-                "ParentUID": 1603845487,
+                "UID": 593836149,
+                "ParentUID": 549278709,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -1196,8 +1283,8 @@
                 ]
             },
             {
-                "UID": 278004980,
-                "ParentUID": 1603845487,
+                "UID": 639020178,
+                "ParentUID": 549278709,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -1274,8 +1361,8 @@
                 ]
             },
             {
-                "UID": 302093846,
-                "ParentUID": 278004980,
+                "UID": 683577618,
+                "ParentUID": 639020178,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -1344,14 +1431,14 @@
                         "LineWidth": 0,
                         "LineSpacing": 0,
                         "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
                         "FontSize": 30
                     }
                 ]
             },
             {
-                "UID": 959501047,
-                "ParentUID": 1603845487,
+                "UID": 728204679,
+                "ParentUID": 549278709,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -1428,8 +1515,8 @@
                 ]
             },
             {
-                "UID": 978020233,
-                "ParentUID": 959501047,
+                "UID": 772970982,
+                "ParentUID": 728204679,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -1504,8 +1591,8 @@
                 ]
             },
             {
-                "UID": 1520039135,
-                "ParentUID": 1474242776,
+                "UID": 817876527,
+                "ParentUID": 188293824,
                 "Name": "OptionsBtn",
                 "Enabled": true,
                 "Active": true,
@@ -1535,7 +1622,7 @@
                         "IsEnabled": true,
                         "Position": [
                             0.0,
-                            0.0,
+                            50.0,
                             0.0
                         ],
                         "Rotation": [
@@ -1586,8 +1673,8 @@
                 ]
             },
             {
-                "UID": 1539393773,
-                "ParentUID": 1520039135,
+                "UID": 862782072,
+                "ParentUID": 817876527,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -1662,8 +1749,8 @@
                 ]
             },
             {
-                "UID": 171711045,
-                "ParentUID": 1520039135,
+                "UID": 907896480,
+                "ParentUID": 817876527,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -1740,8 +1827,8 @@
                 ]
             },
             {
-                "UID": 197053089,
-                "ParentUID": 171711045,
+                "UID": 953567856,
+                "ParentUID": 907896480,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -1810,14 +1897,14 @@
                         "LineWidth": 0,
                         "LineSpacing": 0,
                         "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
                         "FontSize": 30
                     }
                 ]
             },
             {
-                "UID": 946429631,
-                "ParentUID": 1520039135,
+                "UID": 999030369,
+                "ParentUID": 817876527,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -1894,8 +1981,8 @@
                 ]
             },
             {
-                "UID": 965714648,
-                "ParentUID": 946429631,
+                "UID": 1051176498,
+                "ParentUID": 999030369,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -1970,8 +2057,8 @@
                 ]
             },
             {
-                "UID": 779516268,
-                "ParentUID": 1474242776,
+                "UID": 1097752947,
+                "ParentUID": 188293824,
                 "Name": "ExitBtn",
                 "Enabled": true,
                 "Active": true,
@@ -2001,7 +2088,7 @@
                         "IsEnabled": true,
                         "Position": [
                             0.0,
-                            -250.0,
+                            -100.0,
                             0.0
                         ],
                         "Rotation": [
@@ -2052,8 +2139,8 @@
                 ]
             },
             {
-                "UID": 797200002,
-                "ParentUID": 779516268,
+                "UID": 1143633186,
+                "ParentUID": 1097752947,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -2112,7 +2199,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": true,
-                        "Text": "EXIT",
+                        "Text": "QUIT GAME",
                         "Color": [
                             1.0,
                             1.0,
@@ -2128,8 +2215,8 @@
                 ]
             },
             {
-                "UID": 1652818190,
-                "ParentUID": 779516268,
+                "UID": 1189583046,
+                "ParentUID": 1097752947,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -2206,8 +2293,8 @@
                 ]
             },
             {
-                "UID": 1678299476,
-                "ParentUID": 1652818190,
+                "UID": 1235602527,
+                "ParentUID": 1189583046,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -2266,7 +2353,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "EXIT",
+                        "Text": "QUIT GAME",
                         "Color": [
                             0.23137255012989045,
                             0.9960784316062927,
@@ -2276,14 +2363,14 @@
                         "LineWidth": 0,
                         "LineSpacing": 0,
                         "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
                         "FontSize": 30
                     }
                 ]
             },
             {
-                "UID": 166779762,
-                "ParentUID": 779516268,
+                "UID": 1345116360,
+                "ParentUID": 1097752947,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -2360,8 +2447,8 @@
                 ]
             },
             {
-                "UID": 187248336,
-                "ParentUID": 166779762,
+                "UID": 1391623188,
+                "ParentUID": 1345116360,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -2420,7 +2507,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "EXIT",
+                        "Text": "QUIT GAME",
                         "Color": [
                             0.0,
                             0.0,
@@ -2436,8 +2523,8 @@
                 ]
             },
             {
-                "UID": 597757094,
-                "ParentUID": 1385711187,
+                "UID": 1437851532,
+                "ParentUID": 144641457,
                 "Name": "OptionsScreen",
                 "Enabled": true,
                 "Active": true,
@@ -2496,8 +2583,8 @@
                 ]
             },
             {
-                "UID": 13224123,
-                "ParentUID": 597757094,
+                "UID": 1484706465,
+                "ParentUID": 1437851532,
                 "Name": "AudioScreen",
                 "Enabled": false,
                 "Active": false,
@@ -2527,7 +2614,7 @@
                         "IsEnabled": false,
                         "Position": [
                             250.0,
-                            -120.0,
+                            -150.0,
                             0.0
                         ],
                         "Rotation": [
@@ -2556,8 +2643,8 @@
                 ]
             },
             {
-                "UID": 676888874,
-                "ParentUID": 13224123,
+                "UID": 1531909503,
+                "ParentUID": 1484706465,
                 "Name": "VerticalItem (3)",
                 "Enabled": true,
                 "Active": false,
@@ -2634,8 +2721,8 @@
                 ]
             },
             {
-                "UID": 662247507,
-                "ParentUID": 676888874,
+                "UID": 1579182162,
+                "ParentUID": 1531909503,
                 "Name": "Right Arrow (1)",
                 "Enabled": true,
                 "Active": false,
@@ -2716,8 +2803,8 @@
                 ]
             },
             {
-                "UID": 1138375249,
-                "ParentUID": 676888874,
+                "UID": 1626176337,
+                "ParentUID": 1531909503,
                 "Name": "Left Arrow (1)",
                 "Enabled": true,
                 "Active": false,
@@ -2798,8 +2885,8 @@
                 ]
             },
             {
-                "UID": 700560014,
-                "ParentUID": 676888874,
+                "UID": 1674075585,
+                "ParentUID": 1531909503,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -2874,8 +2961,8 @@
                 ]
             },
             {
-                "UID": 1652551155,
-                "ParentUID": 676888874,
+                "UID": 1721417865,
+                "ParentUID": 1531909503,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -2938,8 +3025,8 @@
                 ]
             },
             {
-                "UID": 1217010946,
-                "ParentUID": 1652551155,
+                "UID": 1769108250,
+                "ParentUID": 1721417865,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -3016,8 +3103,8 @@
                 ]
             },
             {
-                "UID": 1236365584,
-                "ParentUID": 1652551155,
+                "UID": 1817634087,
+                "ParentUID": 1721417865,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -3094,8 +3181,8 @@
                 ]
             },
             {
-                "UID": 225844122,
-                "ParentUID": 676888874,
+                "UID": 1865533335,
+                "ParentUID": 1531909503,
                 "Name": "Line",
                 "Enabled": true,
                 "Active": false,
@@ -3172,8 +3259,8 @@
                 ]
             },
             {
-                "UID": 1799647009,
-                "ParentUID": 13224123,
+                "UID": 1913919930,
+                "ParentUID": 1484706465,
                 "Name": "VerticalItem (2)",
                 "Enabled": true,
                 "Active": false,
@@ -3250,8 +3337,8 @@
                 ]
             },
             {
-                "UID": 826419703,
-                "ParentUID": 1799647009,
+                "UID": 1962376146,
+                "ParentUID": 1913919930,
                 "Name": "Line (2)",
                 "Enabled": true,
                 "Active": false,
@@ -3328,8 +3415,8 @@
                 ]
             },
             {
-                "UID": 804164626,
-                "ParentUID": 1799647009,
+                "UID": 2010553878,
+                "ParentUID": 1913919930,
                 "Name": "Right Arrow (1)",
                 "Enabled": true,
                 "Active": false,
@@ -3410,8 +3497,8 @@
                 ]
             },
             {
-                "UID": 1650039829,
-                "ParentUID": 1799647009,
+                "UID": 2058731610,
+                "ParentUID": 1913919930,
                 "Name": "Left Arrow (1)",
                 "Enabled": true,
                 "Active": false,
@@ -3492,8 +3579,8 @@
                 ]
             },
             {
-                "UID": 1823875117,
-                "ParentUID": 1799647009,
+                "UID": 2107605552,
+                "ParentUID": 1913919930,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -3568,8 +3655,8 @@
                 ]
             },
             {
-                "UID": 1552416303,
-                "ParentUID": 1799647009,
+                "UID": 8647742,
+                "ParentUID": 1913919930,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -3632,8 +3719,8 @@
                 ]
             },
             {
-                "UID": 86340401,
-                "ParentUID": 1552416303,
+                "UID": 57312821,
+                "ParentUID": 8647742,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -3710,8 +3797,8 @@
                 ]
             },
             {
-                "UID": 104302619,
-                "ParentUID": 1552416303,
+                "UID": 105977900,
+                "ParentUID": 8647742,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -3788,8 +3875,8 @@
                 ]
             },
             {
-                "UID": 1026392549,
-                "ParentUID": 13224123,
+                "UID": 154991084,
+                "ParentUID": 1484706465,
                 "Name": "VerticalItem (1)",
                 "Enabled": true,
                 "Active": false,
@@ -3866,8 +3953,8 @@
                 ]
             },
             {
-                "UID": 1455669802,
-                "ParentUID": 1026392549,
+                "UID": 204282752,
+                "ParentUID": 154991084,
                 "Name": "Line (1)",
                 "Enabled": true,
                 "Active": false,
@@ -3944,8 +4031,8 @@
                 ]
             },
             {
-                "UID": 1050551036,
-                "ParentUID": 1026392549,
+                "UID": 253783283,
+                "ParentUID": 154991084,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -4020,8 +4107,8 @@
                 ]
             },
             {
-                "UID": 1603273687,
-                "ParentUID": 1026392549,
+                "UID": 303144572,
+                "ParentUID": 154991084,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -4084,8 +4171,8 @@
                 ]
             },
             {
-                "UID": 1628288691,
-                "ParentUID": 1603273687,
+                "UID": 353410934,
+                "ParentUID": 303144572,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -4162,8 +4249,8 @@
                 ]
             },
             {
-                "UID": 1643257206,
-                "ParentUID": 1603273687,
+                "UID": 403120328,
+                "ParentUID": 303144572,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -4240,8 +4327,8 @@
                 ]
             },
             {
-                "UID": 1948142558,
-                "ParentUID": 1026392549,
+                "UID": 452899343,
+                "ParentUID": 154991084,
                 "Name": "Left Arrow",
                 "Enabled": true,
                 "Active": false,
@@ -4322,8 +4409,8 @@
                 ]
             },
             {
-                "UID": 751985981,
-                "ParentUID": 1026392549,
+                "UID": 502817600,
+                "ParentUID": 154991084,
                 "Name": "Right Arrow",
                 "Enabled": true,
                 "Active": false,
@@ -4404,8 +4491,8 @@
                 ]
             },
             {
-                "UID": 1663049835,
-                "ParentUID": 13224123,
+                "UID": 552805478,
+                "ParentUID": 1484706465,
                 "Name": "VerticalItem",
                 "Enabled": true,
                 "Active": false,
@@ -4482,8 +4569,8 @@
                 ]
             },
             {
-                "UID": 1936926760,
-                "ParentUID": 597757094,
+                "UID": 602862977,
+                "ParentUID": 1437851532,
                 "Name": "Options Buttons",
                 "Enabled": true,
                 "Active": true,
@@ -4542,9 +4629,9 @@
                 ]
             },
             {
-                "UID": 2014793913,
-                "ParentUID": 1936926760,
-                "Name": "VerticalBars (1)",
+                "UID": 653129339,
+                "ParentUID": 602862977,
+                "Name": "VerticalBars",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -4584,7 +4671,7 @@
                         ],
                         "Size": [
                             2.0,
-                            550.0
+                            500.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -4620,8 +4707,8 @@
                 ]
             },
             {
-                "UID": 1770784992,
-                "ParentUID": 1936926760,
+                "UID": 703883048,
+                "ParentUID": 602862977,
                 "Name": "KeyboardBtn",
                 "Enabled": true,
                 "Active": true,
@@ -4702,8 +4789,8 @@
                 ]
             },
             {
-                "UID": 1818266514,
-                "ParentUID": 1770784992,
+                "UID": 754427894,
+                "ParentUID": 703883048,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -4778,8 +4865,8 @@
                 ]
             },
             {
-                "UID": 377064010,
-                "ParentUID": 1770784992,
+                "UID": 805181603,
+                "ParentUID": 703883048,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -4856,8 +4943,8 @@
                 ]
             },
             {
-                "UID": 399899698,
-                "ParentUID": 377064010,
+                "UID": 856283417,
+                "ParentUID": 805181603,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -4932,8 +5019,8 @@
                 ]
             },
             {
-                "UID": 1045192845,
-                "ParentUID": 1770784992,
+                "UID": 907245989,
+                "ParentUID": 703883048,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -5010,8 +5097,8 @@
                 ]
             },
             {
-                "UID": 1068655122,
-                "ParentUID": 1045192845,
+                "UID": 958487045,
+                "ParentUID": 907245989,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5086,8 +5173,8 @@
                 ]
             },
             {
-                "UID": 1587681491,
-                "ParentUID": 1936926760,
+                "UID": 1009797722,
+                "ParentUID": 602862977,
                 "Name": "ControllerBtn",
                 "Enabled": true,
                 "Active": true,
@@ -5117,7 +5204,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -450.0,
-                            0.0,
+                            50.0,
                             0.0
                         ],
                         "Rotation": [
@@ -5168,8 +5255,8 @@
                 ]
             },
             {
-                "UID": 1628549018,
-                "ParentUID": 1587681491,
+                "UID": 1062152714,
+                "ParentUID": 1009797722,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -5244,8 +5331,8 @@
                 ]
             },
             {
-                "UID": 244157250,
-                "ParentUID": 1587681491,
+                "UID": 1206894773,
+                "ParentUID": 1009797722,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -5322,8 +5409,8 @@
                 ]
             },
             {
-                "UID": 264973929,
-                "ParentUID": 244157250,
+                "UID": 1261059911,
+                "ParentUID": 1206894773,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5398,8 +5485,8 @@
                 ]
             },
             {
-                "UID": 894323867,
-                "ParentUID": 1587681491,
+                "UID": 1312718693,
+                "ParentUID": 1009797722,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -5476,8 +5563,8 @@
                 ]
             },
             {
-                "UID": 914513957,
-                "ParentUID": 894323867,
+                "UID": 1394662610,
+                "ParentUID": 1312718693,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5552,8 +5639,8 @@
                 ]
             },
             {
-                "UID": 592768026,
-                "ParentUID": 1936926760,
+                "UID": 1447574570,
+                "ParentUID": 602862977,
                 "Name": "AudioBtn",
                 "Enabled": true,
                 "Active": true,
@@ -5583,7 +5670,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -450.0,
-                            -125.0,
+                            -25.0,
                             0.0
                         ],
                         "Rotation": [
@@ -5634,8 +5721,8 @@
                 ]
             },
             {
-                "UID": 638648265,
-                "ParentUID": 592768026,
+                "UID": 1499720699,
+                "ParentUID": 1447574570,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -5710,8 +5797,8 @@
                 ]
             },
             {
-                "UID": 1439265863,
-                "ParentUID": 592768026,
+                "UID": 1551936449,
+                "ParentUID": 1447574570,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -5788,8 +5875,8 @@
                 ]
             },
             {
-                "UID": 1464538286,
-                "ParentUID": 1439265863,
+                "UID": 1604430683,
+                "ParentUID": 1551936449,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -5864,8 +5951,8 @@
                 ]
             },
             {
-                "UID": 239787471,
-                "ParentUID": 592768026,
+                "UID": 1656855296,
+                "ParentUID": 1447574570,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -5942,8 +6029,8 @@
                 ]
             },
             {
-                "UID": 262275054,
-                "ParentUID": 239787471,
+                "UID": 1709628014,
+                "ParentUID": 1656855296,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -6018,8 +6105,8 @@
                 ]
             },
             {
-                "UID": 145355469,
-                "ParentUID": 1936926760,
+                "UID": 1863142319,
+                "ParentUID": 602862977,
                 "Name": "SettingsBtn",
                 "Enabled": true,
                 "Active": true,
@@ -6049,7 +6136,7 @@
                         "IsEnabled": true,
                         "Position": [
                             -450.0,
-                            -250.0,
+                            -100.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6100,8 +6187,8 @@
                 ]
             },
             {
-                "UID": 185317923,
-                "ParentUID": 145355469,
+                "UID": 1942440638,
+                "ParentUID": 1863142319,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -6176,8 +6263,8 @@
                 ]
             },
             {
-                "UID": 985657037,
-                "ParentUID": 145355469,
+                "UID": 1996466534,
+                "ParentUID": 1863142319,
                 "Name": "Hover",
                 "Enabled": false,
                 "Active": false,
@@ -6254,8 +6341,8 @@
                 ]
             },
             {
-                "UID": 1011207944,
-                "ParentUID": 985657037,
+                "UID": 2049796220,
+                "ParentUID": 1996466534,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -6330,8 +6417,8 @@
                 ]
             },
             {
-                "UID": 1696324303,
-                "ParentUID": 145355469,
+                "UID": 2103125906,
+                "ParentUID": 1863142319,
                 "Name": "Clicked",
                 "Enabled": false,
                 "Active": false,
@@ -6408,8 +6495,8 @@
                 ]
             },
             {
-                "UID": 1721666347,
-                "ParentUID": 1696324303,
+                "UID": 9041566,
+                "ParentUID": 2103125906,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -6484,11 +6571,11 @@
                 ]
             },
             {
-                "UID": 144484387,
-                "ParentUID": 597757094,
+                "UID": 62649736,
+                "ParentUID": 1437851532,
                 "Name": "ControllerScreen",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6512,10 +6599,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            200.0,
-                            -130.0,
+                            150.0,
+                            -100.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6525,8 +6612,8 @@
                             1.0
                         ],
                         "Size": [
-                            596.0,
-                            563.0
+                            497.0,
+                            457.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -6543,8 +6630,8 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 1406520614,
+                        "IsEnabled": true,
+                        "ImageID": 759750535,
                         "Color": [
                             1.0,
                             1.0,
@@ -6562,11 +6649,11 @@
                 ]
             },
             {
-                "UID": 1390792502,
-                "ParentUID": 144484387,
+                "UID": 117023737,
+                "ParentUID": 62649736,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6590,10 +6677,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            0.0,
-                            300.0,
+                            -15.0,
+                            250.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6621,7 +6708,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Text": "Pause",
                         "Color": [
                             1.0,
@@ -6638,11 +6725,11 @@
                 ]
             },
             {
-                "UID": 286642259,
-                "ParentUID": 144484387,
+                "UID": 170562286,
+                "ParentUID": 62649736,
                 "Name": "Text (1)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6666,10 +6753,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            90.0,
-                            300.0,
+                            65.0,
+                            250.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6697,7 +6784,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Text": "Attack",
                         "Color": [
                             1.0,
@@ -6714,11 +6801,11 @@
                 ]
             },
             {
-                "UID": 649881433,
-                "ParentUID": 144484387,
+                "UID": 224866666,
+                "ParentUID": 62649736,
                 "Name": "Text (2)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6742,10 +6829,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            170.5,
-                            233.5500030517578,
+                            150.0,
+                            200.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6773,8 +6860,8 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Recharge",
+                        "IsEnabled": true,
+                        "Text": "Granade",
                         "Color": [
                             1.0,
                             1.0,
@@ -6790,11 +6877,11 @@
                 ]
             },
             {
-                "UID": 857904283,
-                "ParentUID": 144484387,
+                "UID": 280006498,
+                "ParentUID": 62649736,
                 "Name": "Text (3)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -6818,10 +6905,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            -262.20001220703127,
-                            233.5500030517578,
+                            -225.0,
+                            200.0,
                             0.0
                         ],
                         "Rotation": [
@@ -6849,311 +6936,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Special Attack",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 12456610,
-                "ParentUID": 144484387,
-                "Name": "Text (4)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            315.0,
-                            110.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Grenade",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1920789242,
-                "ParentUID": 144484387,
-                "Name": "Text (5)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            315.0,
-                            70.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Ultimate",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 855260086,
-                "ParentUID": 144484387,
-                "Name": "Text (6)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            315.0,
-                            30.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Interact",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1687511849,
-                "ParentUID": 144484387,
-                "Name": "Text (7)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            315.0,
-                            -60.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Text": "Dash",
                         "Color": [
                             1.0,
@@ -7170,11 +6953,11 @@
                 ]
             },
             {
-                "UID": 967983571,
-                "ParentUID": 144484387,
-                "Name": "Text (8)",
+                "UID": 334450120,
+                "ParentUID": 62649736,
+                "Name": "Text (4)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -7198,10 +6981,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            35.0,
-                            -315.0,
+                            275.0,
+                            90.0,
                             0.0
                         ],
                         "Rotation": [
@@ -7229,7 +7012,311 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
+                        "Text": "Reload",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 388615258,
+                "ParentUID": 62649736,
+                "Name": "Text (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            -150.0,
+                            250.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": true,
+                        "Text": "Ultimate",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 443058880,
+                "ParentUID": 62649736,
+                "Name": "Text (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            275.0,
+                            25.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": true,
+                        "Text": "Back",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 497641744,
+                "ParentUID": 62649736,
+                "Name": "Text (7)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            275.0,
+                            -50.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": true,
+                        "Text": "Interact / Accept",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 552015745,
+                "ParentUID": 62649736,
+                "Name": "Text (8)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            30.0,
+                            -270.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": true,
                         "Text": "Aim",
                         "Color": [
                             1.0,
@@ -7246,11 +7333,11 @@
                 ]
             },
             {
-                "UID": 1361882570,
-                "ParentUID": 144484387,
+                "UID": 606598609,
+                "ParentUID": 62649736,
                 "Name": "Text (9)",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -7274,10 +7361,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
-                            -180.0,
-                            -315.0,
+                            -160.0,
+                            -270.0,
                             0.0
                         ],
                         "Rotation": [
@@ -7305,7 +7392,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Text": "Move",
                         "Color": [
                             1.0,
@@ -7322,8 +7409,8 @@
                 ]
             },
             {
-                "UID": 1852538699,
-                "ParentUID": 597757094,
+                "UID": 661529578,
+                "ParentUID": 1437851532,
                 "Name": "KeyboardScreen",
                 "Enabled": false,
                 "Active": false,
@@ -7353,7 +7440,7 @@
                         "IsEnabled": false,
                         "Position": [
                             250.0,
-                            -120.0,
+                            -125.0,
                             0.0
                         ],
                         "Rotation": [
@@ -7400,8 +7487,8 @@
                 ]
             },
             {
-                "UID": 407264473,
-                "ParentUID": 1852538699,
+                "UID": 716739031,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem",
                 "Enabled": true,
                 "Active": false,
@@ -7431,7 +7518,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            275.0,
+                            250.0,
                             0.0
                         ],
                         "Rotation": [
@@ -7478,8 +7565,8 @@
                 ]
             },
             {
-                "UID": 303725281,
-                "ParentUID": 407264473,
+                "UID": 771878863,
+                "ParentUID": 716739031,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -7554,8 +7641,8 @@
                 ]
             },
             {
-                "UID": 1699457598,
-                "ParentUID": 407264473,
+                "UID": 827366800,
+                "ParentUID": 716739031,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -7630,8 +7717,8 @@
                 ]
             },
             {
-                "UID": 1028395168,
-                "ParentUID": 1852538699,
+                "UID": 882993979,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (1)",
                 "Enabled": true,
                 "Active": false,
@@ -7708,8 +7795,8 @@
                 ]
             },
             {
-                "UID": 1056800536,
-                "ParentUID": 1028395168,
+                "UID": 938969263,
+                "ParentUID": 882993979,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -7784,8 +7871,8 @@
                 ]
             },
             {
-                "UID": 1984870283,
-                "ParentUID": 1028395168,
+                "UID": 995292652,
+                "ParentUID": 882993979,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -7860,8 +7947,8 @@
                 ]
             },
             {
-                "UID": 1703306338,
-                "ParentUID": 1852538699,
+                "UID": 1051337557,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (2)",
                 "Enabled": true,
                 "Active": false,
@@ -7891,7 +7978,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            130.0,
+                            150.0,
                             0.0
                         ],
                         "Rotation": [
@@ -7938,8 +8025,8 @@
                 ]
             },
             {
-                "UID": 1727812930,
-                "ParentUID": 1703306338,
+                "UID": 1107660946,
+                "ParentUID": 1051337557,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -8014,8 +8101,8 @@
                 ]
             },
             {
-                "UID": 154933213,
-                "ParentUID": 1703306338,
+                "UID": 1163705851,
+                "ParentUID": 1051337557,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -8090,8 +8177,8 @@
                 ]
             },
             {
-                "UID": 249928322,
-                "ParentUID": 1852538699,
+                "UID": 1220098861,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (3)",
                 "Enabled": true,
                 "Active": false,
@@ -8121,7 +8208,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            60.0,
+                            100.0,
                             0.0
                         ],
                         "Rotation": [
@@ -8168,8 +8255,8 @@
                 ]
             },
             {
-                "UID": 280352699,
-                "ParentUID": 249928322,
+                "UID": 1276631113,
+                "ParentUID": 1220098861,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -8244,8 +8331,8 @@
                 ]
             },
             {
-                "UID": 782829273,
-                "ParentUID": 249928322,
+                "UID": 1333024123,
+                "ParentUID": 1220098861,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -8320,8 +8407,8 @@
                 ]
             },
             {
-                "UID": 1687912260,
-                "ParentUID": 1852538699,
+                "UID": 1389904480,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (4)",
                 "Enabled": true,
                 "Active": false,
@@ -8351,7 +8438,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -10.0,
+                            50.0,
                             0.0
                         ],
                         "Rotation": [
@@ -8398,8 +8485,8 @@
                 ]
             },
             {
-                "UID": 1714437861,
-                "ParentUID": 1687912260,
+                "UID": 1447063321,
+                "ParentUID": 1389904480,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -8474,8 +8561,8 @@
                 ]
             },
             {
-                "UID": 97070325,
-                "ParentUID": 1687912260,
+                "UID": 1504222162,
+                "ParentUID": 1389904480,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -8550,8 +8637,8 @@
                 ]
             },
             {
-                "UID": 1752541456,
-                "ParentUID": 1852538699,
+                "UID": 1561520245,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (5)",
                 "Enabled": true,
                 "Active": false,
@@ -8581,7 +8668,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -80.0,
+                            0.0,
                             0.0
                         ],
                         "Rotation": [
@@ -8628,8 +8715,8 @@
                 ]
             },
             {
-                "UID": 1779136678,
-                "ParentUID": 1752541456,
+                "UID": 1618887949,
+                "ParentUID": 1561520245,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -8704,8 +8791,8 @@
                 ]
             },
             {
-                "UID": 50862889,
-                "ParentUID": 1752541456,
+                "UID": 1676951863,
+                "ParentUID": 1561520245,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -8780,8 +8867,8 @@
                 ]
             },
             {
-                "UID": 2057666307,
-                "ParentUID": 1852538699,
+                "UID": 1734389188,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (6)",
                 "Enabled": true,
                 "Active": false,
@@ -8811,7 +8898,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -150.0,
+                            -50.0,
                             0.0
                         ],
                         "Rotation": [
@@ -8858,8 +8945,8 @@
                 ]
             },
             {
-                "UID": 2082590625,
-                "ParentUID": 2057666307,
+                "UID": 1792244239,
+                "ParentUID": 1734389188,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -8934,8 +9021,8 @@
                 ]
             },
             {
-                "UID": 272372919,
-                "ParentUID": 2057666307,
+                "UID": 1849960048,
+                "ParentUID": 1734389188,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -9010,8 +9097,8 @@
                 ]
             },
             {
-                "UID": 319922159,
-                "ParentUID": 1852538699,
+                "UID": 1907815099,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (7)",
                 "Enabled": true,
                 "Active": false,
@@ -9041,7 +9128,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -220.0,
+                            -100.0,
                             0.0
                         ],
                         "Rotation": [
@@ -9088,8 +9175,8 @@
                 ]
             },
             {
-                "UID": 354384554,
-                "ParentUID": 319922159,
+                "UID": 1965670150,
+                "ParentUID": 1907815099,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -9164,8 +9251,8 @@
                 ]
             },
             {
-                "UID": 599983540,
-                "ParentUID": 319922159,
+                "UID": 2023942927,
+                "ParentUID": 1907815099,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -9240,8 +9327,8 @@
                 ]
             },
             {
-                "UID": 1148114263,
-                "ParentUID": 1852538699,
+                "UID": 2082146083,
+                "ParentUID": 661529578,
                 "Name": "VerticalItem (8)",
                 "Enabled": true,
                 "Active": false,
@@ -9271,7 +9358,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            -290.0,
+                            -150.0,
                             0.0
                         ],
                         "Rotation": [
@@ -9318,8 +9405,8 @@
                 ]
             },
             {
-                "UID": 1180418407,
-                "ParentUID": 1148114263,
+                "UID": 2141950522,
+                "ParentUID": 2082146083,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -9394,8 +9481,8 @@
                 ]
             },
             {
-                "UID": 1461593724,
-                "ParentUID": 1148114263,
+                "UID": 53366241,
+                "ParentUID": 2082146083,
                 "Name": "Text (1)",
                 "Enabled": true,
                 "Active": false,
@@ -9470,11 +9557,11 @@
                 ]
             },
             {
-                "UID": 2138220133,
-                "ParentUID": 597757094,
+                "UID": 112404849,
+                "ParentUID": 1437851532,
                 "Name": "SettingsScreen",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9498,10 +9585,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             250.0,
-                            -120.0,
+                            -150.0,
                             0.0
                         ],
                         "Rotation": [
@@ -9530,11 +9617,11 @@
                 ]
             },
             {
-                "UID": 12458238,
-                "ParentUID": 2138220133,
+                "UID": 171513078,
+                "ParentUID": 112404849,
                 "Name": "VerticalItem",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9558,7 +9645,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             275.0,
@@ -9589,7 +9676,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -9608,11 +9695,11 @@
                 ]
             },
             {
-                "UID": 850344888,
-                "ParentUID": 2138220133,
+                "UID": 234937809,
+                "ParentUID": 112404849,
                 "Name": "VerticalItem (4)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9636,7 +9723,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             200.0,
@@ -9667,7 +9754,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -9686,11 +9773,11 @@
                 ]
             },
             {
-                "UID": 866636202,
-                "ParentUID": 850344888,
+                "UID": 295090353,
+                "ParentUID": 234937809,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9714,7 +9801,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             -7.5,
@@ -9745,7 +9832,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "VSync",
                         "Color": [
                             1.0,
@@ -9762,11 +9849,11 @@
                 ]
             },
             {
-                "UID": 323646839,
-                "ParentUID": 850344888,
+                "UID": 354407445,
+                "ParentUID": 234937809,
                 "Name": "Off Btn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9790,7 +9877,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -9821,7 +9908,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -9839,16 +9926,16 @@
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
             {
-                "UID": 1538551761,
-                "ParentUID": 323646839,
+                "UID": 413863779,
+                "ParentUID": 354407445,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9872,7 +9959,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -9903,7 +9990,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 1630554747,
                         "Color": [
                             1.0,
@@ -9922,8 +10009,8 @@
                 ]
             },
             {
-                "UID": 43646981,
-                "ParentUID": 323646839,
+                "UID": 473737839,
+                "ParentUID": 354407445,
                 "Name": "On",
                 "Enabled": false,
                 "Active": false,
@@ -10000,11 +10087,11 @@
                 ]
             },
             {
-                "UID": 1506037091,
-                "ParentUID": 850344888,
+                "UID": 533681520,
+                "ParentUID": 234937809,
                 "Name": "On Btn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10028,7 +10115,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             170.0,
                             0.0,
@@ -10059,7 +10146,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -10077,16 +10164,16 @@
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
             {
-                "UID": 1573639082,
-                "ParentUID": 1506037091,
+                "UID": 593346717,
+                "ParentUID": 533681520,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10110,7 +10197,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10141,7 +10228,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 597047512,
                         "Color": [
                             1.0,
@@ -10160,11 +10247,11 @@
                 ]
             },
             {
-                "UID": 1617500312,
-                "ParentUID": 1506037091,
+                "UID": 652872672,
+                "ParentUID": 533681520,
                 "Name": "On",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10188,7 +10275,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10219,7 +10306,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 2079134756,
                         "Color": [
                             1.0,
@@ -10238,11 +10325,11 @@
                 ]
             },
             {
-                "UID": 1287308101,
-                "ParentUID": 2138220133,
+                "UID": 713303700,
+                "ParentUID": 112404849,
                 "Name": "VerticalItem (5)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10266,7 +10353,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             130.0,
@@ -10297,7 +10384,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -10316,11 +10403,11 @@
                 ]
             },
             {
-                "UID": 935381240,
-                "ParentUID": 1287308101,
+                "UID": 773943591,
+                "ParentUID": 713303700,
                 "Name": "On Btn (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10344,7 +10431,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             170.0,
                             0.0,
@@ -10375,7 +10462,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -10393,16 +10480,16 @@
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
             {
-                "UID": 1135889720,
-                "ParentUID": 935381240,
+                "UID": 834235377,
+                "ParentUID": 773943591,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10426,7 +10513,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10457,7 +10544,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 597047512,
                         "Color": [
                             1.0,
@@ -10476,11 +10563,11 @@
                 ]
             },
             {
-                "UID": 1285783733,
-                "ParentUID": 935381240,
+                "UID": 895292994,
+                "ParentUID": 773943591,
                 "Name": "On",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10504,7 +10591,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10535,7 +10622,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 2079134756,
                         "Color": [
                             1.0,
@@ -10554,11 +10641,11 @@
                 ]
             },
             {
-                "UID": 1949195049,
-                "ParentUID": 1287308101,
+                "UID": 956629095,
+                "ParentUID": 713303700,
                 "Name": "Off Btn (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10582,7 +10669,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10613,7 +10700,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -10631,16 +10718,16 @@
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
             {
-                "UID": 2074791333,
-                "ParentUID": 1949195049,
+                "UID": 1017129744,
+                "ParentUID": 956629095,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10664,7 +10751,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10695,7 +10782,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 1630554747,
                         "Color": [
                             1.0,
@@ -10714,8 +10801,8 @@
                 ]
             },
             {
-                "UID": 20251721,
-                "ParentUID": 1949195049,
+                "UID": 1078187361,
+                "ParentUID": 956629095,
                 "Name": "On",
                 "Enabled": false,
                 "Active": false,
@@ -10792,11 +10879,11 @@
                 ]
             },
             {
-                "UID": 1304434867,
-                "ParentUID": 1287308101,
+                "UID": 1139244978,
+                "ParentUID": 713303700,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10820,7 +10907,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             -7.5,
@@ -10851,7 +10938,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "Fullscreen",
                         "Color": [
                             1.0,
@@ -10868,8 +10955,8 @@
                 ]
             },
             {
-                "UID": 1098789503,
-                "ParentUID": 1385711187,
+                "UID": 1200163353,
+                "ParentUID": 144641457,
                 "Name": "CreditsScreen",
                 "Enabled": false,
                 "Active": false,
@@ -10924,12 +11011,30 @@
                             0.0,
                             0.0
                         ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1016849080,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
                     }
                 ]
             },
             {
-                "UID": 963789577,
-                "ParentUID": 1098789503,
+                "UID": 1261151349,
+                "ParentUID": 1200163353,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -10959,7 +11064,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            125.0,
+                            0.0,
                             0.0
                         ],
                         "Rotation": [
@@ -10988,160 +11093,8 @@
                 ]
             },
             {
-                "UID": 693548950,
-                "ParentUID": 963789577,
-                "Name": "Design profiles (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -100.0,
-                            -200.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Josep Vilaplana\nKike Gutierrez\nMarc Belmonte\nMarc Gabernet\nMoises Garcia\nOscar Mellado\nOscar Pellice\nOriol Gallego\nXinyu Jiang",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 30
-                    }
-                ]
-            },
-            {
-                "UID": 1417746719,
-                "ParentUID": 963789577,
-                "Name": "Design profiles",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -300.0,
-                            -200.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Adrian Mirabel\nAdriana Cortes\nCarlos Garcia\nDavid Bardina\nDavid Longaron\nGiovanni Matera\nJaime Coronado\nJordi Alonso\nJordi Batch\nJordi Nieto",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 30
-                    }
-                ]
-            },
-            {
-                "UID": 353931708,
-                "ParentUID": 963789577,
+                "UID": 1322208966,
+                "ParentUID": 1261151349,
                 "Name": "Programmers",
                 "Enabled": true,
                 "Active": false,
@@ -11170,8 +11123,8 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -200.0,
-                            -150.0,
+                            0.0,
+                            -800.0,
                             0.0
                         ],
                         "Rotation": [
@@ -11200,7 +11153,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "PROGRAMMER",
+                        "Text": "PROGRAMMING",
                         "Color": [
                             1.0,
                             1.0,
@@ -11216,8 +11169,160 @@
                 ]
             },
             {
-                "UID": 1439050958,
-                "ParentUID": 963789577,
+                "UID": 1383893172,
+                "ParentUID": 1322208966,
+                "Name": "Design profiles (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            200.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Josep Vilaplana\n\nKike Gutierrez\n\nMarc Belmonte\n\nMarc Gabernet\n\nMoises Garcia\n\nOscar Mellado\n\nOscar Pellice\n\nOriol Gallego\n\nXinyu Jiang",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 1445368515,
+                "ParentUID": 1322208966,
+                "Name": "Design profiles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -200.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Adrian Mirabel\n\nAriadna Cortes\n\nCarlos Garcia\n\nDavid Bardina\n\nDavid Longaron\n\nGiovanni Matera\n\nJaime Coronado\n\nJordi Alonso\n\nJordi Bach\n\nJordi Nieto",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 1507122342,
+                "ParentUID": 1261151349,
                 "Name": "Develop team",
                 "Enabled": true,
                 "Active": false,
@@ -11292,8 +11397,8 @@
                 ]
             },
             {
-                "UID": 2098231910,
-                "ParentUID": 963789577,
+                "UID": 1577439552,
+                "ParentUID": 1261151349,
                 "Name": "Credits",
                 "Enabled": true,
                 "Active": false,
@@ -11368,8 +11473,8 @@
                 ]
             },
             {
-                "UID": 2109048976,
-                "ParentUID": 963789577,
+                "UID": 1640376936,
+                "ParentUID": 1261151349,
                 "Name": "Artists",
                 "Enabled": true,
                 "Active": false,
@@ -11398,8 +11503,8 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            300.0,
-                            -150.0,
+                            0.0,
+                            -1600.0,
                             0.0
                         ],
                         "Rotation": [
@@ -11438,14 +11543,14 @@
                         "LineWidth": 0,
                         "LineSpacing": 0,
                         "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
                         "FontSize": 35
                     }
                 ]
             },
             {
-                "UID": 206501233,
-                "ParentUID": 963789577,
+                "UID": 1702618110,
+                "ParentUID": 1640376936,
                 "Name": "Design profiles (2)",
                 "Enabled": true,
                 "Active": false,
@@ -11474,7 +11579,159 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            300.0,
+                            -200.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Alex Torell\n\nCarlos Nunez\n\nJoan March\n\nKristina Lyudmilova\n\nLaia Ruiz",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 1765346631,
+                "ParentUID": 1640376936,
+                "Name": "Design profiles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            200.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Natalia Cabrera\n\nPhil Cherukara\n\nRobin Aitken\n\nRoc Feijoo",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 1827796668,
+                "ParentUID": 1261151349,
+                "Name": "Production",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
                             -200.0,
                             0.0
                         ],
@@ -11504,7 +11761,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "Alex Torell\nCarlos Nunez\nJoan March\nKristina Lyudmilova\nLaia Ruiz\nNatalia Cabrera\nPhil Cherukara\nRobin Aitken\nRoc Feijoo",
+                        "Text": "PRODUCTION",
                         "Color": [
                             1.0,
                             1.0,
@@ -11514,17 +11771,17 @@
                         "LineWidth": 0,
                         "LineSpacing": 0,
                         "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 30
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
+                        "FontSize": 35
                     }
                 ]
             },
             {
-                "UID": 161725517,
-                "ParentUID": 1385711187,
-                "Name": "VerticalBars",
+                "UID": 1890664431,
+                "ParentUID": 1827796668,
+                "Name": "Design profiles",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11548,9 +11805,9 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
-                            -570.0,
+                            -100.0,
                             -100.0,
                             0.0
                         ],
@@ -11561,8 +11818,996 @@
                             1.0
                         ],
                         "Size": [
-                            2.0,
-                            550.0
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "PRODUCER\n\nGAME PROGRAMMING LEAD\n\nENGINE PROGRAMMING LEAD\n\nART LEAD\n\nGAME DESIGN LEAD\n\nLEVEL DESIGN LEAD\n\nMUSIC LEAD",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 2,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 1953601815,
+                "ParentUID": 1827796668,
+                "Name": "Design profiles (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            100.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Oscar Pellice\n\nCarlos Garcia\n\nAdrian Mirabel\n\nLaia Ruiz\n\nDavid Longaron\n\nCarlos Nunez\n\nJaime Coronado",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 2016956925,
+                "ParentUID": 1261151349,
+                "Name": "Design",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -2100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "DESIGN",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
+                        "FontSize": 35
+                    }
+                ]
+            },
+            {
+                "UID": 2079894309,
+                "ParentUID": 2016956925,
+                "Name": "Design profiles (2)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -200.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Alex Torell\n\nCarlos Nunez\n\nKristina Lyudmilova\n\nLaia Ruiz\n\nJordi Nieto",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 2143179798,
+                "ParentUID": 2016956925,
+                "Name": "Design profiles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            200.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Phil Cherukara\n\nMarc Gabernet\n\nGiovanni Matera\n\nMoises Garcia\n\nXinyu Jiang",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 58842398,
+                "ParentUID": 1261151349,
+                "Name": "Special",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -2800.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "SPECIAL THANKS",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
+                        "FontSize": 35
+                    }
+                ]
+            },
+            {
+                "UID": 122127887,
+                "ParentUID": 58842398,
+                "Name": "Design profiles (2)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -400.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Jesus Alonso\n\nMarina Amores\n\nDiana Arellano\n\nAlejandro Arque\n\nAurelie Bauzou\n\nTony Cabello\n\nJose Antonio Camacho\n\nJoan Centellas\n\nKevin Cerda",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 186596933,
+                "ParentUID": 58842398,
+                "Name": "Design profiles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Damia Ferrandiz\n\nDavid Font\n\nDavid Gallardo\n\nJavier Galvez\n\nIago Gayoso\n\nSebastian Gil\n\nGonzalo Granizo\n\nVirginia Martin\n\nNil Mullol",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 250578632,
+                "ParentUID": 58842398,
+                "Name": "Design profiles (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            400.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Ramon Nafria\n\nIsaac Obradors\n\nOscar Sahun\n\nRoma Segura\n\nMarine Thomas\n\nPere Torrents\n\nPau Treserra\n\nSergio Tutor\n\nJoan Urgel",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 314769194,
+                "ParentUID": 1261151349,
+                "Name": "Special (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -2600.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "SPECIAL THANKS",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 35
+                    }
+                ]
+            },
+            {
+                "UID": 378472409,
+                "ParentUID": 314769194,
+                "Name": "Design profiles (2)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -400.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Ruben Ajenjo\n\nRoger Leon",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 442384487,
+                "ParentUID": 314769194,
+                "Name": "Design profiles",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Carlos Fuentes\n\nJordi Gil",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 506853533,
+                "ParentUID": 314769194,
+                "Name": "Design profiles (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            400.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Marc Ripoll\n\nCaterina Sumalla\n\n",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 571392200,
+                "ParentUID": 1200163353,
+                "Name": "Button",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            825.0,
+                            -450.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            250.0,
+                            50.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -11579,8 +12824,90 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 572889098,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": false
+                    }
+                ]
+            },
+            {
+                "UID": 635791625,
+                "ParentUID": 571392200,
+                "Name": "Decorator image",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -100.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            10.0,
+                            50.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
                         "Color": [
                             1.0,
                             1.0,
@@ -11598,8 +12925,238 @@
                 ]
             },
             {
-                "UID": 470409709,
-                "ParentUID": 1674828877,
+                "UID": 700191050,
+                "ParentUID": 571392200,
+                "Name": "Skip text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            50.0,
+                            -10.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "TO SKIP",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 20
+                    }
+                ]
+            },
+            {
+                "UID": 764799338,
+                "ParentUID": 571392200,
+                "Name": "Key frame",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -30.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            75.0,
+                            30.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1919951445,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
+            },
+            {
+                "UID": 829755731,
+                "ParentUID": 764799338,
+                "Name": "Key - btn",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -8.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "ESC",
+                        "Color": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-SemiBold.ttf",
+                        "FontSize": 22
+                    }
+                ]
+            },
+            {
+                "UID": 894851366,
+                "ParentUID": 84419292,
                 "Name": "SplashScreen",
                 "Enabled": false,
                 "Active": false,
@@ -11658,7 +13215,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 707421625,
+                        "ImageID": 201965199,
                         "Color": [
                             1.0,
                             1.0,
@@ -11680,8 +13237,8 @@
                 ]
             },
             {
-                "UID": 731314054,
-                "ParentUID": 1674828877,
+                "UID": 959668517,
+                "ParentUID": 84419292,
                 "Name": "EngineScreen",
                 "Enabled": false,
                 "Active": true,
@@ -11758,8 +13315,8 @@
                 ]
             },
             {
-                "UID": 221169527,
-                "ParentUID": 1674828877,
+                "UID": 1024973015,
+                "ParentUID": 84419292,
                 "Name": "StudioScreen",
                 "Enabled": false,
                 "Active": true,
@@ -11836,8 +13393,8 @@
                 ]
             },
             {
-                "UID": 397302865,
-                "ParentUID": 1674828877,
+                "UID": 1090207892,
+                "ParentUID": 84419292,
                 "Name": "LoadingScreen",
                 "Enabled": false,
                 "Active": false,
@@ -11914,8 +13471,8 @@
                 ]
             },
             {
-                "UID": 1373202265,
-                "ParentUID": 397302865,
+                "UID": 1155721253,
+                "ParentUID": 1090207892,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -11978,8 +13535,8 @@
                 ]
             },
             {
-                "UID": 75549531,
-                "ParentUID": 1373202265,
+                "UID": 1221443477,
+                "ParentUID": 1155721253,
                 "Name": "Background",
                 "Enabled": false,
                 "Active": false,
@@ -12056,8 +13613,8 @@
                 ]
             },
             {
-                "UID": 94556064,
-                "ParentUID": 1373202265,
+                "UID": 1287165701,
+                "ParentUID": 1155721253,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
