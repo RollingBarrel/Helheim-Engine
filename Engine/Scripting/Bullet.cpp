@@ -88,9 +88,14 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	if (firstChild)
 	{
 		mHitParticles = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
+		mTrialParticles = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
 		if (mHitParticles)
 		{
 			mHitParticles->SetEnable(false);
+		}
+		if (mTrialParticles)
+		{
+			mTrialParticles->SetEnable(true);
 		}
 	}
 

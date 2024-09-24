@@ -40,6 +40,7 @@ private:
 	bool mHasCollided = false;
 	ParticleSystemComponent* mHitParticles = nullptr;
 	ParticleSystemComponent* mBullet = nullptr;
+	TrailComponent* mTrialParticles = nullptr;
 
 	TimerScript mTimer;
 };
