@@ -13079,22 +13079,6 @@
                             0.0,
                             0.0
                         ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "SPECIAL THANKS",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 1,
-                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
-                        "FontSize": 35
                     }
                 ]
             },
