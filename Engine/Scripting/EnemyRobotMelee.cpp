@@ -32,12 +32,24 @@ void EnemyRobotMelee::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.1f;
-    mChargeDuration = 1.2f;
+    mChargeDuration = 0.4f;
+    mAttackDistance = 1.5f;
     mSwordTrail->SetEnabled(false);
 }
 
 void EnemyRobotMelee::Charge()
 {
+    mAiAgentComponent->PauseCrowdNavigation();
+    mAiAgentComponent->StartCrowdNavigation();
+    if (!IsPlayerReachable() && mDisengageTimer.Delay(mDisengageTime))
+    {
+
+        mCurrentState = EnemyState::CHASE;
+        mSwordTrail->SetEnabled(false);
+        mFirstAttack = true;
+        return;
+
+    }
     mAnimationComponent->SendTrigger("tAttack", mAttackTransitionDuration);
     mAnimationComponent->RestartStateAnimation();
     if (mFirstAttack &&  mFirstAttackTimer.Delay(mFirstAttackTime))
@@ -55,19 +67,9 @@ void EnemyRobotMelee::Charge()
 
 void EnemyRobotMelee::Attack()
 {
-
     mAnimationComponent->SetIsPlaying(true);
     mAttackTime += App->GetDt();
-    if (!IsPlayerReachable() && mDisengageTimer.Delay(mDisengageTime))
-    {
-        
-        mCurrentState = EnemyState::CHASE;
-        mSwordTrail->SetEnabled(false);
-        mFirstAttack = true;
 
-        return;
-       
-    }
    static bool attack = true ;
     if ( attack && mAttackTime>=0.2f)
     {

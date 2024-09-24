@@ -24,9 +24,9 @@ private:
 
 	float mMeeleDamage = 10.0f;
 	GameObject* mSwordTrail = nullptr;
-	bool mFirstAttack = true;
+
 	TimerScript mFirstAttackTimer;
-	float mFirstAttackTime=0.3f;
+	float mFirstAttackTime=0.1f;
 	float mAttackTime = 0.0f;
 
 };

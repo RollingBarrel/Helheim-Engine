@@ -28,6 +28,7 @@ private:
 	float mBulletSpeed = 15.0f;
 	float mTimerDisengage = 0.0f;
 
+
 	GameObject* mBulletOrigin = nullptr;
 };
 

@@ -16,9 +16,10 @@ public:
 	Component* Clone(GameObject* owner) const override;
 
 	void SetNavigationPath(const float3& destination);
+
 	void StartCrowdNavigation();
 	void PauseCrowdNavigation();
-	void FleeFromTarget(const float3& target);
+	bool FleeFromTarget(const float3& target);
 
 	const float GetRadius() const { return mRadius; };
 	const float GetHeight() const { return mHeight; };

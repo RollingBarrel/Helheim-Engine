@@ -154,6 +154,7 @@ void Enemy::Idle()
 
 void Enemy::Chase()
 {
+	mIsFleeing = false;
 	PlayStepAudio();
 
 		if (mAiAgentComponent)
@@ -174,18 +175,20 @@ void Enemy::Flee()
 {
 	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
+		mIsFleeing = false;
 		mCurrentState = EnemyState::ATTACK;
 		return;
 	}
 	PlayStepAudio();	
- 		if (mAiAgentComponent)
+ 		if (mAiAgentComponent  && !mIsFleeing)
 		{		
-			mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition());
+			!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
 
 		if (!IsPlayerInRange(mAttackDistance))
 		{
+			mIsFleeing = false;
 			mCurrentState = EnemyState::IDLE;
 		}
 }
@@ -250,7 +253,6 @@ bool Enemy::IsPlayerReachable()
 
 		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0 || distance>0.1f)
 		{
-			mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
 			reachable = true;
 		}
 	}

@@ -96,10 +96,12 @@ protected:
 	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
-	float mFleeToAttackTime = 1.5f;
+	float mFleeToAttackTime = 0.75f;
 	TimerScript mDeathTimer;
 	float mVanishingTime = 0.0f;
 	float mDeathTime = 1.4f;
+	bool mFirstAttack = true;
+
 	//Transition Times
 	float mIdleTransitionDuration = 0.2f;
 	float mChaseTransitionDuration = 0.2f;
@@ -107,8 +109,10 @@ protected:
 	float mAttackTransitionDuration = 0.2f;
 	float mDeathTransitionDuration = 0.2f;
 
+
 	//Movement
 	float3 mEnemyCollisionDirection = float3::zero;
+	bool mIsFleeing = false;
 	// Step Sound
 	TimerScript mStepTimer;
 	float mStepDuration = 0.0f;
