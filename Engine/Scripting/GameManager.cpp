@@ -267,6 +267,10 @@ void GameManager::HandleBossAudio(int stage)
         }
     }
 }
+void GameManager::RegisterPlayerKill()
+{
+    mPlayerController->AddKill();
+}
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();
