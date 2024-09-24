@@ -326,7 +326,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
         {
             // Give bullet random directon
             float angle = (-pi / 2) + offset + i * alpha;
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             bulletGO->SetWorldPosition(bulletOriginPosition);
 
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
@@ -368,7 +368,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * space * (mBulletsWave % nBullets) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -395,7 +395,7 @@ void EnemyBoss::BulletHellPattern3() //Two streams
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float angle = alpha * i;
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
             direction.Normalize();
@@ -436,7 +436,7 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * width * sin((pi*3/4)* (mBulletsWave % nBullets) / (nBullets - 1)) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -464,7 +464,7 @@ void EnemyBoss::BulletHellPattern5() //Stream
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
 
-        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
         float3 direction = float3(mFront.x * cos(alpha) - mFront.z * sin(alpha), mFront.y, mFront.x * sin(alpha) + mFront.z * cos(alpha));
         LookAt(direction, BEAT_TIME / 8);
         direction.Normalize();
@@ -492,7 +492,7 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
             float alpha = 2 * pi * i / nBullets;
             float3 direction = float3(front.x * cos(alpha) - front.z * sin(alpha), front.y, front.x * sin(alpha) + front.z * cos(alpha));
             direction.Normalize();
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
