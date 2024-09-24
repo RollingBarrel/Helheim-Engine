@@ -65,7 +65,7 @@ void SecondTutorial::Update()
         if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN)
         {
             mPart1Completed = true;
-            //mTutorialArea->SetSpawnerCycles(3);
+            DisableFirstPart();
             mTutorialArea->SetWaves(1);
             GameManager::GetInstance()->UnlockSecondary();
             GameManager::GetInstance()->UnlockGrenade(true);
@@ -73,6 +73,7 @@ void SecondTutorial::Update()
     }
     else
     {
+        DisableFirstPart();
         GameManager::GetInstance()->UnlockUltimate(true);
         if (!mPart2Completed)
         {
@@ -174,4 +175,16 @@ void SecondTutorial::UltTutorial()
         }
     }
     
+}
+
+void SecondTutorial::DisableFirstPart()
+{
+
+    mShootTutorialCon->SetEnabled(false);
+    mShootTutorialCon->SetEnabled(false);
+    mGrenadeTutorialCon->SetEnabled(false);
+    mShootTutorial->SetEnabled(false);
+    mShootTutorial->SetEnabled(false);
+    mGrenadeTutorial->SetEnabled(false);
+
 }

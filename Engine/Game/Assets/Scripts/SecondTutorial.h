@@ -19,6 +19,7 @@ public:
 
 	void Tutorial();
 	void UltTutorial();
+	void DisableFirstPart();
 
 private:
 	//KEYBOARD
