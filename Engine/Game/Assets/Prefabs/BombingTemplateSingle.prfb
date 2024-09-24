@@ -2,9 +2,9 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 311405660,
+                "UID": 346937975,
                 "ParentUID": 1,
-                "Name": "BombingArea",
+                "Name": "BombingTemplateSingle",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -16,12 +16,40 @@
                     -0.7071068286895752,
                     0.0,
                     0.0,
-                    0.7071067094802856
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1089499166,
+                "ParentUID": 346937975,
+                "Name": "BombingArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -1.1368685635634087e-14,
+                    0.0,
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     5.0,
-                    5.0,
-                    5.0
+                    4.999999046325684,
+                    4.999999046325684
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -36,7 +64,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 2.5
+                                "VariableData": 1.5
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -79,8 +107,8 @@
                 ]
             },
             {
-                "UID": 452597048,
-                "ParentUID": 311405660,
+                "UID": 1229646239,
+                "ParentUID": 1089499166,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -286,8 +314,8 @@
                 ]
             },
             {
-                "UID": 1637166768,
-                "ParentUID": 311405660,
+                "UID": 1356774185,
+                "ParentUID": 1089499166,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
