@@ -113,7 +113,7 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 1)
             {
                 //StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState);
-                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState, 67.21f, 1.50f, 7.83f, 0.00f, -45.50f, 0.00f);
+                StartCinematic(mCinematicCameraGO1, mDummyGO1, mBattleArea1, mDummy1AnimState, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
             }    
         }
     }
@@ -207,9 +207,6 @@ void CinematicCamera::StartCinematic(GameObject* camera, GameObject* dummy, Batt
             //****************************************************
             camera->SetWorldPosition(float3(posX, posY, posZ));
             camera->SetWorldRotation(float3(rotX, rotY, rotZ));
-            
-            //camera->SetLocalPosition(float3(posX, posY, posZ));
-            //camera->SetLocalRotation(float3(rotX, rotY, rotZ));
 
             //****************************************************
             camera->Translate(-(camera->GetFront()) * mDistanceToEnemy);
@@ -238,35 +235,38 @@ void CinematicCamera::UpdateCinematic(GameObject* camera, GameObject* dummy, Bat
 {
     if (mPlayingCinematic)
     {
-        if (mTravelling)
-        {   
-            if (HandleFadeIn(camera))
+        if (!GameManager::GetInstance()->IsPaused())
+        {
+            if (mTravelling)
             {
-                ActivateDummy(dummy, true);
-                HandleCameraMovement(camera);
-            }
-
-            if (mTimer.Delay(mAnimationTime))
-            {
-                if (mAnimationComponent)
+                if (HandleFadeIn(camera))
                 {
-                    mAnimationComponent->SetIsPlaying(false);
+                    ActivateDummy(dummy, true);
+                    HandleCameraMovement(camera);
                 }
 
-                mTravelling = false;
-                mFadeOn = true;
-            }
-        }
-        else
-        {
-            if (HandleFadeOut(dummy, battleArea))
-            {
-                mTravelling = true;
-                mPlayingCinematic = false;
-            }
-        }
+                if (mTimer.Delay(mAnimationTime))
+                {
+                    if (mAnimationComponent)
+                    {
+                        mAnimationComponent->SetIsPlaying(false);
+                    }
 
-        HandleEscape(dummy, battleArea);
+                    mTravelling = false;
+                    mFadeOn = true;
+                }
+            }
+            else
+            {
+                if (HandleFadeOut(dummy, battleArea))
+                {
+                    mTravelling = true;
+                    mPlayingCinematic = false;
+                }
+            }
+
+            HandleEscape(dummy, battleArea);
+        }
     }
     else
     {
