@@ -558,7 +558,7 @@ void HudController::SetHealth(float health)
 
 void HudController::SetMaxHealth(float health)
 {
-    float newWidth = health * 2.8f;
+    /*float newWidth = health * 2.8f;
 
     if (mHealthSlider)
     {
@@ -591,7 +591,7 @@ void HudController::SetMaxHealth(float health)
         transform->SetPosition(float3(newPositionX, currentPosition.y, 0));
 
         mHealthGradualSlider->SetValue(currentValue);
-    }
+    }*/
 }
 
 
