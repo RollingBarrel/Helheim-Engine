@@ -78,6 +78,9 @@ void ReloadState::Exit()
 {
     if(mDoRecharge)	mPlayerController->Reload();
 
+    mPlayerController->SetSpineAnimation("tAim", 0.1f);
+
+
     mPlayerController->EnableLaser(true);
 }
 
