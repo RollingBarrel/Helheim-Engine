@@ -255,7 +255,7 @@ void PlayerController::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
         mAnimationComponent->SendTrigger("tIdle", 0.1f);
-        mAnimationComponent->SendTrigger("tAim", 0.1f);
+        mAnimationComponent->SendSpineTrigger("tAim", 0.1f);
 
         mAnimationComponent->SetIsPlaying(true);
     }
