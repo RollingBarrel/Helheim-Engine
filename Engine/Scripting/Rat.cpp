@@ -3,6 +3,7 @@
 #include "ModuleDetourNavigation.h"
 
 #include "GameObject.h"
+#include "AnimationComponent.h"
 #include "AIAGentComponent.h"
 #include "BoxColliderComponent.h"
 
@@ -38,6 +39,7 @@ void Rat::Update()
 
 void Rat::Idle()
 {
+	mAnimationComponent->SetAnimSpeed(1.0f);
 	if (IsPlayerInRange(mFleeRadius))
 	{
 		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
@@ -47,7 +49,7 @@ void Rat::Idle()
 
 void Rat::Flee()
 {
-	PlayStepAudio();
+	mAnimationComponent->SetAnimSpeed(2.5f);
 	if (mAiAgentComponent)
 	{
 		float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
