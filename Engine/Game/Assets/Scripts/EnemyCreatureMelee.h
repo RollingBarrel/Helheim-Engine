@@ -14,9 +14,12 @@ public:
 	~EnemyCreatureMelee() {}
 
 	void Start() override;
+	void Update() override;
 	void Chase() override;
 	void Charge() override;
 	void Attack() override;
+	void TakeDamage(float damage) override;
+	void Death() override;
 
 	void OnCollisionEnter(CollisionData* collisionData);
 
@@ -24,5 +27,6 @@ private:
 
 	BoxColliderComponent* mCollider = nullptr;
 	bool mHit = false;
+	bool mAudioPlayed = false;
 };
 

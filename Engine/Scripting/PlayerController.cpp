@@ -744,7 +744,7 @@ void PlayerController::ThrowGrenade()
     // TODO wait for thow animation time
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_THROW, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
-    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition + float3(0, 0.8, 0));
+    if (mGrenade) mGrenade->ThrowGrenade(mShootOrigin->GetWorldPosition(), mGrenadePosition + float3(0.0f, 0.8f, 0.0f));
     mGrenadeAimTimer.Reset();
 }
 
@@ -926,6 +926,12 @@ void PlayerController::UseEnergy(int energy)
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
+void PlayerController::ResetEnergy()
+{
+    mCurrentEnergy = 0;
+    mEnergyType = EnergyType::NONE;
+}
+
 void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100) 
@@ -986,7 +992,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 
 void PlayerController::TakeDamage(float damage)
 {
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+    //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
     if (mLowerState->GetType() == StateType::DASH || mGodMode)
     {
         return;

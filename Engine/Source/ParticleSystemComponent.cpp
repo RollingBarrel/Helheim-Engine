@@ -286,12 +286,13 @@ void ParticleSystemComponent::CreateNewParticle()
     float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
 
     // Create the particle and sets its speed and size considering if they are linear or curve
+    float initialSize = mSizeCurve.GetValue().CalculateRandom();
+    float initialSpeed = mSpeedCurve.GetValue().CalculateRandom();
     Particle* particle = new Particle(emitionPosition, emitionDirection, 
-        mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom(),
+        mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom(), 
+        initialSize, mSizeCurve.CalculateValue(0, initialSize),
+        initialSpeed, mSpeedCurve.CalculateValue(0, initialSpeed),
         mHasTrails, mTrail, mFollowEmitter);
-    particle->SetInitialSpeed(mSpeedCurve.GetValue().CalculateRandom());
-    particle->SetInitialSize(mSizeCurve.GetValue().CalculateRandom());
-
     mParticles.push_back(particle);
 }
 

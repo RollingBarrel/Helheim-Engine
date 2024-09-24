@@ -57,5 +57,7 @@ private:
 
 	PlayerController* mPlayerController = nullptr;
 
+	int mElevatorAudio = -1;
+	bool mCloseAudioPlayed = false;
 };
 

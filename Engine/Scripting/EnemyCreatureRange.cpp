@@ -51,7 +51,7 @@ void EnemyCreatureRange::Start()
 		mLaserCharge->SetEnabled(false);
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
-
+	mDeathAudioPlayed = false;
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
 	mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
@@ -90,6 +90,7 @@ void EnemyCreatureRange::Charge()
 void EnemyCreatureRange::Attack()
 {
 	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
+	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
 
 	Enemy::Attack();
 	Rotate();
@@ -110,7 +111,8 @@ void EnemyCreatureRange::Attack()
 	ray.dir = mGameObject->GetFront();
 	ray.pos = mLaserOrigin->GetWorldPosition();
 
-	Physics::Raycast(hit, ray, mAttackDistance);
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
+	Physics::Raycast(hit, ray, mAttackDistance, &ignoreTags);
 	if (hit.IsValid())
 	{
 		if (hit.mGameObject->GetTag().compare("Player") == 0 && mDoDamage)
@@ -127,6 +129,22 @@ void EnemyCreatureRange::Attack()
 		float3 originPosition = mLaserOrigin->GetLocalPosition();
 		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
 	}
+}
+
+void EnemyCreatureRange::Death()
+{
+	Enemy::Death(); 
+	if (!mDeathAudioPlayed)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
+		mDeathAudioPlayed = true;
+	}
+}
+
+void EnemyCreatureRange::TakeDamage(float damage)
+{
+	Enemy::TakeDamage(damage);
+	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
 }
 
 void EnemyCreatureRange::Rotate()
