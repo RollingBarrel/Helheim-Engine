@@ -924,6 +924,12 @@ void PlayerController::UseEnergy(int energy)
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
 }
 
+void PlayerController::ResetEnergy()
+{
+    mCurrentEnergy = 0;
+    mEnergyType = EnergyType::NONE;
+}
+
 void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100) 

@@ -4,6 +4,7 @@
 
 #include <Script.h>
 #include "Macros.h"
+#include "TimerScript.h"
 
 class ButtonComponent;
 class SliderComponent;
@@ -13,6 +14,7 @@ class VideoComponent;
 class PlayerController;
 class Sanity;
 class Dialog;
+class Transform2DComponent;
 enum class EnergyType;
 
 enum class SCREEN {
@@ -55,11 +57,13 @@ private:
     ~HudController();
 
     void Controls();
-    void ButtonClick();
     bool Delay(float delay);
+    void LoseUpdate();
+    void WinUpdate();
 
     void OnWinButtonClick();
     void OnTryAgainButtonClick();
+    void OnVideoBackClick();
     void OnTryAgainButtonHoverOn();
     void OnTryAgainButtonHoverOff();
     void OnLoseButtonClick();
@@ -73,6 +77,9 @@ private:
     void FadeIn();
     void FadeOut();
 
+    void LoseAnimation();
+    void WinAnimation();
+    
     void PlayVideoAssociatedAudio();
     void ReleaseVideoAssociatedAudio();
 
@@ -105,7 +112,9 @@ private:
     GameObject* mPickupKeyboardGO = nullptr;
 
     GameObject* mTryAgainBtnGO = nullptr;
+    GameObject* mTryAgainBtnClicked = nullptr;
     GameObject* mLoseMenuBtnGO = nullptr;
+    GameObject* mLoseMenuBtnClicked = nullptr;
     GameObject* mWinMenuBtnGO = nullptr;
     ButtonComponent* mLoseBtn = nullptr;
     ButtonComponent* mWinBtn = nullptr;
@@ -160,9 +169,47 @@ private:
 
     int mCurrentOption = 0;
 
+    // Lose Animation
+    TimerScript mLoseAnimationTimer;
+    bool mLoseFlag = false;
+    GameObject* mLoseBackText = nullptr;
+    ImageComponent* mLoseBackImage = nullptr;
+    GameObject* mLoseFade = nullptr;
+    ImageComponent* mLoseFadeImage = nullptr;
+    GameObject* mLoseText = nullptr;
+    ImageComponent* mLoseTextImage = nullptr;
+    GameObject* mLoseLineRight = nullptr;
+    Transform2DComponent* mLoseLineRightTransfrom = nullptr;
+    GameObject* mLoseLineLeft = nullptr;
+    Transform2DComponent* mLoseLineLeftTransfrom = nullptr;
+
+    // Win Animation
+    TimerScript mWinAnimationTimer;
+    bool mWinFlag = false;
+    GameObject* mWinBackText = nullptr;
+    ImageComponent* mWinBackImage = nullptr;
+    GameObject* mWinFade = nullptr;
+    ImageComponent* mWinFadeImage = nullptr;
+    GameObject* mWinText = nullptr;
+    ImageComponent* mWinTextImage = nullptr;
+    GameObject* mWinLineRight = nullptr;
+    Transform2DComponent* mWinLineRightTransfrom = nullptr;
+    GameObject* mWinLineLeft = nullptr;
+    Transform2DComponent* mWinLineLeftTransfrom = nullptr;
+    
     // Video
     GameObject* mVideoGO = nullptr;
     VideoComponent* mVideoComponent = nullptr;
     bool mIsVideoPlaying = false;
+    GameObject* mVideoBtnGO = nullptr;
+    ButtonComponent* mVideoBtn = nullptr;
     int mVideoAudio = -1;
+
+    //Highlights
+    bool mGrenadeHL = false;
+    TimerScript mGrenadeHLTimer;
+    GameObject* mGrenadeHLGO = nullptr;
+    bool mUltimateHL = false;
+    TimerScript mUltimateHLTimer;
+    GameObject* mUltimateHLGO = nullptr;
 };

@@ -64,6 +64,7 @@ private:
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
+    void OnBackButtonClick();
     void OnPlayButtonClick();
     void OnSplashButtonClick();
     void OnControllerButtonClick();
@@ -173,6 +174,10 @@ private:
     GameObject* mCreditsHover = nullptr;
     GameObject* mCreditsClicked = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+
+    // Back Button
+    GameObject* mBackGO = nullptr;
+    ButtonComponent* mBackButton = nullptr;
 
     // OPTIONS Button
     GameObject* mQuitGO = nullptr;

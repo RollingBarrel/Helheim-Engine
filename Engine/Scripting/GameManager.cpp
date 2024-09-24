@@ -92,6 +92,8 @@ void GameManager::Start()
         UnlockUltimate(false);
     }
     mGameTimer = App->GetCurrentClock();
+
+    mPlayerController->ResetEnergy();
 }
 
 void GameManager::Update()
@@ -227,6 +229,7 @@ void GameManager::ActivateSecondTutorial()
 
 void GameManager::UnlockSecondary()
 {
+    if (mPlayerController->GetCurrentEnergy() == 0)
     mPlayerController->RechargeBattery(EnergyType::RED);
 }
 
@@ -330,7 +333,7 @@ void GameManager::StartAudio()
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::LEVEL2);
     }
-    else if (sceneName == "BossTestingRoom")
+    else if (sceneName == "Level3Scene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
         mBackgroundAudioID2 = mAudioManager->Play(BGM::BOSS_ROOM);

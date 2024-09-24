@@ -45,5 +45,9 @@ private:
     GameObject* mMeshGO = nullptr;
     MeshRendererComponent* mMesh = nullptr;
 
+    GameObject* mTitleTextGO = nullptr;
+    std::string* mTitleText = nullptr;
+    GameObject* mSubtitleTextGO = nullptr;
+    std::string* mSubtitleText = nullptr;
 };
 
