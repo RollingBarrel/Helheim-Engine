@@ -367,10 +367,12 @@ void PlayerController::CheckInput()
             case StateType::IDLE:
                 if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
                 {
+                    /*
                     if (GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
                         SetSpineAnimation("tIdleRanged", 0.3f);
                     else
                         SetSpineAnimation("tIdleMelee", 0.3f);
+                    */
                 }
                 mLowerState = mIdleState;
                 break;
