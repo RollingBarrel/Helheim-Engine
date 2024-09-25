@@ -211,6 +211,7 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MovingObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -385,5 +386,6 @@
     <ClCompile Include="LoreCollectible.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="MovingObject.cpp" />
   </ItemGroup>
 </Project>

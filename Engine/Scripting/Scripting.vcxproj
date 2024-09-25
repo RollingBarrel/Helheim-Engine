@@ -195,6 +195,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\MovingObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="HealVFX.cpp" />
     <ClCompile Include="LinearMovement.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
+    <ClCompile Include="MovingObject.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="RotateObject.cpp" />

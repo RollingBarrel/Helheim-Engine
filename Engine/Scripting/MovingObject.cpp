@@ -60,5 +60,6 @@ void MovingObject::Update()
 		}
 	}
 	
-	mGameObject->SetWorldPosition(mStartingPoint + mCurrentDistance*mDirection);
+	float3 newPos = mStartingPoint + float3(mCurrentDistance * mDirection.x, mCurrentDistance * mDirection.y, mCurrentDistance * mDirection.z);
+	mGameObject->SetWorldPosition(newPos);
 }
