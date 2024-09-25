@@ -42,6 +42,7 @@ update_status ModuleUI::PreUpdate(float dt)
 update_status ModuleUI::Update(float dt) 
 {
 	// Draw the UI
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Ui");
 	App->GetOpenGL()->BindSceneFramebuffer();
 	for (GameObject* gameObject : mCanvasList) 
 	{
@@ -49,7 +50,7 @@ update_status ModuleUI::Update(float dt)
 	}
 	glEnable(GL_DEPTH_TEST);
 	App->GetOpenGL()->UnbindFramebuffer();
-
+	glPopDebugGroup();
 	return UPDATE_CONTINUE;
 }
 
@@ -75,6 +76,26 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 
 	if (gameObject->IsEnabled())
 	{
+		//STENCIL BLUR PREPASS
+		//glClear(GL_STENCIL_BITS);
+		//glStencilMask(0xFF);
+		glEnable(GL_STENCIL_TEST);
+		glStencilFunc(GL_ALWAYS, 1, 0xFF);
+		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+		if (image && image->IsEnabled())
+		{
+			image->StencilDraw();
+		}
+
+		glDisable(GL_STENCIL_TEST);
+		//glClear(GL_STENCIL_BITS);
+
+		//BLUR THE SCENE USING THE STENCIL PREPASS
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetFramebufferTexture());
+
+		
 		//TODO: Check this...
 		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
 		if (image && image->IsEnabled())

@@ -323,6 +323,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PassThroughPixel.glsl";
 	mPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "PassThroughPixel.glsl";
+	mPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -963,6 +967,40 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 	return mBlurTex[0];
 }
 
+unsigned int ModuleOpenGL::GaussianBlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
+{
+	//FALTA MODIFICAR LA TEXTURA MIRANT EL BOOL !!
+	//rEMIRAR EL ALGORITME !!
+	//Passes have to be impair si??
+	if (passes % 2 == 0)
+		passes += 1;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glActiveTexture(GL_TEXTURE0);
+	glUseProgram(mGaussianBlurProgramId);
+	glBindVertexArray(mEmptyVAO);
+	bool horizontal = true;
+	unsigned int drawTex = texId;
+	unsigned int sampleTex = mBlurTex[0];
+	//tine que ser impar
+	for (int i = 0; i < (passes*2+1); ++i)
+	{
+		glUniform1ui(0, horizontal);
+		if ((i&1) == 0)
+		{
+			unsigned int tmp = drawTex;
+			drawTex = sampleTex;
+			sampleTex = tmp;
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+			glBindTexture(GL_TEXTURE_2D, sampleTex);
+		}
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		horizontal = !horizontal;
+	}
+
+	return mBlurTex[0];
+}
+
 void ModuleOpenGL::SetBloomIntensity(float intensity)
 {
 	if (intensity < 0.0001f)
@@ -1503,7 +1541,7 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glActiveTexture(GL_TEXTURE5);
@@ -1518,8 +1556,6 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glActiveTexture(GL_TEXTURE11);
 	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
-	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mPbrLightingPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);

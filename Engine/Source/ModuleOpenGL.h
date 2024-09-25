@@ -222,6 +222,7 @@ private:
 	unsigned int mPbrGeoPassProgramId = 0;
 	unsigned int mPbrLightingPassProgramId = 0;
 	unsigned int mPassThroughProgramId = 0;
+	unsigned int mPassThroughUiProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;

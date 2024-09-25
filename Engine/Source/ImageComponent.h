@@ -62,6 +62,8 @@ public:
     void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
+    bool BlurBackground() const { return mBlurBackground; }
+
 private:
     std::vector<unsigned char> GetPixelData(ResourceTexture* texture);
 
@@ -95,4 +97,6 @@ private:
 
     CanvasComponent* mCanvas = nullptr;
     Transform2DComponent* mTransform = nullptr;
+
+    bool mBlurBackground = true;
 };
