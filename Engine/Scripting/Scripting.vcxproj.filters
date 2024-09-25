@@ -205,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -373,5 +376,8 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="SecurityCameraFollower.cpp" />
+    <ClCompile Include="CinematicCamera.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

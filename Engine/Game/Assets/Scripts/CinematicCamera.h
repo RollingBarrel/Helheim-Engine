@@ -15,40 +15,39 @@ class CinematicCamera :public Script
 
 public:
     CinematicCamera(GameObject* owner);
+    ~CinematicCamera();
+
+    static CinematicCamera* GetInstance();
+
     void Awake() override;
     void Start() override;
     void Update() override;
     bool GetPlayingCinematic() { return mPlayingCinematic; }
 
 private:
-    void DeActivateCameras();
-    void ActivateCamera(GameObject* cinematicCamera, bool state);
+    static CinematicCamera* mInstance;
 
-    //void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState);
-    void StartCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
-    void LocateCamera(GameObject* camera, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
-
-    void UpdateCinematic(GameObject* camera, GameObject* dummy, BattleArea* battleArea);
-    bool HandleFadeIn(GameObject* camera);
-    void HandleCameraMovement(GameObject* camera);
-    bool HandleFadeOut(GameObject* dummy, BattleArea* battleArea);
-    void HandleEscape(GameObject* dummy, BattleArea* battleArea);
-    void EndCinematic(GameObject* dummy, BattleArea* battleArea);
+    void StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void UpdateCinematic(GameObject* dummy, BattleArea* battleArea);
+    void LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    bool HandleFadeIn();
+    bool HandleFadeOut(GameObject* dummy);
+    void HandleCameraMovement();
+    void HandleEscape(GameObject* dummy);
+    void EndCinematic(GameObject* dummy);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
+    void ActivateCamera(bool state);
     void ActivateBattleArea(BattleArea* battleArea, bool state);
     void ActivateDummy(GameObject* dummy, bool state);
  
     GameObject* mPlayerCameraGO = nullptr;
-    GameObject* mCinematicCameraGO1 = nullptr;
-    GameObject* mCinematicCameraGO2 = nullptr;
-    GameObject* mCinematicCameraGO3 = nullptr;
-    GameObject* mCinematicCameraGO4 = nullptr;
+    GameObject* mCinematicCameraGO = nullptr;
 
-    GameObject* mDummyGO1 = nullptr;
-    GameObject* mDummyGO2 = nullptr;
-    GameObject* mDummyGO3 = nullptr;
-    GameObject* mDummyGO4 = nullptr;
+    GameObject* mEnemyGO1 = nullptr;
+    GameObject* mEnemyGO2 = nullptr;
+    GameObject* mEnemyGO3 = nullptr;
+    GameObject* mEnemyGO4 = nullptr;
 
     GameObject* mBattleAreaGO1 = nullptr;
     GameObject* mBattleAreaGO2 = nullptr;
@@ -66,10 +65,10 @@ private:
 
     TimerScript mTimer;
 
-    int mDummy1AnimState = 1;
-    int mDummy2AnimState = 1;
-    int mDummy3AnimState = 1;
-    int mDummy4AnimState = 1;
+    int mEnemyAnimState1 = 1;
+    int mEnemyAnimState2 = 1;
+    int mEnemyAnimState3 = 1;
+    int mEnemyAnimState4 = 1;
     int mCinematicIndex = 1;
  
     float mDistanceToEnemy = 4.0f;
@@ -83,9 +82,14 @@ private:
     float3 mColor = float3(0.0f, 0.0f, 0.0f);
     float mFadeSpeed = 0.05f;
 
+    bool mIsDummy1 = true;
+    bool mIsDummy2 = true;
+    bool mIsDummy3 = true;
+    bool mIsDummy4 = true;
+
     bool mMoveCompleted = false;
-    bool mPlayingCinematic = true;
-    bool mTravelling = true;
+    bool mPlayingCinematic = false;
+    bool mTravelling = false;
     bool mStartParameters = false;
     bool mLevel1 = false;
     bool mFadeStart = false;
