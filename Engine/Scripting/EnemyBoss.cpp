@@ -299,13 +299,15 @@ void EnemyBoss::LaserAttack()
     }
 }
 
-void EnemyBoss::BombAttack()
+void EnemyBoss::BombAttack(const char* pattern)
 {
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_ERUPTION);
     mCurrentState = EnemyState::ATTACK;
+    const int n = sizeof(mTemplateNames) / sizeof(mTemplateNames[0]);
 
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-    int index = rand() % (std::size(mTemplateNames) - 1);
+    const char** targetPtr = std::find(&mTemplateNames[0], mTemplateNames + n, pattern);
+    int index = targetPtr - mTemplateNames;
 
   //  if (index == 2)
   //  {
@@ -402,7 +404,6 @@ void EnemyBoss::BulletHellPattern1() //Circular
         float3 rotation = mGameObject->GetWorldEulerAngles();
         for (unsigned int i = 0; i < nBullets; ++i)
         {
-            // Give bullet random directon
             float angle = (-pi / 2) + offset + i * alpha;
             GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             bulletGO->SetWorldPosition(bulletOriginPosition);
@@ -445,7 +446,6 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         
         for (int i : { -1, 1 })
         {
-            // Give bullet random directon
             GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * space * (mBulletsWave % nBullets) * i;
 
@@ -472,7 +472,6 @@ void EnemyBoss::BulletHellPattern3() //Two streams
 
         for (int i : { -1, 1 })
         {
-            // Give bullet random directon
             GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float angle = alpha * i;
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
@@ -513,7 +512,6 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
 
         for (int i : { -1, 1 })
         {
-            // Give bullet random directon
             GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * width * sin((pi*3/4)* (mBulletsWave % nBullets) / (nBullets - 1)) * i;
 
@@ -691,7 +689,7 @@ void EnemyBoss::UpdatePhase3()
                 StartBulletAttack(BulletPattern::WAVE);
                 break;
             case 1:
-                BombAttack();
+                BombAttack("BombingTemplate2.prfb");
                 break;
             case 2:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
@@ -700,7 +698,7 @@ void EnemyBoss::UpdatePhase3()
                 StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             case -1:// Start with bombs. Never repeat this sequence
-                BombAttack();
+                BombAttack("BombingTemplate1.prfb");
                 break;
             }
         }
@@ -713,7 +711,7 @@ void EnemyBoss::UpdatePhase3()
         case 30:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                BombAttack();
+                BombAttack("BombingTemplate3.prfb");
                 attack++;
             }
             break;

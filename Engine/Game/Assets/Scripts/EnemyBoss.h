@@ -44,7 +44,7 @@ private:
 	void BulletHellPattern5();
 	void BulletHellPattern6();
 	void LaserAttack();
-	void BombAttack();
+	void BombAttack(const char* pattern);
 	void Rotate();
 
 	void  Death() override;
