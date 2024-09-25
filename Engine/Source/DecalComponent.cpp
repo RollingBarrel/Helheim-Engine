@@ -18,19 +18,21 @@ DecalComponent::DecalComponent(GameObject* owner) : Component(owner, ComponentTy
 	mEmisiveColor = { 1.0f, 1.0f, 1.0f, 1.0f };
 }
 
-DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL), 
+DecalComponent::DecalComponent(const DecalComponent& other, GameObject* owner) : Component(owner, ComponentType::DECAL),
 mDiffuseName(other.mDiffuseName), mSpecularName(other.mSpecularName),
 mNormalName(other.mNormalName), mEmisiveName(other.mEmisiveName),
-mDiffuseColor(other.mDiffuseColor), mEmisiveColor(other.mEmisiveColor)
+mDiffuseColor(other.mDiffuseColor), mEmisiveColor(other.mEmisiveColor), mFPS(other.mFPS),
+mFade(other.mFade), mIsSpriteSheet(other.mIsSpriteSheet), mRows(other.mRows),
+mColumns(other.mColumns), mDefaultRow(other.mDefaultRow), mDefaultColumn(other.mDefaultColumn)
 {
-	if(other.mDiffuseTexture)
-		App->GetResource()->RequestResource(other.mDiffuseTexture->GetUID(), Resource::Type::Texture);
+	if (other.mDiffuseTexture)
+		mDiffuseTexture = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(other.mDiffuseTexture->GetUID(), Resource::Type::Texture));
 	if (other.mSpecularTexture)
-		App->GetResource()->RequestResource(other.mSpecularTexture->GetUID(), Resource::Type::Texture);
+		mSpecularTexture = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(other.mSpecularTexture->GetUID(), Resource::Type::Texture));
 	if (other.mNormalTexture)
-		App->GetResource()->RequestResource(other.mNormalTexture->GetUID(), Resource::Type::Texture);
+		mNormalTexture = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(other.mNormalTexture->GetUID(), Resource::Type::Texture));
 	if (other.mEmisiveTexture)
-		App->GetResource()->RequestResource(other.mEmisiveTexture->GetUID(), Resource::Type::Texture);
+		mEmisiveTexture = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(other.mEmisiveTexture->GetUID(), Resource::Type::Texture));
 	if (IsEnabled())
 	{
 		App->GetOpenGL()->AddDecal(*this);
