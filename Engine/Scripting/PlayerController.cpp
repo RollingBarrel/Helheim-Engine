@@ -526,6 +526,14 @@ void PlayerController::SetAnimationSpeed(float speed)
     }
 }
 
+void PlayerController::SetLowerAnimationSpeed(float speed)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetLowerAnimSpeed(speed);
+    }
+}
+
 void PlayerController::MoveInDirection(float3 direction)
 {
 
