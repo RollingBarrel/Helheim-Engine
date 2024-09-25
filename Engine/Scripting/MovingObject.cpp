@@ -21,7 +21,7 @@ void MovingObject::Start()
 {
 	mStartingPoint = mGameObject->GetWorldPosition();
 	mDirection.Normalize();
-
+	mGoingForward = true;
 	mCurrentDistance = 0.0f;
 }
 
