@@ -244,7 +244,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8176528215408326,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -265,9 +265,9 @@
                 ],
                 "Rotation": [
                     0.0,
+                    0.3826834559440613,
                     0.0,
-                    0.0,
-                    1.0
+                    0.9238795042037964
                 ],
                 "Scale": [
                     1.0,
@@ -14383,15 +14383,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    5.350286960601807,
+                    3.1715123653411867,
                     -0.07321131229400635,
-                    0.0
+                    -3.2861416339874269
                 ],
                 "Rotation": [
                     0.0,
+                    0.3826834559440613,
                     0.0,
-                    0.0,
-                    1.0
+                    0.9238795042037964
                 ],
                 "Scale": [
                     1.0,
@@ -14448,6 +14448,15 @@
                                 "VariableName": "mSpawnerGO4",
                                 "MemberType": 3,
                                 "VariableData": -1
+                            },
+                            {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": 1201413929
                             },
                             {
                                 "VariableName": "EXPLOSIVE SPAWNERS",
@@ -14848,9 +14857,9 @@
                 ],
                 "Rotation": [
                     0.0,
-                    0.7071068286895752,
+                    0.9238796234130859,
                     0.0,
-                    0.7071068286895752
+                    0.38268348574638369
                 ],
                 "Scale": [
                     2.0,
@@ -20053,10 +20062,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    5.7872664993574577e-11,
-                    7.991166756093904e-12,
-                    -0.13725052773952485,
-                    0.9942507743835449
+                    3.4231922851901689e-11,
+                    4.712929699279833e-11,
+                    -0.8096438646316528,
+                    0.5881319642066956
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -20210,9 +20219,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    77.55000305175781,
-                    0.0,
-                    -0.05000000074505806
+                    50.802127838134769,
+                    0.30568867921829226,
+                    -51.81696319580078
                 ],
                 "Rotation": [
                     0.0,
@@ -26874,9 +26883,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    6.851825714111328,
+                    5.114748001098633,
                     0.0,
-                    0.0
+                    -5.629899024963379
                 ],
                 "Rotation": [
                     0.0,
@@ -26902,9 +26911,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -1.8093700408935547,
+                    3.628557010415534e-7,
+                    3.043853759765625
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -27167,9 +27176,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.25,
-                    0.0,
-                    1.25
+                    2.7212038040161135,
+                    2.3046969488405012e-7,
+                    3.1833198070526125
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -27432,9 +27441,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.25,
-                    0.0,
-                    -1.25
+                    -1.8975720405578614,
+                    -1.4094395339725453e-7,
+                    -2.432323455810547
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -27697,9 +27706,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.25,
-                    0.0,
-                    -1.25
+                    4.523098945617676,
+                    -0.10419204831123352,
+                    -0.03884201869368553
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -27962,9 +27971,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -1.25,
-                    0.0,
-                    1.25
+                    3.067150115966797,
+                    -5.839694381393201e-7,
+                    -3.648681402206421
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -28227,9 +28236,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    7.289371490478516,
+                    7.730228900909424,
                     0.0,
-                    -0.6546989679336548
+                    3.257645606994629
                 ],
                 "Rotation": [
                     0.0,
@@ -30607,9 +30616,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    7.260580539703369,
+                    -4.007913589477539,
                     0.0,
-                    0.0
+                    -8.355241775512696
                 ],
                 "Rotation": [
                     0.0,
@@ -53448,9 +53457,403 @@
                         "FontSize": 30
                     }
                 ]
+            },
+            {
+                "UID": 21849375,
+                "ParentUID": 701856986,
+                "Name": "BombingArea (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    4.523098945617676,
+                    -0.10419204831123352,
+                    -0.03884201869368553
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    5.0,
+                    5.0,
+                    5.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BombBoss",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mRadius",
+                                "MemberType": 1,
+                                "VariableData": 1.5
+                            },
+                            {
+                                "VariableName": "mTimeDelay",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 520126872,
+                "ParentUID": 21849375,
+                "Name": "Explosion",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 440589114,
+                        "Delay": 0.0,
+                        "Duration": 1.5,
+                        "EmissionRate": 500.0,
+                        "MaxParticles": 500,
+                        "Burst": 0,
+                        "Looping": false,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 1.5,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.699999988079071,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeAngle": 0.10000000149011612,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.4000000059604645,
+                        "ShapeIsRandAngle": true,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.10000000149011612,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 6.0,
+                                "MaxValue": 10.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.008042901754379273,
+                                "Color": [
+                                    0.8941176533699036,
+                                    0.0,
+                                    1.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8203752636909485,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.9959773421287537,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 663546132,
+                "ParentUID": 21849375,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 19,
+                        "IsEnabled": true,
+                        "IsSpriteSheet": false,
+                        "SpriteSheetSize": [
+                            1,
+                            1
+                        ],
+                        "DefaultPosition": [
+                            0,
+                            0
+                        ],
+                        "Speed": 30,
+                        "Fade": 1.0
+                    }
+                ]
+            },
+            {
+                "UID": 1201413929,
+                "ParentUID": 1,
+                "Name": "AreaDoor",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    8.216797828674317,
+                    0.0,
+                    -8.216797828674317
+                ],
+                "Rotation": [
+                    0.0,
+                    0.3826834559440613,
+                    0.0,
+                    0.9238795042037964
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "DoorArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOOR ENTER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 1582036468
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiTop",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "DOOR EXIT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiTop",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "ELEVATOR",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mElevator",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsStartingArea",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0,
+                            3.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1582036468,
+                "ParentUID": 1,
+                "Name": "Door",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    9.148588180541993,
+                    0.36340901255607607,
+                    -9.440677642822266
+                ],
+                "Rotation": [
+                    0.0,
+                    0.3826834559440613,
+                    0.0,
+                    0.9238795042037964
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.5,
+                            1.0,
+                            3.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
             }
         ],
-        "NavMeshResource": 127010870,
+        "NavMeshResource": 374404758,
         "SkyBoxResource": 1741121676,
         "BloomIntensity": 0.5,
         "DirectionalLight": [

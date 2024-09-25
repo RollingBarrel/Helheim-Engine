@@ -78,7 +78,7 @@ void EnemyBoss::Start()
     {
         if (prefab == "BombingTemplateSingle.prfb")
         {
-            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject->GetParent());
             if (bombTemplate)
             {
                 bombTemplate->SetEnabled(false);
@@ -89,7 +89,7 @@ void EnemyBoss::Start()
 
 		for (int i = 0; i < 3; i++)
 		{
-            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject->GetParent());
             if (bombTemplate)
             {
                 bombTemplate->SetEnabled(false);

@@ -12,6 +12,8 @@ CREATE(BossBattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO2);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
+	SEPARATOR("DOORS");
+	MEMBER(MemberType::GAMEOBJECT, mAreaDoorsGO);
 	SEPARATOR("EXPLOSIVE SPAWNERS");
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
