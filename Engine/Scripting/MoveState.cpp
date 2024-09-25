@@ -221,7 +221,7 @@ float MoveState::ComputeMoveAnge(float3 mouseDir)
 	float angleRadians = Acos(dotProduct) ;
 
 	// Step 5: Convert angle to degrees (optional)
-	float angleDegrees = DegToRad(angleRadians);
+	float angleDegrees = RadToDeg(angleRadians);
 
 
 
@@ -241,13 +241,13 @@ std::string MoveState::GetTriggerFromAngle(float angle)
 	// Array of strings representing the actions for each octet
 	std::vector<std::string> octetStrings = {
 		"tWalkForward",			// -22.5 to 22.5 degrees
-		"tWalkForwardRight",	// 22.5 to 67.5 degrees
+		"tWalkFrontRight",	// 22.5 to 67.5 degrees
 		"tStrafeRight",         // 67.5 to 112.5 degrees
-		"tWalkBackwardRight",	// 112.5 to 157.5 degrees
-		"tWalkBackward",		// 157.5 to -157.5 degrees
-		"tWalkBackwardLeft",	// -157.5 to -112.5 degrees
+		"tWalkBackRight",	// 112.5 to 157.5 degrees
+		"tWalkBack",		// 157.5 to -157.5 degrees
+		"tWalkBackLeft",	// -157.5 to -112.5 degrees
 		"tStrafeLeft",          // -112.5 to -67.5 degrees
-		"tWalkForwardLeft"		// -67.5 to -22.5 degrees
+		"tWalkFrontLeft"		// -67.5 to -22.5 degrees
 	};
 
 	// Compute which octet the angle belongs to
