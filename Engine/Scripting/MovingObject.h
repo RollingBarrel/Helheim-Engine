@@ -21,6 +21,8 @@ private:
 	float mDistance = 20.0f;
 	
 	float3 mStartingPoint = float3::zero;
+	float3 mOriginalFront = float3(1.0f, 0.0f, 0.0f);
+
 	float mCurrentDistance = 0.0f;
 	bool mGoingForward = true;
 };

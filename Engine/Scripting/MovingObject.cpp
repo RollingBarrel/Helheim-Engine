@@ -20,7 +20,10 @@ MovingObject::MovingObject(GameObject* owner) : Script(owner) {}
 void MovingObject::Start()
 {
 	mStartingPoint = mGameObject->GetWorldPosition();
+	mOriginalFront = mGameObject->GetFront();
+
 	mDirection.Normalize();
+
 	mGoingForward = true;
 	mCurrentDistance = 0.0f;
 }
@@ -47,11 +50,13 @@ void MovingObject::Update()
 			{
 				mGoingForward = false;
 				mCurrentDistance = mDistance;
+				mGameObject->LookAt(mStartingPoint + float3(mDistance * mDirection.x, mDistance * mDirection.y, mDistance * mDirection.z));
 			}
 			else
 			{
 				mGoingForward = true;
 				mCurrentDistance = 0.0f;
+				mGameObject->LookAt(mStartingPoint);
 			}
 		}
 		else 
@@ -60,6 +65,6 @@ void MovingObject::Update()
 		}
 	}
 	
-	float3 newPos = mStartingPoint + float3(mCurrentDistance * mDirection.x, mCurrentDistance * mDirection.y, mCurrentDistance * mDirection.z);
-	mGameObject->SetWorldPosition(newPos);
+	float3 newPosition = mStartingPoint + float3(mCurrentDistance * mDirection.x, mCurrentDistance * mDirection.y, mCurrentDistance * mDirection.z);
+	mGameObject->SetWorldPosition(newPosition);
 }
