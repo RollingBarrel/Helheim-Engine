@@ -21,6 +21,7 @@ public:
     Component* Clone(GameObject* owner) const override;
 
     void Draw();
+    void StencilDraw();
 
     void SetImage(ResourceTexture* image) { mImage = image; }
     void FillVBO();

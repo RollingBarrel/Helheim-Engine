@@ -25,6 +25,7 @@ public:
 
 private:
 	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
+	void UiBlurPass();
 
 	std::vector<GameObject*> mCanvasList;
 

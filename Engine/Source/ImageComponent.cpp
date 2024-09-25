@@ -254,7 +254,7 @@ void ImageComponent::Draw()
 
 void ImageComponent::StencilDraw()
 {
-	if (mAlpha != 0.0f && mBlurBackground && mImage && mCanvas && mShouldDraw)
+	if (mAlpha != 0.0f && mBlurBackground && mImage && mCanvas && mShouldDraw && mCanvas->GetRenderSpace() == RenderSpace::Screen)
 	{
 		unsigned int UIImageProgram = App->GetOpenGL()->GetUIPassThroughProgram();
 		glUseProgram(UIImageProgram);
@@ -263,86 +263,19 @@ void ImageComponent::StencilDraw()
 		float4x4 model = float4x4::identity;
 		float4x4 view = float4x4::identity;
 
-		switch (mCanvas->GetRenderSpace())
+		Transform2DComponent* component = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+		if (component != nullptr)
 		{
-			case RenderSpace::Screen: //Ortographic Mode
-			{
-				Transform2DComponent* component = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
-				if (component != nullptr)
-				{
-					model = component->GetGlobalMatrix();
+			model = component->GetGlobalMatrix();
 
-					//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
-					float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
+			//float2 windowSize = ((ScenePanel*)App->GetEditor()->GetPanel(SCENEPANEL))->GetWindowsSize();
+			float2 canvasSize = ((CanvasComponent*)(FindCanvasOnParents(this->GetOwner())->GetComponent(ComponentType::CANVAS)))->GetSize();
 
-					model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
+			model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
 
-				}
-				glEnable(GL_CULL_FACE);
-				glDisable(GL_DEPTH_TEST);
-				break;
-			}
-			case RenderSpace::World: //World Mode
-			{
-				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
-
-				proj = camera->GetProjectionMatrix();
-				model = GetOwner()->GetWorldTransform();
-				view = camera->GetViewMatrix();
-				glDisable(GL_CULL_FACE);
-				glEnable(GL_DEPTH_TEST);
-				break;
-			}
-			case RenderSpace::Billboard: //World Mode aligned to the camera
-			{
-				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
-
-				proj = camera->GetProjectionMatrix();
-				view = camera->GetViewMatrix();
-				float3 pos = GetOwner()->GetWorldPosition();
-				float3 scale = GetOwner()->GetWorldScale();
-				float3x3 scaleMatrix = float3x3::identity;
-				scaleMatrix[0][0] = scale.x;
-				scaleMatrix[1][1] = scale.y;
-				scaleMatrix[2][2] = scale.z;
-
-				float3 norm = camera->GetFrustum().front;
-				float3 up = camera->GetFrustum().up;
-				float3 right = -up.Cross(norm).Normalized();
-				model = { float4(right, 0.0f), float4(up, 0.0f),float4(norm, 0.0f),float4(pos, 1.0f) };
-				model = model * scaleMatrix;
-				//model.Transpose();
-
-				glDisable(GL_CULL_FACE);
-				glEnable(GL_DEPTH_TEST);
-				break;
-			}
-			case RenderSpace::WorldAxisBillboard: //World Mode aligned to the camera
-			{
-				const CameraComponent* camera = App->GetCamera()->GetCurrentCamera();
-
-				proj = camera->GetProjectionMatrix();
-				view = camera->GetViewMatrix();
-				float3 pos = GetOwner()->GetWorldPosition();
-				float3 scale = GetOwner()->GetWorldScale();
-				float3x3 scaleMatrix = float3x3::identity;
-				scaleMatrix[0][0] = scale.x;
-				scaleMatrix[1][1] = scale.y;
-				scaleMatrix[2][2] = scale.z;
-
-				float3 norm = (pos - camera->GetFrustum().pos).Normalized();
-				float3 up = float3::unitY;
-				float3 right = -up.Cross(norm).Normalized();
-				norm = up.Cross(right).Normalized();
-				model = { float4(right, 0), float4(up, 0),float4(norm, 0),float4(pos, 1) };
-				model = model * scaleMatrix;
-				//model.Transpose();
-
-				glDisable(GL_CULL_FACE);
-				glEnable(GL_DEPTH_TEST);
-				break;
-			}
 		}
+		glEnable(GL_CULL_FACE);
+		glDisable(GL_DEPTH_TEST);
 
 
 		glBindVertexArray(mQuadVAO);

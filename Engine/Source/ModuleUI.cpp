@@ -43,6 +43,7 @@ update_status ModuleUI::Update(float dt)
 {
 	// Draw the UI
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Ui");
+	UiBlurPass();
 	App->GetOpenGL()->BindSceneFramebuffer();
 	for (GameObject* gameObject : mCanvasList) 
 	{
@@ -72,53 +73,30 @@ bool ModuleUI::CleanUp()
 
 void ModuleUI::DrawWidget(GameObject* gameObject)
 {
-	if (!gameObject) return;
-
-	if (gameObject->IsEnabled())
+	assert(gameObject);
+		
+	//TODO: Check this...
+	ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+	if (image && image->IsEnabled())
 	{
-		//STENCIL BLUR PREPASS
-		//glClear(GL_STENCIL_BITS);
-		//glStencilMask(0xFF);
-		glEnable(GL_STENCIL_TEST);
-		glStencilFunc(GL_ALWAYS, 1, 0xFF);
-		glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
-		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
-		if (image && image->IsEnabled())
-		{
-			image->StencilDraw();
-		}
+		image->Draw();
+	}
+	
+	TextComponent* text = static_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
+	if (text && text->IsEnabled())
+	{
+		text->Draw();
+	}
 
-		glDisable(GL_STENCIL_TEST);
-		//glClear(GL_STENCIL_BITS);
+	VideoComponent* video = static_cast<VideoComponent*>(gameObject->GetComponent(ComponentType::VIDEO));
+	if (video && video->IsEnabled())
+	{
+		video->Draw();
+	}
 
-		//BLUR THE SCENE USING THE STENCIL PREPASS
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, App->GetOpenGL()->GetFramebufferTexture());
-
-		
-		//TODO: Check this...
-		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
-		if (image && image->IsEnabled())
-		{
-			image->Draw();
-		}
-		
-		TextComponent* text = static_cast<TextComponent*>(gameObject->GetComponent(ComponentType::TEXT));
-		if (text && text->IsEnabled())
-		{
-			text->Draw();
-		}
-
-		VideoComponent* video = static_cast<VideoComponent*>(gameObject->GetComponent(ComponentType::VIDEO));
-		if (video && video->IsEnabled())
-		{
-			video->Draw();
-		}
-
-		for (GameObject* child : gameObject->GetChildren())
-		{
-			DrawWidget(child);
-		}
+	for (GameObject* child : gameObject->GetChildren())
+	{
+		DrawWidget(child);
 	}
 }
 
@@ -212,6 +190,33 @@ void ModuleUI::CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggere
 		}
 
 	}
+}
+
+void ModuleUI::UiBlurPass()
+{
+	//STENCIL BLUR PREPASS
+	glStencilMask(0xFF);
+	glClear(GL_STENCIL_BUFFER_BIT);
+	glEnable(GL_STENCIL_TEST);
+	glStencilFunc(GL_ALWAYS, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	for (GameObject* gameObject : mCanvasList)
+	{
+		assert(gameObject);
+		ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+		if (gameObject->IsEnabled() && image && image->IsEnabled())
+		{
+			ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
+			image->StencilDraw();
+		}
+	}
+
+	//BLUR THE SCENE USING THE STENCIL PREPASS
+	glStencilFunc(GL_EQUAL, 1, 0xFF);
+	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+	App->GetOpenGL()->GaussianBlurTexture(App->GetOpenGL()->GetFramebufferTexture(), 21);
+	glDisable(GL_STENCIL_TEST);
+	//glClear(GL_STENCIL_BUFFER_BIT);
 }
 
 void ModuleUI::CheckRaycast() 

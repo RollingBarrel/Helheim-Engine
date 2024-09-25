@@ -231,6 +231,7 @@ bool ModuleOpenGL::Init()
 	}
 	glGenFramebuffers(1, &mBlurFBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
 	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
 	const GLenum att3 = GL_COLOR_ATTACHMENT0;
@@ -325,7 +326,7 @@ bool ModuleOpenGL::Init()
 
 	sourcesPaths[0] = "ui.vs";
 	sourcesPaths[1] = "PassThroughPixel.glsl";
-	mPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	mUiPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
@@ -967,12 +968,12 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 	return mBlurTex[0];
 }
 
-unsigned int ModuleOpenGL::GaussianBlurTexture(unsigned int texId, bool modifyTex, unsigned int passes) const
+void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 {
 	//FALTA MODIFICAR LA TEXTURA MIRANT EL BOOL !!
 	//rEMIRAR EL ALGORITME !!
 	//Passes have to be impair si??
-	if (passes % 2 == 0)
+	if ((passes&1) == 1)
 		passes += 1;
 
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
@@ -980,13 +981,17 @@ unsigned int ModuleOpenGL::GaussianBlurTexture(unsigned int texId, bool modifyTe
 	glUseProgram(mGaussianBlurProgramId);
 	glBindVertexArray(mEmptyVAO);
 	bool horizontal = true;
-	unsigned int drawTex = texId;
-	unsigned int sampleTex = mBlurTex[0];
+	unsigned int drawTex = mBlurTex[0];
+	unsigned int sampleTex = texId;
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+	glBindTexture(GL_TEXTURE_2D, sampleTex);
 	//tine que ser impar
-	for (int i = 0; i < (passes*2+1); ++i)
+	for (int i = 0; i < (passes*2); ++i)
 	{
 		glUniform1ui(0, horizontal);
-		if ((i&1) == 0)
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		horizontal = !horizontal;
+		if (i != 0 && (i&1) == 0)
 		{
 			unsigned int tmp = drawTex;
 			drawTex = sampleTex;
@@ -994,11 +999,7 @@ unsigned int ModuleOpenGL::GaussianBlurTexture(unsigned int texId, bool modifyTe
 			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
 			glBindTexture(GL_TEXTURE_2D, sampleTex);
 		}
-		glDrawArrays(GL_TRIANGLES, 0, 3);
-		horizontal = !horizontal;
 	}
-
-	return mBlurTex[0];
 }
 
 void ModuleOpenGL::SetBloomIntensity(float intensity)
