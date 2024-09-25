@@ -21,6 +21,8 @@ private:
 	void Attack() override;
 	void RangeAttack();
 	void TakeDamage(float damage) override;
+	void Death() override;
+
 	void OnCollisionEnter(CollisionData* collisionData);
 
 	BoxColliderComponent* mCollider = nullptr;
@@ -28,6 +30,8 @@ private:
 	float mBulletSpeed = 15.0f;
 	float mTimerDisengage = 0.0f;
 
+
 	GameObject* mBulletOrigin = nullptr;
+
 };
 

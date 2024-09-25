@@ -64,6 +64,7 @@ private:
     void OnQuitButtonClick();
     void OnOptionsButtonClick();
     void OnCreditsButtonClick();
+    void OnBackButtonClick();
     void OnPlayButtonClick();
     void OnControllerButtonClick();
     void OnKeyboardButtonClick();
@@ -156,6 +157,7 @@ private:
     GameObject* mCreditsHover = nullptr;
     GameObject* mCreditsClicked = nullptr;
     ButtonComponent* mCreditsButton = nullptr;
+    bool mIsScrolling = false;
 
     // OPTIONS Button
     GameObject* mQuitGO = nullptr;
@@ -198,6 +200,10 @@ private:
     GameObject* mControlsScreenGO = nullptr;
     GameObject* mAudioScreenGO = nullptr;
     GameObject* mKeyboardScreenGO = nullptr;
+
+    // Back Button
+    GameObject* mBackGO = nullptr;
+    ButtonComponent* mBackButton = nullptr;
 
     // Settings
     // General Volume

@@ -9,6 +9,7 @@
 #include "ButtonComponent.h"
 #include "GameManager.h"
 #include "PlayerController.h"
+#include "AudioManager.h"
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "Transform2DComponent.h"
@@ -27,7 +28,16 @@ Sanity::Sanity(GameObject* owner) : Script(owner)
 {
     // Create buff selections
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
+    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
 }
 
@@ -40,11 +50,10 @@ void Sanity::Start()
     if (mCard1GO)
     {
         const std::vector<GameObject*> children1 = mCard1GO->GetChildren();
-        mCard1Image = static_cast<ImageComponent*>(mCard1GO->GetComponent(ComponentType::IMAGE));
-        //mCard1Image->SetAlpha(0.7f);
-        mCard1Text = static_cast<TextComponent*>(children1[0]->GetComponent(ComponentType::TEXT));
-        mCard1Btn = static_cast<ButtonComponent*>(mCard1GO->GetComponent(ComponentType::BUTTON));
-        mCard1Transform = static_cast<Transform2DComponent*>(mCard1Image->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        mCard1Text = static_cast<TextComponent*>(children1[1]->GetComponent(ComponentType::TEXT));
+        mCard1Btn = static_cast<ButtonComponent*>(children1[0]->GetComponent(ComponentType::BUTTON));
+        mCard1Transform = static_cast<Transform2DComponent*>(mCard1GO->GetComponent(ComponentType::TRANSFORM2D));
+        mCard1TextTransform = static_cast<Transform2DComponent*>(mCard1Text->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         mCard1Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard1Click, this)));
         mCard1Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOn, this)));
         mCard1Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOff, this)));
@@ -53,10 +62,10 @@ void Sanity::Start()
     if (mCard2GO)
     {
         const std::vector<GameObject*> children2 = mCard2GO->GetChildren();
-        mCard2Image = static_cast<ImageComponent*>(mCard2GO->GetComponent(ComponentType::IMAGE));
-        mCard2Text = static_cast<TextComponent*>(children2[0]->GetComponent(ComponentType::TEXT));
-        mCard2Btn = static_cast<ButtonComponent*>(mCard2GO->GetComponent(ComponentType::BUTTON));
-        mCard2Transform = static_cast<Transform2DComponent*>(mCard2Image->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        mCard2Text = static_cast<TextComponent*>(children2[1]->GetComponent(ComponentType::TEXT));
+        mCard2Btn = static_cast<ButtonComponent*>(children2[0]->GetComponent(ComponentType::BUTTON));
+        mCard2Transform = static_cast<Transform2DComponent*>(mCard2GO->GetComponent(ComponentType::TRANSFORM2D));
+        mCard2TextTransform = static_cast<Transform2DComponent*>(mCard2Text->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         mCard2Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard2Click, this)));
         mCard2Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOn, this)));
         mCard2Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOff, this)));
@@ -65,10 +74,10 @@ void Sanity::Start()
     if (mCard1GO)
     {
         const std::vector<GameObject*> children3 = mCard3GO->GetChildren();
-        mCard3Image = static_cast<ImageComponent*>(mCard3GO->GetComponent(ComponentType::IMAGE));
-        mCard3Text = static_cast<TextComponent*>(children3[0]->GetComponent(ComponentType::TEXT));
-        mCard3Btn = static_cast<ButtonComponent*>(mCard3GO->GetComponent(ComponentType::BUTTON));
-        mCard3Transform = static_cast<Transform2DComponent*>(mCard3Image->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        mCard3Text = static_cast<TextComponent*>(children3[1]->GetComponent(ComponentType::TEXT));
+        mCard3Btn = static_cast<ButtonComponent*>(children3[0]->GetComponent(ComponentType::BUTTON));
+        mCard3Transform = static_cast<Transform2DComponent*>(mCard3GO->GetComponent(ComponentType::TRANSFORM2D));
+        mCard3TextTransform = static_cast<Transform2DComponent*>(mCard3Text->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
         mCard3Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard3Click, this)));
         mCard3Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOn, this)));
         mCard3Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOff, this)));
@@ -89,6 +98,8 @@ void Sanity::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
         if (mCurrentBuff > 1)
         {
             mCurrentBuff = 0;
@@ -103,6 +114,8 @@ void Sanity::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
         if (mCurrentBuff == 0)
         {
             mCurrentBuff = 2;
@@ -118,6 +131,8 @@ void Sanity::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
         CardClick();
     }
 }
@@ -243,14 +258,16 @@ void Sanity::OnCard1HoverOn()
 {
     if (mCard1Hovered) return;
     mCard1Hovered = true;
-    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
+    if (mCard1Transform) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
+    mCard1TextTransform->SetPosition(mCard1TextTransform->GetPosition() - float3(0.0f, 20.0f, 0.0f));
 }
 
 void Sanity::OnCard1HoverOff()
 {
     if (!mCard1Hovered) return;
     mCard1Hovered = false;
-    if (mCard1Image) mCard1Transform->SetSize(mCard1Transform->GetSize().Div(1.2f));
+    if (mCard1Transform) mCard1Transform->SetSize(mCard1Transform->GetSize().Div(1.2f));
+    mCard1TextTransform->SetPosition(mCard1TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
 }
 
 void Sanity::OnCard2Click()
@@ -268,14 +285,16 @@ void Sanity::OnCard2HoverOn()
 {
     if (mCard2Hovered) return;
     mCard2Hovered = true;
-    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
+    if (mCard2Transform) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
+    mCard2TextTransform->SetPosition(mCard2TextTransform->GetPosition() - float3(0.0f, 20.0f, 0.0f));
 }
 
 void Sanity::OnCard2HoverOff()
 {
     if (!mCard2Hovered) return;
     mCard2Hovered = false;
-    if (mCard2Image) mCard2Transform->SetSize(mCard2Transform->GetSize().Div(1.2f));
+    if (mCard2Transform) mCard2Transform->SetSize(mCard2Transform->GetSize().Div(1.2f));
+    mCard2TextTransform->SetPosition(mCard2TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
 }
 
 void Sanity::OnCard3Click()
@@ -293,12 +312,14 @@ void Sanity::OnCard3HoverOn()
 {
     if (mCard3Hovered) return;
     mCard3Hovered = true;
-    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));
+    if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));
+    mCard3TextTransform->SetPosition(mCard3TextTransform->GetPosition() - float3(0.0f, 20.0f, 0.0f));
 }
 
 void Sanity::OnCard3HoverOff()
 {
     if (!mCard3Hovered) return;
     mCard3Hovered = false;
-    if (mCard3Image) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(1.2f));
+    if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(1.2f));
+    mCard3TextTransform->SetPosition(mCard3TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
 }

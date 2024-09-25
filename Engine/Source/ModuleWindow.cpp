@@ -1,7 +1,11 @@
+#include "ModuleWindow.h"
 #include "Globals.h"
 #include "SDL.h"
 #include "Application.h"
-#include "ModuleWindow.h"
+#include "ModuleResource.h"
+#include "ResourceTexture.h"
+
+#include "glew.h"
 
 ModuleWindow::ModuleWindow()
 {
@@ -70,6 +74,7 @@ bool ModuleWindow::Init()
 	SDL_GetWindowPosition(mWindow, &windowPositionX, &windowPositionY);
 	mGameWindowsSize = float2(mWidth, mHeight);
 	mGameWindowsPosition = float2(windowPositionX, windowPositionY);
+
 	return ret;
 }
 
@@ -79,9 +84,14 @@ bool ModuleWindow::CleanUp()
 	LOG("Destroying SDL window and quitting all SDL systems");
 
 	//Destroy window
-	if(mWindow != NULL)
+	if(mWindow)
 	{
 		SDL_DestroyWindow(mWindow);
+	}
+
+	if (mCursor)
+	{
+		SDL_FreeCursor(mCursor);
 	}
 
 	//Quit SDL subsystems
@@ -128,4 +138,51 @@ bool ModuleWindow::IsWindowFullscreen()
 	Uint32 windowFlags = SDL_GetWindowFlags(mWindow);
 	return (windowFlags & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP;
 }
+
+void ModuleWindow::SetCursor(unsigned int resourceID, unsigned int cursorWidth, unsigned int cursorHeight, unsigned int hotPointX, unsigned int hotPointY)
+{
+	if (mCursor)
+	{
+		SDL_FreeCursor(mCursor);
+		mCursor = nullptr;
+	}
+
+	if (resourceID == 0)
+	{
+		SDL_SetCursor(SDL_GetDefaultCursor());
+		return;
+	}
+
+	ResourceTexture* texture = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(resourceID, Resource::Type::Texture));
+
+	int w = 0;
+	int h = 0;
+	glGetTextureLevelParameteriv(texture->GetOpenGLId(), 0, GL_TEXTURE_WIDTH, &w);
+	glGetTextureLevelParameteriv(texture->GetOpenGLId(), 0, GL_TEXTURE_HEIGHT, &h);
+	void* pixel_data = malloc(w * h * 4);
+
+	glBindTexture(GL_TEXTURE_2D, texture->GetOpenGLId());
+	glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixel_data);
+
+	SDL_Surface* surface = SDL_CreateRGBSurfaceFrom(pixel_data, w, h, 32, 4 * w, 0x000000ff, 0x0000ff00, 0x00ff0000, 0xff000000);
+
+	// Scale image
+	SDL_Surface* scaledImage = SDL_CreateRGBSurfaceWithFormat(0, cursorWidth, cursorHeight, 32, SDL_PIXELFORMAT_RGBA32);
+	SDL_SoftStretch(surface, &surface->clip_rect, scaledImage, &scaledImage->clip_rect);
+
+	if (scaledImage)
+	{
+		mCursor = SDL_CreateColorCursor(scaledImage, hotPointX, hotPointY);
+		SDL_SetCursor(mCursor);
+	}
+	else
+	{
+		LOG("Error creating Cursor");
+		SDL_SetCursor(SDL_GetDefaultCursor());
+	}
+	free(pixel_data);
+	pixel_data = nullptr;
+}
+
+
 

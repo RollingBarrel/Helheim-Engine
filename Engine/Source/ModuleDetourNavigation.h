@@ -38,7 +38,7 @@ public:
 	void SetAgentDestination(unsigned int agentId, float3 destination);
 	void MoveAgent(unsigned int agentId, float3& position);
 	void DisableAgent(unsigned int agentId);
-
+	dtCrowd* GetCrowd() const { return mCrowd; };
 
 private:
 	dtNavMeshQuery* mNavQuery = nullptr;

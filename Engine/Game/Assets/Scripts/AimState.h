@@ -20,4 +20,7 @@ private:
 	float mSpecialAttackTimer = 0.0f;
 	float mGrenadeTimer = 0.0f;
 	float mSwitchTimer = 0.0f;
+	float mIdleAnimTimer = 0.0f;
+	float mWaitTimeForIdle = 3.0f;
+	bool mIsIdle = false;
 };
