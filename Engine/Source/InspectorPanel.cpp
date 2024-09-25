@@ -577,6 +577,12 @@ void InspectorPanel::DrawSpotLightComponent(SpotLightComponent* component) const
 		component->SetOuterAngle(DegToRad(outerAngle));
 	}
 
+	bool isVolumetric = component->GetVolumetric();
+	if(ImGui::Checkbox("Volumetric", &isVolumetric))
+	{
+		component->SetVolumetric(isVolumetric);
+	}
+
 	ImGui::SeparatorText("Shadows");
 
 	bool castShadow = component->CanCastShadow();
@@ -624,9 +630,34 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 	MaterialVariables(component);
 
 	ImGui::Separator();
+
+	std::vector<std::string>matFiles;
+	EngineApp->GetFileSystem()->DiscoverFiles(ASSETS_MATERIAL_PATH, ".mat", matFiles);
+	std::string matName;
+	std::string selectedName = (rMat.GetName() != nullptr) ? rMat.GetName() : "SELECT MATERIAL";
+	if (ImGui::BeginCombo("Select Material", selectedName.c_str(), ImGuiComboFlags_PopupAlignLeft))
+	{
+		for (const std::string& file : matFiles)
+		{
+			EngineApp->GetFileSystem()->SplitPath(file.c_str(), &matName);
+			bool selectedMat = (rMat.GetName() != nullptr) && strcmp(matName.c_str(), rMat.GetName());
+			if (ImGui::Selectable(matName.c_str(), selectedMat))
+			{
+				matName = file + ".emeta";
+				char* fileBuffer = nullptr;
+				assert(EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer) && "Not able to open .emeta file");
+				rapidjson::Document document;
+				assert(document.Parse(fileBuffer) != 0 && "Not able to load .emeta file");
+				assert(document.HasMember("uid") && "Meta has no uid");
+				component.SetMaterial(document["uid"].GetInt());
+				break;
+			}
+		}
+		ImGui::EndCombo();
+	}
+
 	if (rMat.GetName() != nullptr)
 	{
-		ImGui::Text(rMat.GetName());
 		if (ImGui::Button("Save Material"))
 		{
 			//Just save the resource material
@@ -634,11 +665,6 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 			Importer::Material::Save(&rMat);
 		}
 	}
-
-	//if (ImGui::Button("Set Material"))
-	//{
-	// chose a material from the assets material foler and set it
-	//}
 
 	if (ImGui::Button("Create New Material"))
 	{
@@ -662,8 +688,7 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 					if (!App->GetFileSystem()->Exists(assetName.c_str()))
 					{
 						Importer::Material::SaveMatFile(rMat, userInputName);
-						unsigned int newUid = EngineApp->GetEngineResource()->ImportFile(assetName.c_str());
-						component.SetMaterial(newUid);
+						component.SetMaterial(EngineApp->GetEngineResource()->ImportFile(assetName.c_str()));
 					}
 					else
 					{
@@ -735,7 +760,7 @@ void InspectorPanel::MaterialVariables(const MeshRendererComponent& renderCompon
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
 
-		if (ImGui::ColorPicker3("BaseColor", material->mBaseColorFactor.ptr()))
+		if (ImGui::ColorPicker4("BaseColor", material->mBaseColorFactor.ptr()))
 		{
 			EngineApp->GetOpenGL()->BatchEditMaterial(renderComponent);
 		}
@@ -999,53 +1024,6 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 
 	if (component->GetAnimationUid() != 0)
 	{
-
-		if (ImGui::Button("Play/Pause"))
-		{
-			//component->OnStart();
-			bool play = component->GetIsPlaying();
-			component->SetIsPlaying(!play);
-		}
-
-		ImGui::SameLine();
-		ImGui::Dummy(ImVec2(40.0f, 0.0f));
-		ImGui::SameLine();
-
-
-
-		if (component->GetIsPlaying())
-		{
-			ImGui::Text("PLAYING");
-		}
-		else
-		{
-			ImGui::Text("PAUSED");
-		}
-
-		if (ImGui::Button("Restart"))
-		{
-			component->OnRestart();
-		}
-
-		if (ImGui::Checkbox("Loop", &loop))
-		{
-			component->SetLoop(loop);
-		}
-
-		float animSpeed = component->GetAnimSpeed();
-
-		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
-		{
-			component->SetAnimSpeed(animSpeed);
-		}
-
-		if (ImGui::Button("Open state machine panel"))
-		{
-			AnimationSMPanel* panel = static_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
-			panel->SetStateMachine(component->GetStateMachine());
-			panel->Open();
-		}
-
 		//Draw selectable state machines
 		std::vector<std::string> assets;
 		GetStateMachineAssets(component, false, assets);
@@ -1072,7 +1050,7 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 			}
 			ImGui::EndCombo();
 		}
-		
+
 		if (component->HasSpine())
 		{
 			ImGui::Text("Select spine state machine:");
@@ -1100,6 +1078,125 @@ void InspectorPanel::DrawAnimationComponent(AnimationComponent* component) const
 				ImGui::EndCombo();
 			}
 		}
+		if (ImGui::Button("Play/Pause"))
+		{
+			//component->OnStart();
+			bool play = component->GetIsPlaying();
+			component->SetIsPlaying(!play);
+		}
+
+		ImGui::SameLine();
+		ImGui::Dummy(ImVec2(40.0f, 0.0f));
+		ImGui::SameLine();
+
+
+
+		if (component->GetIsPlaying())
+		{
+			ImGui::Text("PLAYING");
+		}
+		else
+		{
+			ImGui::Text("PAUSED");
+		}
+
+		if (ImGui::Button("Restart current state"))
+		{
+			component->RestartStateAnimation();
+		}
+
+		if (ImGui::Button("Reset Component"))
+		{
+			component->ResetAnimationComponent();
+		}
+
+		std::vector<std::string> state_names = component->GetSMStateNames();
+		std::string currentState = component->GetCurrentStateName();
+		ImGui::Text("Select current state:");
+		if (ImGui::BeginCombo("##DefaultState", currentState.c_str()))
+		{
+
+			for (int n = 0; n < state_names.size(); n++)
+			{
+				bool is_selected = (currentState == state_names[n]);
+				if (ImGui::Selectable(state_names[n].c_str(), is_selected))
+				{
+					currentState = state_names[n].c_str();
+					component->ChangeState(state_names[n], 0.01f);
+					component->RestartStateAnimation();
+				}
+				if (is_selected)
+				{
+					ImGui::SetItemDefaultFocus();
+				}
+			}
+			ImGui::EndCombo();
+		}
+		if (component->HasSpine())
+		{
+			std::vector<std::string> spine_state_names = component->GetSpineSMStateNames();
+			std::string currentSpineState = component->GetCurrentSpineStateName();
+			ImGui::Text("Select current spine state:");
+			if (ImGui::BeginCombo("##DefaultState", currentSpineState.c_str()))
+			{
+
+				for (int n = 0; n < spine_state_names.size(); n++)
+				{
+					bool is_selected = (currentSpineState == spine_state_names[n]);
+					if (ImGui::Selectable(spine_state_names[n].c_str(), is_selected))
+					{
+						currentSpineState = spine_state_names[n].c_str();
+						component->ChangeSpineState(spine_state_names[n], 0.01f);
+						component->RestartStateAnimation();
+
+					}
+					if (is_selected)
+					{
+						ImGui::SetItemDefaultFocus();
+					}
+				}
+				ImGui::EndCombo();
+			}
+		}
+
+		if (ImGui::Checkbox("Loop", &loop))
+		{
+			component->SetLoop(loop);
+		}
+		float controllerTime = component->GetControllerTime();
+
+		if (ImGui::DragFloat("Current animation time ", &controllerTime, 0.02f, 0.0f, 50.0f))
+		{
+			component->SetControllerTime(controllerTime);
+		}
+
+		if (component->HasSpine())
+		{
+			float spineControllerTime = component->GetSpineControllerTime();
+
+			if (ImGui::DragFloat("Current spine animation time ", &spineControllerTime, 0.02f, 0.0f, 50.0f))
+			{
+				component->SetSpineControllerTime(spineControllerTime);
+			}
+
+
+		}
+
+		float animSpeed = component->GetAnimSpeed();
+
+		if (ImGui::DragFloat("Animation Speed", &animSpeed, 0.02f, 0.0f, 2.0f))
+		{
+			component->SetAnimSpeed(animSpeed);
+		}
+
+		if (ImGui::Button("Open state machine panel"))
+		{
+			AnimationSMPanel* panel = static_cast<AnimationSMPanel*>(EngineApp->GetEditor()->GetPanel(ANIMATIONSMPANEL));
+			panel->SetStateMachine(component->GetStateMachine());
+			panel->Open();
+		}
+
+		
 	}
 }
 
@@ -1783,14 +1880,14 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 	if (ImGui::CollapsingHeader("Shape"))
 	{
-		static const char* items[]{ "Cone","Box","Sphere" };
-		static int Selecteditem = 0;
+		static const char* items[]{ "None", "Cone","Box","Sphere" };
+		static int selectedItem = static_cast<int>(component->mShapeType);
 		ImGui::Text("Shape");
 		ImGui::SameLine();
-		bool check = ImGui::Combo("##Shape", &Selecteditem, items, IM_ARRAYSIZE(items));
+		bool check = ImGui::Combo("##Shape", &selectedItem, items, IM_ARRAYSIZE(items));
 		if (check)
 		{
-			component->mShapeType = (ParticleSystemComponent::EmitterType)(Selecteditem + 1);
+			component->mShapeType = (ParticleSystemComponent::EmitterType)(selectedItem);
 		}
 		switch (component->mShapeType)
 		{
@@ -1819,6 +1916,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
 
+			break;
+		default:
+			ImGui::Text("NONE");
 			break;
 		}
 		ImGui::Text("Rand Dir");

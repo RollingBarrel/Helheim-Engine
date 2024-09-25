@@ -56,6 +56,11 @@ public:
     void UnlockGrenade(bool unlock);
     
     void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
+    void PauseBackgroundAudio(bool pause); 
+
+    void HandleBossAudio(int stage);
+
+    void RegisterPlayerKill();
 
 private:
     void PrepareAudio();
@@ -82,6 +87,8 @@ private:
     GameObject* mFirstTutorial = nullptr;
     GameObject* mSecondTutorial = nullptr;
     TimerScript mHitStopTimer;
+    TimerScript mLoadTimer;
+    TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
 
     bool mPaused = false;
@@ -95,6 +102,8 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
+    int mBackgroundAudioID2 = -1;
+
     int mGameOverAudio = -1;
     int mLastAudioID = -1;
 

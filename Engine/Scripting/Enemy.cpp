@@ -20,7 +20,8 @@
 #include "PoolManager.h"
 #include "ItemDrop.h"
 #include "BattleArea.h"
-
+#include <cmath>
+#include <iostream>
 #include "Math/MathFunc.h"
 
 void Enemy::Start()
@@ -29,52 +30,17 @@ void Enemy::Start()
 	mPlayer = GameManager::GetInstance()->GetPlayer();
 	mHealth = mMaxHealth;
 
-
-
     //Hit Effect
 
 	if (mGameObject->GetName() != "FinalBoss") 
-		/*
-		⠀⠀⠘⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡜⠀⠀⠀
-		⠀⠀⠀⠑⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡔⠁⠀⠀⠀
-		⠀⠀⠀⠀⠈⠢⢄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠴⠊⠀⠀⠀⠀⠀
-		⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⢀⣀⣀⣀⣀⣀⡀⠤⠄⠒⠈⠀⠀⠀⠀⠀⠀⠀⠀
-		⠀⠀⠀⠀⠀⠀⠀⠘⣀⠄⠊⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-		⠀
-		⣿⣿⣿⣿⣿⣿⣿⣿⡿⠿⠛⠛⠛⠋⠉⠈⠉⠉⠉⠉⠛⠻⢿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢿⣿⣿⣿⣿
-		⣿⣿⣿⣿⡏⣀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿
-		⣿⣿⣿⢏⣴⣿⣷⠀⠀⠀⠀⠀⢾⣿⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠈⣿⣿
-		⣿⣿⣟⣾⣿⡟⠁⠀⠀⠀⠀⠀⢀⣾⣿⣿⣿⣿⣿⣷⢢⠀⠀⠀⠀⠀⠀⠀⢸⣿
-		⣿⣿⣿⣿⣟⠀⡴⠄⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⣿
-		⣿⣿⣿⠟⠻⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠶⢴⣿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⣿
-		⣿⣁⡀⠀⠀⢰⢠⣦⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⣿⣿⣿⣿⡄⠀⣴⣶⣿⡄⣿
-		⣿⡋⠀⠀⠀⠎⢸⣿⡆⠀⠀⠀⠀⠀⠀⣴⣿⣿⣿⣿⣿⣿⣿⠗⢘⣿⣟⠛⠿⣼
-		⣿⣿⠋⢀⡌⢰⣿⡿⢿⡀⠀⠀⠀⠀⠀⠙⠿⣿⣿⣿⣿⣿⡇⠀⢸⣿⣿⣧⢀⣼
-		⣿⣿⣷⢻⠄⠘⠛⠋⠛⠃⠀⠀⠀⠀⠀⢿⣧⠈⠉⠙⠛⠋⠀⠀⠀⣿⣿⣿⣿⣿
-		⣿⣿⣧⠀⠈⢸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠟⠀⠀⠀⠀⢀⢃⠀⠀⢸⣿⣿⣿⣿
-		⣿⣿⡿⠀⠴⢗⣠⣤⣴⡶⠶⠖⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡸⠀⣿⣿⣿⣿
-		⣿⣿⣿⡀⢠⣾⣿⠏⠀⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠛⠉⠀⣿⣿⣿⣿
-		⣿⣿⣿⣧⠈⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⣿⣿⣿⣿
-		⣿⣿⣿⣿⡄⠈⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣴⣾⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣿⣦⣄⣀⣀⣀⣀⠀⠀⠀⠀⠘⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣧⠀⠀⠀⠙⣿⣿⡟⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠇⠀⠁⠀⠀⠹⣿⠃⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⣿⣿⣿⣿⡿⠛⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⢐⣿⣿⣿⣿⣿⣿⣿⣿⣿
-		⣿⣿⣿⣿⠿⠛⠉⠉⠁⠀⢻⣿⡇⠀⠀⠀⠀⠀⠀⢀⠈⣿⣿⡿⠉⠛⠛⠛⠉⠉
-		⣿⡿⠋⠁⠀⠀⢀⣀⣠⡴⣸⣿⣇⡄⠀⠀⠀⠀⢀⡿⠄⠙⠛⠀⣀⣠⣤⣤⠄
-		*/
 	{
 		//Randn step duration to not sound so mess
 		mStepDuration = 0.4 + static_cast<float>(rand()) / RAND_MAX * (0.7 - 0.4);
 		mGameObject->GetComponentsInChildren(ComponentType::MESHRENDERER, mMeshComponents);
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
 		{
-			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			const ResourceMaterial* material = static_cast<MeshRendererComponent*>(mMeshComponents[i])->GetResourceMaterial();
+			static_cast<MeshRendererComponent*>(mMeshComponents[i])->CreateUniqueMaterial();
 			mOgColors.push_back(material->GetBaseColorFactor());
 		}
 	}
@@ -98,6 +64,8 @@ void Enemy::Update()
 			Paralyzed(mParalysisSeverityLevel, false);
 		}
 	}
+
+	if (mDeathAudioPlayed && mCurrentState!= EnemyState::DEATH) mDeathAudioPlayed = false;
 	ActivateEnemy();
 
     //Hit Effect
@@ -188,13 +156,14 @@ void Enemy::Idle()
 
 void Enemy::Chase()
 {
+	mIsFleeing = false;
 	PlayStepAudio();
 
 		if (mAiAgentComponent)
 		{
 			mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 			float3 dir = mAiAgentComponent->GetDirection();
-			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+			if (!dir.Equals(float3::zero)) mGameObject->LookAt(mGameObject->GetWorldPosition() + float3(dir.x, 0.0f, dir.z));
 		}
 		
 		if (IsPlayerReachable())
@@ -208,27 +177,20 @@ void Enemy::Flee()
 {
 	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
+		mIsFleeing = false;
 		mCurrentState = EnemyState::ATTACK;
 		return;
 	}
 	PlayStepAudio();	
-		if (mAiAgentComponent)
-		{
-			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
-			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
-			if (collisionDotProduct < 0.0f)
-			{
-				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
-			}
-			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
-			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+ 		if (mAiAgentComponent  && !mIsFleeing)
+		{		
+			!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
-		
 		}
 
 		if (!IsPlayerInRange(mAttackDistance))
 		{
+			mIsFleeing = false;
 			mCurrentState = EnemyState::IDLE;
 		}
 }
@@ -255,7 +217,6 @@ void Enemy::Attack()
 	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
 		mCurrentState = EnemyState::CHASE;
-		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 	}
 	else if (mAttackDurationTimer.Delay(mAttackDuration))
 	{
@@ -274,9 +235,10 @@ bool Enemy::IsPlayerInRange(float range)
 bool Enemy::IsPlayerReachable()
 {
 	bool reachable = false;
-
+	
 	if (IsPlayerInRange(mAttackDistance))
 	{
+		
 		Hit hit;
 		Ray ray;
 
@@ -291,7 +253,7 @@ bool Enemy::IsPlayerReachable()
 		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
 		Physics::Raycast(hit, ray, distance, &ignoreTags);
 
-		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0 || distance>0.1f)
 		{
 			reachable = true;
 		}
@@ -343,7 +305,20 @@ void Enemy::ActivateUltVFX()
 
 void Enemy::Death()
 {
-	if (mDeathTimer.Delay(mDeathTime))
+	mVanishingTime += App->GetDt();
+	if (mVanishingTime >= mDeathTime*0.75)
+	{
+		for (size_t i = 0; i < mMeshComponents.size(); i++)
+		{
+		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+		const ResourceMaterial* material = meshRender->GetResourceMaterial();
+		float4 baseColor = material->GetBaseColorFactor();
+		float4 endColor = baseColor;
+		endColor.w = 0.0f;
+		meshRender->SetBaseColorFactor(baseColor.Lerp(endColor, mVanishingTime /(mDeathTime*10)));
+		}
+	}
+	if (mVanishingTime>=mDeathTime)
 	{
 		//GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_DEATH, mGameObject->GetWorldPosition());
 
@@ -353,8 +328,15 @@ void Enemy::Death()
 			activeBattleArea->EnemyDestroyed(mGameObject);
 		}
 		ResetEnemyColor();
+		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();
+		GameManager::GetInstance()->RegisterPlayerKill();
+
+		if (mAnimationComponent)
+		{
+			mAnimationComponent->ResetAnimationComponent();
+		}
 	}
 }
 
@@ -372,7 +354,7 @@ void Enemy::Init()
 
 	if (mAnimationComponent)
 	{
-		mAnimationComponent->OnReset();
+		mAnimationComponent->ResetAnimationComponent();
 		mAnimationComponent->SendTrigger("tIdle", 0.0f);
 	}
 	if (mAiAgentComponent)

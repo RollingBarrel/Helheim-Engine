@@ -1,5 +1,6 @@
 #include "ElectricTrapController.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "BoxColliderComponent.h"
 #include "GameObject.h"
 #include "ScriptComponent.h"
@@ -12,14 +13,6 @@
 CREATE(ElectricTrapController)
 {
     CLASS(owner);
-    SEPARATOR("ACTIVATION PARAMETER");
-    MEMBER(MemberType::FLOAT, mActivationInterval);
-    MEMBER(MemberType::FLOAT, mActivationDuration);
-    MEMBER(MemberType::BOOL, mIsActive);
-
-    SEPARATOR("SIDE EFFECT");
-    MEMBER(MemberType::FLOAT, mDamageAmount);
-    MEMBER(MemberType::FLOAT, mSpeedReduction);
     END_CREATE;
 }
 
@@ -50,20 +43,25 @@ void ElectricTrapController::Start()
 
 void ElectricTrapController::Update()
 {
-    if (mIsActive)
+    // Don't be working if player is far
+    float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
+    if (distance <= 30)
     {
-        if (mActivationDurationTimer.Delay(mActivationDuration))
+        if (mIsActive)
         {
-            mIsActive = false;
-            ActiveTrap(false);
+            if (mActivationDurationTimer.Delay(mActivationDuration))
+            {
+                mIsActive = false;
+                ActiveTrap(false);
+            }
         }
-    }
-    else
-    {
-        if (mActivationIntervalTimer.Delay(mActivationInterval))
+        else
         {
-            mIsActive = true;
-            ActiveTrap(true);
+            if (mActivationIntervalTimer.Delay(mActivationInterval))
+            {
+                mIsActive = true;
+                ActiveTrap(true);
+            }
         }
     }
 }
@@ -90,6 +88,7 @@ void ElectricTrapController::ActiveTrap(bool active)
         {
             mSfx->SetEnabled(true);
         }
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
         // Reserved for effects, perticle, sounds...
     }
     else
@@ -113,8 +112,7 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
 
         if (collision->GetTag().compare("Player") == 0)
         {
-            const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
-            PlayerController* player = static_cast<PlayerController*>(script->GetScriptInstance());
+            PlayerController* player = GameManager::GetInstance()->GetPlayerController();       
             player->Paralyzed(mSpeedReduction, true);
             player->TakeDamage(mDamageAmount);
         }
@@ -124,7 +122,6 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
             const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
             Enemy* enemy = static_cast<Enemy*>(script->GetScriptInstance());
             enemy->Paralyzed(mSpeedReduction, true);
-            enemy->TakeDamage(mDamageAmount);
         }
     }
 }

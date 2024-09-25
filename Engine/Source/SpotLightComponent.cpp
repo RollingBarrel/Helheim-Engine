@@ -43,7 +43,7 @@ SpotLightComponent::SpotLightComponent(GameObject* owner) : Component(owner, Com
 
 
 SpotLightComponent::SpotLightComponent(const SpotLightComponent* original, GameObject* owner)
-	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias)
+	: Component(owner, ComponentType::SPOTLIGHT), mData(original->mData), mShadowFrustum(original->mShadowFrustum), mCastShadow(original->mCastShadow), mBias(original->mBias), mVolumetric(original->mVolumetric)
 {
 	if (IsEnabled())
 	{
@@ -142,6 +142,12 @@ inline void SpotLightComponent::SetShadowIndex(int index)
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 }
 
+void SpotLightComponent::SetVolumetric(bool newValue)
+{
+	mVolumetric = newValue;
+	App->GetOpenGL()->UpdateSpotLightInfo(*this);
+}
+
 
 void SpotLightComponent::Update()
 {
@@ -179,6 +185,7 @@ void SpotLightComponent::Save(JsonObject& obj) const
 	obj.AddFloat("Range", mData.range);
 	obj.AddBool("CastShadow", mCastShadow);
 	obj.AddFloat("Bias", mBias);
+	obj.AddBool("isVolumetric", mVolumetric);
 }
 
 //TODO: why is the GO owner passed here??
@@ -230,6 +237,8 @@ void SpotLightComponent::Load(const JsonObject& data, const std::unordered_map<u
 	mShadowFrustum.farPlaneDistance = mData.range;
 	mShadowFrustum.horizontalFov = 2.0f * acos(mData.color[3]);
 	mShadowFrustum.verticalFov = 2.0f * acos(mData.color[3]);
+
+	if (data.HasMember("isVolumetric")) SetVolumetric(data.GetBool("isVolumetric"));
 
 	App->GetOpenGL()->UpdateSpotLightInfo(*this);
 	

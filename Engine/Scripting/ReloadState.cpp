@@ -22,9 +22,7 @@ StateType ReloadState::HandleInput()
 {
 	if (mPlayerController->GetPlayerLowerState()->GetType() == StateType::DASH) return StateType::AIM;
 
-    if (mPlayerController->GetGrenadeState()->IsReady() &&
-        (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetGrenadeState()->IsReady())
     {
         mPlayerController->GetGrenadeState()->ResetCooldown();
         return StateType::GRENADE;
@@ -80,6 +78,9 @@ void ReloadState::Exit()
 {
     if(mDoRecharge)	mPlayerController->Reload();
 
+    mPlayerController->SetSpineAnimation("tAim", 0.1f);
+
+
     mPlayerController->EnableLaser(true);
 }
 
@@ -90,6 +91,11 @@ StateType ReloadState::GetType()
 
 bool ReloadState::IsReady()
 {
-    if (mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->CanReload()) return true;
+    if (mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->CanReload()
+        && (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN))
+    {
+        return true;
+    }
     return false;
 }

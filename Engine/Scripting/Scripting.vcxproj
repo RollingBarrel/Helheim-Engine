@@ -166,12 +166,14 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Game\Assets\Scripts\AreaDoors.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AudioManager.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AimState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\AttackState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BombBoss.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\BossBattleArea.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaserEyeBall.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Bullet.h" />
@@ -191,7 +193,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\FirstTutorial.h" />
     <ClInclude Include="..\Game\Assets\Scripts\FlickeringLight.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
@@ -227,8 +231,8 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Weapon.h" />
-    <ClInclude Include="BossBattleArea.h" />
     <ClInclude Include="Keys.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AudioManager.cpp" />
@@ -243,6 +247,7 @@
     <ClCompile Include="Bullet.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Dialog.cpp" />
+    <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyCreatureMelee.cpp" />
@@ -257,10 +262,13 @@
     <ClCompile Include="FirstTutorial.cpp" />
     <ClCompile Include="FlickeringLight.cpp" />
     <ClCompile Include="HealVFX.cpp" />
+    <ClCompile Include="LinearMovement.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
+    <ClCompile Include="PauseMenu.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="RotateObject.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
+    <ClCompile Include="SecurityCameraFollower.cpp" />
     <ClCompile Include="Spawner.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GrenadeState.cpp" />

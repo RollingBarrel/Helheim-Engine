@@ -46,8 +46,6 @@ ExplosiveTrap::~ExplosiveTrap()
 
 void ExplosiveTrap::Start()
 {
-
-
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
@@ -79,7 +77,7 @@ void ExplosiveTrap::Update()
             mExplosionPrestartVFX->SetEnabled(false);
             mExplosionVFX->SetEnabled(true);
 
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_MACHINEGUN, mGameObject->GetWorldPosition());
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mGameObject->GetWorldPosition());
 
             // Change box size to hit farther 
             float3 area(mExplosionArea, 1, mExplosionArea);
@@ -118,6 +116,8 @@ void ExplosiveTrap::OnCollisionEnter(CollisionData* collisionData)
         if (collision->GetTag().compare("Player") == 0)
         {
             mState = TRAP_STATE::EXPLOSION_PRESTART;
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mGameObject->GetWorldPosition());
+
             mExplosionPrestartVFX->SetEnabled(true);
         }
     }
@@ -147,6 +147,8 @@ void ExplosiveTrap::InnerTrapTakeDamage()
     if (mState != TRAP_STATE::EXPLOSION_START)
     {
         mState = TRAP_STATE::EXPLOSION_PRESTART;
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mGameObject->GetWorldPosition());
+
         mExplosionPrestartVFX->SetEnabled(true);
     }
 }

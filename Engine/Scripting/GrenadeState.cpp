@@ -1,26 +1,18 @@
 #include "GrenadeState.h"
+#include "Application.h"
+#include "ModuleInput.h"
 
 #include "GameManager.h"
 #include "HudController.h"
-#include "Application.h"
-#include "ModuleInput.h"
 #include "PlayerController.h"
-#include "Keys.h"
-#include "ScriptComponent.h"
-#include "Grenade.h"
+
 #include "AttackState.h"
 #include "SpecialState.h"
-#include "SwitchState.h"
 #include "ReloadState.h"
 #include "UltimateState.h"
 
-GrenadeState::GrenadeState(PlayerController* player, float cooldown) : State(player, cooldown)
-{
-}
+#include "Keys.h"
 
-GrenadeState::~GrenadeState()
-{
-}
 
 StateType GrenadeState::HandleInput()
 {
@@ -45,9 +37,7 @@ StateType GrenadeState::HandleInput()
     //    return StateType::SWITCH;
     //}
 
-    if (mPlayerController->GetReloadState()->IsReady() &&
-        (App->GetInput()->GetKey(Keys::Keys_R) == KeyState::KEY_DOWN ||
-            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN))
+    if (mPlayerController->GetReloadState()->IsReady())
     {
         mPlayerController->GetReloadState()->ResetCooldown();
         return StateType::RELOAD;
@@ -61,25 +51,31 @@ StateType GrenadeState::HandleInput()
         return StateType::AIM;
     }
 
+    if (mPlayerController->GetUltimateState()->IsReady())
+    {
+        mPlayerController->GetUltimateState()->ResetCooldown();
+        return StateType::ULTIMATE_CHARGE;
+    }
+
     return StateType::GRENADE;
 }
 
 void GrenadeState::Update()
 {
-    mPlayerController->UpdateGrenadeVisuals();
+    mPlayerController->GrenadeAim();
 }
 
 void GrenadeState::Enter()
 {
     mThrowGrenade = false;
 
-    mPlayerController->SetGrenadeVisuals(true);
+    mPlayerController->EnableGrenadeAim(true);
     mPlayerController->SetSpineAnimation("tGrenade", 0.3f);
 }
 
 void GrenadeState::Exit()
 {
-    mPlayerController->SetGrenadeVisuals(false);
+    mPlayerController->EnableGrenadeAim(false);
     
     if (mThrowGrenade) 
     {
@@ -89,12 +85,20 @@ void GrenadeState::Exit()
             GameManager::GetInstance()->GetHud()->SetGrenadeCooldown(mPlayerController->GetGrenadeCooldown());
         }
     }
+    mPlayerController->SetSpineAnimation("tAim", 0.3f);
+
 }
 
 bool GrenadeState::IsReady()
 {
-    if (mStateTimer.DelayWithoutReset(mStateCooldown) && mPlayerController->IsGrenadeUnlocked()) return true; 
-    return false;
+    if (mStateTimer.DelayWithoutReset(mStateCooldown)
+        && mPlayerController->IsGrenadeUnlocked()
+        && (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN ||
+            App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN))
+    {
+        return true;
+    }
+        return false;
 }
 
 StateType GrenadeState::GetType()
