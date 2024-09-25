@@ -331,6 +331,7 @@ void Enemy::Death()
 		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();
+		GameManager::GetInstance()->RegisterPlayerKill();
 
 		if (mAnimationComponent)
 		{

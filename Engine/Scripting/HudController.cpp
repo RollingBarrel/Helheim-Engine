@@ -400,11 +400,13 @@ void HudController::WinUpdate()
 void HudController::FadeIn()
 {
     if (*mFadeoutImage->GetAlpha() >= 0.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() - 0.65f * App->GetDt());
+    if (*mFadeoutImage->GetAlpha() < 0.0f) mFadeoutImage->SetAlpha(0.0f);
 }
 
 void HudController::FadeOut()
 {
     if (*mFadeoutImage->GetAlpha() <= 1.0f) mFadeoutImage->SetAlpha(*mFadeoutImage->GetAlpha() + 0.65f * App->GetDt());
+    if (*mFadeoutImage->GetAlpha() > 1.0f) mFadeoutImage->SetAlpha(1.0f);
 }
 
 void HudController::LoseAnimation()

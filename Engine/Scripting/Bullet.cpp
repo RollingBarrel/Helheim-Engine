@@ -91,11 +91,11 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 		mTrialParticles = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
 		if (mBullet)
 		{
-			mBullet->SetEnable(false);
+			mBullet->SetEnable(true);
 		}
 		if (mTrialParticles)
 		{
-			mTrialParticles->SetEnable(false);
+			mTrialParticles->SetEnable(true);
 		}
 		if (mHitParticles)
 		{

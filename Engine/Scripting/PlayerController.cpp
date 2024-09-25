@@ -807,6 +807,10 @@ void PlayerController::CheckDebugOptions()
     {
         RechargeBattery(EnergyType::RED);
     }
+    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    {
+        mUltimateResource = 100;
+    }
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
         GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
@@ -943,8 +947,7 @@ void PlayerController::ResetEnergy()
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100) 
-        mUltimateResource += 10;
+    if (mUltimateResource != 100) mUltimateResource += 20;
     else return;
 }
 
@@ -1052,6 +1055,12 @@ void PlayerController::ActivateHitEffect()
         meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
     }   
         mHit = true;    
+}
+
+void PlayerController::AddKill()
+{
+    mKillCount++;
+    if (mUpperStateType != StateType::ULTIMATE && mUltimateUnlocked) AddUltimateResource(); 
 }
 
 void PlayerController::CheckHitEffect()
