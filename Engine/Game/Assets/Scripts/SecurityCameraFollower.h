@@ -29,6 +29,7 @@ private:
 	float mSpeed = 3.0f;
 
 	float3 mLookingAtLocation = float3::zero;
+	float3 mInitialFront = float3(1.0f, 0.0f, 0.0f);
 	
 	SpotLightComponent* mCameraLight = nullptr;
 	float mMaxLightIntesity = 20.0f;
