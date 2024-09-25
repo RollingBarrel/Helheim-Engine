@@ -27,14 +27,14 @@ public:
 private:
     static CinematicCamera* mInstance;
 
-    void StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
-    void UpdateCinematic(GameObject* dummy, BattleArea* battleArea);
+    void StartCinematic(GameObject* dummy, bool isDummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void UpdateCinematic(GameObject* dummy, bool isDummy, BattleArea* battleArea);
     void LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
     bool HandleFadeIn();
-    bool HandleFadeOut(GameObject* dummy);
+    bool HandleFadeOut(GameObject* dummy, bool isDummy);
     void HandleCameraMovement();
-    void HandleEscape(GameObject* dummy);
-    void EndCinematic(GameObject* dummy);
+    void HandleEscape(GameObject* dummy, bool isDummy);
+    void EndCinematic(GameObject* dummy, bool isDummy);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ActivateCamera(bool state);
