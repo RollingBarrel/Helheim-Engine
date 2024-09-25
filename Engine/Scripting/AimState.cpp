@@ -58,7 +58,7 @@ StateType AimState::HandleInput()
         return StateType::RELOAD;
     }
 
-    if (mPlayerController->GetUltimateResource() >= 100 && mPlayerController->GetUltimateState()->IsReady())
+    if (mPlayerController->GetUltimateState()->IsReady())
     {
         mPlayerController->GetUltimateState()->ResetCooldown();
         return StateType::ULTIMATE_CHARGE;
@@ -69,12 +69,33 @@ StateType AimState::HandleInput()
 
 void AimState::Update()
 {
+    if (!mIsIdle)
+    {
+        mIdleAnimTimer += App->GetDt();
+        if (mIdleAnimTimer >= mWaitTimeForIdle && mPlayerController->GetPlayerLowerState()->GetType() == StateType::IDLE)
+        {
+            mPlayerController->SetSpineAnimation("tIdleRanged", 0.2f);
+            mIsIdle = true;
+        }
+    }
+    else
+    {
+        mIdleAnimTimer = 0.0f;
+        if (mPlayerController->GetPlayerLowerState()->GetType() != StateType::IDLE)
+        {
+            mIsIdle = false;
+            mPlayerController->SetSpineAnimation("tAim", 0.2f);
+        }
+    }
+    
+
 }
 
 void AimState::Enter()
 {
     //It can't be done when entering because in that case the others animations would be one frame
     //Maybe with buffers
+    /*
     if(mPlayerController->GetPlayerUpperState()->GetType() != StateType::ATTACK)
     {
         if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
@@ -82,6 +103,8 @@ void AimState::Enter()
         else
             mPlayerController->SetSpineAnimation("tIdleMelee", 0.3f);
     }
+    */
+    mIdleAnimTimer = 0.0f;
     
 }
 

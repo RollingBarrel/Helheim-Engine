@@ -253,7 +253,7 @@ void AnimationComponent::SendTrigger(const std::string& trigger, float transitio
 			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
-	LOG("Current Default Name:%s", currentStateName.c_str());
+	//LOG("Current Default Name:%s", currentStateName.c_str());
 }
 
 void AnimationComponent::ChangeState(const std::string& stateName, float transitionTime)

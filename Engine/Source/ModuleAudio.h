@@ -40,13 +40,16 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp();
 
-	FMOD::Studio::System* GetFMODSystem() {return mSystem;};
+	FMOD::Studio::System* GetFMODSystem() { return mSystem; };
+	FMOD::System* GetFMODCoreSystem() {return mCoreSystem;};
 	std::vector<const char*> GetEventsNames();
 
 	void AudioPause();
 	void AudioResume();
 
 	void EngineStop();
+
+	void ReleadAudioSystem();
 	// Start
 	int Play(const FMOD::Studio::EventDescription* eventDescription, const int id = -1);
 	void Pause(const FMOD::Studio::EventDescription* eventDescription, const int id, bool pause);
@@ -55,12 +58,14 @@ public:
 	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
 
+	void ReleaseAllAudio();
 	
 	// Update
 	void GetParameters(const FMOD::Studio::EventDescription* eventDescription, const int id, std::vector<int>& index, std::vector<const char*>& names, std::vector<float>& values);
 	void UpdateParameter(const FMOD::Studio::EventDescription* eventDescription, const int id ,const std::string& parameterName, const float parameterValue);
 	void SetEventPosition(const FMOD::Studio::EventDescription* eventDescription, const int id , float3 eventPosition);
-	void SetAudioPosition(FMOD::Channel* eventDescription, float3 eventPosition);
+	void SetAudioPosition(FMOD::Channel* channel, float3 eventPosition);
+	void SetLoop(FMOD::Channel* channel, bool loop);
 
 	int GetMemoryUsage() const;
 	void GetInstances(std::map<std::string, int>& instances) const;
@@ -99,5 +104,4 @@ private:
 	FMOD::ChannelGroup* mAudioChannelGroup = nullptr;
 
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
-
 };

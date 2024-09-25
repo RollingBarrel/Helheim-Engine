@@ -64,6 +64,8 @@ void Enemy::Update()
 			Paralyzed(mParalysisSeverityLevel, false);
 		}
 	}
+
+	if (mDeathAudioPlayed && mCurrentState!= EnemyState::DEATH) mDeathAudioPlayed = false;
 	ActivateEnemy();
 
     //Hit Effect
@@ -154,6 +156,7 @@ void Enemy::Idle()
 
 void Enemy::Chase()
 {
+	mIsFleeing = false;
 	PlayStepAudio();
 
 		if (mAiAgentComponent)
@@ -174,27 +177,20 @@ void Enemy::Flee()
 {
 	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
+		mIsFleeing = false;
 		mCurrentState = EnemyState::ATTACK;
 		return;
 	}
 	PlayStepAudio();	
-		if (mAiAgentComponent)
-		{
-			float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-			float3 newDir = mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition();
-			float collisionDotProduct = newDir.Dot(mEnemyCollisionDirection);
-			if (collisionDotProduct < 0.0f)
-			{
-				newDir = newDir - mEnemyCollisionDirection.Mul(collisionDotProduct);
-			}
-			float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
-			mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+ 		if (mAiAgentComponent  && !mIsFleeing)
+		{		
+			!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
-		
 		}
 
 		if (!IsPlayerInRange(mAttackDistance))
 		{
+			mIsFleeing = false;
 			mCurrentState = EnemyState::IDLE;
 		}
 }
@@ -217,13 +213,10 @@ void Enemy::Charge()
 
 void Enemy::Attack()
 {
-	if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
 	bool playerReachable = IsPlayerReachable();
 	if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
 	{
-		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
-		mAiAgentComponent->SetNavigationPath(mPlayer->GetWorldPosition());
 	}
 	else if (mAttackDurationTimer.Delay(mAttackDuration))
 	{
@@ -242,9 +235,10 @@ bool Enemy::IsPlayerInRange(float range)
 bool Enemy::IsPlayerReachable()
 {
 	bool reachable = false;
-
+	
 	if (IsPlayerInRange(mAttackDistance))
 	{
+		
 		Hit hit;
 		Ray ray;
 
@@ -259,7 +253,7 @@ bool Enemy::IsPlayerReachable()
 		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
 		Physics::Raycast(hit, ray, distance, &ignoreTags);
 
-		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0 || distance>0.1f)
 		{
 			reachable = true;
 		}
@@ -337,6 +331,7 @@ void Enemy::Death()
 		mVanishingTime = 0.0f;
 		mGameObject->SetEnabled(false);
 		DropItem();
+		GameManager::GetInstance()->RegisterPlayerKill();
 
 		if (mAnimationComponent)
 		{

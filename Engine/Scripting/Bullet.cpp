@@ -15,6 +15,7 @@ CREATE(Bullet)
 {
 	CLASS(owner);
 	MEMBER(MemberType::BOOL, mShooterIsPlayer);
+
 	END_CREATE;
 }
 
@@ -81,26 +82,26 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 	mRange = range;
 
 	mGameObject->SetEnabled(true);
+	mBullet = static_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
 
 	GameObject* firstChild = *(mGameObject->GetChildren().begin());
 	if (firstChild)
 	{
 		mHitParticles = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
-		mBulletTrail = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
-		if (mBulletTrail)
+		mTrialParticles = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
+		if (mBullet)
 		{
-			mBulletTrail->SetEnable(true);
+			mBullet->SetEnable(true);
+		}
+		if (mTrialParticles)
+		{
+			mTrialParticles->SetEnable(true);
 		}
 		if (mHitParticles)
 		{
-			mHitParticles->SetEnable(false);
-		}
-		if (gradient)
-		{
-			mBulletTrail->GetTrail()->SetColorGradient(*gradient);
+			mHitParticles->SetEnable(true);
 		}
 	}
-
 }
 
 
@@ -113,6 +114,14 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			if (collisionData->collidedWith->GetTag().compare("Enemy") == 0)
 			{
 				//LOG("Collided with Enemy: %s", collisionData->collidedWith->GetName().c_str());
+				if(mBullet)
+				{ 
+					mBullet->SetEnable(false);
+				}
+				if(mTrialParticles)
+				{ 
+					mTrialParticles->SetEnable(false);
+				}
 				if (mHitParticles)
 				{
 					mHitParticles->SetEnable(true);
@@ -130,6 +139,14 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 				PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
 				player->TakeDamage(mDamage);
 				mDamage = 0.0f;
+				if (mBullet)
+				{
+					mBullet->SetEnable(false);
+				}
+				if (mTrialParticles)
+				{
+					mTrialParticles->SetEnable(false);
+				}
 				if (mHitParticles)
 				{
 					mHitParticles->SetEnable(true);
@@ -139,9 +156,17 @@ void Bullet::OnCollisionEnter(CollisionData* collisionData)
 			}
 		}
 
-		if (collisionData->collidedWith->GetTag().compare("Wall") == 0)
+		if (collisionData->collidedWith->GetTag().compare("Wall") == 0 || collisionData->collidedWith->GetTag().compare("Door") == 0)
 		{
 			//LOG("Collided with WALL");
+			if (mBullet)
+			{
+				mBullet->SetEnable(false);
+			}
+			if (mTrialParticles)
+			{
+				mTrialParticles->SetEnable(false);
+			}
 			if (mHitParticles)
 			{
 				mHitParticles->SetEnable(true);
