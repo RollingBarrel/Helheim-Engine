@@ -29,20 +29,12 @@ CREATE(CinematicCamera)
     SEPARATOR("Idle = 1 | Chase = 2 | Charge = 3 | Attack = 4");
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO1);
     MEMBER(MemberType::INT, mEnemyAnimState1);
-    MEMBER(MemberType::BOOL, mIsDummy1);
-
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO2);
     MEMBER(MemberType::INT, mEnemyAnimState2);
-    MEMBER(MemberType::BOOL, mIsDummy2);
-
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO3);
-    MEMBER(MemberType::INT, mEnemyAnimState3);
-    MEMBER(MemberType::BOOL, mIsDummy3);
-    
+    MEMBER(MemberType::INT, mEnemyAnimState3);    
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO4);
     MEMBER(MemberType::INT, mEnemyAnimState4);
-    MEMBER(MemberType::BOOL, mIsDummy4);
-
     SEPARATOR("BATTLE AREAS");
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO1);
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO2);
@@ -134,7 +126,7 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
-                StartCinematic(mEnemyGO1, mIsDummy1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
+                StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
             }    
         }
     }
@@ -145,7 +137,7 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
-                StartCinematic(mEnemyGO2, mIsDummy2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
+                StartCinematic(mEnemyGO2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
             }            
         }
     }
@@ -156,7 +148,7 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
-                StartCinematic(mEnemyGO3, mIsDummy3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
+                StartCinematic(mEnemyGO3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
             }
         }
     }
@@ -172,13 +164,13 @@ void CinematicCamera::Update()
 
             if (mCinematicIndex == 4)
             {
-                StartCinematic(mEnemyGO4, mIsDummy4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
+                StartCinematic(mEnemyGO4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
             }
         }
     }
 }
 
-void CinematicCamera::StartCinematic(GameObject* dummy, bool isDummy, BattleArea* battleArea, int animState,
+void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState,
     float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
 {
     if ((dummy) && (mCinematicCameraGO))
@@ -208,11 +200,11 @@ void CinematicCamera::StartCinematic(GameObject* dummy, bool isDummy, BattleArea
             ActivateBattleArea(battleArea, false);
         }
 
-        UpdateCinematic(dummy, isDummy, battleArea);
+        UpdateCinematic(dummy, battleArea);
     }
 }
 
-void CinematicCamera::UpdateCinematic(GameObject* dummy, bool isDummy, BattleArea* battleArea)
+void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
 {
     if (!GameManager::GetInstance()->IsPaused())
     {
@@ -239,13 +231,13 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, bool isDummy, BattleAre
             }
             else
             {
-                if (HandleFadeOut(dummy, isDummy))
+                if (HandleFadeOut(dummy))
                 {
                     mPlayingCinematic = false;
                 }
             }
 
-            HandleEscape(dummy, isDummy);
+            HandleEscape(dummy);
         }
         else
         {
@@ -295,13 +287,13 @@ bool CinematicCamera::HandleFadeIn()
     }
 }
 
-bool CinematicCamera::HandleFadeOut(GameObject* dummy, bool isDummy)
+bool CinematicCamera::HandleFadeOut(GameObject* dummy)
 {
     if (mFadeOn)
     {
         if (Fade(true))
         {
-            EndCinematic(dummy, isDummy);
+            EndCinematic(dummy);
             mFadeOn = false;
         }
 
@@ -348,7 +340,7 @@ void CinematicCamera::HandleCameraMovement()
     }
 }
 
-void CinematicCamera::HandleEscape(GameObject* dummy, bool isDummy)
+void CinematicCamera::HandleEscape(GameObject* dummy)
 {
     if (!mEscape)
     {
@@ -360,7 +352,7 @@ void CinematicCamera::HandleEscape(GameObject* dummy, bool isDummy)
             mTravelling = false;
 
             mTimer.Reset();
-            EndCinematic(dummy, isDummy);
+            EndCinematic(dummy);
         }
     }
 
@@ -374,7 +366,7 @@ void CinematicCamera::HandleEscape(GameObject* dummy, bool isDummy)
     }
 }
 
-void CinematicCamera::EndCinematic(GameObject* dummy, bool isDummy)
+void CinematicCamera::EndCinematic(GameObject* dummy)
 {
     if (mActiveCinematicCamera)
     {
@@ -386,26 +378,18 @@ void CinematicCamera::EndCinematic(GameObject* dummy, bool isDummy)
     }
     
     //Gameobject->getname == compare
+    //PlayerController: void EnableLaser(bool enable);
 
-    if (isDummy)
+    if (dummy->GetName()=="FinalBoss")
     {
+        //mAnimationComponent->SetIsPlaying(true);
         ActivateDummy(dummy, false);
-    }
-    else
-    {
-        mAnimationComponent->SetIsPlaying(true);
-    }
-
-    /*
-    if (dummy->GetName()=="")
-    {
-        mAnimationComponent->SetIsPlaying(true);
+        LOG("END");
     }
     else
     {
         ActivateDummy(dummy, false);
     }
-    */
 
     if (mLevel1)
     {

@@ -27,14 +27,14 @@ public:
 private:
     static CinematicCamera* mInstance;
 
-    void StartCinematic(GameObject* dummy, bool isDummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
-    void UpdateCinematic(GameObject* dummy, bool isDummy, BattleArea* battleArea);
+    void StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void UpdateCinematic(GameObject* dummy, BattleArea* battleArea);
     void LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
     bool HandleFadeIn();
-    bool HandleFadeOut(GameObject* dummy, bool isDummy);
+    bool HandleFadeOut(GameObject* dummy);
     void HandleCameraMovement();
-    void HandleEscape(GameObject* dummy, bool isDummy);
-    void EndCinematic(GameObject* dummy, bool isDummy);
+    void HandleEscape(GameObject* dummy);
+    void EndCinematic(GameObject* dummy);
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ActivateCamera(bool state);
@@ -81,11 +81,6 @@ private:
     float mCounter = 0.0f;
     float3 mColor = float3(0.0f, 0.0f, 0.0f);
     float mFadeSpeed = 0.05f;
-
-    bool mIsDummy1 = true;
-    bool mIsDummy2 = true;
-    bool mIsDummy3 = true;
-    bool mIsDummy4 = true;
 
     bool mMoveCompleted = false;
     bool mPlayingCinematic = false;
