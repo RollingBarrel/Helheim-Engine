@@ -236,7 +236,7 @@ void ParticleSystemComponent::Update()
                 if (mSpeedCenterShape) 
                 {
                     float distance = DistanceToCenter(mParticles[i]->GetPosition());
-                    speed *= distance * mSpeedCenterFactor;
+                    speed *= distance;
                 }
                 mParticles[i]->SetSpeed(speed);
                 mParticles[i]->SetSize(mSizeCurve.CalculateValue(dt, mParticles[i]->GetInitialSize()));
@@ -299,7 +299,7 @@ void ParticleSystemComponent::CreateNewParticle()
     if (mSpeedCenterShape)
     {
         float distanceToCenter = DistanceToCenter(emitionPosition);
-        speed *= distanceToCenter * mSpeedCenterFactor;
+        speed *= distanceToCenter;
     }
     Particle* particle = new Particle(emitionPosition, emitionDirection, 
         mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom(), 
@@ -319,7 +319,7 @@ float ParticleSystemComponent::DistanceToCenter(float3 position)
     case EmitterType::CILINDER:
     {
         float3 projectedPosition = float3(position.x, position.y, center.z);  // Project onto xy-plane
-        return projectedPosition.Distance(center);  // Distance to the z-axis   
+        return std::max(projectedPosition.Distance(center) - mSpeedCenterFactor, 0.0f);  // Distance to the z-axis   
     }
     case EmitterType::DONUT:
     {
@@ -329,11 +329,11 @@ float ParticleSystemComponent::DistanceToCenter(float3 position)
         float distanceToTubeCenter = std::abs(distToXYCenter - mShapeRadius);
 
         float zDistance = std::abs(position.z - center.z);
-        return sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance);  // Total distance
+        return std::max(sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance),0.0f);  // Total distance
     }
     default:
     {
-        return position.Distance(center);
+        return std::max(position.Distance(center), 0.0f);
     }
     }
 }
