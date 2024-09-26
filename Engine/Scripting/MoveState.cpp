@@ -220,59 +220,75 @@ float MoveState::ComputeMoveAnge(float3 mouseDir)
 	// Step 4: Compute the angle in radians using acos (dot product gives cos of angle)
 	float angleRadians = Acos(dotProduct) ;
 
-	// Step 5: Convert angle to degrees (optional)
-	float angleDegrees = RadToDeg(angleRadians);
+	float crossProductZ = frontProjected.x * directionProjected.y - frontProjected.y * directionProjected.x;
 
+	// If the cross product is negative, the angle is clockwise, so we make it negative
+	if (crossProductZ < 0) 
+	{
+		angleRadians = -angleRadians;
+	}
 
+	// Convert the angle to degrees
+	return RadToDeg(angleRadians);
 
-	return angleDegrees;
 }
 
 std::string MoveState::GetTriggerFromAngle(float angle)
 {
 	// Normalize the angle to the range [-180, 180)
-	if (angle > 180.0f) {
+	if (angle > 180.0f) 
+	{
 		angle -= 360.0f;
 	}
-	else if (angle <= -180.0f) {
+	else if (angle <= -180.0f) 
+	{
 		angle += 360.0f;
 	}
 
 	// Array of strings representing the actions for each octet
-	std::vector<std::string> octetStrings = {
+	std::vector<std::string> octetStrings = 
+	{
 		"tWalkForward",			// -22.5 to 22.5 degrees
-		"tWalkFrontRight",	// 22.5 to 67.5 degrees
+		"tWalkFrontRight",		// 22.5 to 67.5 degrees
 		"tStrafeRight",         // 67.5 to 112.5 degrees
-		"tWalkBackRight",	// 112.5 to 157.5 degrees
-		"tWalkBack",		// 157.5 to -157.5 degrees
-		"tWalkBackLeft",	// -157.5 to -112.5 degrees
+		"tWalkBackRight",		// 112.5 to 157.5 degrees
+		"tWalkBack",			// 157.5 to -157.5 degrees
+		"tWalkBackLeft",		// -157.5 to -112.5 degrees
 		"tStrafeLeft",          // -112.5 to -67.5 degrees
 		"tWalkFrontLeft"		// -67.5 to -22.5 degrees
 	};
 
 	// Compute which octet the angle belongs to
-	if (angle > -22.5f && angle <= 22.5f) {
+	if (angle > -22.5f && angle <= 22.5f) 
+	{
 		return octetStrings[0]; // tWalkForward
 	}
-	else if (angle > 22.5f && angle <= 67.5f) {
+	else if (angle > 22.5f && angle <= 67.5f) 
+	{
 		return octetStrings[1]; // tWalkForwardRight
 	}
-	else if (angle > 67.5f && angle <= 112.5f) {
+	else if (angle > 67.5f && angle <= 112.5f) 
+	{
 		return octetStrings[2]; // tWalkRight
 	}
-	else if (angle > 112.5f && angle <= 157.5f) {
+	else if (angle > 112.5f && angle <= 157.5f) 
+	{
 		return octetStrings[3]; // tWalkBackwardRight
 	}
-	else if (angle > 157.5f || angle <= -157.5f) {
+	else if (angle > 157.5f || angle <= -157.5f) 
+	{
 		return octetStrings[4]; // tWalkBackward
 	}
-	else if (angle > -157.5f && angle <= -112.5f) {
+	else if (angle > -157.5f && angle <= -112.5f) 
+	{
 		return octetStrings[5]; // tWalkBackwardLeft
 	}
-	else if (angle > -112.5f && angle <= -67.5f) {
+	else if (angle > -112.5f && angle <= -67.5f) 
+	{
 		return octetStrings[6]; // tWalkLeft
 	}
-	else { // angleDegrees > -67.5f && angleDegrees <= -22.5f
+	else 
+	{ // angleDegrees > -67.5f && angleDegrees <= -22.5f
 		return octetStrings[7]; // tWalkForwardLeft
 	}
 }
