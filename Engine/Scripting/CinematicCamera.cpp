@@ -1,6 +1,7 @@
 #include "CinematicCamera.h"
 #include "GameObject.h"
 #include "Application.h"
+#include "ModuleScene.h"
 #include "ModuleCamera.h"
 #include "Gamemanager.h"
 #include "ScriptComponent.h"
@@ -10,12 +11,11 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "MathFunc.h"
+#include "PlayerController.h"
 
 CREATE(CinematicCamera)
 {
     CLASS(owner);
-    SEPARATOR("LEVEL");
-    MEMBER(MemberType::BOOL, mLevel1);
     SEPARATOR("PARAMS");
     MEMBER(MemberType::FLOAT, mYawAngle);
     MEMBER(MemberType::FLOAT, mPitchAngle);
@@ -84,13 +84,22 @@ void CinematicCamera::Start()
     {
         mImage = static_cast<ImageComponent*>(mFadeGO->GetComponent(ComponentType::IMAGE));
     }
+    
+    if (mPlayerGO)
+    {
+        ScriptComponent* playerScript = (ScriptComponent*)mPlayerGO->GetComponent(ComponentType::SCRIPT);
+        mPlayerController = (PlayerController*)playerScript->GetScriptInstance();
+    }
 
     if (mBattleAreaGO1)
     {
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO1->GetComponent(ComponentType::SCRIPT);
         mBattleArea1 = (BattleArea*)script->GetScriptInstance();
 
-        ActivateDummy(mEnemyGO1, false);
+        if (mEnemyGO1->GetName() != "FinalBoss")
+        {
+            ActivateDummy(mEnemyGO1, false);
+        }
     }
 
     if (mBattleAreaGO2)
@@ -126,7 +135,22 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
-                StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
+                if (App->GetScene()->GetName() == "Level1Scene")
+                {
+                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
+                }
+
+                if (App->GetScene()->GetName() == "Level2Scene")
+                {
+                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 0.00f, 1.50f, 0.00f, 0.00f, -90.00f, 0.00f);
+                }
+
+                if (App->GetScene()->GetName() == "Level3Scene")
+                {
+                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.50f, 0.00f, 0.00f, -90.00f, 0.00f); //12.45
+
+                    //mDistanceToEnemy = mDistanceToEnemy + 4.5f; //Boss enemy is bigger than other enemies and needs more distance for the camera
+                }       
             }    
         }
     }
@@ -137,7 +161,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
-                StartCinematic(mEnemyGO2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
+                if (App->GetScene()->GetName() == "Level1Scene")
+                {
+                    StartCinematic(mEnemyGO2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
+                }        
             }            
         }
     }
@@ -148,7 +175,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
-                StartCinematic(mEnemyGO3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
+                if (App->GetScene()->GetName() == "Level1Scene")
+                {
+                    StartCinematic(mEnemyGO3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
+                }             
             }
         }
     }
@@ -157,14 +187,12 @@ void CinematicCamera::Update()
     {
         if (mBattleArea4->GetIsAreaActive())
         {
-            if (!mLevel1)
-            {
-                mDistanceToEnemy = mDistanceToEnemy + 4.5f; //Boss enemy is bigger than other enemies and needs more distance for the camera
-            }
-
             if (mCinematicIndex == 4)
             {
-                StartCinematic(mEnemyGO4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
+                if (App->GetScene()->GetName() == "Level1Scene")
+                {
+                    StartCinematic(mEnemyGO4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
+                }
             }
         }
     }
@@ -196,7 +224,16 @@ void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, 
             mTravelling = true;
             mFadeOn = true;
 
-            mHudGO->SetEnabled(false);
+            if (mHudGO)
+            {
+                mHudGO->SetEnabled(false);
+            }
+            
+            if (mPlayerController)
+            {
+                mPlayerController->EnableLaser(false);
+            }
+
             ActivateBattleArea(battleArea, false);
         }
 
@@ -214,7 +251,11 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             {
                 if (HandleFadeIn())
                 {
-                    ActivateDummy(dummy, true);
+                    if (mEnemyGO1->GetName() != "FinalBoss")
+                    {
+                        ActivateDummy(dummy, true);
+                    }
+                    
                     HandleCameraMovement();
                 }
 
@@ -243,7 +284,17 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
         {
             mCinematicIndex++;
             mStartParameters = false;
-            mHudGO->SetEnabled(true);
+
+            if (mHudGO)
+            {
+                mHudGO->SetEnabled(true);
+            }
+            
+            if (mPlayerController)
+            {
+                mPlayerController->EnableLaser(true);
+            }
+
             ActivateBattleArea(battleArea, true);
         }
     }
@@ -377,21 +428,19 @@ void CinematicCamera::EndCinematic(GameObject* dummy)
         App->GetCamera()->ActivateFirstCamera();
     }
     
-    //Gameobject->getname == compare
-    //PlayerController: void EnableLaser(bool enable);
-
     if (dummy->GetName()=="FinalBoss")
     {
-        //mAnimationComponent->SetIsPlaying(true);
-        ActivateDummy(dummy, false);
-        LOG("END");
+        mAnimationComponent->SetIsPlaying(true);
     }
     else
     {
-        ActivateDummy(dummy, false);
+        if (mEnemyGO1->GetName() != "FinalBoss")
+        {
+            ActivateDummy(dummy, false);
+        }
     }
 
-    if (mLevel1)
+    if (App->GetScene()->GetName() == "Level1Scene")
     {
         if (mPlayerGO)
         {

@@ -7,6 +7,7 @@ class CameraComponent;
 class BattleArea;
 class AnimationComponent;
 class ImageComponent;
+class PlayerController;
 
 GENERATE_BODY(CinematicCamera);
 class CinematicCamera :public Script
@@ -63,6 +64,8 @@ private:
     BattleArea* mBattleArea3 = nullptr;
     BattleArea* mBattleArea4 = nullptr;
 
+    PlayerController* mPlayerController = nullptr;
+
     TimerScript mTimer;
 
     int mEnemyAnimState1 = 1;
@@ -86,7 +89,6 @@ private:
     bool mPlayingCinematic = false;
     bool mTravelling = false;
     bool mStartParameters = false;
-    bool mLevel1 = false;
     bool mFadeStart = false;
     bool mFadeOn = false;
     bool mEscape = false;
