@@ -19,6 +19,7 @@ public:
 
 	void CheckRaycast();
 	void DrawWidget(GameObject* gameObject);
+	void DrawStencilWidget(GameObject* gameObject);
 	
 	void RemoveCanvas(GameObject* gameObject);
 	void AddCanvas(GameObject* gameObject);

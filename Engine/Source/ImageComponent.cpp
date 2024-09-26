@@ -254,10 +254,9 @@ void ImageComponent::Draw()
 
 void ImageComponent::StencilDraw()
 {
-	if (mAlpha != 0.0f && mBlurBackground && mImage && mCanvas && mShouldDraw && mCanvas->GetRenderSpace() == RenderSpace::Screen)
+	if (mCanvas && mShouldDraw && mAlpha > 0.0f && mBlurBackground && (mCanvas->GetRenderSpace() == RenderSpace::Screen))
 	{
-		unsigned int UIImageProgram = App->GetOpenGL()->GetUIPassThroughProgram();
-		glUseProgram(UIImageProgram);
+		glUseProgram(App->GetOpenGL()->GetUIPassThroughProgram());
 
 		float4x4 proj = float4x4::identity;
 		float4x4 model = float4x4::identity;

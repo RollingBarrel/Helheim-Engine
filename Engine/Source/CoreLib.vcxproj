@@ -836,6 +836,7 @@
     <None Include="..\Game\Assets\Shaders\trail_vertex.glsl" />
     <None Include="..\Game\Assets\Shaders\ui.fs" />
     <None Include="..\Game\Assets\Shaders\ui.vs" />
+    <None Include="..\Game\Assets\Shaders\UiGaussianBlur.glsl" />
     <None Include="..\Game\Assets\Shaders\uiMask.fs" />
     <None Include="..\Game\Assets\Shaders\uiText.fs" />
     <None Include="..\Game\Assets\Shaders\Volumetric.comp" />
