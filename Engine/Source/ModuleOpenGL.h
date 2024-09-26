@@ -177,6 +177,9 @@ public:
 	int GetVolMaxSteps() const { return mVolMaxSteps; }
 	void SetVolMaxSteps(int volMaxSteps);
 
+	unsigned int GetQuadVBO() const { return mQuadVBO; }
+	unsigned int GetQuadVAO() const { return mQuadVAO; }
+
 private:
 	void* context = nullptr;
 
@@ -314,6 +317,9 @@ private:
 	float mVolAnisotropy = 0.35f;
 	float mVolStepSize = 1.0f;
 	int mVolMaxSteps = 16;
+
+	unsigned int mQuadVBO = 0;
+	unsigned int mQuadVAO = 0;
 };
 
 #endif /* _MODULEOPENGL_H_ */

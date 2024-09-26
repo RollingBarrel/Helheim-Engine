@@ -23,9 +23,7 @@ public:
     void Draw();
 
     void SetImage(ResourceTexture* image) { mImage = image; }
-    void FillVBO();
     void FillSpriteSheetVBO();
-    void CreateVAO();
     void ResizeByRatio();
     void RenderMask();
 
@@ -80,9 +78,6 @@ private:
     bool mMantainRatio = true;
     bool mShouldDraw = true;
     bool mIsMaskable = false;
-
-    unsigned int mQuadVBO = 0;
-    unsigned int mQuadVAO = 0;
 
     //Spritesheet
     bool mIsSpritesheet = false;

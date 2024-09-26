@@ -503,6 +503,33 @@ bool ModuleOpenGL::Init()
 	glUniform1ui(9, mVolMaxSteps);
 	glUseProgram(0);
 
+	
+	//ui
+	glGenVertexArrays(1, &mQuadVAO);
+	glBindVertexArray(mQuadVAO);
+
+	float vertices[] = {
+		// texture coordinates
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
+		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
+	};
+
+	glGenBuffers(1, &mQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glBindVertexArray(0);
+
 	return true;
 }
 
@@ -539,6 +566,10 @@ bool ModuleOpenGL::CleanUp()
 	delete mSpotsBoundingSpheres;
 	delete mVolSpotsBuffer;
 	delete mDLightUniBuffer;
+
+	//ui
+	glDeleteBuffers(1, &mQuadVBO);
+	glDeleteVertexArrays(1, &mQuadVAO);
 
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteVertexArrays(1, &mEmptyVAO);
