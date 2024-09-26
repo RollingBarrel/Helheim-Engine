@@ -976,8 +976,6 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 {
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GaussianBlur");
-	//FALTA MODIFICAR LA TEXTURA MIRANT EL BOOL !!
-	//rEMIRAR EL ALGORITME !!
 	//Passes have to be impair si??
 	if ((passes&1) == 1)
 		passes += 1;
