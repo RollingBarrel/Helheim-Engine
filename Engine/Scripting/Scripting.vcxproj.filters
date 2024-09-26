@@ -115,7 +115,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\HudController.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Hammer.h">
       <Filter>Weapons\Melee</Filter>
     </ClInclude>
@@ -161,7 +160,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h">
       <Filter>Enemies</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\UltimateAttack.h" />
     <ClInclude Include="..\Game\Assets\Scripts\BossLaser.h">
       <Filter>Enemies</Filter>
@@ -188,7 +186,6 @@
     <ClInclude Include="..\Game\Assets\Scripts\UltimateChargeState.h">
       <Filter>States\Attack</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
     <ClInclude Include="..\Game\Assets\Scripts\HealVFX.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ExplosiveTrap.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyExplosiveTrap.h">
@@ -203,11 +200,17 @@
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h">
       <Filter>UI</Filter>
     </ClInclude>
-    <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
-    <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
-      <Filter>Managers</Filter>
+    <ClInclude Include="..\Game\Assets\Scripts\Sanity.h">
+      <Filter>UI</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Dialog.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\SecurityCameraFollower.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -234,9 +237,6 @@
     </ClCompile>
     <ClCompile Include="PlayerController.cpp">
       <Filter>Player</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="MeleeWeapon.cpp">
       <Filter>Weapons\Melee</Filter>
@@ -293,7 +293,6 @@
     <ClCompile Include="Spawner.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Sanity.cpp" />
     <ClCompile Include="Machinegun.cpp">
       <Filter>Weapons\Range</Filter>
     </ClCompile>
@@ -335,7 +334,6 @@
     <ClCompile Include="EnemyCreatureMelee.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
-    <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="BombBoss.cpp">
       <Filter>Enemies</Filter>
     </ClCompile>
@@ -360,7 +358,6 @@
       <Filter>States\Attack</Filter>
     </ClCompile>
     <ClCompile Include="HealVFX.cpp" />
-    <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="ExplosiveTrap.cpp" />
     <ClCompile Include="EnemyExplosiveTrap.cpp">
       <Filter>Enemies</Filter>
@@ -375,9 +372,18 @@
     <ClCompile Include="PauseMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="Sanity.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Dialog.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="SecurityCameraFollower.cpp" />
-    <ClCompile Include="CinematicCamera.cpp">
-      <Filter>Managers</Filter>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="LoreCollectible.cpp">
+      <Filter>UI</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

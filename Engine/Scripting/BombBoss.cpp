@@ -13,6 +13,7 @@
 #include "EnemyBoss.h"
 #include "Physics.h"
 #include "Geometry/Ray.h"
+#include <cmath>
 
 
 CREATE(BombBoss)
@@ -34,6 +35,7 @@ BombBoss::~BombBoss()
 void BombBoss::Start()
 {
 	mGameObject->GetComponentsInChildren(ComponentType::PARTICLESYSTEM, mExplosionParticles);
+	decal = static_cast<DecalComponent*>(mGameObject->GetComponent(ComponentType::DECAL));
 	for (GameObject* go : mGameObject->GetChildren())
 	{
 		if (go->GetName() == "Bomb")
@@ -59,19 +61,13 @@ void BombBoss::Update()
 	if (GameManager::GetInstance()->IsPaused()) return;
 	
 	mTimePassed += App->GetDt();
-	if (mHasExploded)
+	//log decal fade
+
+	if (mTimePassed < mTimeDelay)
 	{
-		bool finishedExploding = true;
-		for (Component* particlecomponent : mExplosionParticles)
-		{
-			finishedExploding = static_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
-		}
-		if (finishedExploding)
-		{
-			mGameObject->SetEnabled(false);
-		}
+		decal->SetFadeFactor(mTimePassed / mTimeDelay);
 	}
-	else if (mTimePassed >= mTimeDelay)
+	else if (mTimePassed >= mTimeDelay && !mHasExploded)
 	{
 		GameObject* player = GameManager::GetInstance()->GetPlayer();
 		float3 playerPosition = player->GetWorldPosition();
@@ -89,31 +85,34 @@ void BombBoss::Update()
 
 		mHasExploded = true;
 	}
+	else if (mTimePassed >= mTimeDelay && mHasExploded)
+	{
+		bool finishedExploding = true;
+		for (Component* particlecomponent : mExplosionParticles)
+		{
+			finishedExploding = static_cast<ParticleSystemComponent*>(particlecomponent)->HasEnded();
+		}
+		if (finishedExploding)
+		{
+			decal->SetFadeFactor(1.0f - ((mTimePassed - (mTimeDelay + 2)))*1.5);
+			if (decal->GetFadeFactor() <= 0.f)
+			{
+				mGameObject->SetEnabled(false);
+			}
+		}
+	}
 }
 
 void BombBoss::Init(float3 bombOrigin, float damage)
 {
-	// Check with a raycast if there's floor under the bomb
-	Ray ray;
-	ray.pos = mGameObject->GetWorldPosition() + float3(0, 10, 0);
-	ray.dir = float3(0, -1, 0);
-	Hit hit;
-	Physics::Raycast(hit, ray, 15);
-	if (hit.IsValid())
+	mGameObject->SetEnabled(true);
+	mHasExploded = false;
+	mTimePassed = 0.0f;
+	mBombOrigin = bombOrigin;
+	mDamage = damage;
+	for (Component* particlecomponent : mExplosionParticles)
 	{
-		mGameObject->SetEnabled(true);
-		mHasExploded = false;
-		mTimePassed = 0.0f;
-		mBombOrigin = bombOrigin;
-		mDamage = damage;
-		for (Component* particlecomponent : mExplosionParticles)
-		{
-			particlecomponent->GetOwner()->SetEnabled(false);
-		}
-		mGameObject->SetWorldScale(float3(mRadius * 2));
+		particlecomponent->GetOwner()->SetEnabled(false);
 	}
-	else
-	{
-		mGameObject->SetEnabled(false);
-	}
+	mGameObject->SetWorldScale(float3(mRadius * 2));
 }
