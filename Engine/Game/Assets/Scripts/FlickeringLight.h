@@ -7,6 +7,7 @@ GENERATE_BODY(FlickeringLight);
 
 class Component;
 class MeshRendererComponent;
+class ParticleSystemComponent;
 
 struct Blackout 
 {
@@ -33,7 +34,7 @@ public:
 
 private:
 
-	void UpdateLightState();
+	bool UpdateLightState();
 
 	float mLoopDuration = 10.0f;
 	float mStartingTime = 0.0f;
@@ -69,5 +70,9 @@ private:
 
 	Component* mLightComp = nullptr;
 	MeshRendererComponent* mMeshRenderComp = nullptr;
+
+	//Particle functionality
+	ParticleSystemComponent* mParticles = nullptr;
+	bool mRestartParticles = false;
 
 };

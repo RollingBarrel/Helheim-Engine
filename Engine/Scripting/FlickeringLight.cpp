@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "ScriptComponent.h"
 #include "MeshRendererComponent.h"
+#include "ParticleSystemComponent.h"
 
 CREATE(FlickeringLight)
 {
@@ -113,6 +114,12 @@ void FlickeringLight::Start()
 		mMeshRenderComp->CreateUniqueMaterial();
 	}
 
+	mParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
+	if (!mParticles)
+	{
+		mParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	}
+
 	//Initialize the blackouts
 	flickering.push_back(mBlackout1);
 	flickering.push_back(mBlackout2);
@@ -155,45 +162,47 @@ void FlickeringLight::Update()
 		mTimer -= mLoopDuration;
 	}
 
-	UpdateLightState();
+	mLightOn = UpdateLightState();
 
 	//Updates lights and emissive
 	if (mLightComp)
 	{
-		if (!mLightOn) 
-		{
-			mLightComp->SetEnable(false);
-		}
-		else 
-		{
-			mLightComp->SetEnable(true);
-		}
+		mLightComp->SetEnable(mLightOn);
 	}
-	if (mMeshRenderComp) 
+	if (mMeshRenderComp)
 	{
-		if (!mLightOn)
+		mMeshRenderComp->SetEnableEmissiveTexture(mLightOn);
+	}
+	if (mParticles)
+	{
+		if (mParticles->IsLooping())
 		{
-			mMeshRenderComp->SetEnableEmissiveTexture(false);
+			mParticles->SetEnable(mLightOn);
 		}
-		else
+		else if(mRestartParticles)
 		{
-			mMeshRenderComp->SetEnableEmissiveTexture(true);
+			mParticles->RestartParticles();
+			mRestartParticles = false;
 		}
 	}
 }
 
-void FlickeringLight::UpdateLightState()
+bool FlickeringLight::UpdateLightState()
 {
+	bool isLightOn = true;
 	for (const auto& element : flickering) 
 	{
 		if (element.mTime < mTimer && mTimer < element.mTime + element.mDuration)
 		{
-			mLightOn = false;
+			isLightOn = false;
 			break;
 		}
-		else
-		{
-			mLightOn = true;
-		}
 	}
+	//If the previous frame was off and this one is on we restart the particle system timer to 0
+	if (!mLightOn && isLightOn)	
+	{
+		mRestartParticles = true;
+	}
+
+	return isLightOn;
 }
