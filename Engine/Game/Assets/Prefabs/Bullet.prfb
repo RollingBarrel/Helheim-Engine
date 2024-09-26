@@ -2,14 +2,14 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2061066886,
+                "UID": 457563286,
                 "ParentUID": 1,
                 "Name": "Bullet",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    1.100000023841858,
+                    1.0,
                     0.0
                 ],
                 "Rotation": [
@@ -53,8 +53,8 @@
                 ]
             },
             {
-                "UID": 891479805,
-                "ParentUID": 2061066886,
+                "UID": 1442561194,
+                "ParentUID": 457563286,
                 "Name": "Trail",
                 "Enabled": true,
                 "Active": true,
@@ -135,8 +135,8 @@
                 ]
             },
             {
-                "UID": 1938301161,
-                "ParentUID": 2061066886,
+                "UID": 256682799,
+                "ParentUID": 457563286,
                 "Name": "HitParticles",
                 "Enabled": true,
                 "Active": true,
@@ -327,8 +327,8 @@
                 ]
             },
             {
-                "UID": 865765754,
-                "ParentUID": 1938301161,
+                "UID": 1249547880,
+                "ParentUID": 256682799,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -470,8 +470,8 @@
                 ]
             },
             {
-                "UID": 1862668853,
-                "ParentUID": 2061066886,
+                "UID": 84625406,
+                "ParentUID": 457563286,
                 "Name": "Collider",
                 "Enabled": true,
                 "Active": true,
@@ -515,8 +515,8 @@
                 ]
             },
             {
-                "UID": 695170402,
-                "ParentUID": 2061066886,
+                "UID": 1092737486,
+                "ParentUID": 457563286,
                 "Name": "BulletHole",
                 "Enabled": true,
                 "Active": true,
@@ -575,8 +575,8 @@
                 ]
             },
             {
-                "UID": 1694370994,
-                "ParentUID": 695170402,
+                "UID": 2084767115,
+                "ParentUID": 1092737486,
                 "Name": "SparkParticles",
                 "Enabled": true,
                 "Active": true,
@@ -613,8 +613,8 @@
                         "Looping": true,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
-                        "StretchedBillboard": true,
-                        "StretchedRatio": 1.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
                         "Gravity": 2.0,
                         "Lifetime": {
                             "IsValueRandom": true,
@@ -636,7 +636,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.5,
+                                "MinValue": 0.30000001192092898,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -676,7 +676,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "MinValue": 1.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
@@ -777,7 +777,7 @@
                             "Width": {
                                 "Value": {
                                     "IsValueRandom": false,
-                                    "MinValue": 0.07000000029802323,
+                                    "MinValue": 0.03999999910593033,
                                     "MaxValue": 1.0
                                 },
                                 "IsCurve": true,
