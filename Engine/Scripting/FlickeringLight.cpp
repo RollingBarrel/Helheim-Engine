@@ -88,6 +88,28 @@ void FlickeringLight::Start()
 	mTimeOffset = fmod(mTimeOffset, mLoopDuration);
 	mTimer = fmod(mStartingTime + mTimeOffset, mLoopDuration);
 
+	//Initialize the blackouts
+	flickering.push_back(mBlackout1);
+	flickering.push_back(mBlackout2);
+	flickering.push_back(mBlackout3);
+	flickering.push_back(mBlackout4);
+	flickering.push_back(mBlackout5);
+	flickering.push_back(mBlackout6);
+	flickering.push_back(mBlackout7);
+	flickering.push_back(mBlackout8);
+	flickering.push_back(mBlackout9);
+	flickering.push_back(mBlackout10);
+	flickering.push_back(mBlackout11);
+	flickering.push_back(mBlackout12);
+	flickering.push_back(mBlackout13);
+	flickering.push_back(mBlackout14);
+	flickering.push_back(mBlackout15);
+	//flickering.push_back(mBlackout16);
+	//flickering.push_back(mBlackout17);
+	//flickering.push_back(mBlackout18);
+	//flickering.push_back(mBlackout19);
+	//flickering.push_back(mBlackout20);
+
 	//Checks if there is a spotlight or pointlight component
 	mLightComp = mGameObject->GetComponent(ComponentType::SPOTLIGHT);
 	if (!mLightComp)
@@ -114,33 +136,23 @@ void FlickeringLight::Start()
 		mMeshRenderComp->CreateUniqueMaterial();
 	}
 
+	//Checks if there is a particle system attached to it
 	mParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
 	if (!mParticles)
 	{
 		mParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
 	}
-
-	//Initialize the blackouts
-	flickering.push_back(mBlackout1);
-	flickering.push_back(mBlackout2);
-	flickering.push_back(mBlackout3);
-	flickering.push_back(mBlackout4);
-	flickering.push_back(mBlackout5);
-	flickering.push_back(mBlackout6);
-	flickering.push_back(mBlackout7);
-	flickering.push_back(mBlackout8);
-	flickering.push_back(mBlackout9);
-	flickering.push_back(mBlackout10);
-	flickering.push_back(mBlackout11);
-	flickering.push_back(mBlackout12);
-	flickering.push_back(mBlackout13);
-	flickering.push_back(mBlackout14);
-	flickering.push_back(mBlackout15);
-	//flickering.push_back(mBlackout16);
-	//flickering.push_back(mBlackout17);
-	//flickering.push_back(mBlackout18);
-	//flickering.push_back(mBlackout19);
-	//flickering.push_back(mBlackout20);
+	if (mParticles)
+	{
+		//If is looping it works like the other components, if it's not looping the duration is set as the particles duration
+		if (!mParticles->IsLooping()) 
+		{
+			for (auto& element : flickering)
+			{
+				element.mDuration = mParticles->GetDuration();
+			}
+		}
+	}
 }
 
 void FlickeringLight::Update()
