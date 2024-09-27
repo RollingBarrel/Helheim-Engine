@@ -17,7 +17,6 @@ public:
 	update_status PostUpdate(float dt) override;
 	bool CleanUp() override;
 
-	void CheckRaycast();
 	void DrawWidget(GameObject* gameObject);
 	void DrawStencilWidget(GameObject* gameObject);
 	
@@ -25,11 +24,8 @@ public:
 	void AddCanvas(GameObject* gameObject);
 
 private:
-	void CheckRaycastRecursive(GameObject* gameObject, bool& eventTriggered);
 	void UiBlurPass();
 
 	std::vector<GameObject*> mCanvasList;
-
-	bool mButtonPressed = false;
 };
 

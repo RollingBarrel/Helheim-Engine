@@ -35,7 +35,9 @@ void SecurityCameraFollower::Start()
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
 	
-	mLookingAtLocation = mGameObject->GetWorldPosition() - (float3(0.0f,2.0f,0.0f) + mGameObject->GetFront().Normalized());
+	mInitialFront = mGameObject->GetFront().Normalized();
+
+	mLookingAtLocation = mGameObject->GetWorldPosition() - (float3(0.0f,2.0f,0.0f) + mInitialFront);
 	mGameObject->LookAt(mGameObject->GetWorldPosition() + mGameObject->GetWorldPosition() - mLookingAtLocation);
 	
 }
@@ -63,24 +65,24 @@ void SecurityCameraFollower::Update()
 
 		//Rotates security camera to player
 		float3 playerPosition = mTarget->GetWorldPosition() + float3(0.0f, 0.5f, 0.0f);
+		float3 playerDir = (playerPosition - mGameObject->GetWorldPosition()).Normalized();
 		float3 rotationDirection = playerPosition - mLookingAtLocation;
-		if (rotationDirection.LengthSq() > 0.01f)
+
+		if (!mOutOfReach && rotationDirection.LengthSq() > 0.01f)
 		{
 			mLookingAtLocation += rotationDirection * App->GetDt() * mSpeed;
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mGameObject->GetWorldPosition() - mLookingAtLocation);
 		}
 
-		//Fading out of the light
 		//Workaround since OnCollisionExit is not implemented
-		if (mTarget->GetWorldPosition().DistanceSq(mGameObject->GetWorldPosition()) > mMaxDistance * mMaxDistance)
+		if (mTarget->GetWorldPosition().DistanceSq(mGameObject->GetWorldPosition()) > mMaxDistance * mMaxDistance || mInitialFront.Dot(-playerDir) <= 0)
 		{
 			mOutOfReach = true;
 		}
 
-		if (mCameraLight->IsEnabled() && mOutOfReach)
+		//Fading out of the light
+		if (mOutOfReach)
 		{
-			mOutOfReach = true;
-
 			mCameraLight->SetIntensity(mMaxLightIntesity * percentageTurningOn);
 			mCameraLight->SetRange(mMaxLightRange * percentageTurningOn);
 

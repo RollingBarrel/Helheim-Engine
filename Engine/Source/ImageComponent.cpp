@@ -19,8 +19,6 @@
 
 ImageComponent::ImageComponent(GameObject* owner) : Component(owner, ComponentType::IMAGE)
 {
-	FillVBO();
-	CreateVAO();
 	SetImage(148626881);
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 
@@ -42,9 +40,6 @@ mHasDiffuse(original.mHasDiffuse), mMantainRatio(original.mMantainRatio), mShoul
 mIsSpritesheet(original.mIsSpritesheet), mColumns(original.mColumns), mRows(original.mRows), mCurrentFrame(original.mCurrentFrame), mElapsedTime(original.mElapsedTime),
 mFPS(original.mFPS), mIsPlaying(original.mIsPlaying)
 {
-	FillVBO();
-	CreateVAO();
-
 	if (original.mImage) SetImage(original.mImage->GetUID());
 
 	mTransform = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
@@ -62,8 +57,6 @@ mFPS(original.mFPS), mIsPlaying(original.mIsPlaying)
 
 ImageComponent:: ~ImageComponent()
 {
-	if (mQuadVBO != 0) glDeleteBuffers(1, &mQuadVBO);
-	if (mQuadVAO != 0) glDeleteVertexArrays(1, &mQuadVAO);
 	if (mImage)
 	{
 		App->GetResource()->ReleaseResource(mImage->GetUID());
@@ -124,7 +117,6 @@ void ImageComponent::Draw()
 	if (mIsSpritesheet)
 	{
 		FillSpriteSheetVBO();
-		CreateVAO();
 	}
 
 	if (mImage && mCanvas && mShouldDraw)
@@ -224,7 +216,7 @@ void ImageComponent::Draw()
 		}
 
 
-		glBindVertexArray(mQuadVAO);
+		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
 
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
@@ -361,31 +353,6 @@ void ImageComponent::SetImage(unsigned int resourceId)
 	mImage = static_cast<ResourceTexture*>(App->GetResource()->RequestResource(resourceId, Resource::Type::Texture));
 }
 
-void ImageComponent::FillVBO()
-{
-	float vertices[] = {
-		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
-		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
-	};
-
-	if (mQuadVBO == 0)
-	{
-		glGenBuffers(1, &mQuadVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-	}
-	else
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
-	}
-}
-
 void ImageComponent::FillSpriteSheetVBO()
 {
 	int row = mCurrentFrame / mColumns;
@@ -395,41 +362,6 @@ void ImageComponent::FillSpriteSheetVBO()
 	float vStart = (float)row / mRows;
 	float uEnd = uStart + 1.0f / mColumns;
 	float vEnd = vStart + 1.0f / mRows;
-
-	float vertices[] = {
-		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
-		-0.5f, -0.5f,  uStart, vEnd,     // bottom-left vertex
-		 0.5f, -0.5f,  uEnd,   vEnd,     // bottom-right vertex
-		 0.5f,  0.5f,  uEnd,   vStart,   // top-right vertex
-		-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
-		 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
-	};
-
-	if (mQuadVBO == 0)
-	{
-		glGenBuffers(1, &mQuadVBO);
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-	}
-	else
-	{
-		glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), &vertices);
-	}
-}
-
-void ImageComponent::CreateVAO()
-{
-	glGenVertexArrays(1, &mQuadVAO);
-	glBindVertexArray(mQuadVAO);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glBindVertexArray(0);
 }
 
 void ImageComponent::ResizeByRatio()
@@ -470,7 +402,7 @@ void ImageComponent::RenderMask()
 		float2 canvasSize = mCanvas->GetSize();
 		model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
 
-		glBindVertexArray(mQuadVAO);
+		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
 		glUniform4fv(glGetUniformLocation(UIMaskProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 
 		glActiveTexture(GL_TEXTURE0);

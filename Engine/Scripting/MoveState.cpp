@@ -146,7 +146,7 @@ void MoveState::DoAnimation()
 		}
 		//LOG("x:%f ", animation);
 		mPlayerController->SetAnimation(animation, 0.01f);
-		mPlayerController->SetAnimationSpeed(0.85f);
+		mPlayerController->SetAnimationSpeed(1.5f); // TODO: Modify this with a script value?
 
 		if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
 		{

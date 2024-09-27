@@ -80,7 +80,7 @@ void VideoComponent::Draw()
 		glEnable(GL_CULL_FACE);
 		glDisable(GL_DEPTH_TEST);
 
-		glBindVertexArray(mQuadVAO);
+		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
 		glUniform4fv(glGetUniformLocation(mUIProgramID, "inputColor"), 1, float4(1.0f, 1.0f, 1.0f, 1.0f).ptr());
 
 		glActiveTexture(GL_TEXTURE0);
@@ -149,8 +149,6 @@ void VideoComponent::Init()
 	mTransform2D = static_cast<Transform2DComponent*>(GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
 
 	mUIProgramID = App->GetOpenGL()->GetUIImageProgram();
-	InitVBO();
-	InitVAO();
 
 	glGenTextures(1, &mTextureID);
 	glBindTexture(GL_TEXTURE_2D, mTextureID);
@@ -159,37 +157,6 @@ void VideoComponent::Init()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-}
-
-void VideoComponent::InitVBO()
-{
-	float vertices[] = {
-		// texture coordinates
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
-		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
-		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
-		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
-	};
-
-	glGenBuffers(1, &mQuadVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
-}
-
-void VideoComponent::InitVAO()
-{
-	glGenVertexArrays(1, &mQuadVAO);
-	glBindVertexArray(mQuadVAO);
-
-	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
-
-	glBindVertexArray(0);
 }
 
 void VideoComponent::OpenVideo(const char* filePath)

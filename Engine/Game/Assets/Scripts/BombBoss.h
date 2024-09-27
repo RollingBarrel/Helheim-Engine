@@ -4,6 +4,7 @@
 #include "float3.h"
 
 class BoxColliderComponent;
+class DecalComponent;
 class Component;
 struct CollisionData;
 
@@ -28,5 +29,6 @@ private:
 	float mTimePassed = 0.0f;
 	float3 mBombOrigin = float3::zero;
 	bool mHasExploded = false;
+	DecalComponent* decal;
 	std::vector<Component*> mExplosionParticles;
 };

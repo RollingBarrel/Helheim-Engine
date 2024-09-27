@@ -1,6 +1,10 @@
 #pragma once
 #include "Enemy.h"
 #include "float2.h"
+#include "float3.h"
+#include "TimerScript.h"
+#include <vector>
+#include <map>
 
 struct CollisionData;
 class BoxColliderComponent;
@@ -83,7 +87,10 @@ private:
 	//Bombs
 	float mBombDamage = 5.0f;
 
-	const char* mTemplateNames[6] = { "BombingTemplate.prfb", "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplate4.prfb", "BombingTemplate5.prfb" };
+	GameObject* mAreas[3] = { nullptr, nullptr, nullptr};
+	std::vector<float3> mAreaPositions;
+	std::map<float, int> mPlayerAreaDistances;
+	const char* mTemplateNames[4] = { "BombingTemplate1.prfb", "BombingTemplate2.prfb", "BombingTemplate3.prfb", "BombingTemplateSingle.prfb"};
 	std::vector<GameObject*> mTemplates;
 	GameObject* mLaserGO = nullptr;
 };
