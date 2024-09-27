@@ -58,7 +58,7 @@ CinematicCamera* CinematicCamera::GetInstance()
     if (mInstance == nullptr)
     {
         LOG("CinematicCamera instance has not been initialized.");
-        throw std::runtime_error("CinematicCamera instance has not been initialized.");
+        return nullptr;
     }
     return mInstance;
 }
@@ -142,7 +142,7 @@ void CinematicCamera::Update()
 
                 if (App->GetScene()->GetName() == "Level2Scene")
                 {
-                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 0.00f, 1.50f, 0.00f, 0.00f, -90.00f, 0.00f);
+                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 61.92f, 38.00f, 8.98f, 0.00f, -90.00f, 0.00f);
                 }
 
                 if (App->GetScene()->GetName() == "Level3Scene")

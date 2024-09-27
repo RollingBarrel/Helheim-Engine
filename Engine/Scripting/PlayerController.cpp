@@ -296,9 +296,10 @@ void PlayerController::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
+    CinematicCamera* cinematicCamera = CinematicCamera::GetInstance();
     if (cinematicCamera)
     {
-        if (CinematicCamera::GetInstance()->GetPlayingCinematic()) return;
+        if (cinematicCamera->GetPlayingCinematic()) return;
     }
 
     if (mIsInElevator) return;
