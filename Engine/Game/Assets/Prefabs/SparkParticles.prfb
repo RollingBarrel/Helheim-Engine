@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 50906767,
+                "UID": 463488507,
                 "ParentUID": 1,
                 "Name": "SparkParticles",
                 "Enabled": true,
@@ -63,7 +63,7 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 0.30000001192092898,
+                                "MinValue": 1.0,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": true,
