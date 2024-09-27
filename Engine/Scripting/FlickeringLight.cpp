@@ -95,6 +95,8 @@ void FlickeringLight::Start()
 		//If is looping it works like the other components, if it's not looping the duration is set as the particles duration
 		if (!mParticles->IsLooping()) 
 		{
+			mParticles->SetEmmiterTime(mParticles->GetDuration());
+
 			mBlackout1.mDuration = mParticles->GetDuration();
 			if (mBlackout1.mTime == 0)
 			{
