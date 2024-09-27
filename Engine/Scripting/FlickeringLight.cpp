@@ -61,21 +61,6 @@ CREATE(FlickeringLight)
 	SEPARATOR("15");
 	MEMBER(MemberType::FLOAT, mBlackout15.mTime);
 	MEMBER(MemberType::FLOAT, mBlackout15.mDuration);
-	//SEPARATOR("16");
-	//MEMBER(MemberType::FLOAT, mBlackout16.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout16.mDuration);
-	//SEPARATOR("17");
-	//MEMBER(MemberType::FLOAT, mBlackout17.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout17.mDuration);
-	//SEPARATOR("18");
-	//MEMBER(MemberType::FLOAT, mBlackout18.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout18.mDuration);
-	//SEPARATOR("19");
-	//MEMBER(MemberType::FLOAT, mBlackout19.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout19.mDuration);
-	//SEPARATOR("20");
-	//MEMBER(MemberType::FLOAT, mBlackout20.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout20.mDuration);
 
 	END_CREATE;
 }
@@ -104,11 +89,6 @@ void FlickeringLight::Start()
 	flickering.push_back(mBlackout13);
 	flickering.push_back(mBlackout14);
 	flickering.push_back(mBlackout15);
-	//flickering.push_back(mBlackout16);
-	//flickering.push_back(mBlackout17);
-	//flickering.push_back(mBlackout18);
-	//flickering.push_back(mBlackout19);
-	//flickering.push_back(mBlackout20);
 
 	//Checks if there is a spotlight or pointlight component
 	mLightComp = mGameObject->GetComponent(ComponentType::SPOTLIGHT);
@@ -147,10 +127,22 @@ void FlickeringLight::Start()
 		//If is looping it works like the other components, if it's not looping the duration is set as the particles duration
 		if (!mParticles->IsLooping()) 
 		{
-			for (auto& element : flickering)
-			{
-				element.mDuration = mParticles->GetDuration();
-			}
+			mBlackout1 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout2 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout3 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout4 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout5 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout6 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout7 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout8 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout9 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout10 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout11 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout12 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout13 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout14 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout15 = Blackout(-1.0f, mParticles->GetDuration()); 
+			
 		}
 	}
 }
