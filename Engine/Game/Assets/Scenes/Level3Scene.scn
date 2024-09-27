@@ -441,6 +441,236 @@
                 ]
             },
             {
+                "UID": 1260387518,
+                "ParentUID": 1,
+                "Name": "CinematicCamera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    5.2683560625155226e-8,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "IsEnabled": true,
+                        "AspectRatio": 1.936948299407959,
+                        "FieldOfView": 90.0,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 993460604,
+                "ParentUID": 1,
+                "Name": "CinematicManager",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "CinematicCamera",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "PARAMS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mYawAngle",
+                                "MemberType": 1,
+                                "VariableData": 45.0
+                            },
+                            {
+                                "VariableName": "mPitchAngle",
+                                "MemberType": 1,
+                                "VariableData": -45.0
+                            },
+                            {
+                                "VariableName": "mDistanceToEnemy",
+                                "MemberType": 1,
+                                "VariableData": 4.0
+                            },
+                            {
+                                "VariableName": "mSpeedFactor",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mAnimationTime",
+                                "MemberType": 1,
+                                "VariableData": 7.829999923706055
+                            },
+                            {
+                                "VariableName": "CAMERAS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mPlayerCameraGO",
+                                "MemberType": 3,
+                                "VariableData": 1131062588
+                            },
+                            {
+                                "VariableName": "mCinematicCameraGO",
+                                "MemberType": 3,
+                                "VariableData": 1260387518
+                            },
+                            {
+                                "VariableName": "ENEMIES",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "Idle = 1 | Chase = 2 | Charge = 3 | Attack = 4",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mEnemyGO1",
+                                "MemberType": 3,
+                                "VariableData": 1348112554
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState1",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mEnemyGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState2",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mEnemyGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState3",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "mEnemyGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mEnemyAnimState4",
+                                "MemberType": 0,
+                                "VariableData": 1
+                            },
+                            {
+                                "VariableName": "BATTLE AREAS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO1",
+                                "MemberType": 3,
+                                "VariableData": 1504512197
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mBattleAreaGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "PLAYER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mPlayerGO",
+                                "MemberType": 3,
+                                "VariableData": 1426929061
+                            },
+                            {
+                                "VariableName": "FADE SCREEN",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mFadeGO",
+                                "MemberType": 3,
+                                "VariableData": 727438763
+                            },
+                            {
+                                "VariableName": "mColor",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    0.0,
+                                    0.0,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mFadeSpeed",
+                                "MemberType": 1,
+                                "VariableData": 0.05000000074505806
+                            },
+                            {
+                                "VariableName": "HUD",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHudGO",
+                                "MemberType": 3,
+                                "VariableData": 414271084
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
                 "UID": 1504512197,
                 "ParentUID": 1,
                 "Name": "BossBattleArea",
@@ -6013,10 +6243,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    5.0773600601683458e-11,
-                    -2.8912474844822179e-11,
-                    0.49674084782600405,
-                    0.8722774386405945
+                    -5.1699505787539127e-11,
+                    -2.7249123096817486e-11,
+                    0.46811941266059878,
+                    -0.8882084488868713
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -17090,6 +17320,84 @@
                 "OverridePrefab": true,
                 "Dynamic": false,
                 "Components": []
+            },
+            {
+                "UID": 727438763,
+                "ParentUID": 1868651689,
+                "Name": "FadeScreen",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": true,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false
+                    }
+                ]
             },
             {
                 "UID": 2027874916,

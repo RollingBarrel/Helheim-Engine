@@ -79,7 +79,7 @@ private:
     float mPitchAngle = -45.0f;
     float3 mTargetPosition;
     float mSpeedFactor = 1.0f;
-    float mAnimationTime = 7.6f;
+    float mAnimationTime = 7.83f;
 
     float mCounter = 0.0f;
     float3 mColor = float3(0.0f, 0.0f, 0.0f);

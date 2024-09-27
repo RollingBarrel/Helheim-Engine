@@ -196,6 +196,18 @@ void CinematicCamera::Update()
             }
         }
     }
+
+    //Restores the screen to avoid a bug that appears when the player keys B when the fade is completely black
+    if (mCounter >= 0.9f)
+    { 
+        if ((mTimer.Delay(1.0f) || (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) ||
+            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_BACK) == ButtonState::BUTTON_DOWN)))
+        {
+            mPlayingCinematic = false; //Unpause player
+            mCounter = 0.0f;
+            mImage->SetAlpha(mCounter);
+        }
+    }
 }
 
 void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState,
@@ -251,7 +263,7 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             {
                 if (HandleFadeIn())
                 {
-                    if (mEnemyGO1->GetName() != "FinalBoss")
+                    if (dummy->GetName() != "FinalBoss")
                     {
                         ActivateDummy(dummy, true);
                     }
@@ -277,8 +289,6 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
                     mPlayingCinematic = false;
                 }
             }
-
-            HandleEscape(dummy);
         }
         else
         {
@@ -298,6 +308,8 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             ActivateBattleArea(battleArea, true);
         }
     }
+
+    HandleEscape(dummy);
 }
 
 void CinematicCamera::LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
@@ -395,8 +407,8 @@ void CinematicCamera::HandleEscape(GameObject* dummy)
 {
     if (!mEscape)
     {
-        if ((App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_REPEAT) ||
-            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_REPEAT))
+        if ((App->GetInput()->GetKey(Keys::Keys_B) == KeyState::KEY_DOWN) ||
+            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN))
         {
             mEscape = true;
             mFadeStart = false;
@@ -428,16 +440,13 @@ void CinematicCamera::EndCinematic(GameObject* dummy)
         App->GetCamera()->ActivateFirstCamera();
     }
     
-    if (dummy->GetName()=="FinalBoss")
+    if (dummy->GetName() == "FinalBoss")
     {
         mAnimationComponent->SetIsPlaying(true);
     }
     else
     {
-        if (mEnemyGO1->GetName() != "FinalBoss")
-        {
-            ActivateDummy(dummy, false);
-        }
+      ActivateDummy(dummy, false);
     }
 
     if (App->GetScene()->GetName() == "Level1Scene")
