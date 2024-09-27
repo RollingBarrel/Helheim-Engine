@@ -55,11 +55,6 @@ private:
 	Blackout mBlackout8;
 	Blackout mBlackout9;
 	Blackout mBlackout10;
-	Blackout mBlackout11;
-	Blackout mBlackout12;
-	Blackout mBlackout13;
-	Blackout mBlackout14;
-	Blackout mBlackout15;
 
 	std::vector<Blackout> flickering;
 

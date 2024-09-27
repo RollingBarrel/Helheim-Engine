@@ -46,21 +46,6 @@ CREATE(FlickeringLight)
 	SEPARATOR("10");
 	MEMBER(MemberType::FLOAT, mBlackout10.mTime);
 	MEMBER(MemberType::FLOAT, mBlackout10.mDuration);
-	SEPARATOR("11");
-	MEMBER(MemberType::FLOAT, mBlackout11.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout11.mDuration);
-	SEPARATOR("12");
-	MEMBER(MemberType::FLOAT, mBlackout12.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout12.mDuration);
-	SEPARATOR("13");
-	MEMBER(MemberType::FLOAT, mBlackout13.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout13.mDuration);
-	SEPARATOR("14");
-	MEMBER(MemberType::FLOAT, mBlackout14.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout14.mDuration);
-	SEPARATOR("15");
-	MEMBER(MemberType::FLOAT, mBlackout15.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout15.mDuration);
 
 	END_CREATE;
 }
@@ -72,23 +57,6 @@ void FlickeringLight::Start()
 	//Starting time setup
 	mTimeOffset = fmod(mTimeOffset, mLoopDuration);
 	mTimer = fmod(mStartingTime + mTimeOffset, mLoopDuration);
-
-	//Initialize the blackouts
-	flickering.push_back(mBlackout1);
-	flickering.push_back(mBlackout2);
-	flickering.push_back(mBlackout3);
-	flickering.push_back(mBlackout4);
-	flickering.push_back(mBlackout5);
-	flickering.push_back(mBlackout6);
-	flickering.push_back(mBlackout7);
-	flickering.push_back(mBlackout8);
-	flickering.push_back(mBlackout9);
-	flickering.push_back(mBlackout10);
-	flickering.push_back(mBlackout11);
-	flickering.push_back(mBlackout12);
-	flickering.push_back(mBlackout13);
-	flickering.push_back(mBlackout14);
-	flickering.push_back(mBlackout15);
 
 	//Checks if there is a spotlight or pointlight component
 	mLightComp = mGameObject->GetComponent(ComponentType::SPOTLIGHT);
@@ -127,24 +95,71 @@ void FlickeringLight::Start()
 		//If is looping it works like the other components, if it's not looping the duration is set as the particles duration
 		if (!mParticles->IsLooping()) 
 		{
-			mBlackout1 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout2 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout3 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout4 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout5 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout6 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout7 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout8 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout9 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout10 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout11 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout12 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout13 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout14 = Blackout(-1.0f, mParticles->GetDuration()); 
-			mBlackout15 = Blackout(-1.0f, mParticles->GetDuration()); 
+			mBlackout1.mDuration = mParticles->GetDuration();
+			if (mBlackout1.mTime == 0)
+			{
+				mBlackout1.mTime = -1.0f;
+			}
+			mBlackout2.mDuration = mParticles->GetDuration();
+			if (mBlackout2.mTime == 0)
+			{
+				mBlackout2.mTime = -1.0f;
+			}
+			mBlackout3.mDuration = mParticles->GetDuration();
+			if (mBlackout3.mTime == 0)
+			{
+				mBlackout3.mTime = -1.0f;
+			}
+			mBlackout4.mDuration = mParticles->GetDuration();
+			if (mBlackout4.mTime == 0)
+			{
+				mBlackout4.mTime = -1.0f;
+			}
+			mBlackout5.mDuration = mParticles->GetDuration();
+			if (mBlackout5.mTime == 0)
+			{
+				mBlackout5.mTime = -1.0f;
+			}
+			mBlackout6.mDuration = mParticles->GetDuration();
+			if (mBlackout6.mTime == 0)
+			{
+				mBlackout6.mTime = -1.0f;
+			}
+			mBlackout7.mDuration = mParticles->GetDuration();
+			if (mBlackout7.mTime == 0)
+			{
+				mBlackout7.mTime = -1.0f;
+			}
+			mBlackout8.mDuration = mParticles->GetDuration();
+			if (mBlackout8.mTime == 0)
+			{
+				mBlackout8.mTime = -1.0f;
+			}
+			mBlackout9.mDuration = mParticles->GetDuration();
+			if (mBlackout9.mTime == 0)
+			{
+				mBlackout9.mTime = -1.0f;
+			}
+			mBlackout10.mDuration = mParticles->GetDuration();
+			if (mBlackout10.mTime == 0)
+			{
+				mBlackout10.mTime = -1.0f;
+			}
 			
 		}
 	}
+
+	//Initialize the blackouts
+	flickering.push_back(mBlackout1);
+	flickering.push_back(mBlackout2);
+	flickering.push_back(mBlackout3);
+	flickering.push_back(mBlackout4);
+	flickering.push_back(mBlackout5);
+	flickering.push_back(mBlackout6);
+	flickering.push_back(mBlackout7);
+	flickering.push_back(mBlackout8);
+	flickering.push_back(mBlackout9);
+	flickering.push_back(mBlackout10);
 }
 
 void FlickeringLight::Update()
@@ -168,7 +183,7 @@ void FlickeringLight::Update()
 
 	mLightOn = UpdateLightState();
 
-	//Updates lights and emissive
+	//Updates lights, emissive and particles
 	if (mLightComp)
 	{
 		mLightComp->SetEnable(mLightOn);
