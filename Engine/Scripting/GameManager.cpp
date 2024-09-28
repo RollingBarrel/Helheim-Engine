@@ -14,6 +14,7 @@
 #include "PlayerController.h"
 #include "PlayerCamera.h"
 #include "Timer.h"
+#include "MathFunc.h"
 
 CREATE(GameManager)
 {
@@ -119,6 +120,11 @@ void GameManager::Update()
     if (mStopActive)
     {
         HitStopTime(mHitStopTime);
+    }
+
+    if (mCameraLerp)
+    {
+        BossCameraMovement();
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
@@ -271,6 +277,38 @@ void GameManager::RegisterPlayerKill()
 {
     mPlayerController->AddKill();
 }
+
+void GameManager::ActivateBossCamera(float targetDistance)
+{
+    mCameraLerp = true;
+    mBossCameraTarget = targetDistance;
+    BossCameraMovement();
+}
+
+void GameManager::BossCameraMovement()
+{
+    float distance = mPlayerCamera->GetDistanceToPlayer();
+    float3 rotation = RadToDeg(mPlayerCameraGO->GetLocalEulerAngles());
+    float rotationY = rotation.y;
+
+    distance = Lerp(distance, mBossCameraTarget, App->GetDt());
+    rotationY = Lerp(rotationY, -90.0f, App->GetDt()*1.3f);
+
+    float diffRot = -90.0f - rotationY;
+    float diffDis = mBossCameraTarget - distance;
+    if (diffDis <= 0.01f && diffRot <= -0.01f)
+    {
+        mCameraLerp = false;
+        distance = mBossCameraTarget;
+        rotationY = -90.0f;
+    }
+
+    rotation.y = rotationY;
+    mPlayerCamera->SetDistanceToPlayer(distance);
+    mPlayerCameraGO->SetWorldRotation(DegToRad(rotation));
+}
+
+
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();
