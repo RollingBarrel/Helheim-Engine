@@ -130,6 +130,7 @@ private:
     float mMasterVolumeValue = .75f;
     float mMusicVolumeValue = .75f;
     float mEffectsVolumeValue = .75f;
+	bool mIsAdjustingAudio = false;
 
     TimerScript mTimer;
     TimerScript mStudioTimer;

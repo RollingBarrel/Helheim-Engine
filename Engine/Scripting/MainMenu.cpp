@@ -300,8 +300,11 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) < -0.9f && mTimePassed >= mDebounceTime)))
     {
+        if (mIsAdjustingAudio) return;
+
         mTimePassed = 0.0f; // Restart debounce timer
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
+
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         { 
             if (mMainOption > 0)
@@ -357,6 +360,8 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) > 0.9f && mTimePassed >= mDebounceTime)))
     {
+        if (mIsAdjustingAudio) return;
+
         mTimePassed = 0.0f; // Restart debounce timer
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
 
@@ -431,8 +436,8 @@ void MainMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
         {
-            if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
-            {
+			if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
+			{
 				if (App->GetCurrentClock()->GetVsyncStatus())
 				{
 					OnVSyncButtonOffClick();
@@ -441,26 +446,30 @@ void MainMenu::Controls()
 				{
 					OnVSyncButtonOnClick();
 				}
-            }
-            else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
-            {
+			}
+			else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
+			{
 				if (App->GetWindow()->IsWindowFullscreen())
 				{
 					OnFullscreenButtonOffClick();
 				}
-                else
-                {
-                    OnFullscreenButtonOnClick();
-                }
-            }
-
+				else
+				{
+					OnFullscreenButtonOnClick();
+				}
+			}
         }
+		else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+		{
+            mIsAdjustingAudio = true;
+			LOG("IS ADJUSTING VOLUME");
+		}
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
         {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.01f);
         }
@@ -469,7 +478,7 @@ void MainMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
         {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.01f);
         }
@@ -478,7 +487,7 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
         {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.1f);
         }
@@ -487,14 +496,12 @@ void MainMenu::Controls()
 
     if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
         {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.1f);
         }
 
     }
-
-
 
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
@@ -517,19 +524,28 @@ void MainMenu::Controls()
             }
             else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
             {
-				mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
-                mOptionsOption = 9;
-                mAudioClicked->SetEnabled(false);
-                OnAudioSettingsButtonHover();
+                if (mIsAdjustingAudio)
+                {
+					// TODO: Unselect the current volume slider 
+					mIsAdjustingAudio = false;
+					LOG("IS NOT ADJUSTING VOLUME");
+					return; // Early return to avoid OpenMenu() call
+                }
+                else 
+                {
+                    mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
+                    mOptionsOption = 9;
+                    mAudioClicked->SetEnabled(false);
+                    OnAudioSettingsButtonHover();
+                }
             }
 			else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
-                mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
-                mOptionsOption = 10;
-                mSettingsClicked->SetEnabled(false);
-                OnVideoSettingsButtonHover();
+				mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
+				mOptionsOption = 10;
+				mSettingsClicked->SetEnabled(false);
+				OnVideoSettingsButtonHover();
             }
-
             OpenMenu(MENU_TYPE::OPTIONS);
         }
 		else
