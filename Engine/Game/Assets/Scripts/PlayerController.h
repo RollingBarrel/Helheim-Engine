@@ -33,7 +33,6 @@ class Weapon;
 class RangeWeapon;
 class MeleeWeapon;
 class Grenade;
-class CinematicCamera;
 
 enum class BattleSituation 
 {
@@ -328,7 +327,4 @@ private:
     bool mIsInElevator = false;
 
     int mKillCount = 0;
-
-    //Cinematic Camera
-    CinematicCamera* cinematicCamera = nullptr;
 };

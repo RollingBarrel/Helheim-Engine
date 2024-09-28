@@ -53,7 +53,6 @@
 #include "Shootgun.h"
 #include "Grenade.h"
 #include <LineComponent.h>
-#include <CinematicCamera.h>
 
 CREATE(PlayerController)
 {
@@ -296,11 +295,7 @@ void PlayerController::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
 
-    CinematicCamera* cinematicCamera = CinematicCamera::GetInstance();
-    if (cinematicCamera)
-    {
-        if (cinematicCamera->GetPlayingCinematic()) return;
-    }
+    if (GameManager::GetInstance()->IsPlayingCinematic()) return;
 
     if (mIsInElevator) return;
     // Check input

@@ -18,16 +18,12 @@ public:
     CinematicCamera(GameObject* owner);
     ~CinematicCamera();
 
-    static CinematicCamera* GetInstance();
-
     void Awake() override;
     void Start() override;
     void Update() override;
     bool GetPlayingCinematic() { return mPlayingCinematic; }
 
 private:
-    static CinematicCamera* mInstance;
-
     void StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
     void UpdateCinematic(GameObject* dummy, BattleArea* battleArea);
     void LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);

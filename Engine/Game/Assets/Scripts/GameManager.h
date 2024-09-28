@@ -12,6 +12,7 @@ class EnemyPool;
 class PoolManager;
 class PlayerCamera;
 class Timer;
+class CinematicCamera;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -61,6 +62,8 @@ public:
 
     void RegisterPlayerKill();
 
+    bool IsPlayingCinematic() { return mPlayingCinematic; }
+
 private:
     void PrepareAudio();
     void StartAudio();
@@ -89,6 +92,11 @@ private:
     TimerScript mLoadTimer;
     TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
+
+    GameObject* mCinematicManagerGO = nullptr;
+    CinematicCamera* mCinematicCamera = nullptr;
+
+    bool mPlayingCinematic = false;
 
     bool mPaused = false;
 

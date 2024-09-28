@@ -51,30 +51,11 @@ CREATE(CinematicCamera)
     END_CREATE;
 }
 
-CinematicCamera* CinematicCamera::mInstance = nullptr;
-
-CinematicCamera* CinematicCamera::GetInstance()
-{
-    if (mInstance == nullptr)
-    {
-        LOG("CinematicCamera instance has not been initialized.");
-        return nullptr;
-    }
-    return mInstance;
-}
-
 CinematicCamera::CinematicCamera(GameObject* owner) : Script(owner) {}
 
-CinematicCamera::~CinematicCamera()
-{
-    mInstance = nullptr;
-}
+CinematicCamera::~CinematicCamera() {}
 
-void CinematicCamera::Awake() 
-{
-    assert(!mInstance);
-    mInstance = this;
-}
+void CinematicCamera::Awake() {}
 
 void CinematicCamera::Start()
 {
@@ -477,7 +458,6 @@ void CinematicCamera::InitAnimation(int animState)
     if (mAnimationComponent)
     {
         mAnimationComponent->ResetAnimationComponent();
-        mAnimationComponent->GetLoop();
         mAnimationComponent->SendTrigger(trigger, 0.0f); //0.0f, 0.2, 1.0f
     }
 }

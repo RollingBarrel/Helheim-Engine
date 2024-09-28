@@ -15,6 +15,8 @@
 #include "PlayerCamera.h"
 #include "Timer.h"
 
+#include "CinematicCamera.h"
+
 CREATE(GameManager)
 {
     CLASS(owner);
@@ -23,6 +25,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
@@ -85,6 +88,12 @@ void GameManager::Start()
         StartAudio();
     }
 
+    if (mCinematicManagerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mCinematicManagerGO->GetComponent(ComponentType::SCRIPT));
+        mCinematicCamera = static_cast<CinematicCamera*>(script->GetScriptInstance());
+    }
+
     if (mFirstTutorial) 
     {
         mFirstTutorial->SetEnabled(true);
@@ -125,6 +134,11 @@ void GameManager::Update()
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
         SetPaused(!mPaused, true);
+    }
+
+    if (mCinematicCamera)
+    {
+        mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();
     }
 }
 
