@@ -44,10 +44,12 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeFillGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeBackgroundGO);
+	MEMBER(MemberType::GAMEOBJECT, mVSyncBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOn_On);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOff_On);
+	MEMBER(MemberType::GAMEOBJECT, mFullscreenBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOn_On);
@@ -209,8 +211,10 @@ void MainMenu::Start()
     mEffectsVolumeFill = static_cast<ImageComponent*>(mEffectsVolumeFillGO->GetComponent(ComponentType::IMAGE));
     mEffectsVolumeBackground = static_cast<ImageComponent*>(mEffectsVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
+	mVSyncBackground = static_cast<ImageComponent*>(mVSyncBackgroundGO->GetComponent(ComponentType::IMAGE));
     mVSyncOnButton = static_cast<ButtonComponent*>(mVSyncButtonOnGO->GetComponent(ComponentType::BUTTON));
     mVSyncOffButton = static_cast<ButtonComponent*>(mVSyncButtonOffGO->GetComponent(ComponentType::BUTTON));
+	mFullscreenBackground = static_cast<ImageComponent*>(mFullscreenBackgroundGO->GetComponent(ComponentType::IMAGE));
     mFullscreenOnButton = static_cast<ButtonComponent*>(mFullscreenButtonOnGO->GetComponent(ComponentType::BUTTON));
     mFullscreenOffButton = static_cast<ButtonComponent*>(mFullscreenButtonOffGO->GetComponent(ComponentType::BUTTON));
 
@@ -1088,26 +1092,25 @@ void MainMenu::OnEffectsVolumeHover()
 
 void MainMenu::OnVSyncButtonHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    //image->SetAlpha(1.f);
+
     mCurrentVideoSetting = VIDEO_SETTING_TYPE::VSYNC;
+    mVSyncBackground->SetAlpha(0.1f);
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    //OnFullscreenButtonHoverOff();
+    OnFullscreenButtonHoverOff();
 }
 
 void MainMenu::OnFullscreenButtonHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
-    //image->SetAlpha(1.f);
     mCurrentVideoSetting = VIDEO_SETTING_TYPE::FULL_SCREEN;
+    mFullscreenBackground->SetAlpha(0.1f);
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    //OnVSyncButtonHoverOff();
+    OnVSyncButtonHoverOff();
 }
 
 void MainMenu::OnQuitButtonHover() 
@@ -1312,17 +1315,16 @@ void MainMenu::OnEffectsVolumeHoverOff()
 	mEffectsVolumeBackground->SetAlpha(0.f);
 }
 
-/*void MainMenu::OnVSyncButtonHoverOff()
+void MainMenu::OnVSyncButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}*/
+	mVSyncBackground->SetAlpha(0.f);
+}
 
-/*void MainMenu::OnFullscreenButtonHoverOff()
+void MainMenu::OnFullscreenButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}*/
+	mFullscreenBackground->SetAlpha(0.f);
+
+}
 
 void MainMenu::OnGeneralUp()
 {

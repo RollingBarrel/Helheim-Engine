@@ -103,8 +103,8 @@ private:
     void OnGeneralVolumeHoverOff();
     void OnMusicVolumeHoverOff();
     void OnEffectsVolumeHoverOff();
-    //void OnVSyncButtonHoverOff();
-    //void OnFullscreenButtonHoverOff();
+    void OnVSyncButtonHoverOff();
+    void OnFullscreenButtonHoverOff();
 
     void OnGeneralUp();
     void OnGeneralDown();
@@ -254,6 +254,8 @@ private:
     GameObject* mEffectsVolumeDown = nullptr;
 
     // VSync
+	GameObject* mVSyncBackgroundGO = nullptr;
+	ImageComponent* mVSyncBackground = nullptr;
     GameObject* mVSyncButtonOnGO = nullptr;
     GameObject* mVSyncButtonOffGO = nullptr;
     GameObject* mVSyncImageOn_On = nullptr;
@@ -261,6 +263,8 @@ private:
     ButtonComponent* mVSyncOnButton = nullptr;
     ButtonComponent* mVSyncOffButton = nullptr;
 	// Fullscreen
+    GameObject* mFullscreenBackgroundGO = nullptr;
+    ImageComponent* mFullscreenBackground = nullptr;
     GameObject* mFullscreenButtonOnGO = nullptr;
     GameObject* mFullscreenButtonOffGO = nullptr;
     ButtonComponent* mFullscreenOnButton = nullptr;
