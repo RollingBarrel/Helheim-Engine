@@ -255,12 +255,12 @@ void GameManager::HandleBossAudio(int stage)
     {
         if (mLastAudioID != 2 && stage == 2)
         {
-            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 2);
+            mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 4);
             mLastAudioID = 2;
         }
         else if (mLastAudioID != 1 && stage == 1)
         {
-            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 1);
+            mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 3);
             mLastAudioID = 1;
         }
         else if (mLastAudioID != 0 && stage == 0)
@@ -268,7 +268,7 @@ void GameManager::HandleBossAudio(int stage)
             mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, true);
             mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
 
-            mAudioManager->UpdateParameterValueByName(BGM::LEVEL1, mBackgroundAudioID, "States", 0);
+            mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 2);
             mLastAudioID = 0;
         }
     }
@@ -322,6 +322,10 @@ void GameManager::PauseBackgroundAudio(bool pause)
         {
             mAudioManager->Pause(BGM::LEVEL2, mBackgroundAudioID, pause);
         }
+        else if (sceneName == "Level3Scene")
+        {
+            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, pause);
+        }
     }
 }
 
@@ -355,7 +359,7 @@ void GameManager::PrepareAudio()
     {
         mAudioManager->AddAudioToASComponent(BGM::LEVEL2);
     }
-    else if (sceneName == "BossTestingRoom")
+    else if (sceneName == "Level3Scene")
     {
         mAudioManager->AddAudioToASComponent(BGM::BOSS_ROOM);
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
@@ -420,6 +424,11 @@ void GameManager::EndAudio()
         else if (sceneName == "Level2Scene")
         {
             mBackgroundAudioID = mAudioManager->Release(BGM::LEVEL2, mBackgroundAudioID);
+        }
+        else if (sceneName == "Level3Scene")
+        {
+            mBackgroundAudioID = mAudioManager->Release(BGM::BOSS, mBackgroundAudioID);
+            mBackgroundAudioID = mAudioManager->Release(BGM::BOSS_ROOM, mBackgroundAudioID2);
         }
     }
 
