@@ -43,7 +43,9 @@ update_status ModuleUI::Update(float dt)
 {
 	// Draw the UI
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Ui");
-	UiBlurPass();
+	//UiBlurPass();
+	//App->GetOpenGL()->BlurTexture(App->GetOpenGL()->GetFramebufferTexture(), true, 4);
+	App->GetOpenGL()->BindSceneFramebuffer();
 	for (GameObject* gameObject : mCanvasList) 
 	{
 		DrawWidget(gameObject);

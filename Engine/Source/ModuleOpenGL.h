@@ -205,7 +205,7 @@ private:
 	//AO
 	unsigned int mSSAO;
 	//bloom bramebuffer
-	static const unsigned int mBlurPasses = 3;
+	static const unsigned int mBlurPasses = 4;
 	unsigned int mBlurTex[mBlurPasses + 1];
 	unsigned int mBlurFBO;
 	float mBloomIntensity = 0.5f;

@@ -92,10 +92,8 @@ void VideoComponent::Draw()
 		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+;
 		glBindVertexArray(0);
-		glUseProgram(0);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);

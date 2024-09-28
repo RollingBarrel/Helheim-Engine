@@ -121,13 +121,12 @@ void ImageComponent::Draw()
 
 	if (mImage && mCanvas && mShouldDraw)
 	{
-		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
-		if (UIImageProgram == 0) return;
-
 		glEnable(GL_BLEND);
 		glDepthMask(GL_TRUE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		unsigned int UIImageProgram = App->GetOpenGL()->GetUIImageProgram();
+		assert(UIImageProgram);
 		glUseProgram(UIImageProgram);
 
 		float4x4 proj = float4x4::identity;
@@ -234,9 +233,7 @@ void ImageComponent::Draw()
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glBindVertexArray(0);
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-		glUseProgram(0);
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);

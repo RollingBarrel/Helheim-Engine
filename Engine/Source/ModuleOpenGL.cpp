@@ -236,7 +236,7 @@ bool ModuleOpenGL::Init()
 	}
 	glGenFramebuffers(1, &mBlurFBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
+	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
 	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
 	const GLenum att3 = GL_COLOR_ATTACHMENT0;
@@ -762,7 +762,7 @@ void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
 	for (int i = 0; i <= mBlurPasses; ++i)
 	{
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		w /= 2;
 		h /= 2;
 	}
@@ -991,14 +991,15 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		w *= 2;
 		h *= 2;
 		glViewport(0, 0, w, h);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		if (i == 0 && modifyTex)
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
+		else
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
-		if(i == 1 && modifyTex)
-			glBindTexture(GL_TEXTURE_2D, texId);
 	}
 	glBindVertexArray(0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
 	return mBlurTex[0];
@@ -1532,7 +1533,7 @@ void ModuleOpenGL::Draw()
 		//glEnable(GL_STENCIL_TEST);
 
 		//dual filter blur
-		BlurTexture(mSSAO, true);
+		BlurTexture(mSSAO, true, 1);
 
 		//Gausian blur
 		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
@@ -1578,7 +1579,7 @@ void ModuleOpenGL::Draw()
 	}
 
 	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive);
+	unsigned int blurredTex = BlurTexture(mGEmissive, false, 2);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
