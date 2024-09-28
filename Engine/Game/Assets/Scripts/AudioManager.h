@@ -182,8 +182,8 @@ private:
 		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
 		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"},
 
-		{BGM::BOSS_ROOM, "event:/MC/main/Theme"},
-		{BGM::BOSS, "event:/MC/lvl1/mc_lvl1"},
+		{BGM::BOSS_ROOM, "event:/MC/boss/boss_lvl"},
+		{BGM::BOSS, "event:/MC/boss/boss_lvl"},
 
 		{BGM::GAMEOVER, "Assets/FMOD/Audios/bgm/die.mp3"},
 
