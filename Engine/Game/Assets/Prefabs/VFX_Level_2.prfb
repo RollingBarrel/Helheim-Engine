@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 19735232,
+                "UID": 395863627,
                 "ParentUID": 1,
                 "Name": "VFX_Level_2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 818410078,
-                "ParentUID": 19735232,
+                "UID": 730740637,
+                "ParentUID": 395863627,
                 "Name": "SanityParticles (3)",
                 "Enabled": true,
                 "Active": true,
@@ -184,8 +184,8 @@
                 ]
             },
             {
-                "UID": 833281954,
-                "ParentUID": 19735232,
+                "UID": 1031085631,
+                "ParentUID": 395863627,
                 "Name": "SanityParticles (2)",
                 "Enabled": true,
                 "Active": true,
@@ -338,8 +338,8 @@
                 ]
             },
             {
-                "UID": 1600518168,
-                "ParentUID": 19735232,
+                "UID": 1322031790,
+                "ParentUID": 395863627,
                 "Name": "SanityParticles (1)",
                 "Enabled": true,
                 "Active": true,
@@ -492,8 +492,8 @@
                 ]
             },
             {
-                "UID": 1622974638,
-                "ParentUID": 19735232,
+                "UID": 1664358247,
+                "ParentUID": 395863627,
                 "Name": "SanityParticles",
                 "Enabled": true,
                 "Active": true,
@@ -646,8 +646,8 @@
                 ]
             },
             {
-                "UID": 1523734779,
-                "ParentUID": 19735232,
+                "UID": 1952380324,
+                "ParentUID": 395863627,
                 "Name": "Lab_fire",
                 "Enabled": true,
                 "Active": true,
@@ -674,8 +674,8 @@
                 "Components": []
             },
             {
-                "UID": 1759123380,
-                "ParentUID": 1523734779,
+                "UID": 97304877,
+                "ParentUID": 1952380324,
                 "Name": "Incendio1",
                 "Enabled": true,
                 "Active": true,
@@ -702,8 +702,8 @@
                 "Components": []
             },
             {
-                "UID": 1985391630,
-                "ParentUID": 1759123380,
+                "UID": 393054885,
+                "ParentUID": 97304877,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -869,8 +869,8 @@
                 ]
             },
             {
-                "UID": 42593723,
-                "ParentUID": 1759123380,
+                "UID": 686855505,
+                "ParentUID": 97304877,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -1021,8 +1021,8 @@
                 ]
             },
             {
-                "UID": 177867326,
-                "ParentUID": 1759123380,
+                "UID": 975713034,
+                "ParentUID": 97304877,
                 "Name": "Humo 1",
                 "Enabled": true,
                 "Active": true,
@@ -1183,8 +1183,8 @@
                 ]
             },
             {
-                "UID": 289887515,
-                "ParentUID": 1759123380,
+                "UID": 1263943974,
+                "ParentUID": 97304877,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": true,
@@ -1375,8 +1375,8 @@
                 ]
             },
             {
-                "UID": 1879159435,
-                "ParentUID": 1523734779,
+                "UID": 1556839521,
+                "ParentUID": 1952380324,
                 "Name": "Incendio1 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1403,8 +1403,8 @@
                 "Components": []
             },
             {
-                "UID": 1942514545,
-                "ParentUID": 1879159435,
+                "UID": 1853007255,
+                "ParentUID": 1556839521,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -1570,8 +1570,8 @@
                 ]
             },
             {
-                "UID": 2012831755,
-                "ParentUID": 1879159435,
+                "UID": 6355949,
+                "ParentUID": 1556839521,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -1722,8 +1722,8 @@
                 ]
             },
             {
-                "UID": 2063794327,
-                "ParentUID": 1879159435,
+                "UID": 304124966,
+                "ParentUID": 1556839521,
                 "Name": "Humo 1",
                 "Enabled": true,
                 "Active": true,
@@ -1884,8 +1884,8 @@
                 ]
             },
             {
-                "UID": 2110858123,
-                "ParentUID": 1879159435,
+                "UID": 602868677,
+                "ParentUID": 1556839521,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": true,
@@ -2076,8 +2076,8 @@
                 ]
             },
             {
-                "UID": 564899797,
-                "ParentUID": 1523734779,
+                "UID": 980214497,
+                "ParentUID": 1952380324,
                 "Name": "Incendio1 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -2104,8 +2104,8 @@
                 "Components": []
             },
             {
-                "UID": 595254553,
-                "ParentUID": 564899797,
+                "UID": 1275198674,
+                "ParentUID": 980214497,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -2271,8 +2271,8 @@
                 ]
             },
             {
-                "UID": 653666572,
-                "ParentUID": 564899797,
+                "UID": 1568790431,
+                "ParentUID": 980214497,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -2423,8 +2423,8 @@
                 ]
             },
             {
-                "UID": 694534099,
-                "ParentUID": 564899797,
+                "UID": 1867882247,
+                "ParentUID": 980214497,
                 "Name": "Humo 1",
                 "Enabled": true,
                 "Active": true,
@@ -2585,8 +2585,8 @@
                 ]
             },
             {
-                "UID": 732547165,
-                "ParentUID": 564899797,
+                "UID": 8351056,
+                "ParentUID": 980214497,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": true,
@@ -2777,8 +2777,8 @@
                 ]
             },
             {
-                "UID": 1483296308,
-                "ParentUID": 1523734779,
+                "UID": 301873192,
+                "ParentUID": 1952380324,
                 "Name": "Incendio1 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -2805,8 +2805,8 @@
                 "Components": []
             },
             {
-                "UID": 1573385882,
-                "ParentUID": 1483296308,
+                "UID": 612870199,
+                "ParentUID": 301873192,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -2972,8 +2972,8 @@
                 ]
             },
             {
-                "UID": 1677121172,
-                "ParentUID": 1483296308,
+                "UID": 910778458,
+                "ParentUID": 301873192,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -3124,8 +3124,8 @@
                 ]
             },
             {
-                "UID": 1749387770,
-                "ParentUID": 1483296308,
+                "UID": 1205414530,
+                "ParentUID": 301873192,
                 "Name": "Humo 1",
                 "Enabled": true,
                 "Active": true,
@@ -3286,8 +3286,8 @@
                 ]
             },
             {
-                "UID": 1820122706,
-                "ParentUID": 1483296308,
+                "UID": 1495316374,
+                "ParentUID": 301873192,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": true,
@@ -3478,8 +3478,8 @@
                 ]
             },
             {
-                "UID": 805386353,
-                "ParentUID": 19735232,
+                "UID": 1789186615,
+                "ParentUID": 395863627,
                 "Name": "Fog_V1",
                 "Enabled": true,
                 "Active": true,
@@ -3623,8 +3623,8 @@
                 ]
             },
             {
-                "UID": 1283513254,
-                "ParentUID": 19735232,
+                "UID": 2089113883,
+                "ParentUID": 395863627,
                 "Name": "Fog_V1 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -3768,8 +3768,8 @@
                 ]
             },
             {
-                "UID": 1499716050,
-                "ParentUID": 19735232,
+                "UID": 242880303,
+                "ParentUID": 395863627,
                 "Name": "Fog_V1 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -3913,8 +3913,8 @@
                 ]
             },
             {
-                "UID": 731224504,
-                "ParentUID": 19735232,
+                "UID": 531946695,
+                "ParentUID": 395863627,
                 "Name": "Fog_V1 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -4058,8 +4058,8 @@
                 ]
             },
             {
-                "UID": 1357397140,
-                "ParentUID": 19735232,
+                "UID": 816348480,
+                "ParentUID": 395863627,
                 "Name": "Lab_diposits",
                 "Enabled": true,
                 "Active": true,
@@ -4086,8 +4086,8 @@
                 "Components": []
             },
             {
-                "UID": 989745786,
-                "ParentUID": 1357397140,
+                "UID": 1116484611,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio",
                 "Enabled": true,
                 "Active": true,
@@ -4114,8 +4114,8 @@
                 "Components": []
             },
             {
-                "UID": 1139082831,
-                "ParentUID": 989745786,
+                "UID": 1536856209,
+                "ParentUID": 1116484611,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -4281,8 +4281,8 @@
                 ]
             },
             {
-                "UID": 1344812886,
-                "ParentUID": 989745786,
+                "UID": 1870688904,
+                "ParentUID": 1116484611,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -4294,8 +4294,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9235994219779968,
-                    -0.3825131356716156
+                    0.29447823762893679,
+                    -0.9555636644363403
                 ],
                 "Scale": [
                     1.0,
@@ -4408,8 +4408,8 @@
                 ]
             },
             {
-                "UID": 1508074131,
-                "ParentUID": 989745786,
+                "UID": 35246579,
+                "ParentUID": 1116484611,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -4460,8 +4460,8 @@
                 ]
             },
             {
-                "UID": 692233229,
-                "ParentUID": 1357397140,
+                "UID": 353762654,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio (5)",
                 "Enabled": true,
                 "Active": true,
@@ -4488,8 +4488,8 @@
                 "Components": []
             },
             {
-                "UID": 839342402,
-                "ParentUID": 692233229,
+                "UID": 667196396,
+                "ParentUID": 353762654,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -4655,8 +4655,8 @@
                 ]
             },
             {
-                "UID": 1016179742,
-                "ParentUID": 692233229,
+                "UID": 978123782,
+                "ParentUID": 353762654,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -4668,8 +4668,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9277467131614685,
-                    -0.37233129143714907
+                    0.2839498817920685,
+                    -0.958730161190033
                 ],
                 "Scale": [
                     1.0,
@@ -4782,8 +4782,8 @@
                 ]
             },
             {
-                "UID": 1194618365,
-                "ParentUID": 692233229,
+                "UID": 1283759972,
+                "ParentUID": 353762654,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -4834,8 +4834,8 @@
                 ]
             },
             {
-                "UID": 834068034,
-                "ParentUID": 1357397140,
+                "UID": 1588769573,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio (4)",
                 "Enabled": true,
                 "Active": true,
@@ -4862,8 +4862,8 @@
                 "Components": []
             },
             {
-                "UID": 972196098,
-                "ParentUID": 834068034,
+                "UID": 1890924713,
+                "ParentUID": 1588769573,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -5029,8 +5029,8 @@
                 ]
             },
             {
-                "UID": 1173122304,
-                "ParentUID": 834068034,
+                "UID": 44969617,
+                "ParentUID": 1588769573,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -5042,8 +5042,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9317852258682251,
-                    -0.36209186911582949
+                    0.2733794152736664,
+                    -0.961794376373291
                 ],
                 "Scale": [
                     1.0,
@@ -5156,8 +5156,8 @@
                 ]
             },
             {
-                "UID": 1346060868,
-                "ParentUID": 834068034,
+                "UID": 349770355,
+                "ParentUID": 1588769573,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -5208,8 +5208,8 @@
                 ]
             },
             {
-                "UID": 2114287980,
-                "ParentUID": 1357397140,
+                "UID": 651159664,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio (2)",
                 "Enabled": true,
                 "Active": true,
@@ -5236,8 +5236,8 @@
                 "Components": []
             },
             {
-                "UID": 115445168,
-                "ParentUID": 2114287980,
+                "UID": 957492064,
+                "ParentUID": 651159664,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -5403,8 +5403,8 @@
                 ]
             },
             {
-                "UID": 319713182,
-                "ParentUID": 2114287980,
+                "UID": 1262014318,
+                "ParentUID": 651159664,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -5416,8 +5416,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9357098340988159,
-                    -0.3518180251121521
+                    0.26278090476989748,
+                    -0.9647442698478699
                 ],
                 "Scale": [
                     1.0,
@@ -5530,8 +5530,8 @@
                 ]
             },
             {
-                "UID": 489240317,
-                "ParentUID": 2114287980,
+                "UID": 1563542869,
+                "ParentUID": 651159664,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -5582,8 +5582,8 @@
                 ]
             },
             {
-                "UID": 73946724,
-                "ParentUID": 1357397140,
+                "UID": 1858596667,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio (1)",
                 "Enabled": true,
                 "Active": true,
@@ -5610,8 +5610,8 @@
                 "Components": []
             },
             {
-                "UID": 220638171,
-                "ParentUID": 73946724,
+                "UID": 12154224,
+                "ParentUID": 1858596667,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -5777,8 +5777,8 @@
                 ]
             },
             {
-                "UID": 393924840,
-                "ParentUID": 73946724,
+                "UID": 316815720,
+                "ParentUID": 1858596667,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -5790,8 +5790,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9395379424095154,
-                    -0.34150952100753786
+                    0.2521509528160095,
+                    -0.9675872921943665
                 ],
                 "Scale": [
                     1.0,
@@ -5904,8 +5904,8 @@
                 ]
             },
             {
-                "UID": 552173373,
-                "ParentUID": 73946724,
+                "UID": 616673367,
+                "ParentUID": 1858596667,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -5956,8 +5956,8 @@
                 ]
             },
             {
-                "UID": 348928092,
-                "ParentUID": 1357397140,
+                "UID": 915208215,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio",
                 "Enabled": true,
                 "Active": true,
@@ -5984,8 +5984,8 @@
                 "Components": []
             },
             {
-                "UID": 500075283,
-                "ParentUID": 348928092,
+                "UID": 1220635542,
+                "ParentUID": 915208215,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -6151,8 +6151,8 @@
                 ]
             },
             {
-                "UID": 704969886,
-                "ParentUID": 348928092,
+                "UID": 1526341353,
+                "ParentUID": 915208215,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -6164,8 +6164,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.9432327747344971,
-                    -0.33115917444229128
+                    0.2414935827255249,
+                    -0.9702953100204468
                 ],
                 "Scale": [
                     1.0,
@@ -6278,8 +6278,8 @@
                 ]
             },
             {
-                "UID": 868370373,
-                "ParentUID": 348928092,
+                "UID": 1834832004,
+                "ParentUID": 915208215,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -6330,8 +6330,8 @@
                 ]
             },
             {
-                "UID": 1467968197,
-                "ParentUID": 1357397140,
+                "UID": 2143740381,
+                "ParentUID": 816348480,
                 "Name": "Diposits_Incendio (3)",
                 "Enabled": true,
                 "Active": true,
@@ -6358,8 +6358,8 @@
                 "Components": []
             },
             {
-                "UID": 1612571014,
-                "ParentUID": 1467968197,
+                "UID": 298481495,
+                "ParentUID": 2143740381,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -6525,8 +6525,8 @@
                 ]
             },
             {
-                "UID": 1957751932,
-                "ParentUID": 1467968197,
+                "UID": 603073370,
+                "ParentUID": 2143740381,
                 "Name": "Fuego",
                 "Enabled": true,
                 "Active": true,
@@ -6538,8 +6538,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    -0.946487545967102,
-                    -0.3217122256755829
+                    0.2317894846200943,
+                    -0.9726641178131104
                 ],
                 "Scale": [
                     1.0,
@@ -6652,8 +6652,8 @@
                 ]
             },
             {
-                "UID": 895616824,
-                "ParentUID": 1467968197,
+                "UID": 904741163,
+                "ParentUID": 2143740381,
                 "Name": "Base",
                 "Enabled": true,
                 "Active": true,
@@ -6704,8 +6704,8 @@
                 ]
             },
             {
-                "UID": 286321857,
-                "ParentUID": 19735232,
+                "UID": 1212048257,
+                "ParentUID": 395863627,
                 "Name": "Diposits_Incendio (7)",
                 "Enabled": true,
                 "Active": true,
@@ -6732,8 +6732,8 @@
                 "Components": []
             },
             {
-                "UID": 434614587,
-                "ParentUID": 286321857,
+                "UID": 1515735059,
+                "ParentUID": 1212048257,
                 "Name": "Humo ",
                 "Enabled": true,
                 "Active": true,
@@ -6895,6 +6895,390 @@
                                 "Color Gradient": []
                             }
                         }
+                    }
+                ]
+            },
+            {
+                "UID": 820185381,
+                "ParentUID": 395863627,
+                "Name": "SparkParticles",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    121.5997085571289,
+                    68.50234985351563,
+                    11.671589851379395
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1711944677,
+                        "Delay": 0.0,
+                        "Duration": 0.6000000238418579,
+                        "EmissionRate": 20.0,
+                        "MaxParticles": 20,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 1.0,
+                        "Gravity": 1.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3375000059604645,
+                                        0.6800000071525574
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.42750000953674319,
+                                        0.3399999737739563
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6299999952316284,
+                                        0.13999998569488526
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2824999988079071,
+                                        0.8349999785423279
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4424999952316284,
+                                        0.42500001192092898
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6575000286102295,
+                                        0.10000002384185791
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.9449999928474426,
+                                        0.004999995231628418
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.004999995231628418
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.013404825702309609,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.01876675710082054,
+                                "Color": [
+                                    0.00910076592117548,
+                                    0.009174157865345478,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.057640768587589267,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.12600524723529817,
+                                "Color": [
+                                    0.9920001029968262,
+                                    1.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "FlickeringLight",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.0
+                            },
+                            {
+                                "VariableName": "mStartingTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mLoopDuration",
+                                "MemberType": 1,
+                                "VariableData": 21.0
+                            },
+                            {
+                                "VariableName": "mTimeOffset",
+                                "MemberType": 1,
+                                "VariableData": 13.0
+                            },
+                            {
+                                "VariableName": "Blackouts",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "1",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout1.mTime",
+                                "MemberType": 1,
+                                "VariableData": 5.0
+                            },
+                            {
+                                "VariableName": "mBlackout1.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.6000000238418579
+                            },
+                            {
+                                "VariableName": "2",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout2.mTime",
+                                "MemberType": 1,
+                                "VariableData": 19.0
+                            },
+                            {
+                                "VariableName": "mBlackout2.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.6000000238418579
+                            },
+                            {
+                                "VariableName": "3",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout3.mTime",
+                                "MemberType": 1,
+                                "VariableData": 28.0
+                            },
+                            {
+                                "VariableName": "mBlackout3.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.6000000238418579
+                            },
+                            {
+                                "VariableName": "4",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout4.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout4.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.6000000238418579
+                            },
+                            {
+                                "VariableName": "5",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout5.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout5.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "6",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout6.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout6.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "7",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout7.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout7.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "8",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout8.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout8.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "9",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout9.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout9.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "10",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mBlackout10.mTime",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mBlackout10.mDuration",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            }
+                        ]
                     }
                 ]
             }
