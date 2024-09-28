@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "ScriptComponent.h"
 #include "MeshRendererComponent.h"
+#include "ParticleSystemComponent.h"
 
 CREATE(FlickeringLight)
 {
@@ -45,36 +46,6 @@ CREATE(FlickeringLight)
 	SEPARATOR("10");
 	MEMBER(MemberType::FLOAT, mBlackout10.mTime);
 	MEMBER(MemberType::FLOAT, mBlackout10.mDuration);
-	SEPARATOR("11");
-	MEMBER(MemberType::FLOAT, mBlackout11.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout11.mDuration);
-	SEPARATOR("12");
-	MEMBER(MemberType::FLOAT, mBlackout12.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout12.mDuration);
-	SEPARATOR("13");
-	MEMBER(MemberType::FLOAT, mBlackout13.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout13.mDuration);
-	SEPARATOR("14");
-	MEMBER(MemberType::FLOAT, mBlackout14.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout14.mDuration);
-	SEPARATOR("15");
-	MEMBER(MemberType::FLOAT, mBlackout15.mTime);
-	MEMBER(MemberType::FLOAT, mBlackout15.mDuration);
-	//SEPARATOR("16");
-	//MEMBER(MemberType::FLOAT, mBlackout16.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout16.mDuration);
-	//SEPARATOR("17");
-	//MEMBER(MemberType::FLOAT, mBlackout17.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout17.mDuration);
-	//SEPARATOR("18");
-	//MEMBER(MemberType::FLOAT, mBlackout18.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout18.mDuration);
-	//SEPARATOR("19");
-	//MEMBER(MemberType::FLOAT, mBlackout19.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout19.mDuration);
-	//SEPARATOR("20");
-	//MEMBER(MemberType::FLOAT, mBlackout20.mTime);
-	//MEMBER(MemberType::FLOAT, mBlackout20.mDuration);
 
 	END_CREATE;
 }
@@ -113,6 +84,73 @@ void FlickeringLight::Start()
 		mMeshRenderComp->CreateUniqueMaterial();
 	}
 
+	//Checks if there is a particle system attached to it
+	mParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
+	if (!mParticles)
+	{
+		mParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	}
+	if (mParticles)
+	{
+		//If is looping it works like the other components, if it's not looping the duration is set as the particles duration
+		if (!mParticles->IsLooping()) 
+		{
+			mParticles->SetEmmiterTime(mParticles->GetDuration());
+
+			mBlackout1.mDuration = mParticles->GetDuration();
+			if (mBlackout1.mTime == 0)
+			{
+				mBlackout1.mTime = -1.0f;
+			}
+			mBlackout2.mDuration = mParticles->GetDuration();
+			if (mBlackout2.mTime == 0)
+			{
+				mBlackout2.mTime = -1.0f;
+			}
+			mBlackout3.mDuration = mParticles->GetDuration();
+			if (mBlackout3.mTime == 0)
+			{
+				mBlackout3.mTime = -1.0f;
+			}
+			mBlackout4.mDuration = mParticles->GetDuration();
+			if (mBlackout4.mTime == 0)
+			{
+				mBlackout4.mTime = -1.0f;
+			}
+			mBlackout5.mDuration = mParticles->GetDuration();
+			if (mBlackout5.mTime == 0)
+			{
+				mBlackout5.mTime = -1.0f;
+			}
+			mBlackout6.mDuration = mParticles->GetDuration();
+			if (mBlackout6.mTime == 0)
+			{
+				mBlackout6.mTime = -1.0f;
+			}
+			mBlackout7.mDuration = mParticles->GetDuration();
+			if (mBlackout7.mTime == 0)
+			{
+				mBlackout7.mTime = -1.0f;
+			}
+			mBlackout8.mDuration = mParticles->GetDuration();
+			if (mBlackout8.mTime == 0)
+			{
+				mBlackout8.mTime = -1.0f;
+			}
+			mBlackout9.mDuration = mParticles->GetDuration();
+			if (mBlackout9.mTime == 0)
+			{
+				mBlackout9.mTime = -1.0f;
+			}
+			mBlackout10.mDuration = mParticles->GetDuration();
+			if (mBlackout10.mTime == 0)
+			{
+				mBlackout10.mTime = -1.0f;
+			}
+			
+		}
+	}
+
 	//Initialize the blackouts
 	flickering.push_back(mBlackout1);
 	flickering.push_back(mBlackout2);
@@ -124,16 +162,6 @@ void FlickeringLight::Start()
 	flickering.push_back(mBlackout8);
 	flickering.push_back(mBlackout9);
 	flickering.push_back(mBlackout10);
-	flickering.push_back(mBlackout11);
-	flickering.push_back(mBlackout12);
-	flickering.push_back(mBlackout13);
-	flickering.push_back(mBlackout14);
-	flickering.push_back(mBlackout15);
-	//flickering.push_back(mBlackout16);
-	//flickering.push_back(mBlackout17);
-	//flickering.push_back(mBlackout18);
-	//flickering.push_back(mBlackout19);
-	//flickering.push_back(mBlackout20);
 }
 
 void FlickeringLight::Update()
@@ -155,45 +183,47 @@ void FlickeringLight::Update()
 		mTimer -= mLoopDuration;
 	}
 
-	UpdateLightState();
+	mLightOn = UpdateLightState();
 
-	//Updates lights and emissive
+	//Updates lights, emissive and particles
 	if (mLightComp)
 	{
-		if (!mLightOn) 
-		{
-			mLightComp->SetEnable(false);
-		}
-		else 
-		{
-			mLightComp->SetEnable(true);
-		}
+		mLightComp->SetEnable(mLightOn);
 	}
-	if (mMeshRenderComp) 
+	if (mMeshRenderComp)
 	{
-		if (!mLightOn)
+		mMeshRenderComp->SetEnableEmissiveTexture(mLightOn);
+	}
+	if (mParticles)
+	{
+		if (mParticles->IsLooping())
 		{
-			mMeshRenderComp->SetEnableEmissiveTexture(false);
+			mParticles->SetEnable(mLightOn);
 		}
-		else
+		else if(mRestartParticles)
 		{
-			mMeshRenderComp->SetEnableEmissiveTexture(true);
+			mParticles->RestartParticles();
+			mRestartParticles = false;
 		}
 	}
 }
 
-void FlickeringLight::UpdateLightState()
+bool FlickeringLight::UpdateLightState()
 {
+	bool isLightOn = true;
 	for (const auto& element : flickering) 
 	{
 		if (element.mTime < mTimer && mTimer < element.mTime + element.mDuration)
 		{
-			mLightOn = false;
+			isLightOn = false;
 			break;
 		}
-		else
-		{
-			mLightOn = true;
-		}
 	}
+	//If the previous frame was off and this one is on we restart the particle system timer to 0
+	if (!mLightOn && isLightOn)	
+	{
+		mRestartParticles = true;
+	}
+
+	return isLightOn;
 }
