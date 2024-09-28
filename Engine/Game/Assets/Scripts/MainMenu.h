@@ -228,6 +228,8 @@ private:
     SliderComponent* mGeneralVolumeSlider = nullptr;
     GameObject* mGeneralVolumeFillGO = nullptr;
     ImageComponent* mGeneralVolumeFill = nullptr;
+    GameObject* mGeneralVolumeBackgroundGO = nullptr;
+    ImageComponent* mGeneralVolumeBackground = nullptr;
     GameObject* mGeneralVolumeUp = nullptr;
     GameObject* mGeneralVolumeDown = nullptr;
 
@@ -236,6 +238,8 @@ private:
     SliderComponent* mMusicVolumeSlider = nullptr;
     GameObject* mMusicVolumeFillGO = nullptr;
     ImageComponent* mMusicVolumeFill = nullptr;
+    GameObject* mMusicVolumeBackgroundGO = nullptr;
+    ImageComponent* mMusicVolumeBackground = nullptr;
     GameObject* mMusicVolumeUp = nullptr;
     GameObject* mMusicVolumeDown = nullptr;
 
@@ -244,6 +248,8 @@ private:
     SliderComponent* mEffectsVolumeSlider = nullptr;
     GameObject* mEffectsVolumeFillGO = nullptr;
     ImageComponent* mEffectsVolumeFill = nullptr;
+    GameObject* mEffectsVolumeBackgroundGO = nullptr;
+    ImageComponent* mEffectsVolumeBackground = nullptr;
     GameObject* mEffectsVolumeUp = nullptr;
     GameObject* mEffectsVolumeDown = nullptr;
 

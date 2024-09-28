@@ -37,10 +37,13 @@ CREATE(MainMenu)
     SEPARATOR("SETTINGS");
 	MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOn_On);
@@ -196,11 +199,15 @@ void MainMenu::Start()
     
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
+	mGeneralVolumeBackground = static_cast<ImageComponent*>(mGeneralVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
     mMusicVolumeSlider = static_cast<SliderComponent*>(mMusicVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mMusicVolumeFill = static_cast<ImageComponent*>(mMusicVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mMusicVolumeBackground = static_cast<ImageComponent*>(mMusicVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
+
     mEffectsVolumeSlider = static_cast<SliderComponent*>(mEffectsVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mEffectsVolumeFill = static_cast<ImageComponent*>(mEffectsVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mEffectsVolumeBackground = static_cast<ImageComponent*>(mEffectsVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
     mVSyncOnButton = static_cast<ButtonComponent*>(mVSyncButtonOnGO->GetComponent(ComponentType::BUTTON));
     mVSyncOffButton = static_cast<ButtonComponent*>(mVSyncButtonOffGO->GetComponent(ComponentType::BUTTON));
@@ -229,6 +236,11 @@ void MainMenu::Start()
     mMusicVolumeSlider->SetValue(mMusicVolumeValue);
     App->GetAudio()->SetVolume("bus:/sfx", mEffectsVolumeValue);
     mEffectsVolumeSlider->SetValue(mEffectsVolumeValue);
+
+    // Init the volume sliders alpha
+    mGeneralVolumeFill->SetAlpha(0.8f);
+    mMusicVolumeFill->SetAlpha(0.8f);
+    mEffectsVolumeFill->SetAlpha(0.8f);
 
     OpenMenu(MENU_TYPE::STUDIO);
 }
@@ -462,8 +474,19 @@ void MainMenu::Controls()
 		else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
 		{
             mIsAdjustingAudio = true;
-			LOG("IS ADJUSTING VOLUME");
-		}
+            if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MASTER)
+            {
+                mGeneralVolumeFill->SetAlpha(1.f);
+			}
+			else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MUSIC)
+			{
+                mMusicVolumeFill->SetAlpha(1.f);
+			}
+			else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::EFFECTS)
+			{
+                mEffectsVolumeFill->SetAlpha(1.f);
+			}
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
@@ -491,20 +514,10 @@ void MainMenu::Controls()
             }
             else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
             {
-                if (mIsAdjustingAudio)
-                {
-                    // TODO: Unselect the current volume slider 
-                    mIsAdjustingAudio = false;
-                    LOG("IS NOT ADJUSTING VOLUME");
-                    return; // Early return to avoid OpenMenu() call
-                }
-                else
-                {
-                    mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
-                    mOptionsOption = 9;
-                    mAudioClicked->SetEnabled(false);
-                    OnAudioSettingsButtonHover();
-                }
+				mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
+				mOptionsOption = 9;
+				mAudioClicked->SetEnabled(false);
+				OnAudioSettingsButtonHover();
             }
             else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
@@ -614,7 +627,18 @@ void MainMenu::Controls()
                 {
 					// TODO: Unselect the current volume slider 
 					mIsAdjustingAudio = false;
-					LOG("IS NOT ADJUSTING VOLUME");
+                    if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MASTER)
+                    {
+                        mGeneralVolumeFill->SetAlpha(0.8f);
+                    }
+                    else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::MUSIC)
+                    {
+                        mMusicVolumeFill->SetAlpha(0.8f);
+                    }
+                    else if (mCurrentAudioSetting == AUDIO_SETTING_TYPE::EFFECTS)
+                    {
+                        mEffectsVolumeFill->SetAlpha(0.8f);
+                    }
 					return; // Early return to avoid OpenMenu() call
                 }
                 else 
@@ -1033,8 +1057,8 @@ void MainMenu::HoverVideoMenu(VIDEO_SETTING_TYPE type)
 
 void MainMenu::OnGeneralVolumeHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    mGeneralVolumeFill->SetAlpha(1.f);
+    //TODO: Use when the slider is active - mGeneralVolumeFill->SetAlpha(1.f);
+	mGeneralVolumeBackground->SetAlpha(0.1f);
 	mCurrentAudioSetting = AUDIO_SETTING_TYPE::MASTER;
 
 	//TODO: Abstract this abomination (in all of the hover functions)
@@ -1044,7 +1068,8 @@ void MainMenu::OnGeneralVolumeHover()
 
 void MainMenu::OnMusicVolumeHover()
 {
-    mMusicVolumeFill->SetAlpha(1.f);
+    // mMusicVolumeFill->SetAlpha(1.f);
+    mMusicVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::MUSIC;
 
     OnGeneralVolumeHoverOff();
@@ -1053,7 +1078,8 @@ void MainMenu::OnMusicVolumeHover()
 
 void MainMenu::OnEffectsVolumeHover()
 {
-	mEffectsVolumeFill->SetAlpha(1.f);
+	// mEffectsVolumeFill->SetAlpha(1.f);
+    mEffectsVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::EFFECTS;
 
     OnGeneralVolumeHoverOff();
@@ -1273,17 +1299,17 @@ void MainMenu::OnVideoSettingsButtonHoverOff()
 
 void MainMenu::OnGeneralVolumeHoverOff()
 {
-    mGeneralVolumeFill->SetAlpha(0.8f);
+	mGeneralVolumeBackground->SetAlpha(0.f);
 }
 
 void MainMenu::OnMusicVolumeHoverOff()
 {
-    mMusicVolumeFill->SetAlpha(0.8f);
+    mMusicVolumeBackground->SetAlpha(0.f);
 }
 
 void MainMenu::OnEffectsVolumeHoverOff()
 {
-    mEffectsVolumeFill->SetAlpha(0.8f);
+	mEffectsVolumeBackground->SetAlpha(0.f);
 }
 
 /*void MainMenu::OnVSyncButtonHoverOff()
