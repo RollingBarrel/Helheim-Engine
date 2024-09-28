@@ -2146,8 +2146,5 @@
     <None Include="..\Game\Assets\Shaders\Postpo.comp">
       <Filter>Shaders</Filter>
     </None>
-    <None Include="..\Game\Assets\Shaders\UiGaussianBlur.glsl">
-      <Filter>Shaders</Filter>
-    </None>
   </ItemGroup>
 </Project>

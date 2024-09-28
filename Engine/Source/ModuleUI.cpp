@@ -44,7 +44,6 @@ update_status ModuleUI::Update(float dt)
 	// Draw the UI
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Ui");
 	UiBlurPass();
-	App->GetOpenGL()->BindSceneFramebuffer();
 	for (GameObject* gameObject : mCanvasList) 
 	{
 		DrawWidget(gameObject);
@@ -132,6 +131,7 @@ void ModuleUI::AddCanvas(GameObject* gameObject)
 
 void ModuleUI::UiBlurPass()
 {
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "UiBlur");
 	//STENCIL BLUR PREPASS
 	App->GetOpenGL()->BindBlurFramebuffer();
 	glStencilMask(0xFF);
@@ -148,14 +148,15 @@ void ModuleUI::UiBlurPass()
 	//BLUR THE SCENE USING THE STENCIL PREPASS
 	glStencilFunc(GL_EQUAL, 1, 0xFF);
 	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-	App->GetOpenGL()->GaussianBlurTexture(App->GetOpenGL()->GetFramebufferTexture(), 100);
+	//App->GetOpenGL()->GaussianBlurTexture(App->GetOpenGL()->GetFramebufferTexture(), 16);
+	unsigned int res = App->GetOpenGL()->SimpleBlurTexture(App->GetOpenGL()->GetFramebufferTexture(), 8);
+	App->GetOpenGL()->BindSceneFramebuffer();
+	glUseProgram(App->GetOpenGL()->GetScreenTexProgramId());
+	glBindTexture(GL_TEXTURE_2D, res);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
 	glDisable(GL_STENCIL_TEST);
 	//glClear(GL_STENCIL_BUFFER_BIT);
-}
 
-void ModuleUI::CheckRaycast() 
-{
-	bool eventTriggered = false;
-	CheckRaycastRecursive(App->GetScene()->GetRoot(), eventTriggered);
+	glPopDebugGroup();
 }
-

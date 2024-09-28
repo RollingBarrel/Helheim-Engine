@@ -352,9 +352,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "GaussianBlur.glsl";
 	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	//sourcesPaths[0] = "GameVertex.glsl";
-	//sourcesPaths[1] = "SsaoBlur.glsl";
-	//mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SsaoBlur.glsl";
+	mSimpleBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
@@ -1007,7 +1007,7 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 {
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GaussianBlur");
-	//Passes have to be impair si??
+	//Passes have to be pair
 	if ((passes&1) == 1)
 		passes += 1;
 
@@ -1020,7 +1020,6 @@ void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 	unsigned int sampleTex = texId;
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
 	glBindTexture(GL_TEXTURE_2D, sampleTex);
-	//tine que ser impar
 	for (int i = 0; i < (passes*2); ++i)
 	{
 		glUniform1ui(0, horizontal);
@@ -1036,6 +1035,23 @@ void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
 		}
 	}
 	glPopDebugGroup();
+}
+
+unsigned int ModuleOpenGL::SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize)
+{
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SimpleBlur");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+	glUseProgram(mSimpleBlurProgramId);
+	glBindVertexArray(mEmptyVAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texId);
+	glUniform1i(0, halfKernelSize);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glPopDebugGroup();
+
+	return mBlurTex[0];
 }
 
 void ModuleOpenGL::SetBloomIntensity(float intensity)

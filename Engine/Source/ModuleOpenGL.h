@@ -154,6 +154,7 @@ public:
 	
 	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
 	void GaussianBlurTexture(unsigned int texId, unsigned int passes);
+	unsigned int SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize);
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };
@@ -249,7 +250,7 @@ private:
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
-	//unsigned int mSsaoBlurProgramId = 0;
+	unsigned int mSimpleBlurProgramId = 0;
 	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
 	unsigned int mNoiseProgramId = 0;
