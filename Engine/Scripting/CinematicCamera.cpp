@@ -26,7 +26,7 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO);
     SEPARATOR("ENEMIES");
-    SEPARATOR("Idle = 1 | Chase = 2 | Charge = 3 | Attack = 4");
+    SEPARATOR("Idle 1 | Chase 2 | Charge 3 | Attack 4 | WakeUp 5");
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO1);
     MEMBER(MemberType::INT, mEnemyAnimState1);
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO2);
@@ -147,9 +147,7 @@ void CinematicCamera::Update()
 
                 if (App->GetScene()->GetName() == "Level3Scene")
                 {
-                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.50f, 0.00f, 0.00f, -90.00f, 0.00f); //12.45
-
-                    //mDistanceToEnemy = mDistanceToEnemy + 4.5f; //Boss enemy is bigger than other enemies and needs more distance for the camera
+                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.75f, 0.00f, 45.00f, -90.00f, 0.00f);
                 }       
             }    
         }
@@ -471,6 +469,7 @@ void CinematicCamera::InitAnimation(int animState)
         case 2: trigger = "tChase"; break;
         case 3: trigger = "tCharge"; break;
         case 4: trigger = "tAttack"; break;
+        case 5: trigger = "tWakeUp"; break;
 
         default: trigger = "tIdle"; break;
     }
@@ -478,7 +477,8 @@ void CinematicCamera::InitAnimation(int animState)
     if (mAnimationComponent)
     {
         mAnimationComponent->ResetAnimationComponent();
-        mAnimationComponent->SendTrigger(trigger, 0.0f);
+        mAnimationComponent->GetLoop();
+        mAnimationComponent->SendTrigger(trigger, 0.0f); //0.0f, 0.2, 1.0f
     }
 }
 
