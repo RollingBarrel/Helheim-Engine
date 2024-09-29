@@ -384,17 +384,98 @@ void PauseMenu::Controls()
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) < -0.9f && mTimePassed >= mDebounceTime)))
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        mTimePassed = 0.0f; // Restart debounce timer
+
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
+        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::LEFT, 0.01f);
+        }
+        else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
+        {
+            if (mCurrentMenu == MENU_TYPE::KEYBOARD)
+            {
+                mOptionsOption = 4;
+                mKeyboardClicked->SetEnabled(false);
+                OnKeyboardButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::CONTROLS)
+            {
+                mOptionsOption = 5;
+                mControllerClicked->SetEnabled(false);
+                OnControllerButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+            {
+                mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
+                mOptionsOption = 6;
+                mAudioClicked->SetEnabled(false);
+                OnAudioSettingsButtonHover();
+            }
+            else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
+            {
+                mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
+                mOptionsOption = 7;
+                mSettingsClicked->SetEnabled(false);
+                OnVideoSettingsButtonHover();
+            }
+            OpenMenu(MENU_TYPE::OPTIONS);
+        }
+        else
+        {
+            mOptionsClicked->SetEnabled(false);
+            mCreditsClicked->SetEnabled(false);
+            OpenMenu(MENU_TYPE::MAIN);
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) > 0.9f && mTimePassed >= mDebounceTime)))
     {
-        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS)
+        mTimePassed = 0.0f; // Restart debounce timer
+
+        if (mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS && mIsAdjustingAudio)
+        {
             OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(mAudioSettingOption), DIRECTION::RIGHT, 0.01f);
+        }
+        else if (mCurrentMenu == MENU_TYPE::MAIN)
+        {
+            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+
+            ClickMenu(static_cast<MENU_TYPE>(mMainOption));
+        }
+        else if (mCurrentMenu == MENU_TYPE::OPTIONS)
+        {
+            mAudioManager->PlayOneShot(SFX::MAINMENU_OK);
+
+            OpenMenu(static_cast<MENU_TYPE>(mOptionsOption));
+        }
+        else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
+        {
+            if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::VSYNC)
+            {
+                if (App->GetCurrentClock()->GetVsyncStatus())
+                {
+                    OnVSyncButtonOffClick();
+                }
+                else
+                {
+                    OnVSyncButtonOnClick();
+                }
+            }
+            else if (mCurrentVideoSetting == VIDEO_SETTING_TYPE::FULL_SCREEN)
+            {
+                if (App->GetWindow()->IsWindowFullscreen())
+                {
+                    OnFullscreenButtonOffClick();
+                }
+                else
+                {
+                    OnFullscreenButtonOnClick();
+                }
+            }
+        }
     }
 
     if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)

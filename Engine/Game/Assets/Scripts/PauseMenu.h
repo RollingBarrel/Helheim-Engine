@@ -127,6 +127,8 @@ private:
     float mMusicVolumeValue = .75f;
     float mEffectsVolumeValue = .75f;
 
+    bool mIsAdjustingAudio = false;
+
     TimerScript mTimer;
 
     // Screens
