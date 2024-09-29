@@ -111,10 +111,8 @@ void ParticleSystemComponent::Draw()
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
         glDepthMask(GL_FALSE);
-        glEnable(GL_BLEND);									// Enable Blending
+        glEnable(GL_BLEND);
         BlendModeFunction(mBlendMode);                      
-        //glEnable(GL_TEXTURE_2D);
-        //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
@@ -122,10 +120,9 @@ void ParticleSystemComponent::Draw()
         if (cam && mParticles.size()) 
         {
             float4x4 projection = cam->GetViewProjectionMatrix();
-            float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
+            float3 norm = cam->GetFrustum().front;
             float3 up = cam->GetFrustum().up;
             float3 right = up.Cross(norm).Normalized();
-            //up = norm.Cross(right).Normalized();
             glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
             glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
                 nullptr, GL_DYNAMIC_DRAW);
@@ -161,10 +158,6 @@ void ParticleSystemComponent::Draw()
                 transform.Transpose();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
-                //if (mHasTrails)
-                //{
-                //    mParticles[i]->DrawTrail();
-                //}
             }
             glUnmapBuffer(GL_ARRAY_BUFFER);
             glBindVertexArray(mVAO);
@@ -292,7 +285,6 @@ void ParticleSystemComponent::CreateNewParticle()
     float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
 
-    // Create the particle and sets its speed and size considering if they are linear or curve
     float initialSize = mSizeCurve.GetValue().CalculateRandom();
     float initialSpeed = mSpeedCurve.GetValue().CalculateRandom();
     float speed = mSpeedCurve.CalculateValue(0, initialSpeed);
@@ -318,8 +310,8 @@ float ParticleSystemComponent::DistanceToCenter(float3 position)
     {
     case EmitterType::CILINDER:
     {
-        float3 projectedPosition = float3(position.x, position.y, center.z);  // Project onto xy-plane
-        return std::max(projectedPosition.Distance(center) - mSpeedCenterFactor, 0.0f);  // Distance to the z-axis   
+        float3 projectedPosition = float3(position.x, position.y, center.z);
+        return std::max(projectedPosition.Distance(center) - mSpeedCenterFactor, 0.0f); 
     }
     case EmitterType::DONUT:
     {
@@ -329,7 +321,7 @@ float ParticleSystemComponent::DistanceToCenter(float3 position)
         float distanceToTubeCenter = std::abs(distToXYCenter - mShapeRadius);
 
         float zDistance = std::abs(position.z - center.z);
-        return std::max(sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance),0.0f);  // Total distance
+        return std::max(sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance),0.0f);
     }
     default:
     {
@@ -484,7 +476,7 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
     {
     case EmitterType::CONE:
     {
-        float r = sqrt(randFloat());  // Usar la ra�z cuadrada para una distribuci�n uniforme
+        float r = sqrt(randFloat());
         float angle = randFloat() * 2 * math::pi;
         float distance = r * mShapeRadius;
         float x = distance * cos(angle);
@@ -515,27 +507,24 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
     }
     case EmitterType::CILINDER:
     {
-        // Generate random point on a cylinder's surface
-        float height = (randFloat() - 0.5f) * mShapeHeight;  // Random height along the cylinder axis
-        float angle = randFloat() * 2 * math::pi;  // Random angle around the axis
-        float radius = randFloat() * mShapeRadius;  // Random radius within the cylinder
+        float height = (randFloat() - 0.5f) * mShapeHeight;
+        float angle = randFloat() * 2 * math::pi;
+        float radius = randFloat() * mShapeRadius;
 
         float x = radius * cos(angle);
         float y = radius * sin(angle);
-        float z = height;  // Z-axis represents the height of the cylinder
+        float z = height;
 
         return float3(x, y, z);
     }
     case EmitterType::DONUT:
     {
-        // Generate random point in a torus (donut) shape
-        float angle1 = randFloat() * 2 * math::pi;  // Random angle around the donut's center
-        float angle2 = randFloat() * 2 * math::pi;  // Random angle within the tube
+        float angle1 = randFloat() * 2 * math::pi;
+        float angle2 = randFloat() * 2 * math::pi;
 
-        float majorRadius = mShapeRadius;  // Major radius (distance from center of torus to center of tube)
-        float minorRadius = mShapeTubeRadius;  // Minor radius (radius of the tube itself)
+        float majorRadius = mShapeRadius;
+        float minorRadius = mShapeTubeRadius;
 
-        // Calculate position
         float x = (majorRadius + minorRadius * cos(angle2)) * cos(angle1);
         float y = (majorRadius + minorRadius * cos(angle2)) * sin(angle1);
         float z = minorRadius * sin(angle2);
@@ -596,10 +585,10 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
         {
             float theta = randFloat() * math::pi * 2;
             float phi = randFloat() * mShapeRandAngle;
-            // Calculate rotation axis (a vector perpendicular to direction)
+
             float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
             float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
-            // Rotate direction around the rotation axis by phi
+
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
         return direction.Normalized();
@@ -613,10 +602,10 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
         {
             float theta = randFloat() * math::pi * 2;
             float phi = randFloat() * mShapeRandAngle;
-            // Calculate rotation axis (a vector perpendicular to direction)
+
             float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
             float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
-            // Rotate direction around the rotation axis by phi
+
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
         return direction.Normalized();
