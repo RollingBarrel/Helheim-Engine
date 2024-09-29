@@ -13,6 +13,8 @@
 CREATE(ElectricTrapController)
 {
     CLASS(owner);
+    MEMBER(MemberType::BOOL, mIsAwake);
+    MEMBER(MemberType::BOOL, mIsActive);
     END_CREATE;
 }
 
@@ -39,33 +41,43 @@ void ElectricTrapController::Start()
     {
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ElectricTrapController::OnCollisionEnter, this, std::placeholders::_1)));
     }
+    ActiveTrap(false);
 }
 
 void ElectricTrapController::Update()
 {
-    // Don't be working if player is far
     float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
-    if (distance <= 30)
+    if (distance <= 20) 
     {
         if (mIsActive)
         {
-            if (mActivationDurationTimer.Delay(mActivationDuration))
+            if (mActivationDurationTimer.Delay(mActivationDuration) && mIsAwake)
             {
+
                 mIsActive = false;
                 ActiveTrap(false);
             }
         }
         else
         {
-            if (mActivationIntervalTimer.Delay(mActivationInterval))
+            // Ensure player wont pass by trap without see activation
+            if (mFirstActivation)
+            {
+                if (mActivationIntervalTimer.Delay(mFirstActivationInterval) && mIsAwake)
+                {
+                    mIsActive = true;
+                    ActiveTrap(true);
+                }
+            }
+            else if (mActivationIntervalTimer.Delay(mActivationInterval) && mIsAwake)
             {
                 mIsActive = true;
                 ActiveTrap(true);
             }
         }
+        mIsAwake = false;
     }
 }
-
 
 
 bool ElectricTrapController::IsInTrap(const GameObject* target)
