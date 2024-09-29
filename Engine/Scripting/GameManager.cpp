@@ -289,23 +289,28 @@ void GameManager::BossCameraMovement()
 {
     float distance = mPlayerCamera->GetDistanceToPlayer();
     float3 rotation = RadToDeg(mPlayerCameraGO->GetLocalEulerAngles());
+    float offset = mPlayerCamera->GetOffset();
     float rotationY = rotation.y;
 
     distance = Lerp(distance, mBossCameraTarget, App->GetDt());
     rotationY = Lerp(rotationY, -90.0f, App->GetDt()*1.3f);
+    offset = Lerp(offset, 0.45f, App->GetDt());
 
     float diffRot = -90.0f - rotationY;
     float diffDis = mBossCameraTarget - distance;
-    if (diffDis <= 0.01f && diffRot <= -0.01f)
+    float diffOff = 0.45 - offset;
+    if (diffDis <= 0.01f && diffRot <= -0.01f && diffOff <= 0.001f)
     {
         mCameraLerp = false;
         distance = mBossCameraTarget;
         rotationY = -90.0f;
+        offset = 0.45f;
     }
 
     rotation.y = rotationY;
     mPlayerCamera->SetDistanceToPlayer(distance);
     mPlayerCameraGO->SetWorldRotation(DegToRad(rotation));
+    mPlayerCamera->SetOffset(offset);
 }
 
 
