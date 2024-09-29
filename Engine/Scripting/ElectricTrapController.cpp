@@ -8,7 +8,7 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-
+#include "ParticleSystemComponent.h"
 
 CREATE(ElectricTrapController)
 {
@@ -27,11 +27,14 @@ ElectricTrapController::~ElectricTrapController()
 
 void ElectricTrapController::Start()
 {
-    mSfx = App->GetScene()->InstantiatePrefab("TrapSFX.prfb");
+    GameObject* firstChild = *(mGameObject->GetChildren().begin());
+    if (firstChild)
+    {
+        mSfx = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
+	}
     if (mSfx)
     {
-        mSfx->SetParent(mGameObject);
-        mSfx->SetEnabled(mIsActive);
+        mSfx->SetEnable(mIsActive);
     }
 
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -86,7 +89,7 @@ void ElectricTrapController::ActiveTrap(bool active)
     {
         if (mSfx)
         {
-            mSfx->SetEnabled(true);
+            mSfx->SetEnable(true);
         }
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
         // Reserved for effects, perticle, sounds...
@@ -96,7 +99,7 @@ void ElectricTrapController::ActiveTrap(bool active)
         mInTrap.clear();
         if (mSfx)
         {
-            mSfx->SetEnabled(false);
+            mSfx->SetEnable(false);
         }
         // Reserved for effects, perticle, sounds...
     }

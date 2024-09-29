@@ -7,6 +7,7 @@
 struct CollisionData;
 class BoxColliderComponent;
 class GameObject;
+class ParticleSystemComponent;
 
 GENERATE_BODY(ElectricTrapController);
 class ElectricTrapController :
@@ -28,7 +29,7 @@ private:
 	std::vector<GameObject*> mInTrap;
 
 	float mArea = 1.0f; 
-	GameObject* mSfx = nullptr;
+	ParticleSystemComponent* mSfx = nullptr;
 
 	// Activation
 	bool mIsActive = false;
