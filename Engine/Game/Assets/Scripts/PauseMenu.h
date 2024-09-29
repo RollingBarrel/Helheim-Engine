@@ -117,6 +117,7 @@ private:
     int mAudioSettingOption = 0;
 
     float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
 
     MENU_TYPE mCurrentMenu;
     AUDIO_SETTING_TYPE mCurrentAudioSetting;

@@ -232,13 +232,15 @@ void PauseMenu::Update()
         if (currentPosition.y > 3800.0f) mTextTransform->SetPosition(float3(currentPosition.x, -700.0f, currentPosition.z));
         else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
     }
+    mTimePassed += App->GetDt();
 }
 
 void PauseMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_UP) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) < -0.9f && mTimePassed >= mDebounceTime)))
     {
+        mTimePassed = 0.0f; // Restart debounce timer
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         {
@@ -254,6 +256,8 @@ void PauseMenu::Controls()
         }
         else if (mCurrentMenu == MENU_TYPE::OPTIONS)
         {
+
+
             if (mOptionsOption > 4)
             {
                 mOptionsOption--;
@@ -291,9 +295,10 @@ void PauseMenu::Controls()
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_DOWN) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_DOWN) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) > 0.9f && mTimePassed >= mDebounceTime)))
     {
         mAudioManager->PlayOneShot(SFX::MAINMENU_SELECT);
+        mTimePassed = 0.0f; // Restart debounce timer
         if (mCurrentMenu == MENU_TYPE::MAIN) // MENU MAIN BUTTONS
         {
             if (mMainOption < 3)
