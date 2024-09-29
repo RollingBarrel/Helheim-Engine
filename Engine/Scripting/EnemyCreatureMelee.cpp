@@ -87,7 +87,7 @@ void EnemyCreatureMelee::Chase()
 					GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
 
 					mCurrentState = EnemyState::CHARGE;
-					mDashAttackVFX->SetEnabled(true);
+					//mDashAttackVFX->SetEnabled(true);
 				}
 			}
 			else
@@ -126,7 +126,7 @@ void EnemyCreatureMelee::Attack()
 	{
 		if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
 		mCurrentState = EnemyState::CHASE;
-		mDashAttackVFX->SetEnabled(false);
+		//mDashAttackVFX->SetEnabled(false);
 	}
 	
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
