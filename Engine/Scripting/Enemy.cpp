@@ -306,16 +306,15 @@ void Enemy::ActivateUltVFX()
 void Enemy::Death()
 {
 	mVanishingTime += App->GetDt();
-	if (mVanishingTime >= mDeathTime*0.75)
+	if (mVanishingTime >= mDeathTime*0.35)
 	{
 		for (size_t i = 0; i < mMeshComponents.size(); i++)
 		{
 		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
 		const ResourceMaterial* material = meshRender->GetResourceMaterial();
 		float4 baseColor = material->GetBaseColorFactor();
-		float4 endColor = baseColor;
-		endColor.w = 0.0f;
-		meshRender->SetBaseColorFactor(baseColor.Lerp(endColor, mVanishingTime /(mDeathTime*10)));
+		baseColor.w = baseColor.w - App->GetDt()*0.4f;
+		meshRender->SetBaseColorFactor(baseColor);
 		}
 	}
 	if (mVanishingTime>=mDeathTime)

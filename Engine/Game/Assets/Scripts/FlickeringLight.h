@@ -7,6 +7,7 @@ GENERATE_BODY(FlickeringLight);
 
 class Component;
 class MeshRendererComponent;
+class ParticleSystemComponent;
 
 struct Blackout 
 {
@@ -33,7 +34,7 @@ public:
 
 private:
 
-	void UpdateLightState();
+	bool UpdateLightState();
 
 	float mLoopDuration = 10.0f;
 	float mStartingTime = 0.0f;
@@ -54,20 +55,14 @@ private:
 	Blackout mBlackout8;
 	Blackout mBlackout9;
 	Blackout mBlackout10;
-	Blackout mBlackout11;
-	Blackout mBlackout12;
-	Blackout mBlackout13;
-	Blackout mBlackout14;
-	Blackout mBlackout15;
-	//Blackout mBlackout16;
-	//Blackout mBlackout17;
-	//Blackout mBlackout18;
-	//Blackout mBlackout19;
-	//Blackout mBlackout20;
 
 	std::vector<Blackout> flickering;
 
 	Component* mLightComp = nullptr;
 	MeshRendererComponent* mMeshRenderComp = nullptr;
+
+	//Particle functionality
+	ParticleSystemComponent* mParticles = nullptr;
+	bool mRestartParticles = false;
 
 };
