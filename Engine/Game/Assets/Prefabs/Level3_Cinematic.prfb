@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1531137276,
+                "UID": 1253361151,
                 "ParentUID": 1,
                 "Name": "Level3_Cinematic",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 727438763,
-                "ParentUID": 1531137276,
+                "UID": 1563244222,
+                "ParentUID": 1253361151,
                 "Name": "FadeScreen",
                 "Enabled": true,
                 "Active": true,
@@ -108,8 +108,8 @@
                 ]
             },
             {
-                "UID": 1260387518,
-                "ParentUID": 1531137276,
+                "UID": 1833930670,
+                "ParentUID": 1253361151,
                 "Name": "CinematicCamera",
                 "Enabled": true,
                 "Active": true,
@@ -146,8 +146,8 @@
                 ]
             },
             {
-                "UID": 993460604,
-                "ParentUID": 1531137276,
+                "UID": 2101971520,
+                "ParentUID": 1253361151,
                 "Name": "CinematicManager",
                 "Enabled": true,
                 "Active": true,
@@ -213,12 +213,12 @@
                             {
                                 "VariableName": "mPlayerCameraGO",
                                 "MemberType": 3,
-                                "VariableData": 1131062588
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "mCinematicCameraGO",
                                 "MemberType": 3,
-                                "VariableData": 1260387518
+                                "VariableData": 1833930670
                             },
                             {
                                 "VariableName": "ENEMIES",
@@ -231,7 +231,7 @@
                             {
                                 "VariableName": "mEnemyGO1",
                                 "MemberType": 3,
-                                "VariableData": 1348112554
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "mEnemyAnimState1",
@@ -275,7 +275,7 @@
                             {
                                 "VariableName": "mBattleAreaGO1",
                                 "MemberType": 3,
-                                "VariableData": 1396858192
+                                "VariableData": 226009773
                             },
                             {
                                 "VariableName": "mBattleAreaGO2",
@@ -299,7 +299,7 @@
                             {
                                 "VariableName": "mPlayerGO",
                                 "MemberType": 3,
-                                "VariableData": 1426929061
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "FADE SCREEN",
@@ -308,7 +308,7 @@
                             {
                                 "VariableName": "mFadeGO",
                                 "MemberType": 3,
-                                "VariableData": 727438763
+                                "VariableData": 1563244222
                             },
                             {
                                 "VariableName": "mColor",
@@ -322,7 +322,7 @@
                             {
                                 "VariableName": "mFadeSpeed",
                                 "MemberType": 1,
-                                "VariableData": 0.05000000074505806
+                                "VariableData": 0.04500000178813934
                             },
                             {
                                 "VariableName": "HUD",
@@ -331,15 +331,15 @@
                             {
                                 "VariableName": "mHudGO",
                                 "MemberType": 3,
-                                "VariableData": 414271084
+                                "VariableData": -1
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1396858192,
-                "ParentUID": 1531137276,
+                "UID": 226009773,
+                "ParentUID": 1253361151,
                 "Name": "CinematicBattleArea",
                 "Enabled": true,
                 "Active": true,

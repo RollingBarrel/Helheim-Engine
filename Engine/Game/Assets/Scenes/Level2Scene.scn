@@ -462,7 +462,7 @@
                             {
                                 "VariableName": "mFadeSpeed",
                                 "MemberType": 1,
-                                "VariableData": 0.05000000074505806
+                                "VariableData": 0.04500000178813934
                             },
                             {
                                 "VariableName": "HUD",
@@ -6262,76 +6262,6 @@
                                 "VariableName": "mBlackout10.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
                             }
                         ]
                     }
@@ -6611,76 +6541,6 @@
                             },
                             {
                                 "VariableName": "mBlackout10.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
                             }
@@ -6964,76 +6824,6 @@
                                 "VariableName": "mBlackout10.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
                             }
                         ]
                     }
@@ -7313,76 +7103,6 @@
                             },
                             {
                                 "VariableName": "mBlackout10.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
                             }
@@ -8394,76 +8114,6 @@
                                 "VariableName": "mBlackout10.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
                             }
                         ]
                     }
@@ -8688,76 +8338,6 @@
                             },
                             {
                                 "VariableName": "mBlackout10.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
                             }
@@ -9871,76 +9451,6 @@
                                 "VariableName": "mBlackout10.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
                             }
                         ]
                     }
@@ -10345,76 +9855,6 @@
                             },
                             {
                                 "VariableName": "mBlackout10.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
                             }
@@ -10843,76 +10283,6 @@
                                 "VariableName": "mBlackout10.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
                             }
                         ]
                     }
@@ -11137,76 +10507,6 @@
                             },
                             {
                                 "VariableName": "mBlackout10.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "11",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout11.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout11.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "12",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout12.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout12.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "13",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout13.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout13.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "14",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout14.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout14.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "15",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout15.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout15.mDuration",
                                 "MemberType": 1,
                                 "VariableData": 0.0
                             }
@@ -25453,10 +24753,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -5.841024885988588e-11,
-                    -6.729530127591588e-13,
-                    0.011524394154548645,
-                    -1.0034830570220948
+                    3.2261367188812787e-11,
+                    4.869748354563441e-11,
+                    -0.8365986347198486,
+                    0.5542773604393005
                 ],
                 "Scale": [
                     0.9999998807907105,

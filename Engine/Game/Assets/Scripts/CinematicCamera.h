@@ -79,7 +79,7 @@ private:
 
     float mCounter = 0.0f;
     float3 mColor = float3(0.0f, 0.0f, 0.0f);
-    float mFadeSpeed = 0.05f;
+    float mFadeSpeed = 0.045f;
 
     bool mMoveCompleted = false;
     bool mPlayingCinematic = false;

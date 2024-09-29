@@ -222,17 +222,6 @@ void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, 
 
 void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
 {
-    if (mEscape)
-    {
-        if (Fade(false))
-        {
-            mEscape = false;
-            mPlayingCinematic = false;
-        }
-
-        return;
-    }
-
     if ((!GameManager::GetInstance()->IsPaused()) && (!mEscape))
     {
         if (mPlayingCinematic)
@@ -288,6 +277,17 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
 
         HandleEscape(dummy);
     }
+
+    if (mEscape)
+    {
+        if (Fade(false))
+        {
+            mEscape = false;
+            mPlayingCinematic = false;
+        }
+
+        return;
+    }
 }
 
 void CinematicCamera::LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
@@ -314,7 +314,6 @@ bool CinematicCamera::HandleFadeIn()
 
             mCinematicCamera = (CameraComponent*)mCinematicCameraGO->GetComponent(ComponentType::CAMERA);
             mActiveCinematicCamera = true;
-            App->GetCamera()->ActivateFirstCamera();
 
             mFadeOn = false;
         }
@@ -406,7 +405,6 @@ void CinematicCamera::EndCinematic(GameObject* dummy)
         App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
         ActivateCamera(false);
         mPlayerCameraGO->SetEnabled(true);
-        App->GetCamera()->ActivateFirstCamera();
     }
     
     if (dummy->GetName() == "FinalBoss")
