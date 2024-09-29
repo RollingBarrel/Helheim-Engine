@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
+#include "ParticleSystemComponent.h"
 
 CREATE(LinearMovement)
 {
@@ -11,6 +12,8 @@ CREATE(LinearMovement)
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mReturnIn);
 	MEMBER(MemberType::BOOL, mTeleportBack);
+	MEMBER(MemberType::BOOL, mLocalPosition);
+	MEMBER(MemberType::BOOL, mLookAt);
 	END_CREATE;
 }
 
@@ -21,13 +24,15 @@ LinearMovement::LinearMovement(GameObject* owner) : Script (owner)
 
 void LinearMovement::Start()
 {
-	mInitialPosition = mGameObject->GetWorldPosition();
+	if (!mLocalPosition) mInitialPosition = mGameObject->GetWorldPosition();
+	else mInitialPosition = mGameObject->GetLocalPosition();
 	mCurrentPosition = mInitialPosition;
 	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
+	mParticleComponent = reinterpret_cast<ParticleSystemComponent*>(mGameObject->GetComponent(ComponentType::PARTICLESYSTEM));
 
 	if (mAnimationComponent) mAnimationComponent->SetIsPlaying(true);
 
-	mGameObject->LookAt(mTargetPosition);
+	if(mLookAt) mGameObject->LookAt(mTargetPosition);
 }
 
 void LinearMovement::Update()
@@ -35,6 +40,7 @@ void LinearMovement::Update()
 	if (!mReachedTarget) Movement(mTargetPosition, mSpeed);
 	else
 	{
+		if (mParticleComponent) mParticleComponent->SetEnable(false);
 		if (mReturnTimer.Delay(mReturnIn))
 		{
 			if (!mTeleportBack)
@@ -46,8 +52,11 @@ void LinearMovement::Update()
 			else
 			{
 				mCurrentPosition = mInitialPosition;
-				mGameObject->SetWorldPosition(mInitialPosition);
+				if(!mLocalPosition) mGameObject->SetWorldPosition(mInitialPosition);
+				else mGameObject->SetLocalPosition(mInitialPosition);
 				mReachedTarget = false;
+				mGameObject->SetEnabled(true);
+				if (mParticleComponent) mParticleComponent->SetEnable(true);
 			}
 		}
 	}
@@ -58,8 +67,14 @@ void LinearMovement::Movement(float3 target, float speed)
 	float3 direction = target.Sub(mCurrentPosition).Normalized();
 	float3 velocity = direction * speed;
 	mCurrentPosition = mCurrentPosition + velocity * App->GetDt();
-	
-	mGameObject->SetWorldPosition(mCurrentPosition);
+
 	float dif = target.Distance(mCurrentPosition);
-	if (dif < 0.1f) mReachedTarget = true;
+	if (dif < 0.1f)
+	{
+		mReachedTarget = true;
+		mCurrentPosition = target;
+	}
+	if (!mLocalPosition) mGameObject->SetWorldPosition(mCurrentPosition);
+	else mGameObject->SetLocalPosition(mCurrentPosition);
+	
 }

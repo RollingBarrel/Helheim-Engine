@@ -6,6 +6,7 @@
 GENERATE_BODY(LinearMovement)
 
 class AnimationComponent;
+class ParticleSystemComponent;
 
 class LinearMovement : public Script
 {
@@ -23,6 +24,9 @@ public:
 private:
 
     AnimationComponent* mAnimationComponent = nullptr;
+    ParticleSystemComponent* mParticleComponent = nullptr;
+
+
     float3 mCurrentPosition = float3::zero;
     float3 mInitialPosition = float3::zero;
     float3 mTargetPosition = float3::zero;
@@ -32,5 +36,7 @@ private:
     bool mTeleportBack = false;
     bool mReachedTarget = false;
     bool mStarted = false;
+    bool mLocalPosition = false;
+    bool mLookAt = false;
 };
 
