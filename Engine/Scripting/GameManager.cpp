@@ -271,6 +271,19 @@ void GameManager::RegisterPlayerKill()
 {
     mPlayerController->AddKill();
 }
+void GameManager::PlayPlayerFootStepSound()
+{
+    std::string sceneName = App->GetScene()->GetName();
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene")
+    {
+        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR, mPlayerController->GetPlayerPosition());
+    }
+    else if (sceneName == "Level3Scene")
+    {
+        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL, mPlayerController->GetPlayerPosition());
+    }
+}
+
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -299,7 +312,6 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(BGM::GAMEOVER);
 
     // Player
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
