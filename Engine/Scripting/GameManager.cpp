@@ -294,7 +294,7 @@ void GameManager::BossCameraMovement()
 
     distance = Lerp(distance, mBossCameraTarget, App->GetDt());
     rotationY = Lerp(rotationY, -90.0f, App->GetDt()*1.3f);
-    offset = Lerp(offset, 0.45f, App->GetDt());
+    offset = Lerp(offset, 0.25f, App->GetDt());
 
     float diffRot = -90.0f - rotationY;
     float diffDis = mBossCameraTarget - distance;
@@ -304,7 +304,7 @@ void GameManager::BossCameraMovement()
         mCameraLerp = false;
         distance = mBossCameraTarget;
         rotationY = -90.0f;
-        offset = 0.45f;
+        offset = 0.25f;
     }
 
     rotation.y = rotationY;
