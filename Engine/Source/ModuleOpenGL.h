@@ -76,7 +76,6 @@ public:
 	void SceneFramebufferResized(unsigned int width, unsigned int height);
 	unsigned int GetFramebufferTexture() const { return mSceneTexture; }
 	void BindSceneFramebuffer();
-	void BindBlurFramebuffer();
 	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
@@ -93,7 +92,7 @@ public:
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetTrailProgramId() const { return mTrailProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
-	unsigned int GetUIPassThroughProgram() const { return mUiPassThroughProgramId; }
+	unsigned int GetUICopyBlurTexProgram() const { return mUiCopyBlurTexProgramId; }
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
@@ -229,7 +228,7 @@ private:
 	unsigned int mPbrGeoPassProgramId = 0;
 	unsigned int mPbrLightingPassProgramId = 0;
 	unsigned int mPassThroughProgramId = 0;
-	unsigned int mUiPassThroughProgramId = 0;
+	unsigned int mUiCopyBlurTexProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;

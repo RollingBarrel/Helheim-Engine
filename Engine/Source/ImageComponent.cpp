@@ -218,12 +218,9 @@ void ImageComponent::Draw()
 		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
 
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
-		//glUniform1i(glGetUniformLocation(UIImageProgram, "hasDiffuse"), mHasDiffuse);
-		//glUniform2fv(glGetUniformLocation(UIImageProgram, "offSet"), 1, mTexOffset.ptr());
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
-		glUniform1i(glGetUniformLocation(UIImageProgram, "Texture"), 0);
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);
@@ -241,11 +238,11 @@ void ImageComponent::Draw()
 	if (mIsMaskable) glDisable(GL_STENCIL_TEST);
 }
 
-void ImageComponent::StencilDraw()
+void ImageComponent::BlurDraw()
 {
 	if (mCanvas && mShouldDraw && mAlpha > 0.0f && mBlurBackground && (mCanvas->GetRenderSpace() == RenderSpace::Screen))
 	{
-		glUseProgram(App->GetOpenGL()->GetUIPassThroughProgram());
+		glUseProgram(App->GetOpenGL()->GetUICopyBlurTexProgram());
 
 		float4x4 proj = float4x4::identity;
 		float4x4 model = float4x4::identity;
@@ -262,9 +259,10 @@ void ImageComponent::StencilDraw()
 			model = float4x4::Scale(1.0f / canvasSize.x * 2.0f, 1.0f / canvasSize.y * 2.0f, 0.0f) * model;
 
 		}
-		glEnable(GL_CULL_FACE);
-		glDisable(GL_DEPTH_TEST);
 
+		glUniform4fv(3, 1, float4(mColor, mAlpha).ptr());
+
+		glBindTexture(GL_TEXTURE_2D, mImage->GetOpenGLId());
 
 		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
 
@@ -273,9 +271,6 @@ void ImageComponent::StencilDraw()
 		glUniformMatrix4fv(2, 1, GL_TRUE, &proj[0][0]);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
-
-		glEnable(GL_CULL_FACE);
-		glFrontFace(GL_CCW);
 	}
 }
 
@@ -321,6 +316,7 @@ void ImageComponent::Save(JsonObject& obj) const
 	obj.AddInt("Rows", mRows);
 	obj.AddInt("Speed", mFPS);
 	obj.AddBool("IsPlaying", mIsPlaying);
+	obj.AddBool("BlurBack", mBlurBackground);
 }
 
 void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap)
@@ -342,6 +338,7 @@ void ImageComponent::Load(const JsonObject& data, const std::unordered_map<unsig
 		data.GetFloats("Color", col);
 		mColor = float3(col[0], col[1], col[2]);
 	}
+	if (data.HasMember("BlurBack")) mBlurBackground = data.GetBool("BlurBack");
 }
 
 void ImageComponent::SetImage(unsigned int resourceId)

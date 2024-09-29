@@ -83,11 +83,6 @@ void ModuleOpenGL::BindSceneFramebuffer()
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 }
 
-void ModuleOpenGL::BindBlurFramebuffer()
-{
-	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-}
-
 //void ModuleOpenGL::BindGFramebuffer()
 //{
 //	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
@@ -236,7 +231,6 @@ bool ModuleOpenGL::Init()
 	}
 	glGenFramebuffers(1, &mBlurFBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
-	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, GL_TEXTURE_2D, mGDepth, 0);
 	InitBloomTextures(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
 	const GLenum att3 = GL_COLOR_ATTACHMENT0;
@@ -330,8 +324,8 @@ bool ModuleOpenGL::Init()
 	mPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "ui.vs";
-	sourcesPaths[1] = "PassThroughPixel.glsl";
-	mUiPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[1] = "uiBlurPass.fs";
+	mUiCopyBlurTexProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";

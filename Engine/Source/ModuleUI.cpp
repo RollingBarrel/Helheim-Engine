@@ -43,8 +43,7 @@ update_status ModuleUI::Update(float dt)
 {
 	// Draw the UI
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Ui");
-	//UiBlurPass();
-	//App->GetOpenGL()->BlurTexture(App->GetOpenGL()->GetFramebufferTexture(), true, 4);
+	UiBlurPass();
 	App->GetOpenGL()->BindSceneFramebuffer();
 	for (GameObject* gameObject : mCanvasList) 
 	{
@@ -95,19 +94,19 @@ void ModuleUI::DrawWidget(GameObject* gameObject)
 	}
 }
 
-void ModuleUI::DrawStencilWidget(GameObject* gameObject)
+void ModuleUI::DrawBlurWidget(GameObject* gameObject)
 {
 	assert(gameObject);
 
 	ImageComponent* image = static_cast<ImageComponent*>(gameObject->GetComponent(ComponentType::IMAGE));
 	if (image && image->IsEnabled())
 	{
-		image->StencilDraw();
+		image->BlurDraw();
 	}
 
 	for (GameObject* child : gameObject->GetChildren())
 	{
-		DrawStencilWidget(child);
+		DrawBlurWidget(child);
 	}
 }
 
@@ -135,30 +134,19 @@ void ModuleUI::UiBlurPass()
 {
 	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "UiBlur");
 	//STENCIL BLUR PREPASS
-	App->GetOpenGL()->BindBlurFramebuffer();
-	glStencilMask(0xFF);
-	glClear(GL_STENCIL_BUFFER_BIT);
-	glEnable(GL_STENCIL_TEST);
-	glStencilFunc(GL_ALWAYS, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_REPLACE);
+	unsigned int blurTex = App->GetOpenGL()->BlurTexture(App->GetOpenGL()->GetFramebufferTexture(), false, mBlurIntensity);
+	App->GetOpenGL()->BindSceneFramebuffer();
+	glEnable(GL_CULL_FACE);
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_STENCIL_TEST);
+	glFrontFace(GL_CCW);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, blurTex);
+	glActiveTexture(GL_TEXTURE0);
 	for (GameObject* gameObject : mCanvasList)
 	{
 		assert(gameObject);
-		DrawStencilWidget(gameObject);
+		DrawBlurWidget(gameObject);
 	}
-
-	//BLUR THE SCENE USING THE STENCIL PREPASS
-	glStencilFunc(GL_EQUAL, 1, 0xFF);
-	glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-	//App->GetOpenGL()->GaussianBlurTexture(App->GetOpenGL()->GetFramebufferTexture(), 16);
-	unsigned int res = App->GetOpenGL()->SimpleBlurTexture(App->GetOpenGL()->GetFramebufferTexture(), 8);
-	App->GetOpenGL()->BindSceneFramebuffer();
-	glUseProgram(App->GetOpenGL()->GetScreenTexProgramId());
-	glBindTexture(GL_TEXTURE_2D, res);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
-
-	glDisable(GL_STENCIL_TEST);
-	//glClear(GL_STENCIL_BUFFER_BIT);
-
 	glPopDebugGroup();
 }

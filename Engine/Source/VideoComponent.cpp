@@ -85,7 +85,6 @@ void VideoComponent::Draw()
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, mTextureID);
-		glUniform1i(glGetUniformLocation(mUIProgramID, "Texture"), 0);
 
 		glUniformMatrix4fv(0, 1, GL_TRUE, &model[0][0]);
 		glUniformMatrix4fv(1, 1, GL_TRUE, &view[0][0]);

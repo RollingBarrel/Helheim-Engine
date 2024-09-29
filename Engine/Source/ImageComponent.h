@@ -21,7 +21,7 @@ public:
     Component* Clone(GameObject* owner) const override;
 
     void Draw();
-    void StencilDraw();
+    void BlurDraw();
 
     void SetImage(ResourceTexture* image) { mImage = image; }
     void FillSpriteSheetVBO();
@@ -62,6 +62,7 @@ public:
     GameObject* FindCanvasOnParents(GameObject* gameObject);
 
     bool BlurBackground() const { return mBlurBackground; }
+    void SetBlurBackground(bool background) { mBlurBackground = background;  }
 
 private:
     std::vector<unsigned char> GetPixelData(ResourceTexture* texture);
@@ -94,5 +95,5 @@ private:
     CanvasComponent* mCanvas = nullptr;
     Transform2DComponent* mTransform = nullptr;
 
-    bool mBlurBackground = true;
+    bool mBlurBackground = false;
 };
