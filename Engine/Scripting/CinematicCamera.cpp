@@ -175,18 +175,6 @@ void CinematicCamera::Update()
             }
         }
     }
-
-    //Restores the screen to avoid a bug that appears when the player keys B when the fade is completely black
-    if (mCounter >= 0.9f)
-    { 
-        if ((mTimer.Delay(1.0f) || (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN) ||
-            (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_BACK) == ButtonState::BUTTON_DOWN)))
-        {
-            mPlayingCinematic = false; //Unpause player
-            mCounter = 0.0f;
-            mImage->SetAlpha(mCounter);
-        }
-    }
 }
 
 void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState,
@@ -234,7 +222,18 @@ void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, 
 
 void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
 {
-    if (!GameManager::GetInstance()->IsPaused())
+    if (mEscape)
+    {
+        if (Fade(false))
+        {
+            mEscape = false;
+            mPlayingCinematic = false;
+        }
+
+        return;
+    }
+
+    if ((!GameManager::GetInstance()->IsPaused()) && (!mEscape))
     {
         if (mPlayingCinematic)
         {
@@ -286,9 +285,9 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
 
             ActivateBattleArea(battleArea, true);
         }
-    }
 
-    HandleEscape(dummy);
+        HandleEscape(dummy);
+    }
 }
 
 void CinematicCamera::LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
@@ -395,15 +394,6 @@ void CinematicCamera::HandleEscape(GameObject* dummy)
 
             mTimer.Reset();
             EndCinematic(dummy);
-        }
-    }
-
-    if (mEscape)
-    {
-        if (Fade(false))
-        {
-            mEscape = false;
-            mPlayingCinematic = false;
         }
     }
 }
