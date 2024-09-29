@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 569223036,
-                "ParentUID": 1,
+                "UID": 2067526996,
+                "ParentUID": 1158364653,
                 "Name": "VFX_Explotion2",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
-                    -0.6969296336174011,
                     0.0,
-                    2.4970240592956545
+                    0.699999988079071,
+                    0.06735736131668091
                 ],
                 "Rotation": [
                     0.0,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0099999904632569,
-                    1.6333868503570557,
-                    1.0099999904632569
+                    1.0,
+                    1.0,
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 1267216190,
-                "ParentUID": 569223036,
+                "UID": 2096141227,
+                "ParentUID": 2067526996,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    0.0,
-                    0.05236058682203293,
-                    0.0
+                    0.000003814697265625,
+                    0.04477512836456299,
+                    -0.0002498626708984375
                 ],
                 "Rotation": [
                     0.0,
@@ -47,9 +47,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.5900622606277466,
-                    1.3452235460281373,
-                    0.0019286739407107235
+                    1.350000023841858,
+                    1.75,
+                    1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -58,7 +58,7 @@
                 "Components": [
                     {
                         "ComponentType": 7,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Size": [
                             1920.0,
                             1080.0
@@ -68,11 +68,11 @@
                 ]
             },
             {
-                "UID": 294673617,
-                "ParentUID": 1267216190,
+                "UID": 2102198254,
+                "ParentUID": 2096141227,
                 "Name": "Spritesheet",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -96,7 +96,7 @@
                 "Components": [
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 990477000,
                         "Color": [
                             0.10294115543365479,
@@ -115,11 +115,11 @@
                 ]
             },
             {
-                "UID": 587185254,
-                "ParentUID": 569223036,
+                "UID": 2107559071,
+                "ParentUID": 2067526996,
                 "Name": "Fire",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -143,7 +143,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 636913638,
                         "Delay": 0.0,
                         "Duration": 0.5,
@@ -163,6 +163,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.800000011920929,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 1.0,
                         "ShapeSize": [
                             1.0,
@@ -172,6 +174,8 @@
                         "ShapeRandAngle": 1.7999999523162842,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -312,11 +316,11 @@
                 ]
             },
             {
-                "UID": 636964269,
-                "ParentUID": 569223036,
+                "UID": 2113337614,
+                "ParentUID": 2067526996,
                 "Name": "Burst",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -340,7 +344,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 68952107,
                         "Delay": 0.0,
                         "Duration": 0.10000000149011612,
@@ -360,6 +364,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.009999999776482582,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7853981852531433,
                         "ShapeSize": [
                             1.0,
@@ -369,11 +375,13 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
-                                "IsValueRandom": true,
-                                "MinValue": 10.0,
+                                "IsValueRandom": false,
+                                "MinValue": 40.0,
                                 "MaxValue": 15.0
                             },
                             "IsCurve": true,
@@ -455,15 +463,15 @@
                 ]
             },
             {
-                "UID": 663768354,
-                "ParentUID": 569223036,
+                "UID": 2118837673,
+                "ParentUID": 2067526996,
                 "Name": "Sparks",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
+                    -0.023748397827148439,
                     0.0,
-                    0.0,
-                    0.0
+                    0.00007915496826171875
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -483,26 +491,28 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 1613793439,
+                        "IsEnabled": false,
+                        "Image": 1711944677,
                         "Delay": 0.0,
-                        "Duration": 0.5,
-                        "EmissionRate": 25.0,
-                        "MaxParticles": 25,
-                        "Burst": 25,
-                        "Looping": false,
+                        "Duration": 0.30000001192092898,
+                        "EmissionRate": 2.0,
+                        "MaxParticles": 1000,
+                        "Burst": 40,
+                        "Looping": true,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": true,
                         "StretchedRatio": 0.5,
-                        "Gravity": 0.10000000149011612,
+                        "Gravity": 1.0,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 0.10000000149011612,
-                            "MaxValue": 0.30000001192092898
+                            "MinValue": 1.0,
+                            "MaxValue": 3.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.800000011920929,
+                        "ShapeRadius": 0.4000000059604645,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 1.0,
                         "ShapeSize": [
                             1.0,
@@ -512,12 +522,14 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
-                        "BlendMode": 0,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
+                        "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 0.20000000298023225,
-                                "MaxValue": 0.5
+                                "MinValue": 0.800000011920929,
+                                "MaxValue": 2.200000047683716
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -586,8 +598,8 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 2.0,
-                                "MaxValue": 20.0
+                                "MinValue": 1.0,
+                                "MaxValue": 7.0
                             },
                             "IsCurve": true,
                             "CurvePoints": [
@@ -732,11 +744,11 @@
                 ]
             },
             {
-                "UID": 693009174,
-                "ParentUID": 569223036,
+                "UID": 2124546595,
+                "ParentUID": 2067526996,
                 "Name": "Smoke",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -760,13 +772,13 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 299925969,
-                        "Delay": 0.0,
-                        "Duration": 0.5,
-                        "EmissionRate": 10.0,
+                        "Delay": 0.10000000149011612,
+                        "Duration": 0.699999988079071,
+                        "EmissionRate": 80.0,
                         "MaxParticles": 1000,
-                        "Burst": 50,
+                        "Burst": 80,
                         "Looping": false,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
@@ -779,7 +791,9 @@
                             "MaxValue": 0.30000001192092898
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.800000011920929,
+                        "ShapeRadius": 1.0,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.5,
                         "ShapeSize": [
                             1.0,
@@ -789,12 +803,14 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 0,
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": true,
-                                "MinValue": 3.0,
-                                "MaxValue": 4.0
+                                "MinValue": 4.0,
+                                "MaxValue": 6.0
                             },
                             "IsCurve": true,
                             "CurvePoints": [
