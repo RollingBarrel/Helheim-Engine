@@ -32,18 +32,24 @@ CREATE(PauseMenu)
     SEPARATOR("SETTINGS");
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mGeneralVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mMusicVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mMusicVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeFillGO);
+    MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOn_On);
     MEMBER(MemberType::GAMEOBJECT, mVSyncImageOff_On);
+    MEMBER(MemberType::GAMEOBJECT, mVSyncBackgroundGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOnGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenButtonOffGO);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOn_On);
     MEMBER(MemberType::GAMEOBJECT, mFullscreenImageOff_On);
+	MEMBER(MemberType::GAMEOBJECT, mFullscreenBackgroundGO);
+
 
     SEPARATOR("Play Btn");
     MEMBER(MemberType::GAMEOBJECT, mPlayGO);
@@ -186,14 +192,21 @@ void PauseMenu::Start()
 
     mGeneralVolumeSlider = static_cast<SliderComponent*>(mGeneralVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mGeneralVolumeFill = static_cast<ImageComponent*>(mGeneralVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mGeneralVolumeBackground = static_cast<ImageComponent*>(mGeneralVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
     mMusicVolumeSlider = static_cast<SliderComponent*>(mMusicVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mMusicVolumeFill = static_cast<ImageComponent*>(mMusicVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mMusicVolumeBackground = static_cast<ImageComponent*>(mMusicVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
+
     mEffectsVolumeSlider = static_cast<SliderComponent*>(mEffectsVolumeSliderGO->GetComponent(ComponentType::SLIDER));
     mEffectsVolumeFill = static_cast<ImageComponent*>(mEffectsVolumeFillGO->GetComponent(ComponentType::IMAGE));
+    mEffectsVolumeBackground = static_cast<ImageComponent*>(mEffectsVolumeBackgroundGO->GetComponent(ComponentType::IMAGE));
 
+    mVSyncBackground = static_cast<ImageComponent*>(mVSyncBackgroundGO->GetComponent(ComponentType::IMAGE));
     mVSyncOnButton = static_cast<ButtonComponent*>(mVSyncButtonOnGO->GetComponent(ComponentType::BUTTON));
     mVSyncOffButton = static_cast<ButtonComponent*>(mVSyncButtonOffGO->GetComponent(ComponentType::BUTTON));
+
+    mFullscreenBackground = static_cast<ImageComponent*>(mFullscreenBackgroundGO->GetComponent(ComponentType::IMAGE));
     mFullscreenOnButton = static_cast<ButtonComponent*>(mFullscreenButtonOnGO->GetComponent(ComponentType::BUTTON));
     mFullscreenOffButton = static_cast<ButtonComponent*>(mFullscreenButtonOffGO->GetComponent(ComponentType::BUTTON));
 
@@ -220,6 +233,11 @@ void PauseMenu::Start()
     OpenMenu(MENU_TYPE::MAIN);
     OnPlayButtonHover(); // Hover first option when the menu is first laoded    
     OnKeyboardButtonHover(); // Pre-hover the first option
+
+    // Init the volume sliders alpha
+    mGeneralVolumeFill->SetAlpha(0.8f);
+    mMusicVolumeFill->SetAlpha(0.8f);
+    mEffectsVolumeFill->SetAlpha(0.8f);
 }
 
 void PauseMenu::Update()
@@ -940,8 +958,8 @@ void PauseMenu::HoverVideoMenu(VIDEO_SETTING_TYPE type)
 
 void PauseMenu::OnGeneralVolumeHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mGeneralVolumeButtonGO->GetComponent(ComponentType::IMAGE));
-    mGeneralVolumeFill->SetAlpha(1.f);
+    //TODO: Use when the slider is active - mGeneralVolumeFill->SetAlpha(1.f);
+    mGeneralVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::MASTER;
 
     //TODO: Abstract this abomination (in all of the hover functions)
@@ -951,7 +969,8 @@ void PauseMenu::OnGeneralVolumeHover()
 
 void PauseMenu::OnMusicVolumeHover()
 {
-    mMusicVolumeFill->SetAlpha(1.f);
+    // mMusicVolumeFill->SetAlpha(1.f);
+    mMusicVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::MUSIC;
 
     OnGeneralVolumeHoverOff();
@@ -960,7 +979,8 @@ void PauseMenu::OnMusicVolumeHover()
 
 void PauseMenu::OnEffectsVolumeHover()
 {
-    mEffectsVolumeFill->SetAlpha(1.f);
+    // mEffectsVolumeFill->SetAlpha(1.f);
+    mEffectsVolumeBackground->SetAlpha(0.1f);
     mCurrentAudioSetting = AUDIO_SETTING_TYPE::EFFECTS;
 
     OnGeneralVolumeHoverOff();
@@ -969,28 +989,26 @@ void PauseMenu::OnEffectsVolumeHover()
 
 void PauseMenu::OnVSyncButtonHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    //image->SetAlpha(1.f);
+
     mCurrentVideoSetting = VIDEO_SETTING_TYPE::VSYNC;
+    mVSyncBackground->SetAlpha(0.1f);
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    //OnFullscreenButtonHoverOff();
+    OnFullscreenButtonHoverOff();
 }
 
 void PauseMenu::OnFullscreenButtonHover()
 {
-    //ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
-    //image->SetAlpha(1.f);
     mCurrentVideoSetting = VIDEO_SETTING_TYPE::FULL_SCREEN;
+    mFullscreenBackground->SetAlpha(0.1f);
 
     OnGeneralVolumeHoverOff();
     OnMusicVolumeHoverOff();
     OnEffectsVolumeHoverOff();
-    //OnVSyncButtonHoverOff();
+    OnVSyncButtonHoverOff();
 }
-
 void PauseMenu::OnQuitButtonHover()
 {
     if (mMainOption != 3)
@@ -1180,30 +1198,29 @@ void PauseMenu::OnVideoSettingsButtonHoverOff()
 
 void PauseMenu::OnGeneralVolumeHoverOff()
 {
-    mGeneralVolumeFill->SetAlpha(0.8f);
+    mGeneralVolumeBackground->SetAlpha(0.f);
 }
 
 void PauseMenu::OnMusicVolumeHoverOff()
 {
-    mMusicVolumeFill->SetAlpha(0.8f);
+    mMusicVolumeBackground->SetAlpha(0.f);
 }
 
 void PauseMenu::OnEffectsVolumeHoverOff()
 {
-    mEffectsVolumeFill->SetAlpha(0.8f);
+    mEffectsVolumeBackground->SetAlpha(0.f);
 }
 
-/*void PauseMenu::OnVSyncButtonHoverOff()
+void PauseMenu::OnVSyncButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mVSyncButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}*/
+    mVSyncBackground->SetAlpha(0.f);
+}
 
-/*void PauseMenu::OnFullscreenButtonHoverOff()
+void PauseMenu::OnFullscreenButtonHoverOff()
 {
-    ImageComponent* image = static_cast<ImageComponent*>(mFullscreenButtonGO->GetComponent(ComponentType::IMAGE));
-    image->SetAlpha(0.8f);
-}*/
+    mFullscreenBackground->SetAlpha(0.f);
+
+}
 
 void PauseMenu::OnGeneralUp()
 {
