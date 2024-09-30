@@ -77,6 +77,7 @@ public:
     void SetAnimationTime(float time);
     void SetIsAnimationPlaying(bool state);
     void RestartAnimationState();
+    void DashLookAtFront();
 
 
     void MoveToPosition(float3 position);

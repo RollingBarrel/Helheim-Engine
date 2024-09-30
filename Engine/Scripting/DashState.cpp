@@ -123,6 +123,7 @@ void DashState::Enter()
 	//Pause Animation -> Set animation time -> Pause player rotation(Already done in PlayerController::HandleRotation() -> rotate player in dash direction
 	mPlayerController->SetIsAnimationPlaying(false);
 	mPlayerController->SetAnimationTime(17.5f);
+	mPlayerController->DashLookAtFront();
 	
 }
 

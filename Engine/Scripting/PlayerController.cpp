@@ -558,6 +558,13 @@ void PlayerController::RestartAnimationState()
     }
 }
 
+void PlayerController::DashLookAtFront()
+{
+    float3 dir = GetPlayerDirection();
+    float3 pos = mGameObject->GetWorldPosition();
+    mGameObject->LookAt(float3(dir.x + pos.x, pos.y, dir.z + pos.z));
+}
+
 void PlayerController::MoveInDirection(float3 direction)
 {
 
