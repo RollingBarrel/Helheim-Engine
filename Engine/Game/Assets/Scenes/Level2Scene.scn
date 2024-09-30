@@ -12873,10 +12873,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -4.231543587751574e-11,
-                    -3.997670250388552e-11,
-                    0.6867468953132629,
-                    -0.7269902229309082
+                    4.8621533882409199e-11,
+                    -3.1998549643308397e-11,
+                    0.5497502088546753,
+                    0.8352653980255127
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -87630,8 +87630,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -97512,8 +97512,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.5453210473060608,
-                    -0.839042603969574
+                    -0.6138990521430969,
+                    0.790092945098877
                 ],
                 "Scale": [
                     1.0,
@@ -97886,8 +97886,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.5360549688339233,
-                    -0.8449559807777405
+                    -0.6051626801490784,
+                    0.7967584729194641
                 ],
                 "Scale": [
                     1.0,
@@ -98260,8 +98260,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.5267424583435059,
-                    -0.8508725166320801
+                    -0.5963775515556336,
+                    0.8034319877624512
                 ],
                 "Scale": [
                     1.0,
@@ -98634,8 +98634,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.5173368453979492,
-                    -0.8565858602523804
+                    -0.5874900817871094,
+                    0.8099133968353272
                 ],
                 "Scale": [
                     1.0,
@@ -99008,8 +99008,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.5078668594360352,
-                    -0.8622154593467712
+                    -0.5785314440727234,
+                    0.8163206577301025
                 ],
                 "Scale": [
                     1.0,
@@ -99382,8 +99382,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.49837568402290347,
-                    -0.8677477836608887
+                    -0.5695393681526184,
+                    0.8226338028907776
                 ],
                 "Scale": [
                     1.0,
@@ -99756,8 +99756,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.4896671772003174,
-                    -0.8727009892463684
+                    -0.5612831115722656,
+                    0.8283059000968933
                 ],
                 "Scale": [
                     1.0,
@@ -100325,8 +100325,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.49663621187210085,
-                    -0.8687534332275391
+                    -0.5678848028182983,
+                    0.8237774968147278
                 ],
                 "Scale": [
                     1.0,
@@ -100699,8 +100699,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.5035577416419983,
-                    -0.864750325679779
+                    -0.5744503140449524,
+                    0.819202184677124
                 ],
                 "Scale": [
                     1.0,
@@ -108553,7 +108553,7 @@
                             {
                                 "VariableName": "mSpeed",
                                 "MemberType": 1,
-                                "VariableData": 1.2999999523162842
+                                "VariableData": 2.5
                             },
                             {
                                 "VariableName": "mReturnIn",
@@ -108726,7 +108726,7 @@
                             {
                                 "VariableName": "mSpeed",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.9000000953674318
                             },
                             {
                                 "VariableName": "mReturnIn",
@@ -108836,7 +108836,7 @@
                 "Translation": [
                     104.86125183105469,
                     52.778499603271487,
-                    20.002132415771486
+                    19.843982696533204
                 ],
                 "Rotation": [
                     0.0,
@@ -108893,13 +108893,13 @@
                                 "VariableData": [
                                     131.30999755859376,
                                     52.779998779296878,
-                                    20.0
+                                    19.84000015258789
                                 ]
                             },
                             {
                                 "VariableName": "mSpeed",
                                 "MemberType": 1,
-                                "VariableData": 1.7000000476837159
+                                "VariableData": 2.700000047683716
                             },
                             {
                                 "VariableName": "mReturnIn",
@@ -109007,7 +109007,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    173.21437072753907,
+                    136.5122528076172,
                     52.778499603271487,
                     12.883633613586426
                 ],
@@ -109037,7 +109037,7 @@
                 "Translation": [
                     0.0002288818359375,
                     0.0,
-                    34.281982421875
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -109064,7 +109064,7 @@
                                 "VariableName": "mTargetPosition",
                                 "MemberType": 4,
                                 "VariableData": [
-                                    173.2100067138672,
+                                    155.8000030517578,
                                     52.779998779296878,
                                     12.880000114440918
                                 ]
@@ -109072,7 +109072,7 @@
                             {
                                 "VariableName": "mSpeed",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 3.0999999046325685
                             },
                             {
                                 "VariableName": "mReturnIn",
@@ -109138,6 +109138,179 @@
             {
                 "UID": 1260775214,
                 "ParentUID": 1106495078,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2078972979,
+                "ParentUID": 726623773,
+                "Name": "Moving_MiniEnemy (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    131.30979919433595,
+                    52.778499603271487,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 89668244,
+                "ParentUID": 2078972979,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.44999998807907107,
+                    0.44999998807907107,
+                    0.44999998807907107
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    104.86000061035156,
+                                    52.779998779296878,
+                                    0.0
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.799999952316284
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 671769425,
+                "ParentUID": 89668244,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 847771313,
+                "ParentUID": 671769425,
                 "Name": "OB_Enemy_ranged_mini",
                 "Enabled": true,
                 "Active": true,
