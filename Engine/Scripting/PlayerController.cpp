@@ -534,6 +534,30 @@ void PlayerController::SetLowerAnimationSpeed(float speed)
     }
 }
 
+void PlayerController::SetAnimationTime(float time)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetControllerTime(time);
+    }
+}
+
+void PlayerController::SetIsAnimationPlaying(bool state)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(state);
+    }
+}
+
+void PlayerController::RestartAnimationState()
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->RestartStateAnimation();
+    }
+}
+
 void PlayerController::MoveInDirection(float3 direction)
 {
 

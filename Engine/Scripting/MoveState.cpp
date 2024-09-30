@@ -154,12 +154,12 @@ void MoveState::DoAnimation()
 		StateType upperBodyState = mPlayerController->GetPlayerUpperState()->GetType();
 		if (upperBodyState == StateType::ULTIMATE_CHARGE || upperBodyState == StateType::ULTIMATE)
 		{
-			mPlayerController->SetLowerAnimationSpeed(0.75f); // TODO: Modify this with a script value?
+			mPlayerController->SetLowerAnimationSpeed(0.6f); // TODO: Modify this with a script value?
 
 		}
 		else
 		{
-			mPlayerController->SetLowerAnimationSpeed(1.75f); // TODO: Modify this with a script value?
+			mPlayerController->SetLowerAnimationSpeed(2.0f); // TODO: Modify this with a script value?
 
 		}
 

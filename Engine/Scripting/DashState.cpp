@@ -119,6 +119,11 @@ void DashState::Enter()
 		mBegginingParticles->SetEnabled(false);
 		mBegginingParticles->SetEnabled(true);
 	}
+
+	//Pause Animation -> Set animation time -> Pause player rotation(Already done in PlayerController::HandleRotation() -> rotate player in dash direction
+	mPlayerController->SetIsAnimationPlaying(false);
+	mPlayerController->SetAnimationTime(17.5f);
+	
 }
 
 void DashState::Exit()
@@ -128,6 +133,9 @@ void DashState::Exit()
 		mEndingParticles->SetEnabled(false);
 		mEndingParticles->SetEnabled(true);
 	}
+	//Unpause Animation -> Restart animation state -> Unpause player rotation
+	mPlayerController->SetIsAnimationPlaying(true);
+	mPlayerController->RestartAnimationState();
 }
 
 bool DashState::IsReady()
