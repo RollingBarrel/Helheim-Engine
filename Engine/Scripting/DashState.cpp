@@ -124,6 +124,7 @@ void DashState::Enter()
 	//Option 2: Pause Animation -> Set animation time (look at current animation from lower state machine 8 move states)
 	
 	mPlayerController->SetIsAnimationPlaying(false);
+	/*
 	std::string moveDir = mPlayerController->GetLowerAnimState();
 
 	std::vector<std::string> octetStrings =
@@ -157,10 +158,10 @@ void DashState::Enter()
 			animTime = octetTimes[i];
 		}
 	}
-	
 
 
 	mPlayerController->SetAnimationTime(animTime);
+	*/
 	//mPlayerController->DashLookAtFront();
 	
 }
@@ -174,7 +175,7 @@ void DashState::Exit()
 	}
 	//Unpause Animation -> Restart animation state -> Unpause player rotation
 	mPlayerController->SetIsAnimationPlaying(true);
-	mPlayerController->RestartAnimationState();
+	//mPlayerController->RestartAnimationState();
 }
 
 bool DashState::IsReady()
