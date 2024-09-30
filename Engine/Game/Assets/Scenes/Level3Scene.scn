@@ -5677,7 +5677,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 12,
-                        "IsPlaying": true
+                        "IsPlaying": true,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -6013,10 +6014,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    5.13072535845982e-11,
-                    -2.780393797141567e-11,
-                    0.4777168929576874,
-                    0.8814808130264282
+                    -4.384109048016782e-11,
+                    -3.830119901793161e-11,
+                    0.6580201387405396,
+                    -0.7532840371131897
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -9433,10 +9434,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -3.220935695935623e-8,
-                    -6.641724503708701e-9,
-                    0.9299811720848084,
-                    0.3676072061061859
+                    3.169468243413576e-8,
+                    8.78085337774337e-9,
+                    -0.9033584594726563,
+                    -0.42897963523864748
                 ],
                 "Scale": [
                     1.0435763597488404,
@@ -9502,18 +9503,18 @@
                             {
                                 "Time": 0.029490232467651368,
                                 "Color": [
+                                    0.150176003575325,
+                                    0.46519795060157778,
                                     0.9879999756813049,
-                                    0.150176003575325,
-                                    0.150176003575325,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.6126002073287964,
                                 "Color": [
+                                    0.037586603313684466,
+                                    0.013952028006315232,
                                     0.4359999895095825,
-                                    0.013952001929283142,
-                                    0.013952001929283142,
                                     1.0
                                 ]
                             },
@@ -9638,27 +9639,27 @@
                             {
                                 "Time": 0.029490232467651368,
                                 "Color": [
+                                    0.150176003575325,
+                                    0.16358141601085664,
                                     0.9879999756813049,
-                                    0.150176003575325,
-                                    0.150176003575325,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.6126002073287964,
                                 "Color": [
+                                    0.013952028006315232,
+                                    0.20302948355674745,
                                     0.4359999895095825,
-                                    0.013952001929283142,
-                                    0.013952001929283142,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.97050940990448,
                                 "Color": [
+                                    0.0017279948806390167,
+                                    0.007418869528919458,
                                     0.14399999380111695,
-                                    0.00172800337895751,
-                                    0.00172800337895751,
                                     1.0
                                 ]
                             }
@@ -10726,7 +10727,8 @@
                         "Columns": 6,
                         "Rows": 6,
                         "Speed": 30,
-                        "IsPlaying": true
+                        "IsPlaying": true,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 3,
@@ -11096,7 +11098,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11373,10 +11376,10 @@
                     1.0800000429153443
                 ],
                 "Rotation": [
-                    0.0024598927702754738,
-                    0.0008563348674215376,
-                    0.9433224201202393,
-                    0.3283730447292328
+                    0.001707812654785812,
+                    -0.001961097354069352,
+                    0.6548956036567688,
+                    -0.7520413398742676
                 ],
                 "Scale": [
                     1.7897616624832154,
@@ -11395,7 +11398,7 @@
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
                         "EmissionRate": 200.0,
-                        "MaxParticles": 30,
+                        "MaxParticles": 25,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": true,
@@ -11542,54 +11545,54 @@
                                     {
                                         "Time": 0.21179623901844026,
                                         "Color": [
-                                            0.8079999685287476,
-                                            0.06463998556137085,
-                                            0.06463998556137085,
+                                            0.04705880582332611,
+                                            0.24363917112350465,
+                                            0.9921568632125855,
                                             1.0
                                         ]
                                     },
                                     {
                                         "Time": 0.41286858916282656,
                                         "Color": [
-                                            0.7360000014305115,
-                                            0.0,
-                                            0.0,
+                                            0.04705880582332611,
+                                            0.44778040051460268,
+                                            0.9921568632125855,
                                             1.0
                                         ]
                                     },
                                     {
                                         "Time": 0.589812159538269,
                                         "Color": [
-                                            0.4936296343803406,
-                                            0.02764325588941574,
-                                            0.02764325588941574,
+                                            0.12543979287147523,
+                                            0.0,
+                                            0.9800000190734863,
                                             1.0
                                         ]
                                     },
                                     {
-                                        "Time": 0.7077751159667969,
+                                        "Time": 0.8418229818344116,
                                         "Color": [
-                                            0.27854812145233157,
-                                            0.015598691999912262,
-                                            0.015598691999912262,
+                                            0.02720000594854355,
+                                            0.09579528868198395,
+                                            0.3999999761581421,
                                             1.0
                                         ]
                                     },
                                     {
-                                        "Time": 0.9249328374862671,
-                                        "Color": [
-                                            0.03600001335144043,
-                                            0.03600001335144043,
-                                            0.03600001335144043,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.9249329566955566,
+                                        "Time": 0.9731903672218323,
                                         "Color": [
                                             0.009948058985173703,
                                             0.0005570912035182118,
                                             0.0005570912035182118,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9812329411506653,
+                                        "Color": [
+                                            0.03600001335144043,
+                                            0.03600001335144043,
+                                            0.03600001335144043,
                                             1.0
                                         ]
                                     }
@@ -11652,31 +11655,31 @@
                                 {
                                     "Point": [
                                         0.0,
-                                        0.5049999952316284
+                                        0.7200000286102295
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.10750000178813935,
-                                        0.6399999856948853
+                                        0.09749999642372132,
+                                        0.7749999761581421
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.2750000059604645,
-                                        0.7699999809265137
+                                        0.2775000035762787,
+                                        0.8799999952316284
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.5,
-                                        0.875
+                                        0.4950000047683716,
+                                        0.9649999737739563
                                     ]
                                 },
                                 {
                                     "Point": [
-                                        0.7774999737739563,
-                                        0.9449999928474426
+                                        0.7599999904632568,
+                                        0.9950000047683716
                                     ]
                                 },
                                 {
@@ -11692,9 +11695,9 @@
                                 {
                                     "Time": 0.512499988079071,
                                     "Color": [
-                                        0.9679999947547913,
-                                        0.0,
-                                        0.0,
+                                        0.04761597886681557,
+                                        0.35737401247024538,
+                                        0.9919999837875366,
                                         1.0
                                     ]
                                 }
@@ -11825,18 +11828,18 @@
                             {
                                 "Time": 0.18766747415065766,
                                 "Color": [
-                                    0.9760000109672546,
-                                    0.523635745048523,
-                                    0.14444799721240998,
+                                    0.0,
+                                    0.6549019813537598,
+                                    0.9215686321258545,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.9088466167449951,
                                 "Color": [
-                                    0.9399999976158142,
-                                    0.06392001360654831,
-                                    0.06392001360654831,
+                                    0.0470588244497776,
+                                    0.35686275362968447,
+                                    0.9921568632125855,
                                     1.0
                                 ]
                             }
@@ -12087,20 +12090,38 @@
                                 ]
                             },
                             {
-                                "Time": 0.032171580940485,
+                                "Time": 0.03217144310474396,
                                 "Color": [
-                                    0.9359999895095825,
-                                    0.31221961975097659,
-                                    0.05990395322442055,
+                                    0.1903200000524521,
+                                    0.24400001764297486,
+                                    0.24400001764297486,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.06970507651567459,
+                                "Color": [
+                                    0.1920417994260788,
+                                    0.24408979713916779,
+                                    0.24408979713916779,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.07774731516838074,
+                                "Color": [
+                                    0.11796799302101135,
+                                    0.23924557864665986,
+                                    0.4039999842643738,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.97050940990448,
                                 "Color": [
-                                    0.9480000138282776,
-                                    0.030336005613207818,
-                                    0.030336005613207818,
+                                    0.0470588244497776,
+                                    0.35686275362968447,
+                                    0.9921568632125855,
                                     1.0
                                 ]
                             }
@@ -12234,18 +12255,18 @@
                             {
                                 "Time": 0.3257371187210083,
                                 "Color": [
+                                    0.43921568989753725,
+                                    0.9882352948188782,
                                     1.0,
-                                    0.3372548818588257,
-                                    0.3372548818588257,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.7908848524093628,
                                 "Color": [
-                                    0.3799999952316284,
-                                    0.05623999983072281,
-                                    0.05623999983072281,
+                                    0.0470588244497776,
+                                    0.35686275362968447,
+                                    0.9921568632125855,
                                     1.0
                                 ]
                             },
@@ -12388,27 +12409,27 @@
                             {
                                 "Time": 0.3257371187210083,
                                 "Color": [
+                                    0.43921568989753725,
+                                    0.9882352948188782,
                                     1.0,
-                                    0.3372548818588257,
-                                    0.3372548818588257,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.6621983051300049,
                                 "Color": [
-                                    0.6039999723434448,
-                                    0.18119999766349793,
-                                    0.18119999766349793,
+                                    0.0470588244497776,
+                                    0.35686275362968447,
+                                    0.9921568632125855,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.7908848524093628,
                                 "Color": [
-                                    1.0,
-                                    0.11599999666213989,
-                                    0.11599999666213989,
+                                    0.0,
+                                    0.6549019813537598,
+                                    0.9215686321258545,
                                     1.0
                                 ]
                             },
@@ -12539,9 +12560,9 @@
                                 {
                                     "Time": 0.512499988079071,
                                     "Color": [
-                                        1.0,
-                                        0.3022719621658325,
-                                        0.05199998617172241,
+                                        0.0,
+                                        0.6550401449203491,
+                                        0.9200000166893005,
                                         1.0
                                     ]
                                 }
@@ -13533,7 +13554,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -13611,7 +13633,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -13813,7 +13836,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -13891,7 +13915,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -13969,7 +13994,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14047,7 +14073,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14125,7 +14152,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14203,7 +14231,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14281,7 +14310,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14473,7 +14503,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14551,7 +14582,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14629,7 +14661,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14707,7 +14740,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14785,7 +14819,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14863,7 +14898,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14941,7 +14977,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15095,7 +15132,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15237,7 +15275,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15315,7 +15354,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15457,7 +15497,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15535,7 +15576,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15613,7 +15655,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15691,7 +15734,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15833,7 +15877,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15911,7 +15956,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -15989,7 +16035,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16067,7 +16114,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16145,7 +16193,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16223,7 +16272,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16301,7 +16351,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16443,7 +16494,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16521,7 +16573,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16599,7 +16652,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16677,7 +16731,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16755,7 +16810,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16833,7 +16889,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -16911,7 +16968,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17065,7 +17123,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17112,7 +17171,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 9,
@@ -17297,7 +17357,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17403,7 +17464,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -17485,7 +17547,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17563,7 +17626,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -17645,7 +17709,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17723,7 +17788,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17801,7 +17867,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -17879,7 +17946,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -17961,7 +18029,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -18039,7 +18108,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -18121,7 +18191,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -18279,7 +18350,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -18437,7 +18509,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -18595,7 +18668,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -18753,7 +18827,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -18831,7 +18906,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -18909,7 +18985,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -18987,7 +19064,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -19065,7 +19143,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -19451,7 +19530,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -19593,7 +19673,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -19671,7 +19752,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -19813,7 +19895,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -19891,7 +19974,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -19995,7 +20079,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -20133,7 +20218,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -20351,7 +20437,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -20569,7 +20656,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -20727,7 +20815,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -20805,7 +20894,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 3,
@@ -20919,7 +21009,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -20997,7 +21088,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -21151,7 +21243,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -21305,7 +21398,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -21463,7 +21557,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -21541,7 +21636,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 3,
@@ -22133,7 +22229,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -22271,7 +22368,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -22349,7 +22447,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -22427,7 +22526,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -22509,7 +22609,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -22731,7 +22832,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -22809,7 +22911,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -22887,7 +22990,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -22965,7 +23069,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23043,7 +23148,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23121,7 +23227,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -23203,7 +23310,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -23425,7 +23533,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23503,7 +23612,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23581,7 +23691,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23659,7 +23770,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23877,7 +23989,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -23955,7 +24068,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -24033,7 +24147,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -24115,7 +24230,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -24197,7 +24313,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -24335,7 +24452,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -24493,7 +24611,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -24647,7 +24766,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -24801,7 +24921,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -24959,7 +25080,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -25113,7 +25235,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -25267,7 +25390,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -25425,7 +25549,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -25579,7 +25704,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -25733,7 +25859,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -25891,7 +26018,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -26045,7 +26173,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -26199,7 +26328,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -26277,7 +26407,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -27115,7 +27246,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -27193,7 +27325,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -27271,7 +27404,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -27501,7 +27635,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -27731,7 +27866,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -27961,7 +28097,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -28191,7 +28328,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -28421,7 +28559,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -28651,7 +28790,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -28881,7 +29021,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29111,7 +29252,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29401,7 +29543,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29479,7 +29622,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29557,7 +29701,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29711,7 +29856,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -29793,7 +29939,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29871,7 +30018,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -29949,7 +30097,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -30031,7 +30180,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30109,7 +30259,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30187,7 +30338,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30265,7 +30417,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -30347,7 +30500,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30425,7 +30579,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30503,7 +30658,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -30585,7 +30741,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30663,7 +30820,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -30877,7 +31035,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -31035,7 +31194,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -31189,7 +31349,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -31343,7 +31504,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -31501,7 +31663,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -31655,7 +31818,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -31809,7 +31973,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -31967,7 +32132,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -32121,7 +32287,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -32275,7 +32442,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -32433,7 +32601,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -32587,7 +32756,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -32741,7 +32911,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -34551,7 +34722,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -34633,7 +34805,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -34787,7 +34960,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -34941,7 +35115,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -35019,7 +35194,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -35161,7 +35337,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -35239,7 +35416,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -35383,7 +35561,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -35541,7 +35720,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -49754,18 +49934,18 @@
                 "Translation": [
                     0.10000000149011612,
                     1.0,
-                    0.8299999833106995
+                    1.100000023841858
                 ],
                 "Rotation": [
-                    6.798297036425538e-9,
-                    -1.492670698155507e-8,
-                    -0.9099743366241455,
-                    -0.41442787647247317
+                    1.0359077151633756e-8,
+                    1.2648695424388734e-8,
+                    0.7732434868812561,
+                    -0.6332604885101318
                 ],
                 "Scale": [
-                    1.7897616624832154,
-                    1.7897619009017945,
-                    3.999999761581421
+                    1.5,
+                    1.5,
+                    4.320000171661377
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -49779,7 +49959,7 @@
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
                         "EmissionRate": 200.0,
-                        "MaxParticles": 5,
+                        "MaxParticles": 2,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": true,
@@ -49928,8 +50108,26 @@
                                     },
                                     {
                                         "Point": [
+                                            0.20499999821186067,
+                                            0.29500001668930056
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            0.4950000047683716,
+                                            0.49000000953674319
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            0.8025000095367432,
+                                            0.3100000023841858
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
                                             1.0,
-                                            1.0
+                                            0.004999995231628418
                                         ]
                                     }
                                 ]
@@ -49939,36 +50137,472 @@
                                     {
                                         "Time": 0.21179623901844026,
                                         "Color": [
-                                            0.8079999685287476,
-                                            0.06463998556137085,
-                                            0.06463998556137085,
+                                            0.0,
+                                            0.01587226800620556,
+                                            0.9919999837875366,
                                             1.0
                                         ]
                                     },
                                     {
                                         "Time": 0.41286858916282656,
                                         "Color": [
-                                            0.7360000014305115,
                                             0.0,
-                                            0.0,
+                                            0.06297589838504791,
+                                            0.984000027179718,
                                             1.0
                                         ]
                                     },
                                     {
                                         "Time": 0.589812159538269,
                                         "Color": [
-                                            0.4936296343803406,
-                                            0.02764325588941574,
-                                            0.02764325588941574,
+                                            0.05461949110031128,
+                                            0.04705880582332611,
+                                            0.9921568632125855,
                                             1.0
                                         ]
                                     },
                                     {
                                         "Time": 0.7077751159667969,
                                         "Color": [
-                                            0.27854812145233157,
-                                            0.015598691999912262,
-                                            0.015598691999912262,
+                                            0.04705880582332611,
+                                            0.08486270904541016,
+                                            0.9921568632125855,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.8820374011993408,
+                                        "Color": [
+                                            0.07368168979883194,
+                                            0.019679982215166093,
+                                            0.984000027179718,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9597852826118469,
+                                        "Color": [
+                                            0.0,
+                                            0.03952019661664963,
+                                            0.9879999756813049,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    0.10000000149011612,
+                                    1.0,
+                                    7.130000114440918
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 9.5
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.75
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mLocalPosition",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mLookAt",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1215404637,
+                "ParentUID": 1527198863,
+                "Name": "Ultimte_Laser_Line_contrast (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.11999999731779099,
+                    0.9700000286102295,
+                    0.27000001072883608
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.8999999761581421,
+                    0.9602277278900147,
+                    0.8999999761581421
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 21,
+                        "IsEnabled": true,
+                        "Image": 1485191790,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.10000000149011612,
+                        "MaxLifeTime": 1.0,
+                        "UVScroll": 0.75,
+                        "IsFixedDirection": false,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            2.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.5,
+                                "MaxValue": 0.6000000238418579
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.06000000238418579
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.009999999776482582,
+                                        0.42500001192092898
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4025000035762787,
+                                        0.5049999952316284
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7975000143051148,
+                                        0.8349999785423279
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.512499988079071,
+                                    "Color": [
+                                        0.43921568989753725,
+                                        0.9882352948188782,
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1389526758,
+                "ParentUID": 1215404637,
+                "Name": "FinalPoint",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    8.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "LineFinal",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1931449153,
+                "ParentUID": 1527198863,
+                "Name": "Laser_Spin_Mid_2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.10000000149011612,
+                    1.0,
+                    0.8299999833106995
+                ],
+                "Rotation": [
+                    -7.601824059122464e-9,
+                    1.4498321654343727e-8,
+                    0.8846561908721924,
+                    0.46383801102638247
+                ],
+                "Scale": [
+                    1.7897616624832154,
+                    1.7897619009017945,
+                    3.999999761581421
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 0.30000001192092898,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 3,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 16.700000762939454,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 1.0,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 1.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.32499998807907107,
+                                        0.7950000166893005
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7074999809265137,
+                                        0.42000001668930056
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.16621984541416169,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.420911580324173,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.6461130380630493,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.7935656905174255,
+                                "Color": [
+                                    1.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.20000000298023225,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.25,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            0.20499999821186067,
+                                            0.26999998092651369
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            0.5099999904632568,
+                                            0.5149999856948853
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            0.8025000095367432,
+                                            0.26999998092651369
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            0.004999995231628418
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.21179623901844026,
+                                        "Color": [
+                                            0.03471999615430832,
+                                            0.5778599977493286,
+                                            0.6200000047683716,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.41286858916282656,
+                                        "Color": [
+                                            0.01623999886214733,
+                                            0.552939772605896,
+                                            0.5800000429153442,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.589812159538269,
+                                        "Color": [
+                                            0.017024002969264985,
+                                            0.4825625717639923,
+                                            0.5320000052452087,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.7077751159667969,
+                                        "Color": [
+                                            0.0,
+                                            0.3261440098285675,
+                                            0.3920000195503235,
                                             1.0
                                         ]
                                     },
@@ -50034,6 +50668,244 @@
                                 "VariableData": false
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 1699921889,
+                "ParentUID": 1527198863,
+                "Name": "Laser_Spin_End",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.10000000149011612,
+                    0.949999988079071,
+                    7.380000114440918
+                ],
+                "Rotation": [
+                    0.0017786878161132336,
+                    -0.0018874614033848048,
+                    0.6857540011405945,
+                    -0.7277107834815979
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 148626881,
+                        "Delay": 0.0,
+                        "Duration": 0.30000001192092898,
+                        "EmissionRate": 200.0,
+                        "MaxParticles": 25,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 16.700000762939454,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": false,
+                            "MinValue": 0.5,
+                            "MaxValue": 1.0
+                        },
+                        "ShapeType": 3,
+                        "ShapeRadius": 0.17000000178813935,
+                        "ShapeAngle": 0.0,
+                        "ShapeSize": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 1,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.20000000298023225,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 0.5,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.32499998807907107,
+                                        0.7950000166893005
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7074999809265137,
+                                        0.42000001668930056
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.16621984541416169,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.4879356622695923,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.788203775882721,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.8096514344215393,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": true,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.10000000149011612,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 0.10000000149011612,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": true,
+                                "CurvePoints": [
+                                    {
+                                        "Point": [
+                                            0.0,
+                                            0.0
+                                        ]
+                                    },
+                                    {
+                                        "Point": [
+                                            1.0,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            },
+                            "Gradient": {
+                                "Color Gradient": [
+                                    {
+                                        "Time": 0.21179623901844026,
+                                        "Color": [
+                                            0.04705880582332611,
+                                            0.24363917112350465,
+                                            0.9921568632125855,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.41286858916282656,
+                                        "Color": [
+                                            0.04705880582332611,
+                                            0.44778040051460268,
+                                            0.9921568632125855,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.589812159538269,
+                                        "Color": [
+                                            0.12543979287147523,
+                                            0.0,
+                                            0.9800000190734863,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.8418229818344116,
+                                        "Color": [
+                                            0.02720000594854355,
+                                            0.09579528868198395,
+                                            0.3999999761581421,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9731903672218323,
+                                        "Color": [
+                                            0.009948058985173703,
+                                            0.0005570912035182118,
+                                            0.0005570912035182118,
+                                            1.0
+                                        ]
+                                    },
+                                    {
+                                        "Time": 0.9812329411506653,
+                                        "Color": [
+                                            0.03600001335144043,
+                                            0.03600001335144043,
+                                            0.03600001335144043,
+                                            1.0
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
                     }
                 ]
             }
