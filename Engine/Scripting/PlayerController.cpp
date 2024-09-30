@@ -565,6 +565,15 @@ void PlayerController::DashLookAtFront()
     mGameObject->LookAt(float3(dir.x + pos.x, pos.y, dir.z + pos.z));
 }
 
+std::string PlayerController::GetLowerAnimState() const
+{
+    if (mAnimationComponent)
+    {
+        return mAnimationComponent->GetCurrentStateName();
+    }
+    return std::string();
+}
+
 void PlayerController::MoveInDirection(float3 direction)
 {
 
