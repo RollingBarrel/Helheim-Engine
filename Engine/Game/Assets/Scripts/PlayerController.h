@@ -290,6 +290,7 @@ private:
     float mUltimateDamageInterval = 1.0f;
     float mUltimateAimSpeed = 1.0f;
     TimerScript UltimateRotationTimer;
+    int mUltSound = -1;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
