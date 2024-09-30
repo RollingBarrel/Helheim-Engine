@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2067526996,
-                "ParentUID": 1158364653,
+                "UID": 1266141887,
+                "ParentUID": 1176400418,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -19,9 +19,9 @@
                     1.0
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    5.0,
+                    5.0,
+                    5.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 2096141227,
-                "ParentUID": 2067526996,
+                "UID": 1272129293,
+                "ParentUID": 1266141887,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -68,8 +68,8 @@
                 ]
             },
             {
-                "UID": 2102198254,
-                "ParentUID": 2096141227,
+                "UID": 1277907836,
+                "ParentUID": 1272129293,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -115,8 +115,8 @@
                 ]
             },
             {
-                "UID": 2107559071,
-                "ParentUID": 2067526996,
+                "UID": 1283756000,
+                "ParentUID": 1266141887,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -162,7 +162,7 @@
                             "MaxValue": 0.30000001192092898
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.800000011920929,
+                        "ShapeRadius": 0.5,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 1.0,
@@ -316,8 +316,8 @@
                 ]
             },
             {
-                "UID": 2113337614,
-                "ParentUID": 2067526996,
+                "UID": 1290230753,
+                "ParentUID": 1266141887,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -463,8 +463,8 @@
                 ]
             },
             {
-                "UID": 2118837673,
-                "ParentUID": 2067526996,
+                "UID": 1296287780,
+                "ParentUID": 1266141887,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -744,8 +744,8 @@
                 ]
             },
             {
-                "UID": 2124546595,
-                "ParentUID": 2067526996,
+                "UID": 1302135944,
+                "ParentUID": 1266141887,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -791,7 +791,7 @@
                             "MaxValue": 0.30000001192092898
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0,
+                        "ShapeRadius": 0.6000000238418579,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
                         "ShapeAngle": 0.5,
