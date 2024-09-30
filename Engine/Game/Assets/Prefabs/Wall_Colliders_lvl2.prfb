@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 332539036,
+                "UID": 527795524,
                 "ParentUID": 1,
                 "Name": "Wall_Colliders_lvl2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 57999531,
-                "ParentUID": 332539036,
+                "UID": 888153820,
+                "ParentUID": 527795524,
                 "Name": "Section_1_1",
                 "Enabled": true,
                 "Active": true,
@@ -58,8 +58,8 @@
                 "Components": []
             },
             {
-                "UID": 1847398473,
-                "ParentUID": 57999531,
+                "UID": 1222125757,
+                "ParentUID": 888153820,
                 "Name": "Left_wall",
                 "Enabled": true,
                 "Active": true,
@@ -86,8 +86,8 @@
                 "Components": []
             },
             {
-                "UID": 1497389804,
-                "ParentUID": 1847398473,
+                "UID": 1553939443,
+                "ParentUID": 1222125757,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -131,8 +131,8 @@
                 ]
             },
             {
-                "UID": 1232945344,
-                "ParentUID": 1847398473,
+                "UID": 1859854117,
+                "ParentUID": 1222125757,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -176,8 +176,8 @@
                 ]
             },
             {
-                "UID": 882310086,
-                "ParentUID": 1847398473,
+                "UID": 46203165,
+                "ParentUID": 1222125757,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -221,8 +221,8 @@
                 ]
             },
             {
-                "UID": 532162175,
-                "ParentUID": 1847398473,
+                "UID": 350934282,
+                "ParentUID": 1222125757,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -266,8 +266,8 @@
                 ]
             },
             {
-                "UID": 185077588,
-                "ParentUID": 57999531,
+                "UID": 669519978,
+                "ParentUID": 888153820,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -294,8 +294,8 @@
                 "Components": []
             },
             {
-                "UID": 1979976589,
-                "ParentUID": 185077588,
+                "UID": 980099259,
+                "ParentUID": 669519978,
                 "Name": "Battery",
                 "Enabled": true,
                 "Active": true,
@@ -339,8 +339,8 @@
                 ]
             },
             {
-                "UID": 1650993462,
-                "ParentUID": 185077588,
+                "UID": 1321799127,
+                "ParentUID": 669519978,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -367,8 +367,8 @@
                 "Components": []
             },
             {
-                "UID": 1336700366,
-                "ParentUID": 1650993462,
+                "UID": 1624720098,
+                "ParentUID": 1321799127,
                 "Name": "SmallBox",
                 "Enabled": true,
                 "Active": true,
@@ -412,8 +412,8 @@
                 ]
             },
             {
-                "UID": 983280268,
-                "ParentUID": 1650993462,
+                "UID": 1927571448,
+                "ParentUID": 1321799127,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -457,8 +457,8 @@
                 ]
             },
             {
-                "UID": 629512065,
-                "ParentUID": 1650993462,
+                "UID": 79736585,
+                "ParentUID": 1321799127,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -502,8 +502,8 @@
                 ]
             },
             {
-                "UID": 284864213,
-                "ParentUID": 185077588,
+                "UID": 381473999,
+                "ParentUID": 669519978,
                 "Name": "Servers",
                 "Enabled": true,
                 "Active": true,
@@ -547,8 +547,8 @@
                 ]
             },
             {
-                "UID": 2078997383,
-                "ParentUID": 185077588,
+                "UID": 686135495,
+                "ParentUID": 669519978,
                 "Name": "Computer",
                 "Enabled": true,
                 "Active": true,
@@ -592,8 +592,8 @@
                 ]
             },
             {
-                "UID": 1726134253,
-                "ParentUID": 2078997383,
+                "UID": 990309644,
+                "ParentUID": 686135495,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -637,8 +637,53 @@
                 ]
             },
             {
-                "UID": 1414904481,
-                "ParentUID": 57999531,
+                "UID": 961882914,
+                "ParentUID": 669519978,
+                "Name": "Pillar",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.2607269287109375,
+                    2.706756591796875,
+                    5.92048454284668
+                ],
+                "Rotation": [
+                    0.0868401825428009,
+                    0.2376672774553299,
+                    0.3682665228843689,
+                    0.8946244120597839
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.5,
+                            3.25,
+                            0.44999998807907107
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1335142457,
+                "ParentUID": 888153820,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -665,8 +710,8 @@
                 "Components": []
             },
             {
-                "UID": 1065452780,
-                "ParentUID": 1414904481,
+                "UID": 1639803953,
+                "ParentUID": 1335142457,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -710,8 +755,8 @@
                 ]
             },
             {
-                "UID": 728950585,
-                "ParentUID": 1414904481,
+                "UID": 1972731575,
+                "ParentUID": 1335142457,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -755,8 +800,8 @@
                 ]
             },
             {
-                "UID": 376505181,
-                "ParentUID": 1414904481,
+                "UID": 136036072,
+                "ParentUID": 1335142457,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -800,8 +845,8 @@
                 ]
             },
             {
-                "UID": 34990274,
-                "ParentUID": 1414904481,
+                "UID": 441950746,
+                "ParentUID": 1335142457,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -845,8 +890,8 @@
                 ]
             },
             {
-                "UID": 1827800645,
-                "ParentUID": 332539036,
+                "UID": 747447694,
+                "ParentUID": 527795524,
                 "Name": "Section_1_2",
                 "Enabled": true,
                 "Active": true,
@@ -873,8 +918,8 @@
                 "Components": []
             },
             {
-                "UID": 1492342765,
-                "ParentUID": 1827800645,
+                "UID": 1050856012,
+                "ParentUID": 747447694,
                 "Name": "Left_wall",
                 "Enabled": true,
                 "Active": true,
@@ -901,8 +946,8 @@
                 "Components": []
             },
             {
-                "UID": 1155144360,
-                "ParentUID": 1492342765,
+                "UID": 1355517508,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -946,8 +991,8 @@
                 ]
             },
             {
-                "UID": 800053358,
-                "ParentUID": 1492342765,
+                "UID": 1742679889,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -991,8 +1036,8 @@
                 ]
             },
             {
-                "UID": 445449703,
-                "ParentUID": 1492342765,
+                "UID": 2043303367,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -1036,8 +1081,8 @@
                 ]
             },
             {
-                "UID": 96415728,
-                "ParentUID": 1492342765,
+                "UID": 199088796,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -1081,8 +1126,8 @@
                 ]
             },
             {
-                "UID": 1893751464,
-                "ParentUID": 1492342765,
+                "UID": 508484520,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -1126,8 +1171,8 @@
                 ]
             },
             {
-                "UID": 1553002388,
-                "ParentUID": 1492342765,
+                "UID": 812658669,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -1171,8 +1216,8 @@
                 ]
             },
             {
-                "UID": 1200835468,
-                "ParentUID": 1492342765,
+                "UID": 1118782206,
+                "ParentUID": 1050856012,
                 "Name": "Wall_P7",
                 "Enabled": true,
                 "Active": true,
@@ -1216,8 +1261,8 @@
                 ]
             },
             {
-                "UID": 865516830,
-                "ParentUID": 1827800645,
+                "UID": 1435418514,
+                "ParentUID": 747447694,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -1244,8 +1289,8 @@
                 "Components": []
             },
             {
-                "UID": 509868860,
-                "ParentUID": 865516830,
+                "UID": 1739662284,
+                "ParentUID": 1435418514,
                 "Name": "Computer",
                 "Enabled": true,
                 "Active": true,
@@ -1289,8 +1334,8 @@
                 ]
             },
             {
-                "UID": 162784273,
-                "ParentUID": 865516830,
+                "UID": 2047247862,
+                "ParentUID": 1435418514,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -1317,8 +1362,8 @@
                 "Components": []
             },
             {
-                "UID": 1959632662,
-                "ParentUID": 162784273,
+                "UID": 197881337,
+                "ParentUID": 2047247862,
                 "Name": "SmallBox",
                 "Enabled": true,
                 "Active": true,
@@ -1362,8 +1407,8 @@
                 ]
             },
             {
-                "UID": 1620554490,
-                "ParentUID": 162784273,
+                "UID": 510966974,
+                "ParentUID": 2047247862,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -1407,8 +1452,8 @@
                 ]
             },
             {
-                "UID": 1285235852,
-                "ParentUID": 162784273,
+                "UID": 818552552,
+                "ParentUID": 2047247862,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -1452,8 +1497,8 @@
                 ]
             },
             {
-                "UID": 946018438,
-                "ParentUID": 162784273,
+                "UID": 1148834576,
+                "ParentUID": 2047247862,
                 "Name": "Box3",
                 "Enabled": true,
                 "Active": true,
@@ -1497,8 +1542,8 @@
                 ]
             },
             {
-                "UID": 592807203,
-                "ParentUID": 865516830,
+                "UID": 1506059927,
+                "ParentUID": 1435418514,
                 "Name": "BrokenPods",
                 "Enabled": true,
                 "Active": true,
@@ -1525,8 +1570,8 @@
                 "Components": []
             },
             {
-                "UID": 244678301,
-                "ParentUID": 592807203,
+                "UID": 1813854368,
+                "ParentUID": 1506059927,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -1570,8 +1615,8 @@
                 ]
             },
             {
-                "UID": 2037349430,
-                "ParentUID": 592807203,
+                "UID": 2138984438,
+                "ParentUID": 1506059927,
                 "Name": "Pod3",
                 "Enabled": true,
                 "Active": true,
@@ -1615,8 +1660,8 @@
                 ]
             },
             {
-                "UID": 1688872423,
-                "ParentUID": 592807203,
+                "UID": 303820597,
+                "ParentUID": 1506059927,
                 "Name": "Pod1 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -1660,8 +1705,8 @@
                 ]
             },
             {
-                "UID": 1354180374,
-                "ParentUID": 865516830,
+                "UID": 605488390,
+                "ParentUID": 1435418514,
                 "Name": "Battery",
                 "Enabled": true,
                 "Active": true,
@@ -1705,8 +1750,8 @@
                 ]
             },
             {
-                "UID": 1018026284,
-                "ParentUID": 865516830,
+                "UID": 908200498,
+                "ParentUID": 1435418514,
                 "Name": "RestrictedArea1",
                 "Enabled": true,
                 "Active": true,
@@ -1733,8 +1778,8 @@
                 "Components": []
             },
             {
-                "UID": 670454350,
-                "ParentUID": 1018026284,
+                "UID": 1211956921,
+                "ParentUID": 908200498,
                 "Name": "MechanicalArm",
                 "Enabled": true,
                 "Active": true,
@@ -1778,8 +1823,8 @@
                 ]
             },
             {
-                "UID": 318426672,
-                "ParentUID": 670454350,
+                "UID": 1516827280,
+                "ParentUID": 1211956921,
                 "Name": "Arm",
                 "Enabled": true,
                 "Active": true,
@@ -1823,8 +1868,8 @@
                 ]
             },
             {
-                "UID": 2131357512,
-                "ParentUID": 1018026284,
+                "UID": 1828868602,
+                "ParentUID": 908200498,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -1868,8 +1913,8 @@
                 ]
             },
             {
-                "UID": 1787823596,
-                "ParentUID": 1018026284,
+                "UID": 2135827591,
+                "ParentUID": 908200498,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -1913,8 +1958,8 @@
                 ]
             },
             {
-                "UID": 1467960820,
-                "ParentUID": 1018026284,
+                "UID": 294188997,
+                "ParentUID": 908200498,
                 "Name": "Battery3",
                 "Enabled": true,
                 "Active": true,
@@ -1958,8 +2003,8 @@
                 ]
             },
             {
-                "UID": 1131180141,
-                "ParentUID": 1018026284,
+                "UID": 599616324,
+                "ParentUID": 908200498,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -2003,8 +2048,8 @@
                 ]
             },
             {
-                "UID": 772120742,
-                "ParentUID": 865516830,
+                "UID": 912075372,
+                "ParentUID": 1435418514,
                 "Name": "RestrictedArea2",
                 "Enabled": true,
                 "Active": true,
@@ -2031,8 +2076,8 @@
                 "Components": []
             },
             {
-                "UID": 423156388,
-                "ParentUID": 772120742,
+                "UID": 1221122991,
+                "ParentUID": 912075372,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -2076,8 +2121,8 @@
                 ]
             },
             {
-                "UID": 70850226,
-                "ParentUID": 772120742,
+                "UID": 1528360464,
+                "ParentUID": 912075372,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -2121,8 +2166,8 @@
                 ]
             },
             {
-                "UID": 1875287304,
-                "ParentUID": 772120742,
+                "UID": 1844022078,
+                "ParentUID": 912075372,
                 "Name": "Battery3",
                 "Enabled": true,
                 "Active": true,
@@ -2166,8 +2211,8 @@
                 ]
             },
             {
-                "UID": 1534329365,
-                "ParentUID": 772120742,
+                "UID": 8301269,
+                "ParentUID": 912075372,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -2211,8 +2256,8 @@
                 ]
             },
             {
-                "UID": 1181814340,
-                "ParentUID": 772120742,
+                "UID": 323057810,
+                "ParentUID": 912075372,
                 "Name": "Cryotube",
                 "Enabled": true,
                 "Active": true,
@@ -2256,8 +2301,53 @@
                 ]
             },
             {
-                "UID": 831457566,
-                "ParentUID": 1827800645,
+                "UID": 1767096475,
+                "ParentUID": 1435418514,
+                "Name": "Pillar",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0425872802734375,
+                    2.2365188598632814,
+                    -13.481303215026856
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.28527021408081057,
+                    0.9584471583366394
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.75,
+                            2.8499999046325685,
+                            0.7400000095367432
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 635099132,
+                "ParentUID": 747447694,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -2284,8 +2374,8 @@
                 "Components": []
             },
             {
-                "UID": 485765399,
-                "ParentUID": 831457566,
+                "UID": 950203778,
+                "ParentUID": 635099132,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -2329,8 +2419,8 @@
                 ]
             },
             {
-                "UID": 135826351,
-                "ParentUID": 831457566,
+                "UID": 1285080788,
+                "ParentUID": 635099132,
                 "Name": "Wall_P7",
                 "Enabled": true,
                 "Active": true,
@@ -2374,8 +2464,8 @@
                 ]
             },
             {
-                "UID": 1930446868,
-                "ParentUID": 831457566,
+                "UID": 1610210858,
+                "ParentUID": 635099132,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -2419,8 +2509,8 @@
                 ]
             },
             {
-                "UID": 1597077618,
-                "ParentUID": 831457566,
+                "UID": 1914733112,
+                "ParentUID": 635099132,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -2464,8 +2554,8 @@
                 ]
             },
             {
-                "UID": 1247277812,
-                "ParentUID": 831457566,
+                "UID": 69404605,
+                "ParentUID": 635099132,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -2509,8 +2599,8 @@
                 ]
             },
             {
-                "UID": 894902029,
-                "ParentUID": 831457566,
+                "UID": 372395197,
+                "ParentUID": 635099132,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -2554,8 +2644,8 @@
                 ]
             },
             {
-                "UID": 551507355,
-                "ParentUID": 831457566,
+                "UID": 673784506,
+                "ParentUID": 635099132,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -2599,11 +2689,11 @@
                 ]
             },
             {
-                "UID": 198435362,
-                "ParentUID": 1827800645,
+                "UID": 976635856,
+                "ParentUID": 747447694,
                 "Name": "CircularFence",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     -0.505157470703125,
                     0.0,
@@ -2627,11 +2717,11 @@
                 "Components": []
             },
             {
-                "UID": 1996328066,
-                "ParentUID": 198435362,
+                "UID": 1288120210,
+                "ParentUID": 976635856,
                 "Name": "1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2655,7 +2745,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             8.949999809265137,
                             0.0,
@@ -2672,11 +2762,11 @@
                 ]
             },
             {
-                "UID": 1689205933,
-                "ParentUID": 198435362,
+                "UID": 1666997692,
+                "ParentUID": 976635856,
                 "Name": "2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2700,7 +2790,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -2717,11 +2807,11 @@
                 ]
             },
             {
-                "UID": 1341912483,
-                "ParentUID": 198435362,
+                "UID": 1974583270,
+                "ParentUID": 976635856,
                 "Name": "2 (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2745,7 +2835,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -2762,11 +2852,11 @@
                 ]
             },
             {
-                "UID": 993922823,
-                "ParentUID": 198435362,
+                "UID": 136495347,
+                "ParentUID": 976635856,
                 "Name": "2 (2)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2790,7 +2880,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -2807,11 +2897,11 @@
                 ]
             },
             {
-                "UID": 650876254,
-                "ParentUID": 198435362,
+                "UID": 520315920,
+                "ParentUID": 976635856,
                 "Name": "2 (3)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2835,7 +2925,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -2852,11 +2942,11 @@
                 ]
             },
             {
-                "UID": 297247293,
-                "ParentUID": 198435362,
+                "UID": 829850886,
+                "ParentUID": 976635856,
                 "Name": "2 (4)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     -0.386474609375,
                     0.22725677490234376,
@@ -2880,7 +2970,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             8.949999809265137,
                             0.0,
@@ -2897,11 +2987,11 @@
                 ]
             },
             {
-                "UID": 2091380463,
-                "ParentUID": 198435362,
+                "UID": 1137436464,
+                "ParentUID": 976635856,
                 "Name": "2 (7)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2925,7 +3015,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             9.0,
                             0.0,
@@ -2942,11 +3032,11 @@
                 ]
             },
             {
-                "UID": 1753137743,
-                "ParentUID": 198435362,
+                "UID": 1543674999,
+                "ParentUID": 976635856,
                 "Name": "2 (8)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -2970,7 +3060,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -2987,11 +3077,11 @@
                 ]
             },
             {
-                "UID": 1408837996,
-                "ParentUID": 198435362,
+                "UID": 1864070841,
+                "ParentUID": 976635856,
                 "Name": "2 (9)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -3015,7 +3105,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -3032,11 +3122,11 @@
                 ]
             },
             {
-                "UID": 1057715391,
-                "ParentUID": 198435362,
+                "UID": 19299302,
+                "ParentUID": 976635856,
                 "Name": "2 (10)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -3060,7 +3150,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -3077,11 +3167,11 @@
                 ]
             },
             {
-                "UID": 711605498,
-                "ParentUID": 198435362,
+                "UID": 326188670,
+                "ParentUID": 976635856,
                 "Name": "2 (11)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -3105,7 +3195,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             7.400000095367432,
                             0.0,
@@ -3122,11 +3212,11 @@
                 ]
             },
             {
-                "UID": 364172806,
-                "ParentUID": 198435362,
+                "UID": 632381828,
+                "ParentUID": 976635856,
                 "Name": "2 (12)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.22719955444335938,
@@ -3150,7 +3240,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             8.949999809265137,
                             0.0,
@@ -3167,8 +3257,8 @@
                 ]
             },
             {
-                "UID": 15626178,
-                "ParentUID": 332539036,
+                "UID": 941707931,
+                "ParentUID": 527795524,
                 "Name": "Section_2_1",
                 "Enabled": true,
                 "Active": true,
@@ -3195,8 +3285,8 @@
                 "Components": []
             },
             {
-                "UID": 2005115874,
-                "ParentUID": 15626178,
+                "UID": 1250685929,
+                "ParentUID": 941707931,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -3223,8 +3313,8 @@
                 "Components": []
             },
             {
-                "UID": 1644733676,
-                "ParentUID": 2005115874,
+                "UID": 1552353722,
+                "ParentUID": 1250685929,
                 "Name": "Computers",
                 "Enabled": true,
                 "Active": true,
@@ -3251,8 +3341,8 @@
                 "Components": []
             },
             {
-                "UID": 1297788331,
-                "ParentUID": 1644733676,
+                "UID": 1871078660,
+                "ParentUID": 1552353722,
                 "Name": "Computer1",
                 "Enabled": true,
                 "Active": true,
@@ -3296,8 +3386,8 @@
                 ]
             },
             {
-                "UID": 957944328,
-                "ParentUID": 1297788331,
+                "UID": 44060476,
+                "ParentUID": 1871078660,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -3341,8 +3431,8 @@
                 ]
             },
             {
-                "UID": 632581493,
-                "ParentUID": 1644733676,
+                "UID": 349139698,
+                "ParentUID": 1552353722,
                 "Name": "Computer2",
                 "Enabled": true,
                 "Active": true,
@@ -3386,8 +3476,8 @@
                 ]
             },
             {
-                "UID": 318984607,
-                "ParentUID": 1644733676,
+                "UID": 657143002,
+                "ParentUID": 1552353722,
                 "Name": "Computer3",
                 "Enabled": true,
                 "Active": true,
@@ -3431,8 +3521,8 @@
                 ]
             },
             {
-                "UID": 166908441,
-                "ParentUID": 318984607,
+                "UID": 968488114,
+                "ParentUID": 657143002,
                 "Name": "Chair",
                 "Enabled": true,
                 "Active": true,
@@ -3476,8 +3566,8 @@
                 ]
             },
             {
-                "UID": 1964870766,
-                "ParentUID": 2005115874,
+                "UID": 1278301564,
+                "ParentUID": 1250685929,
                 "Name": "Batteries",
                 "Enabled": true,
                 "Active": true,
@@ -3504,8 +3594,8 @@
                 "Components": []
             },
             {
-                "UID": 1585412414,
-                "ParentUID": 1964870766,
+                "UID": 1582127608,
+                "ParentUID": 1278301564,
                 "Name": "Battery2",
                 "Enabled": true,
                 "Active": true,
@@ -3549,8 +3639,8 @@
                 ]
             },
             {
-                "UID": 1210618669,
-                "ParentUID": 1964870766,
+                "UID": 1922365435,
+                "ParentUID": 1278301564,
                 "Name": "Battery1",
                 "Enabled": true,
                 "Active": true,
@@ -3594,8 +3684,8 @@
                 ]
             },
             {
-                "UID": 849122535,
-                "ParentUID": 2005115874,
+                "UID": 89499087,
+                "ParentUID": 1250685929,
                 "Name": "Pods",
                 "Enabled": true,
                 "Active": true,
@@ -3622,8 +3712,8 @@
                 "Components": []
             },
             {
-                "UID": 504405062,
-                "ParentUID": 849122535,
+                "UID": 396318834,
+                "ParentUID": 89499087,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -3667,8 +3757,8 @@
                 ]
             },
             {
-                "UID": 176257387,
-                "ParentUID": 849122535,
+                "UID": 703834791,
+                "ParentUID": 89499087,
                 "Name": "Pod2",
                 "Enabled": true,
                 "Active": true,
@@ -3712,8 +3802,8 @@
                 ]
             },
             {
-                "UID": 1964472772,
-                "ParentUID": 849122535,
+                "UID": 1014762177,
+                "ParentUID": 89499087,
                 "Name": "Pod2 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -3757,8 +3847,8 @@
                 ]
             },
             {
-                "UID": 1607153898,
-                "ParentUID": 849122535,
+                "UID": 1321581924,
+                "ParentUID": 89499087,
                 "Name": "Pod2 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -3802,8 +3892,8 @@
                 ]
             },
             {
-                "UID": 1256031293,
-                "ParentUID": 15626178,
+                "UID": 1627635840,
+                "ParentUID": 941707931,
                 "Name": "Left_Wall",
                 "Enabled": true,
                 "Active": true,
@@ -3830,8 +3920,8 @@
                 "Components": []
             },
             {
-                "UID": 923079769,
-                "ParentUID": 1256031293,
+                "UID": 1929582117,
+                "ParentUID": 1627635840,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -3875,8 +3965,8 @@
                 ]
             },
             {
-                "UID": 571121712,
-                "ParentUID": 1256031293,
+                "UID": 88570112,
+                "ParentUID": 1627635840,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -3920,8 +4010,8 @@
                 ]
             },
             {
-                "UID": 236847389,
-                "ParentUID": 1256031293,
+                "UID": 430339601,
+                "ParentUID": 1627635840,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -3965,8 +4055,8 @@
                 ]
             },
             {
-                "UID": 2036062892,
-                "ParentUID": 1256031293,
+                "UID": 748994918,
+                "ParentUID": 1627635840,
                 "Name": "Door",
                 "Enabled": true,
                 "Active": true,
@@ -4010,8 +4100,8 @@
                 ]
             },
             {
-                "UID": 1685636497,
-                "ParentUID": 1256031293,
+                "UID": 1091390996,
+                "ParentUID": 1627635840,
                 "Name": "Small_Wall",
                 "Enabled": false,
                 "Active": false,
@@ -4055,8 +4145,8 @@
                 ]
             },
             {
-                "UID": 1337855700,
-                "ParentUID": 15626178,
+                "UID": 1414362815,
+                "ParentUID": 941707931,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -4083,8 +4173,8 @@
                 "Components": []
             },
             {
-                "UID": 987986273,
-                "ParentUID": 1337855700,
+                "UID": 1724037023,
+                "ParentUID": 1414362815,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -4128,8 +4218,8 @@
                 ]
             },
             {
-                "UID": 637420636,
-                "ParentUID": 1337855700,
+                "UID": 2028907382,
+                "ParentUID": 1414362815,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -4173,8 +4263,8 @@
                 ]
             },
             {
-                "UID": 303772902,
-                "ParentUID": 1337855700,
+                "UID": 199591705,
+                "ParentUID": 1414362815,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -4218,8 +4308,8 @@
                 ]
             },
             {
-                "UID": 2106121350,
-                "ParentUID": 332539036,
+                "UID": 507107662,
+                "ParentUID": 527795524,
                 "Name": "Section_2_2",
                 "Enabled": true,
                 "Active": true,
@@ -4246,8 +4336,8 @@
                 "Components": []
             },
             {
-                "UID": 1753745567,
-                "ParentUID": 2106121350,
+                "UID": 836554234,
+                "ParentUID": 507107662,
                 "Name": "Railing",
                 "Enabled": false,
                 "Active": false,
@@ -4274,8 +4364,8 @@
                 "Components": []
             },
             {
-                "UID": 1405059697,
-                "ParentUID": 1753745567,
+                "UID": 1144487917,
+                "ParentUID": 836554234,
                 "Name": "Fence2",
                 "Enabled": true,
                 "Active": false,
@@ -4302,8 +4392,8 @@
                 "Components": []
             },
             {
-                "UID": 1056652311,
-                "ParentUID": 1405059697,
+                "UID": 1474073731,
+                "ParentUID": 1144487917,
                 "Name": "Railing1",
                 "Enabled": true,
                 "Active": false,
@@ -4347,8 +4437,8 @@
                 ]
             },
             {
-                "UID": 708105683,
-                "ParentUID": 1753745567,
+                "UID": 1802127883,
+                "ParentUID": 836554234,
                 "Name": "Fence1",
                 "Enabled": true,
                 "Active": false,
@@ -4375,8 +4465,8 @@
                 "Components": []
             },
             {
-                "UID": 369027511,
-                "ParentUID": 708105683,
+                "UID": 2113751479,
+                "ParentUID": 1802127883,
                 "Name": "Railing1",
                 "Enabled": true,
                 "Active": false,
@@ -4420,8 +4510,8 @@
                 ]
             },
             {
-                "UID": 24727764,
-                "ParentUID": 1753745567,
+                "UID": 271764780,
+                "ParentUID": 836554234,
                 "Name": "Fence3",
                 "Enabled": true,
                 "Active": false,
@@ -4448,8 +4538,8 @@
                 "Components": []
             },
             {
-                "UID": 1823038194,
-                "ParentUID": 24727764,
+                "UID": 579350358,
+                "ParentUID": 271764780,
                 "Name": "Railing1",
                 "Enabled": true,
                 "Active": false,
@@ -4493,8 +4583,8 @@
                 ]
             },
             {
-                "UID": 1471149758,
-                "ParentUID": 1753745567,
+                "UID": 930866787,
+                "ParentUID": 836554234,
                 "Name": "Fence2 (1)",
                 "Enabled": true,
                 "Active": false,
@@ -4521,8 +4611,8 @@
                 "Components": []
             },
             {
-                "UID": 1126153801,
-                "ParentUID": 1471149758,
+                "UID": 1330491327,
+                "ParentUID": 930866787,
                 "Name": "Railing1",
                 "Enabled": true,
                 "Active": false,
@@ -4566,8 +4656,8 @@
                 ]
             },
             {
-                "UID": 778373004,
-                "ParentUID": 1753745567,
+                "UID": 1639817430,
+                "ParentUID": 836554234,
                 "Name": "Fence1 (1)",
                 "Enabled": true,
                 "Active": false,
@@ -4594,8 +4684,8 @@
                 "Components": []
             },
             {
-                "UID": 569277239,
-                "ParentUID": 778373004,
+                "UID": 1952415720,
+                "ParentUID": 1639817430,
                 "Name": "Railing1",
                 "Enabled": true,
                 "Active": false,
@@ -4639,8 +4729,8 @@
                 ]
             },
             {
-                "UID": 237648514,
-                "ParentUID": 1753745567,
+                "UID": 108758117,
+                "ParentUID": 836554234,
                 "Name": "Fence3 (1)",
                 "Enabled": true,
                 "Active": false,
@@ -4667,8 +4757,8 @@
                 "Components": []
             },
             {
-                "UID": 1993211650,
-                "ParentUID": 237648514,
+                "UID": 420312092,
+                "ParentUID": 108758117,
                 "Name": "Railing1",
                 "Enabled": true,
                 "Active": false,
@@ -4712,8 +4802,8 @@
                 ]
             },
             {
-                "UID": 1637494059,
-                "ParentUID": 2106121350,
+                "UID": 725948282,
+                "ParentUID": 507107662,
                 "Name": "Left_Wall",
                 "Enabled": true,
                 "Active": true,
@@ -4740,8 +4830,8 @@
                 "Components": []
             },
             {
-                "UID": 1247871041,
-                "ParentUID": 1637494059,
+                "UID": 1029147737,
+                "ParentUID": 725948282,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -4785,8 +4875,8 @@
                 ]
             },
             {
-                "UID": 851216302,
-                "ParentUID": 1637494059,
+                "UID": 1328169932,
+                "ParentUID": 725948282,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -4830,8 +4920,8 @@
                 ]
             },
             {
-                "UID": 582873066,
-                "ParentUID": 1637494059,
+                "UID": 1643204957,
+                "ParentUID": 725948282,
                 "Name": "Wall_P5",
                 "Enabled": true,
                 "Active": true,
@@ -4875,8 +4965,8 @@
                 ]
             },
             {
-                "UID": 210028709,
-                "ParentUID": 1637494059,
+                "UID": 1958100740,
+                "ParentUID": 725948282,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -4920,8 +5010,8 @@
                 ]
             },
             {
-                "UID": 1978819835,
-                "ParentUID": 1637494059,
+                "UID": 121474858,
+                "ParentUID": 725948282,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -4965,8 +5055,8 @@
                 ]
             },
             {
-                "UID": 1629994723,
-                "ParentUID": 1637494059,
+                "UID": 426066733,
+                "ParentUID": 725948282,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -5010,8 +5100,8 @@
                 ]
             },
             {
-                "UID": 1269125178,
-                "ParentUID": 1637494059,
+                "UID": 731215576,
+                "ParentUID": 725948282,
                 "Name": "Wall_P5 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -5055,8 +5145,8 @@
                 ]
             },
             {
-                "UID": 912572135,
-                "ParentUID": 2106121350,
+                "UID": 1036294798,
+                "ParentUID": 507107662,
                 "Name": "Objects",
                 "Enabled": true,
                 "Active": true,
@@ -5083,8 +5173,8 @@
                 "Components": []
             },
             {
-                "UID": 570291397,
-                "ParentUID": 912572135,
+                "UID": 1373399680,
+                "ParentUID": 1036294798,
                 "Name": "Boxes",
                 "Enabled": true,
                 "Active": true,
@@ -5111,8 +5201,8 @@
                 "Components": []
             },
             {
-                "UID": 226478997,
-                "ParentUID": 570291397,
+                "UID": 1687529632,
+                "ParentUID": 1373399680,
                 "Name": "Box1",
                 "Enabled": true,
                 "Active": true,
@@ -5156,8 +5246,8 @@
                 ]
             },
             {
-                "UID": 2025903363,
-                "ParentUID": 570291397,
+                "UID": 1999849438,
+                "ParentUID": 1373399680,
                 "Name": "Box2",
                 "Enabled": true,
                 "Active": true,
@@ -5201,8 +5291,8 @@
                 ]
             },
             {
-                "UID": 1673388338,
-                "ParentUID": 912572135,
+                "UID": 159046296,
+                "ParentUID": 1036294798,
                 "Name": "Computers",
                 "Enabled": true,
                 "Active": true,
@@ -5229,8 +5319,8 @@
                 "Components": []
             },
             {
-                "UID": 1323867016,
-                "ParentUID": 1673388338,
+                "UID": 464473623,
+                "ParentUID": 159046296,
                 "Name": "Computer4",
                 "Enabled": true,
                 "Active": true,
@@ -5274,8 +5364,8 @@
                 ]
             },
             {
-                "UID": 970446918,
-                "ParentUID": 1673388338,
+                "UID": 779717511,
+                "ParentUID": 159046296,
                 "Name": "Computer3",
                 "Enabled": true,
                 "Active": true,
@@ -5319,15 +5409,15 @@
                 ]
             },
             {
-                "UID": 643552421,
-                "ParentUID": 1673388338,
+                "UID": 1085841048,
+                "ParentUID": 159046296,
                 "Name": "Computer2",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.6584529876708984,
                     0.79339599609375,
-                    -9.94300651550293
+                    -11.417685508728028
                 ],
                 "Rotation": [
                     0.0,
@@ -5364,15 +5454,15 @@
                 ]
             },
             {
-                "UID": 292638679,
-                "ParentUID": 1673388338,
+                "UID": 1412502780,
+                "ParentUID": 159046296,
                 "Name": "Computer1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.6584510803222656,
                     0.79339599609375,
-                    11.361948013305664
+                    12.953619003295899
                 ],
                 "Rotation": [
                     0.0,
@@ -5409,8 +5499,8 @@
                 ]
             },
             {
-                "UID": 2095335232,
-                "ParentUID": 1673388338,
+                "UID": 1721132673,
+                "ParentUID": 159046296,
                 "Name": "Computer5",
                 "Enabled": true,
                 "Active": true,
@@ -5454,8 +5544,8 @@
                 ]
             },
             {
-                "UID": 1765795137,
-                "ParentUID": 1673388338,
+                "UID": 2025794169,
+                "ParentUID": 159046296,
                 "Name": "Computer6",
                 "Enabled": true,
                 "Active": true,
@@ -5499,8 +5589,8 @@
                 ]
             },
             {
-                "UID": 1415995331,
-                "ParentUID": 1673388338,
+                "UID": 184573301,
+                "ParentUID": 159046296,
                 "Name": "Computer7",
                 "Enabled": true,
                 "Active": true,
@@ -5544,8 +5634,8 @@
                 ]
             },
             {
-                "UID": 1066682872,
-                "ParentUID": 912572135,
+                "UID": 495431066,
+                "ParentUID": 1036294798,
                 "Name": "BrokenPods",
                 "Enabled": true,
                 "Active": true,
@@ -5572,8 +5662,8 @@
                 "Components": []
             },
             {
-                "UID": 732338928,
-                "ParentUID": 1066682872,
+                "UID": 827523236,
+                "ParentUID": 495431066,
                 "Name": "Pod1",
                 "Enabled": true,
                 "Active": true,
@@ -5617,8 +5707,8 @@
                 ]
             },
             {
-                "UID": 385323962,
-                "ParentUID": 1066682872,
+                "UID": 1139286074,
+                "ParentUID": 495431066,
                 "Name": "Pod",
                 "Enabled": true,
                 "Active": true,
@@ -5662,8 +5752,8 @@
                 ]
             },
             {
-                "UID": 35106430,
-                "ParentUID": 1066682872,
+                "UID": 1582980707,
+                "ParentUID": 495431066,
                 "Name": "Pod2",
                 "Enabled": true,
                 "Active": true,
@@ -5707,8 +5797,8 @@
                 ]
             },
             {
-                "UID": 1838359951,
-                "ParentUID": 1066682872,
+                "UID": 1898085353,
+                "ParentUID": 495431066,
                 "Name": "Pod3",
                 "Enabled": true,
                 "Active": true,
@@ -5752,8 +5842,8 @@
                 ]
             },
             {
-                "UID": 1492041195,
-                "ParentUID": 1066682872,
+                "UID": 143055283,
+                "ParentUID": 495431066,
                 "Name": "Pod4",
                 "Enabled": true,
                 "Active": true,
@@ -5797,8 +5887,8 @@
                 ]
             },
             {
-                "UID": 1145722439,
-                "ParentUID": 1066682872,
+                "UID": 526040404,
+                "ParentUID": 495431066,
                 "Name": "Pod3 (1)",
                 "Enabled": true,
                 "Active": true,
@@ -5842,8 +5932,8 @@
                 ]
             },
             {
-                "UID": 807410098,
-                "ParentUID": 1066682872,
+                "UID": 835923475,
+                "ParentUID": 495431066,
                 "Name": "Pod3 (2)",
                 "Enabled": true,
                 "Active": true,
@@ -5887,8 +5977,8 @@
                 ]
             },
             {
-                "UID": 461509068,
-                "ParentUID": 1066682872,
+                "UID": 1171148590,
+                "ParentUID": 495431066,
                 "Name": "Pod3 (3)",
                 "Enabled": true,
                 "Active": true,
@@ -5932,8 +6022,8 @@
                 ]
             },
             {
-                "UID": 112962440,
-                "ParentUID": 1066682872,
+                "UID": 1477550611,
+                "ParentUID": 495431066,
                 "Name": "Pod3 (4)",
                 "Enabled": true,
                 "Active": true,
@@ -5977,8 +6067,8 @@
                 ]
             },
             {
-                "UID": 1925754038,
-                "ParentUID": 1066682872,
+                "UID": 1784996947,
+                "ParentUID": 495431066,
                 "Name": "Pod3 (5)",
                 "Enabled": true,
                 "Active": true,
@@ -6022,8 +6112,8 @@
                 ]
             },
             {
-                "UID": 1575884611,
-                "ParentUID": 1066682872,
+                "UID": 2097525616,
+                "ParentUID": 495431066,
                 "Name": "Pod (1)",
                 "Enabled": true,
                 "Active": true,
@@ -6067,8 +6157,8 @@
                 ]
             },
             {
-                "UID": 1230679791,
-                "ParentUID": 1066682872,
+                "UID": 261665565,
+                "ParentUID": 495431066,
                 "Name": "Pod (2)",
                 "Enabled": true,
                 "Active": true,
@@ -6112,8 +6202,8 @@
                 ]
             },
             {
-                "UID": 896753573,
-                "ParentUID": 1066682872,
+                "UID": 569668869,
+                "ParentUID": 495431066,
                 "Name": "Pod (3)",
                 "Enabled": true,
                 "Active": true,
@@ -6157,8 +6247,8 @@
                 ]
             },
             {
-                "UID": 551479132,
-                "ParentUID": 912572135,
+                "UID": 885400104,
+                "ParentUID": 1036294798,
                 "Name": "Batteries",
                 "Enabled": true,
                 "Active": true,
@@ -6185,8 +6275,8 @@
                 "Components": []
             },
             {
-                "UID": 206343933,
-                "ParentUID": 551479132,
+                "UID": 1202106033,
+                "ParentUID": 885400104,
                 "Name": "SmallBattery",
                 "Enabled": true,
                 "Active": true,
@@ -6230,8 +6320,8 @@
                 ]
             },
             {
-                "UID": 2009179728,
-                "ParentUID": 551479132,
+                "UID": 1554666777,
+                "ParentUID": 885400104,
                 "Name": "BigBattery",
                 "Enabled": true,
                 "Active": true,
@@ -6275,8 +6365,8 @@
                 ]
             },
             {
-                "UID": 1661120447,
-                "ParentUID": 551479132,
+                "UID": 1890866586,
+                "ParentUID": 885400104,
                 "Name": "BigBattery (1)",
                 "Enabled": true,
                 "Active": true,
@@ -6320,8 +6410,8 @@
                 ]
             },
             {
-                "UID": 1312643440,
-                "ParentUID": 551479132,
+                "UID": 59601521,
+                "ParentUID": 885400104,
                 "Name": "BigBattery (2)",
                 "Enabled": true,
                 "Active": true,
@@ -6365,8 +6455,8 @@
                 ]
             },
             {
-                "UID": 971963985,
-                "ParentUID": 551479132,
+                "UID": 499049273,
+                "ParentUID": 885400104,
                 "Name": "BigBattery (3)",
                 "Enabled": true,
                 "Active": true,
@@ -6410,8 +6500,8 @@
                 ]
             },
             {
-                "UID": 649107506,
-                "ParentUID": 551479132,
+                "UID": 827451530,
+                "ParentUID": 885400104,
                 "Name": "BigBattery (4)",
                 "Enabled": true,
                 "Active": true,
@@ -6455,13 +6545,58 @@
                 ]
             },
             {
-                "UID": 315738256,
-                "ParentUID": 912572135,
-                "Name": "CircularFence",
+                "UID": 98862851,
+                "ParentUID": 885400104,
+                "Name": "SmallBattery (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.8794898986816406,
+                    -21.243497848510743,
+                    3.3979530334472658,
+                    -64.40359497070313
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.24036261439323426,
+                    0.9706831574440002
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    1.0,
+                    0.9999998807907105
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.8500000238418579,
+                            4.550000190734863,
+                            0.8500000238418579
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1146663815,
+                "ParentUID": 1036294798,
+                "Name": "CircularFence",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.5208797454833984,
                     1.0237884521484376,
                     0.015316963195800782
                 ],
@@ -6483,15 +6618,15 @@
                 "Components": []
             },
             {
-                "UID": 2112168919,
-                "ParentUID": 315738256,
+                "UID": 1457939306,
+                "ParentUID": 1146663815,
                 "Name": "0",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -1.014871597290039,
+                    -1.0,
                     0.22719955444335938,
-                    0.4177694320678711
+                    0.22838211059570313
                 ],
                 "Rotation": [
                     0.0,
@@ -6511,7 +6646,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6528,15 +6663,15 @@
                 ]
             },
             {
-                "UID": 1763274186,
-                "ParentUID": 315738256,
+                "UID": 1768100861,
+                "ParentUID": 1146663815,
                 "Name": "1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -1.1750621795654297,
+                    -1.4937982559204102,
                     0.22719955444335938,
-                    0.7851476669311523
+                    0.8312587738037109
                 ],
                 "Rotation": [
                     0.0,
@@ -6556,7 +6691,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6573,15 +6708,15 @@
                 ]
             },
             {
-                "UID": 1419392165,
-                "ParentUID": 315738256,
+                "UID": 2072135768,
+                "ParentUID": 1146663815,
                 "Name": "2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -0.8303108215332031,
+                    -1.6559944152832032,
                     0.22719955444335938,
-                    1.2426433563232422
+                    0.9817657470703125
                 ],
                 "Rotation": [
                     0.0,
@@ -6601,7 +6736,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6618,21 +6753,21 @@
                 ]
             },
             {
-                "UID": 1071680989,
-                "ParentUID": 315738256,
+                "UID": 232376941,
+                "ParentUID": 1146663815,
                 "Name": "2 (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -0.35187721252441409,
+                    0.17545127868652345,
                     0.22719955444335938,
-                    1.7690095901489258
+                    1.9199914932250977
                 ],
                 "Rotation": [
                     0.0,
-                    0.6343932747840881,
+                    0.6343931555747986,
                     0.0,
-                    0.7730104923248291
+                    0.7730105519294739
                 ],
                 "Scale": [
                     1.0,
@@ -6646,7 +6781,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6663,15 +6798,15 @@
                 ]
             },
             {
-                "UID": 802850406,
-                "ParentUID": 315738256,
+                "UID": 701622481,
+                "ParentUID": 1146663815,
                 "Name": "2 (2)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    0.3431968688964844,
+                    0.41827392578125,
                     0.22719955444335938,
-                    1.7253684997558594
+                    2.1028289794921877
                 ],
                 "Rotation": [
                     0.0,
@@ -6691,7 +6826,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6708,15 +6843,15 @@
                 ]
             },
             {
-                "UID": 460987394,
-                "ParentUID": 315738256,
+                "UID": 1013733424,
+                "ParentUID": 1146663815,
                 "Name": "2 (3)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    0.8575878143310547,
+                    1.247171401977539,
                     0.22719955444335938,
-                    1.283461570739746
+                    1.866532325744629
                 ],
                 "Rotation": [
                     0.0,
@@ -6736,7 +6871,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6753,15 +6888,15 @@
                 ]
             },
             {
-                "UID": 115573711,
-                "ParentUID": 315738256,
+                "UID": 1327932997,
+                "ParentUID": 1146663815,
                 "Name": "2 (4)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    1.0757274627685547,
+                    1.79803466796875,
                     0.22719955444335938,
-                    0.7187786102294922
+                    1.2014045715332032
                 ],
                 "Rotation": [
                     0.0,
@@ -6781,7 +6916,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6798,15 +6933,15 @@
                 ]
             },
             {
-                "UID": 1916808223,
-                "ParentUID": 315738256,
+                "UID": 1641297118,
+                "ParentUID": 1146663815,
                 "Name": "2 (5)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    1.2788581848144532,
+                    1.8557376861572266,
                     0.22719955444335938,
-                    0.2543821334838867
+                    0.3691272735595703
                 ],
                 "Rotation": [
                     0.0,
@@ -6826,7 +6961,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6843,15 +6978,15 @@
                 ]
             },
             {
-                "UID": 1561577979,
-                "ParentUID": 315738256,
+                "UID": 1951667536,
+                "ParentUID": 1146663815,
                 "Name": "2 (6)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    1.2510852813720704,
+                    1.7295074462890626,
                     0.22719955444335938,
-                    -0.2488574981689453
+                    -0.34401988983154299
                 ],
                 "Rotation": [
                     0.0,
@@ -6871,7 +7006,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6888,15 +7023,15 @@
                 ]
             },
             {
-                "UID": 1219854209,
-                "ParentUID": 315738256,
+                "UID": 117130284,
+                "ParentUID": 1146663815,
                 "Name": "2 (7)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    0.9215316772460938,
+                    1.3184261322021485,
                     0.22719955444335938,
-                    -0.6157379150390625
+                    -0.8809471130371094
                 ],
                 "Rotation": [
                     0.0,
@@ -6916,7 +7051,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6933,15 +7068,15 @@
                 ]
             },
             {
-                "UID": 888782452,
-                "ParentUID": 315738256,
+                "UID": 467811261,
+                "ParentUID": 1146663815,
                 "Name": "2 (8)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    0.5724029541015625,
+                    0.7968120574951172,
                     0.22719955444335938,
-                    -0.8566646575927734
+                    -1.1925125122070313
                 ],
                 "Rotation": [
                     0.0,
@@ -6961,7 +7096,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -6978,15 +7113,15 @@
                 ]
             },
             {
-                "UID": 556318275,
-                "ParentUID": 315738256,
+                "UID": 783472875,
+                "ParentUID": 1146663815,
                 "Name": "2 (9)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    0.2299518585205078,
+                    0.2224292755126953,
                     0.22719955444335938,
-                    -1.1560487747192383
+                    -1.1181974411010743
                 ],
                 "Rotation": [
                     0.0,
@@ -7006,7 +7141,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -7023,15 +7158,15 @@
                 ]
             },
             {
-                "UID": 202410830,
-                "ParentUID": 315738256,
+                "UID": 1104077580,
+                "ParentUID": 1146663815,
                 "Name": "2 (10)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -0.20220947265625,
+                    -0.239166259765625,
                     0.22719955444335938,
-                    -1.0165672302246094
+                    -1.2023849487304688
                 ],
                 "Rotation": [
                     0.0,
@@ -7051,7 +7186,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -7068,15 +7203,15 @@
                 ]
             },
             {
-                "UID": 2003506100,
-                "ParentUID": 315738256,
+                "UID": 1414726482,
+                "ParentUID": 1146663815,
                 "Name": "2 (11)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -0.5363922119140625,
+                    -0.6796817779541016,
                     0.22719955444335938,
-                    -0.8027858734130859
+                    -1.0172109603881837
                 ],
                 "Rotation": [
                     0.0,
@@ -7096,7 +7231,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -7113,15 +7248,15 @@
                 ]
             },
             {
-                "UID": 1659693700,
-                "ParentUID": 315738256,
+                "UID": 1729274160,
+                "ParentUID": 1146663815,
                 "Name": "2 (12)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -1.0268592834472657,
+                    -0.9173469543457031,
                     0.22719955444335938,
-                    -0.6861276626586914
+                    -0.6129522323608398
                 ],
                 "Rotation": [
                     0.0,
@@ -7141,7 +7276,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -7158,15 +7293,15 @@
                 ]
             },
             {
-                "UID": 1312052145,
-                "ParentUID": 315738256,
+                "UID": 2071739859,
+                "ParentUID": 1146663815,
                 "Name": "2 (13)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
-                    -1.3019161224365235,
+                    -1.1841144561767579,
                     0.22719955444335938,
-                    -0.23542213439941407
+                    -0.21412372589111329
                 ],
                 "Rotation": [
                     0.0,
@@ -7186,7 +7321,7 @@
                 "Components": [
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             5.900000095367432,
                             0.0,
@@ -7203,8 +7338,8 @@
                 ]
             },
             {
-                "UID": 984461438,
-                "ParentUID": 2106121350,
+                "UID": 270202961,
+                "ParentUID": 507107662,
                 "Name": "RightWall",
                 "Enabled": true,
                 "Active": true,
@@ -7231,8 +7366,8 @@
                 "Components": []
             },
             {
-                "UID": 649699768,
-                "ParentUID": 984461438,
+                "UID": 582801251,
+                "ParentUID": 270202961,
                 "Name": "Wall_P1",
                 "Enabled": true,
                 "Active": true,
@@ -7276,8 +7411,8 @@
                 ]
             },
             {
-                "UID": 300387309,
-                "ParentUID": 984461438,
+                "UID": 923247941,
+                "ParentUID": 270202961,
                 "Name": "Wall_P6",
                 "Enabled": true,
                 "Active": true,
@@ -7321,8 +7456,8 @@
                 ]
             },
             {
-                "UID": 2100786369,
-                "ParentUID": 984461438,
+                "UID": 1237795619,
+                "ParentUID": 270202961,
                 "Name": "Door",
                 "Enabled": true,
                 "Active": true,
@@ -7366,8 +7501,8 @@
                 ]
             },
             {
-                "UID": 1751334668,
-                "ParentUID": 984461438,
+                "UID": 1542665978,
+                "ParentUID": 270202961,
                 "Name": "Wall_P2",
                 "Enabled": true,
                 "Active": true,
@@ -7411,8 +7546,8 @@
                 ]
             },
             {
-                "UID": 1407383026,
-                "ParentUID": 984461438,
+                "UID": 1851156629,
+                "ParentUID": 270202961,
                 "Name": "Wall_P3",
                 "Enabled": true,
                 "Active": true,
@@ -7456,8 +7591,8 @@
                 ]
             },
             {
-                "UID": 1081184739,
-                "ParentUID": 984461438,
+                "UID": 43562704,
+                "ParentUID": 270202961,
                 "Name": "Wall_P4",
                 "Enabled": true,
                 "Active": true,
@@ -7501,8 +7636,8 @@
                 ]
             },
             {
-                "UID": 737720444,
-                "ParentUID": 984461438,
+                "UID": 392155051,
+                "ParentUID": 270202961,
                 "Name": "Wall_P8",
                 "Enabled": true,
                 "Active": true,
@@ -7546,8 +7681,8 @@
                 ]
             },
             {
-                "UID": 389730784,
-                "ParentUID": 984461438,
+                "UID": 699462145,
+                "ParentUID": 270202961,
                 "Name": "Wall_P9",
                 "Enabled": true,
                 "Active": true,
