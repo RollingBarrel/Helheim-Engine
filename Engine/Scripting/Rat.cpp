@@ -50,17 +50,15 @@ void Rat::Idle()
 void Rat::Flee()
 {
 	mAnimationComponent->SetAnimSpeed(2.5f);
-	if (mAiAgentComponent)
+	if (mAiAgentComponent && !mIsFleeing)
 	{
-		float distance = mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition());
-		float3 newDir = ((mGameObject->GetWorldPosition() - mPlayer->GetWorldPosition()).Normalized() + mEnemyCollisionDirection).Normalized();
-		float3 newPos = mGameObject->GetWorldPosition() + newDir * mSpeed;
-		mAiAgentComponent->SetNavigationPath(App->GetNavigation()->FindNearestPoint(newPos, float3(1.0f)));
+		!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
 		mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 	}
 
 	if (!IsPlayerInRange(mFleeRadius))
 	{
+		mIsFleeing = false;
 		mCurrentState = EnemyState::IDLE;
 	}
 }
@@ -70,6 +68,8 @@ void Rat::OnCollisionEnter(CollisionData* collisionData)
 {
 	if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
 	{
-		mEnemyCollisionDirection = collisionData->collisionNormal;
+		mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
+		mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+		mIsFleeing = true;
 	}
 }
