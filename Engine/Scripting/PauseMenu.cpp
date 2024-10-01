@@ -947,11 +947,9 @@ void PauseMenu::HoverVideoMenu(VIDEO_SETTING_TYPE type)
     {
     case VIDEO_SETTING_TYPE::VSYNC:
         OnVSyncButtonHover();
-        LOG("VSYNC");
         break;
     case VIDEO_SETTING_TYPE::FULL_SCREEN:
         OnFullscreenButtonHover();
-        LOG("FULLSCREEN");
         break;
     }
 }
