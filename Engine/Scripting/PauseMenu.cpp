@@ -546,13 +546,13 @@ void PauseMenu::Controls()
         {
             if (mCurrentMenu == MENU_TYPE::KEYBOARD)
             {
-                mOptionsOption = 7;
+                mOptionsOption = 4;
                 mKeyboardClicked->SetEnabled(false);
                 OnKeyboardButtonHover();
             }
             else if (mCurrentMenu == MENU_TYPE::CONTROLS)
             {
-                mOptionsOption = 8;
+                mOptionsOption = 5;
                 mControllerClicked->SetEnabled(false);
                 OnControllerButtonHover();
             }
@@ -579,7 +579,7 @@ void PauseMenu::Controls()
                 else
                 {
                     mAudioSettingOption = AUDIO_SETTING_TYPE::MASTER; // Reset the current setting to the first one
-                    mOptionsOption = 9;
+                    mOptionsOption = 6;
                     mAudioClicked->SetEnabled(false);
                     OnAudioSettingsButtonHover();
                 }
