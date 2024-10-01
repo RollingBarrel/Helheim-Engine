@@ -2,6 +2,8 @@
 #include "Enemy.h"
 
 class BoxColliderComponent;
+class DecalComponent;
+class ParticleSystemComponent;
 struct CollisionData;
 
 GENERATE_BODY(Rat);
@@ -19,9 +21,12 @@ public:
 private:
 	void Idle() override;
 	void Flee() override;
+	void Death() override;
 	void OnCollisionEnter(CollisionData* collisionData);
 	
 	BoxColliderComponent* mCollider = nullptr;
+	DecalComponent* mDecalComponent = nullptr;
+	ParticleSystemComponent* mDeathParticles = nullptr;
 	float mFleeRadius = 5.0f;
 };
 

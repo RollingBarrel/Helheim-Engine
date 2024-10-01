@@ -6,6 +6,8 @@
 #include "AnimationComponent.h"
 #include "AIAGentComponent.h"
 #include "BoxColliderComponent.h"
+#include "DecalComponent.h"
+#include "ParticleSystemComponent.h"
 
 #include "GameManager.h"
 
@@ -23,13 +25,15 @@ void Rat::Start()
 
 	mSpeed = 5.0f;
 	mFleeRadius = 3.0f;
-
+	mDeathTime = 4.0f;
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
 	{
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&Rat::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
+	mDeathParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	mDecalComponent = static_cast<DecalComponent*>(mGameObject->GetComponentInChildren(ComponentType::DECAL));
 }
 
 void Rat::Update()
@@ -52,7 +56,7 @@ void Rat::Flee()
 	mAnimationComponent->SetAnimSpeed(2.5f);
 	if (mAiAgentComponent && !mIsFleeing)
 	{
-		!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
+		mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition());
 		mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 	}
 
@@ -63,6 +67,19 @@ void Rat::Flee()
 	}
 }
 
+void Rat::Death()
+{
+	if (mDeathTimer.DelayWithoutReset(mDeathTime))
+	{
+		mGameObject->SetEnabled(false);
+		return;
+	}
+
+	float halfDeathTime = mDeathTime / 2.0f;
+	if (mDeathTimer.GetTimePassed() >= halfDeathTime)
+	mDecalComponent->SetFadeFactor(1.0f - ((mDeathTimer.GetTimePassed() - halfDeathTime) / halfDeathTime));
+}
+
 
 void Rat::OnCollisionEnter(CollisionData* collisionData)
 {
@@ -71,5 +88,24 @@ void Rat::OnCollisionEnter(CollisionData* collisionData)
 		mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
 		mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		mIsFleeing = true;
+	}
+
+	if (collisionData->collidedWith->GetTag() == "Player")
+	{
+		if (mGameObject->GetWorldPosition().Distance(collisionData->collidedWith->GetWorldPosition()) < 0.4f)
+		{
+			mCurrentState = EnemyState::DEATH;
+			for (int i = 0; i < mMeshComponents.size(); ++i)
+			{
+				mMeshComponents[i]->SetEnable(false);
+			}
+			if (mDecalComponent)
+			{
+				mDecalComponent->SetEnable(true);
+				mDecalComponent->SetFadeFactor(1.0f);
+			}
+			if (mDeathParticles) mDeathParticles->SetEnable(true);
+			if (mAiAgentComponent) mAiAgentComponent->PauseCrowdNavigation();
+		}
 	}
 }
