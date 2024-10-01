@@ -23,7 +23,6 @@ StateType SpecialState::HandleInput()
 	mSpecialAttackTimer += App->GetDt();
 	if (mSpecialAttackTimer < mSpecialWeapon->GetAttackDuration())
 	{
-		mPlayerController->SetSpineAnimation("tSpecial", 0.3f);
 		return StateType::SPECIAL;
 	}
 
@@ -42,7 +41,6 @@ void SpecialState::Enter()
 	mSpecialWeapon = mPlayerController->GetSpecialWeapon();
 	if (mSpecialWeapon)
 	{
-		mPlayerController->SetSpineAnimation("tSpecial", 0.1f);
 		mSpecialWeapon->Enter();
 	}
 }

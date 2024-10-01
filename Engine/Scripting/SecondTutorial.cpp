@@ -7,6 +7,7 @@
 #include "GameManager.h"
 #include "Keys.h"
 #include "BattleArea.h"
+#include "PlayerController.h"
 
 CREATE(SecondTutorial)
 {
@@ -57,23 +58,31 @@ void SecondTutorial::Start()
 
 void SecondTutorial::Update()
 {
-    if (!mCompleted)
+    if (!mPart1Completed)
     {
         if (mTutorialArea) mCurrentStep = mTutorialArea->GetCurrentWave();
         Tutorial(); 
         if (App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN || App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN)
         {
-            mCompleted = true;
-            //mTutorialArea->SetSpawnerCycles(3);
+            mPart1Completed = true;
+            DisableFirstPart();
             mTutorialArea->SetWaves(1);
             GameManager::GetInstance()->UnlockSecondary();
             GameManager::GetInstance()->UnlockGrenade(true);
-            GameManager::GetInstance()->UnlockUltimate(true);
         }
     }
     else
     {
-        mGameObject->SetEnabled(false);
+        DisableFirstPart();
+        GameManager::GetInstance()->UnlockUltimate(true);
+        if (!mPart2Completed)
+        {
+            UltTutorial();
+        }
+        else
+        {
+            mGameObject->SetEnabled(false);
+        }
     }
 }
 
@@ -99,19 +108,7 @@ void SecondTutorial::Tutorial()
             if (mGrenadeUsed)
             {
                 mGrenadeTutorial->SetEnabled(false);
-                mUltimateTutorial->SetEnabled(true);
-                GameManager::GetInstance()->UnlockUltimate(true);
-                if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN)
-                    mUltimateUsed = true;
-            }
-            else
-                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
-            break;
-        case 0:
-            if (mUltimateUsed)
-            {
-                mUltimateTutorial->SetEnabled(false);
-                mCompleted = true;
+                mPart1Completed = true;
             }
             else
                 mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
@@ -140,19 +137,6 @@ void SecondTutorial::Tutorial()
             if (mGrenadeUsed)
             {
                 mGrenadeTutorialCon->SetEnabled(false);
-                mUltimateTutorialCon->SetEnabled(true);
-                GameManager::GetInstance()->UnlockUltimate(true);
-                if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN)
-                    mUltimateUsed = true;
-            }
-            else
-                mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
-            break;
-        case 0:
-            if (mUltimateUsed)
-            {
-                mUltimateTutorialCon->SetEnabled(false);
-                mCompleted = true;
             }
             else
                 mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
@@ -161,4 +145,44 @@ void SecondTutorial::Tutorial()
             break;
         }
     }
+}
+
+void SecondTutorial::UltTutorial()
+{
+    int ultResource = GameManager::GetInstance()->GetPlayerController()->GetUltimateResource();
+    if (GameManager::GetInstance()->UsingController())
+    {
+        if (!mUltTutorialStarted && ultResource >= 100)
+        {
+            mUltimateTutorialCon->SetEnabled(true);
+            mUltTutorialStarted = true;
+        }
+        else
+        {
+            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN) mPart2Completed = true;
+        }
+    }
+    else
+    {
+        if (!mUltTutorialStarted && ultResource >= 100)
+        {
+            mUltimateTutorial->SetEnabled(true);
+            mUltTutorialStarted = true;
+        }
+        else
+        {
+            if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) mPart2Completed = true;
+        }
+    }
+    
+}
+
+void SecondTutorial::DisableFirstPart()
+{
+    mShootTutorialCon->SetEnabled(false);
+    mSecondaryTutorialCon->SetEnabled(false);
+    mGrenadeTutorialCon->SetEnabled(false);
+    mShootTutorial->SetEnabled(false);
+    mSecondaryTutorial->SetEnabled(false);
+    mGrenadeTutorial->SetEnabled(false);
 }

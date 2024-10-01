@@ -15,6 +15,7 @@
 #include "HudController.h"
 #include "MathFunc.h"
 #include "BossBattleArea.h"
+#include <algorithm>
 
 #define LASER_WIND_UP 2.625f
 #define BULLETS_ANIMATION 146.0f / 24.0f
@@ -41,6 +42,10 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mPhase1Hp);
     MEMBER(MemberType::FLOAT, mPhase2Hp);
     MEMBER(MemberType::FLOAT, mDeathTime);
+    SEPARATOR("AREA POSITIONS");
+    MEMBER(MemberType::GAMEOBJECT, mAreas[0]);
+    MEMBER(MemberType::GAMEOBJECT, mAreas[1]);
+    MEMBER(MemberType::GAMEOBJECT, mAreas[2]);
     SEPARATOR("BULLET HELL");
     MEMBER(MemberType::FLOAT, mBulletHellDuration);
     MEMBER(MemberType::FLOAT, mBulletSpeed);
@@ -71,12 +76,26 @@ void EnemyBoss::Start()
 
     for (const char* prefab : mTemplateNames)
     {
-        GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
-        if (bombTemplate)
+        if (prefab == "BombingTemplateSingle.prfb")
         {
-            bombTemplate->SetEnabled(false);
-            mTemplates.push_back(bombTemplate);
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+            if (bombTemplate)
+            {
+                bombTemplate->SetEnabled(false);
+                mTemplates.push_back(bombTemplate);
+            }
+			break;
         }
+
+		for (int i = 0; i < 3; i++)
+		{
+            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject);
+            if (bombTemplate)
+            {
+                bombTemplate->SetEnabled(false);
+                mTemplates.push_back(bombTemplate);
+            }
+		}
     }
 
     mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
@@ -84,6 +103,14 @@ void EnemyBoss::Start()
     {
         mAnimationComponent->SetIsPlaying(true);
         mAnimationComponent->SetLoop(false);
+    }
+
+    for (int i = 0; i < std::size(mAreas); ++i) 
+    {
+        if (mAreas[i]) 
+        {
+            mAreaPositions.push_back(mAreas[i]->GetWorldPosition());
+        }
     }
 }
 
@@ -276,21 +303,72 @@ void EnemyBoss::BombAttack()
 {
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_ERUPTION);
     mCurrentState = EnemyState::ATTACK;
+
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tEruption", mAttackTransitionDuration);
-    float3 target = mPlayer->GetWorldPosition();
-    int index = rand() % mTemplates.size();
-    GameObject* bombGO = mTemplates[index];
-    bombGO->SetWorldPosition(target);
-	float randRotation = static_cast<float>(rand() % 360);
-	float3 bombRotation = float3(0.0f, randRotation, 0.0f);
-	bombGO->SetWorldRotation(bombRotation);
-    std::vector<Component*> scriptComponents;
-    bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-    bombGO->SetEnabled(true);
-    for (Component* scriptComponent : scriptComponents)
+    int index = rand() % (std::size(mTemplateNames) - 1);
+
+    if (index == 2)
     {
-        BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+			float playerAreaDistance = mPlayer->GetWorldPosition().Distance(mAreaPositions[i]);
+            mPlayerAreaDistances[playerAreaDistance] = i;
+        }
+
+		int playerZone = mPlayerAreaDistances.begin()->second;
+		int freeZone = 0;
+
+		//If the player is in the middle, the free are will be the hardest to reach for the player
+		if (playerZone == 1) freeZone = mPlayerAreaDistances.rbegin()->second;
+		else freeZone = mPlayerAreaDistances.at(std::next(mPlayerAreaDistances.begin(), 1)->first);
+
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+            int templateIndex = index * 3 + i;
+			if (i == freeZone) continue;
+
+            GameObject* bombGO = mTemplates[templateIndex];
+            bombGO->SetWorldPosition(mAreaPositions[i]);
+            std::vector<Component*> scriptComponents;
+            bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+            bombGO->SetEnabled(true);
+            for (Component* scriptComponent : scriptComponents)
+            {
+                BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+                bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+            }
+        }
+		mPlayerAreaDistances.clear();
+    }
+    else
+    {
+		//Bomb in player position
+        GameObject* playerBombGO = mTemplates[9];
+        playerBombGO->SetWorldPosition(mPlayer->GetWorldPosition());
+        std::vector<Component*> scriptComponents;
+        playerBombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+        playerBombGO->SetEnabled(true);
+        for (Component* scriptComponent : scriptComponents)
+        {
+            BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+            bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+        }
+
+		//Bombs in area positions
+        for (int i = 0; i < mAreaPositions.size(); i++)
+        {
+            int templateIndex = index * 3 + i;
+            GameObject* bombGO = mTemplates[templateIndex];
+            bombGO->SetWorldPosition(mAreaPositions[i]);
+            std::vector<Component*> scriptComponents;
+            bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+            bombGO->SetEnabled(true);
+            for (Component* scriptComponent : scriptComponents)
+            {
+                BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+                bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage);
+            }
+        }
     }
 }
 
@@ -326,7 +404,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
         {
             // Give bullet random directon
             float angle = (-pi / 2) + offset + i * alpha;
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             bulletGO->SetWorldPosition(bulletOriginPosition);
 
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
@@ -368,7 +446,7 @@ void EnemyBoss::BulletHellPattern2() //Arrow
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * space * (mBulletsWave % nBullets) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -395,7 +473,7 @@ void EnemyBoss::BulletHellPattern3() //Two streams
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float angle = alpha * i;
             float3 direction = float3(mFront.x * cos(angle) - mFront.z * sin(angle), mFront.y, mFront.x * sin(angle) + mFront.z * cos(angle));
             direction.Normalize();
@@ -436,7 +514,7 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
         for (int i : { -1, 1 })
         {
             // Give bullet random directon
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             float3 position = bulletOriginPosition + right * width * sin((pi*3/4)* (mBulletsWave % nBullets) / (nBullets - 1)) * i;
 
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -464,7 +542,7 @@ void EnemyBoss::BulletHellPattern5() //Stream
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
 
-        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+        GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
         float3 direction = float3(mFront.x * cos(alpha) - mFront.z * sin(alpha), mFront.y, mFront.x * sin(alpha) + mFront.z * cos(alpha));
         LookAt(direction, BEAT_TIME / 8);
         direction.Normalize();
@@ -492,7 +570,7 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
             float alpha = 2 * pi * i / nBullets;
             float3 direction = float3(front.x * cos(alpha) - front.z * sin(alpha), front.y, front.x * sin(alpha) + front.z * cos(alpha));
             direction.Normalize();
-            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::ENEMY_BULLET);
+            GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             Bullet* bulletScript = static_cast<Bullet*>(static_cast<ScriptComponent*>(bulletGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
@@ -624,7 +702,6 @@ void EnemyBoss::UpdatePhase3()
             case -1:// Start with bombs. Never repeat this sequence
                 BombAttack();
                 break;
-
             }
         }
         break;

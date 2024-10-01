@@ -25,14 +25,14 @@ void PlayerCamera::Start()
 
     mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
-    mGameObject->Translate(-(mGameObject->GetFront()) * mDistanceToPlayer);
+    mGameObject->Translate(-(mGameObject->GetFront().Add(mOffset)) * mDistanceToPlayer);
 }
 
 void PlayerCamera::Update()
 {
     mGameObject->SetWorldPosition(mFollowTarget->GetWorldPosition());
     //mGameObject->SetWorldRotation(float3(DegToRad(mYawAngle), DegToRad(mPitchAngle), 0.0f));
-    mGameObject->Translate(-(mGameObject->GetFront())*mDistanceToPlayer);
+    mGameObject->Translate(-(mGameObject->GetFront().Add(mOffset))*mDistanceToPlayer);
 
     if (!mShakeTimer.Delay(mShakeDuration))
     {

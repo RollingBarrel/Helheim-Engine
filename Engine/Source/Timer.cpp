@@ -193,6 +193,6 @@ void Timer::SetVsyncStatus(bool vsyncStatus)
 	mEnabledVsync = vsyncStatus;
 	if (App->GetCurrentClock() == this)
 	{
-		SDL_GL_SetSwapInterval(mEnabledVsync ? 1 : 0);
+		SDL_GL_SetSwapInterval(0);
 	}
 }

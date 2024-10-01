@@ -56,6 +56,7 @@ void AttackState::Enter()
 
 void AttackState::Exit()
 {
+	/*
 	if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
 	{
 		mPlayerController->SetSpineAnimation("tIdleRanged", 0.01f);
@@ -65,6 +66,7 @@ void AttackState::Exit()
 		mPlayerController->SetSpineAnimation("tIdleMelee", 0.01f);
 		mPlayerController->SetAnimationSpeed(1.0f);
 	}
+	*/
 
 	mWeapon->Exit();
 	mWeapon = nullptr;

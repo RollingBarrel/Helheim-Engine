@@ -323,6 +323,10 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "PassThroughPixel.glsl";
 	mPassThroughProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
+	sourcesPaths[0] = "ui.vs";
+	sourcesPaths[1] = "uiBlurPass.fs";
+	mUiCopyBlurTexProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+
 	sourcesPaths[0] = "PBRCT_VertexShader.glsl";
 	sourcesPaths[1] = "PBRCT_GeometryPass.glsl";
 	mPbrGeoPassProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
@@ -342,9 +346,9 @@ bool ModuleOpenGL::Init()
 	sourcesPaths[1] = "GaussianBlur.glsl";
 	mGaussianBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
-	//sourcesPaths[0] = "GameVertex.glsl";
-	//sourcesPaths[1] = "SsaoBlur.glsl";
-	//mSsaoBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "GameVertex.glsl";
+	sourcesPaths[1] = "SsaoBlur.glsl";
+	mSimpleBlurProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "KawaseDualFilterDownBlur.glsl";
@@ -503,6 +507,33 @@ bool ModuleOpenGL::Init()
 	glUniform1ui(9, mVolMaxSteps);
 	glUseProgram(0);
 
+	
+	//ui
+	glGenVertexArrays(1, &mQuadVAO);
+	glBindVertexArray(mQuadVAO);
+
+	float vertices[] = {
+		// texture coordinates
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
+		0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
+		-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+		0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
+	};
+
+	glGenBuffers(1, &mQuadVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, mQuadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)0);
+
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(2 * sizeof(float)));
+
+	glBindVertexArray(0);
+
 	return true;
 }
 
@@ -539,6 +570,10 @@ bool ModuleOpenGL::CleanUp()
 	delete mSpotsBoundingSpheres;
 	delete mVolSpotsBuffer;
 	delete mDLightUniBuffer;
+
+	//ui
+	glDeleteBuffers(1, &mQuadVBO);
+	glDeleteVertexArrays(1, &mQuadVAO);
 
 	glDeleteVertexArrays(1, &mSkyVao);
 	glDeleteVertexArrays(1, &mEmptyVAO);
@@ -721,7 +756,7 @@ void ModuleOpenGL::InitBloomTextures(unsigned int width, unsigned int height)
 	for (int i = 0; i <= mBlurPasses; ++i)
 	{
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, w, h, 0, GL_RGBA, GL_FLOAT, NULL);
 		w /= 2;
 		h /= 2;
 	}
@@ -950,16 +985,67 @@ unsigned int ModuleOpenGL::BlurTexture(unsigned int texId, bool modifyTex, unsig
 		w *= 2;
 		h *= 2;
 		glViewport(0, 0, w, h);
-		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+		if (i == 0 && modifyTex)
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texId, 0);
+		else
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[i], 0);
+
 		glDrawArrays(GL_TRIANGLES, 0, 3);
 		glBindTexture(GL_TEXTURE_2D, mBlurTex[i]);
-		if(i == 1 && modifyTex)
-			glBindTexture(GL_TEXTURE_2D, texId);
 	}
 	glBindVertexArray(0);
-	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	glViewport(0 , 0, mSceneWidth, mSceneHeight);
 	glPopDebugGroup();
+	return mBlurTex[0];
+}
+
+void ModuleOpenGL::GaussianBlurTexture(unsigned int texId, unsigned int passes)
+{
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "GaussianBlur");
+	//Passes have to be pair
+	if ((passes&1) == 1)
+		passes += 1;
+
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glActiveTexture(GL_TEXTURE0);
+	glUseProgram(mGaussianBlurProgramId);
+	glBindVertexArray(mEmptyVAO);
+	bool horizontal = true;
+	unsigned int drawTex = mBlurTex[0];
+	unsigned int sampleTex = texId;
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+	glBindTexture(GL_TEXTURE_2D, sampleTex);
+	for (int i = 0; i < (passes*2); ++i)
+	{
+		glUniform1ui(0, horizontal);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
+		horizontal = !horizontal;
+		if (i != 0 && (i&1) == 0)
+		{
+			unsigned int tmp = drawTex;
+			drawTex = sampleTex;
+			sampleTex = tmp;
+			glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, drawTex, 0);
+			glBindTexture(GL_TEXTURE_2D, sampleTex);
+		}
+	}
+	glPopDebugGroup();
+}
+
+unsigned int ModuleOpenGL::SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize)
+{
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "SimpleBlur");
+
+	glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mBlurTex[0], 0);
+	glUseProgram(mSimpleBlurProgramId);
+	glBindVertexArray(mEmptyVAO);
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texId);
+	glUniform1i(0, halfKernelSize);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glPopDebugGroup();
+
 	return mBlurTex[0];
 }
 
@@ -1431,7 +1517,7 @@ void ModuleOpenGL::Draw()
 		//glDisable(GL_STENCIL_TEST);
 		glDepthMask(0x00);
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, mGPosition);
+		glBindTexture(GL_TEXTURE_2D, mGDepth);
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, mGNormals);
 		glBindVertexArray(mEmptyVAO);
@@ -1441,7 +1527,7 @@ void ModuleOpenGL::Draw()
 		//glEnable(GL_STENCIL_TEST);
 
 		//dual filter blur
-		BlurTexture(mSSAO, true);
+		BlurTexture(mSSAO, true, 1);
 
 		//Gausian blur
 		//glBindFramebuffer(GL_FRAMEBUFFER, mBlurFBO);
@@ -1487,7 +1573,7 @@ void ModuleOpenGL::Draw()
 	}
 
 	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive);
+	unsigned int blurredTex = BlurTexture(mGEmissive, false, 2);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
@@ -1503,7 +1589,7 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glActiveTexture(GL_TEXTURE3);
-	glBindTexture(GL_TEXTURE_2D, mGPosition);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glActiveTexture(GL_TEXTURE4);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glActiveTexture(GL_TEXTURE5);
@@ -1518,8 +1604,6 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_BUFFER, mPLightListImgTex);
 	glActiveTexture(GL_TEXTURE11);
 	glBindTexture(GL_TEXTURE_BUFFER, mSLightListImgTex);
-	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT | GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	//glMemoryBarrier(GL_TEXTURE_FETCH_BARRIER_BIT);
 	glBindVertexArray(mEmptyVAO);
 	glUseProgram(mPbrLightingPassProgramId);
 	glDrawArrays(GL_TRIANGLES, 0, 3);

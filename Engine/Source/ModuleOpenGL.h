@@ -92,6 +92,7 @@ public:
 	unsigned int GetParticleProgramId() const { return mParticleProgramId; }
 	unsigned int GetTrailProgramId() const { return mTrailProgramId; }
 	unsigned int GetUIImageProgram() const { return mUIImageProgramId; }
+	unsigned int GetUICopyBlurTexProgram() const { return mUiCopyBlurTexProgramId; }
 	unsigned int GetTextProgram() const { return mTextProgramId; }
 	unsigned int GetSkinningProgramId() const { return mSkinningProgramId; }
 	unsigned int GetSelectSkinsProgramId() const { return mSelectSkinsProgramId; }
@@ -151,6 +152,8 @@ public:
 	float mAoBias = 0.0001f;
 	
 	unsigned int BlurTexture(unsigned int texId, bool modifyTex = false, unsigned int passes = 0) const;
+	void GaussianBlurTexture(unsigned int texId, unsigned int passes);
+	unsigned int SimpleBlurTexture(unsigned int texId, unsigned int halfKernelSize);
 	//Set the intensity between 0 and 1
 	void SetBloomIntensity(float intensity);
 	float GetBloomIntensity() const { return mBloomIntensity; };
@@ -177,6 +180,9 @@ public:
 	int GetVolMaxSteps() const { return mVolMaxSteps; }
 	void SetVolMaxSteps(int volMaxSteps);
 
+	unsigned int GetQuadVBO() const { return mQuadVBO; }
+	unsigned int GetQuadVAO() const { return mQuadVAO; }
+
 private:
 	void* context = nullptr;
 
@@ -198,7 +204,7 @@ private:
 	//AO
 	unsigned int mSSAO;
 	//bloom bramebuffer
-	static const unsigned int mBlurPasses = 3;
+	static const unsigned int mBlurPasses = 4;
 	unsigned int mBlurTex[mBlurPasses + 1];
 	unsigned int mBlurFBO;
 	float mBloomIntensity = 0.5f;
@@ -222,6 +228,7 @@ private:
 	unsigned int mPbrGeoPassProgramId = 0;
 	unsigned int mPbrLightingPassProgramId = 0;
 	unsigned int mPassThroughProgramId = 0;
+	unsigned int mUiCopyBlurTexProgramId = 0;
 	unsigned int mSkyBoxProgramId = 0;
 	unsigned int mDebugDrawProgramId = 0;
 	unsigned int mUIImageProgramId = 0;
@@ -242,7 +249,7 @@ private:
 	unsigned int mDownsampleProgramId = 0;
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
-	//unsigned int mSsaoBlurProgramId = 0;
+	unsigned int mSimpleBlurProgramId = 0;
 	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
 	unsigned int mNoiseProgramId = 0;
@@ -314,6 +321,9 @@ private:
 	float mVolAnisotropy = 0.35f;
 	float mVolStepSize = 1.0f;
 	int mVolMaxSteps = 16;
+
+	unsigned int mQuadVBO = 0;
+	unsigned int mQuadVAO = 0;
 };
 
 #endif /* _MODULEOPENGL_H_ */
