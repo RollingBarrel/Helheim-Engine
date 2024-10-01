@@ -19,18 +19,19 @@ public:
 	void Start() override;
 	void Update() override;
 
-	float mInterval;
-	float mDamageTick;
+	float mInterval = 0.0f;
+	float mDamageTick = 0.0f;
 
 private:
 
+	void SetLength(float targetPercent, float speed);
 	void OnCollisionEnter(CollisionData* collisionData);
 	BoxColliderComponent* mCollider = nullptr;
 
 	GameObject* mLaserGO = nullptr;
-	GameObject* mEnemyCollisionParticle = nullptr;
+	GameObject* mLinesGO = nullptr;
 	TimerScript mDamageTimer;
-	TimerScript mDamageEffectTimer;
-
+	TimerScript mExpansionTimer;
+	float mLengthPercent = 10.0f;
 };
 
