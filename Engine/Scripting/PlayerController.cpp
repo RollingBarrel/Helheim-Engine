@@ -149,9 +149,9 @@ void PlayerController::Start()
 
     mMaxShield = mPlayerStats->GetMaxHealth();
     mShield = mMaxShield;
-
+    mGodMode = mPlayerStats->GetGodMode();
     mPlayerSpeed = mPlayerStats->GetSpeed();
-
+    mDamageModifier = mPlayerStats->GetDamageModifier();
     // States
     mDashState = new DashState(this, mDashCoolDown);
     mIdleState = new IdleState(this, 0.0f);
@@ -253,6 +253,10 @@ void PlayerController::Start()
     mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
     if (mAnimationComponent)
     {
+        mAnimationComponent->SetIsPlaying(true);
+        mAnimationComponent->SendTrigger("tIdle", 0.1f);
+        mAnimationComponent->SendSpineTrigger("tAim", 0.1f);
+
         mAnimationComponent->SetIsPlaying(true);
     }
     // Add Audio Listener
@@ -367,10 +371,12 @@ void PlayerController::CheckInput()
             case StateType::IDLE:
                 if (GetPlayerUpperState()->GetType() != StateType::ATTACK)
                 {
+                    /*
                     if (GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
                         SetSpineAnimation("tIdleRanged", 0.3f);
                     else
                         SetSpineAnimation("tIdleMelee", 0.3f);
+                    */
                 }
                 mLowerState = mIdleState;
                 break;
@@ -658,8 +664,10 @@ void PlayerController::SetSpeed(float speed)
 
 void PlayerController::SetWeaponDamage(float percentage)
 {
-    mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
-    mPlayerStats->SetDamageModifier(mDamageModifier);
+    if (mDamageModifier < 5000.0f) {
+        mDamageModifier = mPlayerStats->GetDamageModifier() * percentage;
+        mPlayerStats->SetDamageModifier(mDamageModifier);
+    }
 }
 
 void PlayerController::SetMaxShield(float percentage)
@@ -776,15 +784,18 @@ void PlayerController::CheckDebugOptions()
     if (input->GetKey(Keys::Keys_G) == KeyState::KEY_DOWN)
     {
         mGodMode = !mGodMode;
+        App->GetScene()->GetPlayerStats()->SetGodMode(mGodMode);
     }
     if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
     {
         if (mDamageModifier != 99999.0f)
         {
             mDamageModifier = 99999.0f;
+            App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
         }
         else
         {
+            App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
             mDamageModifier = 1.0f;
         }
      }
@@ -795,6 +806,10 @@ void PlayerController::CheckDebugOptions()
     else if (input->GetKey(Keys::Keys_2) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::RED);
+    }
+    else if (input->GetKey(Keys::Keys_3) == KeyState::KEY_DOWN)
+    {
+        mUltimateResource = 100;
     }
     else if (input->GetKey(Keys::Keys_F7) == KeyState::KEY_DOWN)
     {
@@ -932,8 +947,7 @@ void PlayerController::ResetEnergy()
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100) 
-        mUltimateResource += 10;
+    if (mUltimateResource != 100) mUltimateResource += 20;
     else return;
 }
 
@@ -941,7 +955,7 @@ void PlayerController::EnableUltimate(bool enable)
 {
     if (mUltimateGO)
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
         mUltimateGO->SetEnabled(enable);
     }
 }
@@ -950,6 +964,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
 {
     if (mUltimateChargeGO)
     {
+        if(enable) mUltSound = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_ULTIMATE); 
         mUltimateChargeGO->SetEnabled(enable);
     }
 }
@@ -1041,6 +1056,12 @@ void PlayerController::ActivateHitEffect()
         meshComponent->SetBaseColorFactor(float4(255.0f, 0.0f, 0.0f, 1.0f));
     }   
         mHit = true;    
+}
+
+void PlayerController::AddKill()
+{
+    mKillCount++;
+    if (mUpperStateType != StateType::ULTIMATE && mUltimateUnlocked) AddUltimateResource(); 
 }
 
 void PlayerController::CheckHitEffect()

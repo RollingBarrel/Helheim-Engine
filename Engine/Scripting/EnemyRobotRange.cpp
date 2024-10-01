@@ -34,7 +34,7 @@ void EnemyRobotRange::Start()
 {
     Enemy::Start();
     mDisengageTime = 0.5f;
-
+    mAttackCoolDown = 1.0f;
     // COLLIDER
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
@@ -46,8 +46,15 @@ void EnemyRobotRange::Start()
 
 void EnemyRobotRange::Attack()
 {
-    Enemy::Attack();
-
+    mAiAgentComponent->PauseCrowdNavigation();
+    mAiAgentComponent->StartCrowdNavigation();
+    bool playerReachable = IsPlayerReachable();
+    if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
+    {
+        mFirstAttack = true;
+        mAttackCoolDownTimer.Reset();
+        mCurrentState = EnemyState::CHASE;
+    }
     float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
     direction.y = 0;
     direction.Normalize();
@@ -58,15 +65,18 @@ void EnemyRobotRange::Attack()
         mGameObject->SetWorldRotation(float3(0, angle, 0));
 
     }
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
+    if (mFirstAttack || mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
+        mFirstAttack = false;
         mAnimationComponent->RestartStateAnimation();
         RangeAttack();
-        if (IsPlayerInRange(mAttackDistance / 2.0f))
-        {
-            if (mAiAgentComponent) mAiAgentComponent->StartCrowdNavigation();
-            mCurrentState = EnemyState::FLEE;
-        }
+
+    }
+    if (IsPlayerInRange(mAttackDistance * 0.4f))
+    {
+        mFirstAttack = true;
+        mAttackCoolDownTimer.Reset();
+        mCurrentState = EnemyState::FLEE;
     }
 }
 
@@ -104,7 +114,10 @@ void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
 {
     if (collisionData->collidedWith->GetTag() == "Door" || collisionData->collidedWith->GetTag() == "Bridge")
     {
-        mEnemyCollisionDirection = collisionData->collisionNormal;
+        mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
+        mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
+        mIsFleeing = true;
+       // mEnemyCollisionDirection = collisionData->collisionNormal;
         //LOG("HOLA")
     }
 }

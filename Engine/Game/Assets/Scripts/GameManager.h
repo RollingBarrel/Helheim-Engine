@@ -56,9 +56,13 @@ public:
     void UnlockGrenade(bool unlock);
     
     void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
-    void PauseBackgroundAudio(bool pause);
+    void PauseBackgroundAudio(bool pause); 
 
     void HandleBossAudio(int stage);
+
+    void RegisterPlayerKill();
+    void ActivateBossCamera(float targetDistance);
+    void BossCameraMovement();
 
 private:
     void PrepareAudio();
@@ -109,4 +113,6 @@ private:
     const char* mLevelName = nullptr;
 
     bool mIsFightingBoss = false;
+    bool mCameraLerp = false;
+    float mBossCameraTarget = 11.0f;
 };
