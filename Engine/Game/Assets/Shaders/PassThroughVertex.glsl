@@ -20,7 +20,7 @@ readonly layout(std430, row_major, binding = 10) buffer Transforms
 
 void main()
 {
-	uint instace_index =  gl_BaseInstance;
+	uint instace_index = gl_BaseInstance;
 	mat4 model = models[gl_BaseInstance];
 
 	gl_Position = proj * view * model * vec4(inPos,1);

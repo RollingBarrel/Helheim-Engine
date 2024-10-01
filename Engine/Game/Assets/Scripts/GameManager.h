@@ -62,6 +62,8 @@ public:
 
     void RegisterPlayerKill();
     void PlayPlayerFootStepSound();
+    void ActivateBossCamera(float targetDistance);
+    void BossCameraMovement();
 
 private:
     void PrepareAudio();
@@ -112,4 +114,6 @@ private:
     const char* mLevelName = nullptr;
 
     bool mIsFightingBoss = false;
+    bool mCameraLerp = false;
+    float mBossCameraTarget = 11.0f;
 };

@@ -1413,6 +1413,11 @@ void InspectorPanel::DrawImageComponent(ImageComponent* imageComponent) const
 	{
 		imageComponent->SetMaskable(maskable);
 	}
+	bool blurBack = imageComponent->BlurBackground();
+	if (ImGui::Checkbox("BlurBack", &blurBack))
+	{
+		imageComponent->SetBlurBackground(blurBack);
+	}
 }
 
 void InspectorPanel::DrawMaskComponent(MaskComponent* component) const

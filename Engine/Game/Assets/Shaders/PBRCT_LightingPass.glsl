@@ -59,7 +59,7 @@ layout(binding = 0)uniform sampler2D diffuseTex;
 //layout(binding = 1)uniform sampler2D specularRoughTex;
 layout(binding = 1)uniform sampler2D metalRoughTex;
 layout(binding = 2)uniform sampler2D normalTex;
-layout(binding = 3)uniform sampler2D positionTex;
+layout(binding = 3)uniform sampler2D depthTex;
 layout(binding = 4)uniform sampler2D emissiveTex;
 //Ambient
 layout(binding = 5)uniform samplerCube prefilteredIBL;
@@ -86,6 +86,19 @@ vec3 V;
 vec3 emissiveCol;
 
 out vec4 outColor;
+
+float GetLinearZ(float inputDepth)
+{
+	return -proj[3][2] / (proj[2][2] + (inputDepth * 2.0 - 1.0));
+}
+
+vec3 GetWorldPos(float depth, vec2 uvs)
+{
+	float viewZ = GetLinearZ(depth);
+	float viewX = (-viewZ * (uvs.x * 2.0 - 1.0)) / proj[0][0];
+	float viewY = (-viewZ * (uvs.y * 2.0 - 1.0)) / proj[1][1];
+	return (invView * vec4(vec3(viewX, viewY, viewZ), 1.0)).xyz;
+}
 
 vec3 GetPBRLightColor(vec3 lDir, vec3 lCol, float lInt, float lAtt)
 {
@@ -123,9 +136,9 @@ void main()
 	//cSpec = specColorTex.rgb;
 	//rough = max(specColorTex.a * specColorTex.a, 0.001f);
 	N = normalize(texture(normalTex, uv).rgb * 2.0 - 1.0);
-	//depth = texture(depthTex, uv).r;
-	//pos = GetWorldPos(depth, uv);
-	pos = texture(positionTex, uv).rgb;
+	depth = texture(depthTex, uv).r;
+	pos = GetWorldPos(depth, uv);
+	//pos = texture(positionTex, uv).rgb;
 	emissiveCol = texture(emissiveTex, uv).rgb;
 	vec3 cameraPos = vec3(invView[3][0], invView[3][1], invView[3][2]);
 	V = normalize(cameraPos - pos);
