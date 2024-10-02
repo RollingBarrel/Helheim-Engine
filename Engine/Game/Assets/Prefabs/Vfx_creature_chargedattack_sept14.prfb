@@ -2,15 +2,43 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 984503770,
-                "ParentUID": 1,
+                "UID": 1063773883,
+                "ParentUID": 803321722,
                 "Name": "Vfx_creature_chargedattack_sept14",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.12408214807510376,
-                    -0.18843209743499757,
-                    0.08449482917785645
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    3.0,
+                    3.0,
+                    3.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1069622047,
+                "ParentUID": 1063773883,
+                "Name": "Claws",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.3656916618347168,
+                    1.001929759979248
                 ],
                 "Rotation": [
                     0.0,
@@ -30,15 +58,15 @@
                 "Components": []
             },
             {
-                "UID": 596605352,
-                "ParentUID": 984503770,
-                "Name": "claw",
+                "UID": 1075470211,
+                "ParentUID": 1069622047,
+                "Name": "claw (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
+                    0.3974219560623169,
                     0.0,
-                    0.0,
-                    -0.05120593309402466
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -76,9 +104,9 @@
                         "IsFixedDirection": true,
                         "IsUVScrolling": false,
                         "Direction": [
-                            0.0,
                             1.0,
-                            0.0
+                            1.0,
+                            -1.0
                         ],
                         "Width": {
                             "Value": {
@@ -167,9 +195,146 @@
                 ]
             },
             {
-                "UID": 1324019326,
-                "ParentUID": 984503770,
-                "Name": "bleed",
+                "UID": 1081248754,
+                "ParentUID": 1069622047,
+                "Name": "claw (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.38092172145843508,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    1.0,
+                    0.0,
+                    -4.371138828673793e-8
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "Render": 1
+                    },
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 1109240331,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.10000000149011612,
+                        "MaxLifeTime": 0.10000000149011612,
+                        "UVScroll": 1.0,
+                        "IsFixedDirection": true,
+                        "IsUVScrolling": false,
+                        "Direction": [
+                            1.0,
+                            1.0,
+                            -1.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 3.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.0054869684390723709
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.043895747512578967
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.14814816415309907
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.3511659801006317
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.6488341093063355
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.8518518805503845
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.9561042785644531
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.9945130348205566
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.6568364500999451,
+                                    "Color": [
+                                        0.9679999947547913,
+                                        0.030976004898548127,
+                                        0.030976004898548127,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1087236160,
+                "ParentUID": 1069622047,
+                "Name": "claw",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -200,7 +365,272 @@
                             1920.0,
                             1080.0
                         ],
-                        "Render": 2
+                        "Render": 1
+                    },
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 1109240331,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.10000000149011612,
+                        "MaxLifeTime": 0.10000000149011612,
+                        "UVScroll": 1.0,
+                        "IsFixedDirection": true,
+                        "IsUVScrolling": false,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            -1.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 3.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.0054869684390723709
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.043895747512578967
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.14814816415309907
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.3511659801006317
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.6488341093063355
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.8518518805503845
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.9561042785644531
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.9945130348205566
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.6568364500999451,
+                                    "Color": [
+                                        0.9679999947547913,
+                                        0.030976004898548127,
+                                        0.030976004898548127,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1093014703,
+                "ParentUID": 1063773883,
+                "Name": "Trail",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.39392048120498659,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 18,
+                        "IsEnabled": true,
+                        "Image": 56701618,
+                        "MaxPoints": 1000,
+                        "MinDistance": 0.20000000298023225,
+                        "MaxLifeTime": 0.10000000149011612,
+                        "UVScroll": 5.0,
+                        "IsFixedDirection": true,
+                        "IsUVScrolling": true,
+                        "Direction": [
+                            0.0,
+                            1.0,
+                            0.0
+                        ],
+                        "Width": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.600000023841858,
+                                "MaxValue": 2.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.35749998688697817,
+                                        0.8149999976158142
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6499999761581421,
+                                        0.20999997854232789
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        0.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "Gradient": {
+                            "Color Gradient": [
+                                {
+                                    "Time": 0.029490560293197633,
+                                    "Color": [
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Time": 0.1635388731956482,
+                                    "Color": [
+                                        0.9307703375816345,
+                                        0.029784657061100007,
+                                        0.029784657061100007,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Time": 0.4959781765937805,
+                                    "Color": [
+                                        0.9559999704360962,
+                                        0.3938719928264618,
+                                        0.3938719928264618,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Time": 0.7184986472129822,
+                                    "Color": [
+                                        0.5040000081062317,
+                                        0.3507840037345886,
+                                        0.3507840037345886,
+                                        1.0
+                                    ]
+                                },
+                                {
+                                    "Time": 0.9919570088386536,
+                                    "Color": [
+                                        0.0,
+                                        0.0,
+                                        0.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1098654004,
+                "ParentUID": 1063773883,
+                "Name": "bleed",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.0636366605758667,
+                    0.1163453757762909,
+                    0.11759048700332642
+                ],
+                "Rotation": [
+                    0.7051851749420166,
+                    -0.052094925194978717,
+                    0.052094925194978717,
+                    0.7051851749420166
+                ],
+                "Scale": [
+                    1.100000023841858,
+                    1.0,
+                    1.0499999523162842
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "Render": 0
                     },
                     {
                         "ComponentType": 8,
@@ -219,280 +649,6 @@
                         "Rows": 8,
                         "Speed": 30,
                         "IsPlaying": true
-                    }
-                ]
-            },
-            {
-                "UID": 1217696481,
-                "ParentUID": 984503770,
-                "Name": "claw (1)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.4131675362586975,
-                    0.0,
-                    -0.05120593309402466
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 7,
-                        "IsEnabled": true,
-                        "Size": [
-                            1920.0,
-                            1080.0
-                        ],
-                        "Render": 1
-                    },
-                    {
-                        "ComponentType": 18,
-                        "IsEnabled": true,
-                        "Image": 1109240331,
-                        "MaxPoints": 1000,
-                        "MinDistance": 0.10000000149011612,
-                        "MaxLifeTime": 0.10000000149011612,
-                        "UVScroll": 1.0,
-                        "IsFixedDirection": true,
-                        "IsUVScrolling": false,
-                        "Direction": [
-                            1.0,
-                            1.0,
-                            0.0
-                        ],
-                        "Width": {
-                            "Value": {
-                                "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 3.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.1111111119389534,
-                                        0.0054869684390723709
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.2222222238779068,
-                                        0.043895747512578967
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.3333333432674408,
-                                        0.14814816415309907
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.4444444477558136,
-                                        0.3511659801006317
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.5555555820465088,
-                                        0.6488341093063355
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.6666666865348816,
-                                        0.8518518805503845
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.7777777910232544,
-                                        0.9561042785644531
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.8888888955116272,
-                                        0.9945130348205566
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "Gradient": {
-                            "Color Gradient": [
-                                {
-                                    "Time": 0.6568364500999451,
-                                    "Color": [
-                                        0.9679999947547913,
-                                        0.030976004898548127,
-                                        0.030976004898548127,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            {
-                "UID": 599656211,
-                "ParentUID": 984503770,
-                "Name": "claw (2)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -0.7761091589927673,
-                    0.0,
-                    -0.05120593309402466
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 7,
-                        "IsEnabled": true,
-                        "Size": [
-                            1920.0,
-                            1080.0
-                        ],
-                        "Render": 1
-                    },
-                    {
-                        "ComponentType": 18,
-                        "IsEnabled": true,
-                        "Image": 1109240331,
-                        "MaxPoints": 1000,
-                        "MinDistance": 0.10000000149011612,
-                        "MaxLifeTime": 0.10000000149011612,
-                        "UVScroll": 1.0,
-                        "IsFixedDirection": true,
-                        "IsUVScrolling": false,
-                        "Direction": [
-                            0.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Width": {
-                            "Value": {
-                                "IsValueRandom": true,
-                                "MinValue": 1.0,
-                                "MaxValue": 3.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.1111111119389534,
-                                        0.0054869684390723709
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.2222222238779068,
-                                        0.043895747512578967
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.3333333432674408,
-                                        0.14814816415309907
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.4444444477558136,
-                                        0.3511659801006317
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.5555555820465088,
-                                        0.6488341093063355
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.6666666865348816,
-                                        0.8518518805503845
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.7777777910232544,
-                                        0.9561042785644531
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        0.8888888955116272,
-                                        0.9945130348205566
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "Gradient": {
-                            "Color Gradient": [
-                                {
-                                    "Time": 0.6568364500999451,
-                                    "Color": [
-                                        0.9679999947547913,
-                                        0.030976004898548127,
-                                        0.030976004898548127,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        }
                     }
                 ]
             }
