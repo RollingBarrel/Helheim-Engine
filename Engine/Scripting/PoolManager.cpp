@@ -13,8 +13,8 @@ CREATE(PoolManager)
 
 void PoolManager::Start()
 {
-
-	unsigned int numBullets = 150;
+	unsigned int numPlayerBullets = 150;
+	unsigned int numEnemyBullets = 40;
 	unsigned int numItems = 15;
 	unsigned int numEnemies = 7;
 
@@ -37,12 +37,12 @@ void PoolManager::Start()
 	mPoolMap.insert({ PoolType::SHIELD, ObjectPool("Item_Shield.prfb", numItems, Shield) });
 	mPoolMap.insert({ PoolType::BLUE_ENERGY, ObjectPool("Item_Blue_Battery.prfb", numItems, BlueEnergy) });
 	mPoolMap.insert({ PoolType::RED_ENERGY, ObjectPool("Item_Red_Battery.prfb", numItems, RedEnergy) });
-	mPoolMap.insert({ PoolType::BULLET, ObjectPool("Bullet.prfb", numBullets, Bullet) });
+	mPoolMap.insert({ PoolType::BULLET, ObjectPool("Bullet.prfb", numPlayerBullets, Bullet) });
 
 
 	if (App->GetScene()->GetName().compare("Level1Scene") == 0)
 	{
-		mPoolMap.insert({ PoolType::ENEMY_BULLET, ObjectPool("EnemyBullet.prfb", numBullets, EnemyBullet) });
+		mPoolMap.insert({ PoolType::ENEMY_BULLET, ObjectPool("EnemyBullet.prfb", numEnemyBullets, EnemyBullet) });
 		mPoolMap.insert({ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", numEnemies, EnemyRobotMelee) });
 		mPoolMap.insert({ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) });
 		mPoolMap.insert({ PoolType::ROBOT_EXPLOSIVE, ObjectPool("Enemy_Explosive.prfb", numEnemies, EnemyExplosive) });
@@ -56,7 +56,7 @@ void PoolManager::Start()
 	}
 	else if (App->GetScene()->GetName().compare("Level3Scene") == 0)
 	{
-		mPoolMap.insert({ PoolType::BOSS_BULLET, ObjectPool("BossBullet.prfb", numBullets, BossBullet) });
+		mPoolMap.insert({ PoolType::BOSS_BULLET, ObjectPool("BossBullet.prfb", numEnemyBullets, BossBullet) });
 
 		mPoolMap.insert({ PoolType::CREATURE_MELEE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyCreatureMelee) });
 		mPoolMap.insert({ PoolType::CREATURE_RANGE, ObjectPool("Creature_Range.prfb", numEnemies, EnemyCreatureRange) });
