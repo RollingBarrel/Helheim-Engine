@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1527198863,
+                "UID": 1514699007,
                 "ParentUID": 1426929061,
                 "Name": "UltimateGO",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.5,
-                    0.20000000298023225
+                    0.25
                 ],
                 "Rotation": [
                     0.0,
@@ -30,19 +30,19 @@
                 "Components": [
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "UltimateAttack",
                         "ScriptVariables": [
                             {
                                 "VariableName": "mLinesGO",
                                 "MemberType": 3,
-                                "VariableData": 359006261
+                                "VariableData": 492360341
                             }
                         ]
                     },
                     {
                         "ComponentType": 17,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Center": [
                             0.05000000074505806,
                             0.949999988079071,
@@ -59,21 +59,21 @@
                 ]
             },
             {
-                "UID": 1699921889,
-                "ParentUID": 1527198863,
+                "UID": 1784550003,
+                "ParentUID": 1514699007,
                 "Name": "Laser_Spin_End",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.09999847412109375,
                     0.9500000476837158,
                     7.179999828338623
                 ],
                 "Rotation": [
-                    -0.0025863545015454294,
-                    -0.00004383292980492115,
-                    -0.9997389912605286,
-                    -0.01651257649064064
+                    -0.0018842141143977643,
+                    0.0017707376973703504,
+                    -0.7280305624008179,
+                    0.6847795248031616
                 ],
                 "Scale": [
                     0.9997341632843018,
@@ -87,7 +87,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -297,21 +297,21 @@
                 ]
             },
             {
-                "UID": 1684220709,
-                "ParentUID": 1527198863,
+                "UID": 1966817781,
+                "ParentUID": 1514699007,
                 "Name": "Laser_Spin",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.10000000149011612,
                     0.8999999761581421,
                     1.0800000429153443
                 ],
                 "Rotation": [
-                    0.002596435137093067,
-                    -0.00005702271664631553,
-                    0.9956378936767578,
-                    -0.02188570611178875
+                    0.0018211405258625746,
+                    -0.0018500551814213396,
+                    0.6983389258384705,
+                    -0.7094447016716003
                 ],
                 "Scale": [
                     1.7897616624832154,
@@ -325,7 +325,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -535,21 +535,21 @@
                 ]
             },
             {
-                "UID": 506292327,
-                "ParentUID": 1527198863,
+                "UID": 86400290,
+                "ParentUID": 1514699007,
                 "Name": "Laser_Spin_Mid",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.10000000149011612,
                     1.0,
-                    1.100000023841858
+                    3.2964982986450197
                 ],
                 "Rotation": [
-                    -2.377571695078018e-9,
-                    1.615335420979136e-8,
-                    0.9874979853630066,
-                    0.14536650478839875
+                    1.1467385263586039e-8,
+                    1.1613263239951266e-8,
+                    0.7099642157554627,
+                    -0.7010202407836914
                 ],
                 "Scale": [
                     1.5,
@@ -563,7 +563,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -803,7 +803,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "LinearMovement",
                         "ScriptVariables": [
                             {
@@ -839,27 +839,46 @@
                                 "VariableName": "mLookAt",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 1.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1931449153,
-                "ParentUID": 1527198863,
+                "UID": 265395881,
+                "ParentUID": 1514699007,
                 "Name": "Laser_Spin_Mid_2",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.10000000149011612,
                     1.0,
-                    0.8299999833106995
+                    3.121999502182007
                 ],
                 "Rotation": [
-                    -1.5817754217550829e-8,
-                    4.132325592820507e-9,
-                    0.2521297037601471,
-                    0.9651330709457398
+                    -6.213812131505847e-9,
+                    1.5114673956873049e-8,
+                    0.9222251176834106,
+                    0.37914374470710757
                 ],
                 "Scale": [
                     1.7897616624832154,
@@ -873,7 +892,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 0.30000001192092898,
@@ -1113,7 +1132,7 @@
                     },
                     {
                         "ComponentType": 3,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ScriptName": "LinearMovement",
                         "ScriptVariables": [
                             {
@@ -1149,17 +1168,36 @@
                                 "VariableName": "mLookAt",
                                 "MemberType": 2,
                                 "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 1.0
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 359006261,
-                "ParentUID": 1527198863,
+                "UID": 492360341,
+                "ParentUID": 1514699007,
                 "Name": "Lines",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1174,7 +1212,7 @@
                 "Scale": [
                     1.0,
                     1.0,
-                    1.0
+                    0.011555204167962075
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -1183,11 +1221,11 @@
                 "Components": []
             },
             {
-                "UID": 1745530319,
-                "ParentUID": 359006261,
+                "UID": 678387653,
+                "ParentUID": 492360341,
                 "Name": "Ultimte_Laser_Line",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.12000274658203125,
                     0.9700000286102295,
@@ -1211,7 +1249,7 @@
                 "Components": [
                     {
                         "ComponentType": 21,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 563896877,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
@@ -1299,11 +1337,11 @@
                 ]
             },
             {
-                "UID": 1952304689,
-                "ParentUID": 1745530319,
+                "UID": 857452865,
+                "ParentUID": 678387653,
                 "Name": "FinalPoint",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1327,11 +1365,11 @@
                 "Components": []
             },
             {
-                "UID": 27817105,
-                "ParentUID": 1952304689,
+                "UID": 1041600410,
+                "ParentUID": 857452865,
                 "Name": "Ultimate_laser_End_V1",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1355,7 +1393,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1711944677,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1467,8 +1505,8 @@
                 ]
             },
             {
-                "UID": 267034861,
-                "ParentUID": 27817105,
+                "UID": 1341249194,
+                "ParentUID": 1041600410,
                 "Name": "Laser_End_Trail",
                 "Enabled": false,
                 "Active": false,
@@ -1595,11 +1633,11 @@
                 ]
             },
             {
-                "UID": 508758973,
-                "ParentUID": 27817105,
+                "UID": 1522472657,
+                "ParentUID": 1041600410,
                 "Name": "Laser_impact",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -1623,7 +1661,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 631868986,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1749,11 +1787,11 @@
                 ]
             },
             {
-                "UID": 738647515,
-                "ParentUID": 1745530319,
+                "UID": 1704670814,
+                "ParentUID": 678387653,
                 "Name": "Ultimate_laser_Origin_contrast",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     -0.06474876403808594,
@@ -1777,7 +1815,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 299925969,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -1903,11 +1941,11 @@
                 ]
             },
             {
-                "UID": 975846262,
-                "ParentUID": 1745530319,
+                "UID": 1885546172,
+                "ParentUID": 678387653,
                 "Name": "Ultimate_laser_Origin",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     -0.06474876403808594,
@@ -1931,7 +1969,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 299925969,
                         "Delay": 0.0,
                         "Duration": 10.0,
@@ -2066,11 +2104,11 @@
                 ]
             },
             {
-                "UID": 1190209321,
-                "ParentUID": 359006261,
+                "UID": 2085845789,
+                "ParentUID": 492360341,
                 "Name": "Ultimte_Laser_Line_contrast",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.12000274658203125,
                     0.9700000286102295,
@@ -2094,7 +2132,7 @@
                 "Components": [
                     {
                         "ComponentType": 21,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1485191790,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
@@ -2182,11 +2220,11 @@
                 ]
             },
             {
-                "UID": 1403945791,
-                "ParentUID": 1190209321,
+                "UID": 120212194,
+                "ParentUID": 2085845789,
                 "Name": "FinalPoint",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -2210,11 +2248,11 @@
                 "Components": []
             },
             {
-                "UID": 1215404637,
-                "ParentUID": 359006261,
+                "UID": 301157173,
+                "ParentUID": 492360341,
                 "Name": "Ultimte_Laser_Line_contrast (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.12000274658203125,
                     0.9700000286102295,
@@ -2238,7 +2276,7 @@
                 "Components": [
                     {
                         "ComponentType": 21,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 1485191790,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
@@ -2332,11 +2370,11 @@
                 ]
             },
             {
-                "UID": 1389526758,
-                "ParentUID": 1215404637,
+                "UID": 504798598,
+                "ParentUID": 301157173,
                 "Name": "FinalPoint",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,

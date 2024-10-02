@@ -21,7 +21,8 @@ public:
 
 	float mInterval = 0.0f;
 	float mDamageTick = 0.0f;
-
+	
+	void ResetTimer() { mExpansionTimer.Reset(); }
 private:
 
 	void SetLength(float targetPercent, float speed);

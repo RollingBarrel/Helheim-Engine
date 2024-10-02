@@ -53,6 +53,7 @@
 #include "Shootgun.h"
 #include "Grenade.h"
 #include <LineComponent.h>
+#include "UltimateAttack.h"
 
 CREATE(PlayerController)
 {
@@ -1010,6 +1011,8 @@ void PlayerController::AddUltimateResource()
 
 void PlayerController::EnableUltimate(bool enable)
 {
+    UltimateAttack* ultimateScript = (UltimateAttack*)((ScriptComponent*)mUltimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    ultimateScript->ResetTimer();
     if (mUltimateGO)
     {
         if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);

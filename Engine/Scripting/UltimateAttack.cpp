@@ -44,8 +44,8 @@ void UltimateAttack::Update()
     }
     else
     {
-        SetLength(10.0f,15.0f);
-        if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();
+        SetLength(10.0f,15.0f);/*
+        if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
     }
     
 }
