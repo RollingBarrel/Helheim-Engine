@@ -119,6 +119,51 @@ void DashState::Enter()
 		mBegginingParticles->SetEnabled(false);
 		mBegginingParticles->SetEnabled(true);
 	}
+
+	//Pause Animation -> Set animation time -> Pause player rotation(Already done in PlayerController::HandleRotation() -> rotate player in dash direction
+	//Option 2: Pause Animation -> Set animation time (look at current animation from lower state machine 8 move states)
+	
+	mPlayerController->SetIsAnimationPlaying(false);
+	/*
+	std::string moveDir = mPlayerController->GetLowerAnimState();
+
+	std::vector<std::string> octetStrings =
+	{
+		"WalkForward",
+		"WalkFrontRight",
+		"StrafeRight",
+		"WalkBackRight",
+		"WalkBack",
+		"WalkBackLeft",
+		"StrafeLeft",
+		"WalkFrontLeft"
+	};
+	std::vector<float> octetTimes =
+	{
+		17.5f,
+		19.95f,
+		20.85f,
+		24.1f,
+		19.15f,
+		24.9f,
+		20.05f,
+		23.05f
+	};
+
+	float animTime = 17.5f; // default if animation is not movement
+	for (unsigned int i = 0; i<octetStrings.size(); ++i)
+	{
+		if (octetStrings[i].compare(moveDir))
+		{
+			animTime = octetTimes[i];
+		}
+	}
+
+
+	mPlayerController->SetAnimationTime(animTime);
+	*/
+	//mPlayerController->DashLookAtFront();
+	
 }
 
 void DashState::Exit()
@@ -128,6 +173,9 @@ void DashState::Exit()
 		mEndingParticles->SetEnabled(false);
 		mEndingParticles->SetEnabled(true);
 	}
+	//Unpause Animation -> Restart animation state -> Unpause player rotation
+	mPlayerController->SetIsAnimationPlaying(true);
+	//mPlayerController->RestartAnimationState();
 }
 
 bool DashState::IsReady()

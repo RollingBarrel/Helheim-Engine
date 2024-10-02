@@ -44,6 +44,8 @@ public:
 
 	//Speed
 	float GetAnimSpeed() const { return mSpeed; }
+	void SetUpperAnimSpeed(float speed);
+	void SetLowerAnimSpeed(float speed);
 	void SetAnimSpeed(float speed);
 
 	std::string GetCurrentStateName();

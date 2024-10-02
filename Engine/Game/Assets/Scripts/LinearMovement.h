@@ -38,5 +38,13 @@ private:
     bool mStarted = false;
     bool mLocalPosition = false;
     bool mLookAt = false;
+
+    //Hovering up'n'down movement
+    bool mHoveringMovement = true;
+    float mHoveringHeight = 0.0f;
+    float mHoveringFrequency = 1.0f;
+    float3 mHoveringPosition = float3::zero;
+
+    float mHoveringTimer = 0.0f;
 };
 
