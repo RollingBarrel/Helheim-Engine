@@ -148,8 +148,8 @@ void GeometryBatch::RecreatePersistentFrustums(unsigned int numFrustums)
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mFrustumsSsbo);
 	const unsigned int size = sizeof(float)*24 * mFrustumsSsboCapacity;
 	const unsigned int inBetweenBufferOffsets = App->GetOpenGL()->AlignedStructSize(size, mSsboOffsetAlignment) - size;
-	glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
-	mSsboFrustumsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS + inBetweenBufferOffsets * NUM_BUFFERS, flags));
+	glBufferStorage(GL_SHADER_STORAGE_BUFFER, (size + inBetweenBufferOffsets) * NUM_BUFFERS, nullptr, flags);
+	mSsboFrustumsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (size + inBetweenBufferOffsets) * NUM_BUFFERS, flags));
 	for (int i = 1; i < NUM_BUFFERS; ++i)
 	{
 		mSsboFrustumsData[i] = mSsboFrustumsData[i-1] + ((size + inBetweenBufferOffsets) / sizeof(float));
@@ -165,12 +165,13 @@ void GeometryBatch::RecreatePersistentSsbos()
 	if (mMeshComponents.size())
 	{
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboModelMatrices);
-		unsigned int size = mMeshComponents.size() * App->GetOpenGL()->AlignedStructSize(sizeof(float) * 16, mSsboOffsetAlignment);
-		glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
-		mSsboModelMatricesData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+		const unsigned int size = mMeshComponents.size() * sizeof(float) * 16;
+		const unsigned int inBetweenBufferOffsets = App->GetOpenGL()->AlignedStructSize(size, mSsboOffsetAlignment) - size;
+		glBufferStorage(GL_SHADER_STORAGE_BUFFER, (size + inBetweenBufferOffsets) * NUM_BUFFERS, nullptr, flags);
+		mSsboModelMatricesData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (size + inBetweenBufferOffsets) * NUM_BUFFERS, flags));
 		for (unsigned int i = 1; i < NUM_BUFFERS; ++i)
 		{
-			mSsboModelMatricesData[i] = mSsboModelMatricesData[0] + ((size * i) / sizeof(float));
+			mSsboModelMatricesData[i] = mSsboModelMatricesData[i-1] + (size + inBetweenBufferOffsets) / sizeof(float);
 		}
 	}
 
@@ -205,12 +206,13 @@ void GeometryBatch::RecreatePersistentSsbos()
 	if (mMeshComponents.size())
 	{
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboObbs);
-		unsigned int size = mMeshComponents.size() * sizeof(float) * 32;
-		glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
-		mSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+		const unsigned int size = mMeshComponents.size() * sizeof(float) * 32;
+		const unsigned int inBetweenSize = App->GetOpenGL()->AlignedStructSize(size, mSsboOffsetAlignment) - size;
+		glBufferStorage(GL_SHADER_STORAGE_BUFFER, (size + inBetweenSize) * NUM_BUFFERS, nullptr, flags);
+		mSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (size + inBetweenSize) * NUM_BUFFERS, flags));
 		for (int i = 1; i < NUM_BUFFERS; ++i)
 		{
-			mSsboObbsData[i] = mSsboObbsData[0] + ((size * i) / sizeof(float));
+			mSsboObbsData[i] = mSsboObbsData[i-1] + (size + inBetweenSize) / sizeof(float);
 		}
 
 		for (unsigned int i = 0; i < mMeshComponents.size(); ++i)
@@ -234,15 +236,16 @@ void GeometryBatch::RecreatePersistentSsbos()
 	glGenBuffers(1, &mSkinSsboObbs);
 	if (mNumSkins)
 	{
-		unsigned int size = mNumSkins * sizeof(float) * 32;
+		const unsigned int size = mNumSkins * sizeof(float) * 32;
+		const unsigned int inBetweenSize = App->GetOpenGL()->AlignedStructSize(size, mSsboOffsetAlignment) - size;
 		if (size)
 		{
 			glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinSsboObbs);
-			glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, flags);
-			mSkinSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, flags));
+			glBufferStorage(GL_SHADER_STORAGE_BUFFER, (size + inBetweenSize) * NUM_BUFFERS, nullptr, flags);
+			mSkinSsboObbsData[0] = reinterpret_cast<float*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (size + inBetweenSize) * NUM_BUFFERS, flags));
 			for (int i = 1; i < NUM_BUFFERS; ++i)
 			{
-				mSkinSsboObbsData[i] = mSkinSsboObbsData[0] + ((size * i) / sizeof(float));
+				mSkinSsboObbsData[i] = mSkinSsboObbsData[i-1] + (size + inBetweenSize) / sizeof(float);
 			}
 		}
 	}
@@ -317,12 +320,13 @@ void GeometryBatch::RecreateSkinningSsbos()
 	if (mNumSkins)
 	{
 		glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSkinDispatchIndirectBuffer);
-		unsigned int size = App->GetOpenGL()->AlignedStructSize(mNumSkins * sizeof(unsigned int) * 3, mSsboOffsetAlignment);
-		glBufferStorage(GL_SHADER_STORAGE_BUFFER, size * NUM_BUFFERS, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
-		mSkinDispatchIndirectBufferData[0] = reinterpret_cast<unsigned int*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, size * NUM_BUFFERS, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
+		const unsigned int size = mNumSkins * sizeof(unsigned int) * 3;
+		const unsigned int inBetweenBufferOffset = App->GetOpenGL()->AlignedStructSize(size, mSsboOffsetAlignment) - size;
+		glBufferStorage(GL_SHADER_STORAGE_BUFFER, (size + inBetweenBufferOffset) * NUM_BUFFERS, nullptr, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT);
+		mSkinDispatchIndirectBufferData[0] = reinterpret_cast<unsigned int*>(glMapBufferRange(GL_SHADER_STORAGE_BUFFER, 0, (size + inBetweenBufferOffset) * NUM_BUFFERS, GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT | GL_MAP_COHERENT_BIT));
 		for (int i = 1; i < NUM_BUFFERS; ++i)
 		{
-			mSkinDispatchIndirectBufferData[i] = mSkinDispatchIndirectBufferData[0] + ((size * i) / sizeof(unsigned int));
+			mSkinDispatchIndirectBufferData[i] = mSkinDispatchIndirectBufferData[i-1] + (size + inBetweenBufferOffset) / sizeof(unsigned int);
 		}
 	}
 
