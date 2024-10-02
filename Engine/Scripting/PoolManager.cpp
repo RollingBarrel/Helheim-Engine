@@ -14,7 +14,7 @@ CREATE(PoolManager)
 void PoolManager::Start()
 {
 
-	unsigned int numBullets = 50;
+	unsigned int numBullets = 150;
 	unsigned int numItems = 15;
 	unsigned int numEnemies = 7;
 
