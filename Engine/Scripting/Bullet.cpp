@@ -75,7 +75,7 @@ void Bullet::Init(const float3& position, const float3& direction, float speed, 
 		mTrialParticles = static_cast<TrailComponent*>(firstChild->GetComponent(ComponentType::TRAIL));
 		if (mBullet) mBullet->SetEnable(true);
 		if (mTrialParticles) mTrialParticles->SetEnable(true);
-		if (mHitParticles) mHitParticles->SetEnable(true);
+		if (mHitParticles) mHitParticles->SetEnable(false);
 	}
 }
 
