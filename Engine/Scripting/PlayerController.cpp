@@ -526,6 +526,54 @@ void PlayerController::SetAnimationSpeed(float speed)
     }
 }
 
+void PlayerController::SetLowerAnimationSpeed(float speed)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetLowerAnimSpeed(speed);
+    }
+}
+
+void PlayerController::SetAnimationTime(float time)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetControllerTime(time);
+    }
+}
+
+void PlayerController::SetIsAnimationPlaying(bool state)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(state);
+    }
+}
+
+void PlayerController::RestartAnimationState()
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->RestartStateAnimation();
+    }
+}
+
+void PlayerController::DashLookAtFront()
+{
+    float3 dir = GetPlayerDirection();
+    float3 pos = mGameObject->GetWorldPosition();
+    mGameObject->LookAt(float3(dir.x + pos.x, pos.y, dir.z + pos.z));
+}
+
+std::string PlayerController::GetLowerAnimState() const
+{
+    if (mAnimationComponent)
+    {
+        return mAnimationComponent->GetCurrentStateName();
+    }
+    return std::string();
+}
+
 void PlayerController::MoveInDirection(float3 direction)
 {
 
@@ -955,7 +1003,7 @@ void PlayerController::EnableUltimate(bool enable)
 {
     if (mUltimateGO)
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
         mUltimateGO->SetEnabled(enable);
     }
 }
@@ -964,6 +1012,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
 {
     if (mUltimateChargeGO)
     {
+        if(enable) mUltSound = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_ULTIMATE); 
         mUltimateChargeGO->SetEnabled(enable);
     }
 }

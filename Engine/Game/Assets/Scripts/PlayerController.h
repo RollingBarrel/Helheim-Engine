@@ -73,6 +73,13 @@ public:
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
     void SetAnimationSpeed(float speed);
+    void SetLowerAnimationSpeed(float speed);
+    void SetAnimationTime(float time);
+    void SetIsAnimationPlaying(bool state);
+    void RestartAnimationState();
+    void DashLookAtFront();
+    std::string GetLowerAnimState() const;
+
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
@@ -290,6 +297,7 @@ private:
     float mUltimateDamageInterval = 1.0f;
     float mUltimateAimSpeed = 1.0f;
     TimerScript UltimateRotationTimer;
+    int mUltSound = -1;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
