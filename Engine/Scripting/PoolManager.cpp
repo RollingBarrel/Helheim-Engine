@@ -15,6 +15,7 @@ void PoolManager::Start()
 {
 	unsigned int numPlayerBullets = 150;
 	unsigned int numEnemyBullets = 40;
+	unsigned int numBossBullets = 100;
 	unsigned int numItems = 15;
 	unsigned int numEnemies = 7;
 
@@ -56,7 +57,7 @@ void PoolManager::Start()
 	}
 	else if (App->GetScene()->GetName().compare("Level3Scene") == 0)
 	{
-		mPoolMap.insert({ PoolType::BOSS_BULLET, ObjectPool("BossBullet.prfb", numEnemyBullets, BossBullet) });
+		mPoolMap.insert({ PoolType::BOSS_BULLET, ObjectPool("BossBullet.prfb", numBossBullets, BossBullet) });
 
 		mPoolMap.insert({ PoolType::CREATURE_MELEE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyCreatureMelee) });
 		mPoolMap.insert({ PoolType::CREATURE_RANGE, ObjectPool("Creature_Range.prfb", numEnemies, EnemyCreatureRange) });
