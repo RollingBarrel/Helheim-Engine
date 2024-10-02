@@ -67,6 +67,7 @@ void ElectricTrapController::Update()
                 {
                     mIsActive = true;
                     ActiveTrap(true);
+                    mFirstActivation = false;
                 }
             }
             else if (mActivationIntervalTimer.Delay(mActivationInterval) && mIsAwake)
@@ -75,7 +76,11 @@ void ElectricTrapController::Update()
                 ActiveTrap(true);
             }
         }
+    }
+    else 
+    {
         mIsAwake = false;
+        ActiveTrap(false);
     }
 }
 
