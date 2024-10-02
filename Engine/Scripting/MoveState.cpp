@@ -11,6 +11,7 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "DashState.h"
+#include "MathFunc.h"
 
 MoveState::MoveState(PlayerController* player, float cooldown) : State(player, cooldown)
 {
@@ -113,6 +114,8 @@ void MoveState::DoAnimation()
 		mMoveDirection.Normalize();
 		float2 mMovingTo = SetMovingDirection();
 		float3 mousePosition = (mPlayerController->GetPlayerAimPosition() - mPlayerController->GetPlayerPosition()).Normalized();
+		
+		/*OUTDATED
 		//LOG("x:%f , y:%f", mMovingTo.x, mMovingTo.y);
 		std::string animation;
 
@@ -145,12 +148,19 @@ void MoveState::DoAnimation()
 			setAnimation("tStrafeLeft", "tStrafeRight", "tWalkBack", "tWalkForward");
 		}
 		//LOG("x:%f ", animation);
+		*/
+		std::string animation = GetTriggerFromAngle(ComputeMoveAnge(mousePosition));
 		mPlayerController->SetAnimation(animation, 0.01f);
-		mPlayerController->SetAnimationSpeed(1.5f); // TODO: Modify this with a script value?
-
-		if (mPlayerController->GetWeapon()->GetType() == Weapon::WeaponType::RANGE)
+		StateType upperBodyState = mPlayerController->GetPlayerUpperState()->GetType();
+		if (upperBodyState == StateType::ULTIMATE_CHARGE || upperBodyState == StateType::ULTIMATE)
 		{
-			//mPlayerController->SetSpineAnimation(animation, 0.3f);
+			mPlayerController->SetLowerAnimationSpeed(0.6f); // TODO: Modify this with a script value?
+
+		}
+		else
+		{
+			mPlayerController->SetLowerAnimationSpeed(2.0f); // TODO: Modify this with a script value?
+
 		}
 
 	}
@@ -198,6 +208,98 @@ float2 MoveState::SetMovingDirection()
 	else
 	{
 		return float2(0, 0); // Not moving
+	}
+}
+
+float MoveState::ComputeMoveAnge(float3 mouseDir)
+{
+	// Step 1: Project the vectors onto the Y plane (XZ plane)
+	float2 frontProjected(mouseDir.x, mouseDir.z);       // Projected front (XZ plane)
+	float2 directionProjected(mMoveDirection.x, mMoveDirection.z); // Projected direction (XZ plane)
+
+	// Step 2: Normalize the projected 2D vectors
+	frontProjected.Normalize();
+	directionProjected.Normalize();
+
+	// Step 3: Compute the dot product to get the cosine of the angle
+	float dotProduct = frontProjected.Dot(directionProjected);
+
+	// Clamp the dot product to avoid precision errors in acos
+	dotProduct = Clamp(dotProduct, -1.0f, 1.0f);
+
+	// Step 4: Compute the angle in radians using acos (dot product gives cos of angle)
+	float angleRadians = Acos(dotProduct) ;
+
+	float crossProductZ = frontProjected.x * directionProjected.y - frontProjected.y * directionProjected.x;
+
+	// If the cross product is negative, the angle is clockwise, so we make it negative
+	if (crossProductZ < 0) 
+	{
+		angleRadians = -angleRadians;
+	}
+
+	// Convert the angle to degrees
+	return RadToDeg(angleRadians);
+
+}
+
+std::string MoveState::GetTriggerFromAngle(float angle)
+{
+	// Normalize the angle to the range [-180, 180)
+	if (angle > 180.0f) 
+	{
+		angle -= 360.0f;
+	}
+	else if (angle <= -180.0f) 
+	{
+		angle += 360.0f;
+	}
+
+	// Array of strings representing the actions for each octet
+	std::vector<std::string> octetStrings = 
+	{
+		"tWalkForward",			// -22.5 to 22.5 degrees
+		"tWalkFrontRight",		// 22.5 to 67.5 degrees
+		"tStrafeRight",         // 67.5 to 112.5 degrees
+		"tWalkBackRight",		// 112.5 to 157.5 degrees
+		"tWalkBack",			// 157.5 to -157.5 degrees
+		"tWalkBackLeft",		// -157.5 to -112.5 degrees
+		"tStrafeLeft",          // -112.5 to -67.5 degrees
+		"tWalkFrontLeft"		// -67.5 to -22.5 degrees
+	};
+
+	// Compute which octet the angle belongs to
+	if (angle > -22.5f && angle <= 22.5f) 
+	{
+		return octetStrings[0]; // tWalkForward
+	}
+	else if (angle > 22.5f && angle <= 67.5f) 
+	{
+		return octetStrings[1]; // tWalkForwardRight
+	}
+	else if (angle > 67.5f && angle <= 112.5f) 
+	{
+		return octetStrings[2]; // tWalkRight
+	}
+	else if (angle > 112.5f && angle <= 157.5f) 
+	{
+		return octetStrings[3]; // tWalkBackwardRight
+	}
+	else if (angle > 157.5f || angle <= -157.5f) 
+	{
+		return octetStrings[4]; // tWalkBackward
+	}
+	else if (angle > -157.5f && angle <= -112.5f) 
+	{
+		return octetStrings[5]; // tWalkBackwardLeft
+	}
+	else if (angle > -112.5f && angle <= -67.5f) 
+	{
+		return octetStrings[6]; // tWalkLeft
+	}
+	else 
+	{ // angleDegrees > -67.5f && angleDegrees <= -22.5f
+		return octetStrings[7]; // tWalkForwardLeft
 	}
 }
 
