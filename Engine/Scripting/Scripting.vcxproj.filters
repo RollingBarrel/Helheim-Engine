@@ -214,6 +214,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Rat.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\PlayAnimationScript.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -391,5 +392,6 @@
     <ClCompile Include="LoreCollectible.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayAnimationScript.cpp" />
   </ItemGroup>
 </Project>
