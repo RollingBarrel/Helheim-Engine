@@ -344,7 +344,7 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
     }
 }
 
-inline bool PlayerController::IsPlayerDashing() const
+bool PlayerController::IsPlayerDashing() const
 { 
     return mLowerState->GetType() == StateType::DASH;
 }
