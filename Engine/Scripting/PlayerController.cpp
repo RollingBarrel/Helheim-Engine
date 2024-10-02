@@ -99,6 +99,7 @@ CREATE(PlayerController)
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateChargeGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltiOuterChargeGO);
     MEMBER(MemberType::FLOAT, mUltimateCooldown);
     MEMBER(MemberType::FLOAT, mUltimateDuration);
     MEMBER(MemberType::FLOAT, mUltimateChargeDuration);
@@ -230,6 +231,9 @@ void PlayerController::Start()
 
     if (mUltimateChargeGO)
         mUltimateChargeGO->SetEnabled(false);
+
+    if (mUltiOuterChargeGO)
+        mUltiOuterChargeGO->SetEnabled(false);
 
     // COLLIDER
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -966,6 +970,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
     {
         if(enable) mUltSound = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_ULTIMATE); 
         mUltimateChargeGO->SetEnabled(enable);
+        //mUltiOuterChargeGO->SetEnabled(enable);
     }
 }
 
