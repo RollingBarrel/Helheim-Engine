@@ -54,6 +54,7 @@ protected:
 	virtual void Flee();
 	virtual void PlayStepAudio();
 	virtual void PlayAttackAudio() {};
+	void RotateHorizontally(const float3& target, float speed);
 
 	bool IsPlayerInRange(float range);
 	bool IsPlayerReachable();

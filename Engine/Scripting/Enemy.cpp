@@ -203,6 +203,26 @@ void Enemy::PlayStepAudio()
 	}
 }
 
+void Enemy::RotateHorizontally(const float3& target, float speed)
+{
+	float3 direction = (target - mGameObject->GetWorldPosition());
+	direction.y = 0.0f;
+	direction.Normalize();
+
+	float3 currentDirection = mGameObject->GetFront();
+	currentDirection.y = 0.0f;
+	currentDirection.Normalize();
+	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
+
+	float angleDifference = currentDirection.AngleBetween(direction);
+	angleDifference = (currentDirection.Cross(direction).y > 0) ? angleDifference : angleDifference * -1;
+
+	float rotationSpeed = speed * App->GetDt();
+	float newAngle = currentRadianAngle + Clamp(angleDifference, -rotationSpeed, rotationSpeed);
+
+	mGameObject->SetLocalRotation(float3(0.0f, newAngle, 0.0f));
+}
+
 void Enemy::Charge()
 {
 	if (mChargeDurationTimer.Delay(mChargeDuration))
@@ -238,7 +258,6 @@ bool Enemy::IsPlayerReachable()
 	
 	if (IsPlayerInRange(mAttackDistance))
 	{
-		
 		Hit hit;
 		Ray ray;
 
@@ -253,7 +272,7 @@ bool Enemy::IsPlayerReachable()
 		std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Enemy" };
 		Physics::Raycast(hit, ray, distance, &ignoreTags);
 
-		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0 || distance>0.1f)
+		if (hit.IsValid() && hit.mGameObject->GetTag().compare("Player") == 0)
 		{
 			reachable = true;
 		}
