@@ -25,6 +25,7 @@ void Rat::Start()
 
 	mSpeed = 5.0f;
 	mFleeRadius = 3.0f;
+	mFleeToAttackTime = 2.0f;
 	mDeathTime = 4.0f;
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
 	if (mCollider)
@@ -53,6 +54,13 @@ void Rat::Idle()
 
 void Rat::Flee()
 {
+	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
+	{
+		mIsFleeing = false;
+		mCurrentState = EnemyState::IDLE;
+		return;
+	}
+
 	mAnimationComponent->SetAnimSpeed(2.5f);
 	if (mAiAgentComponent && !mIsFleeing)
 	{
@@ -60,11 +68,11 @@ void Rat::Flee()
 		mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 	}
 
-	if (!IsPlayerInRange(mFleeRadius))
-	{
-		mIsFleeing = false;
-		mCurrentState = EnemyState::IDLE;
-	}
+	//if (!IsPlayerInRange(mFleeRadius))
+	//{
+	//	mIsFleeing = false;
+	//	mCurrentState = EnemyState::IDLE;
+	//}
 }
 
 void Rat::Death()
