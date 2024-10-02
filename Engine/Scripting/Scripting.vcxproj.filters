@@ -221,6 +221,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapGroupController.h">
       <Filter>Traps</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\Rat.h">
+      <Filter>Enemies</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -387,6 +390,9 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="SecurityCameraFollower.cpp" />
+    <ClCompile Include="Rat.cpp">
+      <Filter>Enemies</Filter>
+    </ClCompile>
     <ClCompile Include="MainMenu.cpp">
       <Filter>UI</Filter>
     </ClCompile>

@@ -73,6 +73,12 @@ void EnemyCreatureRange::Update()
 	{
 		if (mLaserCharge)	mLaserCharge->SetEnabled(false);
 	}
+
+	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
+	{
+		mDoDamage = true;
+	}
+
 }
 
 void EnemyCreatureRange::Charge()
@@ -89,10 +95,11 @@ void EnemyCreatureRange::Charge()
 
 void EnemyCreatureRange::Attack()
 {
+	Enemy::Attack();
+
 	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
 	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
-
-	Enemy::Attack();
+	
 	Rotate();
 	mAimTimer.Reset();
 
@@ -100,11 +107,6 @@ void EnemyCreatureRange::Attack()
 	
 	if (mLaserOrigin)	mLaserOrigin->SetEnabled(true);
 	if (mLaserEnd)		mLaserEnd->SetEnabled(true);
-	
-	if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-	{
-		mDoDamage = true;
-	}
 
 	Hit hit;
 	Ray ray;
@@ -115,14 +117,25 @@ void EnemyCreatureRange::Attack()
 	Physics::Raycast(hit, ray, mAttackDistance, &ignoreTags);
 	if (hit.IsValid())
 	{
-		if (hit.mGameObject->GetTag().compare("Player") == 0 && mDoDamage)
+		if (hit.mGameObject->GetTag().compare("Player") == 0)
 		{
-			ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-			PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-			player->TakeDamage(mAttackDamage);
-			mDoDamage = false;
+			PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+			if (!player->IsPlayerDashing())
+			{
+				mLaserEnd->SetWorldPosition(hit.mHitPoint);
+				if (mDoDamage)
+				{
+					mAttackCoolDownTimer.Reset();
+					player->TakeDamage(mAttackDamage);
+					mDoDamage = false;
+				}
+			}
 		}
-		mLaserEnd->SetWorldPosition(hit.mHitPoint);
+		else
+		{
+			mLaserEnd->SetWorldPosition(hit.mHitPoint);
+		}
+		
 	}
 	else
 	{

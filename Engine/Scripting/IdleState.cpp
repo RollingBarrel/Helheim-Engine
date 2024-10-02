@@ -48,6 +48,7 @@ void IdleState::Update()
 void IdleState::Enter()
 {
 	mPlayerController->SetAnimation("tIdle", 0.1f);
+	mPlayerController->SetLowerAnimationSpeed(1.0f);
 }
 
 void IdleState::Exit()
