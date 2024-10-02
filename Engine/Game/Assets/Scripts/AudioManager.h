@@ -83,6 +83,8 @@ enum class SFX
 	ENEMY_CREATURE_HIT,
 	ENEMY_CREATURE_DEATH,
 
+	ENEMY_RAT_DEATH,
+
 	ENEMY_EXPLOSIVE_STEPS,
 	ENEMY_EXPLOSIVE_PREEXPLOSION,
 	ENEMY_EXPLOSIVE_EXPLOSION,
@@ -250,6 +252,8 @@ private:
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
 		{SFX::ENEMY_CREATURE_HIT, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
 		{SFX::ENEMY_CREATURE_DEATH, "Assets/FMOD/Audios/sfx/creaturedeath.wav"},
+
+		{SFX::ENEMY_RAT_DEATH, "Assets/FMOD/Audios/sfx/ratdeath.mp3"},
 
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
