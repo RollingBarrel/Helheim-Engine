@@ -133,6 +133,11 @@ void EnemyExplosive::Death()
         GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound);
     }
 
+    if (mExplosionParticle)
+    {
+        mExplosionParticle->SetEnabled(false);
+    }
+
     Enemy::Death();
 
     float3 newScale = float3(1, 1, 1);
