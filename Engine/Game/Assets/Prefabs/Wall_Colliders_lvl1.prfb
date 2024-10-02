@@ -817,6 +817,51 @@
                 ]
             },
             {
+                "UID": 1442553255,
+                "ParentUID": 1536521333,
+                "Name": "Pillars",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    4.031026840209961,
+                    1.308372974395752,
+                    1.3026504516601563
+                ],
+                "Rotation": [
+                    0.45009845495224,
+                    0.0,
+                    0.0,
+                    0.8929789662361145
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            3.5,
+                            0.6000000238418579
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
                 "UID": 188772028,
                 "ParentUID": 1425177622,
                 "Name": "Room2",
@@ -1267,9 +1312,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.5139279365539551,
-                    -5.960464477539063e-8,
-                    -0.000011444091796875
+                    0.0,
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
                     0.0,
@@ -2110,9 +2155,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -8.01059341430664,
+                    -7.596981048583984,
                     0.7627143263816834,
-                    -10.482349395751954
+                    -10.482364654541016
                 ],
                 "Rotation": [
                     0.0,
@@ -2363,9 +2408,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.8603725433349609,
+                    -0.41828346252441409,
                     1.4164390563964844,
-                    -0.284912109375
+                    -0.28507232666015627
                 ],
                 "Rotation": [
                     -4.3703753505042189e-8,
@@ -2375,6 +2420,51 @@
                 ],
                 "Scale": [
                     1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            1.850000023841858,
+                            8.399999618530274
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1143798579,
+                "ParentUID": 232529310,
+                "Name": "Pillar",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.0000762939453125,
+                    0.0,
+                    5.822761535644531
+                ],
+                "Rotation": [
+                    -9.706658284060809e-23,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
                     1.0,
                     1.0
                 ],
@@ -2394,7 +2484,232 @@
                         "Size": [
                             0.550000011920929,
                             1.850000023841858,
-                            8.399999618530274
+                            0.44999998807907107
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2051029830,
+                "ParentUID": 232529310,
+                "Name": "Pillar (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.0000762939453125,
+                    0.0,
+                    3.2686386108398439
+                ],
+                "Rotation": [
+                    -9.706658284060809e-23,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            1.850000023841858,
+                            0.44999998807907107
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 804372302,
+                "ParentUID": 232529310,
+                "Name": "Pillar (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.0000762939453125,
+                    0.0,
+                    -0.20957183837890626
+                ],
+                "Rotation": [
+                    -9.706658284060809e-23,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            1.850000023841858,
+                            0.44999998807907107
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1715571950,
+                "ParentUID": 232529310,
+                "Name": "Pillar (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.0000762939453125,
+                    0.0,
+                    -2.560352325439453
+                ],
+                "Rotation": [
+                    -9.706658284060809e-23,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            1.850000023841858,
+                            0.44999998807907107
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 468496696,
+                "ParentUID": 232529310,
+                "Name": "Pillar (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.0004730224609375,
+                    0.0,
+                    -5.6856231689453129
+                ],
+                "Rotation": [
+                    -9.706658284060809e-23,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            1.850000023841858,
+                            0.44999998807907107
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1368139258,
+                "ParentUID": 232529310,
+                "Name": "Pillar (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.001117706298828125,
+                    0.0,
+                    -7.951873779296875
+                ],
+                "Rotation": [
+                    -9.706658284060809e-23,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.550000011920929,
+                            1.850000023841858,
+                            0.44999998807907107
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -2689,7 +3004,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.2344512939453125,
+                    4.145877838134766,
                     2.566470146179199,
                     -1.350550651550293
                 ],
@@ -2720,7 +3035,7 @@
                         "Size": [
                             0.44999998807907107,
                             1.850000023841858,
-                            4.5
+                            9.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -13861,15 +14176,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.6465034484863281,
-                    1.7875406742095948,
-                    0.2568387985229492
+                    -0.568603515625,
+                    4.592479228973389,
+                    0.4308781623840332
                 ],
                 "Rotation": [
                     0.0,
-                    -0.5206371545791626,
                     0.0,
-                    0.853778064250946
+                    0.0,
+                    1.0
                 ],
                 "Scale": [
                     1.0,
@@ -13890,9 +14205,9 @@
                             0.0
                         ],
                         "Size": [
-                            3.5,
-                            4.0,
-                            3.5
+                            3.75,
+                            3.75,
+                            3.75
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
