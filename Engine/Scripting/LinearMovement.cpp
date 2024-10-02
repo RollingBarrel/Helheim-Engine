@@ -4,6 +4,8 @@
 #include "ScriptComponent.h"
 #include "AnimationComponent.h"
 
+#include "MathConstants.h"
+
 CREATE(LinearMovement)
 {
 	CLASS(owner);
@@ -11,6 +13,10 @@ CREATE(LinearMovement)
 	MEMBER(MemberType::FLOAT, mSpeed);
 	MEMBER(MemberType::FLOAT, mReturnIn);
 	MEMBER(MemberType::BOOL, mTeleportBack);
+	SEPARATOR("Hovering");
+	MEMBER(MemberType::BOOL, mHoveringMovement);
+	MEMBER(MemberType::FLOAT, mHoveringHeight);
+	MEMBER(MemberType::FLOAT, mHoveringFrequency);
 	END_CREATE;
 }
 
@@ -42,6 +48,8 @@ void LinearMovement::Update()
 				mTargetPosition = mInitialPosition;
 				mInitialPosition = mCurrentPosition;
 				mReachedTarget = false;
+				mGameObject->LookAt(mTargetPosition);
+
 			}
 			else
 			{
@@ -50,6 +58,7 @@ void LinearMovement::Update()
 				mReachedTarget = false;
 			}
 		}
+		mHoveringTimer = 0.0f;
 	}
 }
 
@@ -57,9 +66,20 @@ void LinearMovement::Movement(float3 target, float speed)
 {
 	float3 direction = target.Sub(mCurrentPosition).Normalized();
 	float3 velocity = direction * speed;
-	mCurrentPosition = mCurrentPosition + velocity * App->GetDt();
+	mCurrentPosition += velocity * App->GetDt();
+
+	if (mHoveringMovement)
+	{
+		mHoveringPosition = mCurrentPosition + mGameObject->GetUp().Normalized() * mHoveringHeight * sinf(mHoveringTimer);
+		mHoveringTimer += mHoveringFrequency * App->GetDt() / (2 * pi);
+
+		mGameObject->SetWorldPosition(mHoveringPosition);
+	}
+	else 
+	{
+		mGameObject->SetWorldPosition(mCurrentPosition);
+	}
 	
-	mGameObject->SetWorldPosition(mCurrentPosition);
 	float dif = target.Distance(mCurrentPosition);
 	if (dif < 0.1f) mReachedTarget = true;
 }
