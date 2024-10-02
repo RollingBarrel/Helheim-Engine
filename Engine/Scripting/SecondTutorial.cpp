@@ -179,12 +179,10 @@ void SecondTutorial::UltTutorial()
 
 void SecondTutorial::DisableFirstPart()
 {
-
     mShootTutorialCon->SetEnabled(false);
-    mShootTutorialCon->SetEnabled(false);
+    mSecondaryTutorialCon->SetEnabled(false);
     mGrenadeTutorialCon->SetEnabled(false);
     mShootTutorial->SetEnabled(false);
-    mShootTutorial->SetEnabled(false);
+    mSecondaryTutorial->SetEnabled(false);
     mGrenadeTutorial->SetEnabled(false);
-
 }

@@ -10,6 +10,7 @@
         "LineFinal",
         "DoorArea",
         "Bridge",
-        "Collectible"
+        "Collectible",
+        "Rat"
     ]
 }

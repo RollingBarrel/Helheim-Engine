@@ -1,9 +1,9 @@
 #version 460 core
-layout (binding = 0) uniform sampler2D Texture;
+layout (binding = 0) uniform sampler2D tex;
 uniform vec4 inputColor;
-in vec2 uv0;
-out vec4 fragment_color;
+in vec2 uv;
+out vec4 col;
 void main()
 {
- fragment_color = texture(Texture, uv0) * inputColor;
+    col = texture(tex, uv) * inputColor;
 }

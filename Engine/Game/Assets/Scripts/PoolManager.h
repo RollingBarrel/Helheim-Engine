@@ -33,7 +33,8 @@ class PoolManager : public Script
 	FRIEND(PoolManager);
 public:	
 
-	PoolManager(GameObject* owner);
+	PoolManager(GameObject* owner) : Script(owner) {}
+	~PoolManager() {}
 
 	void Start() override;
 
