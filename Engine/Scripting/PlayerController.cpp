@@ -344,6 +344,11 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
     }
 }
 
+bool PlayerController::IsPlayerDashing() const
+{ 
+    return mLowerState->GetType() == StateType::DASH;
+}
+
 void PlayerController::SetIdleState()
 {
     mLowerState = mIdleState;
@@ -1054,7 +1059,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 void PlayerController::TakeDamage(float damage)
 {
     //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-    if (mLowerState->GetType() == StateType::DASH || mGodMode)
+    if (IsPlayerDashing()|| mGodMode)
     {
         return;
     }
