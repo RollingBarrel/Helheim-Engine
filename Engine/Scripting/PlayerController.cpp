@@ -53,6 +53,7 @@
 #include "Shootgun.h"
 #include "Grenade.h"
 #include <LineComponent.h>
+#include "UltimateAttack.h"
 
 CREATE(PlayerController)
 {
@@ -99,6 +100,7 @@ CREATE(PlayerController)
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateChargeGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltiOuterChargeGO);
     MEMBER(MemberType::FLOAT, mUltimateCooldown);
     MEMBER(MemberType::FLOAT, mUltimateDuration);
     MEMBER(MemberType::FLOAT, mUltimateChargeDuration);
@@ -231,6 +233,9 @@ void PlayerController::Start()
     if (mUltimateChargeGO)
         mUltimateChargeGO->SetEnabled(false);
 
+    if (mUltiOuterChargeGO)
+        mUltiOuterChargeGO->SetEnabled(false);
+
     // COLLIDER
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
@@ -342,6 +347,11 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 
         mParalysisSpeedReductionFactor = 1.0f;
     }
+}
+
+bool PlayerController::IsPlayerDashing() const
+{ 
+    return mLowerState->GetType() == StateType::DASH;
 }
 
 void PlayerController::SetIdleState()
@@ -524,6 +534,54 @@ void PlayerController::SetAnimationSpeed(float speed)
     {
         mAnimationComponent->SetAnimSpeed(speed);
     }
+}
+
+void PlayerController::SetLowerAnimationSpeed(float speed)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetLowerAnimSpeed(speed);
+    }
+}
+
+void PlayerController::SetAnimationTime(float time)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetControllerTime(time);
+    }
+}
+
+void PlayerController::SetIsAnimationPlaying(bool state)
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->SetIsPlaying(state);
+    }
+}
+
+void PlayerController::RestartAnimationState()
+{
+    if (mAnimationComponent)
+    {
+        mAnimationComponent->RestartStateAnimation();
+    }
+}
+
+void PlayerController::DashLookAtFront()
+{
+    float3 dir = GetPlayerDirection();
+    float3 pos = mGameObject->GetWorldPosition();
+    mGameObject->LookAt(float3(dir.x + pos.x, pos.y, dir.z + pos.z));
+}
+
+std::string PlayerController::GetLowerAnimState() const
+{
+    if (mAnimationComponent)
+    {
+        return mAnimationComponent->GetCurrentStateName();
+    }
+    return std::string();
 }
 
 void PlayerController::MoveInDirection(float3 direction)
@@ -953,9 +1011,11 @@ void PlayerController::AddUltimateResource()
 
 void PlayerController::EnableUltimate(bool enable)
 {
+    UltimateAttack* ultimateScript = (UltimateAttack*)((ScriptComponent*)mUltimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    ultimateScript->ResetTimer();
     if (mUltimateGO)
     {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_ULTIMATE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+        if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
         mUltimateGO->SetEnabled(enable);
     }
 }
@@ -964,7 +1024,9 @@ void PlayerController::EnableChargeUltimate(bool enable)
 {
     if (mUltimateChargeGO)
     {
+        if(enable) mUltSound = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_ULTIMATE); 
         mUltimateChargeGO->SetEnabled(enable);
+        mUltiOuterChargeGO->SetEnabled(enable);
     }
 }
 
@@ -1005,7 +1067,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 void PlayerController::TakeDamage(float damage)
 {
     //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-    if (mLowerState->GetType() == StateType::DASH || mGodMode)
+    if (IsPlayerDashing()|| mGodMode)
     {
         return;
     }

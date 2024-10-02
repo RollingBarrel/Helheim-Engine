@@ -20,6 +20,7 @@ private:
 
 	GameObject* mBossGO = nullptr;
 	EnemyBoss* mBoss = nullptr;
+	bool mCameraActivated = false;
 };
 
 #pragma once

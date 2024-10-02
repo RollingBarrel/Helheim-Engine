@@ -2,31 +2,31 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1924668730,
-                "ParentUID": 265972669,
+                "UID": 567290502,
+                "ParentUID": 378826455,
                 "Name": "UltimateChargeGO",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.933051347732544,
-                    0.6044856309890747
+                    0.0,
+                    0.0
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    -0.8625909686088562,
-                    0.5061611533164978
+                    -6.392955942402523e-9,
+                    3.226087841312619e-8,
+                    0.3604207932949066,
+                    -0.9328258037567139
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
+                    1.0435763597488404,
+                    1.0435763597488404,
                     1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -83,7 +83,7 @@
                                 "Time": 0.029490232467651368,
                                 "Color": [
                                     0.150176003575325,
-                                    0.9276766180992127,
+                                    0.46519795060157778,
                                     0.9879999756813049,
                                     1.0
                                 ]
@@ -91,8 +91,8 @@
                             {
                                 "Time": 0.6126002073287964,
                                 "Color": [
+                                    0.037586603313684466,
                                     0.013952028006315232,
-                                    0.4258708655834198,
                                     0.4359999895095825,
                                     1.0
                                 ]
@@ -106,13 +106,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 839658699,
-                "ParentUID": 1924668730,
+                "UID": 756381138,
+                "ParentUID": 567290502,
                 "Name": "UltimateChargeGO_core",
                 "Enabled": true,
                 "Active": true,
@@ -135,7 +162,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -192,8 +219,8 @@
                                 "Time": 0.029490232467651368,
                                 "Color": [
                                     0.150176003575325,
+                                    0.16358141601085664,
                                     0.9879999756813049,
-                                    0.8472455739974976,
                                     1.0
                                 ]
                             },
@@ -201,21 +228,48 @@
                                 "Time": 0.6126002073287964,
                                 "Color": [
                                     0.013952028006315232,
+                                    0.20302948355674745,
                                     0.4359999895095825,
-                                    0.3853541910648346,
                                     1.0
                                 ]
                             },
                             {
                                 "Time": 0.97050940990448,
                                 "Color": [
+                                    0.0017279948806390167,
+                                    0.007418869528919458,
                                     0.14399999380111695,
-                                    0.00172800337895751,
-                                    0.00172800337895751,
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             }

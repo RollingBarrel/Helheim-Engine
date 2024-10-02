@@ -411,7 +411,6 @@ void TextComponent::Draw()
     glDisable(GL_BLEND);
     glEnable(GL_CULL_FACE);
     glFrontFace(GL_CCW);
-    glUseProgram(0);
 }
 
 GameObject* TextComponent::FindCanvasOnParents(GameObject* gameObject)
