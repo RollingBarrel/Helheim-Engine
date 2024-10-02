@@ -44,11 +44,9 @@ AnimationComponent::~AnimationComponent()
 	delete mController;
 	delete mStateMachine;
 
-	if (mHasSpine)
-	{
-		delete mSpineController;
-		delete mSpineStateMachine;
-	}
+	delete mSpineController;
+	delete mSpineStateMachine;
+	
 	
 
 }
