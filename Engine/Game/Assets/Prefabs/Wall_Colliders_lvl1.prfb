@@ -13383,6 +13383,141 @@
                 ]
             },
             {
+                "UID": 82084229,
+                "ParentUID": 81889047,
+                "Name": "Pillar",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    20.624526977539064,
+                    -2.9995431900024416,
+                    -20.964553833007814
+                ],
+                "Rotation": [
+                    -0.16504760086536408,
+                    0.0,
+                    0.0,
+                    0.9862856268882752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.0,
+                            6.599999904632568,
+                            1.100000023841858
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1003368321,
+                "ParentUID": 81889047,
+                "Name": "Pillar2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -9.046409606933594,
+                    -2.0897412300109865,
+                    -14.727123260498047
+                ],
+                "Rotation": [
+                    -0.02027422934770584,
+                    -0.4422151744365692,
+                    0.04106692224740982,
+                    0.8957388997077942
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.399999976158142,
+                            7.650000095367432,
+                            1.5
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 852667432,
+                "ParentUID": 81889047,
+                "Name": "Pillar3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    4.972816467285156,
+                    0.7827332019805908,
+                    10.335787773132325
+                ],
+                "Rotation": [
+                    0.21260403096675874,
+                    0.0,
+                    0.0,
+                    0.9771384596824646
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Wall",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.800000011920929,
+                            4.150000095367432,
+                            0.8999999761581421
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
                 "UID": 821215145,
                 "ParentUID": 1425177622,
                 "Name": "Room5",
