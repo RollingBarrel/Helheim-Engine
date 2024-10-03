@@ -193,7 +193,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 57899064
+                                "VariableData": 1614229071
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -210,7 +210,7 @@
                 ]
             },
             {
-                "UID": 57899064,
+                "UID": 1614229071,
                 "ParentUID": 1709997031,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -238,8 +238,8 @@
                 "Components": []
             },
             {
-                "UID": 80525889,
-                "ParentUID": 57899064,
+                "UID": 1629545691,
+                "ParentUID": 1614229071,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -383,8 +383,8 @@
                 ]
             },
             {
-                "UID": 83658834,
-                "ParentUID": 57899064,
+                "UID": 1634349540,
+                "ParentUID": 1614229071,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -562,7 +562,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 1055074421
+                                "VariableData": 1922214850
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -579,7 +579,7 @@
                 ]
             },
             {
-                "UID": 1055074421,
+                "UID": 1922214850,
                 "ParentUID": 1829954014,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -607,8 +607,8 @@
                 "Components": []
             },
             {
-                "UID": 1075334132,
-                "ParentUID": 1055074421,
+                "UID": 1942683424,
+                "ParentUID": 1922214850,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -752,8 +752,8 @@
                 ]
             },
             {
-                "UID": 1080973433,
-                "ParentUID": 1055074421,
+                "UID": 1948044241,
+                "ParentUID": 1922214850,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -1050,7 +1050,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 591106992
+                                "VariableData": 181200026
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -1067,7 +1067,7 @@
                 ]
             },
             {
-                "UID": 591106992,
+                "UID": 181200026,
                 "ParentUID": 2044317073,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -1095,8 +1095,8 @@
                 "Components": []
             },
             {
-                "UID": 604961571,
-                "ParentUID": 591106992,
+                "UID": 197839445,
+                "ParentUID": 181200026,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -1240,8 +1240,8 @@
                 ]
             },
             {
-                "UID": 608721105,
-                "ParentUID": 591106992,
+                "UID": 203200262,
+                "ParentUID": 181200026,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -1419,7 +1419,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 226597815
+                                "VariableData": 893621567
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -1436,7 +1436,7 @@
                 ]
             },
             {
-                "UID": 226597815,
+                "UID": 893621567,
                 "ParentUID": 32524755,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -1464,8 +1464,8 @@
                 "Components": []
             },
             {
-                "UID": 243237234,
-                "ParentUID": 226597815,
+                "UID": 916109150,
+                "ParentUID": 893621567,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -1609,8 +1609,8 @@
                 ]
             },
             {
-                "UID": 245952453,
-                "ParentUID": 226597815,
+                "UID": 920843378,
+                "ParentUID": 893621567,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -1788,7 +1788,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 1556944347
+                                "VariableData": 2125390899
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -1805,7 +1805,7 @@
                 ]
             },
             {
-                "UID": 1556944347,
+                "UID": 2125390899,
                 "ParentUID": 165083139,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -1833,8 +1833,8 @@
                 "Components": []
             },
             {
-                "UID": 1572887556,
-                "ParentUID": 1556944347,
+                "UID": 2143770843,
+                "ParentUID": 2125390899,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -1978,8 +1978,8 @@
                 ]
             },
             {
-                "UID": 1576438227,
-                "ParentUID": 1556944347,
+                "UID": 882182,
+                "ParentUID": 2125390899,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -2276,7 +2276,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 331928917
+                                "VariableData": 1811069490
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -2293,7 +2293,7 @@
                 ]
             },
             {
-                "UID": 331928917,
+                "UID": 1811069490,
                 "ParentUID": 329319078,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -2321,8 +2321,8 @@
                 "Components": []
             },
             {
-                "UID": 364790029,
-                "ParentUID": 331928917,
+                "UID": 1828196256,
+                "ParentUID": 1811069490,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -2466,8 +2466,8 @@
                 ]
             },
             {
-                "UID": 368131837,
-                "ParentUID": 331928917,
+                "UID": 1833696315,
+                "ParentUID": 1811069490,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -2645,7 +2645,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 259669117
+                                "VariableData": 432053558
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -2662,7 +2662,7 @@
                 ]
             },
             {
-                "UID": 259669117,
+                "UID": 432053558,
                 "ParentUID": 455054604,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -2690,8 +2690,8 @@
                 "Components": []
             },
             {
-                "UID": 279859207,
-                "ParentUID": 259669117,
+                "UID": 449180324,
+                "ParentUID": 432053558,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -2835,8 +2835,8 @@
                 ]
             },
             {
-                "UID": 284036467,
-                "ParentUID": 259669117,
+                "UID": 454053794,
+                "ParentUID": 432053558,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,
@@ -3014,7 +3014,7 @@
                             {
                                 "VariableName": "mParticlesGO",
                                 "MemberType": 3,
-                                "VariableData": 1541211479
+                                "VariableData": 591185440
                             },
                             {
                                 "VariableName": "mOnlyOnce",
@@ -3031,7 +3031,7 @@
                 ]
             },
             {
-                "UID": 1541211479,
+                "UID": 591185440,
                 "ParentUID": 561087387,
                 "Name": "SpawnerParticle",
                 "Enabled": false,
@@ -3059,8 +3059,8 @@
                 "Components": []
             },
             {
-                "UID": 1561331948,
-                "ParentUID": 1541211479,
+                "UID": 605179261,
+                "ParentUID": 591185440,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": false,
@@ -3204,8 +3204,8 @@
                 ]
             },
             {
-                "UID": 1565857313,
-                "ParentUID": 1541211479,
+                "UID": 609356521,
+                "ParentUID": 591185440,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": false,

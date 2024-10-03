@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 93981506,
-                "ParentUID": 102966571,
+                "UID": 1756232828,
+                "ParentUID": 333133597,
                 "Name": "SpawnerParticle_Ball",
                 "Enabled": true,
                 "Active": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 160887287,
-                "ParentUID": 93981506,
+                "UID": 1781296388,
+                "ParentUID": 1756232828,
                 "Name": "ExplodingParticles",
                 "Enabled": true,
                 "Active": true,
@@ -175,8 +175,8 @@
                 ]
             },
             {
-                "UID": 167988629,
-                "ParentUID": 93981506,
+                "UID": 1788676214,
+                "ParentUID": 1756232828,
                 "Name": "ImplodingTrails",
                 "Enabled": true,
                 "Active": true,
@@ -235,7 +235,7 @@
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": true,
                         "SpeedCenterShape": true,
-                        "SpeedCenterFactor": 1.0,
+                        "SpeedCenterFactor": 0.5,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
