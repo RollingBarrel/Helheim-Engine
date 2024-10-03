@@ -178,7 +178,7 @@ void Enemy::Flee()
 	if (mFleeToAttackTimer.Delay(mFleeToAttackTime))
 	{
 		mIsFleeing = false;
-		mCurrentState = EnemyState::ATTACK;
+		mCurrentState = EnemyState::CHARGE;
 		return;
 	}
 	PlayStepAudio();	
