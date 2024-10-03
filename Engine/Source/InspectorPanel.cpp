@@ -645,9 +645,11 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 			{
 				matName = file + ".emeta";
 				char* fileBuffer = nullptr;
-				assert(EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer) && "Not able to open .emeta file");
+				EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer);
+				//assert(EngineApp->GetFileSystem()->Load(matName.c_str(), &fileBuffer) && "Not able to open .emeta file");
 				rapidjson::Document document;
-				assert(document.Parse(fileBuffer) != 0 && "Not able to load .emeta file");
+				document.Parse(fileBuffer);
+				//assert(document.Parse(fileBuffer) != 0 && "Not able to load .emeta file");
 				assert(document.HasMember("uid") && "Meta has no uid");
 				component.SetMaterial(document["uid"].GetInt());
 				break;
@@ -696,12 +698,14 @@ void InspectorPanel::DrawMeshRendererComponent(MeshRendererComponent& component)
 					}
 					createMaterialPopUp = false;
 				}
-				memset(userInputName, 0, 200);
+				userInputName[0] = '\0';
+				//memset(userInputName, 0, 200);
 			}
 			ImGui::SameLine();
 			if (ImGui::Button("Cancel"))
 			{
-				memset(userInputName, 0, 200);
+				//memset(userInputName, 0, 200);
+				userInputName[0] = '\0';
 				createMaterialPopUp = false;
 			}
 			ImGui::EndPopup();
