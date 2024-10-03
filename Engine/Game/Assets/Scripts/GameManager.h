@@ -61,6 +61,7 @@ public:
     void HandleBossAudio(int stage);
 
     void RegisterPlayerKill();
+    void PlayPlayerFootStepSound();
     void ActivateBossCamera(float targetDistance);
     void BossCameraMovement();
 

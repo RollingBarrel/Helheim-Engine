@@ -30,7 +30,8 @@ enum class SFX
 	MAINMENU_CANCEL,
 
 	// PLAYER
-	PLAYER_FOOTSTEP,
+	PLAYER_FOOTSTEP_FLOOR,
+	PLAYER_FOOTSTEP_METAL,
 
 	PLAYER_PISTOL,
 	PLAYER_MACHINEGUN,
@@ -200,7 +201,8 @@ private:
 		{SFX::MAINMENU_START, "Assets/FMOD/Audios/sfx/gamestart.wav"},
 
 		// PLAYER
-		{SFX::PLAYER_FOOTSTEP, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL, "Assets/FMOD/Audios/sfx/footstepmetal.wav"}, // [X]
 
 		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
 		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
