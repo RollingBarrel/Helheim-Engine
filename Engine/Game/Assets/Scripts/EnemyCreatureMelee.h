@@ -28,6 +28,7 @@ private:
 	BoxColliderComponent* mCollider = nullptr;
 	GameObject* mDashAttackVFX = nullptr;
 	bool mHit = false;
+	bool mAttack = false;
 	bool mAudioPlayed = false;
 };
 

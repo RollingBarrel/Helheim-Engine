@@ -26,6 +26,7 @@ public:
 	float GetAspectRatio() const { return (float)mWidth / (float)mHeight; }
 	float2 GetGameWindowsSize() const { return mGameWindowsSize; }
 	float2 GetGameWindowsPosition() const { return mGameWindowsPosition; }
+	float2 GetScreenSize() const;
 	void SetGameWindowsPosition(float2 gameWindowsPosition) { mGameWindowsPosition = gameWindowsPosition; }
 	void SetMousePositionInWindow(float2 position);
 
