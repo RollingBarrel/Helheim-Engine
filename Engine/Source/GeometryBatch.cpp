@@ -367,7 +367,7 @@ void GeometryBatch::RecreateVboAndEbo()
 void GeometryBatch::RecreateMaterials()
 {
 	//TODO: fer un glMapBuffer !!!
-	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), sizeof(float)*3);
+	unsigned int materialSize = ALIGNED_STRUCT_SIZE(sizeof(Material), sizeof(float)*4);
 	glBindBuffer(GL_SHADER_STORAGE_BUFFER, mSsboMaterials);
 	glBufferData(GL_SHADER_STORAGE_BUFFER, mUniqueMaterials.size() * materialSize, nullptr, GL_STATIC_DRAW);
 	unsigned int offset = 0;
