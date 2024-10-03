@@ -61,8 +61,10 @@ CREATE(HudController)
     SEPARATOR("Collectible");
     MEMBER(MemberType::GAMEOBJECT, mCollectibleScreen);
     MEMBER(MemberType::GAMEOBJECT, mCollectibleTextGO);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleTitleGO);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleSubtitleGO);
     MEMBER(MemberType::GAMEOBJECT, mCollectibleContinueBtnGO);
-    MEMBER(MemberType::GAMEOBJECT, mInteractGO);
+    MEMBER(MemberType::GAMEOBJECT, mInteractGO); 
 
     SEPARATOR("Weapon Pickups");
     MEMBER(MemberType::GAMEOBJECT, mPickupControllerGO);
@@ -146,6 +148,8 @@ void HudController::Start()
     {
         mCollectibleScreen->SetEnabled(false);
         if (mCollectibleTextGO) mLoreText = static_cast<TextComponent*>(mCollectibleTextGO->GetComponent(ComponentType::TEXT));
+        if (mCollectibleTitleGO) mTitleText = static_cast<TextComponent*>(mCollectibleTitleGO->GetComponent(ComponentType::TEXT));
+        if (mCollectibleSubtitleGO) mSubtitleText = static_cast<TextComponent*>(mCollectibleSubtitleGO->GetComponent(ComponentType::TEXT));
         if (mCollectibleContinueBtnGO) 
         {
             mCollectibleContinueBtn = static_cast<ButtonComponent*>(mCollectibleContinueBtnGO->GetComponent(ComponentType::BUTTON));
@@ -609,9 +613,11 @@ void HudController::SetUltimateCooldown(float cooldown)
     mUltimateTimer = 0.001f;
 }
 
-void HudController::SetCollectibleText(std::string text)
+void HudController::SetCollectibleText(std::string text, std::string title, std::string subtitle)
 {
     if (mLoreText) mLoreText->SetText(text);
+    if (mTitleText) mTitleText->SetText(title);
+    if (mSubtitleText) mSubtitleText->SetText(subtitle);
 }
 
 void HudController::SetScreen(SCREEN name, bool active)

@@ -41,7 +41,7 @@ public:
     void SetMaxHealth(float health);
     void SetGrenadeCooldown(float cooldown);
     void SetUltimateCooldown(float cooldown);
-    void SetCollectibleText(std::string text);
+    void SetCollectibleText(std::string text, std::string title, std::string subtitle);
     void SetScreen(SCREEN menu, bool active);
     void SetInteract(bool active);
     void SetPickupPrompt(bool active);
@@ -105,6 +105,8 @@ private:
     GameObject* mFeedbackGO = nullptr;
     GameObject* mCollectibleScreen = nullptr;
     GameObject* mCollectibleTextGO = nullptr;
+    GameObject* mCollectibleTitleGO = nullptr;
+    GameObject* mCollectibleSubtitleGO = nullptr;
     GameObject* mCollectibleImageGO = nullptr;
     GameObject* mCollectibleContinueBtnGO = nullptr;
     GameObject* mInteractGO = nullptr;
@@ -132,6 +134,8 @@ private:
     SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
     TextComponent* mLoreText = nullptr;
+    TextComponent* mTitleText = nullptr;
+    TextComponent* mSubtitleText = nullptr;
     TextComponent* mInteractText = nullptr;
     ButtonComponent* mCollectibleContinueBtn = nullptr;
 
