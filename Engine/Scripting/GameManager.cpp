@@ -59,6 +59,11 @@ void GameManager::Awake()
 
 void GameManager::Start()
 {
+    //float2 gameSize = App->GetWindow()->GetScreenSize();
+    //unsigned int xSize = 46 / (2560 / gameSize.x);
+    //unsigned int ySize = 46 / (1440 / gameSize.y);
+    //App->GetWindow()->SetCursor(674180654, xSize, ySize, xSize/2, ySize/2);
+
     App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 
     if (mHudControllerGO)
@@ -159,6 +164,9 @@ void GameManager::SetPaused(bool value, bool screen)
     mPaused = value;
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
+
+    if (value) App->GetWindow()->SetCursor(0);
+    else App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
