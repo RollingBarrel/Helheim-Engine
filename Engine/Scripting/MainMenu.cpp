@@ -125,7 +125,7 @@ MainMenu::MainMenu(GameObject* owner) : Script(owner) {}
 
 void MainMenu::Start() 
 {
-    //App->GetWindow()->SetCursor(857248271, 50, 50);
+    App->GetWindow()->SetCursor(0);
 
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));

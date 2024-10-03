@@ -133,7 +133,7 @@ void EngineApplication::Start()
 void EngineApplication::Stop()
 {
 	mIsPlayMode = false;
-
+	App->GetWindow()->SetCursor(0);
 	mEngineTimer->SetTotalFrames(EngineApp->GetGameClock()->GetTotalFrames());
 	mGameTimer->Stop();
 	SetCurrentClock(EngineApp->GetEngineClock());
