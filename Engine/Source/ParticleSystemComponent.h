@@ -40,6 +40,11 @@ public:
 
 	const void SetDuration(float duration) { mDuration = duration; }
 	const void SetLoop(bool looping) { mLooping = looping; }
+	const void SetEmmiterTime(float time) { mEmitterTime = time; }
+	
+	const float GetDuration() { return mDuration; }
+	const bool IsLooping() { return mLooping; }
+	void RestartParticles() { mEmitterTime = 0.0f; }
 
 	float3 ShapeInitPosition() const;
 

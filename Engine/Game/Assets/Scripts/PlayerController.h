@@ -73,6 +73,13 @@ public:
     void SetAnimation(std::string trigger, float transitionTime);
     void SetSpineAnimation(std::string trigger, float transitionTime);
     void SetAnimationSpeed(float speed);
+    void SetLowerAnimationSpeed(float speed);
+    void SetAnimationTime(float time);
+    void SetIsAnimationPlaying(bool state);
+    void RestartAnimationState();
+    void DashLookAtFront();
+    std::string GetLowerAnimState() const;
+
 
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
@@ -106,6 +113,7 @@ public:
 
     State* GetPlayerLowerState() const { return mLowerState; }
     State* GetPlayerUpperState() const { return mUpperState; }
+    bool IsPlayerDashing() const;
     void SetIdleState();
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
@@ -282,6 +290,7 @@ private:
     //Ultimate
     GameObject* mUltimateGO = nullptr;
     GameObject* mUltimateChargeGO = nullptr;
+    GameObject* mUltiOuterChargeGO = nullptr;
     float mUltimateCooldown = 1.0f;
     float mUltimateChargeDuration = 1.0f;
     float mUltimateDuration = 3.0f;
@@ -290,6 +299,7 @@ private:
     float mUltimateDamageInterval = 1.0f;
     float mUltimateAimSpeed = 1.0f;
     TimerScript UltimateRotationTimer;
+    int mUltSound = -1;
     
     // Collider
     BoxColliderComponent* mCollider = nullptr;
@@ -327,4 +337,7 @@ private:
     bool mIsInElevator = false;
 
     int mKillCount = 0;
+
+
+    //GameObject* mDebugCube = nullptr;
 };

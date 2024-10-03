@@ -216,6 +216,21 @@ void AnimationComponent::SetSpineStateMachine(AnimationStateMachine* sm)
 	ChangeSpineState("Default", 0.0f);
 }
 
+void AnimationComponent::SetUpperAnimSpeed(float speed)
+{
+	if (mHasSpine)
+	{
+		mSpineController->SetAnimSpeed(speed);
+	}
+}
+
+void AnimationComponent::SetLowerAnimSpeed(float speed)
+{
+	mSpeed = speed;
+	mController->SetAnimSpeed(speed);
+
+}
+
 void AnimationComponent::SetAnimSpeed(float speed)
 {
 	mSpeed = speed;

@@ -69,13 +69,11 @@ void AreaDoors::CloseDoors(bool close)
 	if (close)
 	{
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
-		if (mDoorEnterEmiBorder)
-		{
-			mBorderRenderEnter->SetEmissiveColor(mClosedColor);
-			mTopRenderEnter->SetEmissiveColor(mClosedColor);
-			mBorderRenderExit->SetEmissiveColor(mClosedColor);
-			mTopRenderExit->SetEmissiveColor(mClosedColor);
-		}
+		if (mBorderRenderEnter) mBorderRenderEnter->SetEmissiveColor(mClosedColor);
+		if (mTopRenderEnter) mTopRenderEnter->SetEmissiveColor(mClosedColor);
+		if (mBorderRenderExit) mBorderRenderExit->SetEmissiveColor(mClosedColor);
+		if (mTopRenderExit) mTopRenderExit->SetEmissiveColor(mClosedColor);
+		
 
 	}
 	else
@@ -84,11 +82,11 @@ void AreaDoors::CloseDoors(bool close)
 		{
 			if (!mIsStartingArea)
 			{
-				mBorderRenderEnter->SetEmissiveColor(mOpenColor);
-				mTopRenderEnter->SetEmissiveColor(mOpenColor);
+				if (mBorderRenderEnter) mBorderRenderEnter->SetEmissiveColor(mOpenColor);
+				if (mTopRenderEnter) mTopRenderEnter->SetEmissiveColor(mOpenColor);
 			}
-			mBorderRenderExit->SetEmissiveColor(mOpenColor);
-			mTopRenderExit->SetEmissiveColor(mOpenColor);
+			if (mBorderRenderExit) mBorderRenderExit->SetEmissiveColor(mOpenColor);
+			if (mTopRenderExit) mTopRenderExit->SetEmissiveColor(mOpenColor);
 		}
 	}
 

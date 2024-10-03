@@ -18,11 +18,15 @@ public:
 	bool CleanUp() override;
 
 	void DrawWidget(GameObject* gameObject);
+	void DrawBlurWidget(GameObject* gameObject);
 	
 	void RemoveCanvas(GameObject* gameObject);
 	void AddCanvas(GameObject* gameObject);
 
 private:
+	void UiBlurPass();
+	unsigned int mBlurIntensity = 5;
+
 	std::vector<GameObject*> mCanvasList;
 };
 

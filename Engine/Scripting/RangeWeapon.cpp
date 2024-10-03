@@ -38,7 +38,7 @@ void RangeWeapon::Shoot(const float3& position, float maxSpread, const ColorGrad
 	ray.pos = position;
 	ray.dir = bulletDirection;
 
-	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible"};
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible", "Rat"};
 	Physics::Raycast(hit, ray, mAttackRange, &ignoreTags);
 
 	if (GameManager::GetInstance()->GetPoolManager())

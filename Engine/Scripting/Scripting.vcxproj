@@ -180,6 +180,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\DashState.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Dialog.h" />
     <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapController.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\ElectricTrapGroupController.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Enemy.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyBoss.h" />
     <ClInclude Include="..\Game\Assets\Scripts\EnemyCreatureMelee.h" />
@@ -196,6 +197,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\Rat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
     <ClInclude Include="..\Game\Assets\Scripts\SecondTutorial.h" />
@@ -249,6 +251,7 @@
     <ClCompile Include="Dialog.cpp" />
     <ClCompile Include="AreaDoors.cpp" />
     <ClCompile Include="ElectricTrapController.cpp" />
+    <ClCompile Include="ElectricTrapGroupController.cpp" />
     <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="EnemyCreatureMelee.cpp" />
     <ClCompile Include="EnemyCreatureRange.cpp" />
@@ -265,6 +268,7 @@
     <ClCompile Include="LinearMovement.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="Rat.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="RotateObject.cpp" />
     <ClCompile Include="SecondTutorial.cpp" />
