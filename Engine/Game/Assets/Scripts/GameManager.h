@@ -61,6 +61,9 @@ public:
     void HandleBossAudio(int stage);
 
     void RegisterPlayerKill();
+    void PlayPlayerFootStepSound();
+    void ActivateBossCamera(float targetDistance);
+    void BossCameraMovement();
 
     bool IsPlayingCinematic() { return mPlayingCinematic; }
 
@@ -118,4 +121,6 @@ private:
     const char* mLevelName = nullptr;
 
     bool mIsFightingBoss = false;
+    bool mCameraLerp = false;
+    float mBossCameraTarget = 11.0f;
 };

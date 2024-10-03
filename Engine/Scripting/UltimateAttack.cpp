@@ -8,6 +8,7 @@
 
 #include "Physics.h"
 #include "Geometry/Ray.h"
+#include "MathFunc.h"
 
 #include "ScriptComponent.h"
 #include "BoxColliderComponent.h"
@@ -15,8 +16,7 @@
 CREATE(UltimateAttack)
 {
     CLASS(owner);
-    MEMBER(MemberType::GAMEOBJECT, mLaserGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnemyCollisionParticle);
+    MEMBER(MemberType::GAMEOBJECT, mLinesGO);
     END_CREATE;
 }
 UltimateAttack::UltimateAttack(GameObject* owner) : Script(owner)
@@ -38,7 +38,29 @@ void UltimateAttack::Start()
 
 void UltimateAttack::Update()
 {
+    if (!mExpansionTimer.DelayWithoutReset(3.8f)) 
+    {
+        SetLength(100.0f, 25.0f);
+    }
+    else
+    {
+        SetLength(10.0f,15.0f);/*
+        if (mExpansionTimer.GetTimePassed()>4.0f) mExpansionTimer.Reset();*/
+    }
+    
+}
 
+void UltimateAttack::SetLength(float targetPercent, float speed)
+{
+    if (mLinesGO)
+    {
+        float3 scale = mLinesGO->GetLocalScale();
+        float length = scale.z;
+        length = Lerp(length, 1.0f, App->GetDt()*speed);
+        mLengthPercent = Lerp(mLengthPercent, targetPercent, App->GetDt() * speed);
+        scale.z = length * (mLengthPercent/100.0f);
+        mLinesGO->SetLocalScale(scale);
+    }
 }
 
 void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
@@ -60,11 +82,6 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
                 enemyScript->TakeDamage(mDamageTick);
                 //TODO: Slow enemies 
                 LOG("Ultimate tick")
-            }
-
-            if(mDamageEffectTimer.Delay(1.0f))
-            {
-                
             }
         }
     }

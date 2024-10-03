@@ -2,6 +2,7 @@
 #include "ScriptComponent.h"
 #include "GameObject.h"
 #include "EnemyBoss.h"
+#include "GameManager.h"
 
 CREATE(BossBattleArea)
 {
@@ -49,7 +50,12 @@ void BossBattleArea::EnemyDestroyed(GameObject* enemy)
 }
 
 inline void BossBattleArea::ActivateArea(bool activate)
-{
+{	
+	if (!mCameraActivated)
+	{
+		GameManager::GetInstance()->ActivateBossCamera(15.0f);
+		mCameraActivated = true;
+	}
 	BattleArea::ActivateArea(activate);
 	mBoss->WakeUp();
 	mNeedsToSpawn = false;

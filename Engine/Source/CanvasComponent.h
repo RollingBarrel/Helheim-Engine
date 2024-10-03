@@ -24,10 +24,10 @@ public:
     Component* Clone(GameObject* owner) const override;
     void Reset() override;
 
-    inline float2 GetSize() { return mSize; }
-    inline RenderSpace GetRenderSpace() { return mRenderSpace; }
+    float2 GetSize() const { return mSize; }
+    RenderSpace GetRenderSpace() const { return mRenderSpace; }
 
-    inline void SetSize(float2 size) { mSize = size; }
+    void SetSize(float2 size) { mSize = size; }
     void SetRenderSpace(RenderSpace space) { mRenderSpace = space; }
 
     void Save(JsonObject& obj) const override;

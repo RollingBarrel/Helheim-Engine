@@ -75,6 +75,12 @@ void BossLaserEyeBall::Update()
         }
         break;
     }
+
+
+    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
+    {
+        mCanDamage = true;
+    }
 }
 
 
@@ -138,11 +144,6 @@ void BossLaserEyeBall::UpdateLaser()
 {
     if (mLaserCharge) mLaserCharge->SetEnabled(false);
 
-    if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-    {
-        mCanDamage = true; 
-    }
-
     Hit hit;
     Ray ray;
     ray.dir = mGameObject->GetFront();
@@ -150,21 +151,26 @@ void BossLaserEyeBall::UpdateLaser()
 
     Physics::Raycast(hit, ray, mDistance);
 
-    if (mCanDamage && (hit.IsValid()))
+    if (hit.IsValid())
     {
         if (hit.mGameObject->GetTag().compare("Player") == 0)
         {
-            ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-            PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-
-            if (!(player->GetPlayerLowerState()->GetType() == StateType::DASH))
+            if (!GameManager::GetInstance()->GetPlayerController()->IsPlayerDashing())
             {
-                player->TakeDamage(mDamage);
-                mCanDamage = false;
-                mAttackCoolDownTimer.Reset();
+                mLaserEnd->SetWorldPosition(hit.mHitPoint);
+                if (mCanDamage)
+                {
+                    PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+                    player->TakeDamage(mDamage);
+                    mCanDamage = false;
+                    mAttackCoolDownTimer.Reset();
+                }
             }
         }
-        mLaserEnd->SetWorldPosition(hit.mHitPoint);
+        else
+        {
+            mLaserEnd->SetWorldPosition(hit.mHitPoint);
+        }
     }
     else
     {
