@@ -273,9 +273,6 @@ void GameManager::HandleBossAudio(int stage)
         }
         else if (mLastAudioID != 0 && stage == 0)
         {
-            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, true);
-            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
-
             mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 2);
             mLastAudioID = 0;
         }
@@ -350,7 +347,7 @@ void GameManager::PauseBackgroundAudio(bool pause)
         }
         else if (sceneName == "Level3Scene")
         {
-            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, pause);
+            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, pause);
         }
     }
 }
@@ -386,7 +383,6 @@ void GameManager::PrepareAudio()
     }
     else if (sceneName == "Level3Scene")
     {
-        mAudioManager->AddAudioToASComponent(BGM::BOSS_ROOM);
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
     }
 }
@@ -407,9 +403,6 @@ void GameManager::StartAudio()
     else if (sceneName == "Level3Scene")
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
-        mBackgroundAudioID2 = mAudioManager->Play(BGM::BOSS_ROOM);
-
-        mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, true);
     }
 }
 
@@ -430,10 +423,6 @@ void GameManager::HandleAudio()
     {
         HandleLevel2Audio();
     }
-    else if (sceneName == "BossTestingRoom")
-    {
-        HandleBossAudio(-1);
-    }
 }
 
 void GameManager::EndAudio()
@@ -453,7 +442,6 @@ void GameManager::EndAudio()
         else if (sceneName == "Level3Scene")
         {
             mBackgroundAudioID = mAudioManager->Release(BGM::BOSS, mBackgroundAudioID);
-            mBackgroundAudioID = mAudioManager->Release(BGM::BOSS_ROOM, mBackgroundAudioID2);
         }
     }
 
@@ -492,7 +480,7 @@ void GameManager::HandleLevel2Audio()
         mLastAudioID = 2;
     }
     else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
-    {
+    { 
         mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 1);
         mLastAudioID = 1;
     }
