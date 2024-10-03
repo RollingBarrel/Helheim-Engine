@@ -78,7 +78,6 @@ void EnemyCreatureRange::Update()
 	{
 		mDoDamage = true;
 	}
-
 }
 
 void EnemyCreatureRange::Charge()
@@ -100,7 +99,7 @@ void EnemyCreatureRange::Attack()
 	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
 	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
 	
-	Rotate();
+	RotateHorizontally(mPlayer->GetWorldPosition(), mAttackRotationSpeed);
 	mAimTimer.Reset();
 
 	mAnimationComponent->SendTrigger("tAttack", 0.2f);
@@ -158,26 +157,6 @@ void EnemyCreatureRange::TakeDamage(float damage)
 {
 	Enemy::TakeDamage(damage);
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
-}
-
-void EnemyCreatureRange::Rotate()
-{
-	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-	direction.y = 0.0f;
-	direction.Normalize();
-	
-	float3 currentDirection = mGameObject->GetFront();
-	currentDirection.y = 0.0f;
-	currentDirection.Normalize();
-	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
-
-	float angleDifference = currentDirection.AngleBetween(direction);
-	angleDifference = (currentDirection.Cross(direction).y > 0) ? angleDifference : angleDifference * -1;
-
-	float rotationSpeed = mAttackRotationSpeed * App->GetDt();
-	float newAngle = currentRadianAngle + Clamp(angleDifference, -rotationSpeed, rotationSpeed);
-
-	mGameObject->SetLocalRotation(float3(0.0f, newAngle, 0.0f));
 }
 
 

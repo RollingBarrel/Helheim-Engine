@@ -183,6 +183,11 @@ public:
 	unsigned int GetQuadVBO() const { return mQuadVBO; }
 	unsigned int GetQuadVAO() const { return mQuadVAO; }
 
+	unsigned int AlignedStructSize(unsigned int structSize, unsigned int alignment) const
+	{
+		return (structSize + (alignment - 1)) & ~(alignment - 1);
+	}
+
 private:
 	void* context = nullptr;
 
