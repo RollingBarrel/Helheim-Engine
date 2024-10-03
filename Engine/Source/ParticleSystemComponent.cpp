@@ -321,11 +321,11 @@ float ParticleSystemComponent::DistanceToCenter(float3 position)
         float distanceToTubeCenter = std::abs(distToXYCenter - mShapeRadius);
 
         float zDistance = std::abs(position.z - center.z);
-        return std::max(sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance),0.0f);
+        return std::max(sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance) - mSpeedCenterFactor,0.0f);
     }
     default:
     {
-        return std::max(position.Distance(center), 0.0f);
+        return std::max(position.Distance(center) - mSpeedCenterFactor, 0.0f);
     }
     }
 }
