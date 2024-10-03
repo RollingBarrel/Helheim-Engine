@@ -59,7 +59,7 @@ void GameManager::Awake()
 
 void GameManager::Start()
 {
-    //App->GetWindow()->SetCursor(857248271, 50, 50);
+    App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 
     if (mHudControllerGO)
     {
