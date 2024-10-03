@@ -337,4 +337,7 @@ private:
     bool mIsInElevator = false;
 
     int mKillCount = 0;
+
+
+    //GameObject* mDebugCube = nullptr;
 };
