@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1341463532,
-                "ParentUID": 890746327,
+                "UID": 438077715,
+                "ParentUID": 1,
                 "Name": "ElectricTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    41.76108932495117,
-                    0.0000036565206755767578,
-                    -0.05035507678985596
+                    41.75980758666992,
+                    0.0000033305032047792339,
+                    3.678849935531616
                 ],
                 "Rotation": [
                     6.181723932741079e-8,
@@ -23,7 +23,7 @@
                     2.0,
                     2.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -48,13 +48,19 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "ElectricTrapController",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mElectricVFX",
+                                "MemberType": 3,
+                                "VariableData": 1042618675
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 2032660820,
-                "ParentUID": 1341463532,
+                "UID": 434224658,
+                "ParentUID": 438077715,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -81,8 +87,8 @@
                 "Components": []
             },
             {
-                "UID": 352334083,
-                "ParentUID": 2032660820,
+                "UID": 1851360113,
+                "ParentUID": 434224658,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -119,9 +125,9 @@
                 ]
             },
             {
-                "UID": 1821612872,
-                "ParentUID": 1341463532,
-                "Name": "GameObject",
+                "UID": 1042618675,
+                "ParentUID": 438077715,
+                "Name": "VFX",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -170,7 +176,7 @@
                         "ShapeAngle": 0.7853981852531433,
                         "ShapeSize": [
                             0.800000011920929,
-                            0.800000011920929,
+                            0.10000000149011612,
                             0.800000011920929
                         ],
                         "ShapeRandAngle": 0.0,
