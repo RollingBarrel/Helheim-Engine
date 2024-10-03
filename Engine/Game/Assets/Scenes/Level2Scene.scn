@@ -1219,7 +1219,18 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "ElectricTrapController",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
                     }
                 ]
             },
@@ -1336,7 +1347,18 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "ElectricTrapController",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
                     }
                 ]
             },
@@ -3049,7 +3071,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.5882352590560914,
+                        "AspectRatio": 1.8176528215408326,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -16930,10 +16952,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -3.946919874264765e-11,
-                    -4.3011833678052727e-11,
-                    0.7389137148857117,
-                    -0.6781033277511597
+                    -5.097227501194013e-11,
+                    2.844530687384772e-11,
+                    -0.4887206256389618,
+                    -0.8756793737411499
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -106256,7 +106278,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 1152591871,
+        "NavMeshResource": 1408858458,
         "SkyBoxResource": 1741121676,
         "BloomIntensity": 0.5,
         "DirectionalLight": [
