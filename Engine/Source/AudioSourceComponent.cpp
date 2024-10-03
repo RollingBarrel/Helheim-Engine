@@ -17,6 +17,10 @@ AudioSourceComponent::AudioSourceComponent(const AudioSourceComponent& original,
 
 AudioSourceComponent::~AudioSourceComponent()
 {
+    for (AudioUnit* audio : mAudiosVector) {
+        delete audio; 
+    }
+    mAudiosVector.clear();  
 }
 
 Component* AudioSourceComponent::Clone(GameObject* owner) const

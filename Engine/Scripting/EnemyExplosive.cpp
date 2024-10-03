@@ -1,9 +1,13 @@
 #include "EnemyExplosive.h"
 #include "Application.h"
+#include "ModuleScene.h"
+
 #include "GameObject.h"
 #include "ScriptComponent.h"
 #include "PlayerController.h"
 #include "ParticleSystemComponent.h"
+#include "BoxColliderComponent.h"
+
 #include "AudioManager.h"
 #include "GameManager.h"
 
@@ -113,7 +117,22 @@ void EnemyExplosive::Attack()
         }
     }
 
-    TakeDamage(mMaxHealth);
+    const std::vector<GameObject*>& allEnemies = App->GetScene()->FindGameObjectsWithTag("Enemy");
+    for (GameObject* enemy : allEnemies)
+    {
+        float3 diff = enemy->GetWorldPosition() - mGameObject->GetWorldPosition();
+        float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+
+        if (distanceSquared <= (mExplosionRadius * mExplosionRadius))
+        {
+            Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+            enemyScript->TakeDamage(mAttackDamage);
+        }
+    }
+
+
+    if (mCollider) mCollider->SetEnable(false);
+    mCurrentState = EnemyState::DEATH;
 }
 
 void EnemyExplosive::Death()
@@ -133,6 +152,11 @@ void EnemyExplosive::Death()
         GameManager::GetInstance()->GetAudio()->Release(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mAttackSound);
     }
 
+    if (mExplosionParticle)
+    {
+        mExplosionParticle->SetEnabled(false);
+    }
+
     Enemy::Death();
 
     float3 newScale = float3(1, 1, 1);
@@ -140,9 +164,15 @@ void EnemyExplosive::Death()
     mExplosionWarningGO->SetEnabled(false);
 }
 
-void EnemyExplosive::PlayStepAudio()
+void EnemyExplosive::TakeDamage(float damage)
 {
-    // Do not play step audio
+    if (mHealth > 0.0f)
+    {
+        mHealth = 0.0f;
+        mCurrentState = EnemyState::CHARGE;
+    }
+    
+    ActivateHitEffect();
 }
 
 void EnemyExplosive::ChargeWarningArea()

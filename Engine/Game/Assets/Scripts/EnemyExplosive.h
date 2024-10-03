@@ -18,8 +18,7 @@ public:
 	void Charge() override;
 	void Attack() override;
 	void Death() override;
-
-	void PlayStepAudio() override;
+	void TakeDamage(float damage) override;
 
 private:
 	void ChargeWarningArea();
