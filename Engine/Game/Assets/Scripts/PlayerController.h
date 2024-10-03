@@ -113,6 +113,7 @@ public:
 
     State* GetPlayerLowerState() const { return mLowerState; }
     State* GetPlayerUpperState() const { return mUpperState; }
+    bool IsPlayerDashing() const;
     void SetIdleState();
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
@@ -289,6 +290,7 @@ private:
     //Ultimate
     GameObject* mUltimateGO = nullptr;
     GameObject* mUltimateChargeGO = nullptr;
+    GameObject* mUltiOuterChargeGO = nullptr;
     float mUltimateCooldown = 1.0f;
     float mUltimateChargeDuration = 1.0f;
     float mUltimateDuration = 3.0f;

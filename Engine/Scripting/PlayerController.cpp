@@ -53,6 +53,7 @@
 #include "Shootgun.h"
 #include "Grenade.h"
 #include <LineComponent.h>
+#include "UltimateAttack.h"
 
 CREATE(PlayerController)
 {
@@ -99,6 +100,7 @@ CREATE(PlayerController)
     SEPARATOR("Ultimate");
     MEMBER(MemberType::GAMEOBJECT, mUltimateGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateChargeGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltiOuterChargeGO);
     MEMBER(MemberType::FLOAT, mUltimateCooldown);
     MEMBER(MemberType::FLOAT, mUltimateDuration);
     MEMBER(MemberType::FLOAT, mUltimateChargeDuration);
@@ -231,6 +233,9 @@ void PlayerController::Start()
     if (mUltimateChargeGO)
         mUltimateChargeGO->SetEnabled(false);
 
+    if (mUltiOuterChargeGO)
+        mUltiOuterChargeGO->SetEnabled(false);
+
     // COLLIDER
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
@@ -342,6 +347,11 @@ void PlayerController::Paralyzed(float percentage, bool paralysis)
 
         mParalysisSpeedReductionFactor = 1.0f;
     }
+}
+
+bool PlayerController::IsPlayerDashing() const
+{ 
+    return mLowerState->GetType() == StateType::DASH;
 }
 
 void PlayerController::SetIdleState()
@@ -1001,6 +1011,8 @@ void PlayerController::AddUltimateResource()
 
 void PlayerController::EnableUltimate(bool enable)
 {
+    UltimateAttack* ultimateScript = (UltimateAttack*)((ScriptComponent*)mUltimateGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
+    ultimateScript->ResetTimer();
     if (mUltimateGO)
     {
         if(!enable) GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_ULTIMATE,mUltSound,true);
@@ -1014,6 +1026,7 @@ void PlayerController::EnableChargeUltimate(bool enable)
     {
         if(enable) mUltSound = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_ULTIMATE); 
         mUltimateChargeGO->SetEnabled(enable);
+        mUltiOuterChargeGO->SetEnabled(enable);
     }
 }
 
@@ -1054,7 +1067,7 @@ void PlayerController::InterpolateLookAt(const float3& target, float speed)
 void PlayerController::TakeDamage(float damage)
 {
     //GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_HIT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-    if (mLowerState->GetType() == StateType::DASH || mGodMode)
+    if (IsPlayerDashing()|| mGodMode)
     {
         return;
     }
