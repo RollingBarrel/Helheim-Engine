@@ -24,29 +24,30 @@ public:
 
     void OnCollisionEnter(CollisionData* collisionData);
 
+	void SetAwake(bool awake) { mIsAwake = awake;  }
+
 private:
-    bool IsInTrap(const GameObject* target);
+	bool IsInTrap(const GameObject* target);
+	void ActiveTrap(bool active);
+	void ActiveTrapFisrtTime();
 
     void ActiveTrap(bool active);
 
     BoxColliderComponent* mCollider = nullptr;
 
-    std::vector<GameObject*> mInTrap;
+	// Activation
+	bool mIsAwake = false; // Awake when player is close
+	bool mIsActive = false;
 
-    float mArea = 1.0f;
+	bool mFirstActivation = true;
+	float mFirstActivationInterval = 1.0f;
 
-    GameObject* mElectricVFX = nullptr;
-
-    enum class TRAP_STATE { INACTIVE, ACTIVE };
-    TRAP_STATE mState = TRAP_STATE::INACTIVE;  // Trap starts in inactive state
-
-    bool mIsActive = false;
-    float mActivationInterval = 8.0f;
-    float mActivationDuration = 4.0f;
-
-    TimerScript mActivationIntervalTimer;
-    TimerScript mActivationDurationTimer;
-
-    float mDamageAmount = 5.0f;
-    float mSpeedReduction = 0.7f;
+	float mActivationInterval = 4.0f;
+	float mActivationDuration = 2.0f;
+	TimerScript mActivationIntervalTimer;
+	TimerScript mActivationDurationTimer;
+	
+	// Damage
+	float mDamageAmount = 5.0f;
+	float mSpeedReduction = 0.5f; // Reduce 50%
 };

@@ -21,7 +21,7 @@ public:
 	void TakeDamage(float damage) override;
 
 private:
-	void Rotate();
+	
 
 	float mAttackRotationSpeed = 10.0f;
 	bool mDoDamage = false;

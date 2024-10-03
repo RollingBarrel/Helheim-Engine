@@ -14,6 +14,7 @@
 #include "PlayerController.h"
 #include "PlayerCamera.h"
 #include "Timer.h"
+#include "MathFunc.h"
 
 CREATE(GameManager)
 {
@@ -58,7 +59,12 @@ void GameManager::Awake()
 
 void GameManager::Start()
 {
-    //App->GetWindow()->SetCursor(857248271, 50, 50);
+    //float2 gameSize = App->GetWindow()->GetScreenSize();
+    //unsigned int xSize = 46 / (2560 / gameSize.x);
+    //unsigned int ySize = 46 / (1440 / gameSize.y);
+    //App->GetWindow()->SetCursor(674180654, xSize, ySize, xSize/2, ySize/2);
+
+    App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 
     if (mHudControllerGO)
     {
@@ -121,6 +127,11 @@ void GameManager::Update()
         HitStopTime(mHitStopTime);
     }
 
+    if (mCameraLerp)
+    {
+        BossCameraMovement();
+    }
+
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
@@ -153,6 +164,9 @@ void GameManager::SetPaused(bool value, bool screen)
     mPaused = value;
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
+
+    if (value) App->GetWindow()->SetCursor(0);
+    else App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 }
 
 void GameManager::LoadLevel(const char* LevelName)
@@ -271,6 +285,56 @@ void GameManager::RegisterPlayerKill()
 {
     mPlayerController->AddKill();
 }
+void GameManager::PlayPlayerFootStepSound()
+{
+    std::string sceneName = App->GetScene()->GetName();
+    if (sceneName == "Level1Scene" || sceneName == "Level2Scene")
+    {
+        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_FLOOR, mPlayerController->GetPlayerPosition());
+    }
+    else if (sceneName == "Level3Scene")
+    {
+        mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL, mPlayerController->GetPlayerPosition());
+    }
+}
+
+
+void GameManager::ActivateBossCamera(float targetDistance)
+{
+    mCameraLerp = true;
+    mBossCameraTarget = targetDistance;
+    BossCameraMovement();
+}
+
+void GameManager::BossCameraMovement()
+{
+    float distance = mPlayerCamera->GetDistanceToPlayer();
+    float3 rotation = RadToDeg(mPlayerCameraGO->GetLocalEulerAngles());
+    float offset = mPlayerCamera->GetOffset();
+    float rotationY = rotation.y;
+
+    distance = Lerp(distance, mBossCameraTarget, App->GetDt());
+    rotationY = Lerp(rotationY, -90.0f, App->GetDt()*1.3f);
+    offset = Lerp(offset, 0.25f, App->GetDt());
+
+    float diffRot = -90.0f - rotationY;
+    float diffDis = mBossCameraTarget - distance;
+    float diffOff = 0.45 - offset;
+    if (diffDis <= 0.01f && diffRot <= -0.01f && diffOff <= 0.001f)
+    {
+        mCameraLerp = false;
+        distance = mBossCameraTarget;
+        rotationY = -90.0f;
+        offset = 0.25f;
+    }
+
+    rotation.y = rotationY;
+    mPlayerCamera->SetDistanceToPlayer(distance);
+    mPlayerCameraGO->SetWorldRotation(DegToRad(rotation));
+    mPlayerCamera->SetOffset(offset);
+}
+
+
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -299,7 +363,6 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(BGM::GAMEOVER);
 
     // Player
-    mAudioManager->AddAudioToASComponent(SFX::PLAYER_FOOTSTEP);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_ULTIMATE);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);

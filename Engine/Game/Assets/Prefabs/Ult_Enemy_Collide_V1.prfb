@@ -2,11 +2,11 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 453202370,
+                "UID": 1286493022,
                 "ParentUID": 1,
                 "Name": "Ult_Enemy_Collide_V1",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -30,7 +30,7 @@
                 "Components": [
                     {
                         "ComponentType": 15,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Image": 213516520,
                         "Delay": 0.0,
                         "Duration": 0.5,
@@ -117,9 +117,9 @@
                             {
                                 "Time": 0.21983914077281953,
                                 "Color": [
+                                    0.02799999713897705,
+                                    0.23017597198486329,
                                     1.0,
-                                    0.02799999713897705,
-                                    0.02799999713897705,
                                     1.0
                                 ]
                             },
@@ -132,7 +132,34 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             }

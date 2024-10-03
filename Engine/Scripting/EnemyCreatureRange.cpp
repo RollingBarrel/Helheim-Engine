@@ -73,6 +73,11 @@ void EnemyCreatureRange::Update()
 	{
 		if (mLaserCharge)	mLaserCharge->SetEnabled(false);
 	}
+
+	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
+	{
+		mDoDamage = true;
+	}
 }
 
 void EnemyCreatureRange::Charge()
@@ -89,22 +94,18 @@ void EnemyCreatureRange::Charge()
 
 void EnemyCreatureRange::Attack()
 {
+	Enemy::Attack();
+
 	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
 	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
-
-	Enemy::Attack();
-	Rotate();
+	
+	RotateHorizontally(mPlayer->GetWorldPosition(), mAttackRotationSpeed);
 	mAimTimer.Reset();
 
 	mAnimationComponent->SendTrigger("tAttack", 0.2f);
 	
 	if (mLaserOrigin)	mLaserOrigin->SetEnabled(true);
 	if (mLaserEnd)		mLaserEnd->SetEnabled(true);
-	
-	if (mAttackCoolDownTimer.Delay(mAttackCoolDown))
-	{
-		mDoDamage = true;
-	}
 
 	Hit hit;
 	Ray ray;
@@ -115,14 +116,25 @@ void EnemyCreatureRange::Attack()
 	Physics::Raycast(hit, ray, mAttackDistance, &ignoreTags);
 	if (hit.IsValid())
 	{
-		if (hit.mGameObject->GetTag().compare("Player") == 0 && mDoDamage)
+		if (hit.mGameObject->GetTag().compare("Player") == 0)
 		{
-			ScriptComponent* playerScript = static_cast<ScriptComponent*>(GameManager::GetInstance()->GetPlayer()->GetComponent(ComponentType::SCRIPT));
-			PlayerController* player = static_cast<PlayerController*>(playerScript->GetScriptInstance());
-			player->TakeDamage(mAttackDamage);
-			mDoDamage = false;
+			PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+			if (!player->IsPlayerDashing())
+			{
+				mLaserEnd->SetWorldPosition(hit.mHitPoint);
+				if (mDoDamage)
+				{
+					mAttackCoolDownTimer.Reset();
+					player->TakeDamage(mAttackDamage);
+					mDoDamage = false;
+				}
+			}
 		}
-		mLaserEnd->SetWorldPosition(hit.mHitPoint);
+		else
+		{
+			mLaserEnd->SetWorldPosition(hit.mHitPoint);
+		}
+		
 	}
 	else
 	{
@@ -145,26 +157,6 @@ void EnemyCreatureRange::TakeDamage(float damage)
 {
 	Enemy::TakeDamage(damage);
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
-}
-
-void EnemyCreatureRange::Rotate()
-{
-	float3 direction = (mPlayer->GetWorldPosition() - mGameObject->GetWorldPosition());
-	direction.y = 0.0f;
-	direction.Normalize();
-	
-	float3 currentDirection = mGameObject->GetFront();
-	currentDirection.y = 0.0f;
-	currentDirection.Normalize();
-	float currentRadianAngle = std::atan2(currentDirection.x, currentDirection.z);
-
-	float angleDifference = currentDirection.AngleBetween(direction);
-	angleDifference = (currentDirection.Cross(direction).y > 0) ? angleDifference : angleDifference * -1;
-
-	float rotationSpeed = mAttackRotationSpeed * App->GetDt();
-	float newAngle = currentRadianAngle + Clamp(angleDifference, -rotationSpeed, rotationSpeed);
-
-	mGameObject->SetLocalRotation(float3(0.0f, newAngle, 0.0f));
 }
 
 

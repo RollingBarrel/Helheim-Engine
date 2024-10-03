@@ -117,7 +117,5 @@ void EnemyRobotRange::OnCollisionEnter(CollisionData* collisionData)
         mAiAgentComponent->FleeFromTarget(collisionData->collidedWith->GetWorldPosition());
         mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
         mIsFleeing = true;
-       // mEnemyCollisionDirection = collisionData->collisionNormal;
-        //LOG("HOLA")
     }
 }

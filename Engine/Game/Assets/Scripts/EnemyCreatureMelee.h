@@ -27,6 +27,7 @@ private:
 
 	BoxColliderComponent* mCollider = nullptr;
 	bool mHit = false;
+	bool mAttack = false;
 	bool mAudioPlayed = false;
 };
 

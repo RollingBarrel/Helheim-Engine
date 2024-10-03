@@ -60,7 +60,7 @@
                         "ComponentType": 17,
                         "IsEnabled": true,
                         "Center": [
-                            4.0,
+                            3.049999952316284,
                             0.0,
                             0.0
                         ],
@@ -296,7 +296,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             -6.66152811050415,
                             39.619293212890628,
@@ -310,8 +310,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -355,7 +355,7 @@
                         "Center": [
                             0.0,
                             0.0,
-                            4.0
+                            3.299999952316284
                         ],
                         "Size": [
                             6.0,
@@ -589,7 +589,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             114.8360366821289,
                             68.61929321289063,
@@ -603,8 +603,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -648,7 +648,7 @@
                         "Center": [
                             0.0,
                             0.0,
-                            -4.0
+                            -3.25
                         ],
                         "Size": [
                             6.0,
@@ -882,7 +882,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             149.4515838623047,
                             68.61929321289063,
@@ -896,8 +896,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -941,7 +941,7 @@
                         "Center": [
                             0.0,
                             0.0,
-                            -4.0
+                            -3.1500000953674318
                         ],
                         "Size": [
                             6.0,
@@ -1175,7 +1175,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             93.82679748535156,
                             68.61929321289063,
@@ -1189,8 +1189,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -1234,7 +1234,7 @@
                         "Center": [
                             0.0,
                             0.0,
-                            -4.0
+                            -3.049999952316284
                         ],
                         "Size": [
                             6.0,
@@ -1468,7 +1468,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             54.92045974731445,
                             39.41558837890625,
@@ -1482,8 +1482,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -1527,7 +1527,7 @@
                         "Center": [
                             0.0,
                             0.0,
-                            4.0
+                            3.3499999046325685
                         ],
                         "Size": [
                             6.0,
@@ -1761,7 +1761,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             50.4051513671875,
                             39.41929244995117,
@@ -1775,8 +1775,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2054,7 +2054,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             21.677051544189454,
                             39.619293212890628,
@@ -2068,8 +2068,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2111,7 +2111,7 @@
                         "ComponentType": 17,
                         "IsEnabled": true,
                         "Center": [
-                            4.0,
+                            3.0,
                             0.0,
                             0.0
                         ],
@@ -2347,7 +2347,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             -6.66152811050415,
                             39.619293212890628,
@@ -2361,8 +2361,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2640,7 +2640,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             -6.671316146850586,
                             39.619293212890628,
@@ -2654,8 +2654,8 @@
                             0.9396926164627075
                         ],
                         "Color": [
-                            1.0,
                             0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
@@ -2933,7 +2933,7 @@
                 "Components": [
                     {
                         "ComponentType": 2,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             -9.30190658569336,
                             39.20265579223633,
@@ -2947,8 +2947,301 @@
                             0.9396926164627075
                         ],
                         "Color": [
+                            0.0,
+                            0.5490196347236633,
+                            0.0,
+                            0.9396926164627075
+                        ],
+                        "Range": 10.0,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "isVolumetric": true
+                    }
+                ]
+            },
+            {
+                "UID": 1926850722,
+                "ParentUID": 1609360029,
+                "Name": "Security_Camera_2 (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -7.31666898727417,
+                    39.5,
+                    -25.866823196411134
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.20000000298023225,
+                    0.20000000298023225,
+                    0.20000000298023225
+                ],
+                "Tag": "DoorArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            3.1500000953674318,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            4.0,
+                            4.0,
+                            6.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 2118726198,
+                "ParentUID": 1926850722,
+                "Name": "OB_security_camera_arm",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.74114990234375,
+                    -0.294677734375,
+                    0.46700286865234377
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 138193709,
+                "ParentUID": 2118726198,
+                "Name": "OB_security_camera_arm",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 349128361,
+                        "MaterialID": 349128366,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 342531344,
+                "ParentUID": 1926850722,
+                "Name": "Pivot",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0975341796875,
+                    -0.03271484375,
+                    0.461578369140625
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "SecurityCameraFollower",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mMaxDistance",
+                                "MemberType": 1,
+                                "VariableData": 15.0
+                            },
+                            {
+                                "VariableName": "mTurningOnOffTime",
+                                "MemberType": 1,
+                                "VariableData": 3.0
+                            },
+                            {
+                                "VariableName": "mMaxLightIntesity",
+                                "MemberType": 1,
+                                "VariableData": 20.0
+                            },
+                            {
+                                "VariableName": "mMaxLightRange",
+                                "MemberType": 1,
+                                "VariableData": 10.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 926651534,
+                "ParentUID": 342531344,
+                "Name": "OB_security_camera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.00018310546875,
+                    0.591033935546875,
+                    -2.6809616088867189
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1091583683,
+                "ParentUID": 926651534,
+                "Name": "OB_security_camera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 349128367,
+                        "MaterialID": 349128366,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1270997000,
+                "ParentUID": 926651534,
+                "Name": "Light",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.4972076416015625,
+                    0.03814697265625,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -6.66152811050415,
+                            39.619293212890628,
+                            -25.774471282958986,
+                            20.0
+                        ],
+                        "Direction": [
                             1.0,
                             0.0,
+                            -1.1920927533992654e-7,
+                            0.9396926164627075
+                        ],
+                        "Color": [
+                            0.0,
+                            0.5490196347236633,
                             0.0,
                             0.9396926164627075
                         ],
