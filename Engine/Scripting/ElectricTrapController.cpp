@@ -13,10 +13,12 @@
 CREATE(ElectricTrapController)
 {
     CLASS(owner);
+    MEMBER(MemberType::GAMEOBJECT, mElectricVFX);
     END_CREATE;
 }
 
-ElectricTrapController::ElectricTrapController(GameObject* owner) : Script(owner)
+ElectricTrapController::ElectricTrapController(GameObject* owner)
+    : Script(owner), mActivationInterval(8.0f), mActivationDuration(4.0f)
 {
 }
 
@@ -28,48 +30,45 @@ ElectricTrapController::~ElectricTrapController()
 void ElectricTrapController::Start()
 {
     GameObject* firstChild = *(mGameObject->GetChildren().begin());
-    if (firstChild)
+
+    if (mElectricVFX)
     {
-        mSfx = static_cast<ParticleSystemComponent*>(firstChild->GetComponent(ComponentType::PARTICLESYSTEM));
-	}
-    if (mSfx)
-    {
-        mSfx->SetEnable(mIsActive);
+        mElectricVFX->SetEnabled(false);  // Initially disabled
     }
 
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
     if (mCollider)
     {
+        mCollider->SetSize(float3(mArea, 1.0f, mArea));
         mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ElectricTrapController::OnCollisionEnter, this, std::placeholders::_1)));
     }
+
+    mState = TRAP_STATE::INACTIVE;
 }
 
 void ElectricTrapController::Update()
 {
-    // Don't be working if player is far
-    float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
-    if (distance <= 30)
+    switch (mState)
     {
-        if (mIsActive)
+    case TRAP_STATE::INACTIVE:
+        if (mActivationIntervalTimer.Delay(mActivationInterval))
         {
-            if (mActivationDurationTimer.Delay(mActivationDuration))
-            {
-                mIsActive = false;
-                ActiveTrap(false);
-            }
+            mState = TRAP_STATE::ACTIVE;
+            ActiveTrap(true); 
+            mActivationDurationTimer.Reset();
         }
-        else
+        break;
+
+    case TRAP_STATE::ACTIVE:
+        if (mActivationDurationTimer.Delay(mActivationDuration))
         {
-            if (mActivationIntervalTimer.Delay(mActivationInterval))
-            {
-                mIsActive = true;
-                ActiveTrap(true);
-            }
+            mState = TRAP_STATE::INACTIVE;
+            ActiveTrap(false);  
+            mActivationIntervalTimer.Reset();  
         }
+        break;
     }
 }
-
-
 
 bool ElectricTrapController::IsInTrap(const GameObject* target)
 {
@@ -87,21 +86,19 @@ void ElectricTrapController::ActiveTrap(bool active)
 {
     if (active)
     {
-        if (mSfx)
+        if (mElectricVFX)
         {
-            mSfx->SetEnable(true);
+            mElectricVFX->SetEnabled(true);
         }
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
-        // Reserved for effects, perticle, sounds...
     }
     else
     {
         mInTrap.clear();
-        if (mSfx)
+        if (mElectricVFX)
         {
-            mSfx->SetEnable(false);
+            mElectricVFX->SetEnabled(false);
         }
-        // Reserved for effects, perticle, sounds...
     }
 }
 
@@ -109,14 +106,14 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
 {
     GameObject* collision = collisionData->collidedWith;
 
-    if (!IsInTrap(collision) && mIsActive)
+    if (mState == TRAP_STATE::ACTIVE && !IsInTrap(collision))
     {
         mInTrap.push_back(collision);
 
         if (collision->GetTag().compare("Player") == 0)
         {
-            PlayerController* player = GameManager::GetInstance()->GetPlayerController();       
-            player->Paralyzed(mSpeedReduction, true);
+            PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+            player->Paralyzed(mSpeedReduction, true);  // Reduce speed to 70%
             player->TakeDamage(mDamageAmount);
         }
 
@@ -124,7 +121,8 @@ void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
         {
             const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
             Enemy* enemy = static_cast<Enemy*>(script->GetScriptInstance());
-            enemy->Paralyzed(mSpeedReduction, true);
+            enemy->Paralyzed(mSpeedReduction, true);  // Reduce speed to 70%
+            enemy->TakeDamage(mDamageAmount);
         }
     }
 }

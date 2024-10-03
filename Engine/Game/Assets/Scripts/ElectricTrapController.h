@@ -9,37 +9,44 @@ class BoxColliderComponent;
 class GameObject;
 class ParticleSystemComponent;
 
-GENERATE_BODY(ElectricTrapController);
-class ElectricTrapController :
-    public Script
+GENERATE_BODY(ElectricTrapController)
+
+class ElectricTrapController : public Script
 {
-	FRIEND(ElectricTrapController)
+    FRIEND(ElectricTrapController)
+
 public:
-	ElectricTrapController(GameObject* owner);
-	~ElectricTrapController();
-	void Update() override;
-	void Start () override;
-	void OnCollisionEnter(CollisionData* collisionData);
+    ElectricTrapController(GameObject* owner);
+    ~ElectricTrapController();
+
+    void Update() override;
+    void Start() override;
+
+    void OnCollisionEnter(CollisionData* collisionData);
 
 private:
-	bool IsInTrap(const GameObject* target);
-	void ActiveTrap(bool active);
+    bool IsInTrap(const GameObject* target);
 
-	BoxColliderComponent* mCollider = nullptr;
-	std::vector<GameObject*> mInTrap;
+    void ActiveTrap(bool active);
 
-	float mArea = 1.0f; 
-	ParticleSystemComponent* mSfx = nullptr;
+    BoxColliderComponent* mCollider = nullptr;
 
-	// Activation
-	bool mIsActive = false;
-	float mActivationInterval = 4.0f;
-	float mActivationDuration = 2.0f;
-	TimerScript mActivationIntervalTimer;
-	TimerScript mActivationDurationTimer;
-	
-	// Damage
-	float mDamageAmount = 5.0f;
-	float mSpeedReduction = 0.5f; // Reduce 50%
+    std::vector<GameObject*> mInTrap;
+
+    float mArea = 1.0f;
+
+    GameObject* mElectricVFX = nullptr;
+
+    enum class TRAP_STATE { INACTIVE, ACTIVE };
+    TRAP_STATE mState = TRAP_STATE::INACTIVE;  // Trap starts in inactive state
+
+    bool mIsActive = false;
+    float mActivationInterval = 8.0f;
+    float mActivationDuration = 4.0f;
+
+    TimerScript mActivationIntervalTimer;
+    TimerScript mActivationDurationTimer;
+
+    float mDamageAmount = 5.0f;
+    float mSpeedReduction = 0.7f;
 };
-
