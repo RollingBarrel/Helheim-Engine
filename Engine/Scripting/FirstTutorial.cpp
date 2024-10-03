@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "AnimationComponent.h"
 #include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
@@ -94,6 +95,7 @@ void FirstTutorial::Update()
     {
         if (mDoor1)
         {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
             AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
             if (doorAnimation1)
             {
