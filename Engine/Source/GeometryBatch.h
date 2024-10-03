@@ -102,7 +102,7 @@ private:
 	unsigned int GetCommandsSsbo() const;
 	void ComputeCommands(unsigned int bufferIdx, const math::Frustum& frustum);
 
-	void RecreatePersistentFrustums();
+	void RecreatePersistentFrustums(unsigned int numFrustums);
 	void RecreatePersistentSsbos();
 	void RecreateSkinningSsbos();
 	void RecreateVboAndEbo();
@@ -165,6 +165,6 @@ private:
 	unsigned int mNumSkins = 0;
 	unsigned int mCurrSkinIdx = 0;
 
-	int mSsboAligment = 0;
+	int mSsboOffsetAlignment = 0;
 };
 
