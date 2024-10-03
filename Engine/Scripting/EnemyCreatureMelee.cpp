@@ -27,6 +27,7 @@ CREATE(EnemyCreatureMelee)
 	MEMBER(MemberType::FLOAT, mAttackDistance);
 	SEPARATOR("VFX");
 	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
+	MEMBER(MemberType::GAMEOBJECT, mDashAttackVFX);
 	END_CREATE;
 }
 
@@ -74,14 +75,15 @@ void EnemyCreatureMelee::Chase()
 	{
 		PlayStepAudio();
 		if (IsPlayerReachable())
-		{	
+		{
 			mAiAgentComponent->SetNavigationPath(mGameObject->GetWorldPosition());
-			RotateHorizontally(mPlayer->GetWorldPosition(), mRotationSpeed);			
+			RotateHorizontally(mPlayer->GetWorldPosition(), mRotationSpeed);
 			if (mAttack)
 			{
 				GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
 				RotateHorizontally(mPlayer->GetWorldPosition(), 100.0f);
 				mCurrentState = EnemyState::CHARGE;
+				mDashAttackVFX->SetEnabled(true);
 			}
 		}
 		else
@@ -109,8 +111,9 @@ void EnemyCreatureMelee::Attack()
 		mAttackCoolDownTimer.Reset();
 		mAttack = false;
 		mCurrentState = EnemyState::CHASE;
+		mDashAttackVFX->SetEnabled(false);
 	}
-	
+
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
 	mGameObject->SetWorldPosition(App->GetNavigation()->FindNearestPoint(mGameObject->GetWorldPosition() + mGameObject->GetFront() * movement, float3(10.0f)));
 }

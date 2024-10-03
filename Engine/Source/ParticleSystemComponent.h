@@ -21,7 +21,9 @@ public:
 		NONE = 0,
 		CONE,
 		BOX,
-		SPHERE
+		SPHERE,
+		CILINDER,
+		DONUT
 	};
 	explicit ParticleSystemComponent(GameObject* ownerGameObject);
 	ParticleSystemComponent(const ParticleSystemComponent& original, GameObject* owner);
@@ -59,6 +61,7 @@ private:
 	void SetImage(unsigned int resourceId);
 	void SetFileName(const char* fileName) { mImageName = fileName; }
 	void CreateNewParticle();
+	float DistanceToCenter(float3 position);
 
 	// Recursos
 	ResourceTexture* mImage = nullptr;
@@ -77,17 +80,23 @@ private:
 	bool mLooping = true;
 	bool mDisabling = false;
 
+
 	// Atributos del Emisor
 	bool mFollowEmitter = false;
 	float mSpinSpeed = 0.0f;
 	float mGravity = 0.0f;
 	EmitterType mShapeType = EmitterType::CONE;
-	float mShapeRadius = 0.01f;
+	float mShapeRadius = 1.0f;
+	float mShapeTubeRadius = 1.0f;
 	float mShapeAngle = math::pi / 4.0f;
 	float3 mShapeSize = float3(1.0f, 1.0f, 1.0f);
+	float mShapeHeight = 1.0f;
+	bool mShapeFollowZAxis = false;
 	bool mIsShapeAngleRand = false;
 	float mShapeRandAngle = 0.0f;
 	bool mShapeInverseDir = false;
+	bool mSpeedCenterShape = false;
+	float mSpeedCenterFactor = 1.0f;
 
 	// Control de Tiempo
 	float mDelay = 0.0f;

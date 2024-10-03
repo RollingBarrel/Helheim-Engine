@@ -1885,7 +1885,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 
 	if (ImGui::CollapsingHeader("Shape"))
 	{
-		static const char* items[]{ "None", "Cone","Box","Sphere" };
+		static const char* items[]{ "None", "Cone","Box","Sphere","Cilinder","Donut" };
 		static int selectedItem = static_cast<int>(component->mShapeType);
 		ImGui::Text("Shape");
 		ImGui::SameLine();
@@ -1904,24 +1904,55 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
 			break;
+
 		case ParticleSystemComponent::EmitterType::BOX:
 			ImGui::Text("Width");
 			ImGui::SameLine();
 			ImGui::DragFloat3("##Width", &component->mShapeSize.x, 0.1f, 0.0f);
+			ImGui::Text("Follow Z Axis");
+			ImGui::SameLine();
+			ImGui::Checkbox("##FollowZAxis", &(component->mShapeFollowZAxis));
 			ImGui::Text("Invers Dir");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
-
 			break;
+
 		case ParticleSystemComponent::EmitterType::SPHERE:
 			ImGui::Text("Radius");
 			ImGui::SameLine();
 			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
-			ImGui::Text("Invers Dir");
+			ImGui::Text("InversDir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##InversDir", &(component->mShapeInverseDir));
+			break;
+
+		case ParticleSystemComponent::EmitterType::CILINDER:
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
+			ImGui::Text("Height");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Height", &component->mShapeHeight, 0.1f, 0.0f);
+			ImGui::Text("Follow Z Axis");
+			ImGui::SameLine();
+			ImGui::Checkbox("##FollowZAxis", &(component->mShapeFollowZAxis));
+			ImGui::Text("InversDir");
 			ImGui::SameLine();
 			ImGui::Checkbox("##Invers Dir", &(component->mShapeInverseDir));
-
 			break;
+
+		case ParticleSystemComponent::EmitterType::DONUT:
+			ImGui::Text("Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##Radius", &component->mShapeRadius, 0.1f, 0.0f);
+			ImGui::Text("Tube Radius");
+			ImGui::SameLine();
+			ImGui::DragFloat("##TubeRadius", &component->mShapeTubeRadius, 0.1f, 0.0f);
+			ImGui::Text("InversDir");
+			ImGui::SameLine();
+			ImGui::Checkbox("##InversDir", &(component->mShapeInverseDir));
+			break;
+			
 		default:
 			ImGui::Text("NONE");
 			break;
@@ -1934,8 +1965,15 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::SameLine();
 			ImGui::DragFloat("##RandDirection", &component->mShapeRandAngle, 0.1f, 0.0f);
 		}
+		ImGui::Text("Speed To Center");
+		ImGui::SameLine();
+		ImGui::Checkbox("##SpeedCenterShape", &(component->mSpeedCenterShape));
+		if (component->mSpeedCenterShape)
+		{
+			ImGui::SameLine();
+			ImGui::DragFloat("##SpeedCenterFactor", &component->mSpeedCenterFactor, 0.1f, 0.0f);
+		}
 	}
-
 
 	if (ImGui::CollapsingHeader("Trail"))
 	{
@@ -1971,6 +2009,7 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			DrawBezierCurve(&(component->mTrail->mWidth), "Width");
 		}
 	}
+
 	if (ImGui::CollapsingHeader("Particles Texture & Color"))
 	{
 		static bool interruptor = true;

@@ -57,11 +57,15 @@ void EnemyRobotMelee::Charge()
     {
         mFirstAttack = false;
         mCurrentState = EnemyState::ATTACK;
+        mSwordTrail->SetEnabled(true);
+
     }
     else if (!mFirstAttack && mChargeDurationTimer.Delay(mChargeDuration))
 	{
         
  		mCurrentState = EnemyState::ATTACK;
+        mSwordTrail->SetEnabled(true);
+
 	}
     mGameObject->LookAt(mPlayer->GetWorldPosition());
 }
@@ -96,7 +100,6 @@ void EnemyRobotMelee::Attack()
     {
         attack = true;
         mCurrentState = EnemyState::CHARGE;
-        mSwordTrail->SetEnabled(true);
         mAttackTime = 0.0f;
         
     }
@@ -109,6 +112,7 @@ void EnemyRobotMelee::Death()
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_DEATH, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
         mDeathAudioPlayed = true;
+        mSwordTrail->SetEnabled(false);
     }
 }
 
