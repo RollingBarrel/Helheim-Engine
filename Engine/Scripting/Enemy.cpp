@@ -310,11 +310,11 @@ void Enemy::Death()
 	{
 		for (size_t i = 0; i < mMeshComponents.size(); i++)
 		{
-		MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
-		const ResourceMaterial* material = meshRender->GetResourceMaterial();
-		float4 baseColor = material->GetBaseColorFactor();
-		baseColor.w = baseColor.w - App->GetDt()*0.4f;
-		meshRender->SetBaseColorFactor(baseColor);
+			MeshRendererComponent* meshRender = static_cast<MeshRendererComponent*>(mMeshComponents[i]);
+			const ResourceMaterial* material = meshRender->GetResourceMaterial();
+			float4 baseColor = material->GetBaseColorFactor();
+			baseColor.w = baseColor.w - App->GetDt()*0.4f;
+			meshRender->SetBaseColorFactor(baseColor);
 		}
 	}
 	if (mVanishingTime>=mDeathTime)

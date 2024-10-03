@@ -30,7 +30,8 @@ enum class SFX
 	MAINMENU_CANCEL,
 
 	// PLAYER
-	PLAYER_FOOTSTEP,
+	PLAYER_FOOTSTEP_FLOOR,
+	PLAYER_FOOTSTEP_METAL,
 
 	PLAYER_PISTOL,
 	PLAYER_MACHINEGUN,
@@ -81,6 +82,8 @@ enum class SFX
 	ENEMY_CREATURE_LASER,
 	ENEMY_CREATURE_HIT,
 	ENEMY_CREATURE_DEATH,
+
+	ENEMY_RAT_DEATH,
 
 	ENEMY_EXPLOSIVE_STEPS,
 	ENEMY_EXPLOSIVE_PREEXPLOSION,
@@ -200,7 +203,8 @@ private:
 		{SFX::MAINMENU_START, "Assets/FMOD/Audios/sfx/gamestart.wav"},
 
 		// PLAYER
-		{SFX::PLAYER_FOOTSTEP, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_FLOOR, "Assets/FMOD/Audios/sfx/footstep.wav"}, // [X]
+		{SFX::PLAYER_FOOTSTEP_METAL, "Assets/FMOD/Audios/sfx/footstepmetal.wav"}, // [X]
 
 		{SFX::PLAYER_PISTOL, "event:/SFX/CHAR/main_normal"},
 		{SFX::PLAYER_MACHINEGUN, "event:/SFX/CHAR/main_machinegun"},
@@ -248,6 +252,8 @@ private:
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
 		{SFX::ENEMY_CREATURE_HIT, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
 		{SFX::ENEMY_CREATURE_DEATH, "Assets/FMOD/Audios/sfx/creaturedeath.wav"},
+
+		{SFX::ENEMY_RAT_DEATH, "Assets/FMOD/Audios/sfx/ratdeath.mp3"},
 
 		{SFX::ENEMY_EXPLOSIVE_STEPS, "Assets/FMOD/Audios/sfx/explosivestep.wav"},
 		{SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, "Assets/FMOD/Audios/sfx/explosivecharge.wav"},
