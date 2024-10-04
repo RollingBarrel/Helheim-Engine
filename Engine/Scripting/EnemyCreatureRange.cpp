@@ -4,6 +4,7 @@
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
+#include "LineComponent.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -53,6 +54,13 @@ void EnemyCreatureRange::Start()
 		mLaserCharge->SetEnabled(false);
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
+	if (mPreviewOrigin)
+	{
+		mPreviewOrigin->SetEnabled(false);
+		mPreviewLine = reinterpret_cast<LineComponent*>(mPreviewOrigin->GetComponent(ComponentType::LINE));
+	}
+	if (mPreviewEnd)	mPreviewEnd->SetEnabled(false);
+
 	mDeathAudioPlayed = false;
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
@@ -76,6 +84,7 @@ void EnemyCreatureRange::Update()
 		if (mLaserCharge)	mLaserCharge->SetEnabled(false);
 		if (mPreviewOrigin)	mPreviewOrigin->SetEnabled(false);
 		if (mPreviewEnd)	mPreviewEnd->SetEnabled(false);
+		mPreviewWidth = 0.0f;
 	}
 
 	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
@@ -97,6 +106,7 @@ void EnemyCreatureRange::Charge()
 	if (mPreviewOrigin)	mPreviewOrigin->SetEnabled(true);
 	if (mPreviewEnd)	mPreviewEnd->SetEnabled(true);
 
+	SetPreviewWidth();
 	LaserCollide(mPreviewOrigin, mPreviewEnd, false);
 }
 
@@ -116,7 +126,6 @@ void EnemyCreatureRange::Attack()
 	if (mLaserEnd)		mLaserEnd->SetEnabled(true);
 
 	LaserCollide(mLaserOrigin, mLaserEnd, true);
-	
 }
 
 void EnemyCreatureRange::Death()
@@ -133,6 +142,15 @@ void EnemyCreatureRange::TakeDamage(float damage)
 {
 	Enemy::TakeDamage(damage);
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
+}
+
+void EnemyCreatureRange::SetPreviewWidth()
+{
+	if (mPreviewLine)
+	{ 
+		mPreviewWidth = Lerp(mPreviewWidth, 100.0f, App->GetDt());
+		mPreviewLine->SetLineWidth(10.0f);
+	}
 }
 
 void EnemyCreatureRange::LaserCollide(GameObject* origin, GameObject* end, bool dealDamage)
