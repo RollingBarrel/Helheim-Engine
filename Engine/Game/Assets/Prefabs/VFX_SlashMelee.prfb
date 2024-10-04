@@ -1,0 +1,220 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1722964271,
+                "ParentUID": 1,
+                "Name": "VFX_SlashMelee",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 1932439520,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1728255467,
+                        "ComponentType": 18,
+                        "isEnabled": true,
+                        "Image": 1239023786,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.5899999737739563,
+                        "Width": {
+                            "Lineal": 1.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": 0.0
+                        },
+                        "Color Gradient": []
+                    },
+                    {
+                        "ID": 1753667132,
+                        "ComponentType": 18,
+                        "isEnabled": true,
+                        "Image": 1239023786,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.5899999737739563,
+                        "Width": {
+                            "Lineal": 1.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": 0.0
+                        },
+                        "Color Gradient": []
+                    },
+                    {
+                        "ID": 1761673547,
+                        "ComponentType": 18,
+                        "isEnabled": true,
+                        "Image": 1239023786,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.5899999737739563,
+                        "Width": {
+                            "Lineal": 1.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": 0.0
+                        },
+                        "Color Gradient": []
+                    },
+                    {
+                        "ID": 1767452090,
+                        "ComponentType": 18,
+                        "isEnabled": true,
+                        "Image": 1239023786,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.5899999737739563,
+                        "Width": {
+                            "Lineal": 1.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": 0.0
+                        },
+                        "Color Gradient": []
+                    }
+                ]
+            },
+            {
+                "UID": 1784509235,
+                "ParentUID": 1722964271,
+                "Name": "tail_slash",
+                "isEnabled": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": 0,
+                "PrefabId": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ID": 1785901655,
+                        "ComponentType": 18,
+                        "isEnabled": true,
+                        "Image": 2064100021,
+                        "Max Points": 1000,
+                        "Min Distance": 0.10000000149011612,
+                        "Max Life Time": 0.5,
+                        "Width": {
+                            "Lineal": 0.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": 2.0
+                        },
+                        "Color Gradient": []
+                    },
+                    {
+                        "ID": 1806091745,
+                        "ComponentType": 15,
+                        "isEnabled": true,
+                        "Image": 1647074147,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "Life Time": 1.0,
+                        "Emission Rate": 84.69999694824219,
+                        "Max Particles": 20,
+                        "Looping": true,
+                        "Stretched Billboard": false,
+                        "Size": {
+                            "Lineal": 0.10000000149011612,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": -1.0
+                        },
+                        "Speed": {
+                            "Lineal": 2.0,
+                            "isCurve": true,
+                            "Curve": [
+                                0.8949999809265137,
+                                0.029999999329447748,
+                                0.6850000023841858,
+                                0.2199999988079071
+                            ],
+                            "Factor": 1.0
+                        },
+                        "ShapeType": 1,
+                        "ShapeRadius": 1.0,
+                        "ShapeAngle": 0.7853749990463257,
+                        "ShapeSize": [
+                            1.0,
+                            1.0
+                        ],
+                        "Color Gradient": [
+                            {
+                                "Time": 0.5,
+                                "Color": [
+                                    0.5296040177345276,
+                                    0.9313725233078003,
+                                    0.6005043387413025,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+}
