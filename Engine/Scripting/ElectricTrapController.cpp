@@ -8,7 +8,6 @@
 #include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include <EditorControlPanel.h>
 
 
 CREATE(ElectricTrapController)
@@ -34,7 +33,7 @@ void ElectricTrapController::Start()
     if (mSfx)
     {
         mSfx->SetParent(mGameObject);
-        mSfx->SetEnabled(false);
+        mSfx->SetEnabled(mIsActive);
     }
 
     mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
@@ -45,41 +44,43 @@ void ElectricTrapController::Start()
     ActiveTrap(false);
 }
 
-void ElectricTrapController::Update() {
+void ElectricTrapController::Update()
+{
     float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
-    if (distance <= 20) {
+    if (distance <= 20) 
+    {
+        if (mIsActive)
+        {
+            if (mActivationDurationTimer.Delay(mActivationDuration) && mIsAwake)
+            {
 
-        LOG("Player is close to the trap: %s", StateToString(mCurrentState));
-        if (mIsActive) {
-            if (mActivationDurationTimer.Delay(mActivationDuration)) {
                 mIsActive = false;
                 ActiveTrap(false);
             }
         }
-        else if (mCurrentState == mState::WARNING) {
-            if (mActivationDurationTimer.Delay(mActivationDuration)) {
-                mCurrentState = mState::ACTIVE; // Change to active state after the warning duration
-                ActiveTrap(true);
-            }
-        }
-        else {
-            if (mFirstActivation) {
-                if (mActivationIntervalTimer.Delay(mFirstActivationInterval)) {
-                    mCurrentState = mState::WARNING; // Change to warning state
-                    ActiveTrap(true); // Enable VFX for warning
+        else
+        {
+            // Ensure player wont pass by trap without see activation
+            if (mFirstActivation)
+            {
+                if (mActivationIntervalTimer.Delay(mFirstActivationInterval) && mIsAwake)
+                {
+                    mIsActive = true;
+                    ActiveTrap(true);
                     mFirstActivation = false;
                 }
             }
-            else if (mActivationIntervalTimer.Delay(mActivationInterval)) {
-                mCurrentState = mState::WARNING; // Change to warning state
-                ActiveTrap(true); // Enable VFX for warning
+            else if (mActivationIntervalTimer.Delay(mActivationInterval) && mIsAwake)
+            {
+                mIsActive = true;
+                ActiveTrap(true);
             }
         }
     }
-    else {
+    else 
+    {
         mIsAwake = false;
         ActiveTrap(false);
-        mCurrentState = mState::INACTIVE; // Reset to inactive if the player is not close
     }
 }
 
@@ -96,49 +97,48 @@ bool ElectricTrapController::IsInTrap(const GameObject* target)
     return false;
 }
 
-void ElectricTrapController::ActiveTrap(bool active) {
-    if (active) {
-        if (mSfx) {
-            mSfx->SetEnabled(true); // Enable VFX
+void ElectricTrapController::ActiveTrap(bool active)
+{
+    if (active)
+    {
+        if (mSfx)
+        {
+            mSfx->SetEnabled(true);
         }
-        if (mCurrentState == mState::ACTIVE) {
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
-        }
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ELECTRICAL_TRAP, mGameObject->GetWorldPosition());
+        // Reserved for effects, perticle, sounds...
     }
-    else {
+    else
+    {
         mInTrap.clear();
-        if (mSfx) {
-            mSfx->SetEnabled(false); // Disable VFX if inactive
+        if (mSfx)
+        {
+            mSfx->SetEnabled(false);
         }
+        // Reserved for effects, perticle, sounds...
     }
 }
 
-void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData) {
+void ElectricTrapController::OnCollisionEnter(CollisionData* collisionData)
+{
     GameObject* collision = collisionData->collidedWith;
 
-    if (!IsInTrap(collision) && mCurrentState == mState::ACTIVE) { // Only apply damage if ACTIVE
+    if (!IsInTrap(collision) && mIsActive)
+    {
         mInTrap.push_back(collision);
 
-        if (collision->GetTag().compare("Player") == 0) {
-            PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+        if (collision->GetTag().compare("Player") == 0)
+        {
+            PlayerController* player = GameManager::GetInstance()->GetPlayerController();       
             player->Paralyzed(mSpeedReduction, true);
             player->TakeDamage(mDamageAmount);
         }
 
-        if (collision->GetTag().compare("Enemy") == 0) {
+        if (collision->GetTag().compare("Enemy") == 0)
+        {
             const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
             Enemy* enemy = static_cast<Enemy*>(script->GetScriptInstance());
             enemy->Paralyzed(mSpeedReduction, true);
         }
-    }
-}
-
-const char* ElectricTrapController::StateToString(mState state) {
-    switch (state) {
-    case mState::INACTIVE: return "INACTIVE";
-    case mState::AWAKE: return "AWAKE";
-    case mState::WARNING: return "WARNING";
-    case mState::ACTIVE: return "ACTIVE";
-    default: return "UNKNOWN";
     }
 }
