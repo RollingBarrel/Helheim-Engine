@@ -155,6 +155,11 @@ void Trail::Draw() const
     glEnable(GL_CULL_FACE);
 }
 
+void Trail::SetWidth(float width)
+{
+    mWidth.GetValue().SetMinValue(width);
+}
+
 float3 Trail::CalculateDirection(const float3& position, const float3& norm) const
 {
     if (mFixedDirection)
