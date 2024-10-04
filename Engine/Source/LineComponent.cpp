@@ -81,6 +81,11 @@ void LineComponent::Disable()
     mTrail->Disable();
 }
 
+void LineComponent::SetLineWidth(float width)
+{
+    mTrail->SetWidth(width);
+}
+
 
 void LineComponent::Save(JsonObject& obj) const
 {
