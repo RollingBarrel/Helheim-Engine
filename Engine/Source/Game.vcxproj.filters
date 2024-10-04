@@ -26,5 +26,12 @@
     <ClInclude Include="GameApp.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="resource1.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Game.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\Game\InternalAssets\Chrysalis.ico" />
   </ItemGroup>
 </Project>
