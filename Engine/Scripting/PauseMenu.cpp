@@ -275,7 +275,7 @@ void PauseMenu::Controls()
             }
             else
             {
-                mOptionsOption = 4;
+                mOptionsOption = 7;
             }
             HoverMenu(static_cast<MENU_TYPE>(mOptionsOption));
         }
