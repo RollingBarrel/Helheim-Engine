@@ -14,15 +14,26 @@
 #include "ModuleInput.h"
 #include "PlayerStats.h"
 #include "ModuleScene.h"
+#include "Transform2DComponent.h"
 
 CREATE(Dialog)
 {
     CLASS(owner);
     MEMBER(MemberType::GAMEOBJECT, mDialogGO);
+
     MEMBER(MemberType::GAMEOBJECT, mProtagonistGO);
     MEMBER(MemberType::GAMEOBJECT, mWifeGO);
+
     MEMBER(MemberType::GAMEOBJECT, mTextGO);
+
+    MEMBER(MemberType::GAMEOBJECT, mNextBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mSkipBtnGO);
+
+    MEMBER(MemberType::GAMEOBJECT, mIntroGO);
+    MEMBER(MemberType::GAMEOBJECT, mOutroGO);
+
+    MEMBER(MemberType::GAMEOBJECT, mTopGO);
+    MEMBER(MemberType::GAMEOBJECT, mBotGO);
     END_CREATE;
 }
 
@@ -36,19 +47,26 @@ Dialog::~Dialog()
 
 void Dialog::Start()
 {
-    if (mDialogGO) 
+    if (mNextBtnGO)
     {
-        mDialogButton = static_cast<ButtonComponent*>(mDialogGO->GetComponent(ComponentType::BUTTON));
-        mDialogButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnClick, this)));
+        mNextButton = static_cast<ButtonComponent*>(mNextBtnGO->GetComponent(ComponentType::BUTTON));
+        mNextButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnNextClick, this)));
     }
     if (mSkipBtnGO)
     {
         mSkipButton = static_cast<ButtonComponent*>(mSkipBtnGO->GetComponent(ComponentType::BUTTON));
         mSkipButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnSkipClick, this)));
     }
+
     if (mProtagonistGO) mProtagonistImage = static_cast<ImageComponent*>(mProtagonistGO->GetComponent(ComponentType::IMAGE));
     if (mWifeGO) mWifeImage = static_cast<ImageComponent*>(mWifeGO->GetComponent(ComponentType::IMAGE));
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
+    if (mIntroGO) mIntroImage = static_cast<ImageComponent*>(mIntroGO->GetComponent(ComponentType::IMAGE));
+    if (mOutroGO) mOutroImage = static_cast<ImageComponent*>(mOutroGO->GetComponent(ComponentType::IMAGE));
+
+    if (mTopGO) mTopTransform = static_cast<Transform2DComponent*>(mTopGO->GetComponent(ComponentType::TRANSFORM2D));
+    if (mBotGO) mBotTransform = static_cast<Transform2DComponent*>(mBotGO->GetComponent(ComponentType::TRANSFORM2D));
+
     mPlayerStats = App->GetScene()->GetPlayerStats();
     mCurrentDialogSet = mPlayerStats->GetDialogIndex();
     mDialogBGM = GameManager::GetInstance()->GetAudio()->Play(SFX::DIALOG, mDialogBGM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -57,7 +75,15 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(4.0f)) mTimeout = false;
+ 
+    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(3.0f)) StartAnimationToMain();
+    if (mAnimationToIntro) AnimationToIntro();
+    if (mAnimationToMain) AnimationToMain();
+
+    if (mAnimationToOutro) AnimationToOutro();
+    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(3.0f)) AnimationToEnd();
+
     Controls();
 
     // Check if we are currently typing
@@ -91,7 +117,7 @@ void Dialog::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
-        OnClick();
+        OnNextClick();
     }
 	if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN ||
 		App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
@@ -100,13 +126,112 @@ void Dialog::Controls()
 	}
 }
 
+void Dialog::AnimationToMain()
+{
+    if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 400.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 400.0f, 0.0f) * App->GetDt());
+    else 
+    {
+        mWifeGO->SetEnabled(true);
+        mTextGO->SetEnabled(true);
+
+        mCurrentCharIndex = 0;
+        mTypingTimer = 0.0f;
+        mIsTyping = true;
+        mText->SetText("");
+
+        mNextBtnGO->SetEnabled(true);
+        mSkipBtnGO->SetEnabled(true);
+
+        mAnimationToMain = false;
+        mAnimationToMainDone = true;
+    }
+}
+
+void Dialog::StartAnimationToMain()
+{
+    mAnimationToMain = true;
+
+    mIntroGO->SetEnabled(false);
+    mProtagonistGO->SetEnabled(false);
+
+    mTextGO->SetEnabled(false);
+    mNextBtnGO->SetEnabled(false);
+    mSkipBtnGO->SetEnabled(false);
+}
+
+void Dialog::AnimationToIntro()
+{
+    if (mTopTransform->GetSize().x < 1080.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(800.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x < 1080.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(800.0f, 0.0f) * App->GetDt());
+    else 
+    {
+        mIntroGO->SetEnabled(true);
+        mAnimationToIntro = false;
+    }
+}
+
+void Dialog::StartAnimationToIntro()
+{
+    mAnimationToIntro = true;
+    mTopTransform->SetSize(float2(0.01f, mTopTransform->GetSize().y));
+    mBotTransform->SetSize(float2(0.01f, mBotTransform->GetSize().y));
+    mIntroGO->SetEnabled(false);
+    mOutroGO->SetEnabled(false);
+    mAnimationTimer.Reset();
+    mAnimationToMainDone = false;
+}
+
+void Dialog::AnimationToOutro()
+{
+    if (mTopTransform->GetPosition().y > 55) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 400.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y < -55) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 400.0f, 0.0f) * App->GetDt());
+    else
+    {
+        mOutroGO->SetEnabled(true);
+        StartAnimationToEnd();
+        mAnimationToOutro = false;
+    }
+}
+
+void Dialog::StartAnimationToOutro()
+{
+    mAnimationToOutro = true;
+
+    mProtagonistGO->SetEnabled(false);
+    mWifeGO->SetEnabled(false);
+    mTextGO->SetEnabled(false);
+
+    mNextBtnGO->SetEnabled(false);
+    mSkipBtnGO->SetEnabled(false);
+}
+
+void Dialog::AnimationToEnd()
+{
+    mOutroGO->SetEnabled(false);
+    if (mTopTransform->GetSize().x > 0.0f) mTopTransform->SetSize(mTopTransform->GetSize() - float2(800.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x > 0.0f) mBotTransform->SetSize(mBotTransform->GetSize() - float2(800.0f, 0.0f) * App->GetDt());
+    else
+    {
+        mAnimationToEnd = false;
+        FinishDialogue();
+    }
+}
+
+void Dialog::StartAnimationToEnd()
+{
+    mAnimationTimer.Reset();
+    mAnimationToEnd = true;
+}
+
 void Dialog::StartDialog()
 {
     GameManager::GetInstance()->SetPaused(true, false);
     mCurrentDialog = 0;
     mTimeout = true;
-    mProtagonistImage->SetEnable(false);
-    mWifeImage->SetEnable(true);
+    mClickTimout.Reset();
+    StartAnimationToIntro();
+
     UpdateDialog();
     GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, false);
     GameManager::GetInstance()->GetAudio()->SetPosition(SFX::DIALOG, mDialogBGM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -141,7 +266,7 @@ void Dialog::UpdateDialog()
     }
 }
 
-void Dialog::OnClick()
+void Dialog::OnNextClick()
 {
     if (mTimeout) return;
 
@@ -156,12 +281,7 @@ void Dialog::OnClick()
     // Check if the current dialog set is over
     if (mCurrentDialog == mDialogList[mCurrentDialogSet].size() - 1)
     {
-        NextDialogSet();
-        mGameObject->SetEnabled(false);
-        GameManager::GetInstance()->SetPaused(false, false);
-        if (firstTime) firstTime = false;
-        else GameManager::GetInstance()->GetHud()->SetSanity();
-        GameManager::GetInstance()->GetAudio()->Pause(SFX::DIALOG, mDialogBGM, true);
+        StartAnimationToOutro();
 
         return;
     }
@@ -190,7 +310,11 @@ void Dialog::OnClick()
 void Dialog::OnSkipClick()
 {
     if (mTimeout) return;
+    StartAnimationToOutro();
+}
 
+void Dialog::FinishDialogue()
+{
     NextDialogSet();
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);

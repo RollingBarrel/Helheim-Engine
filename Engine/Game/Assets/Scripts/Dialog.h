@@ -8,6 +8,7 @@ class GameObject;
 class TextComponent;
 class ImageComponent;
 class ButtonComponent;
+class Transform2DComponent;
 class PlayerStats;
 
 GENERATE_BODY(Dialog);
@@ -26,11 +27,23 @@ public:
 
 private:
     void UpdateDialog();
-    void OnClick();
+    void OnNextClick();
     void OnSkipClick();
     void Controls();
 
+    void AnimationToMain();
+    void StartAnimationToMain();
+    void AnimationToIntro();
+    void StartAnimationToIntro();
+    void AnimationToOutro();
+    void StartAnimationToOutro();
+    void StartAnimationToEnd();
+    void AnimationToEnd();
+
+    void FinishDialogue();
+
     GameObject* mDialogGO = nullptr;
+
     GameObject* mProtagonistGO = nullptr;
     GameObject* mWifeGO = nullptr;
     ImageComponent* mProtagonistImage = nullptr;
@@ -38,10 +51,22 @@ private:
 
     GameObject* mTextGO = nullptr;
     TextComponent* mText = nullptr;
-    ButtonComponent* mDialogButton = nullptr;
+
+    GameObject* mNextBtnGO = nullptr;
+    ButtonComponent* mNextButton = nullptr;
 
     GameObject* mSkipBtnGO = nullptr;
     ButtonComponent* mSkipButton = nullptr;
+
+    GameObject* mIntroGO = nullptr;
+    ImageComponent* mIntroImage = nullptr;
+    GameObject* mOutroGO = nullptr;
+    ImageComponent* mOutroImage = nullptr;
+
+    GameObject* mTopGO = nullptr;
+    Transform2DComponent* mTopTransform = nullptr;
+    GameObject* mBotGO = nullptr;
+    Transform2DComponent* mBotTransform = nullptr;
 
     std::vector<std::vector<std::string>> mDialogList = {
         { 
@@ -119,4 +144,13 @@ private:
     PlayerStats* mPlayerStats = nullptr;
 
     bool firstTime = true;
+
+    // Animations 
+    TimerScript mAnimationTimer;
+    bool mAnimationToIntro = false;
+
+    bool mAnimationToMain = false;
+    bool mAnimationToMainDone = false;
+    bool mAnimationToEnd = false;
+    bool mAnimationToOutro = false;
 };
