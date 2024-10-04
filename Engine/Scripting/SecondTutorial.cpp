@@ -159,7 +159,8 @@ void SecondTutorial::UltTutorial()
         }
         else
         {
-            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN) mPart2Completed = true;
+            if (App->GetInput()->GetGameControllerTrigger(LEFT_TRIGGER) == ButtonState::BUTTON_DOWN || 
+                App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_X) == ButtonState::BUTTON_DOWN) mPart2Completed = true;
         }
     }
     else
@@ -171,7 +172,8 @@ void SecondTutorial::UltTutorial()
         }
         else
         {
-            if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN) mPart2Completed = true;
+            if (App->GetInput()->GetKey(Keys::Keys_C) == KeyState::KEY_DOWN ||
+                App->GetInput()->GetKey(Keys::Keys_X) == KeyState::KEY_DOWN) mPart2Completed = true;
         }
     }
     
