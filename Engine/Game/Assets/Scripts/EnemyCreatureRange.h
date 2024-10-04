@@ -22,13 +22,15 @@ public:
 
 private:
 	
-
+	void LaserCollide(GameObject* origin, GameObject* end, bool dealDamage); // false when is preview
 	float mAttackRotationSpeed = 10.0f;
 	bool mDoDamage = false;
 
 	GameObject* mLaserOrigin = nullptr;
 	GameObject* mLaserEnd = nullptr;
 	GameObject* mLaserCharge = nullptr;
+	GameObject* mPreviewOrigin = nullptr;
+	GameObject* mPreviewEnd = nullptr;
 
 
 	float mAimTime = 0.0f;
