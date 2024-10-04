@@ -347,7 +347,7 @@ bool CinematicCamera::HandleFadeOut(GameObject* dummy)
         }
     }
 
-    //return;
+    return false;
 }
 
 void CinematicCamera::HandleCameraMovement()
@@ -495,7 +495,7 @@ bool CinematicCamera::Fade(bool fadeOut)
         }
     }
 
-    //return;
+    return false;
 }
 
 void CinematicCamera::ActivateCamera(bool state)
