@@ -116,9 +116,6 @@ CREATE(PauseMenu)
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeUp);
     MEMBER(MemberType::GAMEOBJECT, mEffectsVolumeDown);
 
-    SEPARATOR("OTHERS");
-    MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
-
     END_CREATE;
 }
 
@@ -215,12 +212,7 @@ void PauseMenu::Start()
     mFullscreenOnButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnFullscreenButtonOnClick, this)));
     mFullscreenOffButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&PauseMenu::OnFullscreenButtonOffClick, this)));
 
-    if (mAudioManagerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mAudioManagerGO->GetComponent(ComponentType::SCRIPT));
-        mAudioManager = static_cast<AudioManager*>(script->GetScriptInstance());
-        mBGMID = mAudioManager->Play(BGM::MAINMENU);
-    }
+    mAudioManager = GameManager::GetInstance()->GetAudio();
 
     // Init the volume setting sliders
     App->GetAudio()->SetVolume("bus:/", mMasterVolumeValue);

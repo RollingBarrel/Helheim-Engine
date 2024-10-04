@@ -258,7 +258,6 @@ private:
     GameObject* mFullscreenImageOn_On = nullptr;
     GameObject* mFullscreenImageOff_On = nullptr;
 
-    GameObject* mAudioManagerGO = nullptr;
     AudioManager* mAudioManager = nullptr;
     int mBGMID = -1;
 };
