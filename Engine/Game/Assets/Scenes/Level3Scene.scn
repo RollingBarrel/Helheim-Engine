@@ -5790,10 +5790,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    2.9790468702994846e-11,
-                    -5.012335338450136e-11,
-                    0.8611254692077637,
-                    0.5117965340614319
+                    -5.709155717625869e-11,
+                    1.1760194380816547e-11,
+                    -0.2020578235387802,
+                    -0.9808391332626343
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -14546,6 +14546,11 @@
                                 "VariableData": 185814426
                             },
                             {
+                                "VariableName": "mGeneralVolumeBackgroundGO",
+                                "MemberType": 3,
+                                "VariableData": 1741593074
+                            },
+                            {
                                 "VariableName": "mMusicVolumeSliderGO",
                                 "MemberType": 3,
                                 "VariableData": 979239244
@@ -14556,6 +14561,11 @@
                                 "VariableData": 1315926400
                             },
                             {
+                                "VariableName": "mMusicVolumeBackgroundGO",
+                                "MemberType": 3,
+                                "VariableData": 1579788506
+                            },
+                            {
                                 "VariableName": "mEffectsVolumeSliderGO",
                                 "MemberType": 3,
                                 "VariableData": 1596801416
@@ -14564,6 +14574,11 @@
                                 "VariableName": "mEffectsVolumeFillGO",
                                 "MemberType": 3,
                                 "VariableData": 1930634111
+                            },
+                            {
+                                "VariableName": "mEffectsVolumeBackgroundGO",
+                                "MemberType": 3,
+                                "VariableData": 1750804914
                             },
                             {
                                 "VariableName": "mVSyncButtonOffGO",
@@ -14586,6 +14601,11 @@
                                 "VariableData": 1650287991
                             },
                             {
+                                "VariableName": "mVSyncBackgroundGO",
+                                "MemberType": 3,
+                                "VariableData": 838891376
+                            },
+                            {
                                 "VariableName": "mFullscreenButtonOnGO",
                                 "MemberType": 3,
                                 "VariableData": 412611572
@@ -14604,6 +14624,11 @@
                                 "VariableName": "mFullscreenImageOff_On",
                                 "MemberType": 3,
                                 "VariableData": 1317336467
+                            },
+                            {
+                                "VariableName": "mFullscreenBackgroundGO",
+                                "MemberType": 3,
+                                "VariableData": 1248137272
                             },
                             {
                                 "VariableName": "Play Btn",
@@ -15916,11 +15941,90 @@
                         "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1579788506,
+                "ParentUID": 123666775,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            64.29000091552735
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
                             0.23137255012989045,
                             0.9960784316062927,
                             0.8745098114013672
                         ],
-                        "Alpha": 0.10100000351667404,
+                        "Alpha": 0.0,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -16541,6 +16645,85 @@
                             1.0,
                             1.0,
                             1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1741593074,
+                "ParentUID": 1486080124,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            64.29000091552735
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
                         ],
                         "Alpha": 0.0,
                         "ShouldDraw": true,
@@ -22565,6 +22748,85 @@
                 ]
             },
             {
+                "UID": 838891376,
+                "ParentUID": 931311924,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            64.29000091552735
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
                 "UID": 1111491072,
                 "ParentUID": 931311924,
                 "Name": "Text",
@@ -23185,11 +23447,90 @@
                         "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1248137272,
+                "ParentUID": 230483036,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            64.29000091552735
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
                             0.23137255012989045,
                             0.9960784316062927,
                             0.8745098114013672
                         ],
-                        "Alpha": 0.10100000351667404,
+                        "Alpha": 0.0,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
@@ -50898,6 +51239,85 @@
                                 "Color Gradient": []
                             }
                         }
+                    }
+                ]
+            },
+            {
+                "UID": 1750804914,
+                "ParentUID": 929275268,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            64.29000091552735
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             }

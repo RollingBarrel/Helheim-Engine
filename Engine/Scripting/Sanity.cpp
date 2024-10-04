@@ -91,30 +91,17 @@ void Sanity::Update()
     Controls();
 
     if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
+    mTimePassed += App->GetDt();
 }
 
 void Sanity::Controls() 
 {
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) > 0.9f && mTimePassed >= mDebounceTime)))
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
-        if (mCurrentBuff > 1)
-        {
-            mCurrentBuff = 0;
-        }
-        else
-        {
-            mCurrentBuff++;
-        }
-        CardHover();
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
-    {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+        mTimePassed = 0.0f; // Restart debounce timer
 
         if (mCurrentBuff == 0)
         {
@@ -123,6 +110,24 @@ void Sanity::Controls()
         else
         {
             mCurrentBuff--;
+        }
+        CardHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) < -0.9f && mTimePassed >= mDebounceTime)))
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
+        mTimePassed = 0.0f; // Restart debounce timer
+
+        if (mCurrentBuff > 1)
+        {
+            mCurrentBuff = 0;
+        }
+        else
+        {
+            mCurrentBuff++;
         }
         CardHover();
     }
