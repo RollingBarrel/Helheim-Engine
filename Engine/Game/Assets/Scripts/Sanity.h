@@ -87,4 +87,6 @@ private:
     bool mTimeout = false;
 
     int mCurrentBuff = 0;
+    float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
 };
