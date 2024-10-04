@@ -99,7 +99,7 @@ protected:
 	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
-	float mFleeToAttackTime = 1.5f;
+	float mFleeToAttackTime = 1.25f;
 	TimerScript mDeathTimer;
 	float mVanishingTime = 0.0f;
 	float mDeathTime = 1.4f;
