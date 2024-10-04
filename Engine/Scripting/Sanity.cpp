@@ -21,6 +21,34 @@ CREATE(Sanity)
     MEMBER(MemberType::GAMEOBJECT, mCard1GO);
     MEMBER(MemberType::GAMEOBJECT, mCard2GO);
     MEMBER(MemberType::GAMEOBJECT, mCard3GO);
+
+    SEPARATOR("Speed Box");
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox1);
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox2);
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox3);
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox4);
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox5);
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox6);
+    MEMBER(MemberType::GAMEOBJECT, mSpeedBox7);
+
+    SEPARATOR("Health Box");
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox1);
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox2);
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox3);
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox4);
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox5);
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox6);
+    MEMBER(MemberType::GAMEOBJECT, mHealthBox7);
+
+    SEPARATOR("Damage Box");
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox1);
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox2);
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox3);
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox4);
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox5);
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox6);
+    MEMBER(MemberType::GAMEOBJECT, mDmgBox7);
+
     END_CREATE;
 }
 
@@ -210,10 +238,6 @@ void Sanity::CardClick()
 
 void Sanity::CardHover()
 {
-    OnCard1HoverOff();
-    OnCard2HoverOff();
-    OnCard3HoverOff();
-
     switch (mCurrentBuff)
     {
     case 0:
@@ -255,12 +279,17 @@ void Sanity::OnCard1Click()
     if (!mCurrentBuffs.empty())
         mCurrentBuffs.at(0).Consume();
 
+    SetSpeedBoxes();
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard1HoverOn()
 {
+    OnCard1HoverOff();
+    OnCard2HoverOff();
+    OnCard3HoverOff();
+
     if (mCard1Hovered) return;
     mCard1Hovered = true;
     if (mCard1Transform) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
@@ -282,12 +311,17 @@ void Sanity::OnCard2Click()
     if (mCurrentBuffs.size() > 1)
         mCurrentBuffs.at(1).Consume();
 
+    SetDamageBoxes();
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard2HoverOn()
 {
+    OnCard1HoverOff();
+    OnCard2HoverOff();
+    OnCard3HoverOff();
+
     if (mCard2Hovered) return;
     mCard2Hovered = true;
     if (mCard2Transform) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
@@ -309,12 +343,17 @@ void Sanity::OnCard3Click()
     if (mCurrentBuffs.size() > 2)
         mCurrentBuffs.at(2).Consume();
 
+    SetHealthBoxes();
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard3HoverOn()
 {
+    OnCard1HoverOff();
+    OnCard2HoverOff();
+    OnCard3HoverOff();
+
     if (mCard3Hovered) return;
     mCard3Hovered = true;
     if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));
@@ -327,4 +366,91 @@ void Sanity::OnCard3HoverOff()
     mCard3Hovered = false;
     if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(1.2f));
     mCard3TextTransform->SetPosition(mCard3TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
+}
+
+void Sanity::SetSpeedBoxes()
+{
+    mSpeedLvl++;
+    switch (mSpeedLvl)
+    {
+        case 1:
+            mSpeedBox1->SetEnabled(true);
+            break;
+        case 2:
+            mSpeedBox2->SetEnabled(true);
+            break;
+        case 3:
+            mSpeedBox3->SetEnabled(true);
+            break;
+        case 4:
+            mSpeedBox4->SetEnabled(true);
+            break;
+        case 5:
+            mSpeedBox5->SetEnabled(true);
+            break;
+        case 6:
+            mSpeedBox6->SetEnabled(true);
+            break;
+        case 7:
+            mSpeedBox7->SetEnabled(true);
+            break;
+    }
+}
+
+void Sanity::SetHealthBoxes()
+{
+    mHealthLvl++;
+    switch (mHealthLvl)
+    {
+    case 1:
+        mHealthBox1->SetEnabled(true);
+        break;
+    case 2:
+        mHealthBox2->SetEnabled(true);
+        break;
+    case 3:
+        mHealthBox3->SetEnabled(true);
+        break;
+    case 4:
+        mHealthBox4->SetEnabled(true);
+        break;
+    case 5:
+        mHealthBox5->SetEnabled(true);
+        break;
+    case 6:
+        mHealthBox6->SetEnabled(true);
+        break;
+    case 7:
+        mHealthBox7->SetEnabled(true);
+        break;
+    }
+}
+
+void Sanity::SetDamageBoxes()
+{
+    mDmgLvl++;
+    switch (mDmgLvl)
+    {
+    case 1:
+        mDmgBox1->SetEnabled(true);
+        break;
+    case 2:
+        mDmgBox2->SetEnabled(true);
+        break;
+    case 3:
+        mDmgBox3->SetEnabled(true);
+        break;
+    case 4:
+        mDmgBox4->SetEnabled(true);
+        break;
+    case 5:
+        mDmgBox5->SetEnabled(true);
+        break;
+    case 6:
+        mDmgBox6->SetEnabled(true);
+        break;
+    case 7:
+        mDmgBox7->SetEnabled(true);
+        break;
+    }
 }
