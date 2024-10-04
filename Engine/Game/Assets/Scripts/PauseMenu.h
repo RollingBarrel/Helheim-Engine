@@ -51,6 +51,8 @@ public:
     void Start() override;
     void Update() override;
 
+    void Reset();
+
 private:
     void Controls();
 

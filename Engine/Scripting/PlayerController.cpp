@@ -843,6 +843,7 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = !mGodMode;
         App->GetScene()->GetPlayerStats()->SetGodMode(mGodMode);
+        GameManager::GetInstance()->GetHud()->SetGodmode(mGodMode);
     }
     if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
     {
@@ -850,13 +851,16 @@ void PlayerController::CheckDebugOptions()
         {
             mDamageModifier = 99999.0f;
             App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
+            GameManager::GetInstance()->GetHud()->SetInstaKill(true);
         }
         else
         {
             App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
             mDamageModifier = 1.0f;
+            GameManager::GetInstance()->GetHud()->SetInstaKill(false);
         }
-     }
+
+    }
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);

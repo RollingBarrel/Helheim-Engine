@@ -234,6 +234,13 @@ void PauseMenu::Update()
     }
 }
 
+void PauseMenu::Reset()
+{
+    OpenMenu(MENU_TYPE::MAIN);
+    OnPlayButtonHover(); // Hover first option when the menu is first laoded    
+    OnKeyboardButtonHover(); // Pre-hover the first option
+}
+
 void PauseMenu::Controls()
 {
     if (App->GetInput()->GetKey(Keys::Keys_UP) == KeyState::KEY_DOWN ||

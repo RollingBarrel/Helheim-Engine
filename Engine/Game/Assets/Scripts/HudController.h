@@ -15,6 +15,7 @@ class PlayerController;
 class Sanity;
 class Dialog;
 class Transform2DComponent;
+class PauseMenu;
 enum class EnergyType;
 
 enum class SCREEN {
@@ -51,7 +52,9 @@ public:
     void DisableCollectible();
     void SetFadein(bool value) { mFadeIn = value; }
 
-
+    void SetGodmode(bool value);
+    void SetInstaKill(bool value);
+    void SetDebug(bool value);
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -85,6 +88,7 @@ private:
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
+    PauseMenu* mPauseMenu = nullptr;
     GameObject* mFadeoutScreen = nullptr;
     ImageComponent* mFadeoutImage = nullptr;
 
@@ -138,6 +142,13 @@ private:
     TextComponent* mSubtitleText = nullptr;
     TextComponent* mInteractText = nullptr;
     ButtonComponent* mCollectibleContinueBtn = nullptr;
+
+    //Debug
+    GameObject* mDebugGO = nullptr;
+    GameObject* mGodmodeGO = nullptr;
+    GameObject* mInstakillGO = nullptr;
+    ImageComponent* mGodmodeImage = nullptr;
+    ImageComponent* mInstakillImage = nullptr;
 
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;

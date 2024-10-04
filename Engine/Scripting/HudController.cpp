@@ -18,10 +18,10 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "PlayerController.h"
-#include "MainMenu.h"
 #include "Keys.h"
 #include "Dialog.h"
 #include "Sanity.h"
+#include "PauseMenu.h"
 
 
 CREATE(HudController)
@@ -54,6 +54,11 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mLoseMenuBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mWinMenuBtnGO);
     
+    SEPARATOR("Debug");
+    MEMBER(MemberType::GAMEOBJECT, mDebugGO);
+    MEMBER(MemberType::GAMEOBJECT, mGodmodeGO);
+    MEMBER(MemberType::GAMEOBJECT, mInstakillGO);
+
     SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     MEMBER(MemberType::GAMEOBJECT, mDialogGO);
@@ -103,7 +108,10 @@ HudController::~HudController()
 
 void HudController::Start()
 {
-    if (mPauseScreen) mPauseScreen->SetEnabled(false);
+    if (mPauseScreen) {
+        mPauseScreen->SetEnabled(false);
+        mPauseMenu = static_cast<PauseMenu*>(static_cast<ScriptComponent*>(mPauseScreen->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    }
 
     if (mWinScreen) 
     {
@@ -143,6 +151,11 @@ void HudController::Start()
         mLoadingSlider->SetValue(0.01f);
     }
     
+    if (mDebugGO) 
+    {
+        mGodmodeImage = static_cast<ImageComponent*>(mGodmodeGO->GetComponent(ComponentType::IMAGE));
+        mInstakillImage = static_cast<ImageComponent*>(mInstakillGO->GetComponent(ComponentType::IMAGE));
+    }
 
     if (mCollectibleScreen)
     {
@@ -220,8 +233,6 @@ void HudController::Start()
         mFadeoutImage = static_cast<ImageComponent*>(mFadeoutScreen->GetComponent(ComponentType::IMAGE));
         mFadeoutScreen->SetEnabled(true);
     }
-
-    //SetDialog();
 
     if (mVideoGO)
     {
@@ -498,6 +509,23 @@ void HudController::DisableCollectible()
     OnCollectibleContinueBtnClick();
 }
 
+void HudController::SetGodmode(bool value)
+{
+    value ? mGodmodeImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mGodmodeImage->SetColor(float3(0.0f, 0.0f, 0.0f));
+    if (mInstakillImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+}
+
+void HudController::SetInstaKill(bool value)
+{
+    value ? mInstakillImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mInstakillImage->SetColor(float3(0.0f, 0.0f, 0.0f));
+    if (mGodmodeImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+}
+
+void HudController::SetDebug(bool value)
+{
+    mDebugGO->SetEnabled(value);
+}
+
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
@@ -638,6 +666,7 @@ void HudController::SetScreen(SCREEN name, bool active)
             if (mWinScreen) mWinScreen->SetEnabled(active);
             break;
         case SCREEN::PAUSE:
+            mPauseMenu->Reset();
             if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
         case SCREEN::COLLECTIBLE:
