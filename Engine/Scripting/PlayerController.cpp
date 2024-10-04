@@ -111,6 +111,7 @@ CREATE(PlayerController)
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
+   //MEMBER(MemberType::GAMEOBJECT, mDebugCube);
 
     END_CREATE;
 }
@@ -473,6 +474,7 @@ void PlayerController::HandleRotation()
         {
             float3 rayPoint = ray.GetPoint(distance);
             mAimPosition = rayPoint;
+            //mDebugCube->SetWorldPosition(mAimPosition);
             mAimPosition.y = mGameObject->GetWorldPosition().y; 
         }    
     }

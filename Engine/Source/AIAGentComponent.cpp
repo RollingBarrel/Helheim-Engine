@@ -43,11 +43,14 @@ void AIAgentComponent::Update()
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
 			mDirection = owner_pos - mOwner->GetWorldPosition();
 			mOwner->SetWorldPosition(owner_pos);
+
+			/*
 			float3 destination = mNavPositions.size() > 1 ? mNavPositions[1] : mNavPositions[0];
 			if (owner_pos.Equals(destination, 0.5f) && mNavPositions.size() > 2)
 			{
 				SetNavigationPath(mNavPositions.back());
 			}
+			*/
 		}
 	}
 }
@@ -61,6 +64,8 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
 	if (!mNavPositions.empty())
 	{
+		App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions.back());
+		/*
 		if (mNavPositions.size() > 1)
 		{
 			App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions[1]);
@@ -69,6 +74,7 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 		{
 			App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions[0]);
 		}
+		*/
 	}	
 }
 

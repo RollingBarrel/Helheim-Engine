@@ -29,6 +29,7 @@ CREATE(ExplosiveTrap)
     SEPARATOR("GAME OBJECT");
     MEMBER(MemberType::GAMEOBJECT, mExplosionPrestartVFX);
     MEMBER(MemberType::GAMEOBJECT, mExplosionVFX);
+    MEMBER(MemberType::GAMEOBJECT, mBarrelMesh);
 
     END_CREATE;
 }
@@ -76,11 +77,12 @@ void ExplosiveTrap::Update()
             mState = TRAP_STATE::EXPLOSION_START;
             mExplosionPrestartVFX->SetEnabled(false);
             mExplosionVFX->SetEnabled(true);
+            mBarrelMesh->SetEnabled(false);
 
             GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mGameObject->GetWorldPosition());
 
             // Change box size to hit farther 
-            float3 area(mExplosionArea, 1, mExplosionArea);
+            float3 area(mExplosionArea/2, 1, mExplosionArea/2);
             mCollider->SetSize(area);
         }
     }

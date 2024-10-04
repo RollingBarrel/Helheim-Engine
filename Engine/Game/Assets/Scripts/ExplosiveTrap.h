@@ -44,6 +44,7 @@ private:
 
 	GameObject* mExplosionPrestartVFX = nullptr;
 	GameObject* mExplosionVFX = nullptr;
+	GameObject* mBarrelMesh = nullptr;
 
 	// Activation
 	float mExplosionWait = 1.5f;
