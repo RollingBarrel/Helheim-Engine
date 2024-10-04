@@ -101,8 +101,8 @@ private:
     void OnGeneralVolumeHoverOff();
     void OnMusicVolumeHoverOff();
     void OnEffectsVolumeHoverOff();
-    //void OnVSyncButtonHoverOff();
-    //void OnFullscreenButtonHoverOff();
+    void OnVSyncButtonHoverOff();
+    void OnFullscreenButtonHoverOff();
 
     void OnGeneralUp();
     void OnGeneralDown();
@@ -117,6 +117,7 @@ private:
     int mAudioSettingOption = 0;
 
     float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
 
     MENU_TYPE mCurrentMenu;
     AUDIO_SETTING_TYPE mCurrentAudioSetting;
@@ -125,6 +126,8 @@ private:
     float mMasterVolumeValue = .75f;
     float mMusicVolumeValue = .75f;
     float mEffectsVolumeValue = .75f;
+
+    bool mIsAdjustingAudio = false;
 
     TimerScript mTimer;
 
@@ -209,6 +212,8 @@ private:
     // General Volume
     GameObject* mGeneralVolumeSliderGO = nullptr;
     SliderComponent* mGeneralVolumeSlider = nullptr;
+    GameObject* mGeneralVolumeBackgroundGO = nullptr;
+    ImageComponent* mGeneralVolumeBackground = nullptr;
     GameObject* mGeneralVolumeFillGO = nullptr;
     ImageComponent* mGeneralVolumeFill = nullptr;
     GameObject* mGeneralVolumeUp = nullptr;
@@ -217,6 +222,8 @@ private:
     // Music Volume
     GameObject* mMusicVolumeSliderGO = nullptr;
     SliderComponent* mMusicVolumeSlider = nullptr;
+    GameObject* mMusicVolumeBackgroundGO = nullptr;
+    ImageComponent* mMusicVolumeBackground = nullptr;
     GameObject* mMusicVolumeFillGO = nullptr;
     ImageComponent* mMusicVolumeFill = nullptr;
     GameObject* mMusicVolumeUp = nullptr;
@@ -225,12 +232,16 @@ private:
     // Effects Volume
     GameObject* mEffectsVolumeSliderGO = nullptr;
     SliderComponent* mEffectsVolumeSlider = nullptr;
+    GameObject* mEffectsVolumeBackgroundGO = nullptr;
+    ImageComponent* mEffectsVolumeBackground = nullptr;
     GameObject* mEffectsVolumeFillGO = nullptr;
     ImageComponent* mEffectsVolumeFill = nullptr;
     GameObject* mEffectsVolumeUp = nullptr;
     GameObject* mEffectsVolumeDown = nullptr;
 
     // VSync
+    GameObject* mVSyncBackgroundGO = nullptr;
+    ImageComponent* mVSyncBackground = nullptr;
     GameObject* mVSyncButtonOnGO = nullptr;
     GameObject* mVSyncButtonOffGO = nullptr;
     GameObject* mVSyncImageOn_On = nullptr;
@@ -238,6 +249,8 @@ private:
     ButtonComponent* mVSyncOnButton = nullptr;
     ButtonComponent* mVSyncOffButton = nullptr;
     // Fullscreen
+    GameObject* mFullscreenBackgroundGO = nullptr;
+    ImageComponent* mFullscreenBackground = nullptr;
     GameObject* mFullscreenButtonOnGO = nullptr;
     GameObject* mFullscreenButtonOffGO = nullptr;
     ButtonComponent* mFullscreenOnButton = nullptr;
@@ -245,7 +258,6 @@ private:
     GameObject* mFullscreenImageOn_On = nullptr;
     GameObject* mFullscreenImageOff_On = nullptr;
 
-    GameObject* mAudioManagerGO = nullptr;
     AudioManager* mAudioManager = nullptr;
     int mBGMID = -1;
 };
