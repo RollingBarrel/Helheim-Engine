@@ -216,6 +216,7 @@ void HudController::Start()
     {
         mUltimateSlider = static_cast<SliderComponent*>(mUltimateSliderGO->GetComponent(ComponentType::SLIDER));
         mUltimateSlider->SetValue(0.001f);
+        mUltimateImage = static_cast<ImageComponent*>(mUltimateHLGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
@@ -349,26 +350,11 @@ void HudController::Update()
         }
     }
 
-    // Ultimate cooldown update
-    if (mUltimateHL && mUltimateHLTimer.DelayWithoutReset(0.25f))
+    // Apply pulsating effect
+    if (mUltimateHL)
     {
-        mUltimateHLGO->SetEnabled(false);
-        mUltimateHL = false;
-    }
-    if (mUltimateSlider != nullptr && mUltimateCooldown != 0.0f)
-    {
-        if (mUltimateTimer <= mUltimateCooldown)
-        {
-            mUltimateTimer += App->GetDt();
-            mUltimateSlider->SetValue(1 - (mUltimateTimer / mUltimateCooldown));
-        }
-        else
-        {
-            mUltimateHL = true;
-            mUltimateHLGO->SetEnabled(true);
-            mUltimateHLTimer.Reset();
-            mUltimateCooldown = 0.0f;
-        }
+        mAlpha += App->GetDt() * 5.0f;
+        mUltimateImage->SetAlpha(abs(sinf(mAlpha)));
     }
 
     // Weapon highlight
@@ -538,7 +524,6 @@ void HudController::SetDebug(bool value)
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
-   if (ammo == 0); // Set grey skin
 }
 
 void HudController::SetEnergy(int energy, EnergyType type, bool up)
@@ -654,8 +639,18 @@ void HudController::SetGrenadeCooldown(float cooldown)
 
 void HudController::SetUltimateCooldown(float cooldown)
 {
-    mUltimateCooldown = cooldown;
-    mUltimateTimer = 0.001f;
+    mUltimateSlider->SetValue(cooldown / 100.0f);
+
+    if (cooldown == 100)
+    {
+        mUltimateHL = true;
+        mUltimateHLGO->SetEnabled(true);
+    }
+    else 
+    {
+        mUltimateHL = false;
+        mUltimateHLGO->SetEnabled(false);
+    }
 }
 
 void HudController::SetCollectibleText(std::string text, std::string title, std::string subtitle)

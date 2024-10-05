@@ -228,7 +228,10 @@ private:
     bool mUltimateHL = false;
     TimerScript mUltimateHLTimer;
     GameObject* mUltimateHLGO = nullptr;
+    ImageComponent* mUltimateImage = nullptr;
     bool mGunHL = false;
     TimerScript mGunHLTimer;
     GameObject* mGunHLGO = nullptr;
+
+    float mAlpha = 0.0f;
 };

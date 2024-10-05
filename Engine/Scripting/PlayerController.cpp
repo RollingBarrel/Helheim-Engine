@@ -1011,7 +1011,11 @@ void PlayerController::ResetEnergy()
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100) mUltimateResource += 20;
+    if (mUltimateResource != 100)
+    {
+        mUltimateResource += 20;
+        GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
+    }
     else return;
 }
 
