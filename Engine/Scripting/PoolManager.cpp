@@ -51,9 +51,10 @@ void PoolManager::Start()
 	}
 	else if (App->GetScene()->GetName().compare("Level2Scene") == 0)
 	{
+		mPoolMap.insert({ PoolType::ENEMY_BULLET, ObjectPool("EnemyBullet.prfb", numEnemyBullets, EnemyBullet) });
 		mPoolMap.insert({ PoolType::CREATURE_MELEE, ObjectPool("Creature_Melee.prfb", numEnemies, EnemyCreatureMelee) });
 		mPoolMap.insert({ PoolType::CREATURE_RANGE, ObjectPool("Creature_Range.prfb", numEnemies, EnemyCreatureRange) });
-		mPoolMap.insert({ PoolType::ROBOT_MELEE, ObjectPool("Robot_Melee.prfb", 4, EnemyRobotMelee) });
+		mPoolMap.insert({ PoolType::ROBOT_RANGE, ObjectPool("Robot_Range.prfb", numEnemies, EnemyRobotRange) });
 	}
 	else if (App->GetScene()->GetName().compare("Level3Scene") == 0)
 	{

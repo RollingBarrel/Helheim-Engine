@@ -274,6 +274,8 @@ void Buff::Consume()
 
 void Sanity::OnCard1Click()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
     if (mTimeout) return;
 
     if (!mCurrentBuffs.empty())
@@ -289,6 +291,7 @@ void Sanity::OnCard1HoverOn()
     OnCard1HoverOff();
     OnCard2HoverOff();
     OnCard3HoverOff();
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
     if (mCard1Hovered) return;
     mCard1Hovered = true;
@@ -306,6 +309,8 @@ void Sanity::OnCard1HoverOff()
 
 void Sanity::OnCard2Click()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
     if (mTimeout) return;
 
     if (mCurrentBuffs.size() > 1)
@@ -321,6 +326,7 @@ void Sanity::OnCard2HoverOn()
     OnCard1HoverOff();
     OnCard2HoverOff();
     OnCard3HoverOff();
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
     if (mCard2Hovered) return;
     mCard2Hovered = true;
@@ -338,6 +344,8 @@ void Sanity::OnCard2HoverOff()
 
 void Sanity::OnCard3Click()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
     if (mTimeout) return;
 
     if (mCurrentBuffs.size() > 2)
@@ -353,6 +361,7 @@ void Sanity::OnCard3HoverOn()
     OnCard1HoverOff();
     OnCard2HoverOff();
     OnCard3HoverOff();
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
     if (mCard3Hovered) return;
     mCard3Hovered = true;

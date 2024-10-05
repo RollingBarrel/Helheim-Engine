@@ -243,9 +243,12 @@ void ModuleAudio::Pause(const FMOD::Studio::EventDescription* eventDescription, 
 {
 	FMOD::Studio::EventInstance* eventInstance = FindEventInstance(eventDescription, id);
 	
+	int count = 0;
+	CheckError(eventDescription->getInstanceCount(&count));
+
 	if (eventInstance != nullptr)
 	{
-		eventInstance->setPaused(pause);
+		CheckError(eventInstance->setPaused(pause));
 	}
 	else 
 	{

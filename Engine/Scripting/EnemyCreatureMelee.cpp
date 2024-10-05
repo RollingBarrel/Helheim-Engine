@@ -42,7 +42,7 @@ void EnemyCreatureMelee::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&EnemyCreatureMelee::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
-	mAudioPlayed = false;
+	mAttackAudioPlayed = false;
 	mDeathAudioPlayed = false;
 	mDisengageTime = 0.0f;
 	mDeathTime = 2.20f;
@@ -51,16 +51,11 @@ void EnemyCreatureMelee::Start()
 void EnemyCreatureMelee::Update()
 {
 	Enemy::Update();
-	if (mCurrentState == EnemyState::ATTACK && !mAudioPlayed)
+	if (mCurrentState == EnemyState::ATTACK && !mAttackAudioPlayed)
 	{
-		mAudioPlayed = true;
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
+		mAttackAudioPlayed = true;
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, mGameObject->GetWorldPosition());
 	}
-	else
-	{
-		mAudioPlayed = false;
-	}
-
 
 	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
 	{
@@ -80,7 +75,6 @@ void EnemyCreatureMelee::Chase()
 			RotateHorizontally(mPlayer->GetWorldPosition(), mRotationSpeed);
 			if (mAttack)
 			{
-				GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE, GameManager::GetInstance()->GetPlayerController()->GetPlayerPosition());
 				RotateHorizontally(mPlayer->GetWorldPosition(), 100.0f);
 				mCurrentState = EnemyState::CHARGE;
 				mDashAttackVFX->SetEnabled(true);
@@ -112,6 +106,7 @@ void EnemyCreatureMelee::Attack()
 		mAttack = false;
 		mCurrentState = EnemyState::CHASE;
 		mDashAttackVFX->SetEnabled(false);
+		mAttackAudioPlayed = false;
 	}
 
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
