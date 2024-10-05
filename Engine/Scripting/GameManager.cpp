@@ -382,13 +382,9 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
-    //mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -402,6 +398,7 @@ void GameManager::PrepareAudio()
     else if (sceneName == "Level3Scene")
     {
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
+        mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
     }
 }
 

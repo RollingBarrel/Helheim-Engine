@@ -43,4 +43,6 @@ private:
     float mCooldownDuration = 2.0f;
 
     GameObject* mLaserEyeBall = nullptr;  // Only one laser now
+
+    int mLaserSound = -1;
 };
