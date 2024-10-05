@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 344749706,
+                "UID": 1981475541,
                 "ParentUID": 1,
                 "Name": "TrapSFX",
                 "Enabled": true,
@@ -34,7 +34,7 @@
                         "Image": 2001471067,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 20.299999237060548,
+                        "EmissionRate": 100.0,
                         "MaxParticles": 1000,
                         "Burst": 0,
                         "Looping": true,
@@ -50,6 +50,8 @@
                         },
                         "ShapeType": 2,
                         "ShapeRadius": 0.009999999776482582,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.7853981852531433,
                         "ShapeSize": [
                             0.800000011920929,
@@ -59,6 +61,8 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": true,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
