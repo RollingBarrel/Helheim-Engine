@@ -56,10 +56,6 @@ void EnemyCreatureMelee::Update()
 		mAttackAudioPlayed = true;
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_CHARGE_ATTACK, mGameObject->GetWorldPosition());
 	}
-	else
-	{
-		mAttackAudioPlayed = false;
-	}
 
 	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
 	{
@@ -110,6 +106,7 @@ void EnemyCreatureMelee::Attack()
 		mAttack = false;
 		mCurrentState = EnemyState::CHASE;
 		mDashAttackVFX->SetEnabled(false);
+		mAttackAudioPlayed = false;
 	}
 
 	float movement = (mAttackDistance * App->GetDt()) / mAttackDuration;
