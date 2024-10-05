@@ -927,7 +927,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
     mCurrentEnergy = Clamp(mCurrentEnergy+50,0,100);
     mEnergyType = batteryType;
 
-    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, true);
 
     switch (mEnergyType)
     {
@@ -1000,7 +1000,7 @@ void PlayerController::UseEnergy(int energy)
             mEquippedSpecialGO->SetEnabled(false);
     }
         
-    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, false);
 }
 
 void PlayerController::ResetEnergy()

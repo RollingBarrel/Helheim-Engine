@@ -22,6 +22,7 @@
 #include "Dialog.h"
 #include "Sanity.h"
 #include "PauseMenu.h"
+#include "Weapon.h"
 
 
 CREATE(HudController)
@@ -31,15 +32,17 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
-    MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeHLGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateHLGO);
+    MEMBER(MemberType::GAMEOBJECT, mGunHLGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
+    MEMBER(MemberType::GAMEOBJECT, mAmmoBaseGO);
+    MEMBER(MemberType::GAMEOBJECT, mAmmoShotgunGO);
+    MEMBER(MemberType::GAMEOBJECT, mAmmoSubGO);
     MEMBER(MemberType::GAMEOBJECT, mFeedbackGO);
+    SEPARATOR("Boss health");
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGradualGO);
     SEPARATOR("Pause Screen");
@@ -216,8 +219,7 @@ void HudController::Start()
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
-    if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
-    if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
+
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
     if (mInteractGO) 
     {
@@ -367,6 +369,13 @@ void HudController::Update()
             mUltimateHLTimer.Reset();
             mUltimateCooldown = 0.0f;
         }
+    }
+
+    // Weapon highlight
+    if (mGunHL && mGunHLTimer.DelayWithoutReset(0.25))
+    {
+        mGunHL = false;
+        mGunHLGO->SetEnabled(false);
     }
 }
 
@@ -529,32 +538,40 @@ void HudController::SetDebug(bool value)
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
+   if (ammo == 0); // Set grey skin
 }
 
-void HudController::SetEnergy(int energy, EnergyType type)
+void HudController::SetEnergy(int energy, EnergyType type, bool up)
 {
-    if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
+    if (mAmmoText) mAmmoText->SetText(std::to_string(energy));
+    if (energy == 0) GameManager::GetInstance()->GetPlayerController()->GetWeapon()->SetCurrentAmmo(0);
 
-    float3 color;
-    switch (type)
+    if (up) 
     {
-    case EnergyType::NONE:
-        color = float3(100.0f / 255.0f,100.0f / 255.0f,100.0f / 255.0f);
-        break;
-    case EnergyType::BLUE:
-        color = float3(0.0f / 255.0f, 0.0f / 255.0f, 200.0f / 255.0f);
-        break;
-    case EnergyType::RED:
-        color = float3(200.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f);
-        break;
-    default:
-        color = float3(100.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f);
-        break;
+        mGunHLTimer.Reset();
+        mGunHL = true;
+        mGunHLGO->SetEnabled(true);
+
+        mAmmoBaseGO->SetEnabled(false);
+        mAmmoSubGO->SetEnabled(false);
+        mAmmoShotgunGO->SetEnabled(false);
+
+        switch (type)
+        {
+        case EnergyType::NONE:
+            mAmmoBaseGO->SetEnabled(true);
+            break;
+        case EnergyType::BLUE:
+            mAmmoSubGO->SetEnabled(true);
+            break;
+        case EnergyType::RED:
+            mAmmoShotgunGO->SetEnabled(true);
+            break;
+        default:
+            mAmmoBaseGO->SetEnabled(true);
+            break;
+        }
     }
-
-    if (mEnergyImage) mEnergyImage->SetColor(color);
-    if (mEnergyText) mEnergyText->SetTextColor(color);
-
 }
 
 void HudController::SetHealth(float health)

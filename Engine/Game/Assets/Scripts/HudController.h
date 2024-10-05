@@ -35,7 +35,7 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(int energy, EnergyType type);
+    void SetEnergy(int energy, EnergyType type, bool up);
     void SetHealth(float health);
     void SetBossHealth(float health);
     void SetBossHealthBarEnabled(bool enabled);
@@ -104,8 +104,6 @@ private:
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
     GameObject* mUltimateSliderGO = nullptr;
-    GameObject* mEnergyGO = nullptr;
-    GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
     GameObject* mCollectibleScreen = nullptr;
     GameObject* mCollectibleTextGO = nullptr;
@@ -132,8 +130,6 @@ private:
     ImageComponent* mHealthIcon = nullptr;
     ImageComponent* mHealthGradualImage = nullptr;
     TextComponent* mAmmoText = nullptr;
-    TextComponent* mEnergyText = nullptr;
-    ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
     SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
@@ -156,6 +152,11 @@ private:
     float mBossHealth = 0.0;
     SliderComponent* mBossHealthSlider = nullptr;
     SliderComponent* mBossHealthGradualSlider = nullptr;
+
+    //Ammo
+    GameObject* mAmmoBaseGO = nullptr;
+    GameObject* mAmmoShotgunGO = nullptr;
+    GameObject* mAmmoSubGO = nullptr;
 
     float mTargetHealth = 1;
 
@@ -227,4 +228,7 @@ private:
     bool mUltimateHL = false;
     TimerScript mUltimateHLTimer;
     GameObject* mUltimateHLGO = nullptr;
+    bool mGunHL = false;
+    TimerScript mGunHLTimer;
+    GameObject* mGunHLGO = nullptr;
 };
