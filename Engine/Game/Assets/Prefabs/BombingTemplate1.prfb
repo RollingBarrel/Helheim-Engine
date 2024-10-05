@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 427338058,
-                "ParentUID": 1,
+                "UID": 727148148,
+                "ParentUID": 1504512197,
                 "Name": "BombingTemplate1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    7.215348243713379,
-                    0.0,
-                    0.0
+                    2.5999999046325685,
+                    0.07321131229400635,
+                    0.036221206188201907
                 ],
                 "Rotation": [
                     0.0,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 563447113,
-                "ParentUID": 427338058,
+                "UID": 855250788,
+                "ParentUID": 727148148,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.26036834716796877,
-                    -0.00006103515625,
-                    4.391511917114258
+                    -1.9349055290222169,
+                    -0.00006118357123341411,
+                    3.314146041870117
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -47,9 +47,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
+                    4.0,
+                    4.0,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -64,7 +64,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 686467420,
-                "ParentUID": 563447113,
+                "UID": 969707712,
+                "ParentUID": 855250788,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -155,6 +155,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -164,6 +166,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -243,8 +247,8 @@
                 ]
             },
             {
-                "UID": 807956065,
-                "ParentUID": 563447113,
+                "UID": 1083398805,
+                "ParentUID": 855250788,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -295,15 +299,15 @@
                 ]
             },
             {
-                "UID": 930001678,
-                "ParentUID": 427338058,
+                "UID": 1196881035,
+                "ParentUID": 727148148,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    3.9423656463623049,
-                    0.0,
-                    2.2450203895568849
+                    1.7375860214233399,
+                    -0.00006169054540805519,
+                    3.1077566146850588
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -312,9 +316,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
+                    4.0,
+                    4.0,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -329,7 +333,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -372,8 +376,8 @@
                 ]
             },
             {
-                "UID": 1052116912,
-                "ParentUID": 930001678,
+                "UID": 1310363265,
+                "ParentUID": 1196881035,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -420,6 +424,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -429,6 +435,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -508,8 +516,8 @@
                 ]
             },
             {
-                "UID": 1177922059,
-                "ParentUID": 930001678,
+                "UID": 1426839198,
+                "ParentUID": 1196881035,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -560,15 +568,15 @@
                 ]
             },
             {
-                "UID": 1372164649,
-                "ParentUID": 427338058,
+                "UID": 1542688542,
+                "ParentUID": 727148148,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    4.254190444946289,
+                    3.5170364379882814,
                     -0.00006103515625,
-                    -2.2424566745758058
+                    0.07841634750366211
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -577,9 +585,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
+                    4.0,
+                    4.0,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -594,7 +602,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -637,8 +645,8 @@
                 ]
             },
             {
-                "UID": 1524425776,
-                "ParentUID": 1372164649,
+                "UID": 1658050539,
+                "ParentUID": 1542688542,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -685,6 +693,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -694,6 +704,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -773,8 +785,8 @@
                 ]
             },
             {
-                "UID": 1650787891,
-                "ParentUID": 1372164649,
+                "UID": 1776406239,
+                "ParentUID": 1542688542,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -825,15 +837,15 @@
                 ]
             },
             {
-                "UID": 1773111988,
-                "ParentUID": 427338058,
+                "UID": 1892046720,
+                "ParentUID": 727148148,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.8190860748291016,
+                    1.890451431274414,
                     0.0,
-                    -3.829979419708252
+                    -3.4255011081695558
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -842,9 +854,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
+                    4.0,
+                    4.0,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -859,7 +871,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -902,8 +914,8 @@
                 ]
             },
             {
-                "UID": 1899056377,
-                "ParentUID": 1773111988,
+                "UID": 2007896064,
+                "ParentUID": 1892046720,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -950,6 +962,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -959,6 +973,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -1038,8 +1054,8 @@
                 ]
             },
             {
-                "UID": 2021937442,
-                "ParentUID": 1773111988,
+                "UID": 2123466924,
+                "ParentUID": 1892046720,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -1090,15 +1106,15 @@
                 ]
             },
             {
-                "UID": 2146559032,
-                "ParentUID": 427338058,
+                "UID": 94199735,
+                "ParentUID": 727148148,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.635267734527588,
-                    -0.0001231504138559103,
-                    -2.0042247772216799
+                    -1.989424228668213,
+                    -0.00018441227439325303,
+                    -3.5086207389831545
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -1107,9 +1123,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
+                    4.0,
+                    4.0,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -1124,7 +1140,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -1167,8 +1183,8 @@
                 ]
             },
             {
-                "UID": 121538724,
-                "ParentUID": 2146559032,
+                "UID": 209422490,
+                "ParentUID": 94199735,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1215,6 +1231,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -1224,6 +1242,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -1303,8 +1323,8 @@
                 ]
             },
             {
-                "UID": 243793200,
-                "ParentUID": 2146559032,
+                "UID": 325271834,
+                "ParentUID": 94199735,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -1355,15 +1375,15 @@
                 ]
             },
             {
-                "UID": 366743886,
-                "ParentUID": 427338058,
+                "UID": 441330041,
+                "ParentUID": 727148148,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.63619327545166,
-                    -0.00006103515625,
-                    2.4946000576019289
+                    -3.7542777061462404,
+                    -0.0001220703125,
+                    -0.038156986236572269
                 ],
                 "Rotation": [
                     -0.7071068286895752,
@@ -1372,9 +1392,9 @@
                     0.7071067094802856
                 ],
                 "Scale": [
-                    5.0,
-                    5.0,
-                    5.0
+                    4.0,
+                    4.0,
+                    4.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -1389,7 +1409,7 @@
                             {
                                 "VariableName": "mRadius",
                                 "MemberType": 1,
-                                "VariableData": 1.5
+                                "VariableData": 2.0
                             },
                             {
                                 "VariableName": "mTimeDelay",
@@ -1432,8 +1452,8 @@
                 ]
             },
             {
-                "UID": 490181919,
-                "ParentUID": 366743886,
+                "UID": 558362942,
+                "ParentUID": 441330041,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1480,6 +1500,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -1489,6 +1511,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -1568,8 +1592,8 @@
                 ]
             },
             {
-                "UID": 613759194,
-                "ParentUID": 366743886,
+                "UID": 674490770,
+                "ParentUID": 441330041,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,

@@ -282,6 +282,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
 void EnemyBoss::LaserAttack()
 {
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_LASER);
+    LookAt(mFront, 2 * BEAT_TIME);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
 
