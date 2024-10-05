@@ -484,6 +484,34 @@
                 ]
             },
             {
+                "UID": 1229097102,
+                "ParentUID": 1,
+                "Name": "CameraObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    25.0,
+                    1.75,
+                    0.0
+                ],
+                "Rotation": [
+                    0.27059808373451235,
+                    -0.6532815098762512,
+                    0.27059808373451235,
+                    0.6532815098762512
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
                 "UID": 291720589,
                 "ParentUID": 1,
                 "Name": "CinematicManager",
@@ -557,6 +585,30 @@
                                 "VariableName": "mCinematicCameraGO",
                                 "MemberType": 3,
                                 "VariableData": 13236589
+                            },
+                            {
+                                "VariableName": "CAMERA OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO1",
+                                "MemberType": 3,
+                                "VariableData": 1229097102
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "ENEMIES",
@@ -6144,10 +6196,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    1.4448711324610564e-11,
-                    5.646892328736719e-11,
-                    -0.9701549410820007,
-                    0.24825024604797364
+                    2.2946804179024839e-11,
+                    -5.360221641548257e-11,
+                    0.9209208488464356,
+                    0.3942227065563202
                 ],
                 "Scale": [
                     0.9999998807907105,

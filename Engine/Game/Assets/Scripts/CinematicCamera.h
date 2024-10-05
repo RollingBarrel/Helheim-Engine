@@ -24,9 +24,9 @@ public:
     bool GetPlayingCinematic() { return mPlayingCinematic; }
 
 private:
-    void StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState, float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void StartCinematic(GameObject* cameraObject, GameObject* dummy, BattleArea* battleArea, int animState);
     void UpdateCinematic(GameObject* dummy, BattleArea* battleArea);
-    void LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ);
+    void LocateCamera(GameObject* cameraObject);
     bool HandleFadeIn();
     bool HandleFadeOut(GameObject* dummy);
     void HandleCameraMovement();
@@ -40,6 +40,11 @@ private:
  
     GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO = nullptr;
+
+    GameObject* mCameraObjectGO1 = nullptr;
+    GameObject* mCameraObjectGO2 = nullptr;
+    GameObject* mCameraObjectGO3 = nullptr;
+    GameObject* mCameraObjectGO4 = nullptr;
 
     GameObject* mEnemyGO1 = nullptr;
     GameObject* mEnemyGO2 = nullptr;

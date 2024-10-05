@@ -25,6 +25,11 @@ CREATE(CinematicCamera)
     SEPARATOR("CAMERAS");
     MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO);
+    SEPARATOR("CAMERA OBJECTS");
+    MEMBER(MemberType::GAMEOBJECT, mCameraObjectGO1);
+    MEMBER(MemberType::GAMEOBJECT, mCameraObjectGO2);
+    MEMBER(MemberType::GAMEOBJECT, mCameraObjectGO3);
+    MEMBER(MemberType::GAMEOBJECT, mCameraObjectGO4);
     SEPARATOR("ENEMIES");
     SEPARATOR("Idle 1 | Chase 2 | Charge 3 | Attack 4 | WakeUp 5");
     MEMBER(MemberType::GAMEOBJECT, mEnemyGO1);
@@ -116,6 +121,9 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
+                StartCinematic(mCameraObjectGO1, mEnemyGO1, mBattleArea1, mEnemyAnimState1);
+
+                /*
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
@@ -129,7 +137,8 @@ void CinematicCamera::Update()
                 if (App->GetScene()->GetName() == "Level3Scene")
                 {
                     StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.75f, 0.00f, 45.00f, -90.00f, 0.00f);
-                }       
+                }  
+                */
             }    
         }
     }
@@ -140,10 +149,14 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
+                StartCinematic(mCameraObjectGO2, mEnemyGO2, mBattleArea2, mEnemyAnimState2);
+
+                /*
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
-                }        
+                } 
+                */
             }            
         }
     }
@@ -154,10 +167,14 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
+                StartCinematic(mCameraObjectGO3, mEnemyGO3, mBattleArea3, mEnemyAnimState3);
+
+                /*
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
-                }             
+                } 
+                */
             }
         }
     }
@@ -168,17 +185,20 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 4)
             {
+                StartCinematic(mCameraObjectGO4, mEnemyGO4, mBattleArea4, mEnemyAnimState4);
+
+                /*
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
                 }
+                */
             }
         }
     }
 }
 
-void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, int animState,
-    float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+void CinematicCamera::StartCinematic(GameObject* cameraObject, GameObject* dummy, BattleArea* battleArea, int animState)
 {
     if ((dummy) && (mCinematicCameraGO))
     {
@@ -186,7 +206,7 @@ void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, 
         {
             mStartParameters = true;
 
-            LocateCamera(posX, posY, posZ, rotX, rotY, rotZ);
+            LocateCamera(cameraObject);
             mTargetPosition = ((dummy->GetWorldPosition()) - ((mCinematicCameraGO->GetFront()) * mDistanceToEnemy));
             mCinematicCameraGO->Translate(-(mCinematicCameraGO->GetFront()) * mDistanceToEnemy);
 
@@ -290,14 +310,18 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
     }
 }
 
-void CinematicCamera::LocateCamera(float posX, float posY, float posZ, float rotX, float rotY, float rotZ)
+void CinematicCamera::LocateCamera(GameObject* cameraObject)
 {
-    float rotXRad = DegToRad(rotX);
-    float rotYRad = DegToRad(rotY);
-    float rotZRad = DegToRad(rotZ);
+    if (cameraObject)
+    {
+        float3 objectPosition = cameraObject->GetWorldPosition();
 
-    mCinematicCameraGO->SetWorldPosition(float3(posX, posY, posZ));
-    mCinematicCameraGO->SetWorldRotation(float3(rotXRad, rotYRad, rotZRad));
+        Quat objectRotationQuat = cameraObject->GetWorldRotation();
+        float3 objectRotationEuler = objectRotationQuat.ToEulerXYZ();
+
+        mCinematicCameraGO->SetWorldPosition(objectPosition);
+        mCinematicCameraGO->SetWorldRotation(objectRotationEuler);
+    }
 }
 
 bool CinematicCamera::HandleFadeIn()
