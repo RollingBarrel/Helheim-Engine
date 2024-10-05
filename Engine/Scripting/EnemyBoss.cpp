@@ -245,7 +245,6 @@ void EnemyBoss::Update()
         {
             mBulletHell = BulletPattern::NONE;
             LookAt(mFront, 2 * BEAT_TIME);
-            LOG("Stop shooting")
         }
         else switch (mBulletHell)
         {
@@ -601,12 +600,10 @@ void EnemyBoss::UpdatePhase1()
         break;
     case EnemyState::CHARGING_LASER:
     case EnemyState::ATTACK:
-        LOG("Attack timer: %f, CoolDown Timer: %f", mAttackDurationTimer.GetTimePassed(), mAttackCoolDownTimer.GetTimePassed())
         if (mAttackCoolDownTimer.Delay(mBulletHellDuration))
         {
             mCurrentState = EnemyState::IDLE;
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
-            LOG("Go IDLE")
             ++sequence;
             sequence %= 3;
         }
@@ -691,7 +688,6 @@ void EnemyBoss::UpdatePhase3()
             {
                 mCurrentState = EnemyState::IDLE;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
-                LOG("Go IDLE")
                 ++sequence;
                 sequence %= 4;
                 attack = 0;
@@ -775,7 +771,6 @@ void EnemyBoss::UpdatePhase2()
             {
                 mCurrentState = EnemyState::IDLE;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mIdleTransitionDuration);
-                LOG("Go IDLE")
                 ++sequence;
                 sequence %= 4;
                 attack = 0;
