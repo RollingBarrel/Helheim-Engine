@@ -413,7 +413,7 @@
                             {
                                 "VariableName": "mLaserGO",
                                 "MemberType": 3,
-                                "VariableData": 139296943
+                                "VariableData": 1756456562
                             },
                             {
                                 "VariableName": "mLaserDamage",
@@ -6123,10 +6123,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    4.459277391788419e-11,
-                    3.7523061047206599e-11,
-                    -0.6446481943130493,
-                    0.7661305665969849
+                    5.825284005167575e-11,
+                    -1.9610086124388637e-12,
+                    0.03370456397533417,
+                    1.0008009672164918
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -51862,6 +51862,41 @@
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1756456562,
+                "ParentUID": 1,
+                "Name": "Laser",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BossLaser",
+                        "ScriptVariables": []
                     }
                 ]
             }
