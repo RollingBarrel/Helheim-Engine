@@ -59,7 +59,7 @@ void EnemyCreatureRange::Start()
 	if (mPreviewOrigin)
 	{
 		mPreviewOrigin->SetEnabled(false);
-		mPreviewLine = reinterpret_cast<LineComponent*>(mPreviewOrigin->GetComponent(ComponentType::LINE));
+		mPreviewLine = static_cast<LineComponent*>(mPreviewOrigin->GetComponent(ComponentType::LINE));
 	}
 	if (mPreviewEnd)	mPreviewEnd->SetEnabled(false);
 
