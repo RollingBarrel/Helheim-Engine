@@ -40,6 +40,9 @@
     <Filter Include="Traps">
       <UniqueIdentifier>{ab7c7c3f-2622-45e9-a1c8-eceddf41129a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Cinematic">
+      <UniqueIdentifier>{fe861f1b-a35f-46e9-b24b-c6e9a9eb0ebf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Keys.h">
@@ -224,6 +227,9 @@
     <ClInclude Include="..\Game\Assets\Scripts\Rat.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
+      <Filter>Cinematic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Macros.h">
@@ -407,6 +413,9 @@
     </ClCompile>
     <ClCompile Include="ElectricTrapGroupController.cpp">
       <Filter>Traps</Filter>
+    </ClCompile>
+    <ClCompile Include="CinematicCamera.cpp">
+      <Filter>Cinematic</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -296,12 +296,13 @@ void PlayerController::Start()
     //LASER
     GameObject* laserFinalPoint = mShootOrigin->GetChildren()[0];
     if (laserFinalPoint) laserFinalPoint->SetWorldPosition(mShootOrigin->GetWorldPosition() + mGameObject->GetFront() * mLaserLenght);
-
 }
 
 void PlayerController::Update()
 {
     if (GameManager::GetInstance()->IsPaused()) return;
+
+    if (GameManager::GetInstance()->IsPlayingCinematic()) return;
 
     if (mIsInElevator) return;
     // Check input
