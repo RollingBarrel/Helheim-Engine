@@ -244,7 +244,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8176528215408326,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -297,7 +297,7 @@
                             {
                                 "VariableName": "mMaxHealth",
                                 "MemberType": 1,
-                                "VariableData": 500.0
+                                "VariableData": 1000.0
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -370,7 +370,7 @@
                             {
                                 "VariableName": "mBulletSpeed",
                                 "MemberType": 1,
-                                "VariableData": 7.0
+                                "VariableData": 10.0
                             },
                             {
                                 "VariableName": "mBulletRange",
@@ -394,12 +394,12 @@
                             {
                                 "VariableName": "mBombsDelay",
                                 "MemberType": 1,
-                                "VariableData": 1.0
+                                "VariableData": 1.5
                             },
                             {
                                 "VariableName": "mBombDamage",
                                 "MemberType": 1,
-                                "VariableData": 5.0
+                                "VariableData": 15.0
                             },
                             {
                                 "VariableName": "LASER",
@@ -413,7 +413,7 @@
                             {
                                 "VariableName": "mLaserDamage",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 30.0
                             },
                             {
                                 "VariableName": "mLaserSpeed",
@@ -437,6 +437,41 @@
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 139296943,
+                "ParentUID": 1,
+                "Name": "Laser",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -12.227773666381836,
+                    1.6156811714172364,
+                    0.9653664231300354
+                ],
+                "Rotation": [
+                    -3.090862321641907e-8,
+                    0.7071068286895752,
+                    3.0908616110991718e-8,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BossLaser",
+                        "ScriptVariables": []
                     }
                 ]
             },
@@ -521,6 +556,11 @@
                                 "VariableName": "mAreaDoorsGO",
                                 "MemberType": 3,
                                 "VariableData": 1343049099
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 1088382681
                             },
                             {
                                 "VariableName": "EXPLOSIVE SPAWNERS",
@@ -755,41 +795,6 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
-            },
-            {
-                "UID": 139296943,
-                "ParentUID": 1348112554,
-                "Name": "Laser",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -12.227773666381836,
-                    1.6156811714172364,
-                    0.9653664231300354
-                ],
-                "Rotation": [
-                    -4.371138828673793e-8,
-                    0.0,
-                    -2.6054013479537114e-15,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": true,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "BossLaser",
-                        "ScriptVariables": []
-                    }
-                ]
             },
             {
                 "UID": 1414948714,
@@ -5799,10 +5804,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    2.052044124900565e-11,
-                    -5.454760254597346e-11,
-                    0.9371554851531982,
-                    0.3525293469429016
+                    -2.136011853504094e-11,
+                    5.423687193806259e-11,
+                    -0.9318209290504456,
+                    -0.36695852875709536
                 ],
                 "Scale": [
                     0.9999998807907105,

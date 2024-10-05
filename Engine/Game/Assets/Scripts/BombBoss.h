@@ -19,7 +19,7 @@ public:
 	void Start() override;
 	void Update() override;
 
-	void Init(float3 bombOrigin, float damage);
+	void Init(float3 bombOrigin, float damage, float delay);
 
 private:
 	GameObject* mBombGO = nullptr;
