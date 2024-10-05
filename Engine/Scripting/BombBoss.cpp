@@ -81,7 +81,7 @@ void BombBoss::Update()
 			PlayerController* playerScript = (PlayerController*)((ScriptComponent*)player->GetComponent(ComponentType::SCRIPT))->GetScriptInstance();
 			playerScript->TakeDamage(mDamage);
 		}
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ERUPTION, mGameObject->GetWorldPosition());
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_FIRE, mGameObject->GetWorldPosition());
 
 		mHasExploded = true;
 	}
