@@ -8,48 +8,44 @@ struct CollisionData;
 class BoxColliderComponent;
 class GameObject;
 
-enum class TRAP_STATE
-{
-    INACTIVE,
-    WARNING,
-    ACTIVE
-};
-
 GENERATE_BODY(ElectricTrapController);
-class ElectricTrapController : public Script
+class ElectricTrapController :
+	public Script
 {
-    FRIEND(ElectricTrapController)
+	FRIEND(ElectricTrapController)
 public:
-    ElectricTrapController(GameObject* owner);
-    ~ElectricTrapController();
+	ElectricTrapController(GameObject* owner);
+	~ElectricTrapController();
+	void Update() override;
+	void Start() override;
+	void OnCollisionEnter(CollisionData* collisionData);
 
-    void Update() override;
-    void Start() override;
-    void OnCollisionEnter(CollisionData* collisionData);
+	void SetAwake(bool awake) { mIsAwake = awake; }
 
 private:
-    void SetTrapState(TRAP_STATE state);
-    bool IsInTrap(const GameObject* target);
-    void ActivateWarningVFX(bool active);
-    void ActivateTrapVFX(bool active);
-    void DealDamage(GameObject* target);
+	bool IsInTrap(const GameObject* target);
+	void ActiveTrap(bool active);
+	void ActiveTrapFisrtTime();
 
-    // Components
-    BoxColliderComponent* mCollider = nullptr;
-    std::vector<GameObject*> mInTrap;
-    GameObject* mWarningVFX = nullptr;
-    GameObject* mActiveVFX = nullptr;
+	BoxColliderComponent* mCollider = nullptr;
+	std::vector<GameObject*> mInTrap;
 
-    // State management
-    TRAP_STATE mState = TRAP_STATE::INACTIVE;
-    TimerScript mWarningTimer;
-    TimerScript mActiveTimer;
+	float mArea = 1.0f;
+	GameObject* mSfx = nullptr;
 
-    // Timings
-    float mWarningDuration = 1.0f;
-    float mActiveDuration = 4.0f;
+	// Activation
+	bool mIsAwake = false; // Awake when player is close
+	bool mIsActive = false;
 
-    // Trap properties
-    float mDamageAmount = 5.0f;
-    float mSpeedReduction = 0.5f; // Reduce speed by 50%
+	bool mFirstActivation = true;
+	float mFirstActivationInterval = 1.0f;
+
+	float mActivationInterval = 4.0f;
+	float mActivationDuration = 2.0f;
+	TimerScript mActivationIntervalTimer;
+	TimerScript mActivationDurationTimer;
+
+	// Damage
+	float mDamageAmount = 5.0f;
+	float mSpeedReduction = 0.5f; // Reduce 50%
 };
