@@ -16,8 +16,6 @@
 #include "Timer.h"
 #include "MathFunc.h"
 
-#include "CinematicCamera.h"
-
 CREATE(GameManager)
 {
     CLASS(owner);
@@ -26,7 +24,6 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
-    MEMBER(MemberType::GAMEOBJECT, mCinematicManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
@@ -94,12 +91,6 @@ void GameManager::Start()
         StartAudio();
     }
 
-    if (mCinematicManagerGO)
-    {
-        ScriptComponent* script = static_cast<ScriptComponent*>(mCinematicManagerGO->GetComponent(ComponentType::SCRIPT));
-        mCinematicCamera = static_cast<CinematicCamera*>(script->GetScriptInstance());
-    }
-
     if (mFirstTutorial) 
     {
         mFirstTutorial->SetEnabled(true);
@@ -145,11 +136,6 @@ void GameManager::Update()
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
         SetPaused(!mPaused, true);
-    }
-
-    if (mCinematicCamera)
-    {
-        mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();
     }
 }
 
@@ -273,10 +259,6 @@ void GameManager::UnlockGrenade(bool unlock)
 
 void GameManager::HandleBossAudio(int stage)
 {
-    if (mBackgroundAudioID == -1)
-    {
-        mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
-    }
     if (mIsFightingBoss && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
@@ -291,6 +273,9 @@ void GameManager::HandleBossAudio(int stage)
         }
         else if (mLastAudioID != 0 && stage == 0)
         {
+            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, true);
+            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, false);
+
             mAudioManager->UpdateParameterValueByName(BGM::BOSS, mBackgroundAudioID, "boss_states", 2);
             mLastAudioID = 0;
         }
@@ -365,7 +350,7 @@ void GameManager::PauseBackgroundAudio(bool pause)
         }
         else if (sceneName == "Level3Scene")
         {
-            mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, pause);
+            mAudioManager->Pause(BGM::BOSS_ROOM, mBackgroundAudioID2, pause);
         }
     }
 }
@@ -401,6 +386,7 @@ void GameManager::PrepareAudio()
     }
     else if (sceneName == "Level3Scene")
     {
+        mAudioManager->AddAudioToASComponent(BGM::BOSS_ROOM);
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
     }
 }
@@ -420,7 +406,10 @@ void GameManager::StartAudio()
     }
     else if (sceneName == "Level3Scene")
     {
-        //mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
+        mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
+        mBackgroundAudioID2 = mAudioManager->Play(BGM::BOSS_ROOM);
+
+        mAudioManager->Pause(BGM::BOSS, mBackgroundAudioID, true);
     }
 }
 
@@ -441,6 +430,10 @@ void GameManager::HandleAudio()
     {
         HandleLevel2Audio();
     }
+    else if (sceneName == "BossTestingRoom")
+    {
+        HandleBossAudio(-1);
+    }
 }
 
 void GameManager::EndAudio()
@@ -460,6 +453,7 @@ void GameManager::EndAudio()
         else if (sceneName == "Level3Scene")
         {
             mBackgroundAudioID = mAudioManager->Release(BGM::BOSS, mBackgroundAudioID);
+            mBackgroundAudioID = mAudioManager->Release(BGM::BOSS_ROOM, mBackgroundAudioID2);
         }
     }
 
@@ -492,30 +486,20 @@ void GameManager::HandleLevel1Audio()
 
 void GameManager::HandleLevel2Audio()
 {
-    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
+    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 2)
     {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 1);
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 2);
+        mLastAudioID = 2;
+    }
+    else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
+    {
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 1);
         mLastAudioID = 1;
     }
     else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
     {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 0);
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 0);
         mLastAudioID = 0;
     }
-    //if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 2)
-    //{
-    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 2);
-    //    mLastAudioID = 2;
-    //}
-    //else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
-    //{ 
-    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 1);
-    //    mLastAudioID = 1;
-    //}
-    //else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
-    //{
-    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 0);
-    //    mLastAudioID = 0;
-    //}
 }
 

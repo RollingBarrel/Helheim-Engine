@@ -285,7 +285,6 @@ private:
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
-    GameObject* mGrenadeThrowOrigin = nullptr;
     TimerScript mGrenadeAimTimer;
 
     //Ultimate

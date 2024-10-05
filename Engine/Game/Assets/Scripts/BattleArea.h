@@ -6,7 +6,6 @@ struct CollisionData;
 class Spawner;
 class EnemyExplosiveSpawner;
 class BoxColliderComponent;
-
 GENERATE_BODY(BattleArea);
 class BattleArea : public Script
 {
@@ -20,22 +19,20 @@ public:
 	virtual void EnemyDestroyed(GameObject* Enemy);
 	virtual void ActivateArea(bool activate);
 	void OnCollisionEnter(CollisionData* collisionData);
-	bool GetIsAreaActive() { return mHasBeenActivated; }
 	int GetCurrentEnemies() const { return mCurrentEnemies; }
 	int GetCurrentWave() const { return mWavesRounds; }
-	void SetWaves(int waves) { mWavesRounds = waves; }
-	void SetSpawnEnemies(bool state) { mSpawnEnemies = state; }
+	void SetWaves(int waves) { mWavesRounds = waves; }; 
 
 protected:
+
 	void CloseDoors(bool close);
 
 	int mCurrentEnemies = 0;
 	int mWavesRounds = 0;
 	bool mHasBeenActivated = false;
 	bool mIsTutorialArea = false;
-	bool mNeedsToSpawn = false;
-	bool mSpawnEnemies = true;
 
+	bool mNeedsToSpawn = false;
 	GameObject* mSpawnerGO1 = nullptr;
 	GameObject* mSpawnerGO2 = nullptr;
 	GameObject* mSpawnerGO3 = nullptr;
@@ -58,6 +55,7 @@ protected:
 
 	GameObject* mAreaDoorsGO = nullptr;
 	
+
 	std::vector<Spawner*> mSpawners;
 	std::vector<EnemyExplosiveSpawner*> mExplosiveSpawners;
 	GameObject* mElevator = nullptr;

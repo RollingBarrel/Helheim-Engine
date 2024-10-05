@@ -21,6 +21,8 @@ public:
 	void TakeDamage(float damage) override;
 
 private:
+	
+
 	float mAttackRotationSpeed = 10.0f;
 	bool mDoDamage = false;
 
@@ -35,6 +37,6 @@ private:
 	//Laser Trail WorkAround
 	bool mMoveTrail = false;
 
-	bool mPlayingAttackSound = false;
+	int mLaserSound = -1;
 };
 

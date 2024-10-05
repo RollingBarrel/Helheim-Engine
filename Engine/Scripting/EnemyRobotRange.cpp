@@ -49,7 +49,6 @@ void EnemyRobotRange::Attack()
     mAiAgentComponent->PauseCrowdNavigation();
     mAiAgentComponent->StartCrowdNavigation();
     bool playerReachable = IsPlayerReachable();
-    
     if (!playerReachable && mDisengageTimer.Delay(mDisengageTime))
     {
         mFirstAttack = true;
@@ -69,16 +68,16 @@ void EnemyRobotRange::Attack()
     if (mFirstAttack || mAttackCoolDownTimer.Delay(mAttackCoolDown)) 
     {
         mFirstAttack = false;
-       
-        RangeAttack();
         mAnimationComponent->RestartStateAnimation();
+        RangeAttack();
+
     }
-    //if (IsPlayerInRange(mAttackDistance * 0.3f))
-    //{
-    //    mFirstAttack = true;
-    //    mAttackCoolDownTimer.Reset();
-    //    mCurrentState = EnemyState::FLEE;
-    //}
+    if (IsPlayerInRange(mAttackDistance * 0.4f))
+    {
+        mFirstAttack = true;
+        mAttackCoolDownTimer.Reset();
+        mCurrentState = EnemyState::FLEE;
+    }
 }
 
 void EnemyRobotRange::RangeAttack()

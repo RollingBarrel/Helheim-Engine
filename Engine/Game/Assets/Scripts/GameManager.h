@@ -12,7 +12,6 @@ class EnemyPool;
 class PoolManager;
 class PlayerCamera;
 class Timer;
-class CinematicCamera;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
@@ -40,6 +39,7 @@ public:
 
     bool IsPaused() const { return mPaused; }
     void SetPaused(bool value, bool screen);
+
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea);
 
@@ -64,8 +64,6 @@ public:
     void PlayPlayerFootStepSound();
     void ActivateBossCamera(float targetDistance);
     void BossCameraMovement();
-
-    bool IsPlayingCinematic() { return mPlayingCinematic; }
 
 private:
     void PrepareAudio();
@@ -96,11 +94,6 @@ private:
     TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
 
-    GameObject* mCinematicManagerGO = nullptr;
-    CinematicCamera* mCinematicCamera = nullptr;
-
-    bool mPlayingCinematic = false;
-
     bool mPaused = false;
 
     bool mStopActive = false;
@@ -112,6 +105,7 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
+    int mBackgroundAudioID2 = -1;
 
     int mGameOverAudio = -1;
     int mLastAudioID = -1;

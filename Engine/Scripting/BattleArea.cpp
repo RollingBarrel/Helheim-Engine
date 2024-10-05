@@ -94,34 +94,31 @@ void BattleArea::Start()
 
 void BattleArea::Update()
 {
-	if(mSpawnEnemies)
+	if (mHasBeenActivated && mNeedsToSpawn)
 	{
-		if (mHasBeenActivated && mNeedsToSpawn)
+		for (size_t i = 0; i < mSpawners.size(); i++)
 		{
-			for (size_t i = 0; i < mSpawners.size(); i++)
+			if (mSpawners[i]->IsActive())
 			{
-				if (mSpawners[i]->IsActive())
+				for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
 				{
-					for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
-					{
-						mSpawners[i]->Spawn();
-						mCurrentEnemies++;
-					}
+					mSpawners[i]->Spawn();
+					mCurrentEnemies++;
 				}
 			}
-			for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
-			{
-				if (mExplosiveSpawners[i]->IsActive())
-				{
-					for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
-					{
-						mExplosiveSpawners[i]->Spawn();
-						mCurrentEnemies++;
-					}
-				}
-			}
-			mNeedsToSpawn = false;
 		}
+		for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
+		{
+			if (mExplosiveSpawners[i]->IsActive())
+			{
+				for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+				{
+					mExplosiveSpawners[i]->Spawn();
+					mCurrentEnemies++;
+				}
+			}
+		}
+		mNeedsToSpawn = false;
 	}
 }
 
@@ -140,9 +137,6 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	if (mWavesRounds <= 0)
 	{
 		ActivateArea(false);
-
-		mHasBeenActivated = false;
-
 		if (mAreaDoorsGO)
 		{
 			AreaDoors* areaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());

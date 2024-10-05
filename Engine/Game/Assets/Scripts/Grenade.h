@@ -70,4 +70,6 @@ private:
 	GameObject* mBlackHoleSFX = nullptr;
 	GameObject* mExplosionSFX = nullptr;
 	GameObject* mSphere = nullptr;
+
+	int mExplosionAudio = -1;
 };

@@ -24,10 +24,11 @@ public:
 	void OnCollisionEnter(CollisionData* collisionData);
 
 private:
+
 	BoxColliderComponent* mCollider = nullptr;
 	GameObject* mDashAttackVFX = nullptr;
 	bool mHit = false;
 	bool mAttack = false;
-	bool mAttackAudioPlayed = false;
+	bool mAudioPlayed = false;
 };
 
