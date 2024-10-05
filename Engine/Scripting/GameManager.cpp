@@ -385,6 +385,8 @@ void GameManager::PrepareAudio()
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
+    mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
+
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -399,7 +401,6 @@ void GameManager::PrepareAudio()
     {
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
         mAudioManager->AddAudioToASComponent(SFX::BOSS_FIRE);
-        mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
     }
 }
 
