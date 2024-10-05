@@ -90,6 +90,7 @@ enum class SFX
 
 	BOSS_SCREAM,
 	BOSS_AWAKE,
+	BOSS_FIRE,
 	BOSS_LASER,
 	BOSS_ERUPTION,
 	BOSS_ROAR_BULLET,
@@ -259,6 +260,7 @@ private:
 
 		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
 		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},
+		{SFX::BOSS_FIRE, "event:/SFX/BOSS/boss_fire"},
 		{SFX::BOSS_LASER, "event:/SFX/BOSS/boss_laser"},
 		{SFX::BOSS_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruptionsound.wav"},
 

@@ -398,6 +398,7 @@ void GameManager::PrepareAudio()
     else if (sceneName == "Level3Scene")
     {
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
+        mAudioManager->AddAudioToASComponent(SFX::BOSS_FIRE);
         mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
     }
 }
