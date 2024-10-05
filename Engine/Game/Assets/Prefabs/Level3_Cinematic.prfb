@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1253361151,
+                "UID": 766403198,
                 "ParentUID": 1,
                 "Name": "Level3_Cinematic",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1563244222,
-                "ParentUID": 1253361151,
+                "UID": 1063197521,
+                "ParentUID": 766403198,
                 "Name": "FadeScreen",
                 "Enabled": true,
                 "Active": true,
@@ -103,51 +103,14 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1833930670,
-                "ParentUID": 1253361151,
-                "Name": "CinematicCamera",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.000006034969374013599,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    0.9999999403953552,
-                    0.9999999403953552,
-                    0.9999998807907105
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 6,
-                        "IsEnabled": true,
-                        "AspectRatio": 1.936948299407959,
-                        "FieldOfView": 90.0,
-                        "NearPlane": 0.009999999776482582,
-                        "FarPlane": 1000.0,
-                        "IsOrtographic": false
-                    }
-                ]
-            },
-            {
-                "UID": 2101971520,
-                "ParentUID": 1253361151,
+                "UID": 1589184176,
+                "ParentUID": 766403198,
                 "Name": "CinematicManager",
                 "Enabled": true,
                 "Active": true,
@@ -218,7 +181,31 @@
                             {
                                 "VariableName": "mCinematicCameraGO",
                                 "MemberType": 3,
-                                "VariableData": 1833930670
+                                "VariableData": 1326156038
+                            },
+                            {
+                                "VariableName": "CAMERA OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO1",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "ENEMIES",
@@ -275,7 +262,7 @@
                             {
                                 "VariableName": "mBattleAreaGO1",
                                 "MemberType": 3,
-                                "VariableData": 226009773
+                                "VariableData": 1854231323
                             },
                             {
                                 "VariableName": "mBattleAreaGO2",
@@ -308,7 +295,7 @@
                             {
                                 "VariableName": "mFadeGO",
                                 "MemberType": 3,
-                                "VariableData": 1563244222
+                                "VariableData": 1063197521
                             },
                             {
                                 "VariableName": "mColor",
@@ -338,8 +325,74 @@
                 ]
             },
             {
-                "UID": 226009773,
-                "ParentUID": 1253361151,
+                "UID": 1326156038,
+                "ParentUID": 766403198,
+                "Name": "CinematicCamera",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.000006034969374013599,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 6,
+                        "IsEnabled": true,
+                        "AspectRatio": 1.936948299407959,
+                        "FieldOfView": 90.0,
+                        "NearPlane": 0.009999999776482582,
+                        "FarPlane": 1000.0,
+                        "IsOrtographic": false
+                    }
+                ]
+            },
+            {
+                "UID": 2118443018,
+                "ParentUID": 766403198,
+                "Name": "CameraObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1854231323,
+                "ParentUID": 766403198,
                 "Name": "CinematicBattleArea",
                 "Enabled": true,
                 "Active": true,
