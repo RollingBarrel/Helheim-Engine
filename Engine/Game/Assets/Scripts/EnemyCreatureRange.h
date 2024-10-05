@@ -45,5 +45,7 @@ private:
 	bool mMoveTrail = false;
 	
 	int mLaserSound = -1;
+
+	bool mPlayingAttackSound = false;
 };
 
