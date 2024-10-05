@@ -32,6 +32,6 @@
     <ResourceCompile Include="Game.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Game\InternalAssets\Chrysalis.ico" />
+    <Image Include="..\Game\InternalAssets\Chrysalis_new.ico" />
   </ItemGroup>
 </Project>
