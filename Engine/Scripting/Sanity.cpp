@@ -91,30 +91,17 @@ void Sanity::Update()
     Controls();
 
     if (mTimeout && mClickTimout.Delay(1.0f)) mTimeout = false;
+    mTimePassed += App->GetDt();
 }
 
 void Sanity::Controls() 
 {
     if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN)
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) > 0.9f && mTimePassed >= mDebounceTime)))
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
-        if (mCurrentBuff > 1)
-        {
-            mCurrentBuff = 0;
-        }
-        else
-        {
-            mCurrentBuff++;
-        }
-        CardHover();
-    }
-
-    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
-        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN)
-    {
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+        mTimePassed = 0.0f; // Restart debounce timer
 
         if (mCurrentBuff == 0)
         {
@@ -123,6 +110,24 @@ void Sanity::Controls()
         else
         {
             mCurrentBuff--;
+        }
+        CardHover();
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) < -0.9f && mTimePassed >= mDebounceTime)))
+    {
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
+        mTimePassed = 0.0f; // Restart debounce timer
+
+        if (mCurrentBuff > 1)
+        {
+            mCurrentBuff = 0;
+        }
+        else
+        {
+            mCurrentBuff++;
         }
         CardHover();
     }
@@ -245,6 +250,8 @@ void Buff::Consume()
 
 void Sanity::OnCard1Click()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
     if (mTimeout) return;
 
     if (!mCurrentBuffs.empty())
@@ -256,6 +263,8 @@ void Sanity::OnCard1Click()
 
 void Sanity::OnCard1HoverOn()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
     if (mCard1Hovered) return;
     mCard1Hovered = true;
     if (mCard1Transform) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
@@ -272,6 +281,8 @@ void Sanity::OnCard1HoverOff()
 
 void Sanity::OnCard2Click()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
     if (mTimeout) return;
 
     if (mCurrentBuffs.size() > 1)
@@ -283,6 +294,8 @@ void Sanity::OnCard2Click()
 
 void Sanity::OnCard2HoverOn()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
     if (mCard2Hovered) return;
     mCard2Hovered = true;
     if (mCard2Transform) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
@@ -299,6 +312,8 @@ void Sanity::OnCard2HoverOff()
 
 void Sanity::OnCard3Click()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_OK);
+
     if (mTimeout) return;
 
     if (mCurrentBuffs.size() > 2)
@@ -310,6 +325,8 @@ void Sanity::OnCard3Click()
 
 void Sanity::OnCard3HoverOn()
 {
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
+
     if (mCard3Hovered) return;
     mCard3Hovered = true;
     if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));

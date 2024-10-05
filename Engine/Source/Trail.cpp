@@ -155,6 +155,11 @@ void Trail::Draw() const
     glEnable(GL_CULL_FACE);
 }
 
+void Trail::SetWidth(float width)
+{
+    mWidth.GetValue().SetMinValue(width);
+}
+
 float3 Trail::CalculateDirection(const float3& position, const float3& norm) const
 {
     if (mFixedDirection)
@@ -196,8 +201,11 @@ void Trail::AddFirstTrailPoint(GameObject* mOwner)
     float2 topPointTexCoord = float2(mPoints.front().mDistanceUV, 1);
     float2 botPointTexCoord = float2(mPoints.front().mDistanceUV, 0);
 
-    mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
-    mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
+    if (mPoints.size() > 1)
+    {
+        mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
+        mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
+    }
 
     mLastPointPosition = position;
     mMinDist = distUV;
@@ -229,8 +237,11 @@ void Trail::AddFirstTrailPoint(float3 position)
     float2 topPointTexCoord = float2(mPoints.front().mDistanceUV, 1);
     float2 botPointTexCoord = float2(mPoints.front().mDistanceUV, 0);
 
-    mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
-    mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
+    if (mPoints.size() > 1)
+    {
+        mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
+        mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
+    }
 
     mLastPointPosition = position;
     mMinDist = distUV;
@@ -255,7 +266,11 @@ void Trail::UpdateTrailComponent(GameObject* owner)
     float3 position = owner->GetWorldPosition();
 
     const float dposition = position.DistanceSq(mLastPointPosition);
-    if (dposition >= mMinDistance && mPoints.size() < mMaxPoints)
+    if (dposition >= mMinDistance and mPoints.size() < mMaxPoints)
+    {
+        AddFirstTrailPoint(owner);
+    }
+    else if (mPoints.size() == 1)
     {
         AddFirstTrailPoint(owner);
     }
@@ -266,6 +281,7 @@ void Trail::UpdateTrailComponent(GameObject* owner)
         RemoveLastTrailPoint();
     }
 }
+
 void Trail::UpdateTrailParticle(float3 position)
 {
     const float dposition = position.DistanceSq(mLastPointPosition);
@@ -273,6 +289,11 @@ void Trail::UpdateTrailParticle(float3 position)
     {
         AddFirstTrailPoint(position);
     }
+    else if (mPoints.size() == 1)
+    {
+        AddFirstTrailPoint(position);
+    }
+
 
     mTrailTime += App->GetDt();
     if (mPoints.size() > 1 and mMaxLifeTime > 0 and (mTrailTime - mPoints.back().mCreationTime) >= mMaxLifeTime)
@@ -314,6 +335,7 @@ void Trail::UpdateLineComponent(GameObject* origin, GameObject* final)
         mMaxDist = 0.0f;
     }
 }
+
 void Trail::SetImage(unsigned int resourceId)
 {
     App->GetResource()->ReleaseResource(mImage->GetUID());
