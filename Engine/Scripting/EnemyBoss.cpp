@@ -587,13 +587,13 @@ void EnemyBoss::UpdatePhase1()
             switch (sequence)
             {
             case 0:
-                StartBulletAttack(BulletPattern::WAVE);
+                StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             case 1:
                 StartBulletAttack(BulletPattern::ARROW);
                 break;
             case 2:
-                StartBulletAttack(BulletPattern::CIRCLES);
+                StartBulletAttack(BulletPattern::WAVE);
                 break;
             }
         }
