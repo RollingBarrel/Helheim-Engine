@@ -37,6 +37,8 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
 	MEMBER(MemberType::GAMEOBJECT, mPreviewOrigin);
 	MEMBER(MemberType::GAMEOBJECT, mPreviewEnd);
+	MEMBER(MemberType::GAMEOBJECT, mPreviewContrast);
+	MEMBER(MemberType::GAMEOBJECT, mPreviewContrastEnd);
 	SEPARATOR("VFX");
 	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
 	END_CREATE;
@@ -61,6 +63,9 @@ void EnemyCreatureRange::Start()
 	}
 	if (mPreviewEnd)	mPreviewEnd->SetEnabled(false);
 
+	if (mPreviewContrast)	    mPreviewContrast->SetEnabled(false);
+	if (mPreviewContrastEnd)	mPreviewContrastEnd->SetEnabled(false);
+
 	mDeathAudioPlayed = false;
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
@@ -81,9 +86,11 @@ void EnemyCreatureRange::Update()
 	}
 	if (mCurrentState != EnemyState::CHARGE)
 	{
-		if (mLaserCharge)	mLaserCharge->SetEnabled(false);
-		if (mPreviewOrigin)	mPreviewOrigin->SetEnabled(false);
-		if (mPreviewEnd)	mPreviewEnd->SetEnabled(false);
+		if (mLaserCharge)			mLaserCharge->SetEnabled(false);
+		if (mPreviewOrigin)		    mPreviewOrigin->SetEnabled(false);
+		if (mPreviewEnd)			mPreviewEnd->SetEnabled(false);
+		if (mPreviewContrast)	    mPreviewContrast->SetEnabled(false);
+		if (mPreviewContrastEnd)	mPreviewContrastEnd->SetEnabled(false);
 		mPreviewWidth = 0.0f;
 	}
 
@@ -102,11 +109,14 @@ void EnemyCreatureRange::Charge()
 		mGameObject->LookAt(mPlayer->GetWorldPosition());
 	}
 	
-	if (mLaserCharge)	mLaserCharge->SetEnabled(true); 
-	if (mPreviewOrigin)	mPreviewOrigin->SetEnabled(true);
-	if (mPreviewEnd)	mPreviewEnd->SetEnabled(true);
+	if (mLaserCharge)			mLaserCharge->SetEnabled(true); 
+	if (mPreviewOrigin)			mPreviewOrigin->SetEnabled(true);
+	if (mPreviewEnd)			mPreviewEnd->SetEnabled(true);
+	if (mPreviewContrast)	    mPreviewContrast->SetEnabled(true);
+	if (mPreviewContrastEnd)	mPreviewContrastEnd->SetEnabled(true);
 
 	SetPreviewWidth();
+	LaserCollide(mPreviewContrast, mPreviewContrastEnd, false);
 	LaserCollide(mPreviewOrigin, mPreviewEnd, false);
 }
 
@@ -146,11 +156,12 @@ void EnemyCreatureRange::TakeDamage(float damage)
 
 void EnemyCreatureRange::SetPreviewWidth()
 {
-	if (mPreviewLine)
+	//TODO:
+	/*if (mPreviewLine)
 	{ 
 		mPreviewWidth = Lerp(mPreviewWidth, 100.0f, App->GetDt());
 		mPreviewLine->SetLineWidth(10.0f);
-	}
+	}*/
 }
 
 void EnemyCreatureRange::LaserCollide(GameObject* origin, GameObject* end, bool dealDamage)
