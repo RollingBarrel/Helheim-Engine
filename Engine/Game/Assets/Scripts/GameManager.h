@@ -112,7 +112,6 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
-    int mBackgroundAudioID2 = -1;
 
     int mGameOverAudio = -1;
     int mLastAudioID = -1;

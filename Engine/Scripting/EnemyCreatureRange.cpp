@@ -54,8 +54,6 @@ void EnemyCreatureRange::Start()
 	mDeathAudioPlayed = false;
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
-	mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
-	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound,true);
 }
 
 void EnemyCreatureRange::Update()
@@ -64,7 +62,7 @@ void EnemyCreatureRange::Update()
 
 	if (mCurrentState != EnemyState::ATTACK)
 	{
-		GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, true);
+		mPlayingAttackSound = false;
 
 		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
 		if (mLaserEnd) mLaserEnd->SetEnabled(false);
@@ -96,8 +94,13 @@ void EnemyCreatureRange::Attack()
 {
 	Enemy::Attack();
 
-	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
-	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
+	if (!mPlayingAttackSound)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_LASER, mGameObject->GetWorldPosition());
+
+
+		mPlayingAttackSound = true;
+	}
 	
 	RotateHorizontally(mPlayer->GetWorldPosition(), mAttackRotationSpeed);
 	mAimTimer.Reset();
