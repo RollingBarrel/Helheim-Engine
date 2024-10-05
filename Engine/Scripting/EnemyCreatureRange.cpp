@@ -112,7 +112,7 @@ void EnemyCreatureRange::Attack()
 
 	Hit hit;
 	Ray ray;
-	ray.dir = mGameObject->GetFront();
+	ray.dir = (mGameObject->GetFront() - float3(0.0f, 0.1f, 0.0f)).Normalized();
 	ray.pos = mLaserOrigin->GetWorldPosition();
 
 	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
@@ -141,8 +141,8 @@ void EnemyCreatureRange::Attack()
 	}
 	else
 	{
-		float3 originPosition = mLaserOrigin->GetLocalPosition();
-		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
+		float3 originPosition = mLaserOrigin->GetWorldPosition();
+		mLaserEnd->SetWorldPosition(originPosition + ray.dir * mAttackDistance);
 	}
 }
 
