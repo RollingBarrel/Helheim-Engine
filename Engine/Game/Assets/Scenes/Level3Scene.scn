@@ -249,7 +249,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8176528215408326,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -302,7 +302,7 @@
                             {
                                 "VariableName": "mMaxHealth",
                                 "MemberType": 1,
-                                "VariableData": 500.0
+                                "VariableData": 1000.0
                             },
                             {
                                 "VariableName": "mSpeed",
@@ -375,7 +375,7 @@
                             {
                                 "VariableName": "mBulletSpeed",
                                 "MemberType": 1,
-                                "VariableData": 7.0
+                                "VariableData": 10.0
                             },
                             {
                                 "VariableName": "mBulletRange",
@@ -399,12 +399,12 @@
                             {
                                 "VariableName": "mBombsDelay",
                                 "MemberType": 1,
-                                "VariableData": 1.0
+                                "VariableData": 1.5
                             },
                             {
                                 "VariableName": "mBombDamage",
                                 "MemberType": 1,
-                                "VariableData": 5.0
+                                "VariableData": 15.0
                             },
                             {
                                 "VariableName": "LASER",
@@ -413,12 +413,12 @@
                             {
                                 "VariableName": "mLaserGO",
                                 "MemberType": 3,
-                                "VariableData": 139296943
+                                "VariableData": 1756456562
                             },
                             {
                                 "VariableName": "mLaserDamage",
                                 "MemberType": 1,
-                                "VariableData": 3.0
+                                "VariableData": 30.0
                             },
                             {
                                 "VariableName": "mLaserSpeed",
@@ -749,6 +749,20 @@
                                 "VariableData": -1
                             },
                             {
+                                "VariableName": "DOORS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mAreaDoorsGO",
+                                "MemberType": 3,
+                                "VariableData": 1343049099
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 1088382681
+                            },
+                            {
                                 "VariableName": "EXPLOSIVE SPAWNERS",
                                 "MemberType": 5
                             },
@@ -981,41 +995,6 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
-            },
-            {
-                "UID": 139296943,
-                "ParentUID": 1348112554,
-                "Name": "Laser",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -12.227773666381836,
-                    1.6156811714172364,
-                    0.9653664231300354
-                ],
-                "Rotation": [
-                    -4.371138828673793e-8,
-                    0.0,
-                    -2.6054013479537114e-15,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": true,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "BossLaser",
-                        "ScriptVariables": []
-                    }
-                ]
             },
             {
                 "UID": 1414948714,
@@ -6144,10 +6123,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    4.459277391788419e-11,
-                    3.7523061047206599e-11,
-                    -0.6446481943130493,
-                    0.7661305665969849
+                    5.825284005167575e-11,
+                    -1.9610086124388637e-12,
+                    0.03370456397533417,
+                    1.0008009672164918
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -29453,89 +29432,6 @@
                 "Components": []
             },
             {
-                "UID": 1088382681,
-                "ParentUID": 1,
-                "Name": "Door",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    12.831094741821289,
-                    -0.13620591163635255,
-                    -0.01379251480102539
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Door",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": true,
-                "Components": [
-                    {
-                        "ComponentType": 17,
-                        "IsEnabled": false,
-                        "Center": [
-                            1.149999976158142,
-                            0.0,
-                            0.0
-                        ],
-                        "Size": [
-                            1.4500000476837159,
-                            0.699999988079071,
-                            2.3499999046325685
-                        ],
-                        "ColliderType": 0,
-                        "FreezeRotation": false
-                    }
-                ]
-            },
-            {
-                "UID": 1094370087,
-                "ParentUID": 1088382681,
-                "Name": "OB_BB_Puerta.002",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": true,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": false,
-                        "MeshID": 503749207,
-                        "MaterialID": 503749173,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
                 "UID": 951408258,
                 "ParentUID": 947857587,
                 "Name": "OB_Mini_Elevator",
@@ -51777,6 +51673,232 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
+            },
+            {
+                "UID": 1343049099,
+                "ParentUID": 1,
+                "Name": "DoorArea",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    12.220464706420899,
+                    0.7335675358772278,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "DoorArea",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "AreaDoors",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "DOOR ENTER",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorEnter",
+                                "MemberType": 3,
+                                "VariableData": 1088382681
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoorEnterEmiTop",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "DOOR EXIT",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mDoorExit",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiBorder",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mDoorExitEmiTop",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "ELEVATOR",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mElevator",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "TUTORIAL",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mIsStartingArea",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            0.5,
+                            2.0,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1088382681,
+                "ParentUID": 1343049099,
+                "Name": "Door",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.6106300354003906,
+                    -0.8697734475135803,
+                    -0.01379251480102539
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Door",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            1.149999976158142,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            1.4500000476837159,
+                            0.699999988079071,
+                            2.3499999046325685
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 1094370087,
+                "ParentUID": 1088382681,
+                "Name": "OB_BB_Puerta.002",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": false,
+                        "MeshID": 503749207,
+                        "MaterialID": 503749173,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1756456562,
+                "ParentUID": 1,
+                "Name": "Laser",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "BossLaser",
+                        "ScriptVariables": []
+                    }
+                ]
             }
         ],
         "NavMeshResource": 912797924,

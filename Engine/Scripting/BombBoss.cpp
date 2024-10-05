@@ -103,13 +103,14 @@ void BombBoss::Update()
 	}
 }
 
-void BombBoss::Init(float3 bombOrigin, float damage)
+void BombBoss::Init(float3 bombOrigin, float damage, float delay)
 {
 	mGameObject->SetEnabled(true);
 	mHasExploded = false;
 	mTimePassed = 0.0f;
 	mBombOrigin = bombOrigin;
 	mDamage = damage;
+	mTimeDelay = delay;
 	for (Component* particlecomponent : mExplosionParticles)
 	{
 		particlecomponent->GetOwner()->SetEnabled(false);

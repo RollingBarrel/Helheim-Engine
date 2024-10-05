@@ -26,7 +26,7 @@ void BossLaser::Start()
     if (mLaserEyeBall)
     {
         mLaserEyeBall->SetEnabled(false);
-        mLaserEyeBall->SetLocalScale(float3::one * 0.5f);
+        //mLaserEyeBall->SetLocalScale(float3::one * 0.5f);
     }
 }
 
