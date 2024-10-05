@@ -122,23 +122,6 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 1)
             {
                 StartCinematic(mCameraObjectGO1, mEnemyGO1, mBattleArea1, mEnemyAnimState1);
-
-                /*
-                if (App->GetScene()->GetName() == "Level1Scene")
-                {
-                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
-                }
-
-                if (App->GetScene()->GetName() == "Level2Scene")
-                {
-                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 61.92f, 38.00f, 8.98f, 0.00f, -90.00f, 0.00f);
-                }
-
-                if (App->GetScene()->GetName() == "Level3Scene")
-                {
-                    StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.75f, 0.00f, 45.00f, -90.00f, 0.00f);
-                }  
-                */
             }    
         }
     }
@@ -150,13 +133,6 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 2)
             {
                 StartCinematic(mCameraObjectGO2, mEnemyGO2, mBattleArea2, mEnemyAnimState2);
-
-                /*
-                if (App->GetScene()->GetName() == "Level1Scene")
-                {
-                    StartCinematic(mEnemyGO2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
-                } 
-                */
             }            
         }
     }
@@ -168,13 +144,6 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 3)
             {
                 StartCinematic(mCameraObjectGO3, mEnemyGO3, mBattleArea3, mEnemyAnimState3);
-
-                /*
-                if (App->GetScene()->GetName() == "Level1Scene")
-                {
-                    StartCinematic(mEnemyGO3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
-                } 
-                */
             }
         }
     }
@@ -186,13 +155,6 @@ void CinematicCamera::Update()
             if (mCinematicIndex == 4)
             {
                 StartCinematic(mCameraObjectGO4, mEnemyGO4, mBattleArea4, mEnemyAnimState4);
-
-                /*
-                if (App->GetScene()->GetName() == "Level1Scene")
-                {
-                    StartCinematic(mEnemyGO4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
-                }
-                */
             }
         }
     }
@@ -315,12 +277,10 @@ void CinematicCamera::LocateCamera(GameObject* cameraObject)
     if (cameraObject)
     {
         float3 objectPosition = cameraObject->GetWorldPosition();
-
-        Quat objectRotationQuat = cameraObject->GetWorldRotation();
-        float3 objectRotationEuler = objectRotationQuat.ToEulerXYZ();
+        Quat objectRotation = cameraObject->GetWorldRotation();
 
         mCinematicCameraGO->SetWorldPosition(objectPosition);
-        mCinematicCameraGO->SetWorldRotation(objectRotationEuler);
+        mCinematicCameraGO->SetWorldRotation(objectRotation);
     }
 }
 

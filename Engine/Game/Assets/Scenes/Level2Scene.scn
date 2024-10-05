@@ -361,6 +361,30 @@
                                 "VariableData": 1820664883
                             },
                             {
+                                "VariableName": "CAMERA OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO1",
+                                "MemberType": 3,
+                                "VariableData": 2136209027
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "ENEMIES",
                                 "MemberType": 5
                             },
@@ -476,6 +500,34 @@
                         ]
                     }
                 ]
+            },
+            {
+                "UID": 2136209027,
+                "ParentUID": 1,
+                "Name": "CameraObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    61.91999816894531,
+                    38.0,
+                    8.979999542236329
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             },
             {
                 "UID": 735514415,
@@ -14095,10 +14147,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    -2.452722747126046e-11,
-                    5.2804854239196788e-11,
-                    -0.9071901440620422,
-                    -0.42132389545440676
+                    2.368589872847604e-11,
+                    -5.3198521976494109e-11,
+                    0.9139467477798462,
+                    0.40687111020088198
                 ],
                 "Scale": [
                     0.9999998807907105,
