@@ -13,7 +13,6 @@ enum class BGM
 	LEVEL1,
 	LEVEL2,
 
-	BOSS_ROOM,
 	BOSS,
 
 	GAMEOVER,
@@ -91,9 +90,8 @@ enum class SFX
 
 	BOSS_SCREAM,
 	BOSS_AWAKE,
+	BOSS_FIRE,
 	BOSS_LASER,
-	BOSS_LASER2,
-	BOSS_ERUPTION,
 	BOSS_ROAR_BULLET,
 	BOSS_ROAR_ERUPTION,
 	BOSS_ROAR_LASER,
@@ -183,10 +181,10 @@ private:
 	{
 		{BGM::MAINMENU, "event:/MC/main/Theme"},
 		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
-		{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"},
+		{BGM::LEVEL2, "event:/MC/boss/boss_lvl"},
 
-		{BGM::BOSS_ROOM, "event:/MC/boss/boss_lvl"},
 		{BGM::BOSS, "event:/MC/boss/boss_lvl"},
+		//{BGM::BOSS, "event:/MC/main/Theme"},
 
 		{BGM::GAMEOVER, "Assets/FMOD/Audios/bgm/die.mp3"},
 
@@ -247,8 +245,8 @@ private:
 		{SFX::ENEMY_ROBOT_HIT, "Assets/FMOD/Audios/sfx/enemyrobothit.wav"},
 		{SFX::ENEMY_ROBOT_DEATH, "Assets/FMOD/Audios/sfx/robotdeath.wav"}, // [X]
 
-		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.wav"},
-		{SFX::ENEMY_CREATURE_CHARGE_ATTACK, "Assets/FMOD/Audios/sfx/creaturechargeattack.wav"},
+		{SFX::ENEMY_CREATURE_CHARGE, "Assets/FMOD/Audios/sfx/creaturecharge.mp3"},
+		{SFX::ENEMY_CREATURE_CHARGE_ATTACK, "Assets/FMOD/Audios/sfx/creatureattack.wav"},
 		{SFX::ENEMY_CREATURE_LASER, "Assets/FMOD/Audios/sfx/laser.wav"},
 		{SFX::ENEMY_CREATURE_HIT, "Assets/FMOD/Audios/sfx/enemycreaturehit.wav"},
 		{SFX::ENEMY_CREATURE_DEATH, "Assets/FMOD/Audios/sfx/creaturedeath.wav"},
@@ -261,9 +259,8 @@ private:
 
 		{SFX::BOSS_SCREAM, "Assets/FMOD/Audios/sfx/bossscream.wav"},
 		{SFX::BOSS_AWAKE, "Assets/FMOD/Audios/sfx/bossawake.wav"},
-		{SFX::BOSS_LASER, "Assets/FMOD/Audios/sfx/bosslasersound.wav"},
-		{SFX::BOSS_LASER2, "Assets/FMOD/Audios/sfx/bosslasersound2.wav"},
-		{SFX::BOSS_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruptionsound.wav"},
+		{SFX::BOSS_FIRE, "event:/SFX/BOSS/boss_fire"},
+		{SFX::BOSS_LASER, "event:/SFX/BOSS/boss_laser"},
 
 		{SFX::BOSS_ROAR_BULLET, "Assets/FMOD/Audios/sfx/bossbullet.wav"},
 		{SFX::BOSS_ROAR_ERUPTION, "Assets/FMOD/Audios/sfx/bosseruption.wav"},

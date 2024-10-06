@@ -1,8 +1,6 @@
 #pragma once
 #include "Enemy.h"
 #include "float2.h"
-#include "float3.h"
-#include "TimerScript.h"
 #include <vector>
 #include <map>
 
@@ -46,7 +44,7 @@ private:
 	void BulletHellPattern5();
 	void BulletHellPattern6();
 	void LaserAttack();
-	void BombAttack();
+	void BombAttack(const char* pattern);
 	void Rotate();
 
 	void  Death() override;

@@ -21,6 +21,8 @@ public:
 	void Enable() override;
 	void Disable() override;
 
+	void SetLineWidth(float width);
+
 	Component* Clone(GameObject* owner) const override;
 	void Save(JsonObject& archive) const override;
 	void Load(const JsonObject& data, const std::unordered_map<unsigned int, GameObject*>& uidPointerMap) override;

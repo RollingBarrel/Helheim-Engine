@@ -31,9 +31,6 @@ void Grenade::Start()
     mExplosionSFX->SetEnabled(false);
     mTrail->SetEnabled(false);
     mSphere->SetEnabled(false);
-
-    mExplosionAudio = GameManager::GetInstance()->GetAudio()->Play(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
-    GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2,mExplosionAudio, true);
 }
 
 void Grenade::Update()
@@ -69,7 +66,6 @@ void Grenade::MoveToTarget()
     {
         mBlackHoleSFX->SetEnabled(false);
         mBlackHoleSFX->SetEnabled(true);
-        //mTrail->SetEnabled(false);
         mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
@@ -79,8 +75,7 @@ void Grenade::MoveToTarget()
         mSphere->SetWorldPosition(mDestination);
 
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE1, mExplosionSFX->GetWorldPosition());
-        GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, false);
-        GameManager::GetInstance()->GetAudio()->SetPosition(SFX::PLAYER_BLACKHOLE2, mExplosionAudio, mExplosionSFX->GetWorldPosition());
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_BLACKHOLE2, mExplosionSFX->GetWorldPosition());
     }
 }
 
@@ -132,6 +127,7 @@ void Grenade::BlackHole()
     if (mBlackHoleTimer.Delay(mBlackHoleDuration))
     {
         mState = GRENADE_STATE::EXPLOSION;
+        mTrail->SetEnabled(false);
         MakeDamage(affectedEnemies);
 
     }
@@ -177,7 +173,6 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
 
 void Grenade::EndExplosion()
 {
-    GameManager::GetInstance()->GetAudio()->Pause(SFX::PLAYER_THROW, mExplosionAudio, true);
     mState = GRENADE_STATE::NONE;
     mSphere->SetEnabled(false);
 }

@@ -15,6 +15,9 @@ public:
 	float GetMaxValue() const { return mMax; }
 	float GetMinValue() const { return mMin; }
 	bool IsRand() const { return mIsRand; }
+
+	void SetMinValue(float min) { mMin = min; }
+
 	void CalculateInitialValue();
 	float CalculateRandom() const;
 

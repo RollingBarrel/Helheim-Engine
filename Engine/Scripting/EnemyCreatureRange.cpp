@@ -4,6 +4,7 @@
 #include "AnimationComponent.h"
 #include "ScriptComponent.h"
 #include "AIAGentComponent.h"
+#include "LineComponent.h"
 
 #include "GameManager.h"
 #include "AudioManager.h"
@@ -34,6 +35,10 @@ CREATE(EnemyCreatureRange)
 	MEMBER(MemberType::GAMEOBJECT, mLaserOrigin);
 	MEMBER(MemberType::GAMEOBJECT, mLaserEnd);
 	MEMBER(MemberType::GAMEOBJECT, mLaserCharge);
+	MEMBER(MemberType::GAMEOBJECT, mPreviewOrigin);
+	MEMBER(MemberType::GAMEOBJECT, mPreviewEnd);
+	MEMBER(MemberType::GAMEOBJECT, mPreviewContrast);
+	MEMBER(MemberType::GAMEOBJECT, mPreviewContrastEnd);
 	SEPARATOR("VFX");
 	MEMBER(MemberType::GAMEOBJECT, mUltHitEffectGO);
 	END_CREATE;
@@ -51,11 +56,19 @@ void EnemyCreatureRange::Start()
 		mLaserCharge->SetEnabled(false);
 		if (mLaserOrigin) mLaserCharge->SetLocalPosition(mLaserOrigin->GetLocalPosition());
 	}
+	if (mPreviewOrigin)
+	{
+		mPreviewOrigin->SetEnabled(false);
+		mPreviewLine = static_cast<LineComponent*>(mPreviewOrigin->GetComponent(ComponentType::LINE));
+	}
+	if (mPreviewEnd)	mPreviewEnd->SetEnabled(false);
+
+	if (mPreviewContrast)	    mPreviewContrast->SetEnabled(false);
+	if (mPreviewContrastEnd)	mPreviewContrastEnd->SetEnabled(false);
+
 	mDeathAudioPlayed = false;
 	mDeathTime = 2.20f;
 	mAimTime = mChargeDuration * 0.8f;
-	mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
-	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound,true);
 }
 
 void EnemyCreatureRange::Update()
@@ -64,14 +77,22 @@ void EnemyCreatureRange::Update()
 
 	if (mCurrentState != EnemyState::ATTACK)
 	{
-		GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, true);
-
+		mPlayingAttackSound = false;
+		if (mLaserSound != -1)
+		{
+			mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+		}
 		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
 		if (mLaserEnd) mLaserEnd->SetEnabled(false);
 	}
 	if (mCurrentState != EnemyState::CHARGE)
 	{
-		if (mLaserCharge)	mLaserCharge->SetEnabled(false);
+		if (mLaserCharge)			mLaserCharge->SetEnabled(false);
+		if (mPreviewOrigin)		    mPreviewOrigin->SetEnabled(false);
+		if (mPreviewEnd)			mPreviewEnd->SetEnabled(false);
+		if (mPreviewContrast)	    mPreviewContrast->SetEnabled(false);
+		if (mPreviewContrastEnd)	mPreviewContrastEnd->SetEnabled(false);
+		mPreviewWidth = 0.0f;
 	}
 
 	if (mAttackCoolDownTimer.DelayWithoutReset(mAttackCoolDown))
@@ -89,15 +110,27 @@ void EnemyCreatureRange::Charge()
 		mGameObject->LookAt(mPlayer->GetWorldPosition());
 	}
 	
-	if (mLaserCharge)	mLaserCharge->SetEnabled(true);
+	if (mLaserCharge)			mLaserCharge->SetEnabled(true); 
+	if (mPreviewOrigin)			mPreviewOrigin->SetEnabled(true);
+	if (mPreviewEnd)			mPreviewEnd->SetEnabled(true);
+	if (mPreviewContrast)	    mPreviewContrast->SetEnabled(true);
+	if (mPreviewContrastEnd)	mPreviewContrastEnd->SetEnabled(true);
+
+	SetPreviewWidth();
+	LaserCollide(mPreviewContrast, mPreviewContrastEnd, false);
+	LaserCollide(mPreviewOrigin, mPreviewEnd, false);
 }
 
 void EnemyCreatureRange::Attack()
 {
 	Enemy::Attack();
 
-	GameManager::GetInstance()->GetAudio()->Pause(SFX::ENEMY_CREATURE_LASER, mLaserSound, false);
-	GameManager::GetInstance()->GetAudio()->SetPosition(SFX::ENEMY_CREATURE_LASER, mLaserSound, mGameObject->GetWorldPosition());
+	if (!mPlayingAttackSound)
+	{
+		mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::BOSS_LASER, mLaserSound, mGameObject->GetWorldPosition());
+
+		mPlayingAttackSound = true;
+	}
 	
 	RotateHorizontally(mPlayer->GetWorldPosition(), mAttackRotationSpeed);
 	mAimTimer.Reset();
@@ -107,40 +140,7 @@ void EnemyCreatureRange::Attack()
 	if (mLaserOrigin)	mLaserOrigin->SetEnabled(true);
 	if (mLaserEnd)		mLaserEnd->SetEnabled(true);
 
-	Hit hit;
-	Ray ray;
-	ray.dir = mGameObject->GetFront();
-	ray.pos = mLaserOrigin->GetWorldPosition();
-
-	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
-	Physics::Raycast(hit, ray, mAttackDistance, &ignoreTags);
-	if (hit.IsValid())
-	{
-		if (hit.mGameObject->GetTag().compare("Player") == 0)
-		{
-			PlayerController* player = GameManager::GetInstance()->GetPlayerController();
-			if (!player->IsPlayerDashing())
-			{
-				mLaserEnd->SetWorldPosition(hit.mHitPoint);
-				if (mDoDamage)
-				{
-					mAttackCoolDownTimer.Reset();
-					player->TakeDamage(mAttackDamage);
-					mDoDamage = false;
-				}
-			}
-		}
-		else
-		{
-			mLaserEnd->SetWorldPosition(hit.mHitPoint);
-		}
-		
-	}
-	else
-	{
-		float3 originPosition = mLaserOrigin->GetLocalPosition();
-		mLaserEnd->SetLocalPosition(float3(originPosition.x, originPosition.y, originPosition.z + mAttackDistance));
-	}
+	LaserCollide(mLaserOrigin, mLaserEnd, true);
 }
 
 void EnemyCreatureRange::Death()
@@ -157,6 +157,54 @@ void EnemyCreatureRange::TakeDamage(float damage)
 {
 	Enemy::TakeDamage(damage);
 	GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_HIT, mGameObject->GetWorldPosition());
+}
+
+void EnemyCreatureRange::SetPreviewWidth()
+{
+	//TODO:
+	/*if (mPreviewLine)
+	{ 
+		mPreviewWidth = Lerp(mPreviewWidth, 100.0f, App->GetDt());
+		mPreviewLine->SetLineWidth(10.0f);
+	}*/
+}
+
+void EnemyCreatureRange::LaserCollide(GameObject* origin, GameObject* end, bool dealDamage)
+{
+	Hit hit;
+	Ray ray;
+	ray.dir = (mGameObject->GetFront() - float3(0.0f, 0.1f, 0.0f)).Normalized();
+	ray.pos = origin->GetWorldPosition();
+
+	std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible" };
+	Physics::Raycast(hit, ray, mAttackDistance, &ignoreTags);
+	if (hit.IsValid())
+	{
+		if (hit.mGameObject->GetTag().compare("Player") == 0)
+		{
+			PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+			if (!player->IsPlayerDashing())
+			{
+				end->SetWorldPosition(hit.mHitPoint);
+				if (mDoDamage)
+				{
+					mAttackCoolDownTimer.Reset();
+					if (dealDamage) player->TakeDamage(mAttackDamage);
+					mDoDamage = false;
+				}
+			}
+		}
+		else
+		{
+			end->SetWorldPosition(hit.mHitPoint);
+		}
+
+	}
+	else
+	{
+		float3 originPosition = mLaserOrigin->GetWorldPosition();
+		mLaserEnd->SetWorldPosition(originPosition + ray.dir * mAttackDistance);
+	}
 }
 
 
