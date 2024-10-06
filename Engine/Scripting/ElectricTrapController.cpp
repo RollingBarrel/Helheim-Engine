@@ -46,7 +46,6 @@ void ElectricTrapController::Start()
 void ElectricTrapController::Update()
 {
     float distance = GameManager::GetInstance()->GetPlayer()->GetWorldPosition().Distance(mGameObject->GetWorldPosition());
-    LOG("Distance: %f", distance);
     if (distance <= 30)
     {
         if (mIsActive)
