@@ -532,7 +532,7 @@
                             {
                                 "VariableName": "mDistanceToEnemy",
                                 "MemberType": 1,
-                                "VariableData": 4.0
+                                "VariableData": 8.0
                             },
                             {
                                 "VariableName": "mSpeedFactor",
