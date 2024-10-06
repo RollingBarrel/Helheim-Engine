@@ -137,7 +137,8 @@ HudController::~HudController()
 
 void HudController::Start()
 {
-    if (mPauseScreen) {
+    if (mPauseScreen) 
+    {
         mPauseScreen->SetEnabled(false);
         mPauseMenu = static_cast<PauseMenu*>(static_cast<ScriptComponent*>(mPauseScreen->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
     }
