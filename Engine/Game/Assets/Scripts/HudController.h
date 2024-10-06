@@ -15,6 +15,7 @@ class PlayerController;
 class Sanity;
 class Dialog;
 class Transform2DComponent;
+class PauseMenu;
 enum class EnergyType;
 
 enum class SCREEN {
@@ -34,14 +35,14 @@ public:
     void Update();
 
     void SetAmmo(int ammo);
-    void SetEnergy(int energy, EnergyType type);
+    void SetEnergy(int energy, EnergyType type, bool up);
     void SetHealth(float health);
     void SetBossHealth(float health);
     void SetBossHealthBarEnabled(bool enabled);
     void SetMaxHealth(float health);
     void SetGrenadeCooldown(float cooldown);
     void SetUltimateCooldown(float cooldown);
-    void SetCollectibleText(std::string text);
+    void SetCollectibleText(std::string text, std::string title, std::string subtitle);
     void SetScreen(SCREEN menu, bool active);
     void SetInteract(bool active);
     void SetPickupPrompt(bool active);
@@ -51,7 +52,12 @@ public:
     void DisableCollectible();
     void SetFadein(bool value) { mFadeIn = value; }
 
+    void SetGodmode(bool value);
+    void SetInstaKill(bool value);
+    void SetDebug(bool value);
 
+    void ChangeBindings(bool controller);
+    void SetHud(bool value);
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -85,6 +91,7 @@ private:
 
     // Pause Menu
     GameObject* mPauseScreen = nullptr;
+    PauseMenu* mPauseMenu = nullptr;
     GameObject* mFadeoutScreen = nullptr;
     ImageComponent* mFadeoutImage = nullptr;
 
@@ -100,11 +107,11 @@ private:
     GameObject* mWeaponRangeGO = nullptr;
     GameObject* mGrenadeSliderGO = nullptr;
     GameObject* mUltimateSliderGO = nullptr;
-    GameObject* mEnergyGO = nullptr;
-    GameObject* mEnergyImageGO = nullptr;
     GameObject* mFeedbackGO = nullptr;
     GameObject* mCollectibleScreen = nullptr;
     GameObject* mCollectibleTextGO = nullptr;
+    GameObject* mCollectibleTitleGO = nullptr;
+    GameObject* mCollectibleSubtitleGO = nullptr;
     GameObject* mCollectibleImageGO = nullptr;
     GameObject* mCollectibleContinueBtnGO = nullptr;
     GameObject* mInteractGO = nullptr;
@@ -126,14 +133,21 @@ private:
     ImageComponent* mHealthIcon = nullptr;
     ImageComponent* mHealthGradualImage = nullptr;
     TextComponent* mAmmoText = nullptr;
-    TextComponent* mEnergyText = nullptr;
-    ImageComponent* mEnergyImage = nullptr;
     SliderComponent* mGrenadeSlider = nullptr;
     SliderComponent* mUltimateSlider = nullptr;
     ImageComponent* mFeedbackImage = nullptr;
     TextComponent* mLoreText = nullptr;
+    TextComponent* mTitleText = nullptr;
+    TextComponent* mSubtitleText = nullptr;
     TextComponent* mInteractText = nullptr;
     ButtonComponent* mCollectibleContinueBtn = nullptr;
+
+    //Debug
+    GameObject* mDebugGO = nullptr;
+    GameObject* mGodmodeGO = nullptr;
+    GameObject* mInstakillGO = nullptr;
+    ImageComponent* mGodmodeImage = nullptr;
+    ImageComponent* mInstakillImage = nullptr;
 
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;
@@ -141,6 +155,11 @@ private:
     float mBossHealth = 0.0;
     SliderComponent* mBossHealthSlider = nullptr;
     SliderComponent* mBossHealthGradualSlider = nullptr;
+
+    //Ammo
+    GameObject* mAmmoBaseGO = nullptr;
+    GameObject* mAmmoShotgunGO = nullptr;
+    GameObject* mAmmoSubGO = nullptr;
 
     float mTargetHealth = 1;
 
@@ -212,4 +231,39 @@ private:
     bool mUltimateHL = false;
     TimerScript mUltimateHLTimer;
     GameObject* mUltimateHLGO = nullptr;
+    ImageComponent* mUltimateImage = nullptr;
+    bool mGunHL = false;
+    TimerScript mGunHLTimer;
+    GameObject* mGunHLGO = nullptr;
+
+    float mAlpha = 0.0f;
+
+    //Hud
+    GameObject* mHudGO = nullptr;
+
+
+    // Buttons change
+    GameObject* mControllerWeaponBinding = nullptr;
+    GameObject* mControllerUltiBinding = nullptr;
+    GameObject* mControllerGrenadeBinding = nullptr;
+    GameObject* mControllerDialogueNextBinding = nullptr;
+    GameObject* mControllerDialogueSkipBinding = nullptr;
+    GameObject* mControllerVideoBinding = nullptr;
+    GameObject* mControllerCollectibleOpenBinding = nullptr;
+    GameObject* mControllerCollectibleCloseBinding = nullptr;
+    GameObject* mControllerMenuSelectBinding = nullptr;
+    GameObject* mControllerMenuBackBinding = nullptr;
+    GameObject* mControllerCreditsSkipBinding = nullptr;
+
+    GameObject* mKeyboardWeaponBinding = nullptr;
+    GameObject* mKeyboardUltiBinding = nullptr;
+    GameObject* mKeyboardGrenadeBinding = nullptr;
+    GameObject* mKeyboardDialogueNextBinding = nullptr;
+    GameObject* mKeyboardDialogueSkipBinding = nullptr;
+    GameObject* mKeyboardVideoBinding = nullptr;
+    GameObject* mKeyboardCollectibleOpenBinding = nullptr;
+    GameObject* mKeyboardCollectibleCloseBinding = nullptr;
+    GameObject* mKeyboardMenuSelectBinding = nullptr;
+    GameObject* mKeyboardMenuBackBinding = nullptr;
+    GameObject* mKeyboardCreditsSkipBinding = nullptr;
 };
