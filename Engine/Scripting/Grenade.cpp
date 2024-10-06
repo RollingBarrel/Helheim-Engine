@@ -66,7 +66,6 @@ void Grenade::MoveToTarget()
     {
         mBlackHoleSFX->SetEnabled(false);
         mBlackHoleSFX->SetEnabled(true);
-        //mTrail->SetEnabled(false);
         mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
@@ -128,6 +127,7 @@ void Grenade::BlackHole()
     if (mBlackHoleTimer.Delay(mBlackHoleDuration))
     {
         mState = GRENADE_STATE::EXPLOSION;
+        mTrail->SetEnabled(false);
         MakeDamage(affectedEnemies);
 
     }
