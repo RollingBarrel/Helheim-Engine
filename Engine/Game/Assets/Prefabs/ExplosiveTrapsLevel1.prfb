@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 402326249,
+                "UID": 288751416,
                 "ParentUID": 1,
                 "Name": "ExplosiveTrapsLevel1",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 447928004,
-                "ParentUID": 402326249,
+                "UID": 11009345,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -51,10 +51,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -121,25 +121,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 455447072
+                                "VariableData": 1148338001
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 482251157
+                                "VariableData": 1233993648
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 463314245
+                                "VariableData": 64106266
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 455447072,
-                "ParentUID": 447928004,
+                "UID": 1148338001,
+                "ParentUID": 11009345,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -162,7 +162,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -190,8 +190,8 @@
                 ]
             },
             {
-                "UID": 463314245,
-                "ParentUID": 447928004,
+                "UID": 64106266,
+                "ParentUID": 11009345,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -214,7 +214,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -240,15 +240,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 447928004
+                                "VariableData": 11009345
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 469788998,
-                "ParentUID": 463314245,
+                "UID": 1133415205,
+                "ParentUID": 64106266,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -271,12 +271,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 475846025,
-                "ParentUID": 469788998,
+                "UID": 45563178,
+                "ParentUID": 1133415205,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -299,7 +299,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -313,8 +313,8 @@
                 ]
             },
             {
-                "UID": 482251157,
-                "ParentUID": 447928004,
+                "UID": 1233993648,
+                "ParentUID": 11009345,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -337,12 +337,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 488377805,
-                "ParentUID": 482251157,
+                "UID": 151989785,
+                "ParentUID": 1233993648,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -365,7 +365,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -379,8 +379,8 @@
                 ]
             },
             {
-                "UID": 494852558,
-                "ParentUID": 488377805,
+                "UID": 1214754350,
+                "ParentUID": 151989785,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -403,7 +403,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -427,8 +427,8 @@
                 ]
             },
             {
-                "UID": 501188069,
-                "ParentUID": 482251157,
+                "UID": 214764025,
+                "ParentUID": 1233993648,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -451,7 +451,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -628,8 +628,8 @@
                 ]
             },
             {
-                "UID": 507384338,
-                "ParentUID": 482251157,
+                "UID": 1354668658,
+                "ParentUID": 1233993648,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -652,7 +652,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -775,8 +775,8 @@
                 ]
             },
             {
-                "UID": 515321132,
-                "ParentUID": 482251157,
+                "UID": 271202754,
+                "ParentUID": 1233993648,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -799,7 +799,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -1056,8 +1056,8 @@
                 ]
             },
             {
-                "UID": 521865506,
-                "ParentUID": 482251157,
+                "UID": 1319068425,
+                "ParentUID": 1233993648,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -1080,7 +1080,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -1257,8 +1257,8 @@
                 ]
             },
             {
-                "UID": 529036469,
-                "ParentUID": 402326249,
+                "UID": 217152956,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -1278,10 +1278,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -1348,25 +1348,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 535789706
+                                "VariableData": 1262164166
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 561758339
+                                "VariableData": 1175159733
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 542334080
+                                "VariableData": 164425957
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 535789706,
-                "ParentUID": 529036469,
+                "UID": 1262164166,
+                "ParentUID": 217152956,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -1389,7 +1389,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -1417,8 +1417,8 @@
                 ]
             },
             {
-                "UID": 542334080,
-                "ParentUID": 529036469,
+                "UID": 164425957,
+                "ParentUID": 217152956,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -1441,7 +1441,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -1467,15 +1467,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 529036469
+                                "VariableData": 217152956
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 548948075,
-                "ParentUID": 542334080,
+                "UID": 1214589121,
+                "ParentUID": 164425957,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -1498,12 +1498,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 555353207,
-                "ParentUID": 548948075,
+                "UID": 124578843,
+                "ParentUID": 1214589121,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -1526,7 +1526,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -1540,8 +1540,8 @@
                 ]
             },
             {
-                "UID": 561758339,
-                "ParentUID": 529036469,
+                "UID": 1175159733,
+                "ParentUID": 217152956,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -1564,12 +1564,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 568302713,
-                "ParentUID": 561758339,
+                "UID": 190834133,
+                "ParentUID": 1175159733,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -1592,7 +1592,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -1606,8 +1606,8 @@
                 ]
             },
             {
-                "UID": 574638224,
-                "ParentUID": 568302713,
+                "UID": 1242946685,
+                "ParentUID": 190834133,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -1630,7 +1630,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -1654,8 +1654,8 @@
                 ]
             },
             {
-                "UID": 580904114,
-                "ParentUID": 561758339,
+                "UID": 153214891,
+                "ParentUID": 1175159733,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -1678,7 +1678,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -1855,8 +1855,8 @@
                 ]
             },
             {
-                "UID": 587309246,
-                "ParentUID": 561758339,
+                "UID": 1199618521,
+                "ParentUID": 1175159733,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -1879,7 +1879,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -2002,8 +2002,8 @@
                 ]
             },
             {
-                "UID": 593644757,
-                "ParentUID": 561758339,
+                "UID": 106544919,
+                "ParentUID": 1175159733,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -2026,7 +2026,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -2283,8 +2283,8 @@
                 ]
             },
             {
-                "UID": 600049889,
-                "ParentUID": 561758339,
+                "UID": 1163461320,
+                "ParentUID": 1175159733,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -2307,7 +2307,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -2484,8 +2484,8 @@
                 ]
             },
             {
-                "UID": 606524642,
-                "ParentUID": 402326249,
+                "UID": 66837047,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -2505,10 +2505,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -2575,25 +2575,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 612860153
+                                "VariableData": 1113936887
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 637645229
+                                "VariableData": 1126629726
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 619334906
+                                "VariableData": 21768358
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 612860153,
-                "ParentUID": 606524642,
+                "UID": 1113936887,
+                "ParentUID": 66837047,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -2616,7 +2616,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -2644,8 +2644,8 @@
                 ]
             },
             {
-                "UID": 619334906,
-                "ParentUID": 606524642,
+                "UID": 21768358,
+                "ParentUID": 66837047,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -2668,7 +2668,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -2694,15 +2694,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 606524642
+                                "VariableData": 66837047
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 625252691,
-                "ParentUID": 619334906,
+                "UID": 1073950531,
+                "ParentUID": 21768358,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -2725,12 +2725,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 631588202,
-                "ParentUID": 625252691,
+                "UID": 58852449,
+                "ParentUID": 1073950531,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -2753,7 +2753,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -2767,8 +2767,8 @@
                 ]
             },
             {
-                "UID": 637645229,
-                "ParentUID": 606524642,
+                "UID": 1126629726,
+                "ParentUID": 66837047,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -2791,12 +2791,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 643980740,
-                "ParentUID": 637645229,
+                "UID": 32163704,
+                "ParentUID": 1126629726,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -2819,7 +2819,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -2833,8 +2833,8 @@
                 ]
             },
             {
-                "UID": 650246630,
-                "ParentUID": 643980740,
+                "UID": 1087548443,
+                "ParentUID": 32163704,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -2857,7 +2857,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -2881,8 +2881,8 @@
                 ]
             },
             {
-                "UID": 656651762,
-                "ParentUID": 637645229,
+                "UID": 2134091315,
+                "ParentUID": 1126629726,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -2905,7 +2905,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -3082,8 +3082,8 @@
                 ]
             },
             {
-                "UID": 665702492,
-                "ParentUID": 637645229,
+                "UID": 1038998704,
+                "ParentUID": 1126629726,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -3106,7 +3106,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -3229,8 +3229,8 @@
                 ]
             },
             {
-                "UID": 672873455,
-                "ParentUID": 637645229,
+                "UID": 2132953477,
+                "ParentUID": 1126629726,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -3253,7 +3253,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -3510,8 +3510,8 @@
                 ]
             },
             {
-                "UID": 679557071,
-                "ParentUID": 637645229,
+                "UID": 1150298781,
+                "ParentUID": 1126629726,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -3534,7 +3534,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -3711,8 +3711,8 @@
                 ]
             },
             {
-                "UID": 686031824,
-                "ParentUID": 402326249,
+                "UID": 75674744,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -3732,10 +3732,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -3802,25 +3802,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 692436956
+                                "VariableData": 1141015286
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 718196726
+                                "VariableData": 1204252971
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 698772467
+                                "VariableData": 165810037
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 692436956,
-                "ParentUID": 686031824,
+                "UID": 1141015286,
+                "ParentUID": 75674744,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -3843,7 +3843,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -3871,8 +3871,8 @@
                 ]
             },
             {
-                "UID": 698772467,
-                "ParentUID": 686031824,
+                "UID": 165810037,
+                "ParentUID": 75674744,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -3895,7 +3895,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -3921,15 +3921,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 686031824
+                                "VariableData": 75674744
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 705107978,
-                "ParentUID": 698772467,
+                "UID": 1230593611,
+                "ParentUID": 165810037,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -3952,12 +3952,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 711791594,
-                "ParentUID": 705107978,
+                "UID": 138355461,
+                "ParentUID": 1230593611,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -3980,7 +3980,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -3994,8 +3994,8 @@
                 ]
             },
             {
-                "UID": 718196726,
-                "ParentUID": 686031824,
+                "UID": 1204252971,
+                "ParentUID": 75674744,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -4018,12 +4018,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 724601858,
-                "ParentUID": 718196726,
+                "UID": 155319083,
+                "ParentUID": 1204252971,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -4046,7 +4046,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -4060,8 +4060,8 @@
                 ]
             },
             {
-                "UID": 731076611,
-                "ParentUID": 724601858,
+                "UID": 1218849479,
+                "ParentUID": 155319083,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -4084,7 +4084,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -4108,8 +4108,8 @@
                 ]
             },
             {
-                "UID": 737551364,
-                "ParentUID": 718196726,
+                "UID": 133086082,
+                "ParentUID": 1204252971,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -4132,7 +4132,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -4309,8 +4309,8 @@
                 ]
             },
             {
-                "UID": 744304601,
-                "ParentUID": 718196726,
+                "UID": 1183945456,
+                "ParentUID": 1204252971,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -4333,7 +4333,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -4456,8 +4456,8 @@
                 ]
             },
             {
-                "UID": 750640112,
-                "ParentUID": 718196726,
+                "UID": 113498679,
+                "ParentUID": 1204252971,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -4480,7 +4480,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -4737,8 +4737,8 @@
                 ]
             },
             {
-                "UID": 756975623,
-                "ParentUID": 718196726,
+                "UID": 1167699861,
+                "ParentUID": 1204252971,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -4761,7 +4761,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -4938,8 +4938,8 @@
                 ]
             },
             {
-                "UID": 763450376,
-                "ParentUID": 402326249,
+                "UID": 169450061,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -4959,10 +4959,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -5029,25 +5029,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 769855508
+                                "VariableData": 1266259295
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 794988689
+                                "VariableData": 1230565539
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 776330261
+                                "VariableData": 196091002
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 769855508,
-                "ParentUID": 763450376,
+                "UID": 1266259295,
+                "ParentUID": 169450061,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -5070,7 +5070,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -5098,8 +5098,8 @@
                 ]
             },
             {
-                "UID": 776330261,
-                "ParentUID": 763450376,
+                "UID": 196091002,
+                "ParentUID": 169450061,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -5122,7 +5122,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -5148,15 +5148,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 763450376
+                                "VariableData": 169450061
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 782248046,
-                "ParentUID": 776330261,
+                "UID": 1257045421,
+                "ParentUID": 196091002,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -5179,12 +5179,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 788583557,
-                "ParentUID": 782248046,
+                "UID": 170028846,
+                "ParentUID": 1257045421,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -5207,7 +5207,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -5221,8 +5221,8 @@
                 ]
             },
             {
-                "UID": 794988689,
-                "ParentUID": 763450376,
+                "UID": 1230565539,
+                "ParentUID": 169450061,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -5245,12 +5245,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 801463442,
-                "ParentUID": 794988689,
+                "UID": 148283192,
+                "ParentUID": 1230565539,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -5273,7 +5273,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -5287,8 +5287,8 @@
                 ]
             },
             {
-                "UID": 807868574,
-                "ParentUID": 801463442,
+                "UID": 1227756797,
+                "ParentUID": 148283192,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -5311,7 +5311,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -5335,8 +5335,8 @@
                 ]
             },
             {
-                "UID": 813786359,
-                "ParentUID": 794988689,
+                "UID": 145265587,
+                "ParentUID": 1230565539,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -5359,7 +5359,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -5536,8 +5536,8 @@
                 ]
             },
             {
-                "UID": 820191491,
-                "ParentUID": 794988689,
+                "UID": 1216454293,
+                "ParentUID": 1230565539,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -5560,7 +5560,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -5683,8 +5683,8 @@
                 ]
             },
             {
-                "UID": 828685253,
-                "ParentUID": 794988689,
+                "UID": 127488330,
+                "ParentUID": 1230565539,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -5707,7 +5707,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -5964,8 +5964,8 @@
                 ]
             },
             {
-                "UID": 835786595,
-                "ParentUID": 794988689,
+                "UID": 1250892786,
+                "ParentUID": 1230565539,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -5988,7 +5988,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -6165,8 +6165,8 @@
                 ]
             },
             {
-                "UID": 842539832,
-                "ParentUID": 402326249,
+                "UID": 162066065,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -6186,10 +6186,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -6256,25 +6256,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 849293069
+                                "VariableData": 1221349580
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 879787067
+                                "VariableData": 1213156119
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 856324790
+                                "VariableData": 140181169
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 849293069,
-                "ParentUID": 842539832,
+                "UID": 1221349580,
+                "ParentUID": 162066065,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -6297,7 +6297,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -6325,8 +6325,8 @@
                 ]
             },
             {
-                "UID": 856324790,
-                "ParentUID": 842539832,
+                "UID": 140181169,
+                "ParentUID": 162066065,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -6349,7 +6349,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -6375,15 +6375,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 842539832
+                                "VariableData": 162066065
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 862660301,
-                "ParentUID": 856324790,
+                "UID": 1200091273,
+                "ParentUID": 140181169,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -6406,12 +6406,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 872407241,
-                "ParentUID": 862660301,
+                "UID": 151505490,
+                "ParentUID": 1200091273,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -6434,7 +6434,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -6448,8 +6448,8 @@
                 ]
             },
             {
-                "UID": 879787067,
-                "ParentUID": 842539832,
+                "UID": 1213156119,
+                "ParentUID": 162066065,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -6472,12 +6472,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 886818788,
-                "ParentUID": 879787067,
+                "UID": 124607882,
+                "ParentUID": 1213156119,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -6500,7 +6500,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -6514,8 +6514,8 @@
                 ]
             },
             {
-                "UID": 893850509,
-                "ParentUID": 886818788,
+                "UID": 1183195187,
+                "ParentUID": 124607882,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -6538,7 +6538,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -6562,8 +6562,8 @@
                 ]
             },
             {
-                "UID": 900673367,
-                "ParentUID": 879787067,
+                "UID": 100147009,
+                "ParentUID": 1213156119,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -6586,7 +6586,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -6763,8 +6763,8 @@
                 ]
             },
             {
-                "UID": 907496225,
-                "ParentUID": 879787067,
+                "UID": 1287324301,
+                "ParentUID": 1213156119,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -6787,7 +6787,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -6910,8 +6910,8 @@
                 ]
             },
             {
-                "UID": 914319083,
-                "ParentUID": 879787067,
+                "UID": 198079854,
+                "ParentUID": 1213156119,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -6934,7 +6934,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -7191,8 +7191,8 @@
                 ]
             },
             {
-                "UID": 920584973,
-                "ParentUID": 879787067,
+                "UID": 1255344360,
+                "ParentUID": 1213156119,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -7215,7 +7215,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -7392,8 +7392,8 @@
                 ]
             },
             {
-                "UID": 2096119037,
-                "ParentUID": 402326249,
+                "UID": 171739214,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -7413,10 +7413,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -7483,25 +7483,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1399049683
+                                "VariableData": 1231997423
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1154284064
+                                "VariableData": 1186556727
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 261905988
+                                "VariableData": 150829012
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1399049683,
-                "ParentUID": 2096119037,
+                "UID": 1231997423,
+                "ParentUID": 171739214,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -7524,7 +7524,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -7552,8 +7552,8 @@
                 ]
             },
             {
-                "UID": 261905988,
-                "ParentUID": 2096119037,
+                "UID": 150829012,
+                "ParentUID": 171739214,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -7576,7 +7576,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -7602,15 +7602,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 2096119037
+                                "VariableData": 171739214
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1268625648,
-                "ParentUID": 261905988,
+                "UID": 1216865764,
+                "ParentUID": 150829012,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -7633,12 +7633,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 147425162,
-                "ParentUID": 1268625648,
+                "UID": 128247906,
+                "ParentUID": 1216865764,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -7661,7 +7661,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -7675,8 +7675,8 @@
                 ]
             },
             {
-                "UID": 1154284064,
-                "ParentUID": 2096119037,
+                "UID": 1186556727,
+                "ParentUID": 171739214,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -7699,12 +7699,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 24798679,
-                "ParentUID": 1154284064,
+                "UID": 97451522,
+                "ParentUID": 1186556727,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -7727,7 +7727,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -7741,8 +7741,8 @@
                 ]
             },
             {
-                "UID": 1036809535,
-                "ParentUID": 24798679,
+                "UID": 1410503582,
+                "ParentUID": 97451522,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -7765,7 +7765,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -7789,8 +7789,8 @@
                 ]
             },
             {
-                "UID": 2054459692,
-                "ParentUID": 1154284064,
+                "UID": 350499955,
+                "ParentUID": 1186556727,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -7813,7 +7813,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -7990,8 +7990,8 @@
                 ]
             },
             {
-                "UID": 959715186,
-                "ParentUID": 1154284064,
+                "UID": 1413891109,
+                "ParentUID": 1186556727,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -8014,7 +8014,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -8137,8 +8137,8 @@
                 ]
             },
             {
-                "UID": 1974371640,
-                "ParentUID": 1154284064,
+                "UID": 324020073,
+                "ParentUID": 1186556727,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -8161,7 +8161,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -8418,8 +8418,8 @@
                 ]
             },
             {
-                "UID": 854215469,
-                "ParentUID": 1154284064,
+                "UID": 1382120031,
+                "ParentUID": 1186556727,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -8442,7 +8442,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -8619,8 +8619,8 @@
                 ]
             },
             {
-                "UID": 1975095597,
-                "ParentUID": 402326249,
+                "UID": 292388237,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -8640,10 +8640,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -8710,25 +8710,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1046954144
+                                "VariableData": 1347633734
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 796340361
+                                "VariableData": 1459258014
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 2058268790
+                                "VariableData": 260826022
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1046954144,
-                "ParentUID": 1975095597,
+                "UID": 1347633734,
+                "ParentUID": 292388237,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -8751,7 +8751,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -8779,8 +8779,8 @@
                 ]
             },
             {
-                "UID": 2058268790,
-                "ParentUID": 1975095597,
+                "UID": 260826022,
+                "ParentUID": 292388237,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -8803,7 +8803,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -8829,15 +8829,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 1975095597
+                                "VariableData": 292388237
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 924466903,
-                "ParentUID": 2058268790,
+                "UID": 1322546272,
+                "ParentUID": 260826022,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -8860,12 +8860,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1937522074,
-                "ParentUID": 924466903,
+                "UID": 342606795,
+                "ParentUID": 1322546272,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -8888,7 +8888,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -8902,8 +8902,8 @@
                 ]
             },
             {
-                "UID": 796340361,
-                "ParentUID": 1975095597,
+                "UID": 1459258014,
+                "ParentUID": 292388237,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -8926,12 +8926,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1802572674,
-                "ParentUID": 796340361,
+                "UID": 371266745,
+                "ParentUID": 1459258014,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -8954,7 +8954,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -8968,8 +8968,8 @@
                 ]
             },
             {
-                "UID": 712632017,
-                "ParentUID": 1802572674,
+                "UID": 1433056616,
+                "ParentUID": 371266745,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -8992,7 +8992,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -9016,8 +9016,8 @@
                 ]
             },
             {
-                "UID": 1763630633,
-                "ParentUID": 796340361,
+                "UID": 348476776,
+                "ParentUID": 1459258014,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -9040,7 +9040,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -9217,8 +9217,8 @@
                 ]
             },
             {
-                "UID": 645284608,
-                "ParentUID": 796340361,
+                "UID": 1407272944,
+                "ParentUID": 1459258014,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -9241,7 +9241,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -9364,8 +9364,8 @@
                 ]
             },
             {
-                "UID": 1679783047,
-                "ParentUID": 796340361,
+                "UID": 324364008,
+                "ParentUID": 1459258014,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -9388,7 +9388,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -9645,8 +9645,8 @@
                 ]
             },
             {
-                "UID": 544519119,
-                "ParentUID": 796340361,
+                "UID": 1382533587,
+                "ParentUID": 1459258014,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -9669,7 +9669,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -9846,8 +9846,8 @@
                 ]
             },
             {
-                "UID": 1079296025,
-                "ParentUID": 402326249,
+                "UID": 294751181,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -9867,10 +9867,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -9937,25 +9937,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 2129737673
+                                "VariableData": 1357167641
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1905510249
+                                "VariableData": 1393670862
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 994195261
+                                "VariableData": 350702563
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 2129737673,
-                "ParentUID": 1079296025,
+                "UID": 1357167641,
+                "ParentUID": 294751181,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -9978,7 +9978,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -10006,8 +10006,8 @@
                 ]
             },
             {
-                "UID": 994195261,
-                "ParentUID": 1079296025,
+                "UID": 350702563,
+                "ParentUID": 294751181,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -10030,7 +10030,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -10056,15 +10056,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 1079296025
+                                "VariableData": 294751181
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 2005092181,
-                "ParentUID": 994195261,
+                "UID": 1416739315,
+                "ParentUID": 350702563,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -10087,12 +10087,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 869758632,
-                "ParentUID": 2005092181,
+                "UID": 333900000,
+                "ParentUID": 1416739315,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -10115,7 +10115,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -10129,8 +10129,8 @@
                 ]
             },
             {
-                "UID": 1905510249,
-                "ParentUID": 1079296025,
+                "UID": 1393670862,
+                "ParentUID": 294751181,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -10153,12 +10153,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 776721074,
-                "ParentUID": 1905510249,
+                "UID": 310970789,
+                "ParentUID": 1393670862,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -10181,7 +10181,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -10195,8 +10195,8 @@
                 ]
             },
             {
-                "UID": 1796668724,
-                "ParentUID": 776721074,
+                "UID": 1368653021,
+                "ParentUID": 310970789,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -10219,7 +10219,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -10243,8 +10243,8 @@
                 ]
             },
             {
-                "UID": 727753609,
-                "ParentUID": 1905510249,
+                "UID": 280940236,
+                "ParentUID": 1393670862,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -10267,7 +10267,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -10444,8 +10444,8 @@
                 ]
             },
             {
-                "UID": 1748397469,
-                "ParentUID": 1905510249,
+                "UID": 1341407308,
+                "ParentUID": 1393670862,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -10468,7 +10468,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -10591,8 +10591,8 @@
                 ]
             },
             {
-                "UID": 620026020,
-                "ParentUID": 1905510249,
+                "UID": 256270500,
+                "ParentUID": 1393670862,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -10615,7 +10615,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -10872,8 +10872,8 @@
                 ]
             },
             {
-                "UID": 1641296469,
-                "ParentUID": 1905510249,
+                "UID": 1325509818,
+                "ParentUID": 1393670862,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -10896,7 +10896,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -11073,8 +11073,8 @@
                 ]
             },
             {
-                "UID": 888143233,
-                "ParentUID": 402326249,
+                "UID": 283329167,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -11094,10 +11094,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -11164,25 +11164,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1909970650
+                                "VariableData": 1345884869
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 1662977159
+                                "VariableData": 1290140265
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 768162348
+                                "VariableData": 257545495
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1909970650,
-                "ParentUID": 888143233,
+                "UID": 1345884869,
+                "ParentUID": 283329167,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -11205,7 +11205,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -11233,8 +11233,8 @@
                 ]
             },
             {
-                "UID": 768162348,
-                "ParentUID": 888143233,
+                "UID": 257545495,
+                "ParentUID": 283329167,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -11257,7 +11257,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -11283,15 +11283,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 888143233
+                                "VariableData": 283329167
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1777109880,
-                "ParentUID": 768162348,
+                "UID": 1318430293,
+                "ParentUID": 257545495,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -11314,12 +11314,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 637599071,
-                "ParentUID": 1777109880,
+                "UID": 225913659,
+                "ParentUID": 1318430293,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -11342,7 +11342,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -11356,8 +11356,8 @@
                 ]
             },
             {
-                "UID": 1662977159,
-                "ParentUID": 888143233,
+                "UID": 1290140265,
+                "ParentUID": 283329167,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -11380,12 +11380,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 526111948,
-                "ParentUID": 1662977159,
+                "UID": 207092087,
+                "ParentUID": 1290140265,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -11408,7 +11408,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -11422,8 +11422,8 @@
                 ]
             },
             {
-                "UID": 1590895522,
-                "ParentUID": 526111948,
+                "UID": 1271457935,
+                "ParentUID": 207092087,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -11446,7 +11446,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -11470,8 +11470,8 @@
                 ]
             },
             {
-                "UID": 472479876,
-                "ParentUID": 1662977159,
+                "UID": 184162876,
+                "ParentUID": 1290140265,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -11494,7 +11494,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -11671,8 +11671,8 @@
                 ]
             },
             {
-                "UID": 1488946476,
-                "ParentUID": 1662977159,
+                "UID": 1237807090,
+                "ParentUID": 1290140265,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -11695,7 +11695,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -11818,8 +11818,8 @@
                 ]
             },
             {
-                "UID": 357442082,
-                "ParentUID": 1662977159,
+                "UID": 285159045,
+                "ParentUID": 1290140265,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -11842,7 +11842,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -12099,8 +12099,8 @@
                 ]
             },
             {
-                "UID": 1367712413,
-                "ParentUID": 1662977159,
+                "UID": 1377512535,
+                "ParentUID": 1290140265,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -12123,7 +12123,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -12300,8 +12300,8 @@
                 ]
             },
             {
-                "UID": 2111895841,
-                "ParentUID": 402326249,
+                "UID": 506669165,
+                "ParentUID": 288751416,
                 "Name": "ExplosiveTrap",
                 "Enabled": true,
                 "Active": true,
@@ -12321,10 +12321,10 @@
                     1.0,
                     1.0000001192092896
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -12391,25 +12391,25 @@
                             {
                                 "VariableName": "mExplosionPrestartVFX",
                                 "MemberType": 3,
-                                "VariableData": 1134880446
+                                "VariableData": 1566370406
                             },
                             {
                                 "VariableName": "mExplosionVFX",
                                 "MemberType": 3,
-                                "VariableData": 891228763
+                                "VariableData": 1509303003
                             },
                             {
                                 "VariableName": "mBarrelMesh",
                                 "MemberType": 3,
-                                "VariableData": 103865
+                                "VariableData": 478448758
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1134880446,
-                "ParentUID": 2111895841,
+                "UID": 1566370406,
+                "ParentUID": 506669165,
                 "Name": "BombingArea",
                 "Enabled": false,
                 "Active": false,
@@ -12432,7 +12432,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 19,
@@ -12460,8 +12460,8 @@
                 ]
             },
             {
-                "UID": 103865,
-                "ParentUID": 2111895841,
+                "UID": 478448758,
+                "ParentUID": 506669165,
                 "Name": "OB_explosive_Barrell",
                 "Enabled": true,
                 "Active": true,
@@ -12484,7 +12484,7 @@
                 "Tag": "Enemy",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -12510,15 +12510,15 @@
                             {
                                 "VariableName": "mOuterTrap",
                                 "MemberType": 3,
-                                "VariableData": 2111895841
+                                "VariableData": 506669165
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1010722301,
-                "ParentUID": 103865,
+                "UID": 1538567725,
+                "ParentUID": 478448758,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -12541,12 +12541,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 2025587618,
-                "ParentUID": 1010722301,
+                "UID": 452247360,
+                "ParentUID": 1538567725,
                 "Name": "OB_explosive_barrell",
                 "Enabled": true,
                 "Active": true,
@@ -12569,7 +12569,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -12583,8 +12583,8 @@
                 ]
             },
             {
-                "UID": 891228763,
-                "ParentUID": 2111895841,
+                "UID": 1509303003,
+                "ParentUID": 506669165,
                 "Name": "VFX_Explotion2",
                 "Enabled": false,
                 "Active": false,
@@ -12607,12 +12607,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 1915144810,
-                "ParentUID": 891228763,
+                "UID": 424583921,
+                "ParentUID": 1509303003,
                 "Name": "Smoke spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -12635,7 +12635,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 7,
@@ -12649,8 +12649,8 @@
                 ]
             },
             {
-                "UID": 787051845,
-                "ParentUID": 1915144810,
+                "UID": 1485886445,
+                "ParentUID": 424583921,
                 "Name": "Spritesheet",
                 "Enabled": true,
                 "Active": false,
@@ -12673,7 +12673,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 8,
@@ -12697,8 +12697,8 @@
                 ]
             },
             {
-                "UID": 1839025155,
-                "ParentUID": 891228763,
+                "UID": 458952793,
+                "ParentUID": 1509303003,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": false,
@@ -12721,7 +12721,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -12898,8 +12898,8 @@
                 ]
             },
             {
-                "UID": 714900587,
-                "ParentUID": 891228763,
+                "UID": 1521299632,
+                "ParentUID": 1509303003,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": false,
@@ -12922,7 +12922,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -13045,8 +13045,8 @@
                 ]
             },
             {
-                "UID": 1731715292,
-                "ParentUID": 891228763,
+                "UID": 435466614,
+                "ParentUID": 1509303003,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": false,
@@ -13069,7 +13069,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
@@ -13326,8 +13326,8 @@
                 ]
             },
             {
-                "UID": 595407049,
-                "ParentUID": 891228763,
+                "UID": 1504636311,
+                "ParentUID": 1509303003,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": false,
@@ -13350,7 +13350,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 15,
