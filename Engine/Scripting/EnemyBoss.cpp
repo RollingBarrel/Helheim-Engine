@@ -454,7 +454,14 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         }
 
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletOriginPosition);
+        if (mBulletsWave % 2 == 0)
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletOriginPosition);
+        }
+        else 
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletOriginPosition);
+        }
 
         mBulletsWave++;
     }
@@ -551,14 +558,8 @@ void EnemyBoss::BulletHellPattern5() //Stream
         bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         mBulletsWave++;
 
-        if (mBulletsWave % 4)
-        {
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletGO->GetWorldPosition());
-        }
-        else if (mBulletsWave % 2)
-        {
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
-        }
+        // We use player shot sound because other sounds may reach the max limit defined by composer, causing some sounds to be dropped
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletGO->GetWorldPosition()); 
     }
 }
 
