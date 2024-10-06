@@ -174,7 +174,7 @@ void Enemy::Flee()
 	PlayStepAudio();	
  		if (mAiAgentComponent  && !mIsFleeing)
 		{		
-			!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
+			mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition());
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
 

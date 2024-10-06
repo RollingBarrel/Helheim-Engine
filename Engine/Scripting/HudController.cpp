@@ -29,6 +29,7 @@ CREATE(HudController)
 {
     CLASS(owner);
     SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHudGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
@@ -521,6 +522,11 @@ void HudController::SetDebug(bool value)
     mDebugGO->SetEnabled(value);
 }
 
+void HudController::SetHud(bool value)
+{
+    mHudGO->SetEnabled(value);
+}
+
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
@@ -645,11 +651,13 @@ void HudController::SetUltimateCooldown(float cooldown)
     {
         mUltimateHL = true;
         mUltimateHLGO->SetEnabled(true);
+        mUltimateSliderGO->SetEnabled(false);
     }
     else 
     {
         mUltimateHL = false;
         mUltimateHLGO->SetEnabled(false);
+        mUltimateSliderGO->SetEnabled(true);
     }
 }
 

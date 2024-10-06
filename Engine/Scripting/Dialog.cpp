@@ -75,14 +75,14 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(4.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(3.0f)) mTimeout = false;
  
-    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(3.0f)) StartAnimationToMain();
+    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(2.0f)) StartAnimationToMain();
     if (mAnimationToIntro) AnimationToIntro();
     if (mAnimationToMain) AnimationToMain();
 
     if (mAnimationToOutro) AnimationToOutro();
-    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(3.0f)) AnimationToEnd();
+    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(2.0f)) AnimationToEnd();
 
     Controls();
 
@@ -128,8 +128,8 @@ void Dialog::Controls()
 
 void Dialog::AnimationToMain()
 {
-    if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 400.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 400.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 600.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 600.0f, 0.0f) * App->GetDt());
     else 
     {
         mWifeGO->SetEnabled(true);
@@ -162,8 +162,8 @@ void Dialog::StartAnimationToMain()
 
 void Dialog::AnimationToIntro()
 {
-    if (mTopTransform->GetSize().x < 1080.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(800.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetSize().x < 1080.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(800.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetSize().x < 1080.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x < 1080.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(1000.0f, 0.0f) * App->GetDt());
     else 
     {
         mIntroGO->SetEnabled(true);
@@ -184,8 +184,8 @@ void Dialog::StartAnimationToIntro()
 
 void Dialog::AnimationToOutro()
 {
-    if (mTopTransform->GetPosition().y > 55) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 400.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y < -55) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 400.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetPosition().y > 55) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 600.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y < -55) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 600.0f, 0.0f) * App->GetDt());
     else
     {
         mOutroGO->SetEnabled(true);
@@ -209,8 +209,8 @@ void Dialog::StartAnimationToOutro()
 void Dialog::AnimationToEnd()
 {
     mOutroGO->SetEnabled(false);
-    if (mTopTransform->GetSize().x > 0.0f) mTopTransform->SetSize(mTopTransform->GetSize() - float2(800.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetSize().x > 0.0f) mBotTransform->SetSize(mBotTransform->GetSize() - float2(800.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetSize().x > 0.0f) mTopTransform->SetSize(mTopTransform->GetSize() - float2(1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x > 0.0f) mBotTransform->SetSize(mBotTransform->GetSize() - float2(1000.0f, 0.0f) * App->GetDt());
     else
     {
         mAnimationToEnd = false;

@@ -176,6 +176,7 @@ bool GameManager::UsingController() const
 void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
+    mHudController->SetHud(!value);
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
 

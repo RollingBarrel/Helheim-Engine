@@ -55,6 +55,8 @@ public:
     void SetGodmode(bool value);
     void SetInstaKill(bool value);
     void SetDebug(bool value);
+
+    void SetHud(bool value);
 private:
     HudController(GameObject* owner);
     ~HudController();
@@ -234,4 +236,7 @@ private:
     GameObject* mGunHLGO = nullptr;
 
     float mAlpha = 0.0f;
+
+    //Hud
+    GameObject* mHudGO = nullptr;
 };

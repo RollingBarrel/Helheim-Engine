@@ -123,5 +123,4 @@ private:
     GameObject* mDmgBox5 = nullptr;
     GameObject* mDmgBox6 = nullptr;
     GameObject* mDmgBox7 = nullptr;
-
 };
