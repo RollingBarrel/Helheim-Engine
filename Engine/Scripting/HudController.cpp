@@ -239,6 +239,8 @@ void HudController::Start()
 
 void HudController::Update()
 {
+    mDebounceTimePassed += App->GetDt();
+
     if (mIsVideoPlaying && mVideoComponent)
     {
         bool stopVideo = false;
@@ -352,7 +354,7 @@ void HudController::Update()
             mUltimateHLTimer.Reset();
             mUltimateCooldown = 0.0f;
         }
-    }
+    } 
 }
 
 void HudController::LoseUpdate()
@@ -471,6 +473,27 @@ bool HudController::Delay(float delay)
 
 void HudController::Controls()
 {
+    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) > 0.9f && mDebounceTimePassed >= mDebounceTime)))
+    {
+        mTimePassed = 0.0f; // Restart debounce timer
+        if (mLoseScreen && mLoseScreen->IsActive())
+        {
+			OnSelectLooseOption(LOSE_OPTION::MENU);
+        }
+
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) < -0.9f && mDebounceTimePassed >= mDebounceTime)))
+    {
+        mTimePassed = 0.0f; // Restart debounce timer
+        if (mLoseScreen && mLoseScreen->IsActive())
+        {
+            OnSelectLooseOption(LOSE_OPTION::TRY_AGAIN);
+        }
+    }
+
     if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
@@ -479,6 +502,17 @@ void HudController::Controls()
 		{
 			OnWinButtonClick();
 		}
+        if (mLoseScreen && mLoseScreen->IsActive())
+        {
+            if (mLoseOption == LOSE_OPTION::TRY_AGAIN)
+            {
+                OnTryAgainButtonClick();
+			}
+			else if (mLoseOption == LOSE_OPTION::MENU)
+			{
+				OnLoseButtonClick();
+			}
+        }
     }
 
     if (!GameManager::GetInstance()->IsPaused()) return;
@@ -724,6 +758,26 @@ void HudController::OnVideoBackClick()
     ReleaseVideoAssociatedAudio();
 
     GameManager::GetInstance()->PauseBackgroundAudio(false);
+}
+
+void HudController::OnSelectLooseOption(LOSE_OPTION option)
+{
+	OnTryAgainButtonHoverOff();
+	OnLoseButtonHoverOff();
+
+	switch (option)
+	{
+	case LOSE_OPTION::TRY_AGAIN:
+        mLoseOption = LOSE_OPTION::TRY_AGAIN;
+		OnTryAgainButtonHoverOn();
+		break;
+	case LOSE_OPTION::MENU:
+		mLoseOption = LOSE_OPTION::MENU;
+		OnLoseButtonHoverOn();
+		break;
+	default:
+		break;
+	}
 }
 
 void HudController::OnTryAgainButtonHoverOn()
