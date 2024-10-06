@@ -45,8 +45,6 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO2);
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO3);
     MEMBER(MemberType::GAMEOBJECT, mBattleAreaGO4);
-    SEPARATOR("PLAYER");
-    MEMBER(MemberType::GAMEOBJECT, mPlayerGO);
     SEPARATOR("FADE SCREEN");
     MEMBER(MemberType::GAMEOBJECT, mFadeGO);
     MEMBER(MemberType::FLOAT3, mColor);
@@ -66,17 +64,14 @@ void CinematicCamera::Start()
 {
     ActivateCamera(false);
 
+    mPlayer = GameManager::GetInstance()->GetPlayer();
+    mPlayerController = GameManager::GetInstance()->GetPlayerController();
+
     if (mFadeGO)
     {
         mImage = static_cast<ImageComponent*>(mFadeGO->GetComponent(ComponentType::IMAGE));
     }
     
-    if (mPlayerGO)
-    {
-        ScriptComponent* playerScript = (ScriptComponent*)mPlayerGO->GetComponent(ComponentType::SCRIPT);
-        mPlayerController = (PlayerController*)playerScript->GetScriptInstance();
-    }
-
     if (mBattleAreaGO1)
     {
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO1->GetComponent(ComponentType::SCRIPT);
@@ -249,11 +244,6 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
                 mHudGO->SetEnabled(true);
             }
             
-            if (mPlayerController)
-            {
-                mPlayerController->EnableLaser(true);
-            }
-
             ActivateBattleArea(battleArea, true);
         }
 
@@ -385,6 +375,11 @@ void CinematicCamera::HandleEscape(GameObject* dummy)
 
 void CinematicCamera::EndCinematic(GameObject* dummy)
 {
+    if (mPlayerController)
+    {
+        mPlayerController->EnableLaser(true);
+    }
+
     if (mActiveCinematicCamera)
     {
         mActiveCinematicCamera = false;
@@ -404,12 +399,12 @@ void CinematicCamera::EndCinematic(GameObject* dummy)
 
     if (App->GetScene()->GetName() == "Level1Scene")
     {
-        if (mPlayerGO)
+        if (mPlayer)
         {
             //Locates the player in a correct position behind the doors
-            float3 position = mPlayerGO->GetWorldPosition();
+            float3 position = mPlayer->GetWorldPosition();
             position.x -= 2.6f;
-            mPlayerGO->SetWorldPosition(position);
+            mPlayer->SetWorldPosition(position);
         }
     }
 }
