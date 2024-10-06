@@ -77,7 +77,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 		{
 			meshRendererComps->push_back(static_cast<MeshRendererComponent*>(cloned));
 		}
-		else if (animationComps && cloned->GetType() == ComponentType::ANIMATION)
+		if (animationComps && cloned->GetType() == ComponentType::ANIMATION)
 		{
 			animationComps->push_back(static_cast<AnimationComponent*>(cloned));
 		}
@@ -86,7 +86,7 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
-		GameObject* gameObject = new GameObject(*child, this, originalToNew, meshRendererComps);
+		GameObject* gameObject = new GameObject(*child, this, originalToNew, meshRendererComps, animationComps);
 		AddChild(gameObject);
 	}
 
