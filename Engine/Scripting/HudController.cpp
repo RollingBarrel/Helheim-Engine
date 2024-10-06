@@ -518,7 +518,6 @@ void HudController::Controls()
         {
 			OnSelectLoseOption(LOSE_OPTION::BACK_TO_MENU);
         }
-
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
