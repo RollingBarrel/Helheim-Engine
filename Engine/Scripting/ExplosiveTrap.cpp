@@ -89,6 +89,10 @@ void ExplosiveTrap::Update()
 
     if (mState == TRAP_STATE::EXPLOSION_START)
     {
+        if(mExplosionDamageTimer.Delay(mExplosionDamageTime))
+        {
+            mCollider->SetEnable(false);
+        }
         if (mExplosionWaitTimer.Delay(mExplosionDuration))
         {
             mGameObject->SetEnabled(false);

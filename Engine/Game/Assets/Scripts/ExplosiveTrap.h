@@ -49,8 +49,10 @@ private:
 	// Activation
 	float mExplosionWait = 1.5f;
 	float mExplosionDuration = 4.0f;
+	float mExplosionDamageTime = 0.3f;
 	TimerScript mExplosionWaitTimer;
 	TimerScript mExplosionDurationTimer;
+	TimerScript mExplosionDamageTimer;
 
 	// Damage
 	float mDamageAmount = 20.0f;
