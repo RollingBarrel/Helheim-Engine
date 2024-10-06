@@ -46,13 +46,20 @@ Component* VideoComponent::Clone(GameObject* owner) const
 
 void VideoComponent::Update()
 {
-	if (mIsPlaying)
+	if (!mFirstFrame)
 	{
-		mElapsedTime += App->GetDt();
-		while (mElapsedTime > mFrameTime)
+		if (mIsPlaying)
 		{
-			ReadNextFrame();
+			mElapsedTime += App->GetDt();
+			while (mElapsedTime > mFrameTime)
+			{
+				ReadNextFrame();
+			}
 		}
+	}
+	else
+	{
+		mFirstFrame = false;
 	}
 }
 
@@ -127,6 +134,7 @@ void VideoComponent::Stop()
 	Pause();
 	RestartVideo();
 	ReadNextFrame();
+	mFirstFrame = true;
 }
 
 void VideoComponent::Reset()
@@ -318,6 +326,7 @@ void VideoComponent::RestartVideo()
 	mFrameTime = 0.0;
 	av_seek_frame(mFormatContext, mVideoStreamIndex, 0, AVSEEK_FLAG_BACKWARD);
 	avcodec_flush_buffers(mCodecContext);
+	mFirstFrame = true;
 }
 
 void VideoComponent::ReadNextFrame()
