@@ -23,29 +23,30 @@ public:
 	void SetAwake(bool awake) { mIsAwake = awake; }
 
 private:
-	bool IsInTrap(const GameObject* target);
-	void ActiveTrap(bool active);
-	void ActiveTrapFisrtTime();
+    bool IsInTrap(const GameObject* target);
+    void ActivateTrap(bool active, bool vfxOnly);
 
-	BoxColliderComponent* mCollider = nullptr;
-	std::vector<GameObject*> mInTrap;
+    BoxColliderComponent* mCollider = nullptr;
+    std::vector<GameObject*> mInTrap;
 
-	float mArea = 1.0f;
-	GameObject* mSfx = nullptr;
+    float mArea = 1.0f;
+    GameObject* mSfx = nullptr;
 
-	// Activation
-	bool mIsAwake = false; // Awake when player is close
-	bool mIsActive = false;
+    // Activation
+    bool mIsAwake = false; 
+    bool mIsActive = false;
 
-	bool mFirstActivation = true;
-	float mFirstActivationInterval = 1.0f;
+    bool mFirstActivation = true;
+    float mFirstActivationInterval = 1.0f;
 
-	float mActivationInterval = 4.0f;
-	float mActivationDuration = 2.0f;
-	TimerScript mActivationIntervalTimer;
-	TimerScript mActivationDurationTimer;
+    float mActivationInterval = 4.0f;
+    float mActivationDuration = 2.0f;
+    float mVFXWarningDuration = 0.5f; 
+    TimerScript mActivationIntervalTimer;
+    TimerScript mActivationDurationTimer;
+    TimerScript mVFXWarningTimer; 
 
-	// Damage
-	float mDamageAmount = 5.0f;
-	float mSpeedReduction = 0.5f; // Reduce 50%
+    // Damage
+    float mDamageAmount = 5.0f;
+    float mSpeedReduction = 0.5f; 
 };
