@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1126901625,
+                "UID": 1776581769,
                 "ParentUID": 1,
                 "Name": "ElectricTraps_lvl2",
                 "Enabled": true,
@@ -30,28 +30,69 @@
                 "Components": []
             },
             {
-                "UID": 1600412437,
-                "ParentUID": 1126901625,
+                "UID": 1095726834,
+                "ParentUID": 1776581769,
+                "Name": "TrapGroups",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ElectricTrapGroupController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTraps",
+                                "MemberType": 3,
+                                "VariableData": 1095726834
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 9437645,
+                "ParentUID": 1095726834,
                 "Name": "ElectricTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    130.7966766357422,
-                    65.55403900146485,
-                    12.684577941894532
+                    105.00758361816406,
+                    65.26248168945313,
+                    12.968799591064454
                 ],
                 "Rotation": [
-                    3.111927071586251e-8,
-                    -0.7072290182113648,
-                    0.00017998952534981072,
-                    -0.7069845199584961
+                    -3.108045021349426e-8,
+                    0.7072291374206543,
+                    -0.00017982095596380532,
+                    0.7069844007492065
                 ],
                 "Scale": [
                     4.0,
                     4.0,
                     4.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -65,9 +106,9 @@
                             0.0
                         ],
                         "Size": [
-                            1.0,
-                            1.0,
-                            1.0
+                            2.0,
+                            2.0,
+                            2.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -76,13 +117,24 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "ElectricTrapController",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 1965156856,
-                "ParentUID": 1600412437,
+                "UID": 350023577,
+                "ParentUID": 9437645,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -109,8 +161,8 @@
                 "Components": []
             },
             {
-                "UID": 124144851,
-                "ParentUID": 1965156856,
+                "UID": 689286710,
+                "ParentUID": 350023577,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -147,205 +199,28 @@
                 ]
             },
             {
-                "UID": 439040634,
-                "ParentUID": 1600412437,
-                "Name": "Sfx",
+                "UID": 1019568734,
+                "ParentUID": 1095726834,
+                "Name": "ElectricTrap (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.862645149230957e-8,
-                    0.03238708898425102,
-                    0.0
+                    129.12155151367188,
+                    65.26248168945313,
+                    12.968799591064454
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 2001471067,
-                        "Delay": 0.0,
-                        "Duration": 5.0,
-                        "EmissionRate": 25.299999237060548,
-                        "MaxParticles": 1000,
-                        "Burst": 0,
-                        "Looping": true,
-                        "FollowEmitter": false,
-                        "SpinSpeed": 0.0,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.10000000149011612,
-                        "Gravity": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.5,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 2,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
-                        "ShapeSize": [
-                            0.800000011920929,
-                            0.800000011920929,
-                            0.800000011920929
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": true,
-                        "BlendMode": 1,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": true,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
-                                "Color": [
-                                    0.19199997186660767,
-                                    0.0007680014241486788,
-                                    0.0007680014241486788,
-                                    1.0
-                                ]
-                            }
-                        ],
-                        "HasTrails": true,
-                        "Trail": {
-                            "Image": 1970995954,
-                            "MaxPoints": 1000,
-                            "MinDistance": 0.10000000149011612,
-                            "MaxLifeTime": 0.0,
-                            "UVScroll": 1.0,
-                            "IsFixedDirection": false,
-                            "IsUVScrolling": false,
-                            "Direction": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ],
-                            "Width": {
-                                "Value": {
-                                    "IsValueRandom": false,
-                                    "MinValue": 1.0,
-                                    "MaxValue": 2.0
-                                },
-                                "IsCurve": false,
-                                "CurvePoints": []
-                            },
-                            "Gradient": {
-                                "Color Gradient": [
-                                    {
-                                        "Time": 0.02144772559404373,
-                                        "Color": [
-                                            1.0,
-                                            1.0,
-                                            1.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.11528126895427704,
-                                        "Color": [
-                                            0.8669522404670715,
-                                            0.9639999866485596,
-                                            0.030848003923892976,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.44772109389305117,
-                                        "Color": [
-                                            1.0,
-                                            0.8160000443458557,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.6836467385292053,
-                                        "Color": [
-                                            1.0,
-                                            0.9599999785423279,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.9490615725517273,
-                                        "Color": [
-                                            1.0,
-                                            0.0,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                ]
-            },
-            {
-                "UID": 1571598251,
-                "ParentUID": 1126901625,
-                "Name": "ElectricTrap (2)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    102.40607452392578,
-                    65.56132507324219,
-                    12.6943941116333
-                ],
-                "Rotation": [
-                    3.111927071586251e-8,
-                    -0.7072290182113648,
-                    0.00017998952534981072,
-                    -0.7069845199584961
+                    -3.108045021349426e-8,
+                    0.7072291374206543,
+                    -0.00017982095596380532,
+                    0.7069844007492065
                 ],
                 "Scale": [
                     4.0,
                     4.0,
                     4.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
                 "Dynamic": false,
@@ -359,9 +234,9 @@
                             0.0
                         ],
                         "Size": [
-                            1.0,
-                            1.0,
-                            1.0
+                            2.0,
+                            2.0,
+                            2.0
                         ],
                         "ColliderType": 0,
                         "FreezeRotation": false
@@ -370,13 +245,24 @@
                         "ComponentType": 3,
                         "IsEnabled": true,
                         "ScriptName": "ElectricTrapController",
-                        "ScriptVariables": []
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 165160528,
-                "ParentUID": 1571598251,
+                "UID": 1345046909,
+                "ParentUID": 1019568734,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -403,8 +289,8 @@
                 "Components": []
             },
             {
-                "UID": 353972680,
-                "ParentUID": 165160528,
+                "UID": 1710069812,
+                "ParentUID": 1345046909,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -437,183 +323,6 @@
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
-                "UID": 542367106,
-                "ParentUID": 1571598251,
-                "Name": "Sfx",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    1.862645149230957e-8,
-                    0.03238708898425102,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 15,
-                        "IsEnabled": true,
-                        "Image": 2001471067,
-                        "Delay": 0.0,
-                        "Duration": 5.0,
-                        "EmissionRate": 25.100000381469728,
-                        "MaxParticles": 1000,
-                        "Burst": 0,
-                        "Looping": true,
-                        "FollowEmitter": false,
-                        "SpinSpeed": 0.0,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 0.0,
-                        "Gravity": 0.0,
-                        "Lifetime": {
-                            "IsValueRandom": false,
-                            "MinValue": 1.5,
-                            "MaxValue": 1.0
-                        },
-                        "ShapeType": 2,
-                        "ShapeRadius": 0.009999999776482582,
-                        "ShapeAngle": 0.7853981852531433,
-                        "ShapeSize": [
-                            0.800000011920929,
-                            0.800000011920929,
-                            0.800000011920929
-                        ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
-                        "ShapeInvertedDir": true,
-                        "BlendMode": 1,
-                        "SizeCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 1.0
-                            },
-                            "IsCurve": true,
-                            "CurvePoints": [
-                                {
-                                    "Point": [
-                                        0.0,
-                                        0.0
-                                    ]
-                                },
-                                {
-                                    "Point": [
-                                        1.0,
-                                        1.0
-                                    ]
-                                }
-                            ]
-                        },
-                        "SpeedCurve": {
-                            "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 1.0,
-                                "MaxValue": 2.0
-                            },
-                            "IsCurve": false,
-                            "CurvePoints": []
-                        },
-                        "Color Gradient": [
-                            {
-                                "Time": 0.5,
-                                "Color": [
-                                    0.19199997186660767,
-                                    0.0007680014241486788,
-                                    0.0007680014241486788,
-                                    1.0
-                                ]
-                            }
-                        ],
-                        "HasTrails": true,
-                        "Trail": {
-                            "Image": 1970995954,
-                            "MaxPoints": 1000,
-                            "MinDistance": 0.10000000149011612,
-                            "MaxLifeTime": 0.0,
-                            "UVScroll": 1.0,
-                            "IsFixedDirection": false,
-                            "IsUVScrolling": false,
-                            "Direction": [
-                                0.0,
-                                1.0,
-                                0.0
-                            ],
-                            "Width": {
-                                "Value": {
-                                    "IsValueRandom": false,
-                                    "MinValue": 1.0,
-                                    "MaxValue": 2.0
-                                },
-                                "IsCurve": false,
-                                "CurvePoints": []
-                            },
-                            "Gradient": {
-                                "Color Gradient": [
-                                    {
-                                        "Time": 0.02144772559404373,
-                                        "Color": [
-                                            1.0,
-                                            1.0,
-                                            1.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.11528126895427704,
-                                        "Color": [
-                                            0.8669522404670715,
-                                            0.9639999866485596,
-                                            0.030848003923892976,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.44772109389305117,
-                                        "Color": [
-                                            1.0,
-                                            0.8160000443458557,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.6836467385292053,
-                                        "Color": [
-                                            1.0,
-                                            0.9599999785423279,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    },
-                                    {
-                                        "Time": 0.9490615725517273,
-                                        "Color": [
-                                            1.0,
-                                            0.0,
-                                            0.0,
-                                            1.0
-                                        ]
-                                    }
-                                ]
-                            }
-                        }
                     }
                 ]
             }
