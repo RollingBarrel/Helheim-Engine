@@ -9,6 +9,7 @@
 #include "ModuleScriptManager.h"
 #include "ModuleDetourNavigation.h"
 #include "MeshRendererComponent.h"
+#include "AnimationComponent.h"
 #include <algorithm> 
 #include "glew.h"
 
@@ -631,13 +632,18 @@ GameObject* ModuleScene::DuplicateGameObject(GameObject* gameObject)
 {
 	std::unordered_map<const GameObject*, GameObject*> originalToNew;
 	std::vector<MeshRendererComponent*>mRenderers;
-	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers);
+	std::vector<AnimationComponent*>mAnimations;
+	GameObject* duplicatedGameObject = new GameObject(*gameObject, gameObject->GetParent(), &originalToNew, &mRenderers, &mAnimations);
 	for (MeshRendererComponent* mRend : mRenderers)
 	{
 		if (mRend->HasSkinning())
 		{
 			mRend->UpdateSkeletonObjects(originalToNew);
 		}
+	}
+	for (AnimationComponent* mAnim : mAnimations)
+	{
+		mAnim->SetObjects(originalToNew);
 	}
 	AddGameObjectToDuplicate(duplicatedGameObject);
 

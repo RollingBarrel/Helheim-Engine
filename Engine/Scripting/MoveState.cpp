@@ -112,7 +112,7 @@ void MoveState::DoAnimation()
 	{
 		mMoveDirection.Normalize();
 		float2 mMovingTo = SetMovingDirection();
-		float3 mousePosition = (mPlayerController->GetPlayerAimPosition() - mPlayerController->GetPlayerPosition()).Normalized();
+		float3 mousePosition = GameManager::GetInstance()->GetPlayer()->GetFront();
 		
 		/*OUTDATED
 		//LOG("x:%f , y:%f", mMovingTo.x, mMovingTo.y);
@@ -215,6 +215,7 @@ float MoveState::ComputeMoveAnge(float3 mouseDir)
 	// Step 1: Project the vectors onto the Y plane (XZ plane)
 	float2 frontProjected(mouseDir.x, mouseDir.z);       // Projected front (XZ plane)
 	float2 directionProjected(mMoveDirection.x, mMoveDirection.z); // Projected direction (XZ plane)
+
 
 	// Step 2: Normalize the projected 2D vectors
 	frontProjected.Normalize();
