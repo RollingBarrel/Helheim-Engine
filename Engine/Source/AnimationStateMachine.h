@@ -12,6 +12,8 @@ public:
 		mEndTime = 100.0f; 
 		mLoop = true;
 	};
+	AnimationState(const AnimationState& other) : 
+		mName(other.mName), mStartTime(other.mStartTime), mEndTime(other.mEndTime), mLoop(other.mLoop) {}
 
 	std::string mName;
 	float mStartTime, mEndTime;
@@ -27,6 +29,8 @@ public:
 		mTarget = targetName;
 		mTrigger = trigger;
 	};
+	AnimationTransition(const AnimationTransition& other) : 
+		mTrigger(other.mTrigger), mSource(other.mSource), mTarget(other.mTarget){}
 	std::string mTrigger;
 	std::string mSource;
 	std::string mTarget;
@@ -37,6 +41,7 @@ class ENGINE_API AnimationStateMachine
 
 public:
 	AnimationStateMachine(unsigned int animUID);
+	AnimationStateMachine(const AnimationStateMachine& other);
 	~AnimationStateMachine();
 
 	//States
@@ -94,8 +99,5 @@ private:
 	std::string mName = "Simple";
 	unsigned int mResourceUID = 0;
 	unsigned int mAnimationUID = 0;
-	
-	
-
 };
 

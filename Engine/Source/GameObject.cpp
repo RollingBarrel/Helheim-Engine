@@ -59,7 +59,7 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 	}
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps)
+GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps, std::vector<AnimationComponent*>* animationComps)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.GetWorldTransform()), mLocalTransformMatrix(original.mLocalTransformMatrix),
@@ -76,6 +76,10 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 		if (meshRendererComps && cloned->GetType() == ComponentType::MESHRENDERER)
 		{
 			meshRendererComps->push_back(static_cast<MeshRendererComponent*>(cloned));
+		}
+		else if (animationComps && cloned->GetType() == ComponentType::ANIMATION)
+		{
+			animationComps->push_back(static_cast<AnimationComponent*>(cloned));
 		}
 	}
 
