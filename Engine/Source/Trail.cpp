@@ -158,6 +158,7 @@ void Trail::Draw() const
 void Trail::SetWidth(float width)
 {
     mWidth.GetValue().SetMinValue(width);
+    mWidthUpdated = true;
 }
 
 float3 Trail::CalculateDirection(const float3& position, const float3& norm) const
@@ -291,8 +292,9 @@ void Trail::UpdateLineComponent(GameObject* origin, GameObject* final)
     float3 originPos = origin->GetWorldPosition();
     float3 finalPos = final->GetWorldPosition();
 
-    if (!finalPos.Equals(mLastPointPosition))
+    if (!finalPos.Equals(mLastPointPosition) || mWidthUpdated)
     {
+        if (mWidthUpdated)mWidthUpdated = false;
         float3 lineDirection = (finalPos - originPos).Normalized();
         float distance = finalPos.Distance(originPos);
         float sumOfDist = 0;

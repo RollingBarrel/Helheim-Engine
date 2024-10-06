@@ -389,7 +389,10 @@ void Enemy::SetAttracted(bool attracted)
 { 
 	mBeAttracted = attracted;
 	// Sometime, AI component is over everything, I need to set it disable to make blackhole works
-	mAiAgentComponent->SetEnable(!attracted);
+	if (mAiAgentComponent)
+	{
+		mAiAgentComponent->SetEnable(!attracted);
+	}
 }
 
 

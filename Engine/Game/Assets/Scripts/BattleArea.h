@@ -54,6 +54,7 @@ protected:
 	EnemyExplosiveSpawner* mEnemyExplosiveSpawner4= nullptr;
 
 	GameObject* mAreaDoorsGO = nullptr;
+	GameObject* mDoorEnter = nullptr;
 	
 
 	std::vector<Spawner*> mSpawners;
