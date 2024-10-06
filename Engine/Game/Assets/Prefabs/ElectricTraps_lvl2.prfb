@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 727221300,
+                "UID": 2107620368,
                 "ParentUID": 1,
                 "Name": "ElectricTraps_lvl2",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1097883504,
-                "ParentUID": 727221300,
+                "UID": 404527564,
+                "ParentUID": 2107620368,
                 "Name": "TrapGroups",
                 "Enabled": true,
                 "Active": true,
@@ -64,7 +64,7 @@
                             {
                                 "VariableName": "mTraps",
                                 "MemberType": 3,
-                                "VariableData": 1097883504
+                                "VariableData": 404527564
                             }
                         ]
                     },
@@ -87,8 +87,8 @@
                 ]
             },
             {
-                "UID": 1434988386,
-                "ParentUID": 1097883504,
+                "UID": 805196419,
+                "ParentUID": 404527564,
                 "Name": "ElectricTrap",
                 "Enabled": true,
                 "Active": true,
@@ -111,7 +111,7 @@
                 "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -149,8 +149,8 @@
                 ]
             },
             {
-                "UID": 1769029944,
-                "ParentUID": 1434988386,
+                "UID": 1212131164,
+                "ParentUID": 805196419,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -173,12 +173,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 2097919548,
-                "ParentUID": 1769029944,
+                "UID": 1607160718,
+                "ParentUID": 1212131164,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -201,7 +201,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
@@ -215,8 +215,8 @@
                 ]
             },
             {
-                "UID": 283572386,
-                "ParentUID": 1097883504,
+                "UID": 2004835870,
+                "ParentUID": 404527564,
                 "Name": "ElectricTrap (1)",
                 "Enabled": true,
                 "Active": true,
@@ -239,7 +239,7 @@
                 "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -277,8 +277,8 @@
                 ]
             },
             {
-                "UID": 645601586,
-                "ParentUID": 283572386,
+                "UID": 316293855,
+                "ParentUID": 2004835870,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -301,12 +301,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 983681162,
-                "ParentUID": 645601586,
+                "UID": 718981719,
+                "ParentUID": 316293855,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -329,7 +329,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
