@@ -62,7 +62,7 @@
                             {
                                 "VariableName": "mCinematicManagerGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 291720589
                             },
                             {
                                 "VariableName": "mPoolManager",
@@ -755,12 +755,12 @@
                             {
                                 "VariableName": "mAreaDoorsGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1343049099
                             },
                             {
                                 "VariableName": "mDoorEnter",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1088382681
                             },
                             {
                                 "VariableName": "EXPLOSIVE SPAWNERS",
@@ -44936,7 +44936,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "QUIT GAME",
+                        "Text": "MAIN MENU",
                         "Color": [
                             1.0,
                             1.0,
@@ -45091,7 +45091,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "QUIT GAME",
+                        "Text": "MAIN MENU",
                         "Color": [
                             0.23137255012989045,
                             0.9960784316062927,
@@ -45246,7 +45246,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "QUIT GAME",
+                        "Text": "MAIN MENU",
                         "Color": [
                             0.1411764770746231,
                             0.18431372940540315,
@@ -52789,7 +52789,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "B",
+                        "Text": "A",
                         "Color": [
                             0.13333334028720857,
                             0.21176470816135407,
@@ -55300,7 +55300,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            475.0,
+                            -375.0,
                             0.0
                         ],
                         "Rotation": [
@@ -55310,7 +55310,7 @@
                             1.0
                         ],
                         "Size": [
-                            925.0,
+                            930.0,
                             26.0
                         ],
                         "AnchorMin": [
@@ -55389,7 +55389,7 @@
                             1.0
                         ],
                         "Size": [
-                            767.0,
+                            771.1468505859375,
                             18.0
                         ],
                         "AnchorMin": [
@@ -55453,7 +55453,7 @@
                             1.0
                         ],
                         "Size": [
-                            767.0,
+                            771.1468505859375,
                             18.0
                         ],
                         "AnchorMin": [
@@ -55532,7 +55532,7 @@
                             1.0
                         ],
                         "Size": [
-                            575.25,
+                            578.3602905273438,
                             18.0
                         ],
                         "AnchorMin": [
@@ -55611,7 +55611,7 @@
                             1.0
                         ],
                         "Size": [
-                            767.0,
+                            771.1468505859375,
                             18.0
                         ],
                         "AnchorMin": [
@@ -55675,7 +55675,7 @@
                             1.0
                         ],
                         "Size": [
-                            767.0,
+                            771.1468505859375,
                             18.0
                         ],
                         "AnchorMin": [
@@ -55754,7 +55754,7 @@
                             1.0
                         ],
                         "Size": [
-                            533.8319702148438,
+                            536.7169799804688,
                             18.0
                         ],
                         "AnchorMin": [
@@ -55833,7 +55833,7 @@
                             1.0
                         ],
                         "Size": [
-                            932.0,
+                            937.0379028320313,
                             47.0
                         ],
                         "AnchorMin": [
