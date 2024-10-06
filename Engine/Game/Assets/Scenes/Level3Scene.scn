@@ -340,9 +340,9 @@
                                 "VariableData": 0.30000001192092898
                             },
                             {
-                                "VariableName": "mDeathTime",
-                                "MemberType": 1,
-                                "VariableData": 1.399999976158142
+                                "VariableName": "mShieldGO",
+                                "MemberType": 3,
+                                "VariableData": 1279133507
                             },
                             {
                                 "VariableName": "AREA POSITIONS",
@@ -682,7 +682,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    5.350286960601807,
+                    3.840608596801758,
                     -0.07321131229400635,
                     0.0
                 ],
@@ -6123,10 +6123,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    5.825284005167575e-11,
-                    -1.9610086124388637e-12,
-                    0.03370456397533417,
-                    1.0008009672164918
+                    5.877837799816987e-11,
+                    2.4789914045142414e-12,
+                    -0.042564280331134799,
+                    1.0098624229431153
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -51681,7 +51681,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    12.220464706420899,
+                    12.056994438171387,
                     0.7335675358772278,
                     0.0
                 ],
@@ -51897,6 +51897,92 @@
                         "IsEnabled": true,
                         "ScriptName": "BossLaser",
                         "ScriptVariables": []
+                    }
+                ]
+            },
+            {
+                "UID": 1132999028,
+                "ParentUID": 1,
+                "Name": "Boss_shield",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.9625060558319092,
+                    0.0
+                ],
+                "Rotation": [
+                    -1.0686562745831907e-11,
+                    -0.7072290182113648,
+                    -6.181723932741079e-8,
+                    -0.7069845199584961
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "Render": 2
+                    }
+                ]
+            },
+            {
+                "UID": 1279133507,
+                "ParentUID": 1132999028,
+                "Name": "Spriteshe",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.699999988079071,
+                    0.20000000298023225
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    8.0,
+                    8.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 226658285,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.9411764144897461
+                        ],
+                        "Alpha": 0.3490000069141388,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 6,
+                        "Rows": 6,
+                        "Speed": 20,
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             }

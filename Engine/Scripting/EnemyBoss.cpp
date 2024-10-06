@@ -15,6 +15,7 @@
 #include "HudController.h"
 #include "MathFunc.h"
 #include "BossBattleArea.h"
+#include "ImageComponent.h"
 #include <algorithm>
 
 #define LASER_WIND_UP 2.625f
@@ -41,7 +42,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::FLOAT, mPhaseShiftTime);
     MEMBER(MemberType::FLOAT, mPhase1Hp);
     MEMBER(MemberType::FLOAT, mPhase2Hp);
-    MEMBER(MemberType::FLOAT, mDeathTime);
+    MEMBER(MemberType::GAMEOBJECT, mShieldGO);
     SEPARATOR("AREA POSITIONS");
     MEMBER(MemberType::GAMEOBJECT, mAreas[0]);
     MEMBER(MemberType::GAMEOBJECT, mAreas[1]);
@@ -112,7 +113,12 @@ void EnemyBoss::Start()
             mAreaPositions.push_back(mAreas[i]->GetWorldPosition());
         }
     }
+
+    if (mShieldGO)
+    {
+        mSpritesheet = static_cast<ImageComponent*>(mShieldGO->GetComponent(ComponentType::IMAGE));
     }
+}
 
 void EnemyBoss::Update()
 {
@@ -131,8 +137,17 @@ void EnemyBoss::Update()
         mCurrentState = EnemyState::PHASE;
         mBulletHell = BulletPattern::NONE;
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
+        if (mSpritesheet) {
+            mSpritesheet->SetEnable(true);
+            mSpritesheet->PlayAnimation();
+            mShieldDelay = 18.0f / mSpritesheet->GetFrameDuration();
+            mShieldTimer.Reset();
+            LOG("Delay %f", mShieldDelay);
+        }
         return;
     }
+
+   
 
     if (!mBeAttracted)
     {
@@ -152,6 +167,7 @@ void EnemyBoss::Update()
         switch (mCurrentState)
         {
         case EnemyState::PHASE:
+            
             switch (phaseChange)
             {
             case 0:
@@ -160,6 +176,10 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseStart", mDeathTransitionDuration);
                     ++phaseChange;
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
+                }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet) mSpritesheet->PauseAnimation();
                 }
                 break;
             case 1:
@@ -170,6 +190,10 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseLoop", mDeathTransitionDuration);
                     ++phaseChange;
                 }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet) mSpritesheet->PauseAnimation();
+                }
                 break;
             case 2:
                 if (mWakeUp)
@@ -177,6 +201,8 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseEnd", 1.0f);
                     ++phaseChange;
                     mWakeUp = false;
+                    if (mSpritesheet) mSpritesheet->PlayAnimation();
+                    mShieldTimer.Reset();
                 }
                 break;
             case 3:
@@ -187,6 +213,14 @@ void EnemyBoss::Update()
                     ++phaseChange;
                     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_AWAKE, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
                 }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet)
+                    {
+                        mSpritesheet->StopAnimation();
+                        mSpritesheet->SetEnable(false);
+                    }
+                }
                 break;
             case 4:
                 if (mPhaseShiftTimer.Delay(PHASE_ANIMATION))
@@ -195,6 +229,14 @@ void EnemyBoss::Update()
                     mCurrentState = EnemyState::IDLE;
                     LookAt(mFront, BEAT_TIME);
                     phaseChange = 0;
+                }
+                if (mShieldTimer.Delay(mShieldDelay))
+                {
+                    if (mSpritesheet)
+                    {
+                        mSpritesheet->StopAnimation();
+                        mSpritesheet->SetEnable(false);
+                    }
                 }
                 break;
             }
@@ -372,7 +414,7 @@ void EnemyBoss::BombAttack(const char* pattern)
 
 void EnemyBoss::Death()
 {
-    if (mDeathTimer.Delay(mDeathTime))
+    if (mDeathTimer.Delay(DEATH_ANIMATION))
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_SCREAM);
 
