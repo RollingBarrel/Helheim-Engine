@@ -133,7 +133,7 @@ void VideoComponent::Stop()
 {
 	Pause();
 	RestartVideo();
-	ReadNextFrame();
+	//ReadNextFrame();
 	mFirstFrame = true;
 }
 
