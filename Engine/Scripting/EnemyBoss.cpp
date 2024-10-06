@@ -452,9 +452,10 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
-
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
+
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletOriginPosition);
+
         mBulletsWave++;
     }
 }
