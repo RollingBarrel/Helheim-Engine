@@ -87,8 +87,8 @@ void FirstTutorial::Update()
 
         if (mBorderEnter && mTopRender)
         {
-            mTopRender->SetEmissiveColor(float3(255.0f, 0.0f, 0.0f));
-            mBorderEnter->SetEmissiveColor(float3(255.0f, 0.0f, 0.0f));
+            mTopRender->SetEmissiveColor(float3(255.0f, 37.0f, 0.0f));
+            mBorderEnter->SetEmissiveColor(float3(255.0f, 37.0f, 0.0f));
         }
     }
     else 
