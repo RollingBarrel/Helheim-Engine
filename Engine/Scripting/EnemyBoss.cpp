@@ -103,7 +103,7 @@ void EnemyBoss::Start()
     if (mAnimationComponent)
     {
         mAnimationComponent->SetIsPlaying(true);
-        mAnimationComponent->SetLoop(false);
+        mAnimationComponent->SetAnimSpeed(0.5f);
     }
 
     for (int i = 0; i < std::size(mAreas); ++i) 
@@ -131,18 +131,19 @@ void EnemyBoss::Update()
     if ((mStage == 1 && mHealth / mMaxHealth < mPhase2Hp) || (mStage == 0 && mHealth / mMaxHealth < mPhase1Hp))
     {
         //Phase change
+        phaseChange = 0;
         ++mStage;
         if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
         else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
         mCurrentState = EnemyState::PHASE;
         mBulletHell = BulletPattern::NONE;
+        mInvulnerable = true;
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
         if (mSpritesheet) {
             mSpritesheet->SetEnable(true);
             mSpritesheet->PlayAnimation();
             mShieldDelay = 18.0f / mSpritesheet->GetFrameDuration();
             mShieldTimer.Reset();
-            LOG("Delay %f", mShieldDelay);
         }
         return;
     }
@@ -275,10 +276,11 @@ void EnemyBoss::Update()
             {
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 GameManager::GetInstance()->SetIsFightingBoss(true);
+                mAnimationComponent->SetAnimSpeed(1.0f);
                 mWakeUp = false;
                 mInvulnerable = false;
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
-                mCurrentState = EnemyState::WAKE;
+                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
+                mCurrentState = EnemyState::IDLE;
             }
         }
     }
@@ -668,7 +670,7 @@ void EnemyBoss::UpdatePhase3()
             switch (sequence)
             {
             case -1:
-                LaserAttack();
+                BombAttack("BombingTemplate3.prfb");
                 break;
             case 0:
                 BombAttack("BombingTemplate1.prfb");
@@ -699,13 +701,13 @@ void EnemyBoss::UpdatePhase3()
         case 1:
         case 10:
         case 20:
-        case 30:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 LaserAttack();
                 attack++;
             }
             break;
+        case 30:           
         case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
@@ -754,17 +756,19 @@ void EnemyBoss::UpdatePhase2()
             switch (sequence)
             {
             case 0:
+                LaserAttack();
+                break;
             case 2:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 break;
             case 1:
-                BombAttack("BombingTemplate2.prfb");
+                StartBulletAttack(BulletPattern::WAVE);
                 break;
             case 3:
                 StartBulletAttack(BulletPattern::CIRCLES);
                 break;
             case -1:// Start with bombs. Never repeat this sequence
-                BombAttack("BombingTemplate3.prfb");
+                LaserAttack();
                 break;
             }
         }
@@ -774,39 +778,25 @@ void EnemyBoss::UpdatePhase2()
         switch (sequence * 10 + attack)
         {
         case 0:
-        case 11:
-            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
-            {
-                BombAttack("BombingTemplate1.prfb"); // Donut
-                attack++;
-            }
-            break;
-        case 10:
-        case 31:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 StartBulletAttack(BulletPattern::ARROW);
                 attack++;
             }
             break;
+        case 10:
         case 30:
-            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
-            {
-                BombAttack("BombingTemplate2.prfb"); // Cross
-                attack++;
-            }
-            break;
-        case 20:
-            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
-            {
-                BombAttack("BombingTemplate3.prfb"); // Big
-                attack++;
-            }
-            break;
         case 1:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                StartBulletAttack(BulletPattern::WAVE);
+                LaserAttack();
+                attack++;
+            }
+            break;
+        case 31:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 attack++;
             }
             break;
