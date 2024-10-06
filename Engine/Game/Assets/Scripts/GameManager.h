@@ -12,16 +12,17 @@ class EnemyPool;
 class PoolManager;
 class PlayerCamera;
 class Timer;
+class CinematicCamera;
 
 GENERATE_BODY(GameManager);
 class GameManager : public Script
 {
     FRIEND(GameManager)
 public:
-    GameManager(GameObject* owner); 
+    GameManager(GameObject* owner);
     ~GameManager();
 
-    static GameManager* GetInstance(); 
+    static GameManager* GetInstance();
 
     void Awake();
     void Start();
@@ -31,15 +32,14 @@ public:
     GameObject* GetPlayer() const { return mPlayer; }
     PlayerController* GetPlayerController() const { return mPlayerController; }
     PlayerCamera* GetPlayerCamera() const { return mPlayerCamera; }
-    AudioManager* GetAudio() const { return mAudioManager;}
+    AudioManager* GetAudio() const { return mAudioManager; }
     HudController* GetHud() const { return mHudController; }
     bool UsingController() const;
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
-    PoolManager* GetPoolManager() const; 
+    PoolManager* GetPoolManager() const;
 
     bool IsPaused() const { return mPaused; }
     void SetPaused(bool value, bool screen);
-
     void LoadLevel(const char* LevelName);
     void SetActiveBattleArea(BattleArea* activeArea);
 
@@ -54,9 +54,9 @@ public:
     void UnlockSecondary();
     void UnlockUltimate(bool unlock);
     void UnlockGrenade(bool unlock);
-    
+
     void SetIsFightingBoss(bool fighting) { mIsFightingBoss = fighting; }
-    void PauseBackgroundAudio(bool pause); 
+    void PauseBackgroundAudio(bool pause);
 
     void HandleBossAudio(int stage);
 
@@ -64,6 +64,8 @@ public:
     void PlayPlayerFootStepSound();
     void ActivateBossCamera(float targetDistance);
     void BossCameraMovement();
+
+    bool IsPlayingCinematic() { return mPlayingCinematic; }
 
 private:
     void PrepareAudio();
@@ -75,7 +77,7 @@ private:
     void HandleLevel2Audio();
 
     static GameManager* mInstance;
-    
+
     GameObject* mPlayer = nullptr;
     GameObject* mPlayerCameraGO = nullptr;
     GameObject* mHudControllerGO = nullptr;
@@ -94,6 +96,11 @@ private:
     TimerScript mLoadSecondTimer;
     Timer* mGameTimer = nullptr;
 
+    GameObject* mCinematicManagerGO = nullptr;
+    CinematicCamera* mCinematicCamera = nullptr;
+
+    bool mPlayingCinematic = false;
+
     bool mPaused = false;
     bool mPauseScreen = false;
 
@@ -106,7 +113,6 @@ private:
     bool mController = false;
 
     int mBackgroundAudioID = -1;
-    int mBackgroundAudioID2 = -1;
 
     int mGameOverAudio = -1;
     int mLastAudioID = -1;
