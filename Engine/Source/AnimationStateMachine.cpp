@@ -16,6 +16,9 @@ AnimationStateMachine::AnimationStateMachine(unsigned int animationUid = 0)
 	mStates[0].mLoop = true;
 }
 
+AnimationStateMachine::AnimationStateMachine(const AnimationStateMachine& other): 
+	mStates(other.mStates), mTransitions(other.mTransitions), mName(other.mName), mResourceUID(other.mResourceUID), mAnimationUID(other.mAnimationUID) {}
+
 
 AnimationStateMachine::~AnimationStateMachine()
 {

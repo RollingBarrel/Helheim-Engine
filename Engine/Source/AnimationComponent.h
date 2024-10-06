@@ -78,6 +78,7 @@ public:
 
 	void SetSpineControllerTime(float time);
 	float GetSpineControllerTime() const;
+	void SetObjects(const std::unordered_map<const GameObject*, GameObject*>& originalToNew);
 
 private:
 
