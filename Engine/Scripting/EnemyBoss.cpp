@@ -201,6 +201,7 @@ void EnemyBoss::Update()
                     if (mAnimationComponent) mAnimationComponent->SendTrigger("tDefenseEnd", 1.0f);
                     ++phaseChange;
                     mWakeUp = false;
+                    mInvulnerable = false;
                     if (mSpritesheet) mSpritesheet->PlayAnimation();
                     mShieldTimer.Reset();
                 }
@@ -275,6 +276,7 @@ void EnemyBoss::Update()
                 GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
                 GameManager::GetInstance()->SetIsFightingBoss(true);
                 mWakeUp = false;
+                mInvulnerable = false;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tWakeUp", mDeathTransitionDuration);
                 mCurrentState = EnemyState::WAKE;
             }
@@ -862,7 +864,7 @@ void EnemyBoss::Rotate()
 
 void EnemyBoss::TakeDamage(float damage)
 {
-    if (mCurrentState == EnemyState::PHASE) return;
+    if (mInvulnerable) return;
     if (mHealth > 0) // TODO: WITHOUT THIS IF DEATH is called two times
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_HIT);

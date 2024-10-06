@@ -57,6 +57,7 @@ private:
 	float mPhase1Hp = 0.6f;
 	float mPhase2Hp = 0.3f;
 	bool mWakeUp = false;
+	bool mInvulnerable = true;
 
 	GameObject* mShieldGO = nullptr;
 	ImageComponent* mSpritesheet = nullptr;
