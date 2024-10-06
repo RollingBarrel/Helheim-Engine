@@ -479,7 +479,7 @@ void HudController::Controls()
         mTimePassed = 0.0f; // Restart debounce timer
         if (mLoseScreen && mLoseScreen->IsActive())
         {
-			OnSelectLooseOption(LOSE_OPTION::MENU);
+			OnSelectLoseOption(LOSE_OPTION::MENU);
         }
 
     }
@@ -490,7 +490,7 @@ void HudController::Controls()
         mTimePassed = 0.0f; // Restart debounce timer
         if (mLoseScreen && mLoseScreen->IsActive())
         {
-            OnSelectLooseOption(LOSE_OPTION::TRY_AGAIN);
+            OnSelectLoseOption(LOSE_OPTION::TRY_AGAIN);
         }
     }
 
@@ -760,7 +760,7 @@ void HudController::OnVideoBackClick()
     GameManager::GetInstance()->PauseBackgroundAudio(false);
 }
 
-void HudController::OnSelectLooseOption(LOSE_OPTION option)
+void HudController::OnSelectLoseOption(LOSE_OPTION option)
 {
 	OnTryAgainButtonHoverOff();
 	OnLoseButtonHoverOff();
