@@ -249,7 +249,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8176528215408326,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -559,6 +559,30 @@
                                 "VariableData": 13236589
                             },
                             {
+                                "VariableName": "CAMERA OBJECTS",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO1",
+                                "MemberType": 3,
+                                "VariableData": 688059759
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO2",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO3",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
+                                "VariableName": "mCameraObjectGO4",
+                                "MemberType": 3,
+                                "VariableData": -1
+                            },
+                            {
                                 "VariableName": "ENEMIES",
                                 "MemberType": 5
                             },
@@ -637,7 +661,7 @@
                             {
                                 "VariableName": "mPlayerGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1634374094
                             },
                             {
                                 "VariableName": "FADE SCREEN",
@@ -775,6 +799,34 @@
                         ]
                     }
                 ]
+            },
+            {
+                "UID": 688059759,
+                "ParentUID": 1,
+                "Name": "CameraObject",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    25.0,
+                    1.75,
+                    0.0
+                ],
+                "Rotation": [
+                    0.27059808373451235,
+                    -0.653281569480896,
+                    0.2705981135368347,
+                    0.6532814502716065
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             },
             {
                 "UID": 1702026974,
@@ -6144,10 +6196,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    4.459277391788419e-11,
-                    3.7523061047206599e-11,
-                    -0.6446481943130493,
-                    0.7661305665969849
+                    3.286717772943426e-11,
+                    -4.8132622887386847e-11,
+                    0.8269485235214233,
+                    0.5646591782569885
                 ],
                 "Scale": [
                     0.9999998807907105,
