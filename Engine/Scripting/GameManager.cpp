@@ -147,6 +147,12 @@ void GameManager::Update()
         if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
     }
 
+    if (App->GetInput()->GetKey(Keys::Keys_N) == KeyState::KEY_DOWN)
+    {
+        mDialogue = !mDialogue;
+        GameManager::GetInstance()->GetHud()->SetDialogue(!mDialogue);
+    }
+
     if (mCinematicCamera)
     {
         mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();

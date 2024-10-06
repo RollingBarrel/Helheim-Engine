@@ -62,6 +62,7 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mDebugGO);
     MEMBER(MemberType::GAMEOBJECT, mGodmodeGO);
     MEMBER(MemberType::GAMEOBJECT, mInstakillGO);
+    MEMBER(MemberType::GAMEOBJECT, mDialogueGO);
 
     SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
@@ -185,6 +186,7 @@ void HudController::Start()
     {
         mGodmodeImage = static_cast<ImageComponent*>(mGodmodeGO->GetComponent(ComponentType::IMAGE));
         mInstakillImage = static_cast<ImageComponent*>(mInstakillGO->GetComponent(ComponentType::IMAGE));
+        mDialogueImage = static_cast<ImageComponent*>(mDialogueGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mCollectibleScreen)
@@ -279,7 +281,10 @@ void HudController::Start()
         GameManager::GetInstance()->PauseBackgroundAudio(true);
         mIsVideoPlaying = true;
     }
-    else SetDialog();
+    else if (App->GetScene()->GetName() == "Level3Scene")
+    {
+        SetDialog();
+    }
 }
 
 void HudController::Update()
@@ -534,13 +539,22 @@ void HudController::DisableCollectible()
 void HudController::SetGodmode(bool value)
 {
     value ? mGodmodeImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mGodmodeImage->SetColor(float3(0.0f, 0.0f, 0.0f));
-    if (mInstakillImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+    if (mInstakillImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f)) &&
+        mDialogueImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
 }
 
 void HudController::SetInstaKill(bool value)
 {
     value ? mInstakillImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mInstakillImage->SetColor(float3(0.0f, 0.0f, 0.0f));
-    if (mGodmodeImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+    if (mGodmodeImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f)) &&
+        mDialogueImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+}
+
+void HudController::SetDialogue(bool value)
+{
+    value ? mDialogueImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mDialogueImage->SetColor(float3(0.0f, 0.0f, 0.0f));
+    if (mGodmodeImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f)) &&
+        mInstakillImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
 }
 
 void HudController::SetDebug(bool value)

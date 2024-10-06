@@ -73,14 +73,14 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(1.5f)) mTimeout = false;
  
-    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(2.5f)) StartAnimationToMain();
+    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(1.5f)) StartAnimationToMain();
     if (mAnimationToIntro) AnimationToIntro();
     if (mAnimationToMain) AnimationToMain();
 
     if (mAnimationToOutro) AnimationToOutro();
-    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(1.5f)) AnimationToEnd();
+    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(0.75f)) AnimationToEnd();
 
     Controls();
 
@@ -126,8 +126,8 @@ void Dialog::Controls()
 
 void Dialog::AnimationToMain()
 {
-    if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 600.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 600.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetPosition().y < 300) mTopTransform->SetPosition(mTopTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y > -310) mBotTransform->SetPosition(mBotTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
     else 
     {
         mWifeGO->SetEnabled(true);
@@ -160,8 +160,8 @@ void Dialog::StartAnimationToMain()
 
 void Dialog::AnimationToIntro()
 {
-    if (mTopTransform->GetSize().x < 1080.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(1000.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetSize().x < 1080.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(1000.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetSize().x < 1080.0f) mTopTransform->SetSize(mTopTransform->GetSize() + float2(2000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x < 1080.0f) mBotTransform->SetSize(mBotTransform->GetSize() + float2(2000.0f, 0.0f) * App->GetDt());
     else 
     {
         mIntroGO->SetEnabled(true);
@@ -182,8 +182,8 @@ void Dialog::StartAnimationToIntro()
 
 void Dialog::AnimationToOutro()
 {
-    if (mTopTransform->GetPosition().y > 55) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 600.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetPosition().y < -55) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 600.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetPosition().y > 55) mTopTransform->SetPosition(mTopTransform->GetPosition() - float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetPosition().y < -55) mBotTransform->SetPosition(mBotTransform->GetPosition() + float3(0.0f, 1000.0f, 0.0f) * App->GetDt());
     else
     {
         mOutroGO->SetEnabled(true);
@@ -194,6 +194,7 @@ void Dialog::AnimationToOutro()
 
 void Dialog::StartAnimationToOutro()
 {
+    if (mAnimationToOutro || mAnimationToEnd) return;
     mAnimationToOutro = true;
 
     mProtagonistGO->SetEnabled(false);
@@ -207,8 +208,8 @@ void Dialog::StartAnimationToOutro()
 void Dialog::AnimationToEnd()
 {
     mOutroGO->SetEnabled(false);
-    if (mTopTransform->GetSize().x > 0.0f) mTopTransform->SetSize(mTopTransform->GetSize() - float2(1000.0f, 0.0f) * App->GetDt());
-    if (mBotTransform->GetSize().x > 0.0f) mBotTransform->SetSize(mBotTransform->GetSize() - float2(1000.0f, 0.0f) * App->GetDt());
+    if (mTopTransform->GetSize().x > 0.0f) mTopTransform->SetSize(mTopTransform->GetSize() - float2(2000.0f, 0.0f) * App->GetDt());
+    if (mBotTransform->GetSize().x > 0.0f) mBotTransform->SetSize(mBotTransform->GetSize() - float2(2000.0f, 0.0f) * App->GetDt());
     else
     {
         mAnimationToEnd = false;
@@ -224,6 +225,12 @@ void Dialog::StartAnimationToEnd()
 
 void Dialog::StartDialog()
 {
+    if (!GameManager::GetInstance()->IsDialogueActive()) 
+    {
+        FinishDialogue();
+        return;
+    }
+
     GameManager::GetInstance()->SetPaused(true, false);
     mCurrentDialog = 0;
     mTimeout = true;

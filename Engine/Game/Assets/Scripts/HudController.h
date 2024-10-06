@@ -54,6 +54,7 @@ public:
 
     void SetGodmode(bool value);
     void SetInstaKill(bool value);
+    void SetDialogue(bool value);
     void SetDebug(bool value);
 
     void ChangeBindings(bool controller);
@@ -146,8 +147,10 @@ private:
     GameObject* mDebugGO = nullptr;
     GameObject* mGodmodeGO = nullptr;
     GameObject* mInstakillGO = nullptr;
+    GameObject* mDialogueGO = nullptr;
     ImageComponent* mGodmodeImage = nullptr;
     ImageComponent* mInstakillImage = nullptr;
+    ImageComponent* mDialogueImage = nullptr;
 
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;

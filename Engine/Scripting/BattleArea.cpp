@@ -194,7 +194,6 @@ inline void BattleArea::ActivateArea(bool activate)
 	{
 		GameManager::GetInstance()->SetActiveBattleArea(nullptr);
 		GameManager::GetInstance()->GetHud()->SetDialog();
-		//LOG("Sanity");
 	}
 }
 
@@ -209,6 +208,5 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
  		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
-		//LOG("PLAYER COLLISION");
 	}
 }
