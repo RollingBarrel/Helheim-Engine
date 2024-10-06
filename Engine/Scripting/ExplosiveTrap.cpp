@@ -42,7 +42,7 @@ void ExplosiveTrap::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ExplosiveTrap::OnCollisionEnter, this, std::placeholders::_1)));
 	}
 
-	if (mExplosionPrestartVFX) mExplosionPrestartVFX->SetWorldScale(float3(mExplosionArea, mExplosionArea, 0.5f));
+	if (mExplosionPrestartVFX) mExplosionPrestartVFX->SetWorldScale(float3(mExplosionArea, mExplosionArea, 1.0f));
 	if (mExplosionVFX) mExplosionVFX->SetWorldScale(float3(mExplosionArea));
 }
 
