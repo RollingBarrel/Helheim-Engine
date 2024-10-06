@@ -77,10 +77,13 @@ void CinematicCamera::Start()
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO1->GetComponent(ComponentType::SCRIPT);
         mBattleArea1 = (BattleArea*)script->GetScriptInstance();
 
-        if (mEnemyGO1->GetName() != "FinalBoss")
+        if (mEnemyGO1)
         {
-            ActivateDummy(mEnemyGO1, false);
-        }
+            if (mEnemyGO1->GetName() != "FinalBoss")
+            {
+                ActivateDummy(mEnemyGO1, false);
+            }
+        }   
     }
 
     if (mBattleAreaGO2)
@@ -88,7 +91,9 @@ void CinematicCamera::Start()
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO2->GetComponent(ComponentType::SCRIPT);
         mBattleArea2 = (BattleArea*)script->GetScriptInstance();
 
-        ActivateDummy(mEnemyGO2, false);
+        if (mEnemyGO2) {
+            ActivateDummy(mEnemyGO2, false);
+        }
     }
 
     if (mBattleAreaGO3)
@@ -96,7 +101,10 @@ void CinematicCamera::Start()
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO3->GetComponent(ComponentType::SCRIPT);
         mBattleArea3 = (BattleArea*)script->GetScriptInstance();
 
-        ActivateDummy(mEnemyGO3, false);
+        if (mEnemyGO3)
+        {
+            ActivateDummy(mEnemyGO3, false);
+        }
     }
 
     if (mBattleAreaGO4)
@@ -104,7 +112,10 @@ void CinematicCamera::Start()
         ScriptComponent* script = (ScriptComponent*)mBattleAreaGO4->GetComponent(ComponentType::SCRIPT);
         mBattleArea4 = (BattleArea*)script->GetScriptInstance();
 
-        ActivateDummy(mEnemyGO4, false);
+        if (mEnemyGO4)
+        {
+            ActivateDummy(mEnemyGO4, false);
+        }
     }
 }
 
@@ -116,7 +127,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 1)
             {
-                StartCinematic(mCameraObjectGO1, mEnemyGO1, mBattleArea1, mEnemyAnimState1);
+                if ((mCameraObjectGO1)&&(mEnemyGO1))
+                {
+                    StartCinematic(mCameraObjectGO1, mEnemyGO1, mBattleArea1, mEnemyAnimState1);
+                } 
             }    
         }
     }
@@ -127,7 +141,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 2)
             {
-                StartCinematic(mCameraObjectGO2, mEnemyGO2, mBattleArea2, mEnemyAnimState2);
+                if ((mCameraObjectGO2) && (mEnemyGO2))
+                {
+                    StartCinematic(mCameraObjectGO2, mEnemyGO2, mBattleArea2, mEnemyAnimState2);
+                }  
             }            
         }
     }
@@ -138,7 +155,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 3)
             {
-                StartCinematic(mCameraObjectGO3, mEnemyGO3, mBattleArea3, mEnemyAnimState3);
+                if ((mCameraObjectGO3) && (mEnemyGO3))
+                {
+                    StartCinematic(mCameraObjectGO3, mEnemyGO3, mBattleArea3, mEnemyAnimState3);
+                } 
             }
         }
     }
@@ -149,7 +169,10 @@ void CinematicCamera::Update()
         {
             if (mCinematicIndex == 4)
             {
-                StartCinematic(mCameraObjectGO4, mEnemyGO4, mBattleArea4, mEnemyAnimState4);
+                if ((mCameraObjectGO4) && (mEnemyGO4))
+                {
+                    StartCinematic(mCameraObjectGO4, mEnemyGO4, mBattleArea4, mEnemyAnimState4);
+                }
             }
         }
     }
