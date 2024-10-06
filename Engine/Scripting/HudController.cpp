@@ -508,6 +508,16 @@ bool HudController::Delay(float delay)
 
 void HudController::Controls()
 {
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+    {
+		if (mWinScreen && mWinScreen->IsActive())
+		{
+			OnWinButtonClick();
+		}
+    }
+
     if (!GameManager::GetInstance()->IsPaused()) return;
 
     GameManager::GetInstance()->GetPlayerController()->SetIdleState();
