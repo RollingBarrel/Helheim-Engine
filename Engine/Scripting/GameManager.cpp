@@ -273,11 +273,11 @@ void GameManager::UnlockGrenade(bool unlock)
 
 void GameManager::HandleBossAudio(int stage)
 {
-    if (mBackgroundAudioID == -1)
+    if (mBackgroundAudioID == -1 && stage == -1)
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
     }
-    if (mIsFightingBoss && stage >= 0)
+    if (mIsFightingBoss && mBackgroundAudioID == -1 && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
         {
