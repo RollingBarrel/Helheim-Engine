@@ -174,7 +174,7 @@ void Enemy::Flee()
 	PlayStepAudio();	
  		if (mAiAgentComponent  && !mIsFleeing)
 		{		
-			!(mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition()));
+			mAiAgentComponent->FleeFromTarget(mPlayer->GetWorldPosition());
 			mGameObject->LookAt(mGameObject->GetWorldPosition() + mAiAgentComponent->GetDirection());
 		}
 
@@ -236,10 +236,10 @@ void Enemy::Attack()
 
 bool Enemy::IsPlayerInRange(float range)
 {
-	float distance = 0.0f;
-	distance = (mPlayer) ? mGameObject->GetWorldPosition().Distance(mPlayer->GetWorldPosition()) : inf;
+	float distanceSq = 0.0f;
+	distanceSq = (mPlayer) ? mGameObject->GetWorldPosition().DistanceSq(mPlayer->GetWorldPosition()) : inf;
 
-	return (distance <= range);
+	return (distanceSq <= (range * range));
 }
 
 bool Enemy::IsPlayerReachable()
@@ -389,7 +389,10 @@ void Enemy::SetAttracted(bool attracted)
 { 
 	mBeAttracted = attracted;
 	// Sometime, AI component is over everything, I need to set it disable to make blackhole works
-	mAiAgentComponent->SetEnable(!attracted);
+	if (mAiAgentComponent)
+	{
+		mAiAgentComponent->SetEnable(!attracted);
+	}
 }
 
 

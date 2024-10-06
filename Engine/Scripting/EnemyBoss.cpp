@@ -457,7 +457,10 @@ void EnemyBoss::BulletHellPattern1() //Circular
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
 
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            if (i % 2 == 0)
+            {
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            }
         }
         mBulletsWave++;
     }
@@ -495,9 +498,17 @@ void EnemyBoss::BulletHellPattern2() //Arrow
             ColorGradient gradient;
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
-
         }
+
+        if (mBulletsWave % 2 == 0)
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletOriginPosition);
+        }
+        else 
+        {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletOriginPosition);
+        }
+
         mBulletsWave++;
     }
 }
@@ -562,6 +573,7 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(position, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
 
+
             GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
         }
         mBulletsWave++;
@@ -592,7 +604,8 @@ void EnemyBoss::BulletHellPattern5() //Stream
         bulletScript->Init(bulletOriginPosition, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
         mBulletsWave++;
 
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+        // We use player shot sound because other sounds may reach the max limit defined by composer, causing some sounds to be dropped
+        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PISTOL, bulletGO->GetWorldPosition()); 
     }
 }
 
@@ -616,7 +629,10 @@ void EnemyBoss::BulletHellPattern6() //Aimed circles
             gradient.AddColorGradientMark(0.1f, float4(255.0f, 255.0f, 255.0f, 1.0f));
             bulletScript->Init(target - direction*radius, direction, mBulletSpeed, 1.0f, &gradient, mBulletsDamage, mBulletRange);
 
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            if (i % 2 == 0)
+            {
+                GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_ROBOT_GUNFIRE, bulletGO->GetWorldPosition());
+            }
         }
     }
 }
@@ -675,6 +691,9 @@ void EnemyBoss::UpdatePhase3()
             case 0:
                 BombAttack("BombingTemplate1.prfb");
                 break;
+            case 0:
+                BombAttack("BombingTemplate1.prfb");
+                break;
             case 1:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 break;
@@ -708,6 +727,27 @@ void EnemyBoss::UpdatePhase3()
             }
             break;
         case 30:           
+        case 11:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                BombAttack("BombingTemplate3.prfb"); // Big
+                attack++;
+            }
+            break;
+        case 21:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::WAVE);
+                attack++;
+            }
+            break;
+        case 31:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
+                attack++;
+            }
+            break;
         case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
@@ -789,7 +829,7 @@ void EnemyBoss::UpdatePhase2()
         case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                LaserAttack();
+                BombAttack("BombingTemplate3.prfb"); // Big
                 attack++;
             }
             break;
