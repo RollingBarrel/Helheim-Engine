@@ -38,7 +38,6 @@ private:
     void ActivateBattleArea(BattleArea* battleArea, bool state);
     void ActivateDummy(GameObject* dummy, bool state);
  
-    GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO = nullptr;
 
     GameObject* mCameraObjectGO1 = nullptr;
@@ -57,8 +56,7 @@ private:
     GameObject* mBattleAreaGO4 = nullptr;
 
     GameObject* mFadeGO = nullptr;
-    GameObject* mHudGO = nullptr;
-
+    
     BattleArea* mBattleArea1 = nullptr;
     BattleArea* mBattleArea2 = nullptr;
     BattleArea* mBattleArea3 = nullptr;
@@ -66,6 +64,8 @@ private:
 
     GameObject* mPlayer = nullptr;
     PlayerController* mPlayerController = nullptr;
+    GameObject* mPlayerCamera = nullptr;
+    GameObject* mHud = nullptr;
     
     TimerScript mTimer;
 

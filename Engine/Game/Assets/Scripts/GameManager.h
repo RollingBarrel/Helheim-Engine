@@ -37,6 +37,8 @@ public:
     bool UsingController() const;
     BattleArea* GetActiveBattleArea() const { return mActiveBattleArea; }
     PoolManager* GetPoolManager() const; 
+    GameObject* GetHudObject() { return mHudControllerGO; }
+    GameObject* GetPlayerCameraObject() { return mPlayerCameraGO; }
 
     bool IsPaused() const { return mPaused; }
     void SetPaused(bool value, bool screen);

@@ -23,7 +23,6 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT, mSpeedFactor);
     MEMBER(MemberType::FLOAT, mAnimationTime);
     SEPARATOR("CAMERAS");
-    MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mCinematicCameraGO);
     SEPARATOR("CAMERA OBJECTS");
     MEMBER(MemberType::GAMEOBJECT, mCameraObjectGO1);
@@ -50,7 +49,7 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT3, mColor);
     MEMBER(MemberType::FLOAT, mFadeSpeed);
     SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHudGO);
+    MEMBER(MemberType::GAMEOBJECT, mHud);
     END_CREATE;
 }
 
@@ -66,6 +65,7 @@ void CinematicCamera::Start()
 
     mPlayer = GameManager::GetInstance()->GetPlayer();
     mPlayerController = GameManager::GetInstance()->GetPlayerController();
+    mPlayerCamera = GameManager::GetInstance()->GetPlayerCameraObject();
 
     if (mFadeGO)
     {
@@ -180,9 +180,9 @@ void CinematicCamera::StartCinematic(GameObject* cameraObject, GameObject* dummy
             mTravelling = true;
             mFadeOn = true;
 
-            if (mHudGO)
+            if (mHud)
             {
-                mHudGO->SetEnabled(false);
+                mHud->SetEnabled(false);
             }
             
             if (mPlayerController)
@@ -239,9 +239,9 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             mCinematicIndex++;
             mStartParameters = false;
 
-            if (mHudGO)
+            if (mHud)
             {
-                mHudGO->SetEnabled(true);
+                mHud->SetEnabled(true);
             }
             
             ActivateBattleArea(battleArea, true);
@@ -280,10 +280,10 @@ bool CinematicCamera::HandleFadeIn()
     {
         if (Fade(true))
         {
-            if (mPlayerCameraGO)
+            if (mPlayerCamera)
             {
                 ActivateCamera(true);
-                mPlayerCameraGO->SetEnabled(false);
+                mPlayerCamera->SetEnabled(false);
             }
 
             mCinematicCamera = (CameraComponent*)mCinematicCameraGO->GetComponent(ComponentType::CAMERA);
@@ -385,7 +385,7 @@ void CinematicCamera::EndCinematic(GameObject* dummy)
         mActiveCinematicCamera = false;
         App->GetCamera()->RemoveEnabledCamera(mCinematicCamera);
         ActivateCamera(false);
-        mPlayerCameraGO->SetEnabled(true);
+        mPlayerCamera->SetEnabled(true);
     }
     
     if (dummy->GetName() == "FinalBoss")
