@@ -26,7 +26,6 @@ private:
 	float mExplosionRadius = 5.0f;
 	GameObject* mExplosionWarningGO = nullptr;
 	GameObject* mExplosionParticle = nullptr;
-	float3 mWarningSize = float3(0.1f, 0.1f, 0.1f);
 	PlayerController* playerScript = nullptr;
 
 	int mChargeSound = -1;
