@@ -691,9 +691,6 @@ void EnemyBoss::UpdatePhase3()
             case 0:
                 BombAttack("BombingTemplate1.prfb");
                 break;
-            case 0:
-                BombAttack("BombingTemplate1.prfb");
-                break;
             case 1:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 break;
@@ -727,27 +724,6 @@ void EnemyBoss::UpdatePhase3()
             }
             break;
         case 30:           
-        case 11:
-            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
-            {
-                BombAttack("BombingTemplate3.prfb"); // Big
-                attack++;
-            }
-            break;
-        case 21:
-            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
-            {
-                StartBulletAttack(BulletPattern::WAVE);
-                attack++;
-            }
-            break;
-        case 31:
-            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
-            {
-                StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
-                attack++;
-            }
-            break;
         case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
@@ -829,7 +805,7 @@ void EnemyBoss::UpdatePhase2()
         case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
-                BombAttack("BombingTemplate3.prfb"); // Big
+                LaserAttack();
                 attack++;
             }
             break;
