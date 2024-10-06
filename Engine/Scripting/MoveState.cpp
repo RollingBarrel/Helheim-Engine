@@ -216,8 +216,6 @@ float MoveState::ComputeMoveAnge(float3 mouseDir)
 	float2 frontProjected(mouseDir.x, mouseDir.z);       // Projected front (XZ plane)
 	float2 directionProjected(mMoveDirection.x, mMoveDirection.z); // Projected direction (XZ plane)
 
-	LOG("Aim direction X = %f ; Z = %f", mouseDir.x, mouseDir.z);
-	LOG("Move direction X = %f ; Z = %f", mMoveDirection.x, mMoveDirection.z);
 
 	// Step 2: Normalize the projected 2D vectors
 	frontProjected.Normalize();
@@ -256,7 +254,6 @@ std::string MoveState::GetTriggerFromAngle(float angle)
 	{
 		angle += 360.0f;
 	}
-	LOG("Move angle: %f", angle);
 
 	// Array of strings representing the actions for each octet
 	std::vector<std::string> octetStrings = 
