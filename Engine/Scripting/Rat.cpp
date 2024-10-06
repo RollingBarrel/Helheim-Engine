@@ -34,7 +34,9 @@ void Rat::Start()
 	}
 
 	mDeathParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	if (mDeathParticles) mDeathParticles->SetEnable(false);
 	mDecalComponent = static_cast<DecalComponent*>(mGameObject->GetComponentInChildren(ComponentType::DECAL));
+	if (mDecalComponent) mDecalComponent->SetEnable(false);
 }
 
 void Rat::Update()

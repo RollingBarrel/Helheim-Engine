@@ -1,0 +1,24 @@
+{
+    "Name": "security_panel_top_enter",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "BaseColorTex": 80636794,
+    "MetallicRoughTex": 80636795,
+    "NormalTex": 80636796,
+    "EmissiveTex": 80636797,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

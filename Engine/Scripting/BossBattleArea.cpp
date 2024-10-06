@@ -13,6 +13,9 @@ CREATE(BossBattleArea)
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO2);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO3);
 	MEMBER(MemberType::GAMEOBJECT, mSpawnerGO4);
+	SEPARATOR("DOORS");
+	MEMBER(MemberType::GAMEOBJECT, mAreaDoorsGO);
+	MEMBER(MemberType::GAMEOBJECT, mDoorEnter);
 	SEPARATOR("EXPLOSIVE SPAWNERS");
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn1);
 	MEMBER(MemberType::GAMEOBJECT, mExplosiveSpawn2);
@@ -59,4 +62,7 @@ inline void BossBattleArea::ActivateArea(bool activate)
 	BattleArea::ActivateArea(activate);
 	mBoss->WakeUp();
 	mNeedsToSpawn = false;
+
+	// This has to be here because the door has no animation
+	mDoorEnter->SetEnabled(true);
 }
