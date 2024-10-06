@@ -342,7 +342,7 @@
                             {
                                 "VariableName": "mShieldGO",
                                 "MemberType": 3,
-                                "VariableData": 1279133507
+                                "VariableData": 1755122441
                             },
                             {
                                 "VariableName": "AREA POSITIONS",
@@ -574,7 +574,7 @@
                             {
                                 "VariableName": "mEnemyAnimState1",
                                 "MemberType": 0,
-                                "VariableData": 1
+                                "VariableData": 5
                             },
                             {
                                 "VariableName": "mEnemyGO2",
@@ -682,7 +682,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    3.840608596801758,
+                    3.573176860809326,
                     -0.07321131229400635,
                     0.0
                 ],
@@ -919,7 +919,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.700000047683716,
+                    -0.5697038173675537,
                     0.0,
                     9.130000114440918
                 ],
@@ -947,7 +947,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    2.5999999046325685,
+                    4.198832988739014,
                     0.0,
                     -0.09000000357627869
                 ],
@@ -975,7 +975,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -2.700000047683716,
+                    -0.8458104133605957,
                     0.0,
                     -9.199999809265137
                 ],
@@ -61113,6 +61113,108 @@
                         "Speed": 30,
                         "IsPlaying": false,
                         "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1610032277,
+                "ParentUID": 1,
+                "Name": "Boss_shield",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.9625060558319092,
+                    0.0
+                ],
+                "Rotation": [
+                    -1.0686562745831907e-11,
+                    -0.7072290182113648,
+                    -6.181723932741079e-8,
+                    -0.7069845199584961
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            1920.0,
+                            1080.0
+                        ],
+                        "Render": 2
+                    }
+                ]
+            },
+            {
+                "UID": 1755122441,
+                "ParentUID": 1610032277,
+                "Name": "Spritesheet",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    2.2290642220923475e-8,
+                    0.4227309226989746,
+                    0.19994358718395234
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    8.0,
+                    8.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 226658285,
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.9411764144897461
+                        ],
+                        "Alpha": 0.3490000069141388,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": true,
+                        "Columns": 6,
+                        "Rows": 6,
+                        "Speed": 20,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            3.700000047683716,
+                            4.0,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             }

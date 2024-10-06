@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1515691224,
+                "UID": 1610032277,
                 "ParentUID": 1,
                 "Name": "Boss_shield",
                 "Enabled": true,
@@ -40,11 +40,11 @@
                 ]
             },
             {
-                "UID": 1576748841,
-                "ParentUID": 1515691224,
-                "Name": "Spriteshe",
-                "Enabled": true,
-                "Active": true,
+                "UID": 1755122441,
+                "ParentUID": 1610032277,
+                "Name": "Spritesheet",
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.699999988079071,
@@ -68,7 +68,7 @@
                 "Components": [
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 226658285,
                         "Color": [
                             1.0,
@@ -81,9 +81,25 @@
                         "IsSpritesheet": true,
                         "Columns": 6,
                         "Rows": 6,
-                        "Speed": 30,
+                        "Speed": 20,
                         "IsPlaying": false,
                         "BlurBack": false
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": false,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            3.700000047683716,
+                            4.0,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             }

@@ -140,7 +140,7 @@ void EnemyBoss::Update()
         mInvulnerable = true;
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
         if (mSpritesheet) {
-            mSpritesheet->SetEnable(true);
+            mShieldGO->SetEnabled(true);
             mSpritesheet->PlayAnimation();
             mShieldDelay = 18.0f / mSpritesheet->GetFrameDuration();
             mShieldTimer.Reset();
@@ -220,7 +220,7 @@ void EnemyBoss::Update()
                     if (mSpritesheet)
                     {
                         mSpritesheet->StopAnimation();
-                        mSpritesheet->SetEnable(false);
+                        mShieldGO->SetEnabled(false);
                     }
                 }
                 break;
@@ -237,7 +237,7 @@ void EnemyBoss::Update()
                     if (mSpritesheet)
                     {
                         mSpritesheet->StopAnimation();
-                        mSpritesheet->SetEnable(false);
+                        mShieldGO->SetEnabled(false);
                     }
                 }
                 break;
