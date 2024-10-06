@@ -3049,7 +3049,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8176528215408326,
+                        "AspectRatio": 1.8978978395462037,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -5042,7 +5042,7 @@
                         "Range": 25.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752,
-                        "isVolumetric": false
+                        "isVolumetric": true
                     }
                 ]
             },
@@ -5053,7 +5053,7 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    149.6223602294922,
+                    145.65911865234376,
                     74.6488037109375,
                     13.00570011138916
                 ],
@@ -5077,7 +5077,7 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            149.6223602294922,
+                            145.65911865234376,
                             74.6488037109375,
                             13.00570011138916,
                             210.5
@@ -5872,7 +5872,7 @@
                             {
                                 "VariableName": "mStartingTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mLoopDuration",
@@ -5882,7 +5882,7 @@
                             {
                                 "VariableName": "mTimeOffset",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.10000000149011612
                             },
                             {
                                 "VariableName": "Blackouts",
@@ -5895,12 +5895,12 @@
                             {
                                 "VariableName": "mBlackout1.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout1.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "2",
@@ -5909,12 +5909,12 @@
                             {
                                 "VariableName": "mBlackout2.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout2.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "3",
@@ -5923,12 +5923,12 @@
                             {
                                 "VariableName": "mBlackout3.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout3.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "4",
@@ -5937,12 +5937,12 @@
                             {
                                 "VariableName": "mBlackout4.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout4.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "5",
@@ -5951,12 +5951,12 @@
                             {
                                 "VariableName": "mBlackout5.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout5.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "6",
@@ -5965,12 +5965,12 @@
                             {
                                 "VariableName": "mBlackout6.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout6.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "7",
@@ -5979,12 +5979,12 @@
                             {
                                 "VariableName": "mBlackout7.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout7.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "8",
@@ -5993,12 +5993,12 @@
                             {
                                 "VariableName": "mBlackout8.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout8.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "9",
@@ -6007,12 +6007,12 @@
                             {
                                 "VariableName": "mBlackout9.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout9.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "10",
@@ -6021,12 +6021,12 @@
                             {
                                 "VariableName": "mBlackout10.mTime",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             },
                             {
                                 "VariableName": "mBlackout10.mDuration",
                                 "MemberType": 1,
-                                "VariableData": 0.0
+                                "VariableData": 0.5
                             }
                         ]
                     }
@@ -6695,9 +6695,9 @@
                             1.0,
                             0.0,
                             0.0,
-                            0.5877853035926819
+                            0.7313537001609802
                         ],
-                        "Range": 17.5,
+                        "Range": 8.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752,
                         "isVolumetric": false
@@ -6909,7 +6909,7 @@
                             83.05827331542969,
                             75.89484405517578,
                             13.005807876586914,
-                            48.5
+                            39.5
                         ],
                         "Direction": [
                             0.41741135716438296,
@@ -6976,7 +6976,7 @@
                             0.0,
                             0.9519999027252197,
                             1.0,
-                            0.5299192667007446
+                            0.5877853035926819
                         ],
                         "Range": 10.5,
                         "CastShadow": true,
@@ -7527,15 +7527,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    99.25592041015625,
-                    68.95951080322266,
-                    2.006218433380127
+                    98.60126495361328,
+                    64.09986114501953,
+                    2.320566177368164
                 ],
                 "Rotation": [
-                    -7.527328307332937e-7,
-                    0.4897272288799286,
-                    0.0000013401323712969316,
-                    0.8718757033348084
+                    -0.3311573565006256,
+                    0.5193639397621155,
+                    0.22809366881847382,
+                    0.7540352940559387
                 ],
                 "Scale": [
                     1.0,
@@ -7551,27 +7551,27 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            99.25592041015625,
-                            68.95951080322266,
-                            2.006218433380127,
-                            112.0
+                            98.60126495361328,
+                            64.09986114501953,
+                            2.320566177368164,
+                            100.0
                         ],
                         "Direction": [
-                            0.8539625406265259,
-                            0.0000026251775580021787,
-                            0.5203344821929932,
+                            0.6321676969528198,
+                            0.7363359332084656,
+                            0.2411918044090271,
                             0.9063077569007874
                         ],
                         "Color": [
-                            0.2705882489681244,
-                            0.0,
-                            1.0,
-                            0.7071067690849304
+                            0.8470588326454163,
+                            0.1725490242242813,
+                            0.9686274528503418,
+                            0.7193397879600525
                         ],
-                        "Range": 20.5,
+                        "Range": 9.0,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752,
-                        "isVolumetric": false
+                        "isVolumetric": true
                     }
                 ]
             },
@@ -7610,15 +7610,15 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -29.458038330078126,
-                    37.58771896362305,
+                    -35.42137145996094,
+                    28.407596588134767,
                     -43.725616455078128
                 ],
                 "Rotation": [
-                    -0.0661134198307991,
-                    0.7191105484962463,
-                    0.06907238811254502,
-                    0.6882863640785217
+                    -0.2250015288591385,
+                    0.6861988306045532,
+                    0.22100350260734559,
+                    0.6554868221282959
                 ],
                 "Scale": [
                     1.0,
@@ -7634,27 +7634,27 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            -29.458038330078126,
-                            37.58771896362305,
+                            -35.42137145996094,
+                            28.407596588134767,
                             -43.725616455078128,
-                            266.0
+                            100.0
                         ],
                         "Direction": [
-                            0.9807746410369873,
-                            0.19035126268863679,
-                            -0.04298197850584984,
+                            0.8001363277435303,
+                            0.5982757806777954,
+                            -0.04298901557922363,
                             0.9063077569007874
                         ],
                         "Color": [
-                            0.2705882489681244,
+                            0.9439997673034668,
                             0.0,
                             1.0,
-                            0.838670551776886
+                            0.9063077569007874
                         ],
                         "Range": 31.0,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752,
-                        "isVolumetric": false
+                        "isVolumetric": true
                     }
                 ]
             },
@@ -10580,409 +10580,6 @@
                 ]
             },
             {
-                "UID": 2132221379,
-                "ParentUID": 1427843905,
-                "Name": "AREA 3",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 32428117,
-                "ParentUID": 2132221379,
-                "Name": "Spotlight",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -147.63735961914063,
-                    -0.9718122482299805,
-                    -44.00112533569336
-                ],
-                "Rotation": [
-                    -0.0661134123802185,
-                    0.7191105484962463,
-                    0.06907238811254502,
-                    0.688286304473877
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0000001192092896
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -147.63735961914063,
-                            -0.9718122482299805,
-                            -44.00112533569336,
-                            300.0
-                        ],
-                        "Direction": [
-                            0.9807746410369873,
-                            0.19035127758979798,
-                            -0.04298198223114014,
-                            0.9063077569007874
-                        ],
-                        "Color": [
-                            0.2705882489681244,
-                            0.0,
-                            1.0,
-                            0.9063077569007874
-                        ],
-                        "Range": 47.0,
-                        "CastShadow": true,
-                        "Bias": 0.000009999999747378752,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 83181826,
-                "ParentUID": 2132221379,
-                "Name": "SpotLight",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -62.885215759277347,
-                    11.602139472961426,
-                    -46.04588317871094
-                ],
-                "Rotation": [
-                    0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -62.885215759277347,
-                            11.602139472961426,
-                            -46.04588317871094,
-                            300.0
-                        ],
-                        "Direction": [
-                            0.0,
-                            -1.0,
-                            -1.1920927533992654e-7,
-                            0.6946583986282349
-                        ],
-                        "Color": [
-                            0.2705882489681244,
-                            0.0,
-                            1.0,
-                            0.6156615018844605
-                        ],
-                        "Range": 17.5,
-                        "CastShadow": true,
-                        "Bias": 0.000029999999242136256,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 154264867,
-                "ParentUID": 2132221379,
-                "Name": "SpotLight (1)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -81.35396575927735,
-                    11.602139472961426,
-                    -46.04588317871094
-                ],
-                "Rotation": [
-                    0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -81.35396575927735,
-                            11.602139472961426,
-                            -46.04588317871094,
-                            300.0
-                        ],
-                        "Direction": [
-                            0.0,
-                            -1.0,
-                            -1.1920927533992654e-7,
-                            0.6946583986282349
-                        ],
-                        "Color": [
-                            0.2705882489681244,
-                            0.0,
-                            1.0,
-                            0.6156615018844605
-                        ],
-                        "Range": 17.5,
-                        "CastShadow": true,
-                        "Bias": 0.000029999999242136256,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 223746625,
-                "ParentUID": 2132221379,
-                "Name": "SpotLight (2)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -109.24108123779297,
-                    15.02914047241211,
-                    -46.04588317871094
-                ],
-                "Rotation": [
-                    0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071068286895752
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -109.24108123779297,
-                            15.02914047241211,
-                            -46.04588317871094,
-                            44.5
-                        ],
-                        "Direction": [
-                            0.0,
-                            -1.0,
-                            -1.1920927533992654e-7,
-                            0.6946583986282349
-                        ],
-                        "Color": [
-                            0.2705882489681244,
-                            0.0,
-                            1.0,
-                            0.6156615018844605
-                        ],
-                        "Range": 17.5,
-                        "CastShadow": true,
-                        "Bias": 0.000029999999242136256,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 292114447,
-                "ParentUID": 2132221379,
-                "Name": "SpotLight (3)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -108.04230499267578,
-                    8.62403678894043,
-                    -58.46406555175781
-                ],
-                "Rotation": [
-                    0.306296169757843,
-                    -0.28126993775367739,
-                    0.0952550396323204,
-                    0.9044315218925476
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -108.04230499267578,
-                            8.62403678894043,
-                            -58.46406555175781,
-                            44.5
-                        ],
-                        "Direction": [
-                            -0.450426310300827,
-                            -0.607632577419281,
-                            0.6541397571563721,
-                            0.6946583986282349
-                        ],
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.6156615018844605
-                        ],
-                        "Range": 37.5,
-                        "CastShadow": true,
-                        "Bias": 0.000029999999242136256,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 355260694,
-                "ParentUID": 2132221379,
-                "Name": "SpotLight (4)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -105.50920104980469,
-                    8.62403678894043,
-                    -31.594348907470704
-                ],
-                "Rotation": [
-                    0.3322603404521942,
-                    0.8396937251091003,
-                    -0.23899249732494355,
-                    -0.35693153738975527
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -105.50920104980469,
-                            8.62403678894043,
-                            -31.594348907470704,
-                            44.5
-                        ],
-                        "Direction": [
-                            -0.7582417726516724,
-                            -0.16417260468006135,
-                            -0.630964994430542,
-                            0.6946583986282349
-                        ],
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0,
-                            0.6156615018844605
-                        ],
-                        "Range": 37.5,
-                        "CastShadow": true,
-                        "Bias": 0.000029999999242136256,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 420425950,
-                "ParentUID": 2132221379,
-                "Name": "PointLight",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -101.24769592285156,
-                    5.044375896453857,
-                    -43.437896728515628
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 1,
-                        "IsEnabled": true,
-                        "Position": [
-                            -101.24769592285156,
-                            5.044375896453857,
-                            -43.437896728515628
-                        ],
-                        "Radius": 25.0,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Intensity": 50.0
-                    }
-                ]
-            },
-            {
                 "UID": 97512864,
                 "ParentUID": 1,
                 "Name": "Decals_Level_2",
@@ -11564,7 +11161,7 @@
                 "Active": true,
                 "Translation": [
                     19.034528732299806,
-                    34.582923889160159,
+                    34.73992919921875,
                     -43.83946228027344
                 ],
                 "Rotation": [
@@ -24519,10 +24116,10 @@
                     0.0
                 ],
                 "Rotation": [
-                    5.6071643855792888e-11,
-                    -1.631485051223347e-11,
-                    0.28032341599464419,
-                    0.9632967710494995
+                    -5.755210891189577e-11,
+                    -9.602044853673775e-12,
+                    0.1649225354194641,
+                    -0.9887491464614868
                 ],
                 "Scale": [
                     0.9999998807907105,
@@ -60892,7 +60489,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771587,
-                        "MaterialID": 551771592,
+                        "MaterialID": 175650272,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -60958,7 +60555,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771587,
-                        "MaterialID": 551771592,
+                        "MaterialID": 175650272,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -61024,7 +60621,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771587,
-                        "MaterialID": 551771592,
+                        "MaterialID": 175650272,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -61090,7 +60687,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771593,
-                        "MaterialID": 551771598,
+                        "MaterialID": 285175701,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -61156,7 +60753,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771593,
-                        "MaterialID": 551771598,
+                        "MaterialID": 285175701,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -61222,7 +60819,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771593,
-                        "MaterialID": 551771598,
+                        "MaterialID": 285175701,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -86896,7 +86493,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771767,
-                        "MaterialID": 551771772,
+                        "MaterialID": 175650272,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -86962,7 +86559,7 @@
                         "ComponentType": 0,
                         "IsEnabled": true,
                         "MeshID": 551771773,
-                        "MaterialID": 551771778,
+                        "MaterialID": 285175701,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
@@ -102686,9 +102283,1925 @@
                         "InverseBindMatrices": []
                     }
                 ]
+            },
+            {
+                "UID": 1906042081,
+                "ParentUID": 1,
+                "Name": "OB_cocoon",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -628.6597290039063,
+                    -551.3323974609375,
+                    -42.115501403808597
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    50.0,
+                    50.0,
+                    50.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 626328453,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1922681500,
+                "ParentUID": 1906042081,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 83549262,
+                "ParentUID": 1922681500,
+                "Name": "OB_cocoon",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 86891070,
+                "ParentUID": 83549262,
+                "Name": "OB_cocoon",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 626328447,
+                        "MaterialID": 626328452,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 971987980,
+                                "Matrix": [
+                                    0.0,
+                                    100.00000762939453,
+                                    -0.0000075497905527299739,
+                                    339.4150390625,
+                                    -100.00000762939453,
+                                    0.00001192093168356223,
+                                    -9.000052764683575e-13,
+                                    0.0000404614293074701,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 989462851,
+                                "Matrix": [
+                                    100.00000762939453,
+                                    0.0000011685048093568185,
+                                    -8.821966052639796e-14,
+                                    0.000004023079327453161,
+                                    -0.000011920929864572827,
+                                    100.00000762939453,
+                                    -0.0000075497905527299739,
+                                    -126.44281005859375,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -3.081488681391555e-27,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 991760344,
+                                "Matrix": [
+                                    100.00000762939453,
+                                    0.0000011685048093568185,
+                                    -8.821966052639796e-14,
+                                    -0.000012457448065106292,
+                                    -0.000011920929864572827,
+                                    100.00000762939453,
+                                    -0.0000075497905527299739,
+                                    -252.34991455078126,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 993500869,
+                                "Matrix": [
+                                    90.45008087158203,
+                                    0.000004276691470295191,
+                                    42.64723587036133,
+                                    -0.0000092122772912262,
+                                    -0.00002281501110701356,
+                                    100.00000762939453,
+                                    -0.000012135400538682007,
+                                    -1.8417969942092896,
+                                    -42.64723587036133,
+                                    0.000006330453743430553,
+                                    90.4500732421875,
+                                    0.000004343591172073502,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 971987980,
+                "ParentUID": 1922681500,
+                "Name": "root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -3.637978807091713e-12,
+                    0.0,
+                    339.4150390625
+                ],
+                "Rotation": [
+                    -0.5,
+                    0.5000000596046448,
+                    0.5000000596046448,
+                    0.5000000596046448
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999998807907105,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 989462851,
+                "ParentUID": 971987980,
+                "Name": "InnerPannels",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    465.8578186035156,
+                    0.000061035148974042389,
+                    1.028298201254628e-13
+                ],
+                "Rotation": [
+                    0.4241180419921875,
+                    0.4241180717945099,
+                    -0.565794825553894,
+                    0.5657948851585388
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 991760344,
+                "ParentUID": 971987980,
+                "Name": "OuterPannels",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    591.764892578125,
+                    0.00006103514533606358,
+                    3.611982372410536e-20
+                ],
+                "Rotation": [
+                    0.44471079111099245,
+                    0.44471079111099245,
+                    -0.5497565269470215,
+                    0.549756646156311
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999999403953552,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 993500869,
+                "ParentUID": 971987980,
+                "Name": "Cristal",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    297.7662353515625,
+                    0.000024824908905429767,
+                    -7.821452361646275e-13
+                ],
+                "Rotation": [
+                    0.08260450512170792,
+                    0.0826045423746109,
+                    -0.702265202999115,
+                    0.7022653222084045
+                ],
+                "Scale": [
+                    0.9999998807907105,
+                    0.9999999403953552,
+                    0.9999999403953552
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1179176661,
+                "ParentUID": 1,
+                "Name": "OB_Stairs",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1569921907,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1199714856,
+                "ParentUID": 1179176661,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2028992404,
+                "ParentUID": 1199714856,
+                "Name": "OB_emergency_stairs",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2048138179,
+                "ParentUID": 2028992404,
+                "Name": "OB_emergency_stairs",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1569921901,
+                        "MaterialID": 1569921906,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1295640598,
+                                "Matrix": [
+                                    -0.0000059099575082655068,
+                                    94.29910278320313,
+                                    -33.281822204589847,
+                                    -0.0,
+                                    0.000001074550709745381,
+                                    33.281822204589847,
+                                    94.29911804199219,
+                                    -0.0,
+                                    100.00001525878906,
+                                    0.000004121945039514685,
+                                    -0.0000014547948694598745,
+                                    0.0,
+                                    -0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1315830688,
+                                "Matrix": [
+                                    -0.000008793835149845109,
+                                    26.05231475830078,
+                                    96.5467758178711,
+                                    -391.72137451171877,
+                                    -6.4759490214783e-7,
+                                    96.5467758178711,
+                                    -26.052316665649415,
+                                    -3583.00341796875,
+                                    -100.00001525878906,
+                                    -0.000001822767558223859,
+                                    -0.000009846889952314087,
+                                    3065.851318359375,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1318267423,
+                                "Matrix": [
+                                    100.00000762939453,
+                                    -0.0000018385202338322416,
+                                    -7.373629387075198e-7,
+                                    -3105.250732421875,
+                                    0.0000024716846382943915,
+                                    100.00001525878906,
+                                    -0.0000045695578592130918,
+                                    -3515.72265625,
+                                    0.000001550564547869726,
+                                    0.000007549791462224675,
+                                    100.00001525878906,
+                                    554.2599487304688,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1320147190,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1295640598,
+                "ParentUID": 1199714856,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.11938276886940003,
+                    0.6969560384750366,
+                    -0.11938279867172241,
+                    0.6969561576843262
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999998211860657,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1315830688,
+                "ParentUID": 1295640598,
+                "Name": "Even",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3543.098388671875,
+                    661.66845703125,
+                    3065.8515625
+                ],
+                "Rotation": [
+                    0.6798330545425415,
+                    0.7333669662475586,
+                    -1.6117594370257394e-8,
+                    5.536767488933947e-8
+                ],
+                "Scale": [
+                    1.0,
+                    0.9999998211860657,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1318267423,
+                "ParentUID": 1295640598,
+                "Name": "Odds",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3499.762451171875,
+                    647.4340209960938,
+                    3105.25146484375
+                ],
+                "Rotation": [
+                    -0.40840601921081545,
+                    -0.5772387385368347,
+                    -0.4084060490131378,
+                    0.5772387385368347
+                ],
+                "Scale": [
+                    1.0,
+                    0.9999998211860657,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1320147190,
+                "ParentUID": 1199714856,
+                "Name": "neutral_bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071067690849304,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 101955611,
+                "ParentUID": 19735232,
+                "Name": "Fog_V1 (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    141.31719970703126,
+                    65.12229919433594,
+                    15.411470413208008
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1369715751,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 11.300000190734864,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 10.0,
+                            "MaxValue": 13.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            30.0,
+                            1.0,
+                            30.0
+                        ],
+                        "ShapeRandAngle": 10.100000381469727,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 3,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 30.0,
+                                "MaxValue": 60.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.30000001192092898,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.014745593070983887,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.1501348316669464,
+                                "Color": [
+                                    0.24400001764297486,
+                                    0.1180960163474083,
+                                    0.2268771082162857,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5790883302688599,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.973190188407898,
+                                "Color": [
+                                    0.015999972820281984,
+                                    0.01587197370827198,
+                                    0.01587197370827198,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 640611852,
+                "ParentUID": 19735232,
+                "Name": "Fog_V1 (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    94.17514038085938,
+                    65.12229919433594,
+                    15.411470413208008
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1369715751,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 11.300000190734864,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 10.0,
+                            "MaxValue": 13.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            30.0,
+                            1.0,
+                            30.0
+                        ],
+                        "ShapeRandAngle": 10.100000381469727,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 3,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 30.0,
+                                "MaxValue": 60.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.30000001192092898,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.014745593070983887,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.1501348316669464,
+                                "Color": [
+                                    0.24400001764297486,
+                                    0.1180960163474083,
+                                    0.2268771082162857,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5790883302688599,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.973190188407898,
+                                "Color": [
+                                    0.015999972820281984,
+                                    0.01587197370827198,
+                                    0.01587197370827198,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 808376799,
+                "ParentUID": 19735232,
+                "Name": "Fog_V1 (6)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    50.57038116455078,
+                    36.02894592285156,
+                    15.411470413208008
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1369715751,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 11.300000190734864,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 10.0,
+                            "MaxValue": 13.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            30.0,
+                            1.0,
+                            30.0
+                        ],
+                        "ShapeRandAngle": 10.100000381469727,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 3,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 30.0,
+                                "MaxValue": 60.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.30000001192092898,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.014745593070983887,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.1501348316669464,
+                                "Color": [
+                                    0.24400001764297486,
+                                    0.1180960163474083,
+                                    0.2268771082162857,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5790883302688599,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.973190188407898,
+                                "Color": [
+                                    0.015999972820281984,
+                                    0.01587197370827198,
+                                    0.01587197370827198,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1271398431,
+                "ParentUID": 19735232,
+                "Name": "Fog_V1 (7)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    7.458123683929443,
+                    36.02894592285156,
+                    15.411470413208008
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1369715751,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 11.300000190734864,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 10.0,
+                            "MaxValue": 13.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            30.0,
+                            1.0,
+                            30.0
+                        ],
+                        "ShapeRandAngle": 10.100000381469727,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 3,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 30.0,
+                                "MaxValue": 60.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.30000001192092898,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.014745593070983887,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.1501348316669464,
+                                "Color": [
+                                    0.24400001764297486,
+                                    0.1180960163474083,
+                                    0.2268771082162857,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5790883302688599,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.973190188407898,
+                                "Color": [
+                                    0.015999972820281984,
+                                    0.01587197370827198,
+                                    0.01587197370827198,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 623738083,
+                "ParentUID": 19735232,
+                "Name": "Fog_V1 (8)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -5.655977725982666,
+                    36.02894592285156,
+                    -36.73457336425781
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 15,
+                        "IsEnabled": true,
+                        "Image": 1369715751,
+                        "Delay": 0.0,
+                        "Duration": 5.0,
+                        "EmissionRate": 11.300000190734864,
+                        "MaxParticles": 1000,
+                        "Burst": 0,
+                        "Looping": true,
+                        "FollowEmitter": false,
+                        "SpinSpeed": 0.0,
+                        "StretchedBillboard": false,
+                        "StretchedRatio": 0.0,
+                        "Gravity": 0.0,
+                        "Lifetime": {
+                            "IsValueRandom": true,
+                            "MinValue": 10.0,
+                            "MaxValue": 13.0
+                        },
+                        "ShapeType": 2,
+                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeSize": [
+                            30.0,
+                            1.0,
+                            30.0
+                        ],
+                        "ShapeRandAngle": 10.100000381469727,
+                        "ShapeIsRandAngle": false,
+                        "ShapeInvertedDir": false,
+                        "BlendMode": 3,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 30.0,
+                                "MaxValue": 60.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 0.30000001192092898,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
+                        "Color Gradient": [
+                            {
+                                "Time": 0.014745593070983887,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.1501348316669464,
+                                "Color": [
+                                    0.24400001764297486,
+                                    0.1180960163474083,
+                                    0.2268771082162857,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.5790883302688599,
+                                "Color": [
+                                    0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "Time": 0.973190188407898,
+                                "Color": [
+                                    0.015999972820281984,
+                                    0.01587197370827198,
+                                    0.01587197370827198,
+                                    1.0
+                                ]
+                            }
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
+                    }
+                ]
+            },
+            {
+                "UID": 1979076137,
+                "ParentUID": 1,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    117.20114135742188,
+                    62.13745880126953,
+                    22.55734634399414
+                ],
+                "Rotation": [
+                    -0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    3.8077452182769777,
+                    3.8077478408813478,
+                    1.6594622135162354
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1361013709,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1993348442,
+                "ParentUID": 1979076137,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.013330280780792237,
+                    2.5310263633728029,
+                    0.41402143239974978
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 88911706,
+                "ParentUID": 1993348442,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 92601619,
+                "ParentUID": 88911706,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1361013703,
+                        "MaterialID": 1361013708,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 651949092,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.013330280780792237,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 670050552,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -1.9670801162719727,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 651949092,
+                "ParentUID": 1993348442,
+                "Name": "Bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.022617915645241739,
+                    0.9997442364692688
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 670050552,
+                "ParentUID": 1993348442,
+                "Name": "Bone.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.9537497758865357,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1721575723,
+                "ParentUID": 1,
+                "Name": "Shadow Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1767038236,
+                "ParentUID": 1721575723,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.5876391530036926,
+                    47.82484817504883,
+                    15.964217185974121
+                ],
+                "Rotation": [
+                    -0.029554767534136773,
+                    0.716614842414856,
+                    -0.6965692043304443,
+                    -0.01952183246612549
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1361013709,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1814867863,
+                "ParentUID": 1767038236,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.013330280780792237,
+                    2.5310263633728029,
+                    0.41402143239974978
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1838190898,
+                "ParentUID": 1814867863,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1856013874,
+                "ParentUID": 1838190898,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1361013703,
+                        "MaterialID": 1361013708,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1863602563,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.013330280780792237,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1879824256,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -1.9670801162719727,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1863602563,
+                "ParentUID": 1814867863,
+                "Name": "Bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.022617915645241739,
+                    0.9997442364692688
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1879824256,
+                "ParentUID": 1814867863,
+                "Name": "Bone.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.9537497758865357,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1888248397,
+                "ParentUID": 1721575723,
+                "Name": "spotlight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.6249163150787354,
+                    51.51071548461914,
+                    13.548150062561036
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.6249163150787354,
+                            51.51071548461914,
+                            13.548150062561036,
+                            300.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -1.0,
+                            -1.1920930376163597e-7,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.6691305637359619
+                        ],
+                        "Range": 143.5,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "isVolumetric": false
+                    }
+                ]
             }
         ],
-        "NavMeshResource": 1152591871,
+        "NavMeshResource": 719204421,
         "SkyBoxResource": 1741121676,
         "BloomIntensity": 0.5,
         "DirectionalLight": [
@@ -102703,19 +104216,19 @@
         ],
         "Fog": {
             "Color": [
-                0.06800001859664917,
-                0.008976004086434842,
-                0.04439043253660202
+                0.007843137718737126,
+                0.0,
+                0.0117647061124444
             ],
-            "Density": 0.03200000151991844,
-            "HeightFallof": 0.029999999329447748,
-            "MaxFog": 0.9700000286102295
+            "Density": 0.02199999988079071,
+            "HeightFallof": 0.17499999701976777,
+            "MaxFog": 0.9950000047683716
         },
         "Volumetric": {
-            "BaseExtCoeff": 0.03999999910593033,
+            "BaseExtCoeff": 0.17599999904632569,
             "NoiseAmount": 1.0,
             "VolIntensity": 1.0,
-            "Anisotropy": 0.3499999940395355,
+            "Anisotropy": 0.0,
             "StepSize": 1.0,
             "MaxSteps": 16
         }

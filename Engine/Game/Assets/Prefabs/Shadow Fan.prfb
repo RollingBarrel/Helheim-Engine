@@ -1,0 +1,317 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 630150614,
+                "ParentUID": 1,
+                "Name": "Shadow Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1722938691,
+                "ParentUID": 630150614,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.5876391530036926,
+                    47.82484817504883,
+                    15.964217185974121
+                ],
+                "Rotation": [
+                    -0.029554767534136773,
+                    0.716614842414856,
+                    -0.6965692043304443,
+                    -0.01952183246612549
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1361013709,
+                        "LowerSMUID": 0
+                    }
+                ]
+            },
+            {
+                "UID": 1739369247,
+                "ParentUID": 1722938691,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.013330280780792237,
+                    2.5310263633728029,
+                    0.41402143239974978
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1748559219,
+                "ParentUID": 1739369247,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1753920036,
+                "ParentUID": 1748559219,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1361013703,
+                        "MaterialID": 1361013708,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1766591058,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.013330280780792237,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1772091117,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -1.9670801162719727,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1766591058,
+                "ParentUID": 1739369247,
+                "Name": "Bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.022617915645241739,
+                    0.9997442364692688
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1772091117,
+                "ParentUID": 1739369247,
+                "Name": "Bone.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.9537497758865357,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1755435907,
+                "ParentUID": 630150614,
+                "Name": "spotlight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.6249163150787354,
+                    51.51071548461914,
+                    13.548150062561036
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.6249163150787354,
+                            51.51071548461914,
+                            13.548150062561036,
+                            300.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -1.0,
+                            -1.1920927533992654e-7,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0,
+                            0.6691305637359619
+                        ],
+                        "Range": 143.5,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "isVolumetric": false
+                    }
+                ]
+            }
+        ]
+    }
+}
