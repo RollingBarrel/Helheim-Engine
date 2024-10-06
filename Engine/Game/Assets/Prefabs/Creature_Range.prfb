@@ -2,14 +2,14 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2019150105,
+                "UID": 1004266645,
                 "ParentUID": 1,
                 "Name": "Creature_Range",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     0.0,
-                    0.16083163022994996,
+                    0.0,
                     0.0
                 ],
                 "Rotation": [
@@ -45,90 +45,7 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "EnemyCreatureRange",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "STATS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mMaxHealth",
-                                "MemberType": 1,
-                                "VariableData": 12.0
-                            },
-                            {
-                                "VariableName": "mSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mRotationSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mChargeDuration",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mAttackDamage",
-                                "MemberType": 1,
-                                "VariableData": 10.0
-                            },
-                            {
-                                "VariableName": "mAttackDuration",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            },
-                            {
-                                "VariableName": "mAttackRotationSpeed",
-                                "MemberType": 1,
-                                "VariableData": 0.5
-                            },
-                            {
-                                "VariableName": "mAttackCoolDown",
-                                "MemberType": 1,
-                                "VariableData": 4.0
-                            },
-                            {
-                                "VariableName": "STATES",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mAttackDistance",
-                                "MemberType": 1,
-                                "VariableData": 13.0
-                            },
-                            {
-                                "VariableName": "GAME OBJECTS",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mLaserOrigin",
-                                "MemberType": 3,
-                                "VariableData": 946647907
-                            },
-                            {
-                                "VariableName": "mLaserEnd",
-                                "MemberType": 3,
-                                "VariableData": 841496295
-                            },
-                            {
-                                "VariableName": "mLaserCharge",
-                                "MemberType": 3,
-                                "VariableData": 2083234634
-                            },
-                            {
-                                "VariableName": "VFX",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mUltHitEffectGO",
-                                "MemberType": 3,
-                                "VariableData": 1744456763
-                            }
-                        ]
+                        "ScriptName": "EnemyCreatureRange"
                     },
                     {
                         "ComponentType": 17,
@@ -149,8 +66,8 @@
                 ]
             },
             {
-                "UID": 1320479468,
-                "ParentUID": 2019150105,
+                "UID": 1084748521,
+                "ParentUID": 1004266645,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -177,8 +94,8 @@
                 "Components": []
             },
             {
-                "UID": 185215540,
-                "ParentUID": 1320479468,
+                "UID": 1133274358,
+                "ParentUID": 1084748521,
                 "Name": "enemy_creature",
                 "Enabled": true,
                 "Active": true,
@@ -205,8 +122,8 @@
                 "Components": []
             },
             {
-                "UID": 1197017533,
-                "ParentUID": 185215540,
+                "UID": 1181243227,
+                "ParentUID": 1133274358,
                 "Name": "enemy_creature",
                 "Enabled": true,
                 "Active": true,
@@ -240,7 +157,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 62867541,
+                                "GoId": 1230395653,
                                 "Matrix": [
                                     1.6473307609558106,
                                     99.98641204833985,
@@ -261,7 +178,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1082606328,
+                                "GoId": 1278573385,
                                 "Matrix": [
                                     38.50492477416992,
                                     92.28959655761719,
@@ -282,7 +199,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2106591996,
+                                "GoId": 1326403012,
                                 "Matrix": [
                                     5.887195587158203,
                                     99.82653045654297,
@@ -303,7 +220,7 @@
                                 ]
                             },
                             {
-                                "GoId": 971606552,
+                                "GoId": 1373884534,
                                 "Matrix": [
                                     -5.834187030792236,
                                     99.82965087890625,
@@ -324,7 +241,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1981668020,
+                                "GoId": 1422479992,
                                 "Matrix": [
                                     -5.834188938140869,
                                     99.82965087890625,
@@ -345,7 +262,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1073786278,
+                                "GoId": 263679996,
                                 "Matrix": [
                                     1.2344883680343629,
                                     -99.99237060546875,
@@ -366,7 +283,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2078556550,
+                                "GoId": 333370617,
                                 "Matrix": [
                                     -1.7388578653335572,
                                     -99.98485565185547,
@@ -387,7 +304,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1002888198,
+                                "GoId": 396238380,
                                 "Matrix": [
                                     1.2874473333358765,
                                     -99.99169921875,
@@ -408,7 +325,7 @@
                                 ]
                             },
                             {
-                                "GoId": 2011626867,
+                                "GoId": 459106143,
                                 "Matrix": [
                                     1.287443995475769,
                                     -99.99169921875,
@@ -429,7 +346,7 @@
                                 ]
                             },
                             {
-                                "GoId": 871489469,
+                                "GoId": 521973906,
                                 "Matrix": [
                                     38.50493621826172,
                                     -92.28956604003906,
@@ -450,7 +367,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1880158517,
+                                "GoId": 585677121,
                                 "Matrix": [
                                     5.887204647064209,
                                     -99.82652282714844,
@@ -471,7 +388,7 @@
                                 ]
                             },
                             {
-                                "GoId": 742040128,
+                                "GoId": 649032231,
                                 "Matrix": [
                                     -5.834187984466553,
                                     -99.82964324951172,
@@ -492,7 +409,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1764146029,
+                                "GoId": 712387341,
                                 "Matrix": [
                                     -5.834188461303711,
                                     -99.82964324951172,
@@ -513,7 +430,7 @@
                                 ]
                             },
                             {
-                                "GoId": 622268106,
+                                "GoId": 776856387,
                                 "Matrix": [
                                     1.3458898706630863e-7,
                                     -96.26862335205078,
@@ -534,7 +451,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1636297971,
+                                "GoId": 841186191,
                                 "Matrix": [
                                     8.332846590519694e-8,
                                     -99.93992614746094,
@@ -555,7 +472,7 @@
                                 ]
                             },
                             {
-                                "GoId": 641807705,
+                                "GoId": 905446374,
                                 "Matrix": [
                                     8.736444101486996e-8,
                                     -99.9736557006836,
@@ -576,7 +493,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1809282254,
+                                "GoId": 962883699,
                                 "Matrix": [
                                     8.736450496371617e-8,
                                     -99.97364807128906,
@@ -597,7 +514,7 @@
                                 ]
                             },
                             {
-                                "GoId": 674784157,
+                                "GoId": 1017814668,
                                 "Matrix": [
                                     0.000010572873179626186,
                                     98.439208984375,
@@ -618,7 +535,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1685889940,
+                                "GoId": 1082562198,
                                 "Matrix": [
                                     6.965347552068124e-7,
                                     90.1082992553711,
@@ -639,7 +556,7 @@
                                 ]
                             },
                             {
-                                "GoId": 541923387,
+                                "GoId": 1136588094,
                                 "Matrix": [
                                     -0.0000019566180071706187,
                                     -39.391929626464847,
@@ -660,7 +577,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1548434184,
+                                "GoId": 1190613990,
                                 "Matrix": [
                                     -0.0000019566180071706187,
                                     -39.391929626464847,
@@ -681,7 +598,7 @@
                                 ]
                             },
                             {
-                                "GoId": 410803142,
+                                "GoId": 1244709507,
                                 "Matrix": [
                                     -8.154419219863485e-7,
                                     37.840599060058597,
@@ -702,7 +619,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1421769683,
+                                "GoId": 1298944266,
                                 "Matrix": [
                                     -8.154415809258353e-7,
                                     37.84061813354492,
@@ -723,7 +640,7 @@
                                 ]
                             },
                             {
-                                "GoId": 281562664,
+                                "GoId": 1353666372,
                                 "Matrix": [
                                     99.9999771118164,
                                     0.000001018336206470849,
@@ -744,7 +661,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1290022849,
+                                "GoId": 1408318857,
                                 "Matrix": [
                                     99.99999237060547,
                                     -0.000009412479812453967,
@@ -765,7 +682,7 @@
                                 ]
                             },
                             {
-                                "GoId": 150024693,
+                                "GoId": 1463528310,
                                 "Matrix": [
                                     99.99999237060547,
                                     -4.7178320983221058e-7,
@@ -786,7 +703,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1169206512,
+                                "GoId": 1519085868,
                                 "Matrix": [
                                     99.3589859008789,
                                     -11.304304122924805,
@@ -807,7 +724,7 @@
                                 ]
                             },
                             {
-                                "GoId": 329622971,
+                                "GoId": 1575618120,
                                 "Matrix": [
                                     94.59429931640625,
                                     -27.769054412841798,
@@ -828,7 +745,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1339266713,
+                                "GoId": 1631593404,
                                 "Matrix": [
                                     99.7853775024414,
                                     0.7498153448104858,
@@ -849,7 +766,7 @@
                                 ]
                             },
                             {
-                                "GoId": 258446407,
+                                "GoId": 1709638545,
                                 "Matrix": [
                                     99.78538513183594,
                                     0.749813437461853,
@@ -870,7 +787,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1274216797,
+                                "GoId": 1768955637,
                                 "Matrix": [
                                     99.3589859008789,
                                     11.304332733154297,
@@ -891,7 +808,7 @@
                                 ]
                             },
                             {
-                                "GoId": 144870654,
+                                "GoId": 1826462583,
                                 "Matrix": [
                                     94.59429168701172,
                                     27.76908302307129,
@@ -912,7 +829,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1168508217,
+                                "GoId": 1882785972,
                                 "Matrix": [
                                     99.7853775024414,
                                     -0.7498155236244202,
@@ -933,7 +850,7 @@
                                 ]
                             },
                             {
-                                "GoId": 28927787,
+                                "GoId": 1938970119,
                                 "Matrix": [
                                     99.7853775024414,
                                     -0.7498073577880859,
@@ -958,8 +875,8 @@
                 ]
             },
             {
-                "UID": 62867541,
-                "ParentUID": 1320479468,
+                "UID": 1230395653,
+                "ParentUID": 1084748521,
                 "Name": "joint_cintura",
                 "Enabled": true,
                 "Active": true,
@@ -986,8 +903,8 @@
                 "Components": []
             },
             {
-                "UID": 1082606328,
-                "ParentUID": 62867541,
+                "UID": 1278573385,
+                "ParentUID": 1230395653,
                 "Name": "joint_falda_R_1",
                 "Enabled": true,
                 "Active": true,
@@ -1014,8 +931,8 @@
                 "Components": []
             },
             {
-                "UID": 2106591996,
-                "ParentUID": 1082606328,
+                "UID": 1326403012,
+                "ParentUID": 1278573385,
                 "Name": "joint_falda_R_2",
                 "Enabled": true,
                 "Active": true,
@@ -1042,8 +959,8 @@
                 "Components": []
             },
             {
-                "UID": 971606552,
-                "ParentUID": 2106591996,
+                "UID": 1373884534,
+                "ParentUID": 1326403012,
                 "Name": "joint_falda_R_3",
                 "Enabled": true,
                 "Active": true,
@@ -1070,8 +987,8 @@
                 "Components": []
             },
             {
-                "UID": 1981668020,
-                "ParentUID": 971606552,
+                "UID": 1422479992,
+                "ParentUID": 1373884534,
                 "Name": "joint_falda_R_4",
                 "Enabled": true,
                 "Active": true,
@@ -1098,8 +1015,8 @@
                 "Components": []
             },
             {
-                "UID": 1073786278,
-                "ParentUID": 62867541,
+                "UID": 263679996,
+                "ParentUID": 1230395653,
                 "Name": "joint_falda_F_1",
                 "Enabled": true,
                 "Active": true,
@@ -1126,8 +1043,8 @@
                 "Components": []
             },
             {
-                "UID": 2078556550,
-                "ParentUID": 1073786278,
+                "UID": 333370617,
+                "ParentUID": 263679996,
                 "Name": "joint_falda_F_2",
                 "Enabled": true,
                 "Active": true,
@@ -1154,8 +1071,8 @@
                 "Components": []
             },
             {
-                "UID": 1002888198,
-                "ParentUID": 2078556550,
+                "UID": 396238380,
+                "ParentUID": 333370617,
                 "Name": "joint_falda_F_3",
                 "Enabled": true,
                 "Active": true,
@@ -1182,8 +1099,8 @@
                 "Components": []
             },
             {
-                "UID": 2011626867,
-                "ParentUID": 1002888198,
+                "UID": 459106143,
+                "ParentUID": 396238380,
                 "Name": "joint_falda_F_4",
                 "Enabled": true,
                 "Active": true,
@@ -1210,8 +1127,8 @@
                 "Components": []
             },
             {
-                "UID": 871489469,
-                "ParentUID": 62867541,
+                "UID": 521973906,
+                "ParentUID": 1230395653,
                 "Name": "joint_falda_L_1",
                 "Enabled": true,
                 "Active": true,
@@ -1238,8 +1155,8 @@
                 "Components": []
             },
             {
-                "UID": 1880158517,
-                "ParentUID": 871489469,
+                "UID": 585677121,
+                "ParentUID": 521973906,
                 "Name": "joint_falda_L_2",
                 "Enabled": true,
                 "Active": true,
@@ -1266,8 +1183,8 @@
                 "Components": []
             },
             {
-                "UID": 742040128,
-                "ParentUID": 1880158517,
+                "UID": 649032231,
+                "ParentUID": 585677121,
                 "Name": "joint_falda_L_3",
                 "Enabled": true,
                 "Active": true,
@@ -1294,8 +1211,8 @@
                 "Components": []
             },
             {
-                "UID": 1764146029,
-                "ParentUID": 742040128,
+                "UID": 712387341,
+                "ParentUID": 649032231,
                 "Name": "joint_falda_L_4",
                 "Enabled": true,
                 "Active": true,
@@ -1322,8 +1239,8 @@
                 "Components": []
             },
             {
-                "UID": 622268106,
-                "ParentUID": 62867541,
+                "UID": 776856387,
+                "ParentUID": 1230395653,
                 "Name": "joint_falda_B_1",
                 "Enabled": true,
                 "Active": true,
@@ -1350,8 +1267,8 @@
                 "Components": []
             },
             {
-                "UID": 1636297971,
-                "ParentUID": 622268106,
+                "UID": 841186191,
+                "ParentUID": 776856387,
                 "Name": "joint_falda_B_2",
                 "Enabled": true,
                 "Active": true,
@@ -1378,8 +1295,8 @@
                 "Components": []
             },
             {
-                "UID": 641807705,
-                "ParentUID": 1636297971,
+                "UID": 905446374,
+                "ParentUID": 841186191,
                 "Name": "joint_falda_B_3",
                 "Enabled": true,
                 "Active": true,
@@ -1406,8 +1323,8 @@
                 "Components": []
             },
             {
-                "UID": 1809282254,
-                "ParentUID": 641807705,
+                "UID": 962883699,
+                "ParentUID": 905446374,
                 "Name": "joint_falda_B_4",
                 "Enabled": true,
                 "Active": true,
@@ -1434,8 +1351,8 @@
                 "Components": []
             },
             {
-                "UID": 674784157,
-                "ParentUID": 62867541,
+                "UID": 1017814668,
+                "ParentUID": 1230395653,
                 "Name": "joint_espalda_1",
                 "Enabled": true,
                 "Active": true,
@@ -1462,8 +1379,8 @@
                 "Components": []
             },
             {
-                "UID": 1685889940,
-                "ParentUID": 674784157,
+                "UID": 1082562198,
+                "ParentUID": 1017814668,
                 "Name": "joint_espalda_2",
                 "Enabled": true,
                 "Active": true,
@@ -1490,8 +1407,8 @@
                 "Components": []
             },
             {
-                "UID": 541923387,
-                "ParentUID": 1685889940,
+                "UID": 1136588094,
+                "ParentUID": 1082562198,
                 "Name": "joint_cuello_1",
                 "Enabled": true,
                 "Active": true,
@@ -1518,8 +1435,8 @@
                 "Components": []
             },
             {
-                "UID": 1548434184,
-                "ParentUID": 541923387,
+                "UID": 1190613990,
+                "ParentUID": 1136588094,
                 "Name": "joint_cuello_2",
                 "Enabled": true,
                 "Active": true,
@@ -1546,8 +1463,8 @@
                 "Components": []
             },
             {
-                "UID": 410803142,
-                "ParentUID": 1548434184,
+                "UID": 1244709507,
+                "ParentUID": 1190613990,
                 "Name": "joint_cabeza",
                 "Enabled": true,
                 "Active": true,
@@ -1574,8 +1491,8 @@
                 "Components": []
             },
             {
-                "UID": 1421769683,
-                "ParentUID": 410803142,
+                "UID": 1298944266,
+                "ParentUID": 1244709507,
                 "Name": "joint_ojo",
                 "Enabled": true,
                 "Active": true,
@@ -1602,8 +1519,8 @@
                 "Components": []
             },
             {
-                "UID": 281562664,
-                "ParentUID": 1548434184,
+                "UID": 1353666372,
+                "ParentUID": 1190613990,
                 "Name": "joint_papada",
                 "Enabled": true,
                 "Active": true,
@@ -1630,8 +1547,8 @@
                 "Components": []
             },
             {
-                "UID": 1290022849,
-                "ParentUID": 1685889940,
+                "UID": 1408318857,
+                "ParentUID": 1082562198,
                 "Name": "joint_cuerno_L",
                 "Enabled": true,
                 "Active": true,
@@ -1658,8 +1575,8 @@
                 "Components": []
             },
             {
-                "UID": 150024693,
-                "ParentUID": 1685889940,
+                "UID": 1463528310,
+                "ParentUID": 1082562198,
                 "Name": "joint_cuerno_R",
                 "Enabled": true,
                 "Active": true,
@@ -1686,8 +1603,8 @@
                 "Components": []
             },
             {
-                "UID": 1169206512,
-                "ParentUID": 1685889940,
+                "UID": 1519085868,
+                "ParentUID": 1082562198,
                 "Name": "joint_clavicula_L",
                 "Enabled": true,
                 "Active": true,
@@ -1714,8 +1631,8 @@
                 "Components": []
             },
             {
-                "UID": 329622971,
-                "ParentUID": 1169206512,
+                "UID": 1575618120,
+                "ParentUID": 1519085868,
                 "Name": "joint_hombro_L",
                 "Enabled": true,
                 "Active": true,
@@ -1742,8 +1659,8 @@
                 "Components": []
             },
             {
-                "UID": 1339266713,
-                "ParentUID": 329622971,
+                "UID": 1631593404,
+                "ParentUID": 1575618120,
                 "Name": "joint_codo_L",
                 "Enabled": true,
                 "Active": true,
@@ -1770,8 +1687,8 @@
                 "Components": []
             },
             {
-                "UID": 258446407,
-                "ParentUID": 1339266713,
+                "UID": 1709638545,
+                "ParentUID": 1631593404,
                 "Name": "joint_pincho_L",
                 "Enabled": true,
                 "Active": true,
@@ -1798,8 +1715,8 @@
                 "Components": []
             },
             {
-                "UID": 1274216797,
-                "ParentUID": 1685889940,
+                "UID": 1768955637,
+                "ParentUID": 1082562198,
                 "Name": "joint_clavicula_R",
                 "Enabled": true,
                 "Active": true,
@@ -1826,8 +1743,8 @@
                 "Components": []
             },
             {
-                "UID": 144870654,
-                "ParentUID": 1274216797,
+                "UID": 1826462583,
+                "ParentUID": 1768955637,
                 "Name": "joint_hombro_R",
                 "Enabled": true,
                 "Active": true,
@@ -1854,8 +1771,8 @@
                 "Components": []
             },
             {
-                "UID": 1168508217,
-                "ParentUID": 144870654,
+                "UID": 1882785972,
+                "ParentUID": 1826462583,
                 "Name": "joint_codo_R",
                 "Enabled": true,
                 "Active": true,
@@ -1882,8 +1799,8 @@
                 "Components": []
             },
             {
-                "UID": 28927787,
-                "ParentUID": 1168508217,
+                "UID": 1938970119,
+                "ParentUID": 1882785972,
                 "Name": "joint_pincho_R",
                 "Enabled": true,
                 "Active": true,
@@ -1910,8 +1827,8 @@
                 "Components": []
             },
             {
-                "UID": 1065027509,
-                "ParentUID": 2019150105,
+                "UID": 1996128960,
+                "ParentUID": 1004266645,
                 "Name": "Laser",
                 "Enabled": true,
                 "Active": true,
@@ -1938,68 +1855,137 @@
                 "Components": []
             },
             {
-                "UID": 2083234634,
-                "ParentUID": 1065027509,
+                "UID": 263344999,
+                "ParentUID": 1996128960,
                 "Name": "CreatureRange_laser_Charging_V1",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -0.012390375137329102,
-                    -2.0222089290618898,
-                    -0.9653647541999817
+                    -0.11999999731779099,
+                    -0.27000001072883608
                 ],
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    0.7050339579582214,
+                    0.7066333293914795
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
+                    1.0079822540283204,
+                    1.0079822540283204,
                     1.0
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": true,
+                "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 148626881,
+                        "Image": 530119606,
                         "Delay": 0.0,
                         "Duration": 2.0,
-                        "EmissionRate": 22.399999618530275,
-                        "MaxParticles": 1000,
-                        "Burst": 0,
+                        "EmissionRate": 1000.0,
+                        "MaxParticles": 5000,
+                        "Burst": 100,
                         "Looping": true,
-                        "FollowEmitter": false,
-                        "SpinSpeed": 0.0,
+                        "FollowEmitter": true,
+                        "SpinSpeed": 8.5,
                         "StretchedBillboard": true,
-                        "StretchedRatio": 1.0,
+                        "StretchedRatio": 7.599999904632568,
                         "Gravity": 0.0,
                         "Lifetime": {
-                            "IsValueRandom": true,
+                            "IsValueRandom": false,
                             "MinValue": 0.5,
                             "MaxValue": 1.0
                         },
-                        "ShapeType": 3,
-                        "ShapeRadius": 0.5,
-                        "ShapeAngle": 1.0,
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.4000000059604645,
+                        "ShapeAngle": 1.7999999523162842,
                         "ShapeSize": [
                             1.0,
                             1.0,
                             1.0
                         ],
-                        "ShapeRandAngle": 1.0,
-                        "ShapeIsRandAngle": true,
+                        "ShapeRandAngle": 0.0,
+                        "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": true,
                         "BlendMode": 1,
-                        "SizeCurve": {},
-                        "SpeedCurve": {
+                        "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
+                                "MinValue": 0.20000000298023225,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        1.2975703477859498
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        1.037214756011963
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.9140794277191162
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        1.0431593656539918
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.9927278161048889
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.995078444480896
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        1.0044875144958497
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.9983840584754944
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
+                        "SpeedCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
                                 "MinValue": 1.5,
                                 "MaxValue": 1.0
                             },
@@ -2008,66 +1994,57 @@
                         },
                         "Color Gradient": [
                             {
-                                "Time": 0.029490232467651368,
+                                "Time": 0.276139497756958,
                                 "Color": [
+                                    0.6709760427474976,
                                     1.0,
-                                    1.0,
-                                    1.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.12868615984916688,
-                                "Color": [
-                                    0.9127572178840637,
                                     0.6119999885559082,
-                                    1.0,
                                     1.0
                                 ]
                             },
                             {
-                                "Time": 0.3257371187210083,
+                                "Time": 0.6139410734176636,
                                 "Color": [
-                                    0.8509804010391235,
-                                    0.33725491166114809,
-                                    1.0,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.6621983051300049,
-                                "Color": [
-                                    0.5089322924613953,
-                                    0.18119999766349793,
-                                    0.6039999723434448,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.7908848524093628,
-                                "Color": [
-                                    1.0,
-                                    0.11599999666213989,
-                                    0.43424010276794436,
-                                    1.0
-                                ]
-                            },
-                            {
-                                "Time": 0.97050940990448,
-                                "Color": [
-                                    0.0,
-                                    0.0,
-                                    0.0,
+                                    0.9879999756813049,
+                                    0.027663996443152429,
+                                    0.027663996443152429,
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 946647907,
-                "ParentUID": 1065027509,
+                "UID": 2111421336,
+                "ParentUID": 1996128960,
                 "Name": "Laser_Line_Origin",
                 "Enabled": true,
                 "Active": true,
@@ -2095,13 +2072,13 @@
                     {
                         "ComponentType": 21,
                         "IsEnabled": true,
-                        "Image": 1034913839,
+                        "Image": 240993341,
                         "MaxPoints": 1000,
                         "MinDistance": 0.10000000149011612,
                         "MaxLifeTime": 0.0,
                         "UVScroll": 1.0,
                         "IsFixedDirection": false,
-                        "IsUVScrolling": true,
+                        "IsUVScrolling": false,
                         "Direction": [
                             0.0,
                             1.0,
@@ -2109,21 +2086,82 @@
                         ],
                         "Width": {
                             "Value": {
-                                "IsValueRandom": false,
-                                "MinValue": 0.30000001192092898,
-                                "MaxValue": 1.0
+                                "IsValueRandom": true,
+                                "MinValue": -2.700000047683716,
+                                "MaxValue": -6.0
                             },
-                            "IsCurve": false,
-                            "CurvePoints": []
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.00027096140547655523
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.008670764975249768
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.06584363430738449
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.27746447920799258
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.7225356101989746
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.9341564178466797
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.9913292527198792
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.9997290372848511
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
                         },
                         "Gradient": {
                             "Color Gradient": [
                                 {
                                     "Time": 0.49654144048690798,
                                     "Color": [
-                                        0.9586917161941528,
-                                        0.3706563711166382,
                                         1.0,
+                                        0.3706563711166382,
+                                        0.4612818956375122,
                                         1.0
                                     ]
                                 }
@@ -2133,8 +2171,8 @@
                 ]
             },
             {
-                "UID": 1974393109,
-                "ParentUID": 946647907,
+                "UID": 21514256,
+                "ParentUID": 2111421336,
                 "Name": "CreatureRange_laser_Origin_V1 ",
                 "Enabled": true,
                 "Active": true,
@@ -2162,7 +2200,7 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 148626881,
+                        "Image": 1067194935,
                         "Delay": 0.0,
                         "Duration": 10.0,
                         "EmissionRate": 22.399999618530275,
@@ -2172,7 +2210,7 @@
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
                         "StretchedBillboard": true,
-                        "StretchedRatio": 2.0999999046325685,
+                        "StretchedRatio": 6.400000095367432,
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
@@ -2191,7 +2229,15 @@
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
                         "BlendMode": 1,
-                        "SizeCurve": {},
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
@@ -2239,15 +2285,6 @@
                                 ]
                             },
                             {
-                                "Time": 0.7908848524093628,
-                                "Color": [
-                                    1.0,
-                                    0.11599999666213989,
-                                    0.43424010276794436,
-                                    1.0
-                                ]
-                            },
-                            {
                                 "Time": 0.97050940990448,
                                 "Color": [
                                     0.0,
@@ -2256,13 +2293,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 841496295,
-                "ParentUID": 946647907,
+                "UID": 79021202,
+                "ParentUID": 2111421336,
                 "Name": "FinalPoint",
                 "Enabled": true,
                 "Active": true,
@@ -2289,8 +2353,8 @@
                 "Components": []
             },
             {
-                "UID": 1853159046,
-                "ParentUID": 841496295,
+                "UID": 140914271,
+                "ParentUID": 79021202,
                 "Name": "CreatureRange_laser_End_V1",
                 "Enabled": true,
                 "Active": true,
@@ -2318,7 +2382,7 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 148626881,
+                        "Image": 1067194935,
                         "Delay": 0.0,
                         "Duration": 10.0,
                         "EmissionRate": 22.399999618530275,
@@ -2327,8 +2391,8 @@
                         "Looping": true,
                         "FollowEmitter": false,
                         "SpinSpeed": 0.0,
-                        "StretchedBillboard": false,
-                        "StretchedRatio": 1.0,
+                        "StretchedBillboard": true,
+                        "StretchedRatio": 2.700000047683716,
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": true,
@@ -2336,8 +2400,8 @@
                             "MaxValue": 1.0
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 1.0010000467300416,
-                        "ShapeAngle": 0.7850000262260437,
+                        "ShapeRadius": 0.10000000149011612,
+                        "ShapeAngle": 0.1850000023841858,
                         "ShapeSize": [
                             1.0,
                             0.0,
@@ -2347,7 +2411,15 @@
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
                         "BlendMode": 1,
-                        "SizeCurve": {},
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
@@ -2412,13 +2484,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 716990045,
-                "ParentUID": 1853159046,
+                "UID": 198560459,
+                "ParentUID": 140914271,
                 "Name": "Laser_impact",
                 "Enabled": true,
                 "Active": true,
@@ -2430,8 +2529,8 @@
                 "Rotation": [
                     0.0,
                     0.0,
-                    0.0,
-                    1.0
+                    -0.05908159166574478,
+                    -0.9982534646987915
                 ],
                 "Scale": [
                     1.0,
@@ -2446,26 +2545,26 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 148626881,
+                        "Image": 924733528,
                         "Delay": 0.0,
                         "Duration": 10.0,
-                        "EmissionRate": 77.9000015258789,
-                        "MaxParticles": 1000,
-                        "Burst": 0,
+                        "EmissionRate": 20.0,
+                        "MaxParticles": 100,
+                        "Burst": 32,
                         "Looping": true,
                         "FollowEmitter": false,
-                        "SpinSpeed": 0.0,
+                        "SpinSpeed": 1.399999976158142,
                         "StretchedBillboard": true,
-                        "StretchedRatio": 2.0999999046325685,
-                        "Gravity": 0.0,
+                        "StretchedRatio": 4.5,
+                        "Gravity": 0.20000000298023225,
                         "Lifetime": {
                             "IsValueRandom": true,
-                            "MinValue": 0.5,
-                            "MaxValue": 1.0
+                            "MinValue": 0.10000000149011612,
+                            "MaxValue": 0.5
                         },
                         "ShapeType": 1,
-                        "ShapeRadius": 0.0010000000474974514,
-                        "ShapeAngle": 0.7850000262260437,
+                        "ShapeRadius": 0.0005000000237487257,
+                        "ShapeAngle": 0.800000011920929,
                         "ShapeSize": [
                             1.0,
                             1.0,
@@ -2474,12 +2573,81 @@
                         "ShapeRandAngle": 0.0,
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
-                        "BlendMode": 1,
-                        "SizeCurve": {},
+                        "BlendMode": 5,
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": true,
+                                "MinValue": 1.0,
+                                "MaxValue": 6.0
+                            },
+                            "IsCurve": true,
+                            "CurvePoints": [
+                                {
+                                    "Point": [
+                                        0.0,
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.1111111119389534,
+                                        0.03015368990600109
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.2222222238779068,
+                                        0.11697778105735779
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.3333333432674408,
+                                        0.25
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.4444444477558136,
+                                        0.41317591071128847
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.5555555820465088,
+                                        0.5868241190910339
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.6666666865348816,
+                                        0.75
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.7777777910232544,
+                                        0.8830222487449646
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        0.8888888955116272,
+                                        0.9698463082313538
+                                    ]
+                                },
+                                {
+                                    "Point": [
+                                        1.0,
+                                        1.0
+                                    ]
+                                }
+                            ]
+                        },
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 1.5,
+                                "MinValue": 0.5,
                                 "MaxValue": 1.0
                             },
                             "IsCurve": false,
@@ -2540,13 +2708,40 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             },
             {
-                "UID": 1744456763,
-                "ParentUID": 2019150105,
+                "UID": 256624373,
+                "ParentUID": 1004266645,
                 "Name": "Ult_Enemy_Collide_V1",
                 "Enabled": false,
                 "Active": false,
@@ -2603,7 +2798,15 @@
                         "ShapeIsRandAngle": false,
                         "ShapeInvertedDir": false,
                         "BlendMode": 1,
-                        "SizeCurve": {},
+                        "SizeCurve": {
+                            "Value": {
+                                "IsValueRandom": false,
+                                "MinValue": 1.0,
+                                "MaxValue": 1.0
+                            },
+                            "IsCurve": false,
+                            "CurvePoints": []
+                        },
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": true,
@@ -2672,7 +2875,34 @@
                                     1.0
                                 ]
                             }
-                        ]
+                        ],
+                        "HasTrails": false,
+                        "Trail": {
+                            "Image": 148626881,
+                            "MaxPoints": 1000,
+                            "MinDistance": 0.10000000149011612,
+                            "MaxLifeTime": 0.0,
+                            "UVScroll": 1.0,
+                            "IsFixedDirection": false,
+                            "IsUVScrolling": true,
+                            "Direction": [
+                                0.0,
+                                1.0,
+                                0.0
+                            ],
+                            "Width": {
+                                "Value": {
+                                    "IsValueRandom": false,
+                                    "MinValue": 1.0,
+                                    "MaxValue": 1.0
+                                },
+                                "IsCurve": false,
+                                "CurvePoints": []
+                            },
+                            "Gradient": {
+                                "Color Gradient": []
+                            }
+                        }
                     }
                 ]
             }
