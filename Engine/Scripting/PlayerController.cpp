@@ -745,7 +745,7 @@ void PlayerController::EnableGrenadeAim(bool value)
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
         if (value)
         {
-            mGrenadeGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 1.0f, mGrenade->GetGrenadeRadius()));
+            mGrenadeGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius()));
             mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
         }  
     }
