@@ -56,6 +56,7 @@ private:
     GameObject* mBattleAreaGO4 = nullptr;
 
     GameObject* mFadeGO = nullptr;
+    GameObject* mHudGO = nullptr;
     
     BattleArea* mBattleArea1 = nullptr;
     BattleArea* mBattleArea2 = nullptr;
@@ -65,8 +66,7 @@ private:
     GameObject* mPlayer = nullptr;
     PlayerController* mPlayerController = nullptr;
     GameObject* mPlayerCamera = nullptr;
-    GameObject* mHud = nullptr;
-    
+
     TimerScript mTimer;
 
     int mEnemyAnimState1 = 1;

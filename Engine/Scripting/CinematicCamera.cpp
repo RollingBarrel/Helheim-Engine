@@ -49,7 +49,7 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT3, mColor);
     MEMBER(MemberType::FLOAT, mFadeSpeed);
     SEPARATOR("HUD");
-    MEMBER(MemberType::GAMEOBJECT, mHud);
+    MEMBER(MemberType::GAMEOBJECT, mHudGO);
     END_CREATE;
 }
 
@@ -180,9 +180,9 @@ void CinematicCamera::StartCinematic(GameObject* cameraObject, GameObject* dummy
             mTravelling = true;
             mFadeOn = true;
 
-            if (mHud)
+            if (mHudGO)
             {
-                mHud->SetEnabled(false);
+                mHudGO->SetEnabled(false);
             }
             
             if (mPlayerController)
@@ -239,9 +239,9 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             mCinematicIndex++;
             mStartParameters = false;
 
-            if (mHud)
+            if (mHudGO)
             {
-                mHud->SetEnabled(true);
+                mHudGO->SetEnabled(true);
             }
             
             ActivateBattleArea(battleArea, true);
