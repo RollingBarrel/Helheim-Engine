@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1776581769,
+                "UID": 727221300,
                 "ParentUID": 1,
                 "Name": "ElectricTraps_lvl2",
                 "Enabled": true,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 1095726834,
-                "ParentUID": 1776581769,
+                "UID": 1097883504,
+                "ParentUID": 727221300,
                 "Name": "TrapGroups",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    114.59261322021485,
+                    70.05933380126953,
+                    11.014784812927246
                 ],
                 "Rotation": [
                     0.0,
@@ -64,22 +64,38 @@
                             {
                                 "VariableName": "mTraps",
                                 "MemberType": 3,
-                                "VariableData": 1095726834
+                                "VariableData": 1097883504
                             }
                         ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            23.700000762939454,
+                            3.0,
+                            15.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
                     }
                 ]
             },
             {
-                "UID": 9437645,
-                "ParentUID": 1095726834,
+                "UID": 1434988386,
+                "ParentUID": 1097883504,
                 "Name": "ElectricTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    105.00758361816406,
-                    65.26248168945313,
-                    12.968799591064454
+                    -9.585029602050782,
+                    -4.796852111816406,
+                    1.954014778137207
                 ],
                 "Rotation": [
                     -3.108045021349426e-8,
@@ -133,8 +149,8 @@
                 ]
             },
             {
-                "UID": 350023577,
-                "ParentUID": 9437645,
+                "UID": 1769029944,
+                "ParentUID": 1434988386,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -161,8 +177,8 @@
                 "Components": []
             },
             {
-                "UID": 689286710,
-                "ParentUID": 350023577,
+                "UID": 2097919548,
+                "ParentUID": 1769029944,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -199,15 +215,15 @@
                 ]
             },
             {
-                "UID": 1019568734,
-                "ParentUID": 1095726834,
+                "UID": 283572386,
+                "ParentUID": 1097883504,
                 "Name": "ElectricTrap (1)",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    129.12155151367188,
-                    65.26248168945313,
-                    12.968799591064454
+                    14.528938293457032,
+                    -4.796852111816406,
+                    1.954014778137207
                 ],
                 "Rotation": [
                     -3.108045021349426e-8,
@@ -261,8 +277,8 @@
                 ]
             },
             {
-                "UID": 1345046909,
-                "ParentUID": 1019568734,
+                "UID": 645601586,
+                "ParentUID": 283572386,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -289,8 +305,8 @@
                 "Components": []
             },
             {
-                "UID": 1710069812,
-                "ParentUID": 1345046909,
+                "UID": 983681162,
+                "ParentUID": 645601586,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
