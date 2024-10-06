@@ -139,7 +139,8 @@ void EnemyBoss::Update()
         mBulletHell = BulletPattern::NONE;
         mInvulnerable = true;
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
-        if (mSpritesheet) {
+        if (mSpritesheet) 
+        {
             mShieldGO->SetEnabled(true);
             mSpritesheet->PlayAnimation();
             mShieldDelay = 18.0f / mSpritesheet->GetFrameDuration();
