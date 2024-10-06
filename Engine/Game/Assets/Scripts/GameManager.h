@@ -103,6 +103,7 @@ private:
     bool mPlayingCinematic = false;
 
     bool mPaused = false;
+    bool mPauseScreen = false;
 
     bool mStopActive = false;
     float mDefaultHitStopTime = 0.0f;

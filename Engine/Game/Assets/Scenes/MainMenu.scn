@@ -580,7 +580,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -648,8 +649,8 @@
                 "UID": 597757094,
                 "ParentUID": 1385711187,
                 "Name": "OptionsScreen",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -673,7 +674,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -709,7 +710,7 @@
                 "ParentUID": 597757094,
                 "Name": "VerticalBars",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -733,7 +734,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -600.0,
                             0.0,
@@ -764,21 +765,22 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 572889098,
                         "Color": [
                             1.0,
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -843,9 +845,9 @@
                 ]
             },
             {
-                "UID": 2014793913,
+                "UID": 1677264920,
                 "ParentUID": 13224123,
-                "Name": "VerticalBars",
+                "Name": "HorizontalBars (1)",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -873,19 +875,19 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -550.0,
-                            150.0,
+                            0.0,
+                            165.0,
                             0.0
                         ],
                         "Rotation": [
                             0.0,
                             0.0,
-                            0.0,
-                            1.0
+                            0.7071068286895752,
+                            0.7071068286895752
                         ],
                         "Size": [
                             2.0,
-                            300.0
+                            1000.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -909,21 +911,22 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 676888874,
+                "UID": 1663049835,
                 "ParentUID": 13224123,
-                "Name": "VerticalItem (3)",
+                "Name": "VerticalItem",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -952,7 +955,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            60.0,
+                            275.0,
                             0.0
                         ],
                         "Rotation": [
@@ -963,85 +966,7 @@
                         ],
                         "Size": [
                             1000.0,
-                            64.28570556640625
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 1408765097,
-                "ParentUID": 676888874,
-                "Name": "Background",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            64.29000091552735
+                            48.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1065,6 +990,85 @@
                             0.9960784316062927,
                             0.8745098114013672
                         ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1026392549,
+                "ParentUID": 13224123,
+                "Name": "VerticalItem (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            200.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            50.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
                         "Alpha": 0.0,
                         "ShouldDraw": true,
                         "IsMaskable": false,
@@ -1072,14 +1076,91 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 662247507,
-                "ParentUID": 676888874,
-                "Name": "Right Arrow (1)",
+                "UID": 1154332249,
+                "ParentUID": 1026392549,
+                "Name": "HL Text",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Master",
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 1494963900,
+                "ParentUID": 1154332249,
+                "Name": "Image",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -1107,8 +1188,8 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            370.0,
-                            0.0,
+                            -20.0,
+                            7.5,
                             0.0
                         ],
                         "Rotation": [
@@ -1118,8 +1199,8 @@
                             1.0
                         ],
                         "Size": [
-                            24.0,
-                            24.0
+                            6.0,
+                            36.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -1137,7 +1218,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1000114685,
+                        "ImageID": 1314989160,
                         "Color": [
                             1.0,
                             1.0,
@@ -1150,99 +1231,14 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1138375249,
-                "ParentUID": 676888874,
-                "Name": "Left Arrow (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -70.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            24.0,
-                            24.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 267970338,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
-                    }
-                ]
-            },
-            {
-                "UID": 700560014,
-                "ParentUID": 676888874,
+                "UID": 1050551036,
+                "ParentUID": 1026392549,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -1301,7 +1297,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "Effects",
+                        "Text": "Master",
                         "Color": [
                             1.0,
                             1.0,
@@ -1317,8 +1313,8 @@
                 ]
             },
             {
-                "UID": 1652551155,
-                "ParentUID": 676888874,
+                "UID": 1603273687,
+                "ParentUID": 1026392549,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -1381,8 +1377,8 @@
                 ]
             },
             {
-                "UID": 1217010946,
-                "ParentUID": 1652551155,
+                "UID": 1628288691,
+                "ParentUID": 1603273687,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -1454,13 +1450,14 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1236365584,
-                "ParentUID": 1652551155,
+                "UID": 1643257206,
+                "ParentUID": 1603273687,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -1521,9 +1518,9 @@
                         "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
-                            0.23137255012989045,
+                            0.21176470816135407,
                             0.9960784316062927,
-                            0.8745098114013672
+                            0.9137254953384399
                         ],
                         "Alpha": 1.0,
                         "ShouldDraw": true,
@@ -1532,7 +1529,253 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1948142558,
+                "ParentUID": 1026392549,
+                "Name": "Left Arrow",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -70.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 267970338,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": false
+                    }
+                ]
+            },
+            {
+                "UID": 751985981,
+                "ParentUID": 1026392549,
+                "Name": "Right Arrow",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            370.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1000114685,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": false
+                    }
+                ]
+            },
+            {
+                "UID": 54092246,
+                "ParentUID": 1026392549,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            64.29000091552735
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -1610,7 +1853,163 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1561620143,
+                "ParentUID": 1799647009,
+                "Name": "HL Text",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Music",
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 1966372735,
+                "ParentUID": 1561620143,
+                "Name": "Image",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -20.0,
+                            7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            6.0,
+                            36.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1314989160,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -1688,85 +2087,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 826419703,
-                "ParentUID": 1799647009,
-                "Name": "Line (2)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            150.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            3.0,
-                            34.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -1844,7 +2166,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -1926,7 +2249,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -2148,7 +2472,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -2226,14 +2551,15 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1026392549,
+                "UID": 676888874,
                 "ParentUID": 13224123,
-                "Name": "VerticalItem (1)",
+                "Name": "VerticalItem (3)",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -2262,7 +2588,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            200.0,
+                            60.0,
                             0.0
                         ],
                         "Rotation": [
@@ -2273,7 +2599,7 @@
                         ],
                         "Size": [
                             1000.0,
-                            50.0
+                            64.28570556640625
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2304,14 +2630,91 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1455669802,
-                "ParentUID": 1026392549,
-                "Name": "Line (1)",
+                "UID": 1770016898,
+                "ParentUID": 676888874,
+                "Name": "HL Text",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Effects",
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 2045344051,
+                "ParentUID": 1770016898,
+                "Name": "Image",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -2339,7 +2742,86 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            150.0,
+                            -20.0,
+                            7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            6.0,
+                            36.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1314989160,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1408765097,
+                "ParentUID": 676888874,
+                "Name": "Background",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
                             0.0,
                             0.0
                         ],
@@ -2350,8 +2832,8 @@
                             1.0
                         ],
                         "Size": [
-                            3.0,
-                            34.0
+                            1000.0,
+                            64.29000091552735
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2375,6 +2857,85 @@
                             0.9960784316062927,
                             0.8745098114013672
                         ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 662247507,
+                "ParentUID": 676888874,
+                "Name": "Right Arrow (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            370.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1000114685,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
                         "Alpha": 1.0,
                         "ShouldDraw": true,
                         "IsMaskable": false,
@@ -2382,13 +2943,101 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": false
                     }
                 ]
             },
             {
-                "UID": 1050551036,
-                "ParentUID": 1026392549,
+                "UID": 1138375249,
+                "ParentUID": 676888874,
+                "Name": "Left Arrow (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -70.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 267970338,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    },
+                    {
+                        "ComponentType": 11,
+                        "IsEnabled": false
+                    }
+                ]
+            },
+            {
+                "UID": 700560014,
+                "ParentUID": 676888874,
                 "Name": "Text",
                 "Enabled": true,
                 "Active": false,
@@ -2447,7 +3096,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "Master",
+                        "Text": "Effects",
                         "Color": [
                             1.0,
                             1.0,
@@ -2463,8 +3112,8 @@
                 ]
             },
             {
-                "UID": 1603273687,
-                "ParentUID": 1026392549,
+                "UID": 1652551155,
+                "ParentUID": 676888874,
                 "Name": "Slider",
                 "Enabled": true,
                 "Active": false,
@@ -2527,8 +3176,8 @@
                 ]
             },
             {
-                "UID": 1628288691,
-                "ParentUID": 1603273687,
+                "UID": 1217010946,
+                "ParentUID": 1652551155,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -2600,13 +3249,14 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1643257206,
-                "ParentUID": 1603273687,
+                "UID": 1236365584,
+                "ParentUID": 1652551155,
                 "Name": "Fill",
                 "Enabled": true,
                 "Active": false,
@@ -2667,9 +3317,9 @@
                         "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
-                            0.21176470816135407,
+                            0.23137255012989045,
                             0.9960784316062927,
-                            0.9137254953384399
+                            0.8745098114013672
                         ],
                         "Alpha": 1.0,
                         "ShouldDraw": true,
@@ -2678,14 +3328,15 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1663049835,
+                "UID": 2014793913,
                 "ParentUID": 13224123,
-                "Name": "VerticalItem",
+                "Name": "VerticalBars",
                 "Enabled": true,
                 "Active": false,
                 "Translation": [
@@ -2706,15 +3357,15 @@
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
-                "OverridePrefab": true,
+                "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": [
                     {
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            0.0,
-                            275.0,
+                            -550.0,
+                            150.0,
                             0.0
                         ],
                         "Rotation": [
@@ -2724,8 +3375,8 @@
                             1.0
                         ],
                         "Size": [
-                            1000.0,
-                            48.0
+                            2.0,
+                            300.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -2743,20 +3394,97 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 148626881,
+                        "ImageID": 572889098,
                         "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
+                            1.0,
+                            1.0,
+                            1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 429327663,
+                "ParentUID": 13224123,
+                "Name": "Title",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            265.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "AUDIO",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 30
                     }
                 ]
             },
@@ -2834,7 +3562,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -2912,7 +3641,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -2994,7 +3724,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -3072,7 +3803,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -3080,8 +3812,8 @@
                 "UID": 397302865,
                 "ParentUID": 1674828877,
                 "Name": "LoadingScreen",
-                "Enabled": false,
-                "Active": false,
+                "Enabled": true,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -3105,7 +3837,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             0.0,
                             0.0,
@@ -3136,8 +3868,8 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 299796997,
+                        "IsEnabled": true,
+                        "ImageID": 1925411666,
                         "Color": [
                             1.0,
                             1.0,
@@ -3150,7 +3882,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -3159,7 +3892,7 @@
                 "ParentUID": 597757094,
                 "Name": "Options Buttons",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -3183,7 +3916,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -3219,7 +3952,7 @@
                 "ParentUID": 1936926760,
                 "Name": "KeyboardBtn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -3243,7 +3976,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             125.0,
@@ -3274,7 +4007,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -3288,11 +4021,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -3301,7 +4035,7 @@
                 "ParentUID": 1770784992,
                 "Name": "Base",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -3325,7 +4059,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -75.0,
                             -12.5,
@@ -3356,7 +4090,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "KEYBOARD",
                         "Color": [
                             1.0,
@@ -3446,7 +4180,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -3600,7 +4335,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -3754,7 +4490,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -3825,14 +4562,15 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -4670,7 +5408,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -4741,14 +5480,15 @@
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -4826,7 +5566,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -5056,7 +5797,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -5286,7 +6028,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -5516,7 +6259,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -5746,7 +6490,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -5976,7 +6721,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -6206,7 +6952,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -6436,7 +7183,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -6666,7 +7414,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -6953,7 +7702,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -7111,7 +7861,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -7265,7 +8016,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -7419,7 +8171,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -7577,7 +8330,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -7731,7 +8485,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -7885,7 +8640,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -8043,7 +8799,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -8197,7 +8954,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -8351,7 +9109,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -8509,7 +9268,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -8663,7 +9423,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -8748,7 +9509,7 @@
                 "ParentUID": 1936926760,
                 "Name": "ControllerBtn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -8772,7 +9533,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             50.0,
@@ -8803,7 +9564,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -8817,11 +9578,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -8830,7 +9592,7 @@
                 "ParentUID": 1587681491,
                 "Name": "Base",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -8854,7 +9616,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -75.0,
                             -12.5,
@@ -8885,7 +9647,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "CONTROLLER",
                         "Color": [
                             1.0,
@@ -8975,7 +9737,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -9129,7 +9892,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -9214,7 +9978,7 @@
                 "ParentUID": 1936926760,
                 "Name": "AudioBtn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9238,7 +10002,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             -25.0,
@@ -9269,7 +10033,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -9283,11 +10047,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -9296,7 +10061,7 @@
                 "ParentUID": 592768026,
                 "Name": "Base",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9320,7 +10085,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -75.0,
                             -12.5,
@@ -9351,7 +10116,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "AUDIO",
                         "Color": [
                             1.0,
@@ -9441,7 +10206,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -9595,7 +10361,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -9680,7 +10447,7 @@
                 "ParentUID": 1936926760,
                 "Name": "SettingsBtn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9704,7 +10471,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             -100.0,
@@ -9735,7 +10502,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -9749,11 +10516,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -9762,7 +10530,7 @@
                 "ParentUID": 145355469,
                 "Name": "Base",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -9786,7 +10554,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -75.0,
                             -12.5,
@@ -9817,7 +10585,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "VIDEO",
                         "Color": [
                             1.0,
@@ -9907,7 +10675,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10061,7 +10830,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10145,8 +10915,8 @@
                 "UID": 2138220133,
                 "ParentUID": 597757094,
                 "Name": "SettingsScreen",
-                "Enabled": true,
-                "Active": true,
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10170,7 +10940,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             250.0,
                             -150.0,
@@ -10206,7 +10976,7 @@
                 "ParentUID": 2138220133,
                 "Name": "VerticalBars",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10230,7 +11000,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -550.0,
                             150.0,
@@ -10261,21 +11031,22 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 572889098,
                         "Color": [
                             1.0,
                             1.0,
                             1.0
                         ],
-                        "Alpha": 1.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10284,7 +11055,7 @@
                 "ParentUID": 2138220133,
                 "Name": "VerticalItem",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10308,7 +11079,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             275.0,
@@ -10339,7 +11110,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -10353,7 +11124,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10362,7 +11134,7 @@
                 "ParentUID": 2138220133,
                 "Name": "VerticalItem (4)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10386,7 +11158,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             200.0,
@@ -10417,7 +11189,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -10431,7 +11203,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10440,7 +11213,7 @@
                 "ParentUID": 850344888,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10464,7 +11237,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             -7.5,
@@ -10495,7 +11268,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "VSync",
                         "Color": [
                             1.0,
@@ -10516,7 +11289,7 @@
                 "ParentUID": 2138220133,
                 "Name": "VerticalItem (5)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10540,7 +11313,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             130.0,
@@ -10571,7 +11344,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -10585,16 +11358,17 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 94221511,
+                "UID": 2146068029,
                 "ParentUID": 1287308101,
-                "Name": "Background (1)",
-                "Enabled": true,
-                "Active": true,
+                "Name": "HL Text",
+                "Enabled": false,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10618,7 +11392,162 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Fullscreen",
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 354393411,
+                "ParentUID": 2146068029,
+                "Name": "Image",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -20.0,
+                            7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            6.0,
+                            36.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1314989160,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 94221511,
+                "ParentUID": 1287308101,
+                "Name": "Background (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10649,7 +11578,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -10663,7 +11592,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10672,7 +11602,7 @@
                 "ParentUID": 1287308101,
                 "Name": "On Btn (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10696,7 +11626,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             170.0,
                             0.0,
@@ -10727,7 +11657,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -10741,11 +11671,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -10754,7 +11685,7 @@
                 "ParentUID": 935381240,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10778,7 +11709,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10809,7 +11740,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 597047512,
                         "Color": [
                             1.0,
@@ -10823,7 +11754,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10832,7 +11764,7 @@
                 "ParentUID": 935381240,
                 "Name": "On",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10856,7 +11788,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10887,7 +11819,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 2079134756,
                         "Color": [
                             1.0,
@@ -10901,7 +11833,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -10910,7 +11843,7 @@
                 "ParentUID": 1287308101,
                 "Name": "Off Btn (1)",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -10934,7 +11867,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -10965,7 +11898,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -10979,11 +11912,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -10992,7 +11926,7 @@
                 "ParentUID": 1949195049,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11016,7 +11950,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -11047,7 +11981,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 1630554747,
                         "Color": [
                             1.0,
@@ -11061,7 +11995,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11139,7 +12074,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11148,7 +12084,7 @@
                 "ParentUID": 1287308101,
                 "Name": "Text",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11172,7 +12108,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             -450.0,
                             -7.5,
@@ -11203,7 +12139,7 @@
                     },
                     {
                         "ComponentType": 16,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Text": "Fullscreen",
                         "Color": [
                             1.0,
@@ -11224,7 +12160,7 @@
                 "ParentUID": 397302865,
                 "Name": "Slider",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11248,7 +12184,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             0.0,
                             -220.0,
@@ -11279,7 +12215,7 @@
                     },
                     {
                         "ComponentType": 12,
-                        "IsEnabled": false
+                        "IsEnabled": true
                     }
                 ]
             },
@@ -11357,7 +12293,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11366,7 +12303,7 @@
                 "ParentUID": 1373202265,
                 "Name": "Fill",
                 "Enabled": true,
-                "Active": false,
+                "Active": true,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11390,7 +12327,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "Position": [
                             -211.64999389648438,
                             0.0,
@@ -11421,7 +12358,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": false,
+                        "IsEnabled": true,
                         "ImageID": 148626881,
                         "Color": [
                             0.23137255012989045,
@@ -11435,249 +12372,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
-                    }
-                ]
-            },
-            {
-                "UID": 1948142558,
-                "ParentUID": 1026392549,
-                "Name": "Left Arrow",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -70.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            24.0,
-                            24.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 267970338,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
-                    }
-                ]
-            },
-            {
-                "UID": 751985981,
-                "ParentUID": 1026392549,
-                "Name": "Right Arrow",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            370.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            24.0,
-                            24.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 1000114685,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
-                    },
-                    {
-                        "ComponentType": 11,
-                        "IsEnabled": false
-                    }
-                ]
-            },
-            {
-                "UID": 225844122,
-                "ParentUID": 676888874,
-                "Name": "Line",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            150.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            3.0,
-                            34.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11686,7 +12382,7 @@
                 "ParentUID": 850344888,
                 "Name": "Off Btn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11710,7 +12406,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -11741,7 +12437,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -11755,11 +12451,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -11768,7 +12465,7 @@
                 "ParentUID": 323646839,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11792,7 +12489,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -11823,7 +12520,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 1630554747,
                         "Color": [
                             1.0,
@@ -11837,7 +12534,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11915,7 +12613,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -11924,7 +12623,7 @@
                 "ParentUID": 850344888,
                 "Name": "On Btn",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -11948,7 +12647,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             170.0,
                             0.0,
@@ -11979,7 +12678,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 148626881,
                         "Color": [
                             1.0,
@@ -11993,11 +12692,12 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
-                        "IsEnabled": true
+                        "IsEnabled": false
                     }
                 ]
             },
@@ -12006,7 +12706,7 @@
                 "ParentUID": 1506037091,
                 "Name": "Off",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12030,7 +12730,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -12061,7 +12761,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 597047512,
                         "Color": [
                             1.0,
@@ -12075,7 +12775,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -12084,7 +12785,7 @@
                 "ParentUID": 1506037091,
                 "Name": "On",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -12108,7 +12809,7 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
                             0.0,
                             0.0,
@@ -12139,7 +12840,7 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "ImageID": 2079134756,
                         "Color": [
                             1.0,
@@ -12153,7 +12854,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -13947,7 +14649,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     },
                     {
                         "ComponentType": 11,
@@ -14029,7 +14732,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14183,7 +14887,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
@@ -14264,8 +14969,8 @@
                 ]
             },
             {
-                "UID": 54092246,
-                "ParentUID": 1026392549,
+                "UID": 799058622,
+                "ParentUID": 850344888,
                 "Name": "Background",
                 "Enabled": true,
                 "Active": false,
@@ -14337,16 +15042,17 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 799058622,
-                "ParentUID": 850344888,
-                "Name": "Background",
+                "UID": 2083497608,
+                "ParentUID": 2138220133,
+                "Name": "Title",
                 "Enabled": true,
-                "Active": true,
+                "Active": false,
                 "Translation": [
                     0.0,
                     0.0,
@@ -14370,10 +15076,10 @@
                 "Components": [
                     {
                         "ComponentType": 9,
-                        "IsEnabled": true,
+                        "IsEnabled": false,
                         "Position": [
-                            0.0,
-                            0.0,
+                            -450.0,
+                            265.0,
                             0.0
                         ],
                         "Rotation": [
@@ -14383,8 +15089,84 @@
                             1.0
                         ],
                         "Size": [
-                            1000.0,
-                            64.29000091552735
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "VIDEO",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 350138929,
+                "ParentUID": 2138220133,
+                "Name": "HorizontalBars",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            165.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.7071068286895752,
+                            0.7071068286895752
+                        ],
+                        "Size": [
+                            2.0,
+                            1000.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -14401,21 +15183,256 @@
                     },
                     {
                         "ComponentType": 8,
-                        "IsEnabled": true,
-                        "ImageID": 148626881,
+                        "IsEnabled": false,
+                        "ImageID": 572889098,
                         "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
+                            1.0,
+                            1.0,
+                            1.0
                         ],
-                        "Alpha": 0.0,
+                        "Alpha": 0.39899998903274538,
                         "ShouldDraw": true,
                         "IsMaskable": false,
                         "IsSpritesheet": false,
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 422609887,
+                "ParentUID": 850344888,
+                "Name": "HL Text",
+                "Enabled": false,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "VSync",
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Bold.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 571939395,
+                "ParentUID": 422609887,
+                "Name": "Image",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -20.0,
+                            7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            6.0,
+                            36.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1314989160,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1638534222,
+                "ParentUID": 13224123,
+                "Name": "HorizontalBars",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            95.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.7071068286895752,
+                            0.7071068286895752
+                        ],
+                        "Size": [
+                            2.0,
+                            1000.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 572889098,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.39899998903274538,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             }

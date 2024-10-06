@@ -78,7 +78,10 @@ void EnemyCreatureRange::Update()
 	if (mCurrentState != EnemyState::ATTACK)
 	{
 		mPlayingAttackSound = false;
-
+		if (mLaserSound != -1)
+		{
+			mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+		}
 		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
 		if (mLaserEnd) mLaserEnd->SetEnabled(false);
 	}
@@ -124,8 +127,7 @@ void EnemyCreatureRange::Attack()
 
 	if (!mPlayingAttackSound)
 	{
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_LASER, mGameObject->GetWorldPosition());
-
+		mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::BOSS_LASER, mLaserSound, mGameObject->GetWorldPosition());
 
 		mPlayingAttackSound = true;
 	}

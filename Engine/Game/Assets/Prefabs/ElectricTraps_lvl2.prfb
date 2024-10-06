@@ -1,0 +1,347 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 2107620368,
+                "ParentUID": 1,
+                "Name": "ElectricTraps_lvl2",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 404527564,
+                "ParentUID": 2107620368,
+                "Name": "TrapGroups",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    114.59261322021485,
+                    70.05933380126953,
+                    11.014784812927246
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ElectricTrapGroupController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTraps",
+                                "MemberType": 3,
+                                "VariableData": 404527564
+                            }
+                        ]
+                    },
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            23.700000762939454,
+                            3.0,
+                            15.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    }
+                ]
+            },
+            {
+                "UID": 805196419,
+                "ParentUID": 404527564,
+                "Name": "ElectricTrap",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -9.585029602050782,
+                    -4.796852111816406,
+                    1.954014778137207
+                ],
+                "Rotation": [
+                    -3.108045021349426e-8,
+                    0.7072291374206543,
+                    -0.00017982095596380532,
+                    0.7069844007492065
+                ],
+                "Scale": [
+                    4.0,
+                    4.0,
+                    4.0
+                ],
+                "Tag": "Trap",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.0,
+                            2.0,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ElectricTrapController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1212131164,
+                "ParentUID": 805196419,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.004999999888241291,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.004999999888241291,
+                    0.5
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 1607160718,
+                "ParentUID": 1212131164,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 951606329,
+                        "MaterialID": 951606334,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 2004835870,
+                "ParentUID": 404527564,
+                "Name": "ElectricTrap (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    14.528938293457032,
+                    -4.796852111816406,
+                    1.954014778137207
+                ],
+                "Rotation": [
+                    -3.108045021349426e-8,
+                    0.7072291374206543,
+                    -0.00017982095596380532,
+                    0.7069844007492065
+                ],
+                "Scale": [
+                    4.0,
+                    4.0,
+                    4.0
+                ],
+                "Tag": "Trap",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 17,
+                        "IsEnabled": true,
+                        "Center": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Size": [
+                            2.0,
+                            2.0,
+                            2.0
+                        ],
+                        "ColliderType": 0,
+                        "FreezeRotation": false
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "ElectricTrapController",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "mIsActive",
+                                "MemberType": 2,
+                                "VariableData": false
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 316293855,
+                "ParentUID": 2004835870,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.004999999888241291,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.5,
+                    0.004999999888241291,
+                    0.5
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": []
+            },
+            {
+                "UID": 718981719,
+                "ParentUID": 316293855,
+                "Name": "Cube.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": true,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 951606329,
+                        "MaterialID": 951606334,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}
