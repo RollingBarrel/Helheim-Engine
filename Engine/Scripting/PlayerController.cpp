@@ -112,7 +112,6 @@ CREATE(PlayerController)
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
-   //MEMBER(MemberType::GAMEOBJECT, mDebugCube);
 
     END_CREATE;
 }

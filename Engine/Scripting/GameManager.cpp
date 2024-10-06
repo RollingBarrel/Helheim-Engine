@@ -144,12 +144,18 @@ void GameManager::Update()
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
-        SetPaused(!mPaused, true);
+        if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
     }
 
     if (mCinematicCamera)
     {
         mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();
+    }
+
+    if (mController != App->GetInput()->isGamepadAvailable())
+    {
+        mController = App->GetInput()->isGamepadAvailable();
+        mHudController->ChangeBindings(mController);
     }
 }
 
@@ -176,6 +182,7 @@ bool GameManager::UsingController() const
 void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
+    mPauseScreen = screen;
     mHudController->SetHud(!value);
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
@@ -297,10 +304,12 @@ void GameManager::HandleBossAudio(int stage)
         }
     }
 }
+
 void GameManager::RegisterPlayerKill()
 {
     mPlayerController->AddKill();
 }
+
 void GameManager::PlayPlayerFootStepSound()
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -313,7 +322,6 @@ void GameManager::PlayPlayerFootStepSound()
         mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL, mPlayerController->GetPlayerPosition());
     }
 }
-
 
 void GameManager::ActivateBossCamera(float targetDistance)
 {
@@ -349,7 +357,6 @@ void GameManager::BossCameraMovement()
     mPlayerCameraGO->SetWorldRotation(DegToRad(rotation));
     mPlayerCamera->SetOffset(offset);
 }
-
 
 void GameManager::PauseBackgroundAudio(bool pause)
 {

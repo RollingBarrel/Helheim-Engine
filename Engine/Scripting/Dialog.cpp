@@ -58,8 +58,6 @@ void Dialog::Start()
         mSkipButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Dialog::OnSkipClick, this)));
     }
 
-    if (mProtagonistGO) mProtagonistImage = static_cast<ImageComponent*>(mProtagonistGO->GetComponent(ComponentType::IMAGE));
-    if (mWifeGO) mWifeImage = static_cast<ImageComponent*>(mWifeGO->GetComponent(ComponentType::IMAGE));
     if (mTextGO) mText = static_cast<TextComponent*>(mTextGO->GetComponent(ComponentType::TEXT));
     if (mIntroGO) mIntroImage = static_cast<ImageComponent*>(mIntroGO->GetComponent(ComponentType::IMAGE));
     if (mOutroGO) mOutroImage = static_cast<ImageComponent*>(mOutroGO->GetComponent(ComponentType::IMAGE));
@@ -75,14 +73,14 @@ void Dialog::Start()
 
 void Dialog::Update()
 {
-    if (mTimeout && mClickTimout.Delay(3.0f)) mTimeout = false;
+    if (mTimeout && mClickTimout.Delay(2.0f)) mTimeout = false;
  
-    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(2.0f)) StartAnimationToMain();
+    if (!mAnimationToMainDone && mAnimationTimer.DelayWithoutReset(2.5f)) StartAnimationToMain();
     if (mAnimationToIntro) AnimationToIntro();
     if (mAnimationToMain) AnimationToMain();
 
     if (mAnimationToOutro) AnimationToOutro();
-    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(2.0f)) AnimationToEnd();
+    if (mAnimationToEnd && mAnimationTimer.DelayWithoutReset(1.5f)) AnimationToEnd();
 
     Controls();
 
@@ -287,19 +285,19 @@ void Dialog::OnNextClick()
     }
 
     // Swap between Protagonist and Wife images
-    if (!mWifeImage->IsEnabled())
+    if (!mWifeGO->IsEnabled())
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_FEMALE);
 
-        mProtagonistImage->SetEnable(false);
-        mWifeImage->SetEnable(true);
+        mProtagonistGO->SetEnabled(false);
+        mWifeGO->SetEnabled(true);
     }
     else
     {
         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DIALOG_MALE);
 
-        mProtagonistImage->SetEnable(true);
-        mWifeImage->SetEnable(false);
+        mProtagonistGO->SetEnabled(true);
+        mWifeGO->SetEnabled(false);
     }
 
 

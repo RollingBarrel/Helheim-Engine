@@ -56,6 +56,7 @@ public:
     void SetInstaKill(bool value);
     void SetDebug(bool value);
 
+    void ChangeBindings(bool controller);
     void SetHud(bool value);
 private:
     HudController(GameObject* owner);
@@ -239,4 +240,30 @@ private:
 
     //Hud
     GameObject* mHudGO = nullptr;
+
+
+    // Buttons change
+    GameObject* mControllerWeaponBinding = nullptr;
+    GameObject* mControllerUltiBinding = nullptr;
+    GameObject* mControllerGrenadeBinding = nullptr;
+    GameObject* mControllerDialogueNextBinding = nullptr;
+    GameObject* mControllerDialogueSkipBinding = nullptr;
+    GameObject* mControllerVideoBinding = nullptr;
+    GameObject* mControllerCollectibleOpenBinding = nullptr;
+    GameObject* mControllerCollectibleCloseBinding = nullptr;
+    GameObject* mControllerMenuSelectBinding = nullptr;
+    GameObject* mControllerMenuBackBinding = nullptr;
+    GameObject* mControllerCreditsSkipBinding = nullptr;
+
+    GameObject* mKeyboardWeaponBinding = nullptr;
+    GameObject* mKeyboardUltiBinding = nullptr;
+    GameObject* mKeyboardGrenadeBinding = nullptr;
+    GameObject* mKeyboardDialogueNextBinding = nullptr;
+    GameObject* mKeyboardDialogueSkipBinding = nullptr;
+    GameObject* mKeyboardVideoBinding = nullptr;
+    GameObject* mKeyboardCollectibleOpenBinding = nullptr;
+    GameObject* mKeyboardCollectibleCloseBinding = nullptr;
+    GameObject* mKeyboardMenuSelectBinding = nullptr;
+    GameObject* mKeyboardMenuBackBinding = nullptr;
+    GameObject* mKeyboardCreditsSkipBinding = nullptr;
 };

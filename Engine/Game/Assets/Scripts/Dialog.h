@@ -46,8 +46,6 @@ private:
 
     GameObject* mProtagonistGO = nullptr;
     GameObject* mWifeGO = nullptr;
-    ImageComponent* mProtagonistImage = nullptr;
-    ImageComponent* mWifeImage = nullptr;
 
     GameObject* mTextGO = nullptr;
     TextComponent* mText = nullptr;

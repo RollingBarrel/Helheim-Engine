@@ -99,6 +99,31 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mVideoGO);
     MEMBER(MemberType::GAMEOBJECT, mVideoBtnGO);
 
+    SEPARATOR("BINDINGS");
+    MEMBER(MemberType::GAMEOBJECT, mControllerWeaponBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerUltiBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerGrenadeBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerDialogueNextBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerDialogueSkipBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerVideoBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerCollectibleOpenBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerCollectibleCloseBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerMenuSelectBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerMenuBackBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerCreditsSkipBinding);
+
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardWeaponBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardUltiBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardGrenadeBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardDialogueNextBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardDialogueSkipBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardVideoBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardCollectibleOpenBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardCollectibleCloseBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardMenuSelectBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardMenuBackBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardCreditsSkipBinding);
+
     END_CREATE;
 }
 
@@ -701,11 +726,6 @@ void HudController::SetInteract(bool active)
 {
     if (mInteractGO)
     {
-        if (mInteractText) 
-        {
-           if(GameManager::GetInstance()->UsingController()) mInteractText->SetText("Y to Interact");
-           else mInteractText->SetText("F to Interact");
-        }
         mInteractGO->SetEnabled(active);
     }
         
@@ -824,6 +844,60 @@ void HudController::SetBossHealth(float health)
     if (mBossHealthSlider)
     {
         mBossHealthSlider->SetValue(health);
+    }
+}
+
+void HudController::ChangeBindings(bool controller)
+{
+    if (controller)
+    {
+        mControllerWeaponBinding->SetEnabled(true);
+        mControllerUltiBinding->SetEnabled(true);
+        mControllerGrenadeBinding->SetEnabled(true);
+        mControllerDialogueNextBinding->SetEnabled(true);
+        mControllerDialogueSkipBinding->SetEnabled(true);
+        mControllerVideoBinding->SetEnabled(true);
+        mControllerCollectibleOpenBinding->SetEnabled(true);
+        mControllerCollectibleCloseBinding->SetEnabled(true);
+        mControllerMenuSelectBinding->SetEnabled(true);
+        mControllerMenuBackBinding->SetEnabled(true);
+        mControllerCreditsSkipBinding->SetEnabled(true);
+        mKeyboardWeaponBinding->SetEnabled(false);
+        mKeyboardUltiBinding->SetEnabled(false);
+        mKeyboardGrenadeBinding->SetEnabled(false);
+        mKeyboardDialogueNextBinding->SetEnabled(false);
+        mKeyboardDialogueSkipBinding->SetEnabled(false);
+        mKeyboardVideoBinding->SetEnabled(false);
+        mKeyboardCollectibleOpenBinding->SetEnabled(false);
+        mKeyboardCollectibleCloseBinding->SetEnabled(false);
+        mKeyboardMenuSelectBinding->SetEnabled(false);
+        mKeyboardMenuBackBinding->SetEnabled(false);
+        mKeyboardCreditsSkipBinding->SetEnabled(false);
+    }
+    else
+    {
+        mControllerWeaponBinding->SetEnabled(false);
+        mControllerUltiBinding->SetEnabled(false);
+        mControllerGrenadeBinding->SetEnabled(false);
+        mControllerDialogueNextBinding->SetEnabled(false);
+        mControllerDialogueSkipBinding->SetEnabled(false);
+        mControllerVideoBinding->SetEnabled(false);
+        mControllerCollectibleOpenBinding->SetEnabled(false);
+        mControllerCollectibleCloseBinding->SetEnabled(false);
+        mControllerMenuSelectBinding->SetEnabled(false);
+        mControllerMenuBackBinding->SetEnabled(false);
+        mControllerCreditsSkipBinding->SetEnabled(false);
+        mKeyboardWeaponBinding->SetEnabled(true);
+        mKeyboardUltiBinding->SetEnabled(true);
+        mKeyboardGrenadeBinding->SetEnabled(true);
+        mKeyboardDialogueNextBinding->SetEnabled(true);
+        mKeyboardDialogueSkipBinding->SetEnabled(true);
+        mKeyboardVideoBinding->SetEnabled(true);
+        mKeyboardCollectibleOpenBinding->SetEnabled(true);
+        mKeyboardCollectibleCloseBinding->SetEnabled(true);
+        mKeyboardMenuSelectBinding->SetEnabled(true);
+        mKeyboardMenuBackBinding->SetEnabled(true);
+        mKeyboardCreditsSkipBinding->SetEnabled(true);
     }
 }
 
