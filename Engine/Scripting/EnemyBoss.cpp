@@ -755,13 +755,13 @@ void EnemyBoss::UpdatePhase2()
         {
             switch (sequence)
             {
-            case 0:
+            case 1:
                 LaserAttack();
                 break;
             case 2:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
                 break;
-            case 1:
+            case 0:
                 StartBulletAttack(BulletPattern::WAVE);
                 break;
             case 3:
@@ -777,23 +777,24 @@ void EnemyBoss::UpdatePhase2()
     case EnemyState::ATTACK:
         switch (sequence * 10 + attack)
         {
-        case 0:
+        case 10:
+        case 31:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 StartBulletAttack(BulletPattern::ARROW);
                 attack++;
             }
             break;
-        case 10:
         case 30:
-        case 1:
+        case 11:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 LaserAttack();
                 attack++;
             }
             break;
-        case 31:
+        case 0:
+        case 20:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
             {
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
@@ -816,12 +817,13 @@ void EnemyBoss::UpdatePhase2()
 
 void EnemyBoss::LookAt(float3 direction, float time)
 { 
-    LookAt(direction.xz(), mGameObject->GetFront().AngleBetween(direction) / time); 
+    float angle = mGameObject->GetFront().AngleBetween(direction);
+    LookAt(direction.xz().Normalized(), angle / time);
 }
 
 void EnemyBoss::LookAt(float2 direction, float speed)
 {
-    mTargetRotation = direction.AngleBetweenNorm(float2::unitY);
+    mTargetRotation = direction.AngleBetween(float2::unitY);
     if (direction.x < 0)
     {
         mTargetRotation = 2*pi - mTargetRotation;
