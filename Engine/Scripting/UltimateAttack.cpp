@@ -71,6 +71,7 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
     ray.dir = mGameObject->GetFront();
     ray.pos = mGameObject->GetWorldPosition();
 
+
     if (collisionGO->GetTag() == "Enemy")
     {
         Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(collisionGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -85,15 +86,17 @@ void UltimateAttack::OnCollisionEnter(CollisionData* collisionData)
             }
         }
     }
-    else if (collisionGO->GetTag() != "Player" && collisionGO->GetTag() != "Drop" && collisionGO->GetTag() != "Trap" && collisionGO->GetTag() != "DoorArea")
+    else 
     {
         float3 currentScale = mGameObject->GetLocalScale();
-
-        Physics::Raycast(hit, ray, 10.0f);  
+        std::vector<std::string> ignoreTags = { "Bullet", "BattleArea", "Trap", "Drop", "Bridge", "DoorArea", "Collectible","Player","Enemy"};
+        Physics::Raycast(hit, ray, 10.0f, &ignoreTags);
         if (hit.IsValid()) {
             float distance = Distance(float2(hit.mHitPoint.x, hit.mHitPoint.z), float2(mGameObject->GetWorldPosition().x, mGameObject->GetWorldPosition().z)) / 10;
-            mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y, distance));
+            
+            mGameObject->SetLocalScale(float3(currentScale.x, currentScale.y,distance + 0.1));
         }
+        else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));
     }
-    else mGameObject->SetLocalScale(float3(1.0, 1.0, 1.0));
+    
 }

@@ -26,7 +26,7 @@ void BossLaser::Start()
     if (mLaserEyeBall)
     {
         mLaserEyeBall->SetEnabled(false);
-        mLaserEyeBall->SetLocalScale(float3::one * 0.5f);
+        //mLaserEyeBall->SetLocalScale(float3::one * 0.5f);
     }
 }
 
@@ -90,8 +90,9 @@ void BossLaser::Fire()
         if (eyeBallScript)
         {
             eyeBallScript->Init(mDamage, mLaserDuration, mLaserDistance, mLaserSpeed, -90.0f);
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER, mLaserEyeBall->GetWorldPosition());
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_LASER2, mLaserEyeBall->GetWorldPosition());
+
+            mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::BOSS_LASER);
+            GameManager::GetInstance()->GetAudio()->SetPosition(SFX::BOSS_LASER, mLaserSound, mLaserEyeBall->GetWorldPosition());
         }
     }
 }
@@ -103,6 +104,8 @@ void BossLaser::Cooldown()
 
     if (mLaserEyeBall)
     {
+        mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+
         mLaserEyeBall->SetEnabled(false);
     }
 }

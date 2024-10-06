@@ -16,6 +16,8 @@
 #include "Timer.h"
 #include "MathFunc.h"
 
+#include "CinematicCamera.h"
+
 CREATE(GameManager)
 {
     CLASS(owner);
@@ -24,6 +26,7 @@ CREATE(GameManager)
     MEMBER(MemberType::GAMEOBJECT, mPlayerCameraGO);
     MEMBER(MemberType::GAMEOBJECT, mHudControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+    MEMBER(MemberType::GAMEOBJECT, mCinematicManagerGO);
     MEMBER(MemberType::GAMEOBJECT, mPoolManager);
     MEMBER(MemberType::GAMEOBJECT, mFirstTutorial);
     MEMBER(MemberType::GAMEOBJECT, mSecondTutorial);
@@ -91,6 +94,12 @@ void GameManager::Start()
         StartAudio();
     }
 
+    if (mCinematicManagerGO)
+    {
+        ScriptComponent* script = static_cast<ScriptComponent*>(mCinematicManagerGO->GetComponent(ComponentType::SCRIPT));
+        mCinematicCamera = static_cast<CinematicCamera*>(script->GetScriptInstance());
+    }
+
     if (mFirstTutorial) 
     {
         mFirstTutorial->SetEnabled(true);
@@ -136,6 +145,11 @@ void GameManager::Update()
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
         SetPaused(!mPaused, true);
+    }
+
+    if (mCinematicCamera)
+    {
+        mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();
     }
 }
 
@@ -259,11 +273,11 @@ void GameManager::UnlockGrenade(bool unlock)
 
 void GameManager::HandleBossAudio(int stage)
 {
-    if (mBackgroundAudioID == -1)
+    if (mBackgroundAudioID == -1 && stage == -1)
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
     }
-    if (mIsFightingBoss && stage >= 0)
+    if (mIsFightingBoss && mBackgroundAudioID == -1 && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
         {
@@ -368,13 +382,11 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
-    //mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
+
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -388,6 +400,7 @@ void GameManager::PrepareAudio()
     else if (sceneName == "Level3Scene")
     {
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
+        mAudioManager->AddAudioToASComponent(SFX::BOSS_FIRE);
     }
 }
 
