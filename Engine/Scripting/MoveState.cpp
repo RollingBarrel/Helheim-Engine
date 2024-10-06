@@ -112,7 +112,7 @@ void MoveState::DoAnimation()
 	{
 		mMoveDirection.Normalize();
 		float2 mMovingTo = SetMovingDirection();
-		float3 mousePosition = (mPlayerController->GetPlayerAimPosition() - mPlayerController->GetPlayerPosition()).Normalized();
+		float3 mousePosition = GameManager::GetInstance()->GetPlayer()->GetFront();
 		
 		/*OUTDATED
 		//LOG("x:%f , y:%f", mMovingTo.x, mMovingTo.y);
@@ -216,6 +216,9 @@ float MoveState::ComputeMoveAnge(float3 mouseDir)
 	float2 frontProjected(mouseDir.x, mouseDir.z);       // Projected front (XZ plane)
 	float2 directionProjected(mMoveDirection.x, mMoveDirection.z); // Projected direction (XZ plane)
 
+	LOG("Aim direction X = %f ; Z = %f", mouseDir.x, mouseDir.z);
+	LOG("Move direction X = %f ; Z = %f", mMoveDirection.x, mMoveDirection.z);
+
 	// Step 2: Normalize the projected 2D vectors
 	frontProjected.Normalize();
 	directionProjected.Normalize();
@@ -253,6 +256,7 @@ std::string MoveState::GetTriggerFromAngle(float angle)
 	{
 		angle += 360.0f;
 	}
+	LOG("Move angle: %f", angle);
 
 	// Array of strings representing the actions for each octet
 	std::vector<std::string> octetStrings = 
