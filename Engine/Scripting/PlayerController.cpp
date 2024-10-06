@@ -111,7 +111,6 @@ CREATE(PlayerController)
 
     SEPARATOR("DEBUG MODE");
     MEMBER(MemberType::BOOL, mGodMode);
-   //MEMBER(MemberType::GAMEOBJECT, mDebugCube);
 
     END_CREATE;
 }
@@ -744,7 +743,7 @@ void PlayerController::EnableGrenadeAim(bool value)
         mGrenadeExplotionPreviewAreaGO->SetEnabled(value);
         if (value)
         {
-            mGrenadeGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius(), 1.0f, mGrenade->GetGrenadeRadius()));
+            mGrenadeGO->SetWorldScale(float3(mGrenade->GetGrenadeRadius()));
             mGrenadeExplotionPreviewAreaGO->SetWorldPosition(mGameObject->GetWorldPosition());
         }  
     }
@@ -845,6 +844,7 @@ void PlayerController::CheckDebugOptions()
     {
         mGodMode = !mGodMode;
         App->GetScene()->GetPlayerStats()->SetGodMode(mGodMode);
+        GameManager::GetInstance()->GetHud()->SetGodmode(mGodMode);
     }
     if (input->GetKey(Keys::Keys_K) == KeyState::KEY_DOWN)
     {
@@ -852,13 +852,16 @@ void PlayerController::CheckDebugOptions()
         {
             mDamageModifier = 99999.0f;
             App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
+            GameManager::GetInstance()->GetHud()->SetInstaKill(true);
         }
         else
         {
             App->GetScene()->GetPlayerStats()->SetDamageModifier(mDamageModifier);
             mDamageModifier = 1.0f;
+            GameManager::GetInstance()->GetHud()->SetInstaKill(false);
         }
-     }
+
+    }
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {
         RechargeBattery(EnergyType::BLUE);
@@ -923,7 +926,7 @@ void PlayerController::RechargeBattery(EnergyType batteryType)
     mCurrentEnergy = Clamp(mCurrentEnergy+50,0,100);
     mEnergyType = batteryType;
 
-    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, true);
 
     switch (mEnergyType)
     {
@@ -996,7 +999,7 @@ void PlayerController::UseEnergy(int energy)
             mEquippedSpecialGO->SetEnabled(false);
     }
         
-    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType);
+    GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, false);
 }
 
 void PlayerController::ResetEnergy()
@@ -1007,7 +1010,11 @@ void PlayerController::ResetEnergy()
 
 void PlayerController::AddUltimateResource()
 {
-    if (mUltimateResource != 100) mUltimateResource += 20;
+    if (mUltimateResource != 100)
+    {
+        mUltimateResource += 20;
+        GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
+    }
     else return;
 }
 

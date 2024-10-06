@@ -80,7 +80,6 @@ public:
     void DashLookAtFront();
     std::string GetLowerAnimState() const;
 
-
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
 
@@ -339,5 +338,4 @@ private:
     int mKillCount = 0;
 
 
-    //GameObject* mDebugCube = nullptr;
 };

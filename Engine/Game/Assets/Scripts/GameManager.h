@@ -95,6 +95,7 @@ private:
     Timer* mGameTimer = nullptr;
 
     bool mPaused = false;
+    bool mPauseScreen = false;
 
     bool mStopActive = false;
     float mDefaultHitStopTime = 0.0f;

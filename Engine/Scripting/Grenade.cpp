@@ -69,7 +69,6 @@ void Grenade::MoveToTarget()
     {
         mBlackHoleSFX->SetEnabled(false);
         mBlackHoleSFX->SetEnabled(true);
-        //mTrail->SetEnabled(false);
         mSphere->SetEnabled(true);
 
         mState = GRENADE_STATE::BLACK_HOLE;
@@ -132,6 +131,7 @@ void Grenade::BlackHole()
     if (mBlackHoleTimer.Delay(mBlackHoleDuration))
     {
         mState = GRENADE_STATE::EXPLOSION;
+        mTrail->SetEnabled(false);
         MakeDamage(affectedEnemies);
 
     }
@@ -159,16 +159,21 @@ void Grenade::PullCloser(std::vector<GameObject*> enemies)
         float distance = direction.Length();
         if (distance > 0)
         {
-            float3 normalizedDirection = float3(direction.x / distance, direction.y / distance, direction.z / distance);
+            direction.y = 0;
+            float3 normalizedDirection = direction.Normalized();
             float pullStrength = 3.0f * App->GetDt();
-            enemy->SetWorldPosition(enemy->GetWorldPosition() + normalizedDirection * pullStrength);
+
+            //Patch to solve grenade not attracting correctly barrels
+            if (enemy->GetName().compare("OB_explosive_Barrell") != 0)
+                enemy->SetWorldPosition(enemy->GetWorldPosition() + normalizedDirection * pullStrength);
+            else
+                enemy->GetParent()->SetWorldPosition(enemy->GetParent()->GetWorldPosition() + normalizedDirection * pullStrength);
 
             ScriptComponent* script = static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT));
             Enemy* target = static_cast<Enemy*>(script->GetScriptInstance());
 
             if (target)
             {
-                //target->TakeDamage(mGrenadeDPS * App->GetDt());
                 target->SetAttracted(true);
             }
         }
@@ -184,16 +189,16 @@ void Grenade::EndExplosion()
 
 void Grenade::GetAffectedEnemies(std::vector<GameObject*>& affectedEnemies) const
 {
-    const std::vector<GameObject*>& allEnemies = App->GetScene()->FindGameObjectsWithTag("Enemy");
-    // Check if enemies are inside circle
-    for (const auto& e : allEnemies)
-    {
-        float3 diff = e->GetWorldPosition() - mExplosionSFX->GetWorldPosition();
-        float distanceSquared = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+    float radiusSq = mGrenadeRadius * mGrenadeRadius;
 
-        if (distanceSquared <= (mGrenadeRadius * mGrenadeRadius))
+    const std::vector<GameObject*>& allEnemies = App->GetScene()->FindGameObjectsWithTag("Enemy");
+    for (GameObject* enemy : allEnemies)
+    {
+        float distanceSquared = enemy->GetWorldPosition().DistanceSq(mExplosionSFX->GetWorldPosition());
+
+        if (distanceSquared < radiusSq)
         {
-            affectedEnemies.push_back(e);
+            affectedEnemies.push_back(enemy);
         }
     }
 }
