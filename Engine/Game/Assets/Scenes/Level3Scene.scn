@@ -551,12 +551,12 @@
                             {
                                 "VariableName": "mPlayerCameraGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1131062588
                             },
                             {
                                 "VariableName": "mCinematicCameraGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 13236589
                             },
                             {
                                 "VariableName": "ENEMIES",
@@ -569,7 +569,7 @@
                             {
                                 "VariableName": "mEnemyGO1",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1348112554
                             },
                             {
                                 "VariableName": "mEnemyAnimState1",
@@ -613,7 +613,7 @@
                             {
                                 "VariableName": "mBattleAreaGO1",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 569995726
                             },
                             {
                                 "VariableName": "mBattleAreaGO2",
@@ -637,7 +637,7 @@
                             {
                                 "VariableName": "mPlayerGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1634374094
                             },
                             {
                                 "VariableName": "FADE SCREEN",
@@ -646,7 +646,7 @@
                             {
                                 "VariableName": "mFadeGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 2037610754
                             },
                             {
                                 "VariableName": "mColor",
@@ -669,7 +669,7 @@
                             {
                                 "VariableName": "mHudGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 601313962
                             }
                         ]
                     }
@@ -49353,8 +49353,8 @@
                             1.0
                         ],
                         "Size": [
-                            44.0,
-                            44.0
+                            10.0,
+                            38.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -49372,7 +49372,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": true,
-                        "ImageID": 702566348,
+                        "ImageID": 181553418,
                         "Color": [
                             1.0,
                             1.0,
@@ -49451,7 +49451,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1575301693,
+                        "ImageID": 735985207,
                         "Color": [
                             1.0,
                             1.0,
