@@ -1,13 +1,12 @@
 #pragma once
 #include "Enemy.h"
 #include "float2.h"
-#include "float3.h"
-#include "TimerScript.h"
 #include <vector>
 #include <map>
 
 struct CollisionData;
 class BoxColliderComponent;
+class ImageComponent;
 
 enum BulletPattern
 {
@@ -46,7 +45,7 @@ private:
 	void BulletHellPattern5();
 	void BulletHellPattern6();
 	void LaserAttack();
-	void BombAttack();
+	void BombAttack(const char* pattern);
 	void Rotate();
 
 	void  Death() override;
@@ -58,6 +57,10 @@ private:
 	float mPhase1Hp = 0.6f;
 	float mPhase2Hp = 0.3f;
 	bool mWakeUp = false;
+	bool mInvulnerable = true;
+
+	GameObject* mShieldGO = nullptr;
+	ImageComponent* mSpritesheet = nullptr;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
@@ -65,6 +68,8 @@ private:
 	TimerScript mPhaseShiftTimer;
 	float mPhaseShiftTime = 5.0f;
 	TimerScript mBulletHellTimer;
+	TimerScript mShieldTimer;
+	float mShieldDelay = 200.0f;
 
 	float mAttackSequenceCooldown = 4.0f;
 

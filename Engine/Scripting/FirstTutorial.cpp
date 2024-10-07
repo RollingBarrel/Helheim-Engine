@@ -4,6 +4,7 @@
 #include "Application.h"
 #include "ModuleInput.h"
 #include "GameManager.h"
+#include "AudioManager.h"
 #include "AnimationComponent.h"
 #include "BoxColliderComponent.h"
 #include "MeshRendererComponent.h"
@@ -94,6 +95,7 @@ void FirstTutorial::Update()
     {
         if (mDoor1)
         {
+            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::DOOR);
             AnimationComponent* doorAnimation1 = static_cast<AnimationComponent*>(mDoor1->GetComponent(ComponentType::ANIMATION));
             if (doorAnimation1)
             {
@@ -101,7 +103,11 @@ void FirstTutorial::Update()
                 doorAnimation1->SendTrigger("tOpen", 0.6f);
 
             }
-
+            if (mBorderEnter && mTopRender)
+            {
+                mTopRender->SetEmissiveColor(float3(0.0f, 255.0f, 0.0f));
+                mBorderEnter->SetEmissiveColor(float3(0.0f, 255.0f, 0.0f));
+            }
             BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
             if (door1Collider)
             {

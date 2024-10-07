@@ -1,0 +1,1072 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 665369390,
+                "ParentUID": 1,
+                "Name": "MovingObjects_lvl1",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 638100963,
+                "ParentUID": 665369390,
+                "Name": "Moving_MiniEnemy",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    64.83264923095703,
+                    -0.510005533695221,
+                    -17.9587459564209
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1699473108,
+                "ParentUID": 638100963,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    64.83000183105469,
+                                    -0.5099999904632568,
+                                    -24.59000015258789
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.600000023841858
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 579734663,
+                "ParentUID": 1699473108,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1612840682,
+                "ParentUID": 579734663,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1158913576,
+                "ParentUID": 665369390,
+                "Name": "Moving_MiniEnemy (1)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    70.8315200805664,
+                    -0.510005533695221,
+                    -26.350000381469728
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1705716910,
+                "ParentUID": 1158913576,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    70.83000183105469,
+                                    -0.5099999904632568,
+                                    -17.739999771118165
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 1.7999999523162842
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 494914197,
+                "ParentUID": 1705716910,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1042274499,
+                "ParentUID": 494914197,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1033066186,
+                "ParentUID": 665369390,
+                "Name": "Moving_MiniEnemy (2)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    59.282630920410159,
+                    -0.510005533695221,
+                    -26.349205017089845
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7071068286895752,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1535381701,
+                "ParentUID": 1033066186,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    59.279998779296878,
+                                    -0.5099999904632568,
+                                    -17.739999771118165
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.0
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 278768370,
+                "ParentUID": 1535381701,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 912528333,
+                "ParentUID": 278768370,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 910133147,
+                "ParentUID": 665369390,
+                "Name": "Moving_MiniEnemy (3)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -73.59664154052735,
+                    -4.809999942779541,
+                    9.2562837600708
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1456797239,
+                "ParentUID": 910133147,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -73.5999984741211,
+                                    -4.809999942779541,
+                                    -15.119999885559082
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.4000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 243905896,
+                "ParentUID": 1456797239,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 752278438,
+                "ParentUID": 243905896,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 295500808,
+                "ParentUID": 665369390,
+                "Name": "Moving_MiniEnemy (4)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -89.56621551513672,
+                    -4.809999942779541,
+                    -17.83559226989746
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 801854341,
+                "ParentUID": 295500808,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -89.56999969482422,
+                                    -4.809999942779541,
+                                    1.2699999809265137
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.4000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1655964769,
+                "ParentUID": 801854341,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 22841070,
+                "ParentUID": 1655964769,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            },
+            {
+                "UID": 1252820073,
+                "ParentUID": 665369390,
+                "Name": "Moving_MiniEnemy (5)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -105.54497528076172,
+                    -4.810604095458984,
+                    -14.777542114257813
+                ],
+                "Rotation": [
+                    0.0,
+                    -0.7069845795631409,
+                    0.0,
+                    0.70722895860672
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1761331857,
+                "ParentUID": 1252820073,
+                "Name": "OB_Enemy_Ranged_Mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.25,
+                    0.25,
+                    0.25
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "LinearMovement",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "mTargetPosition",
+                                "MemberType": 4,
+                                "VariableData": [
+                                    -105.54000091552735,
+                                    -4.809999942779541,
+                                    5.71999979019165
+                                ]
+                            },
+                            {
+                                "VariableName": "mSpeed",
+                                "MemberType": 1,
+                                "VariableData": 2.4000000953674318
+                            },
+                            {
+                                "VariableName": "mReturnIn",
+                                "MemberType": 1,
+                                "VariableData": 0.0
+                            },
+                            {
+                                "VariableName": "mTeleportBack",
+                                "MemberType": 2,
+                                "VariableData": false
+                            },
+                            {
+                                "VariableName": "Hovering",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mHoveringMovement",
+                                "MemberType": 2,
+                                "VariableData": true
+                            },
+                            {
+                                "VariableName": "mHoveringHeight",
+                                "MemberType": 1,
+                                "VariableData": 0.10000000149011612
+                            },
+                            {
+                                "VariableName": "mHoveringFrequency",
+                                "MemberType": 1,
+                                "VariableData": 50.0
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 498522257,
+                "ParentUID": 1761331857,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -1.2303820848464966,
+                    5.2403459548950199,
+                    0.45560216903686526
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    0.2680247724056244,
+                    0.04946816712617874,
+                    0.2680247724056244
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1000698530,
+                "ParentUID": 498522257,
+                "Name": "OB_Enemy_ranged_mini",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1253033476,
+                        "MaterialID": 1253033481,
+                        "HasSkinning": false,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": []
+                    }
+                ]
+            }
+        ]
+    }
+}

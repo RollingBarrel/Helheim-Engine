@@ -43,11 +43,14 @@ void AIAgentComponent::Update()
 			App->GetNavigation()->MoveAgent(mCrowdId, owner_pos);
 			mDirection = owner_pos - mOwner->GetWorldPosition();
 			mOwner->SetWorldPosition(owner_pos);
+
+			/*
 			float3 destination = mNavPositions.size() > 1 ? mNavPositions[1] : mNavPositions[0];
 			if (owner_pos.Equals(destination, 0.5f) && mNavPositions.size() > 2)
 			{
 				SetNavigationPath(mNavPositions.back());
 			}
+			*/
 		}
 	}
 }
@@ -61,6 +64,8 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 	mNavPositions = App->GetNavigation()->FindNavPath(GetOwner()->GetWorldPosition(), destination);
 	if (!mNavPositions.empty())
 	{
+		App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions.back());
+		/*
 		if (mNavPositions.size() > 1)
 		{
 			App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions[1]);
@@ -69,6 +74,7 @@ void AIAgentComponent::SetNavigationPath(const float3& destination)
 		{
 			App->GetNavigation()->SetAgentDestination(mCrowdId, mNavPositions[0]);
 		}
+		*/
 	}	
 }
 
@@ -79,6 +85,8 @@ void AIAgentComponent::StartCrowdNavigation()
 		dtCrowdAgentParams agentParams;
 		memset(&agentParams, 0, sizeof(agentParams));
 
+
+
 		//AI Agent Class params
 		agentParams.radius = mRadius;
 		agentParams.height = mHeight;
@@ -86,10 +94,10 @@ void AIAgentComponent::StartCrowdNavigation()
 		agentParams.maxSpeed = mMaxSpeed;
 
 		//Crowd fixed params
-		agentParams.collisionQueryRange = agentParams.radius * 3.0f;
-		agentParams.pathOptimizationRange = agentParams.radius * 30.0f;
-		agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE | DT_CROWD_OPTIMIZE_VIS | DT_CROWD_OPTIMIZE_TOPO | DT_CROWD_SEPARATION;
-		agentParams.obstacleAvoidanceType = (unsigned char)3.0f;
+		agentParams.collisionQueryRange = agentParams.radius * 20.0f;
+		agentParams.pathOptimizationRange = agentParams.radius * 50.0f;
+		agentParams.updateFlags = DT_CROWD_ANTICIPATE_TURNS | DT_CROWD_OBSTACLE_AVOIDANCE | DT_CROWD_OPTIMIZE_VIS;
+		agentParams.obstacleAvoidanceType = (unsigned char)2.0f;
 		agentParams.separationWeight = 14.0f;
 
 		mCrowdId = App->GetNavigation()->AddAgent(mOwner->GetWorldPosition(), agentParams);

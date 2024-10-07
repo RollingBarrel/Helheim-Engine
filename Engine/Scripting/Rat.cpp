@@ -10,7 +10,7 @@
 #include "ParticleSystemComponent.h"
 
 #include "GameManager.h"
-
+#include "AudioManager.h"
 
 CREATE(Rat)
 {
@@ -34,7 +34,9 @@ void Rat::Start()
 	}
 
 	mDeathParticles = static_cast<ParticleSystemComponent*>(mGameObject->GetComponentInChildren(ComponentType::PARTICLESYSTEM));
+	if (mDeathParticles) mDeathParticles->SetEnable(false);
 	mDecalComponent = static_cast<DecalComponent*>(mGameObject->GetComponentInChildren(ComponentType::DECAL));
+	if (mDecalComponent) mDecalComponent->SetEnable(false);
 }
 
 void Rat::Update()
@@ -86,6 +88,12 @@ void Rat::Death()
 	float halfDeathTime = mDeathTime / 2.0f;
 	if (mDeathTimer.GetTimePassed() >= halfDeathTime)
 	mDecalComponent->SetFadeFactor(1.0f - ((mDeathTimer.GetTimePassed() - halfDeathTime) / halfDeathTime));
+
+	if (!mDeathAudioPlayed)
+	{
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_RAT_DEATH, mGameObject->GetWorldPosition());
+		mDeathAudioPlayed = true;
+	}
 }
 
 
@@ -100,7 +108,7 @@ void Rat::OnCollisionEnter(CollisionData* collisionData)
 
 	if (collisionData->collidedWith->GetTag() == "Player")
 	{
-		if (mGameObject->GetWorldPosition().Distance(collisionData->collidedWith->GetWorldPosition()) < 0.4f)
+		if (mGameObject->GetWorldPosition().Distance(collisionData->collidedWith->GetWorldPosition()) < 2.0f)
 		{
 			mCurrentState = EnemyState::DEATH;
 			for (int i = 0; i < mMeshComponents.size(); ++i)

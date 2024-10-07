@@ -229,7 +229,12 @@ OBB MeshRendererComponent::GetOBB() const
 	math::OBB obb;
 	if (mHasSkinning)
 	{
-		float4x4 world = GetPalette()[0].Transposed();
+		auto palette = GetPalette();
+		float4x4 world;
+		if (palette.size() > 0)
+			world = GetPalette()[0].Transposed();
+		else
+			world = mOwner->GetWorldTransform();
 		obb.pos = world.MulPos(mOriginalAABB.CenterPoint());
 		float3 size = mOriginalAABB.HalfSize();
 		obb.axis[0] = world.Col(0).xyz();

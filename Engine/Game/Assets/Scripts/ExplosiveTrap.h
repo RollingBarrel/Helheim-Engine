@@ -1,6 +1,5 @@
 #pragma once
 #include <Script.h>
-#include <vector>
 #include "Macros.h"
 #include "TimerScript.h"
 
@@ -11,8 +10,9 @@ class GameObject;
 enum class TRAP_STATE
 {
 	INACTIVE,
-	EXPLOSION_PRESTART,
+	EXPLOSION_CHARGE,
 	EXPLOSION_START,
+	EXPLOSION_END
 };
 
 GENERATE_BODY(ExplosiveTrap);
@@ -21,8 +21,8 @@ class ExplosiveTrap :
 {
 	FRIEND(ExplosiveTrap)
 public:
-	ExplosiveTrap(GameObject* owner);
-	~ExplosiveTrap();
+	ExplosiveTrap(GameObject* owner) : Script(owner) {}
+	~ExplosiveTrap() {}
 	void Update() override;
 	void Start() override;
 	void OnCollisionEnter(CollisionData* collisionData);
@@ -30,12 +30,10 @@ public:
 	void InnerTrapTakeDamage();
 
 private:
-	bool IsInTrap(const GameObject* target);
+	void DoDamage();
 
 	BoxColliderComponent* mCollider = nullptr;
 	BoxColliderComponent* mTrapCollider = nullptr; 
-
-	std::vector<GameObject*> mInTrap;
 
 	TRAP_STATE mState = TRAP_STATE::INACTIVE;
 
@@ -44,11 +42,12 @@ private:
 
 	GameObject* mExplosionPrestartVFX = nullptr;
 	GameObject* mExplosionVFX = nullptr;
+	GameObject* mBarrelMesh = nullptr;
 
 	// Activation
 	float mExplosionWait = 1.5f;
 	float mExplosionDuration = 4.0f;
-	TimerScript mExplosionWaitTimer;
+	TimerScript mExplosionChargeTimer;
 	TimerScript mExplosionDurationTimer;
 
 	// Damage

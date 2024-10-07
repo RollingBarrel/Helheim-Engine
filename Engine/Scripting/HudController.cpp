@@ -18,28 +18,32 @@
 #include "GameManager.h"
 #include "AudioManager.h"
 #include "PlayerController.h"
-#include "MainMenu.h"
 #include "Keys.h"
 #include "Dialog.h"
 #include "Sanity.h"
+#include "PauseMenu.h"
+#include "Weapon.h"
 
 
 CREATE(HudController)
 {
     CLASS(owner);
     SEPARATOR("HUD");
+    MEMBER(MemberType::GAMEOBJECT, mHudGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthGradualGO);
     MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
-    MEMBER(MemberType::GAMEOBJECT, mWeaponRangeGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeHLGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateHLGO);
+    MEMBER(MemberType::GAMEOBJECT, mGunHLGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnergyGO);
-    MEMBER(MemberType::GAMEOBJECT, mEnergyImageGO);
+    MEMBER(MemberType::GAMEOBJECT, mAmmoBaseGO);
+    MEMBER(MemberType::GAMEOBJECT, mAmmoShotgunGO);
+    MEMBER(MemberType::GAMEOBJECT, mAmmoSubGO);
     MEMBER(MemberType::GAMEOBJECT, mFeedbackGO);
+    SEPARATOR("Boss health");
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGO);
     MEMBER(MemberType::GAMEOBJECT, mBossHealthGradualGO);
     SEPARATOR("Pause Screen");
@@ -54,6 +58,12 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mLoseMenuBtnGO);
     MEMBER(MemberType::GAMEOBJECT, mWinMenuBtnGO);
     
+    SEPARATOR("Debug");
+    MEMBER(MemberType::GAMEOBJECT, mDebugGO);
+    MEMBER(MemberType::GAMEOBJECT, mGodmodeGO);
+    MEMBER(MemberType::GAMEOBJECT, mInstakillGO);
+    MEMBER(MemberType::GAMEOBJECT, mDialogueGO);
+
     SEPARATOR("Sanity & Dialog");
     MEMBER(MemberType::GAMEOBJECT, mSanityGO);
     MEMBER(MemberType::GAMEOBJECT, mDialogGO);
@@ -61,8 +71,10 @@ CREATE(HudController)
     SEPARATOR("Collectible");
     MEMBER(MemberType::GAMEOBJECT, mCollectibleScreen);
     MEMBER(MemberType::GAMEOBJECT, mCollectibleTextGO);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleTitleGO);
+    MEMBER(MemberType::GAMEOBJECT, mCollectibleSubtitleGO);
     MEMBER(MemberType::GAMEOBJECT, mCollectibleContinueBtnGO);
-    MEMBER(MemberType::GAMEOBJECT, mInteractGO);
+    MEMBER(MemberType::GAMEOBJECT, mInteractGO); 
 
     SEPARATOR("Weapon Pickups");
     MEMBER(MemberType::GAMEOBJECT, mPickupControllerGO);
@@ -88,6 +100,41 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mVideoGO);
     MEMBER(MemberType::GAMEOBJECT, mVideoBtnGO);
 
+    SEPARATOR("Enemies");
+    MEMBER(MemberType::GAMEOBJECT, mEnemyGO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemy1GO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemy2GO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemy3GO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemy4GO);
+    MEMBER(MemberType::GAMEOBJECT, mEnemy5GO);
+
+    SEPARATOR("BINDINGS");
+    MEMBER(MemberType::GAMEOBJECT, mControllerWeaponBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerUltiBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerGrenadeBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerDialogueNextBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerDialogueSkipBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerVideoBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerCollectibleOpenBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerCollectibleCloseBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerMenuSelectBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerMenuBackBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerCreditsSkipBinding);
+    MEMBER(MemberType::GAMEOBJECT, mControllerPresentationSkipBinding);
+
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardWeaponBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardUltiBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardGrenadeBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardDialogueNextBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardDialogueSkipBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardVideoBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardCollectibleOpenBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardCollectibleCloseBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardMenuSelectBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardMenuBackBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardCreditsSkipBinding);
+    MEMBER(MemberType::GAMEOBJECT, mKeyboardPresentationSkipBinding);
+
     END_CREATE;
 }
 
@@ -101,7 +148,11 @@ HudController::~HudController()
 
 void HudController::Start()
 {
-    if (mPauseScreen) mPauseScreen->SetEnabled(false);
+    if (mPauseScreen) 
+    {
+        mPauseScreen->SetEnabled(false);
+        mPauseMenu = static_cast<PauseMenu*>(static_cast<ScriptComponent*>(mPauseScreen->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    }
 
     if (mWinScreen) 
     {
@@ -141,11 +192,19 @@ void HudController::Start()
         mLoadingSlider->SetValue(0.01f);
     }
     
+    if (mDebugGO) 
+    {
+        mGodmodeImage = static_cast<ImageComponent*>(mGodmodeGO->GetComponent(ComponentType::IMAGE));
+        mInstakillImage = static_cast<ImageComponent*>(mInstakillGO->GetComponent(ComponentType::IMAGE));
+        mDialogueImage = static_cast<ImageComponent*>(mDialogueGO->GetComponent(ComponentType::IMAGE));
+    }
 
     if (mCollectibleScreen)
     {
         mCollectibleScreen->SetEnabled(false);
         if (mCollectibleTextGO) mLoreText = static_cast<TextComponent*>(mCollectibleTextGO->GetComponent(ComponentType::TEXT));
+        if (mCollectibleTitleGO) mTitleText = static_cast<TextComponent*>(mCollectibleTitleGO->GetComponent(ComponentType::TEXT));
+        if (mCollectibleSubtitleGO) mSubtitleText = static_cast<TextComponent*>(mCollectibleSubtitleGO->GetComponent(ComponentType::TEXT));
         if (mCollectibleContinueBtnGO) 
         {
             mCollectibleContinueBtn = static_cast<ButtonComponent*>(mCollectibleContinueBtnGO->GetComponent(ComponentType::BUTTON));
@@ -178,6 +237,7 @@ void HudController::Start()
     {
         mBossHealthSlider = static_cast<SliderComponent*>(mBossHealthGO->GetComponent(ComponentType::SLIDER));
         mBossHealthSlider->SetValue(1.0f);
+        mBossHealthImage = static_cast<ImageComponent*>(mBossHealthGO->GetChildren()[1]->GetComponent(ComponentType::IMAGE));
     }
 
     if (mBossHealthGradualGO) 
@@ -196,11 +256,11 @@ void HudController::Start()
     {
         mUltimateSlider = static_cast<SliderComponent*>(mUltimateSliderGO->GetComponent(ComponentType::SLIDER));
         mUltimateSlider->SetValue(0.001f);
+        mUltimateImage = static_cast<ImageComponent*>(mUltimateHLGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
-    if (mEnergyGO) mEnergyText = static_cast<TextComponent*>(mEnergyGO->GetComponent(ComponentType::TEXT));
-    if (mEnergyImageGO) mEnergyImage = static_cast<ImageComponent*>(mEnergyImageGO->GetComponent(ComponentType::IMAGE));
+
     if (mFeedbackGO) mFeedbackImage = static_cast<ImageComponent*>(mFeedbackGO->GetComponent(ComponentType::IMAGE));
     if (mInteractGO) 
     {
@@ -217,8 +277,6 @@ void HudController::Start()
         mFadeoutScreen->SetEnabled(true);
     }
 
-    //SetDialog();
-
     if (mVideoGO)
     {
         mVideoComponent = static_cast<VideoComponent*>(mVideoGO->GetComponent(ComponentType::VIDEO));
@@ -234,7 +292,10 @@ void HudController::Start()
         GameManager::GetInstance()->PauseBackgroundAudio(true);
         mIsVideoPlaying = true;
     }
-    else SetDialog();
+    else if (App->GetScene()->GetName() != "Level3Scene")
+    {
+        SetDialog();
+    }
 }
 
 void HudController::Update()
@@ -332,26 +393,18 @@ void HudController::Update()
         }
     }
 
-    // Ultimate cooldown update
-    if (mUltimateHL && mUltimateHLTimer.DelayWithoutReset(0.25f))
+    // Apply pulsating effect
+    if (mUltimateHL)
     {
-        mUltimateHLGO->SetEnabled(false);
-        mUltimateHL = false;
+        mAlpha += App->GetDt() * 5.0f;
+        mUltimateImage->SetAlpha(abs(sinf(mAlpha)));
     }
-    if (mUltimateSlider != nullptr && mUltimateCooldown != 0.0f)
+
+    // Weapon highlight
+    if (mGunHL && mGunHLTimer.DelayWithoutReset(0.25))
     {
-        if (mUltimateTimer <= mUltimateCooldown)
-        {
-            mUltimateTimer += App->GetDt();
-            mUltimateSlider->SetValue(1 - (mUltimateTimer / mUltimateCooldown));
-        }
-        else
-        {
-            mUltimateHL = true;
-            mUltimateHLGO->SetEnabled(true);
-            mUltimateHLTimer.Reset();
-            mUltimateCooldown = 0.0f;
-        }
+        mGunHL = false;
+        mGunHLGO->SetEnabled(false);
     }
 }
 
@@ -472,8 +525,6 @@ bool HudController::Delay(float delay)
 void HudController::Controls()
 {
     if (!GameManager::GetInstance()->IsPaused()) return;
-
-    GameManager::GetInstance()->GetPlayerController()->SetIdleState();
 }
 
 void HudController::SetSanity()
@@ -494,35 +545,105 @@ void HudController::DisableCollectible()
     OnCollectibleContinueBtnClick();
 }
 
+void HudController::SetEnemyScreen(bool value, int enemy)
+{
+    mEnemyGO->SetEnabled(value);
+    
+    if (mEnemy1GO) mEnemy1GO->SetEnabled(false);
+    if (mEnemy2GO) mEnemy2GO->SetEnabled(false);
+    if (mEnemy3GO) mEnemy3GO->SetEnabled(false);
+    if (mEnemy4GO) mEnemy4GO->SetEnabled(false);
+    if (mEnemy5GO) mEnemy5GO->SetEnabled(false);
+
+    switch(enemy)
+    {
+    case 1:
+        if (mEnemy1GO)  mEnemy1GO->SetEnabled(true);
+        break;
+    case 2:
+        if (mEnemy2GO) mEnemy2GO->SetEnabled(true);
+        break;
+    case 3:
+        if (mEnemy3GO) mEnemy3GO->SetEnabled(true);
+        break;
+    case 4:
+        if (mEnemy4GO) mEnemy4GO->SetEnabled(true);
+        break;
+    case 5:
+        if (mEnemy5GO) mEnemy5GO->SetEnabled(true);
+        break;
+    default:
+        break;
+    }
+}
+
+void HudController::SetGodmode(bool value)
+{
+    value ? mGodmodeImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mGodmodeImage->SetColor(float3(0.0f, 0.0f, 0.0f));
+    if (mInstakillImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f)) &&
+        mDialogueImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+}
+
+void HudController::SetInstaKill(bool value)
+{
+    value ? mInstakillImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mInstakillImage->SetColor(float3(0.0f, 0.0f, 0.0f));
+    if (mGodmodeImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f)) &&
+        mDialogueImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+}
+
+void HudController::SetDialogue(bool value)
+{
+    value ? mDialogueImage->SetColor(float3(1.0f, 1.0f, 1.0f)) : mDialogueImage->SetColor(float3(0.0f, 0.0f, 0.0f));
+    if (mGodmodeImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f)) &&
+        mInstakillImage->GetColor()->Equals(float3(0.0f, 0.0f, 0.0f))) SetDebug(value);
+}
+
+void HudController::SetDebug(bool value)
+{
+    mDebugGO->SetEnabled(value);
+}
+
+void HudController::SetHud(bool value)
+{
+    mHudGO->SetEnabled(value);
+}
+
 void HudController::SetAmmo(int ammo)
 {
    if (mAmmoText) mAmmoText->SetText(std::to_string(ammo));
 }
 
-void HudController::SetEnergy(int energy, EnergyType type)
+void HudController::SetEnergy(int energy, EnergyType type, bool up)
 {
-    if (mEnergyText) mEnergyText->SetText(std::to_string(energy));
+    if (mAmmoText) mAmmoText->SetText(std::to_string(energy));
+    if (energy == 0) GameManager::GetInstance()->GetPlayerController()->GetWeapon()->SetCurrentAmmo(0);
 
-    float3 color;
+    if (up)
+    {
+        mGunHLTimer.Reset();
+        mGunHL = true;
+        mGunHLGO->SetEnabled(true);
+    }
+
+    mAmmoBaseGO->SetEnabled(false);
+    mAmmoSubGO->SetEnabled(false);
+    mAmmoShotgunGO->SetEnabled(false);
+
     switch (type)
     {
     case EnergyType::NONE:
-        color = float3(100.0f / 255.0f,100.0f / 255.0f,100.0f / 255.0f);
+        mAmmoBaseGO->SetEnabled(true);
         break;
     case EnergyType::BLUE:
-        color = float3(0.0f / 255.0f, 0.0f / 255.0f, 200.0f / 255.0f);
+        mAmmoSubGO->SetEnabled(true);
         break;
     case EnergyType::RED:
-        color = float3(200.0f / 255.0f, 0.0f / 255.0f, 0.0f / 255.0f);
+        mAmmoShotgunGO->SetEnabled(true);
         break;
     default:
-        color = float3(100.0f / 255.0f, 100.0f / 255.0f, 100.0f / 255.0f);
+        mAmmoBaseGO->SetEnabled(true);
         break;
     }
-
-    if (mEnergyImage) mEnergyImage->SetColor(color);
-    if (mEnergyText) mEnergyText->SetTextColor(color);
-
 }
 
 void HudController::SetHealth(float health)
@@ -605,13 +726,27 @@ void HudController::SetGrenadeCooldown(float cooldown)
 
 void HudController::SetUltimateCooldown(float cooldown)
 {
-    mUltimateCooldown = cooldown;
-    mUltimateTimer = 0.001f;
+    mUltimateSlider->SetValue(cooldown / 100.0f);
+
+    if (cooldown == 100)
+    {
+        mUltimateHL = true;
+        mUltimateHLGO->SetEnabled(true);
+        mUltimateSliderGO->SetEnabled(false);
+    }
+    else 
+    {
+        mUltimateHL = false;
+        mUltimateHLGO->SetEnabled(false);
+        mUltimateSliderGO->SetEnabled(true);
+    }
 }
 
-void HudController::SetCollectibleText(std::string text)
+void HudController::SetCollectibleText(std::string text, std::string title, std::string subtitle)
 {
     if (mLoreText) mLoreText->SetText(text);
+    if (mTitleText) mTitleText->SetText(title);
+    if (mSubtitleText) mSubtitleText->SetText(subtitle);
 }
 
 void HudController::SetScreen(SCREEN name, bool active)
@@ -632,6 +767,7 @@ void HudController::SetScreen(SCREEN name, bool active)
             if (mWinScreen) mWinScreen->SetEnabled(active);
             break;
         case SCREEN::PAUSE:
+            mPauseMenu->Reset();
             if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
         case SCREEN::COLLECTIBLE:
@@ -646,11 +782,6 @@ void HudController::SetInteract(bool active)
 {
     if (mInteractGO)
     {
-        if (mInteractText) 
-        {
-           if(GameManager::GetInstance()->UsingController()) mInteractText->SetText("Y to Interact");
-           else mInteractText->SetText("F to Interact");
-        }
         mInteractGO->SetEnabled(active);
     }
         
@@ -769,6 +900,77 @@ void HudController::SetBossHealth(float health)
     if (mBossHealthSlider)
     {
         mBossHealthSlider->SetValue(health);
+    }
+}
+
+void HudController::SetBossInvulnerable(bool value)
+{
+    LOG("Change color: " + value)
+    if (value)
+    {
+        mBossHealthImage->SetColor(float3(77.0f / 255.f, 94.0f / 255.f, 114.0f / 255.f));
+    }
+    else 
+    {
+        mBossHealthImage->SetColor(float3(252.0f / 255.f, 15.0f / 255.f, 62.0f / 255.f));
+    }
+}
+
+void HudController::ChangeBindings(bool controller)
+{
+    if (controller)
+    {
+        if (mControllerWeaponBinding) mControllerWeaponBinding->SetEnabled(true);
+        if (mControllerUltiBinding) mControllerUltiBinding->SetEnabled(true);
+        if (mControllerGrenadeBinding) mControllerGrenadeBinding->SetEnabled(true);
+        if (mControllerDialogueNextBinding) mControllerDialogueNextBinding->SetEnabled(true);
+        if (mControllerDialogueSkipBinding) mControllerDialogueSkipBinding->SetEnabled(true);
+        if (mControllerVideoBinding) mControllerVideoBinding->SetEnabled(true);
+        if (mControllerCollectibleOpenBinding) mControllerCollectibleOpenBinding->SetEnabled(true);
+        if (mControllerCollectibleCloseBinding) mControllerCollectibleCloseBinding->SetEnabled(true);
+        if (mControllerMenuSelectBinding) mControllerMenuSelectBinding->SetEnabled(true);
+        if (mControllerMenuBackBinding) mControllerMenuBackBinding->SetEnabled(true);
+        if (mControllerCreditsSkipBinding)  mControllerCreditsSkipBinding->SetEnabled(true);
+        if (mControllerPresentationSkipBinding) mControllerPresentationSkipBinding->SetEnabled(true);
+        if (mKeyboardWeaponBinding)  mKeyboardWeaponBinding->SetEnabled(false);
+        if (mKeyboardUltiBinding)  mKeyboardUltiBinding->SetEnabled(false);
+        if (mKeyboardGrenadeBinding) mKeyboardGrenadeBinding->SetEnabled(false);
+        if (mKeyboardDialogueNextBinding) mKeyboardDialogueNextBinding->SetEnabled(false);
+        if (mKeyboardDialogueSkipBinding)  mKeyboardDialogueSkipBinding->SetEnabled(false);
+        if (mKeyboardVideoBinding)  mKeyboardVideoBinding->SetEnabled(false);
+        if (mKeyboardCollectibleOpenBinding)  mKeyboardCollectibleOpenBinding->SetEnabled(false);
+        if (mKeyboardCollectibleCloseBinding)  mKeyboardCollectibleCloseBinding->SetEnabled(false);
+        if (mKeyboardMenuSelectBinding)  mKeyboardMenuSelectBinding->SetEnabled(false);
+        if (mKeyboardMenuBackBinding)  mKeyboardMenuBackBinding->SetEnabled(false);
+        if (mKeyboardCreditsSkipBinding)   mKeyboardCreditsSkipBinding->SetEnabled(false);
+        if (mKeyboardPresentationSkipBinding) mKeyboardPresentationSkipBinding->SetEnabled(false);
+    }
+    else
+    {
+        if (mControllerWeaponBinding) mControllerWeaponBinding->SetEnabled(false);
+        if (mControllerUltiBinding) mControllerUltiBinding->SetEnabled(false);
+        if (mControllerGrenadeBinding) mControllerGrenadeBinding->SetEnabled(false);
+        if (mControllerDialogueNextBinding) mControllerDialogueNextBinding->SetEnabled(false);
+        if (mControllerDialogueSkipBinding) mControllerDialogueSkipBinding->SetEnabled(false);
+        if (mControllerVideoBinding) mControllerVideoBinding->SetEnabled(false);
+        if (mControllerCollectibleOpenBinding) mControllerCollectibleOpenBinding->SetEnabled(false);
+        if (mControllerCollectibleCloseBinding) mControllerCollectibleCloseBinding->SetEnabled(false);
+        if (mControllerMenuSelectBinding) mControllerMenuSelectBinding->SetEnabled(false);
+        if (mControllerMenuBackBinding) mControllerMenuBackBinding->SetEnabled(false);
+        if (mControllerCreditsSkipBinding)  mControllerCreditsSkipBinding->SetEnabled(false);
+        if (mControllerPresentationSkipBinding) mControllerPresentationSkipBinding->SetEnabled(false);
+        if (mKeyboardWeaponBinding)  mKeyboardWeaponBinding->SetEnabled(true);
+        if (mKeyboardUltiBinding)  mKeyboardUltiBinding->SetEnabled(true);
+        if (mKeyboardGrenadeBinding) mKeyboardGrenadeBinding->SetEnabled(true);
+        if (mKeyboardDialogueNextBinding) mKeyboardDialogueNextBinding->SetEnabled(true);
+        if (mKeyboardDialogueSkipBinding)  mKeyboardDialogueSkipBinding->SetEnabled(true);
+        if (mKeyboardVideoBinding)  mKeyboardVideoBinding->SetEnabled(true);
+        if (mKeyboardCollectibleOpenBinding)  mKeyboardCollectibleOpenBinding->SetEnabled(true);
+        if (mKeyboardCollectibleCloseBinding)  mKeyboardCollectibleCloseBinding->SetEnabled(true);
+        if (mKeyboardMenuSelectBinding)  mKeyboardMenuSelectBinding->SetEnabled(true);
+        if (mKeyboardMenuBackBinding)  mKeyboardMenuBackBinding->SetEnabled(true);
+        if (mKeyboardCreditsSkipBinding)   mKeyboardCreditsSkipBinding->SetEnabled(true);
+        if (mKeyboardPresentationSkipBinding) mKeyboardPresentationSkipBinding->SetEnabled(true);
     }
 }
 
