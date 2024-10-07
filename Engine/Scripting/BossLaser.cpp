@@ -65,7 +65,7 @@ void BossLaser::Update()
 void BossLaser::Init(float damage, float duration, float distance, float speed)
 {
     mDamage = damage;
-    mLaserDuration = duration;
+    mLaserDuration = duration - mChargeTime;
     mLaserDistance = distance;
     mLaserSpeed = speed;
     Charge();

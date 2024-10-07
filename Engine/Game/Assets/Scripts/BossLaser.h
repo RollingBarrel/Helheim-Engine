@@ -38,7 +38,7 @@ private:
     float mLaserDistance = 0.0f;
     float mLaserSpeed = 0.0f;
     float mStateTime = 0.0f;
-    float mChargeTime = 1.0f;
+    float mChargeTime = 2.0f;
     float mLaserDuration = 0.0f;
     float mCooldownDuration = 2.0f;
 
