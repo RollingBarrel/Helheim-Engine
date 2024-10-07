@@ -62378,6 +62378,34 @@
                         "BlurBack": false
                     }
                 ]
+            },
+            {
+                "UID": 182660391,
+                "ParentUID": 1,
+                "Name": "Lights_Alpha3_Level3",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
             }
         ],
         "NavMeshResource": 912797924,
