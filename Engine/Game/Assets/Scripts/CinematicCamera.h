@@ -41,7 +41,6 @@ private:
  
     void OnSkipClick();
 
-    //GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO = nullptr;
 
     GameObject* mCameraObjectGO1 = nullptr;
