@@ -283,8 +283,3 @@ void SpotLightComponent::Disable()
 {
 	App->GetOpenGL()->RemoveSpotLight(*this);
 }
-
-float3 SpotLightComponent::GetPosition() const
-{
-	return mOwner->GetWorldPosition();
-}

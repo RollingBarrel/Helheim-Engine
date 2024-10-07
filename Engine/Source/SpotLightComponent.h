@@ -35,7 +35,6 @@ public:
 	void Disable() override;
 
 	const SpotLight& GetData() const { return mData; }
-	float3 GetPosition() const;
 	const float* GetDirection() const { return mData.aimD; };
 	const float* GetColor() const { return mData.color; }
 	void SetColor(float col[3]);
