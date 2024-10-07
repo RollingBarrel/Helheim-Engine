@@ -95,7 +95,6 @@ void SecondTutorial::Tutorial()
         case 3:
             mShootTutorialCon->SetEnabled(false);
             mShootTutorial->SetEnabled(false);
-            mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
@@ -129,15 +128,14 @@ void SecondTutorial::Tutorial()
         case 3:
             mShootTutorialCon->SetEnabled(false);
             mShootTutorial->SetEnabled(false);
-            mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
         case 2:
             mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(false);
-            mGrenadeTutorialCon->SetEnabled(false);
-            mGrenadeTutorial->SetEnabled(true);
+            mGrenadeTutorialCon->SetEnabled(true);
+            mGrenadeTutorial->SetEnabled(false);
             GameManager::GetInstance()->UnlockGrenade(true);
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
                 mGrenadeUsed = true;
@@ -147,6 +145,7 @@ void SecondTutorial::Tutorial()
             {
                 mGrenadeTutorialCon->SetEnabled(false);
                 mGrenadeTutorial->SetEnabled(false);
+                mPart1Completed = true;
             }
             else
                 mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);

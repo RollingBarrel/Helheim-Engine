@@ -132,7 +132,7 @@ void FirstTutorial::Tutorial()
             {
                 mMoveTutorial->SetEnabled(false);
                 mMoveTutorialCon->SetEnabled(false);
-                mDashTutorialCon->SetEnabled(true);
+                mDashTutorialCon->SetEnabled(false);
                 mDashTutorial->SetEnabled(true);
                 mCurrentStep = 2;
             }
@@ -159,7 +159,7 @@ void FirstTutorial::Tutorial()
             {
                 mMoveTutorial->SetEnabled(false);
                 mMoveTutorialCon->SetEnabled(false);
-                mDashTutorial->SetEnabled(true);
+                mDashTutorial->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(true);
                 mCurrentStep = 2;
             }
