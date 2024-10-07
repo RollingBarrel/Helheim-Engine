@@ -47,6 +47,7 @@ private:
 	void LaserAttack();
 	void BombAttack(const char* pattern);
 	void Rotate();
+	void InterruptAttacks();
 
 	void  Death() override;
 

@@ -136,7 +136,7 @@ void EnemyBoss::Update()
         if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
         else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
         mCurrentState = EnemyState::PHASE;
-        mBulletHell = BulletPattern::NONE;
+        InterruptAttacks();
         mInvulnerable = true;
         GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
@@ -249,7 +249,7 @@ void EnemyBoss::Update()
             break;
         case EnemyState::DEATH:
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
-            mBulletHell = BulletPattern::NONE;
+            InterruptAttacks();
             Death();
             break;
         case EnemyState::CHARGING_BULLET_HELL:
@@ -264,14 +264,6 @@ void EnemyBoss::Update()
             {
                 mCurrentState = EnemyState::ATTACK;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
-            }
-            break;
-        case EnemyState::WAKE:
-            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
-            {
-                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
-                mCurrentState = EnemyState::IDLE;
             }
             break;
         case EnemyState::DOWN:
@@ -337,6 +329,7 @@ void EnemyBoss::LaserAttack()
         float3 laserSpawn = mGameObject->GetWorldPosition();
         laserSpawn.y = mPlayer->GetWorldPosition().y + 2.0f;
         mLaserGO->SetWorldPosition(laserSpawn);
+        mLaserGO->SetEnabled(true);
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (laserScript)
         {
@@ -889,5 +882,15 @@ void EnemyBoss::TakeDamage(float damage)
             // Use Hit2 animation before Death??
             mCurrentState = EnemyState::DEATH;
         }
+    }
+}
+
+void EnemyBoss::InterruptAttacks()
+{
+    mBulletHell = BulletPattern::NONE;
+    mLaserGO->SetEnabled(false);
+    for (GameObject* bombGO : mTemplates)
+    {
+        bombGO->SetEnabled(false);
     }
 }
