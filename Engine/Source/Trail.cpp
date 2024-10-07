@@ -207,6 +207,10 @@ void Trail::AddFirstTrailPoint(GameObject* mOwner)
         mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
         mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
     }
+    if (mPoints.size() == 2)
+    {
+        mBuffer[0].mDirection = mBuffer[1].mDirection = direction;
+    }
 
     mLastPointPosition = position;
     mMinDist = distUV;
@@ -242,6 +246,10 @@ void Trail::AddFirstTrailPoint(float3 position)
     {
         mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
         mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
+    }
+    if (mPoints.size() == 2)
+    {
+        mBuffer[0].mDirection = mBuffer[1].mDirection = direction;
     }
 
     mLastPointPosition = position;
