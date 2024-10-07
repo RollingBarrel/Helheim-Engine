@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 850292588,
+                "UID": 114977064,
                 "ParentUID": 1,
                 "Name": "FlickeringLights",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1278044012,
-                "ParentUID": 850292588,
+                "UID": 539247438,
+                "ParentUID": 114977064,
                 "Name": "Light_1_5",
                 "Enabled": true,
                 "Active": true,
@@ -230,8 +230,8 @@
                 ]
             },
             {
-                "UID": 1673212808,
-                "ParentUID": 1278044012,
+                "UID": 911998272,
+                "ParentUID": 539247438,
                 "Name": "OB_Ind_Light_B.004",
                 "Enabled": true,
                 "Active": true,
@@ -268,8 +268,8 @@
                 ]
             },
             {
-                "UID": 2064065102,
-                "ParentUID": 1278044012,
+                "UID": 1282590855,
+                "ParentUID": 539247438,
                 "Name": "Spotlight (6)",
                 "Enabled": true,
                 "Active": true,
@@ -323,8 +323,8 @@
                 ]
             },
             {
-                "UID": 308060338,
-                "ParentUID": 850292588,
+                "UID": 1665784839,
+                "ParentUID": 114977064,
                 "Name": "cryotube_light",
                 "Enabled": true,
                 "Active": true,
@@ -523,8 +523,8 @@
                 ]
             },
             {
-                "UID": 710330476,
-                "ParentUID": 308060338,
+                "UID": 2039231883,
+                "ParentUID": 1665784839,
                 "Name": "light",
                 "Enabled": true,
                 "Active": true,
@@ -568,8 +568,8 @@
                 ]
             },
             {
-                "UID": 1103549884,
-                "ParentUID": 308060338,
+                "UID": 265891490,
+                "ParentUID": 1665784839,
                 "Name": "OB_Serial_Cryotube.021",
                 "Enabled": true,
                 "Active": true,
@@ -606,8 +606,8 @@
                 ]
             },
             {
-                "UID": 1500041479,
-                "ParentUID": 850292588,
+                "UID": 639477776,
+                "ParentUID": 114977064,
                 "Name": "Light_1_1",
                 "Enabled": true,
                 "Active": true,
@@ -806,8 +806,8 @@
                 ]
             },
             {
-                "UID": 1891172257,
-                "ParentUID": 1500041479,
+                "UID": 1012855199,
+                "ParentUID": 639477776,
                 "Name": "OB_Ind_Light_B.001",
                 "Enabled": true,
                 "Active": true,
@@ -844,8 +844,8 @@
                 ]
             },
             {
-                "UID": 141154899,
-                "ParentUID": 1500041479,
+                "UID": 1394726384,
+                "ParentUID": 639477776,
                 "Name": "f_light_1",
                 "Enabled": true,
                 "Active": true,
@@ -899,8 +899,8 @@
                 ]
             },
             {
-                "UID": 532842645,
-                "ParentUID": 850292588,
+                "UID": 1772350688,
+                "ParentUID": 114977064,
                 "Name": "Light_1_7",
                 "Enabled": true,
                 "Active": true,
@@ -1099,8 +1099,8 @@
                 ]
             },
             {
-                "UID": 924321528,
-                "ParentUID": 532842645,
+                "UID": 2282482,
+                "ParentUID": 1772350688,
                 "Name": "OB_Ind_Light_B.006",
                 "Enabled": true,
                 "Active": true,
@@ -1137,8 +1137,8 @@
                 ]
             },
             {
-                "UID": 1320047292,
-                "ParentUID": 532842645,
+                "UID": 398008246,
+                "ParentUID": 1772350688,
                 "Name": "Spotlight (8)",
                 "Enabled": true,
                 "Active": true,
@@ -1192,8 +1192,8 @@
                 ]
             },
             {
-                "UID": 1717235097,
-                "ParentUID": 850292588,
+                "UID": 778278148,
+                "ParentUID": 114977064,
                 "Name": "terminal_light1",
                 "Enabled": true,
                 "Active": true,
@@ -1392,8 +1392,8 @@
                 ]
             },
             {
-                "UID": 2113865934,
-                "ParentUID": 1717235097,
+                "UID": 1156737904,
+                "ParentUID": 778278148,
                 "Name": "OB_Terminal.011",
                 "Enabled": true,
                 "Active": true,
@@ -1430,8 +1430,8 @@
                 ]
             },
             {
-                "UID": 360506768,
-                "ParentUID": 850292588,
+                "UID": 1535615386,
+                "ParentUID": 114977064,
                 "Name": "ternimal_light2",
                 "Enabled": true,
                 "Active": true,
@@ -1630,8 +1630,8 @@
                 ]
             },
             {
-                "UID": 757764194,
-                "ParentUID": 360506768,
+                "UID": 1914562489,
+                "ParentUID": 1535615386,
                 "Name": "OB_Terminal_lvl2.004",
                 "Enabled": true,
                 "Active": true,
@@ -1661,282 +1661,6 @@
                         "IsEnabled": true,
                         "MeshID": 551771652,
                         "MaterialID": 551771657,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
-                "UID": 1168945820,
-                "ParentUID": 850292588,
-                "Name": "tube_light_2_1",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    63.32447814941406,
-                    37.08906936645508,
-                    23.41162109375
-                ],
-                "Rotation": [
-                    -0.7071068286895752,
-                    0.0,
-                    0.0,
-                    0.7071067094802856
-                ],
-                "Scale": [
-                    0.3556743562221527,
-                    0.3556743860244751,
-                    0.3556743860244751
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 3,
-                        "IsEnabled": true,
-                        "ScriptName": "FlickeringLight",
-                        "ScriptVariables": [
-                            {
-                                "VariableName": "mSpeed",
-                                "MemberType": 1,
-                                "VariableData": 1.0
-                            },
-                            {
-                                "VariableName": "mStartingTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mLoopDuration",
-                                "MemberType": 1,
-                                "VariableData": 8.0
-                            },
-                            {
-                                "VariableName": "mTimeOffset",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "Blackouts",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "1",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout1.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout1.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.5
-                            },
-                            {
-                                "VariableName": "2",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout2.mTime",
-                                "MemberType": 1,
-                                "VariableData": 3.0
-                            },
-                            {
-                                "VariableName": "mBlackout2.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.10000000149011612
-                            },
-                            {
-                                "VariableName": "3",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout3.mTime",
-                                "MemberType": 1,
-                                "VariableData": 3.4000000953674318
-                            },
-                            {
-                                "VariableName": "mBlackout3.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.10000000149011612
-                            },
-                            {
-                                "VariableName": "4",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout4.mTime",
-                                "MemberType": 1,
-                                "VariableData": 5.0
-                            },
-                            {
-                                "VariableName": "mBlackout4.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.6000000238418579
-                            },
-                            {
-                                "VariableName": "5",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout5.mTime",
-                                "MemberType": 1,
-                                "VariableData": 5.699999809265137
-                            },
-                            {
-                                "VariableName": "mBlackout5.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.07500000298023224
-                            },
-                            {
-                                "VariableName": "6",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout6.mTime",
-                                "MemberType": 1,
-                                "VariableData": 5.900000095367432
-                            },
-                            {
-                                "VariableName": "mBlackout6.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.20000000298023225
-                            },
-                            {
-                                "VariableName": "7",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout7.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout7.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "8",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout8.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout8.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "9",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout9.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout9.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "10",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mBlackout10.mTime",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            },
-                            {
-                                "VariableName": "mBlackout10.mDuration",
-                                "MemberType": 1,
-                                "VariableData": 0.0
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "UID": 1576994501,
-                "ParentUID": 1168945820,
-                "Name": "OB_Lab_Tube_A_Blue.002",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    4.3696441650390629,
-                    0.00000762939453125
-                ],
-                "Rotation": [
-                    1.0331604016755591e-7,
-                    -5.9604641222676949e-8,
-                    1.0,
-                    1.033160259567012e-7
-                ],
-                "Scale": [
-                    1.000000238418579,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 551771618,
-                        "MaterialID": 551771623,
-                        "HasSkinning": false,
-                        "PaletteOwner": 0,
-                        "InverseBindMatrices": []
-                    }
-                ]
-            },
-            {
-                "UID": 228968797,
-                "ParentUID": 1168945820,
-                "Name": "OB_Lab_Tube_A_Blue.003",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 0,
-                        "IsEnabled": true,
-                        "MeshID": 551771618,
-                        "MaterialID": 551771623,
                         "HasSkinning": false,
                         "PaletteOwner": 0,
                         "InverseBindMatrices": []
