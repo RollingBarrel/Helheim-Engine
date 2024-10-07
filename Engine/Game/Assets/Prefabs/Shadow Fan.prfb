@@ -2,15 +2,15 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 630150614,
+                "UID": 2118691746,
                 "ParentUID": 1,
                 "Name": "Shadow Fan",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    -0.6935482025146484,
+                    -4.5973334312438969,
+                    1.7580366134643555
                 ],
                 "Rotation": [
                     0.0,
@@ -30,15 +30,15 @@
                 "Components": []
             },
             {
-                "UID": 1722938691,
-                "ParentUID": 630150614,
+                "UID": 31987232,
+                "ParentUID": 2118691746,
                 "Name": "OB_Animated_Fan",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.5876391530036926,
-                    47.82484817504883,
-                    15.964217185974121
+                    -0.45832133293151858,
+                    49.31373977661133,
+                    18.156051635742189
                 ],
                 "Rotation": [
                     -0.029554767534136773,
@@ -47,9 +47,9 @@
                     -0.01952183246612549
                 ],
                 "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
+                    1.909999966621399,
+                    1.909999966621399,
+                    1.9099998474121094
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -60,13 +60,18 @@
                         "ComponentType": 10,
                         "IsEnabled": true,
                         "AnimationUID": 1361013709,
-                        "LowerSMUID": 0
+                        "LowerSMUID": 1668306357
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayAnimationScript"
                     }
                 ]
             },
             {
-                "UID": 1739369247,
-                "ParentUID": 1722938691,
+                "UID": 40272131,
+                "ParentUID": 31987232,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -93,8 +98,8 @@
                 "Components": []
             },
             {
-                "UID": 1748559219,
-                "ParentUID": 1739369247,
+                "UID": 46816505,
+                "ParentUID": 40272131,
                 "Name": "OB_Animated_Fan",
                 "Enabled": true,
                 "Active": true,
@@ -121,8 +126,8 @@
                 "Components": []
             },
             {
-                "UID": 1753920036,
-                "ParentUID": 1748559219,
+                "UID": 52664669,
+                "ParentUID": 46816505,
                 "Name": "OB_Animated_Fan",
                 "Enabled": true,
                 "Active": true,
@@ -156,7 +161,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1766591058,
+                                "GoId": 58860938,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -177,7 +182,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1772091117,
+                                "GoId": 65544554,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -202,8 +207,8 @@
                 ]
             },
             {
-                "UID": 1766591058,
-                "ParentUID": 1739369247,
+                "UID": 58860938,
+                "ParentUID": 40272131,
                 "Name": "Bone",
                 "Enabled": true,
                 "Active": true,
@@ -230,8 +235,8 @@
                 "Components": []
             },
             {
-                "UID": 1772091117,
-                "ParentUID": 1739369247,
+                "UID": 65544554,
+                "ParentUID": 40272131,
                 "Name": "Bone.001",
                 "Enabled": true,
                 "Active": true,
@@ -258,14 +263,14 @@
                 "Components": []
             },
             {
-                "UID": 1755435907,
-                "ParentUID": 630150614,
+                "UID": 71880065,
+                "ParentUID": 2118691746,
                 "Name": "spotlight",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -0.6249163150787354,
-                    51.51071548461914,
+                    51.75384521484375,
                     13.548150062561036
                 ],
                 "Rotation": [
@@ -288,27 +293,27 @@
                         "ComponentType": 2,
                         "IsEnabled": true,
                         "Position": [
-                            -0.6249163150787354,
-                            51.51071548461914,
-                            13.548150062561036,
+                            -1.3184645175933838,
+                            47.15651321411133,
+                            15.30618667602539,
                             300.0
                         ],
                         "Direction": [
                             0.0,
                             -1.0,
-                            -1.1920927533992654e-7,
+                            -1.1920930376163597e-7,
                             0.9063077569007874
                         ],
                         "Color": [
                             1.0,
-                            1.0,
-                            1.0,
+                            0.5,
+                            0.5,
                             0.6691305637359619
                         ],
                         "Range": 143.5,
                         "CastShadow": true,
                         "Bias": 0.000009999999747378752,
-                        "isVolumetric": false
+                        "isVolumetric": true
                     }
                 ]
             }
