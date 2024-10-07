@@ -207,9 +207,10 @@ void Trail::AddFirstTrailPoint(GameObject* mOwner)
         mBuffer.push_back({ botPointPos, botPointTexCoord, distUV, direction });
         mBuffer.push_back({ topPointPos, topPointTexCoord, distUV, direction });
     }
-    if (mPoints.size() == 2)
+    if (mPoints.size() == 2) 
     {
-        mBuffer[0].mDirection = mBuffer[1].mDirection = direction;
+        mBuffer[0].mPosition = mLastPointPosition - direction * (mWidth.GetValue().GetMinValue() * 0.5f);
+        mBuffer[1].mPosition = mLastPointPosition + direction * (mWidth.GetValue().GetMinValue() * 0.5f);
     }
 
     mLastPointPosition = position;
@@ -249,7 +250,8 @@ void Trail::AddFirstTrailPoint(float3 position)
     }
     if (mPoints.size() == 2)
     {
-        mBuffer[0].mDirection = mBuffer[1].mDirection = direction;
+        mBuffer[0].mPosition = mLastPointPosition - direction * (mWidth.GetValue().GetMinValue() * 0.5f);
+        mBuffer[1].mPosition = mLastPointPosition + direction * (mWidth.GetValue().GetMinValue() * 0.5f);
     }
 
     mLastPointPosition = position;
@@ -279,7 +281,11 @@ void Trail::UpdateTrailComponent(GameObject* owner)
     {
         AddFirstTrailPoint(owner);
     }
-    else if (mPoints.size() == 1)
+    else if (dposition >= 0.0001 and mPoints.size() == 1)
+    {
+        AddFirstTrailPoint(owner);
+    }
+    else if (mPoints.empty())
     {
         AddFirstTrailPoint(owner);
     }
@@ -298,7 +304,11 @@ void Trail::UpdateTrailParticle(float3 position)
     {
         AddFirstTrailPoint(position);
     }
-    else if (mPoints.size() == 1)
+    else if (  mPoints.size() == 1 and dposition >= 0.0001)
+    {
+        AddFirstTrailPoint(position);
+    }
+    else if (mPoints.empty())
     {
         AddFirstTrailPoint(position);
     }
