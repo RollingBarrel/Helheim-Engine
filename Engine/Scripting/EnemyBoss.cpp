@@ -329,7 +329,6 @@ void EnemyBoss::LaserAttack()
         float3 laserSpawn = mGameObject->GetWorldPosition();
         laserSpawn.y = mPlayer->GetWorldPosition().y + 2.0f;
         mLaserGO->SetWorldPosition(laserSpawn);
-        mLaserGO->SetEnabled(true);
         BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
         if (laserScript)
         {
@@ -580,7 +579,7 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
 void EnemyBoss::BulletHellPattern5() //Stream
 {
 
-    if (mBulletHellTimer.Delay(BEAT_TIME/8)) //Each pattern will need different rythm
+    if (mBulletHellTimer.Delay(BEAT_TIME * 0.25)) //Each pattern will need different rythm
     {
         const unsigned int nBullets = 16;
         float alpha = (pi / 2) - pi * (mBulletsWave % nBullets) / (nBullets - 1);
@@ -686,7 +685,7 @@ void EnemyBoss::UpdatePhase3()
                 BombAttack("BombingTemplate3.prfb");
                 break;
             case 0:
-                BombAttack("BombingTemplate1.prfb");
+                LaserAttack();
                 break;
             case 1:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
@@ -712,6 +711,12 @@ void EnemyBoss::UpdatePhase3()
             }
             break;
         case 1:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                BombAttack("BombingTemplate1.prfb"); // Big
+                attack++;
+            }
+            break;
         case 10:
         case 20:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
@@ -885,10 +890,14 @@ void EnemyBoss::TakeDamage(float damage)
     }
 }
 
-void EnemyBoss::InterruptAttacks()
+void EnemyBoss::InterruptAttacks() 
 {
     mBulletHell = BulletPattern::NONE;
-    mLaserGO->SetEnabled(false);
+    BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (laserScript)
+    {
+        laserScript->Interrupt();
+    }
     for (GameObject* bombGO : mTemplates)
     {
         bombGO->SetEnabled(false);

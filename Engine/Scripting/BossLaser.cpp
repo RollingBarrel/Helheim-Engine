@@ -109,3 +109,11 @@ void BossLaser::Cooldown()
         mLaserEyeBall->SetEnabled(false);
     }
 }
+
+void BossLaser::Interrupt()
+{
+    if (mCurrentState != LaserState::IDLE && mCurrentState != LaserState::COOLDOWN)
+    {
+        Cooldown();
+    }
+}

@@ -26,7 +26,7 @@ public:
     void Start() override;
     void Update() override;
     void Init(float damage, float duration, float distance, float speed);
-
+    void Interrupt();
 private:
     void Charge();
     void Fire();
