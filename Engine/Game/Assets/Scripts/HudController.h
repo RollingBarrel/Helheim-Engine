@@ -26,6 +26,11 @@ enum class SCREEN {
     COLLECTIBLE
 };
 
+enum LOSE_OPTION {
+    RETRY,
+    BACK_TO_MENU
+};
+
 GENERATE_BODY(HudController);
 class HudController : public Script
 {
@@ -75,6 +80,7 @@ private:
     void OnLoseButtonClick();
     void OnLoseButtonHoverOn();
     void OnLoseButtonHoverOff();
+	void OnSelectLooseOption(LOSE_OPTION option);
 
     void OnCollectibleContinueBtnClick();
     void OnCollectibleContinueBtnHoverOn();
@@ -186,7 +192,12 @@ private:
 
     int mArenaCounter = 0;
 
-    int mCurrentOption = 0;
+    // Debounce gamepad analog input (joystick)
+    float mDebounceTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
+
+    // Lose Screen
+	LOSE_OPTION mLoseOption = LOSE_OPTION::RETRY;
 
     // Lose Animation
     TimerScript mLoseAnimationTimer;
