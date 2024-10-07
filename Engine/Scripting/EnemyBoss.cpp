@@ -374,8 +374,8 @@ void EnemyBoss::BombAttack(const char* pattern)
         if (index == 1)
         {
             //Spawn 2 single bombs on the area separators
-            SetupBomb(mTemplates[10], mAreaPositions[0] + math::float3(2.12f, 0.0f, -4.33f));
-            SetupBomb(mTemplates[11], mAreaPositions[2] + math::float3(2.12f, 0.0f, 4.33f));
+            SetupBomb(mTemplates[10], mAreaPositions[0] + math::float3(2.45f, 0.0f, -4.55f));
+            SetupBomb(mTemplates[11], mAreaPositions[2] + math::float3(2.45f, 0.0f, 4.55f));
         }
 
         SetupBomb(mTemplates[9], mPlayer->GetWorldPosition());
