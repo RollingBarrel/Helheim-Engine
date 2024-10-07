@@ -38,6 +38,7 @@ public:
     void SetEnergy(int energy, EnergyType type, bool up);
     void SetHealth(float health);
     void SetBossHealth(float health);
+    void SetBossInvulnerable(bool value);
     void SetBossHealthBarEnabled(bool enabled);
     void SetMaxHealth(float health);
     void SetGrenadeCooldown(float cooldown);
@@ -52,8 +53,11 @@ public:
     void DisableCollectible();
     void SetFadein(bool value) { mFadeIn = value; }
 
+    void SetEnemyScreen(bool value, int enemy);
+
     void SetGodmode(bool value);
     void SetInstaKill(bool value);
+    void SetDialogue(bool value);
     void SetDebug(bool value);
 
     void ChangeBindings(bool controller);
@@ -146,14 +150,17 @@ private:
     GameObject* mDebugGO = nullptr;
     GameObject* mGodmodeGO = nullptr;
     GameObject* mInstakillGO = nullptr;
+    GameObject* mDialogueGO = nullptr;
     ImageComponent* mGodmodeImage = nullptr;
     ImageComponent* mInstakillImage = nullptr;
+    ImageComponent* mDialogueImage = nullptr;
 
     //Boss Health bar
     GameObject* mBossHealthGO = nullptr;
     GameObject* mBossHealthGradualGO = nullptr;
     float mBossHealth = 0.0;
     SliderComponent* mBossHealthSlider = nullptr;
+    ImageComponent* mBossHealthImage = nullptr;
     SliderComponent* mBossHealthGradualSlider = nullptr;
 
     //Ammo
@@ -185,8 +192,6 @@ private:
     Dialog* mDialog = nullptr;
 
     int mArenaCounter = 0;
-
-    int mCurrentOption = 0;
 
     // Lose Animation
     TimerScript mLoseAnimationTimer;
@@ -241,6 +246,14 @@ private:
     //Hud
     GameObject* mHudGO = nullptr;
 
+    // Enemies
+    GameObject* mEnemyGO = nullptr;
+    GameObject* mEnemy1GO = nullptr;
+    GameObject* mEnemy2GO = nullptr;
+    GameObject* mEnemy3GO = nullptr;
+    GameObject* mEnemy4GO = nullptr;
+    GameObject* mEnemy5GO = nullptr;
+
 
     // Buttons change
     GameObject* mControllerWeaponBinding = nullptr;
@@ -254,6 +267,7 @@ private:
     GameObject* mControllerMenuSelectBinding = nullptr;
     GameObject* mControllerMenuBackBinding = nullptr;
     GameObject* mControllerCreditsSkipBinding = nullptr;
+    GameObject* mControllerPresentationSkipBinding = nullptr;
 
     GameObject* mKeyboardWeaponBinding = nullptr;
     GameObject* mKeyboardUltiBinding = nullptr;
@@ -266,4 +280,5 @@ private:
     GameObject* mKeyboardMenuSelectBinding = nullptr;
     GameObject* mKeyboardMenuBackBinding = nullptr;
     GameObject* mKeyboardCreditsSkipBinding = nullptr;
+    GameObject* mKeyboardPresentationSkipBinding = nullptr;
 };

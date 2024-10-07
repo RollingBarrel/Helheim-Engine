@@ -248,10 +248,17 @@ void PauseMenu::Update()
 void PauseMenu::Reset()
 {
     OpenMenu(MENU_TYPE::MAIN);
+
     mPlayClicked->SetEnabled(false);
     mOptionsClicked->SetEnabled(false);
     mCreditsClicked->SetEnabled(false);
     mQuitClicked->SetEnabled(false);
+
+    mControllerClicked->SetEnabled(false);
+    mKeyboardClicked->SetEnabled(false);
+    mAudioClicked->SetEnabled(false);
+    mSettingsClicked->SetEnabled(false);
+
     OnPlayButtonHover(); // Hover first option when the menu is first laoded    
     OnKeyboardButtonHover(); // Pre-hover the first option
 }
