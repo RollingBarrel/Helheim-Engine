@@ -662,7 +662,7 @@
                             {
                                 "VariableName": "mEnemiesPerRound",
                                 "MemberType": 0,
-                                "VariableData": 1
+                                "VariableData": 2
                             }
                         ]
                     }
@@ -723,7 +723,7 @@
                             {
                                 "VariableName": "mEnemiesPerRound",
                                 "MemberType": 0,
-                                "VariableData": 1
+                                "VariableData": 2
                             }
                         ]
                     }
