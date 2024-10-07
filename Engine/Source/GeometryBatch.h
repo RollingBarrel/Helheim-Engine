@@ -43,7 +43,7 @@ typedef struct BufferIndices {
 	uint32_t Metarial;
 }ShaderIndices;
 
-#define NUM_BUFFERS 3
+#define NUM_BUFFERS 2
 class GeometryBatch
 {
 

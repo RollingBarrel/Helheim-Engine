@@ -96,8 +96,8 @@ void main()
 		//outSpecularRough.rgb = mix(vec3(0.04), diffuseColor.rgb, metal);
 		//outSpecularRough.a = rough;
 		
-		outSpecularRough.b = metal;
-		outSpecularRough.g = rough;
+		outSpecularRough.r = rough;
+		outSpecularRough.g = metal;
 
 		//outSpecularRough = pow(specTex, vec4(2.2));
 		outSpecularRough.a = fade;
