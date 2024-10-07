@@ -144,12 +144,18 @@ void GameManager::Update()
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
-        SetPaused(!mPaused, true);
+        if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
     }
 
     if (mCinematicCamera)
     {
         mPlayingCinematic = mCinematicCamera->GetPlayingCinematic();
+    }
+
+    if (mController != App->GetInput()->isGamepadAvailable())
+    {
+        mController = App->GetInput()->isGamepadAvailable();
+        mHudController->ChangeBindings(mController);
     }
 }
 
@@ -176,6 +182,8 @@ bool GameManager::UsingController() const
 void GameManager::SetPaused(bool value, bool screen)
 {
     mPaused = value;
+    mPauseScreen = screen;
+    mHudController->SetHud(!value);
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
 
@@ -273,11 +281,11 @@ void GameManager::UnlockGrenade(bool unlock)
 
 void GameManager::HandleBossAudio(int stage)
 {
-    if (mBackgroundAudioID == -1)
+    if (mBackgroundAudioID == -1 && stage == -1)
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
     }
-    if (mIsFightingBoss && stage >= 0)
+    if (mIsFightingBoss && mBackgroundAudioID == -1 && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
         {
@@ -296,10 +304,12 @@ void GameManager::HandleBossAudio(int stage)
         }
     }
 }
+
 void GameManager::RegisterPlayerKill()
 {
     mPlayerController->AddKill();
 }
+
 void GameManager::PlayPlayerFootStepSound()
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -312,7 +322,6 @@ void GameManager::PlayPlayerFootStepSound()
         mAudioManager->PlayOneShot(SFX::PLAYER_FOOTSTEP_METAL, mPlayerController->GetPlayerPosition());
     }
 }
-
 
 void GameManager::ActivateBossCamera(float targetDistance)
 {
@@ -349,7 +358,6 @@ void GameManager::BossCameraMovement()
     mPlayerCamera->SetOffset(offset);
 }
 
-
 void GameManager::PauseBackgroundAudio(bool pause)
 {
     std::string sceneName = App->GetScene()->GetName();
@@ -382,13 +390,11 @@ void GameManager::PrepareAudio()
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_PISTOL);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_MACHINEGUN);
     mAudioManager->AddAudioToASComponent(SFX::PLAYER_SHOTGUN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_HIT);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_BROKEN);
-    //mAudioManager->AddAudioToASComponent(SFX::PLAYER_DANGER);
 
     // Enemy
     mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_GUNFIRE);
-    //mAudioManager->AddAudioToASComponent(SFX::ENEMY_ROBOT_FOOTSTEP);
+    mAudioManager->AddAudioToASComponent(SFX::BOSS_LASER);
+
 
     // Level Specific audio
     if (sceneName == "Level1Scene" || sceneName == "TestAudio")
@@ -402,6 +408,7 @@ void GameManager::PrepareAudio()
     else if (sceneName == "Level3Scene")
     {
         mAudioManager->AddAudioToASComponent(BGM::BOSS);
+        mAudioManager->AddAudioToASComponent(SFX::BOSS_FIRE);
     }
 }
 

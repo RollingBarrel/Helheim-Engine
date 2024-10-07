@@ -13,7 +13,8 @@ class AnimationController
 {
 public:
 
-	AnimationController(ResourceAnimation* animation);
+	AnimationController(unsigned int uid);
+	AnimationController(const AnimationController& other);
 	~AnimationController();
 
 	void Update();
@@ -55,7 +56,7 @@ public:
 	float GetAnimationCurrentTime() const { return mCurrentTime; }
 	void SetAnimationCurrentTime(float time) { EndBlending(); mCurrentTime = time; }
 
-	unsigned int GetAnimationUID() const;
+	unsigned int GetAnimationUID() const { return (mCurrentAnimation) ? mCurrentAnimation->GetUID() : 0;}
 private:
 	float3 Interpolate(const float3& first, const float3& second, float lambda);
 	Quat Interpolate(const Quat& first, const Quat& second, float lambda);
@@ -77,5 +78,4 @@ private:
 	bool mLoop = false;
 
 	ResourceAnimation* mCurrentAnimation = nullptr;
-	unsigned int mAnimationUID = 0;
 };

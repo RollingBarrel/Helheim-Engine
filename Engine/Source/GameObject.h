@@ -13,6 +13,7 @@
 
 class Component;
 class MeshRendererComponent;
+class AnimationComponent;
 enum class ComponentType : unsigned int;
 
 class ENGINE_API GameObject
@@ -29,7 +30,7 @@ public:
 	explicit GameObject(GameObject* parent);
 	GameObject(const char* name, GameObject* parent);
 	GameObject(unsigned int ID, const char* name, GameObject* parent);
-	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew = nullptr, std::vector<MeshRendererComponent*>*meshRendererComps = nullptr);
+	GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew = nullptr, std::vector<MeshRendererComponent*>*meshRendererComps = nullptr, std::vector<AnimationComponent*>* animationComps = nullptr);
 	~GameObject();
 
 	void Update();

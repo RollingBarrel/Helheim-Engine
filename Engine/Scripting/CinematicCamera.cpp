@@ -128,6 +128,7 @@ void CinematicCamera::Update()
 
                 if (App->GetScene()->GetName() == "Level3Scene")
                 {
+                    GameManager::GetInstance()->HandleBossAudio(-1);
                     StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.75f, 0.00f, 45.00f, -90.00f, 0.00f);
                 }       
             }    

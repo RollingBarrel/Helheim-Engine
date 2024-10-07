@@ -1,0 +1,24 @@
+{
+    "Name": "door_exit_top_4",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "BaseColorTex": 80636664,
+    "MetallicRoughTex": 80636665,
+    "NormalTex": 80636666,
+    "EmissiveTex": 80636667,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}

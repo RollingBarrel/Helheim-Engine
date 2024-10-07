@@ -12,21 +12,31 @@
 
 #include "Globals.h"
 
-AnimationController::AnimationController(ResourceAnimation* animation) {
-	mCurrentAnimation = animation;
-	mAnimationUID = animation->GetUID();
+AnimationController::AnimationController(unsigned int uid) 
+{
+	mCurrentAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(uid, Resource::Type::Animation));
+	assert(mCurrentAnimation);
 	mLoop = false;
 
 	mCurrentTime = 0.1f;
 	mStartTime = 0.1f;
-	mEndTime = animation->GetDuration();
+	mEndTime = mCurrentAnimation->GetDuration();
+}
+
+AnimationController::AnimationController(const AnimationController& other):
+	mCurrentTime(other.mCurrentTime), mStartTime(other.mStartTime), mEndTime(other.mEndTime), 
+	mStartTransitionTime(other.mStartTransitionTime), mTransitionDuration(other.mTransitionDuration), mTransition(other.mTransition), mClipStartTime(other.mClipStartTime),
+	mCurrentTransitionTime(other.mCurrentTransitionTime), mSpeed(other.mSpeed), mLoop(other.mLoop)
+{
+	mCurrentAnimation = static_cast<ResourceAnimation*>(App->GetResource()->RequestResource(other.GetAnimationUID(), Resource::Type::Animation));
+	assert(mCurrentAnimation);
 }
 
 AnimationController::~AnimationController()
 {
-	if (mAnimationUID != 0)
+	if (mCurrentAnimation)
 	{
-		App->GetResource()->ReleaseResource(mAnimationUID);
+		App->GetResource()->ReleaseResource(mCurrentAnimation->GetUID());
 	}
 }
 
@@ -107,11 +117,6 @@ void AnimationController::EndBlending()
 	mCurrentTime = mClipStartTime;
 	mCurrentTransitionTime = 0.0f;
 
-}
-
-unsigned int AnimationController::GetAnimationUID() const
-{
-	return mAnimationUID;
 }
 
 void AnimationController::GetTransform(GameObject* model)
