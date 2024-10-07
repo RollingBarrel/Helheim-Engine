@@ -352,6 +352,40 @@
                                 "VariableData": 1626903432
                             },
                             {
+                                "VariableName": "Enemies",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mEnemyGO",
+                                "MemberType": 3,
+                                "VariableData": 1527013092
+                            },
+                            {
+                                "VariableName": "mEnemy1GO",
+                                "MemberType": 3,
+                                "VariableData": 1317257930
+                            },
+                            {
+                                "VariableName": "mEnemy2GO",
+                                "MemberType": 3,
+                                "VariableData": 1104906740
+                            },
+                            {
+                                "VariableName": "mEnemy3GO",
+                                "MemberType": 3,
+                                "VariableData": 1013327451
+                            },
+                            {
+                                "VariableName": "mEnemy4GO",
+                                "MemberType": 3,
+                                "VariableData": 1689379812
+                            },
+                            {
+                                "VariableName": "mEnemy5GO",
+                                "MemberType": 3,
+                                "VariableData": 306262168
+                            },
+                            {
                                 "VariableName": "BINDINGS",
                                 "MemberType": 5
                             },
@@ -411,6 +445,11 @@
                                 "VariableData": 1164845686
                             },
                             {
+                                "VariableName": "mControllerPresentationSkipBinding",
+                                "MemberType": 3,
+                                "VariableData": 1765236508
+                            },
+                            {
                                 "VariableName": "mKeyboardWeaponBinding",
                                 "MemberType": 3,
                                 "VariableData": 356326588
@@ -464,6 +503,11 @@
                                 "VariableName": "mKeyboardCreditsSkipBinding",
                                 "MemberType": 3,
                                 "VariableData": 747213209
+                            },
+                            {
+                                "VariableName": "mKeyboardPresentationSkipBinding",
+                                "MemberType": 3,
+                                "VariableData": 1090424057
                             }
                         ]
                     }

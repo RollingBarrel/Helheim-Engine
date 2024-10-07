@@ -12,6 +12,8 @@
 #include "Keys.h"
 #include "MathFunc.h"
 #include "PlayerController.h"
+#include "HudController.h"
+#include "ButtonComponent.h"
 
 CREATE(CinematicCamera)
 {
@@ -48,6 +50,7 @@ CREATE(CinematicCamera)
     MEMBER(MemberType::FLOAT, mFadeSpeed);
     SEPARATOR("HUD");
     MEMBER(MemberType::GAMEOBJECT, mHudGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipGO);
     END_CREATE;
 }
 
@@ -106,10 +109,18 @@ void CinematicCamera::Start()
 
         ActivateDummy(mEnemyGO4, false);
     }
+
+    if (mSkipGO)
+    {
+        mSkipBtn = static_cast<ButtonComponent*>(mSkipGO->GetComponent(ComponentType::BUTTON));
+        mSkipBtn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&CinematicCamera::OnSkipClick, this)));
+    }
 }
 
 void CinematicCamera::Update()
 {
+    HandleEscape();
+
     if (mBattleArea1)
     {
         if (mBattleArea1->GetIsAreaActive())
@@ -119,17 +130,20 @@ void CinematicCamera::Update()
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 67.21f, 1.50f, 7.83f, 0.00f, -90.00f, 0.00f);
+                    if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 1);
                 }
 
                 if (App->GetScene()->GetName() == "Level2Scene")
                 {
                     StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 61.92f, 38.00f, 8.98f, 0.00f, -90.00f, 0.00f);
+                    if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 5);
                 }
 
                 if (App->GetScene()->GetName() == "Level3Scene")
                 {
                     GameManager::GetInstance()->HandleBossAudio(-1);
                     StartCinematic(mEnemyGO1, mBattleArea1, mEnemyAnimState1, 25.00f, 1.75f, 0.00f, 45.00f, -90.00f, 0.00f);
+                    if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 0);
                 }       
             }    
         }
@@ -144,6 +158,7 @@ void CinematicCamera::Update()
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO2, mBattleArea2, mEnemyAnimState2, 12.77f, 1.50f, -22.54f, 0.00f, -90.00f, 0.00f);
+                    if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 2);
                 }        
             }            
         }
@@ -158,6 +173,7 @@ void CinematicCamera::Update()
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO3, mBattleArea3, mEnemyAnimState3, -38.75f, 1.50f, -17.11f, 0.00f, -90.00f, 0.00f);
+                    if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 3);
                 }             
             }
         }
@@ -172,6 +188,7 @@ void CinematicCamera::Update()
                 if (App->GetScene()->GetName() == "Level1Scene")
                 {
                     StartCinematic(mEnemyGO4, mBattleArea4, mEnemyAnimState4, -113.00f, 1.50f, 4.00f, 0.00f, -180.00f, 0.00f);
+                    if (!mEscape && mPlayingCinematic) GameManager::GetInstance()->GetHud()->SetEnemyScreen(true, 4);
                 }
             }
         }
@@ -183,15 +200,16 @@ void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, 
 {
     if ((dummy) && (mCinematicCameraGO))
     {
+        mDummy = dummy;
         if (!mStartParameters)
         {
             mStartParameters = true;
 
             LocateCamera(posX, posY, posZ, rotX, rotY, rotZ);
-            mTargetPosition = ((dummy->GetWorldPosition()) - ((mCinematicCameraGO->GetFront()) * mDistanceToEnemy));
+            mTargetPosition = ((mDummy->GetWorldPosition()) - ((mCinematicCameraGO->GetFront()) * mDistanceToEnemy));
             mCinematicCameraGO->Translate(-(mCinematicCameraGO->GetFront()) * mDistanceToEnemy);
 
-            mAnimationComponent = static_cast<AnimationComponent*>(dummy->GetComponent(ComponentType::ANIMATION));
+            mAnimationComponent = static_cast<AnimationComponent*>(mDummy->GetComponent(ComponentType::ANIMATION));
 
             if (mAnimationComponent)
             {
@@ -217,11 +235,11 @@ void CinematicCamera::StartCinematic(GameObject* dummy, BattleArea* battleArea, 
             ActivateBattleArea(battleArea, false);
         }
 
-        UpdateCinematic(dummy, battleArea);
+        UpdateCinematic(battleArea);
     }
 }
 
-void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
+void CinematicCamera::UpdateCinematic(BattleArea* battleArea)
 {
     if ((!GameManager::GetInstance()->IsPaused()) && (!mEscape))
     {
@@ -231,9 +249,9 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             {
                 if (HandleFadeIn())
                 {
-                    if (dummy->GetName() != "FinalBoss")
+                    if (mDummy->GetName() != "FinalBoss")
                     {
-                        ActivateDummy(dummy, true);
+                        ActivateDummy(mDummy, true);
                     }
                     
                     HandleCameraMovement();
@@ -252,7 +270,7 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             }
             else
             {
-                if (HandleFadeOut(dummy))
+                if (HandleFadeOut())
                 {
                     mPlayingCinematic = false;
                 }
@@ -276,7 +294,6 @@ void CinematicCamera::UpdateCinematic(GameObject* dummy, BattleArea* battleArea)
             ActivateBattleArea(battleArea, true);
         }
 
-        HandleEscape(dummy);
     }
 
     if (mEscape)
@@ -328,13 +345,13 @@ bool CinematicCamera::HandleFadeIn()
     }
 }
 
-bool CinematicCamera::HandleFadeOut(GameObject* dummy)
+bool CinematicCamera::HandleFadeOut()
 {
     if (mFadeOn)
     {
         if (Fade(true))
         {
-            EndCinematic(dummy);
+            EndCinematic();
             mFadeOn = false;
         }
 
@@ -383,11 +400,11 @@ void CinematicCamera::HandleCameraMovement()
     }
 }
 
-void CinematicCamera::HandleEscape(GameObject* dummy)
+void CinematicCamera::HandleEscape()
 {
-    if (!mEscape)
+    if (!mEscape && mPlayingCinematic)
     {
-        if ((App->GetInput()->GetKey(Keys::Keys_B) == KeyState::KEY_DOWN) ||
+        if ((App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN) ||
             (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN))
         {
             mEscape = true;
@@ -395,13 +412,15 @@ void CinematicCamera::HandleEscape(GameObject* dummy)
             mTravelling = false;
 
             mTimer.Reset();
-            EndCinematic(dummy);
+            EndCinematic();
         }
     }
 }
 
-void CinematicCamera::EndCinematic(GameObject* dummy)
+void CinematicCamera::EndCinematic()
 {
+    GameManager::GetInstance()->GetHud()->SetEnemyScreen(false, 0);
+
     if (mActiveCinematicCamera)
     {
         mActiveCinematicCamera = false;
@@ -410,13 +429,13 @@ void CinematicCamera::EndCinematic(GameObject* dummy)
         mPlayerCameraGO->SetEnabled(true);
     }
     
-    if (dummy->GetName() == "FinalBoss")
+    if (mDummy->GetName() == "FinalBoss")
     {
         mAnimationComponent->SetIsPlaying(true);
     }
     else
     {
-      ActivateDummy(dummy, false);
+        ActivateDummy(mDummy, false);
     }
 
     if (App->GetScene()->GetName() == "Level1Scene")
@@ -521,6 +540,16 @@ void CinematicCamera::ActivateDummy(GameObject* dummy, bool state)
     {
         dummy->SetEnabled(state);
     }  
+}
+
+void CinematicCamera::OnSkipClick()
+{
+    mEscape = true;
+    mFadeStart = false;
+    mTravelling = false;
+
+    mTimer.Reset();
+    EndCinematic();
 }
 
 

@@ -144,7 +144,10 @@ void GameManager::Update()
     if (App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN || 
         (UsingController() && (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_START) == ButtonState::BUTTON_DOWN)))
     {
-        if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
+        if (!mPlayingCinematic)
+        {
+            if (!mPaused || mPaused && mPauseScreen) SetPaused(!mPaused, true);
+        }
     }
 
     if (App->GetInput()->GetKey(Keys::Keys_N) == KeyState::KEY_DOWN)

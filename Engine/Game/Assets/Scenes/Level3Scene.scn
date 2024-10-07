@@ -670,6 +670,11 @@
                                 "VariableName": "mHudGO",
                                 "MemberType": 3,
                                 "VariableData": 593488388
+                            },
+                            {
+                                "VariableName": "mSkipGO",
+                                "MemberType": 3,
+                                "VariableData": 638292070
                             }
                         ]
                     }
@@ -31712,6 +31717,40 @@
                                 "VariableData": -1
                             },
                             {
+                                "VariableName": "Enemies",
+                                "MemberType": 5
+                            },
+                            {
+                                "VariableName": "mEnemyGO",
+                                "MemberType": 3,
+                                "VariableData": 478094149
+                            },
+                            {
+                                "VariableName": "mEnemy1GO",
+                                "MemberType": 3,
+                                "VariableData": 2106459718
+                            },
+                            {
+                                "VariableName": "mEnemy2GO",
+                                "MemberType": 3,
+                                "VariableData": 1941597190
+                            },
+                            {
+                                "VariableName": "mEnemy3GO",
+                                "MemberType": 3,
+                                "VariableData": 285777045
+                            },
+                            {
+                                "VariableName": "mEnemy4GO",
+                                "MemberType": 3,
+                                "VariableData": 1781120785
+                            },
+                            {
+                                "VariableName": "mEnemy5GO",
+                                "MemberType": 3,
+                                "VariableData": 121193001
+                            },
+                            {
                                 "VariableName": "BINDINGS",
                                 "MemberType": 5
                             },
@@ -31771,6 +31810,11 @@
                                 "VariableData": 316466429
                             },
                             {
+                                "VariableName": "mControllerPresentationSkipBinding",
+                                "MemberType": 3,
+                                "VariableData": 1452300802
+                            },
+                            {
                                 "VariableName": "mKeyboardWeaponBinding",
                                 "MemberType": 3,
                                 "VariableData": 2062885312
@@ -31824,6 +31868,11 @@
                                 "VariableName": "mKeyboardCreditsSkipBinding",
                                 "MemberType": 3,
                                 "VariableData": 43900214
+                            },
+                            {
+                                "VariableName": "mKeyboardPresentationSkipBinding",
+                                "MemberType": 3,
+                                "VariableData": 1126892248
                             }
                         ]
                     }
@@ -55407,7 +55456,7 @@
                         "IsEnabled": false,
                         "Position": [
                             0.0,
-                            475.0,
+                            -375.0,
                             0.0
                         ],
                         "Rotation": [
@@ -61939,7 +61988,7 @@
                 "UID": 1781120785,
                 "ParentUID": 478094149,
                 "Name": "creature-melee",
-                "Enabled": true,
+                "Enabled": false,
                 "Active": false,
                 "Translation": [
                     0.0,
