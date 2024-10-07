@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2042366587,
+                "UID": 2109679700,
                 "ParentUID": 1,
                 "Name": "BombingTemplateSingle",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 41504766,
-                "ParentUID": 2042366587,
+                "UID": 109165984,
+                "ParentUID": 2109679700,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 164803557,
-                "ParentUID": 41504766,
+                "UID": 255021979,
+                "ParentUID": 109165984,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -155,6 +155,8 @@
                         },
                         "ShapeType": 1,
                         "ShapeRadius": 0.10000000149011612,
+                        "ShapeTubeRadius": 1.0,
+                        "ShapeHeight": 1.0,
                         "ShapeAngle": 0.10000000149011612,
                         "ShapeSize": [
                             1.0,
@@ -164,6 +166,8 @@
                         "ShapeRandAngle": 0.4000000059604645,
                         "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": false,
+                        "SpeedCenterShape": false,
+                        "SpeedCenterFactor": 1.0,
                         "BlendMode": 1,
                         "SizeCurve": {
                             "Value": {
@@ -314,8 +318,8 @@
                 ]
             },
             {
-                "UID": 288450453,
-                "ParentUID": 41504766,
+                "UID": 393915874,
+                "ParentUID": 109165984,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,

@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 352997318,
+                "UID": 1068102577,
                 "ParentUID": 1,
                 "Name": "BombingTemplate3",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 483049346,
-                "ParentUID": 352997318,
+                "UID": 1217439622,
+                "ParentUID": 1068102577,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 598968311,
-                "ParentUID": 483049346,
+                "UID": 1357029727,
+                "ParentUID": 1217439622,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -247,8 +247,8 @@
                 ]
             },
             {
-                "UID": 714956897,
-                "ParentUID": 483049346,
+                "UID": 1497176800,
+                "ParentUID": 1217439622,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -284,6 +284,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -294,7 +302,7 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             }

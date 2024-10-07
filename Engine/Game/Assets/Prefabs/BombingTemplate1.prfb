@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 727148148,
-                "ParentUID": 1504512197,
+                "UID": 1086716170,
+                "ParentUID": 1,
                 "Name": "BombingTemplate1",
                 "Enabled": true,
                 "Active": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 855250788,
-                "ParentUID": 727148148,
+                "UID": 1228812631,
+                "ParentUID": 1086716170,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 969707712,
-                "ParentUID": 855250788,
+                "UID": 1359143143,
+                "ParentUID": 1228812631,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -247,8 +247,8 @@
                 ]
             },
             {
-                "UID": 1083398805,
-                "ParentUID": 855250788,
+                "UID": 1489891381,
+                "ParentUID": 1228812631,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -284,6 +284,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -294,13 +302,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             },
             {
-                "UID": 1196881035,
-                "ParentUID": 727148148,
+                "UID": 1621057345,
+                "ParentUID": 1086716170,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -376,8 +384,8 @@
                 ]
             },
             {
-                "UID": 1310363265,
-                "ParentUID": 1196881035,
+                "UID": 1751318236,
+                "ParentUID": 1621057345,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -516,8 +524,8 @@
                 ]
             },
             {
-                "UID": 1426839198,
-                "ParentUID": 1196881035,
+                "UID": 1881300643,
+                "ParentUID": 1621057345,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -553,6 +561,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -563,13 +579,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             },
             {
-                "UID": 1542688542,
-                "ParentUID": 727148148,
+                "UID": 2017966666,
+                "ParentUID": 1086716170,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -645,8 +661,8 @@
                 ]
             },
             {
-                "UID": 1658050539,
-                "ParentUID": 1542688542,
+                "UID": 9725019,
+                "ParentUID": 2017966666,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -785,8 +801,8 @@
                 ]
             },
             {
-                "UID": 1776406239,
-                "ParentUID": 1542688542,
+                "UID": 164770986,
+                "ParentUID": 2017966666,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -822,6 +838,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -832,13 +856,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             },
             {
-                "UID": 1892046720,
-                "ParentUID": 727148148,
+                "UID": 302968671,
+                "ParentUID": 1086716170,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -914,8 +938,8 @@
                 ]
             },
             {
-                "UID": 2007896064,
-                "ParentUID": 1892046720,
+                "UID": 441584082,
+                "ParentUID": 302968671,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1054,8 +1078,8 @@
                 ]
             },
             {
-                "UID": 2123466924,
-                "ParentUID": 1892046720,
+                "UID": 580199493,
+                "ParentUID": 302968671,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -1091,6 +1115,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -1101,13 +1133,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             },
             {
-                "UID": 94199735,
-                "ParentUID": 727148148,
+                "UID": 718884525,
+                "ParentUID": 1086716170,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -1183,8 +1215,8 @@
                 ]
             },
             {
-                "UID": 209422490,
-                "ParentUID": 94199735,
+                "UID": 859310082,
+                "ParentUID": 718884525,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1323,8 +1355,8 @@
                 ]
             },
             {
-                "UID": 325271834,
-                "ParentUID": 94199735,
+                "UID": 998830566,
+                "ParentUID": 718884525,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -1360,6 +1392,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -1370,13 +1410,13 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             },
             {
-                "UID": 441330041,
-                "ParentUID": 727148148,
+                "UID": 1137724461,
+                "ParentUID": 1086716170,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -1452,8 +1492,8 @@
                 ]
             },
             {
-                "UID": 558362942,
-                "ParentUID": 441330041,
+                "UID": 1279055091,
+                "ParentUID": 1137724461,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -1592,8 +1632,8 @@
                 ]
             },
             {
-                "UID": 674490770,
-                "ParentUID": 441330041,
+                "UID": 1418436333,
+                "ParentUID": 1137724461,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -1629,6 +1669,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -1639,7 +1687,7 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             }
