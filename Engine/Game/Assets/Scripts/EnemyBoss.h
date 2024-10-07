@@ -6,6 +6,7 @@
 
 struct CollisionData;
 class BoxColliderComponent;
+class ImageComponent;
 
 enum BulletPattern
 {
@@ -56,6 +57,10 @@ private:
 	float mPhase1Hp = 0.6f;
 	float mPhase2Hp = 0.3f;
 	bool mWakeUp = false;
+	bool mInvulnerable = true;
+
+	GameObject* mShieldGO = nullptr;
+	ImageComponent* mSpritesheet = nullptr;
 
 	//Collider
 	BoxColliderComponent* mCollider = nullptr;
@@ -63,6 +68,8 @@ private:
 	TimerScript mPhaseShiftTimer;
 	float mPhaseShiftTime = 5.0f;
 	TimerScript mBulletHellTimer;
+	TimerScript mShieldTimer;
+	float mShieldDelay = 200.0f;
 
 	float mAttackSequenceCooldown = 4.0f;
 

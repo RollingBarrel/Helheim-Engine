@@ -66,7 +66,7 @@ public:
     void BossCameraMovement();
 
     bool IsPlayingCinematic() { return mPlayingCinematic; }
-
+    bool IsDialogueActive() const { return mDialogue; }
 private:
     void PrepareAudio();
     void StartAudio();
@@ -102,6 +102,7 @@ private:
     bool mPlayingCinematic = false;
 
     bool mPaused = false;
+    bool mPauseScreen = false;
 
     bool mStopActive = false;
     float mDefaultHitStopTime = 0.0f;
@@ -122,4 +123,6 @@ private:
     bool mIsFightingBoss = false;
     bool mCameraLerp = false;
     float mBossCameraTarget = 11.0f;
+
+    bool mDialogue = true;
 };
