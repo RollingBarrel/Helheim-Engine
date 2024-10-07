@@ -80,7 +80,7 @@ private:
     void OnLoseButtonClick();
     void OnLoseButtonHoverOn();
     void OnLoseButtonHoverOff();
-	void OnSelectLooseOption(LOSE_OPTION option);
+	void OnSelectLoseOption(LOSE_OPTION option);
 
     void OnCollectibleContinueBtnClick();
     void OnCollectibleContinueBtnHoverOn();
