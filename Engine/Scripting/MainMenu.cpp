@@ -1374,17 +1374,16 @@ void MainMenu::ChangeBindings(bool value)
 {
     if (value)
     {
-        mAcceptKeyboardGO->SetEnabled(false);
-        mBackKeyboardGO->SetEnabled(false);
-        mAcceptControllerGO->SetEnabled(true);
-        mBackControllerGO->SetEnabled(true);
+        if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(false);
+        if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(false);
+        if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(true);
+        if (mBackControllerGO) mBackControllerGO->SetEnabled(true);
     }
     else
     {
-        mAcceptKeyboardGO->SetEnabled(true);
-        mBackKeyboardGO->SetEnabled(true);
-        mAcceptControllerGO->SetEnabled(false);
-        mBackControllerGO->SetEnabled(false);
+        if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(true);
+        if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(true);
+        if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(false);
+        if (mBackControllerGO) mBackControllerGO->SetEnabled(false);
     }
-    
 }

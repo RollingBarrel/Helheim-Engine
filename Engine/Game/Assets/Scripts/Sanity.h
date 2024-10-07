@@ -70,18 +70,21 @@ private:
     TextComponent* mCard1Text = nullptr;
     ButtonComponent* mCard1Btn = nullptr;
     GameObject* mCard1Hover = nullptr;
+    ImageComponent* mCard1Image = nullptr;
     bool mCard1Hovered = false;
 
     GameObject* mCard2GO = nullptr;
     TextComponent* mCard2Text = nullptr;
     ButtonComponent* mCard2Btn = nullptr;
     GameObject* mCard2Hover = nullptr;
+    ImageComponent* mCard2Image = nullptr;
     bool mCard2Hovered = false;
 
     GameObject* mCard3GO = nullptr;
     TextComponent* mCard3Text = nullptr;
     ButtonComponent* mCard3Btn = nullptr;
     GameObject* mCard3Hover = nullptr;
+    ImageComponent* mCard3Image = nullptr;
     bool mCard3Hovered = false;
 
     TimerScript mClickTimout;

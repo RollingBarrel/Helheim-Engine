@@ -11,12 +11,20 @@ public:
 	bool GetGodMode() { return mGodMode; };
 	int GetDialogIndex() { return mDialogIndex; }
 
+	int GetHealthLvl() { return mHealthLvl; }
+	int GetDamageLvl() { return mDamageLvl; }
+	int GetSpeedLvl() { return mSpeedLvl; }
+
 	void SetMaxHealth(float maxHealth) { mMaxHealth = maxHealth; }
 	void SetSpeed(float speed) { mSpeed = speed; }
 	void SetDamageModifier(float damageModifier) { mDamageModifier = damageModifier; }
 	void SetDialogIndex(int index) { mDialogIndex = index; }
 	void SetGodMode(bool godMode) { mGodMode = godMode; };
 	void SetInitLevelStats();
+
+	void SetHealthLvl(int stat) { mHealthLvl = stat; }
+	void SetDamageLvl(int stat) { mDamageLvl = stat; }
+	void SetSpeedLvl(int stat) { mSpeedLvl = stat; }
 
 	void TryAgainStats();
 
@@ -33,5 +41,9 @@ private:
 	float mIniSpeed = 0.0f;
 	float mIniDamage = 0.0f;
 	int mIniDialogIdx = 0;
+
+	int mHealthLvl = 0;
+	int mSpeedLvl = 0;
+	int mDamageLvl = 0;
 };
 

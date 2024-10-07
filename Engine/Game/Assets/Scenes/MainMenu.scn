@@ -457,7 +457,7 @@
                             {
                                 "VariableName": "mKeyboardScreenGO",
                                 "MemberType": 3,
-                                "VariableData": 1852538699
+                                "VariableData": 490182502
                             },
                             {
                                 "VariableName": "Audio buttons",
@@ -1592,7 +1592,7 @@
                         "ComponentType": 9,
                         "IsEnabled": false,
                         "Position": [
-                            -600.0,
+                            -580.0,
                             0.0,
                             0.0
                         ],
@@ -6191,2243 +6191,6 @@
                 ]
             },
             {
-                "UID": 1852538699,
-                "ParentUID": 597757094,
-                "Name": "KeyboardScreen",
-                "Enabled": false,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            250.0,
-                            -125.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            600.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1305809169,
-                "ParentUID": 1852538699,
-                "Name": "VerticalBars",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -550.0,
-                            50.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            2.0,
-                            450.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 572889098,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.39899998903274538,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 407264473,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            250.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 1.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 303725281,
-                "ParentUID": 407264473,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -10.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "ACTION",
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
-                        "FontSize": 30
-                    }
-                ]
-            },
-            {
-                "UID": 1699457598,
-                "ParentUID": 407264473,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -10.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "BINDING",
-                        "Color": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
-                        "FontSize": 30
-                    }
-                ]
-            },
-            {
-                "UID": 1028395168,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            200.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1056800536,
-                "ParentUID": 1028395168,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Movement",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1984870283,
-                "ParentUID": 1028395168,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "W A S D",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1703306338,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (2)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            150.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 0.10100000351667404,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1727812930,
-                "ParentUID": 1703306338,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Dash",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 154933213,
-                "ParentUID": 1703306338,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "SPACE",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 249928322,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (3)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            100.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 280352699,
-                "ParentUID": 249928322,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Attack",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 782829273,
-                "ParentUID": 249928322,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "LMB",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1687912260,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (4)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            50.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 0.10100000351667404,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1714437861,
-                "ParentUID": 1687912260,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Special Attack",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 97070325,
-                "ParentUID": 1687912260,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "RMB",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1752541456,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (5)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            0.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1779136678,
-                "ParentUID": 1752541456,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Grenade",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 50862889,
-                "ParentUID": 1752541456,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "E",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 2057666307,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (6)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -50.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 0.10000000149011612,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 2082590625,
-                "ParentUID": 2057666307,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Ultimate",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 272372919,
-                "ParentUID": 2057666307,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "C",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 319922159,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (7)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -100.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 0.0,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 354384554,
-                "ParentUID": 319922159,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Reload",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 599983540,
-                "ParentUID": 319922159,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "R",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1148114263,
-                "ParentUID": 1852538699,
-                "Name": "VerticalItem (8)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -150.0,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1000.0,
-                            48.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 8,
-                        "IsEnabled": false,
-                        "ImageID": 148626881,
-                        "Color": [
-                            0.23137255012989045,
-                            0.9960784316062927,
-                            0.8745098114013672
-                        ],
-                        "Alpha": 0.10000000149011612,
-                        "ShouldDraw": true,
-                        "IsMaskable": false,
-                        "IsSpritesheet": false,
-                        "Columns": 1,
-                        "Rows": 1,
-                        "Speed": 30,
-                        "IsPlaying": false,
-                        "BlurBack": false
-                    }
-                ]
-            },
-            {
-                "UID": 1180418407,
-                "ParentUID": 1148114263,
-                "Name": "Text",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            -450.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "Pause",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
-                "UID": 1461593724,
-                "ParentUID": 1148114263,
-                "Name": "Text (1)",
-                "Enabled": true,
-                "Active": false,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": true,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 9,
-                        "IsEnabled": false,
-                        "Position": [
-                            0.0,
-                            -7.5,
-                            0.0
-                        ],
-                        "Rotation": [
-                            0.0,
-                            0.0,
-                            0.0,
-                            1.0
-                        ],
-                        "Size": [
-                            1.0,
-                            1.0
-                        ],
-                        "AnchorMin": [
-                            0.5,
-                            0.5
-                        ],
-                        "AnchorMax": [
-                            0.5,
-                            0.5
-                        ],
-                        "Pivot": [
-                            0.0,
-                            0.0
-                        ]
-                    },
-                    {
-                        "ComponentType": 16,
-                        "IsEnabled": false,
-                        "Text": "ESC",
-                        "Color": [
-                            1.0,
-                            1.0,
-                            1.0
-                        ],
-                        "Alpha": 1.0,
-                        "LineWidth": 0,
-                        "LineSpacing": 0,
-                        "Alignment": 0,
-                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
-                        "FontSize": 24
-                    }
-                ]
-            },
-            {
                 "UID": 1044790463,
                 "ParentUID": 1,
                 "Name": "AudioManager",
@@ -11824,6 +9587,3264 @@
                             0.0,
                             0.0
                         ]
+                    }
+                ]
+            },
+            {
+                "UID": 490182502,
+                "ParentUID": 597757094,
+                "Name": "KeyboardScreen",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            250.0,
+                            -125.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            600.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 551797087,
+                "ParentUID": 490182502,
+                "Name": "VerticalBars",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -550.0,
+                            50.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            2.0,
+                            450.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 572889098,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 613759777,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            250.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 677045266,
+                "ParentUID": 613759777,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -10.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "ACTION",
+                        "Color": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 739564924,
+                "ParentUID": 613759777,
+                "Name": "Text (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -10.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "BINDING",
+                        "Color": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Light.ttf",
+                        "FontSize": 30
+                    }
+                ]
+            },
+            {
+                "UID": 802363066,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            200.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 865091587,
+                "ParentUID": 802363066,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Movement",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 927889729,
+                "ParentUID": 802363066,
+                "Name": "Binding",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            10.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 991314460,
+                "ParentUID": 927889729,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "W",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 1062954469,
+                "ParentUID": 802363066,
+                "Name": "Binding (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            40.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1126309579,
+                "ParentUID": 1062954469,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "A",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 1189664689,
+                "ParentUID": 802363066,
+                "Name": "Binding (2)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            70.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1253228662,
+                "ParentUID": 1189664689,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "S",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 1316792635,
+                "ParentUID": 802363066,
+                "Name": "Binding (3)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            100.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1380426229,
+                "ParentUID": 1316792635,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "D",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 1444477549,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (2)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            150.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.10100000351667404,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1508598490,
+                "ParentUID": 1444477549,
+                "Name": "Binding (4)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            20.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            50.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1572371326,
+                "ParentUID": 1508598490,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "SPACE",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 1636283404,
+                "ParentUID": 1444477549,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Dash",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 1701170176,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (3)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1766126569,
+                "ParentUID": 1701170176,
+                "Name": "Binding",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            10.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            34.0,
+                            34.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1836319380,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1831152583,
+                "ParentUID": 1701170176,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Attack",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 1896944428,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (4)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            50.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.10100000351667404,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 1961831200,
+                "ParentUID": 1896944428,
+                "Name": "Binding (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            10.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            34.0,
+                            34.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 1836319380,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 2026648351,
+                "ParentUID": 1896944428,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Special Attack",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 2092022470,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (5)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 9982563,
+                "ParentUID": 2092022470,
+                "Name": "Binding (4)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            10.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 76400997,
+                "ParentUID": 9982563,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "E",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 141775116,
+                "ParentUID": 2092022470,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Grenade",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 207218856,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (6)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -50.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.10000000149011612,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 274403121,
+                "ParentUID": 207218856,
+                "Name": "Binding",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            10.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 340264587,
+                "ParentUID": 274403121,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "C",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 406265295,
+                "ParentUID": 207218856,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Ultimate",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 472683729,
+                "ParentUID": 207218856,
+                "Name": "Text (1)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "C",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 539311026,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (7)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -100.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 0.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 605520597,
+                "ParentUID": 539311026,
+                "Name": "Binding",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            10.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            24.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 672147894,
+                "ParentUID": 605520597,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "R",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 738705570,
+                "ParentUID": 539311026,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Reload",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
+                    }
+                ]
+            },
+            {
+                "UID": 805750593,
+                "ParentUID": 490182502,
+                "Name": "VerticalItem (8)",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -150.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1000.0,
+                            48.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 148626881,
+                        "Color": [
+                            0.23137255012989045,
+                            0.9960784316062927,
+                            0.8745098114013672
+                        ],
+                        "Alpha": 0.10000000149011612,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 873143721,
+                "ParentUID": 805750593,
+                "Name": "Binding",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            20.0,
+                            0.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            50.0,
+                            24.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": false,
+                        "ImageID": 373736388,
+                        "Color": [
+                            0.8509804010391235,
+                            0.8509804010391235,
+                            0.8509804010391235
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
+                    }
+                ]
+            },
+            {
+                "UID": 967062450,
+                "ParentUID": 873143721,
+                "Name": "GameObject",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            0.0,
+                            -5.0,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "ESC",
+                        "Color": [
+                            0.1411764770746231,
+                            0.18431372940540315,
+                            0.23137255012989045
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 1,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 16
+                    }
+                ]
+            },
+            {
+                "UID": 1034664441,
+                "ParentUID": 805750593,
+                "Name": "Text",
+                "Enabled": true,
+                "Active": false,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": true,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 9,
+                        "IsEnabled": false,
+                        "Position": [
+                            -450.0,
+                            -7.5,
+                            0.0
+                        ],
+                        "Rotation": [
+                            0.0,
+                            0.0,
+                            0.0,
+                            1.0
+                        ],
+                        "Size": [
+                            1.0,
+                            1.0
+                        ],
+                        "AnchorMin": [
+                            0.5,
+                            0.5
+                        ],
+                        "AnchorMax": [
+                            0.5,
+                            0.5
+                        ],
+                        "Pivot": [
+                            0.0,
+                            0.0
+                        ]
+                    },
+                    {
+                        "ComponentType": 16,
+                        "IsEnabled": false,
+                        "Text": "Pause",
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "LineWidth": 0,
+                        "LineSpacing": 0,
+                        "Alignment": 0,
+                        "FontName": "Assets\\Fonts\\Akshar-Regular.ttf",
+                        "FontSize": 24
                     }
                 ]
             },

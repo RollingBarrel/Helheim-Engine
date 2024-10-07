@@ -233,10 +233,16 @@ private:
     bool mGrenadeHL = false;
     TimerScript mGrenadeHLTimer;
     GameObject* mGrenadeHLGO = nullptr;
+    GameObject* mGrenadeImageGO = nullptr;
+    ImageComponent* mGrenadeImage = nullptr;
+
     bool mUltimateHL = false;
     TimerScript mUltimateHLTimer;
     GameObject* mUltimateHLGO = nullptr;
+    ImageComponent* mUltimateBorder = nullptr;
+    GameObject* mUltimateImageGO = nullptr;
     ImageComponent* mUltimateImage = nullptr;
+
     bool mGunHL = false;
     TimerScript mGunHLTimer;
     GameObject* mGunHLGO = nullptr;
