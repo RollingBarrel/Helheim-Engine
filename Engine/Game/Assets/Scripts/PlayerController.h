@@ -113,7 +113,6 @@ public:
     State* GetPlayerLowerState() const { return mLowerState; }
     State* GetPlayerUpperState() const { return mUpperState; }
     bool IsPlayerDashing() const;
-    void SetIdleState();
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
