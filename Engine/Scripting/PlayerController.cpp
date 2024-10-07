@@ -891,7 +891,6 @@ void PlayerController::CheckDebugOptions()
             mDamageModifier = 1.0f;
             GameManager::GetInstance()->GetHud()->SetInstaKill(false);
         }
-
     }
     if (input->GetKey(Keys::Keys_1) == KeyState::KEY_DOWN) 
     {

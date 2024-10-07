@@ -55,7 +55,8 @@ void LoreCollectible::Update()
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
 	}*/
 
-	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN ||
+		App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
 	{
 		GameManager::GetInstance()->GetHud()->DisableCollectible();
 	}
