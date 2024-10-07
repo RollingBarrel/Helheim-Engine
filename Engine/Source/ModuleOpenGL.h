@@ -79,7 +79,7 @@ public:
 	//void BindGFramebuffer();
 	void UnbindFramebuffer();
 	unsigned int GetGBufferDiffuse() const { return mGDiffuse; }
-	unsigned int GetGBufferSpecularRough() const { return mGSpecularRough; }
+	unsigned int GetGBufferSpecularRough() const { return mGMetallicRough; }
 	unsigned int GetGBufferEmissive() const { return mGEmissive; }
 	unsigned int GetGBufferNormals() const { return mGNormals; }
 	unsigned int GetGBufferDepth() const { return mGDepth; }
@@ -200,7 +200,7 @@ private:
 	//Gbuffer Framebuffer
 	unsigned int mGFbo;
 	unsigned int mGDiffuse;
-	unsigned int mGSpecularRough;
+	unsigned int mGMetallicRough;
 	unsigned int mGPosition;
 	unsigned int mGNormals;
 	unsigned int mGEmissive;

@@ -117,6 +117,8 @@ bool ModuleOpenGL::Init()
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION, 0, nullptr, false);
 #endif // _DEBUG
 
+	//SDL_GL_SetSwapInterval(0);
+	
 	glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
@@ -157,7 +159,7 @@ bool ModuleOpenGL::Init()
 	glGenFramebuffers(1, &mGFbo);
 	glBindFramebuffer(GL_FRAMEBUFFER, mGFbo);
 	glGenTextures(1, &mGDiffuse);
-	glGenTextures(1, &mGSpecularRough);
+	glGenTextures(1, &mGMetallicRough);
 	glGenTextures(1, &mGNormals);
 	glGenTextures(1, &mGColDepth);
 	glGenTextures(1, &mGEmissive);
@@ -180,7 +182,7 @@ bool ModuleOpenGL::Init()
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glBindTexture(GL_TEXTURE_2D, mGMetallicRough);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
@@ -203,7 +205,7 @@ bool ModuleOpenGL::Init()
 
 	ResizeGBuffer(App->GetWindow()->GetWidth(), App->GetWindow()->GetHeight());
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, mGDiffuse, 0);
-	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGSpecularRough, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, mGMetallicRough, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, mGNormals, 0);
 	//glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGColDepth, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT3, GL_TEXTURE_2D, mGPosition, 0);
@@ -736,8 +738,8 @@ void ModuleOpenGL::ResizeGBuffer(unsigned int width, unsigned int height)
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGEmissive);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glBindTexture(GL_TEXTURE_2D, mGMetallicRough);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RG8, width, height, 0, GL_RG, GL_UNSIGNED_BYTE, NULL);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB8, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	//glBindTexture(GL_TEXTURE_2D, mGColDepth);
@@ -1585,7 +1587,7 @@ void ModuleOpenGL::Draw()
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mGDiffuse);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_2D, mGSpecularRough);
+	glBindTexture(GL_TEXTURE_2D, mGMetallicRough);
 	glActiveTexture(GL_TEXTURE2);
 	glBindTexture(GL_TEXTURE_2D, mGNormals);
 	glActiveTexture(GL_TEXTURE3);
