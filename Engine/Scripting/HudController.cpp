@@ -281,7 +281,7 @@ void HudController::Start()
         GameManager::GetInstance()->PauseBackgroundAudio(true);
         mIsVideoPlaying = true;
     }
-    else if (App->GetScene()->GetName() == "Level3Scene")
+    else if (App->GetScene()->GetName() != "Level3Scene")
     {
         SetDialog();
     }
