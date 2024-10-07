@@ -68,7 +68,7 @@ void LoreCollectible::Update()
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
 	}
 
-	if (mInteractTimer.DelayWithoutReset(2.0f))
+	if (mInteractTimer.DelayWithoutReset(1.0f))
 		mUsed = false;
 
 	if (mMesh) ColorChange();
