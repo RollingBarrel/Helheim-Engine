@@ -59,9 +59,10 @@ void LoreCollectible::Update()
 		App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
 	{
 		GameManager::GetInstance()->GetHud()->DisableCollectible();
+
 	}
 
-	if (mUsed)
+	/*if (mUsed)
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
 	else if (mInteractTimer.Delay(2.5f))
 	{
@@ -69,7 +70,7 @@ void LoreCollectible::Update()
 	}
 
 	if (mInteractTimer.DelayWithoutReset(1.0f))
-		mUsed = false;
+		mUsed = false;*/
 
 	if (mMesh) ColorChange();
 }
@@ -95,7 +96,7 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data(), mTitleText->data(), mSubtitleText->data());
 				GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
 				GameManager::GetInstance()->GetHud()->SetInteract(false);
-				mUsed = true;
+				//mUsed = true;
 			}
 		}
 	}
