@@ -130,8 +130,8 @@ void FirstTutorial::Tutorial()
                 App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_S) == KeyState::KEY_REPEAT ||
                 App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_DOWN || App->GetInput()->GetKey(Keys::Keys_D) == KeyState::KEY_REPEAT)
             {
-                //mMoveTutorialCon->SetEnabled(false);
                 mMoveTutorial->SetEnabled(false);
+                mMoveTutorialCon->SetEnabled(false);
                 mDashTutorial->SetEnabled(true);
                 mCurrentStep = 2;
             }
@@ -139,8 +139,8 @@ void FirstTutorial::Tutorial()
         case 2:
             if (App->GetInput()->GetKey(Keys::Keys_SPACE) == KeyState::KEY_DOWN)
             {
-                //mDashTutorialCon->SetEnabled(false);
                 mDashTutorial->SetEnabled(false);
+                mDashTutorialCon->SetEnabled(false);
                 mCompleted = true;
             }
             break;
@@ -156,7 +156,7 @@ void FirstTutorial::Tutorial()
             if (App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) != 0 ||
                 App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTY) != 0)
             {
-                //mMoveTutorial->SetEnabled(false);
+                mMoveTutorial->SetEnabled(false);
                 mMoveTutorialCon->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(true);
                 mCurrentStep = 2;
@@ -165,7 +165,7 @@ void FirstTutorial::Tutorial()
         case 2:
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_LEFTSHOULDER) == ButtonState::BUTTON_DOWN)
             {
-                //mDashTutorialCon->SetEnabled(false);
+                mDashTutorialCon->SetEnabled(false);
                 mDashTutorialCon->SetEnabled(false);
                 mCompleted = true;
             }

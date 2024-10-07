@@ -93,12 +93,16 @@ void SecondTutorial::Tutorial()
         switch (mCurrentStep)
         {
         case 3:
+            mShootTutorialCon->SetEnabled(false);
             mShootTutorial->SetEnabled(false);
+            mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
         case 2:
+            mSecondaryTutorialCon->SetEnabled(false);
             mSecondaryTutorial->SetEnabled(false);
+            mGrenadeTutorialCon->SetEnabled(false);
             mGrenadeTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockGrenade(true);
             if (App->GetInput()->GetKey(Keys::Keys_E) == KeyState::KEY_DOWN)
@@ -107,6 +111,7 @@ void SecondTutorial::Tutorial()
         case 1:
             if (mGrenadeUsed)
             {
+                mGrenadeTutorialCon->SetEnabled(false);
                 mGrenadeTutorial->SetEnabled(false);
                 mPart1Completed = true;
             }
@@ -123,12 +128,16 @@ void SecondTutorial::Tutorial()
         {
         case 3:
             mShootTutorialCon->SetEnabled(false);
-            mSecondaryTutorialCon->SetEnabled(true);
+            mShootTutorial->SetEnabled(false);
+            mSecondaryTutorialCon->SetEnabled(false);
+            mSecondaryTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockSecondary();
             break;
         case 2:
             mSecondaryTutorialCon->SetEnabled(false);
-            mGrenadeTutorialCon->SetEnabled(true);
+            mSecondaryTutorial->SetEnabled(false);
+            mGrenadeTutorialCon->SetEnabled(false);
+            mGrenadeTutorial->SetEnabled(true);
             GameManager::GetInstance()->UnlockGrenade(true);
             if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_RIGHTSHOULDER) == ButtonState::BUTTON_DOWN)
                 mGrenadeUsed = true;
@@ -137,6 +146,7 @@ void SecondTutorial::Tutorial()
             if (mGrenadeUsed)
             {
                 mGrenadeTutorialCon->SetEnabled(false);
+                mGrenadeTutorial->SetEnabled(false);
             }
             else
                 mTutorialArea->SetWaves(mTutorialArea->GetCurrentWave() + 1);
@@ -154,6 +164,7 @@ void SecondTutorial::UltTutorial()
     {
         if (!mUltTutorialStarted && ultResource >= 100)
         {
+            mUltimateTutorial->SetEnabled(false);
             mUltimateTutorialCon->SetEnabled(true);
             mUltTutorialStarted = true;
         }
@@ -167,6 +178,7 @@ void SecondTutorial::UltTutorial()
     {
         if (!mUltTutorialStarted && ultResource >= 100)
         {
+            mUltimateTutorialCon->SetEnabled(false);
             mUltimateTutorial->SetEnabled(true);
             mUltTutorialStarted = true;
         }
