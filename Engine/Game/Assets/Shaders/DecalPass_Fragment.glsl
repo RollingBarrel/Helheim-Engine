@@ -128,7 +128,13 @@ void main()
 	
 	if (hasEmisive)
 	{
-		vec3 emissiveTex = texture(decalEmisiveTex, texCoordsCurrent).rgb * emisiveColor;
+		vec3 rgb = texture(decalEmisiveTex, texCoordsCurrent).rgb;
+		if (!hasDiffuse && rgb.r < 0.1 && rgb.g < 0.1 && rgb.b < 0.1)
+		{
+			discard;
+		}
+
+		vec3 emissiveTex = rgb * emisiveColor;
 		outEmissive.rgb = pow(emissiveTex, vec3(2.2));
 		outEmissive.w = fade;
 	}
