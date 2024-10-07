@@ -356,11 +356,6 @@ bool PlayerController::IsPlayerDashing() const
     return mLowerState->GetType() == StateType::DASH;
 }
 
-void PlayerController::SetIdleState()
-{
-    mLowerState = mIdleState;
-}
-
 void PlayerController::CheckInput()
 {
     // Lowerbody state machine

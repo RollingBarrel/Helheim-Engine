@@ -102,7 +102,7 @@ void ParticleSystemComponent::Init()
     glVertexAttribDivisor(COLOR_LOCATION, 1);
     glBindVertexArray(0);
 
-    App->GetOpenGL()->AddParticleSystem(this);
+    if (IsEnabled()) App->GetOpenGL()->AddParticleSystem(this);
 }
 
 void ParticleSystemComponent::Draw()
