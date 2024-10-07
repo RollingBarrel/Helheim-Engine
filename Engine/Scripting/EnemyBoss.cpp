@@ -138,6 +138,7 @@ void EnemyBoss::Update()
         mCurrentState = EnemyState::PHASE;
         mBulletHell = BulletPattern::NONE;
         mInvulnerable = true;
+        GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
         if (mSpritesheet) 
         {
@@ -204,6 +205,7 @@ void EnemyBoss::Update()
                     ++phaseChange;
                     mWakeUp = false;
                     mInvulnerable = false;
+                    GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
                     if (mSpritesheet) mSpritesheet->PlayAnimation();
                     mShieldTimer.Reset();
                 }
@@ -280,6 +282,7 @@ void EnemyBoss::Update()
                 mAnimationComponent->SetAnimSpeed(1.0f);
                 mWakeUp = false;
                 mInvulnerable = false;
+                GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
                 mCurrentState = EnemyState::IDLE;
             }
