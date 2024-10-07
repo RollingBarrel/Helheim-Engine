@@ -46,7 +46,11 @@ void CameraComponent::Disable()
 
 void CameraComponent::Update()
 {
-	if (!mHasUpdatedFrustum || mOwner->HasUpdatedTransform())  App->GetOpenGL()->SetOpenGlCameraUniforms();
+	if (!mHasUpdatedFrustum || mOwner->HasUpdatedTransform())
+	{
+		mHasUpdatedFrustum = false;
+		App->GetOpenGL()->SetOpenGlCameraUniforms();
+	}
 }
 
 Component* CameraComponent::Clone(GameObject* owner) const

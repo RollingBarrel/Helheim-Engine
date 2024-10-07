@@ -55,7 +55,8 @@ void LoreCollectible::Update()
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
 	}*/
 
-	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN ||
+		App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
 	{
 		GameManager::GetInstance()->GetHud()->DisableCollectible();
 	}
@@ -87,7 +88,7 @@ void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
 				GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_INTERACT, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
 
 				GameManager::GetInstance()->SetPaused(true, false);
-				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data());
+				if (mLoreText)GameManager::GetInstance()->GetHud()->SetCollectibleText(mLoreText->data(), mTitleText->data(), mSubtitleText->data());
 				GameManager::GetInstance()->GetHud()->SetScreen(SCREEN::COLLECTIBLE, true);
 				GameManager::GetInstance()->GetHud()->SetInteract(false);
 				mUsed = true;

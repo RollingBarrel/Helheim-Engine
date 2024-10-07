@@ -94,31 +94,34 @@ void BattleArea::Start()
 
 void BattleArea::Update()
 {
-	if (mHasBeenActivated && mNeedsToSpawn)
+	if(mSpawnEnemies)
 	{
-		for (size_t i = 0; i < mSpawners.size(); i++)
+		if (mHasBeenActivated && mNeedsToSpawn)
 		{
-			if (mSpawners[i]->IsActive())
+			for (size_t i = 0; i < mSpawners.size(); i++)
 			{
-				for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
+				if (mSpawners[i]->IsActive())
 				{
-					mSpawners[i]->Spawn();
-					mCurrentEnemies++;
+					for (size_t y = 0; y < mSpawners[i]->GetEnemiesPerRound(); y++)
+					{
+						mSpawners[i]->Spawn();
+						mCurrentEnemies++;
+					}
 				}
 			}
-		}
-		for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
-		{
-			if (mExplosiveSpawners[i]->IsActive())
+			for (size_t i = 0; i < mExplosiveSpawners.size(); i++)
 			{
-				for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+				if (mExplosiveSpawners[i]->IsActive())
 				{
-					mExplosiveSpawners[i]->Spawn();
-					mCurrentEnemies++;
+					for (size_t y = 0; y < mExplosiveSpawners[i]->GetEnemiesPerRound(); y++)
+					{
+						mExplosiveSpawners[i]->Spawn();
+						mCurrentEnemies++;
+					}
 				}
 			}
+			mNeedsToSpawn = false;
 		}
-		mNeedsToSpawn = false;
 	}
 }
 
@@ -137,6 +140,9 @@ void BattleArea::EnemyDestroyed(GameObject* enemy)
 	if (mWavesRounds <= 0)
 	{
 		ActivateArea(false);
+
+		mHasBeenActivated = false;
+
 		if (mAreaDoorsGO)
 		{
 			AreaDoors* areaDoors = static_cast<AreaDoors*>(static_cast<ScriptComponent*>(mAreaDoorsGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
@@ -188,7 +194,6 @@ inline void BattleArea::ActivateArea(bool activate)
 	{
 		GameManager::GetInstance()->SetActiveBattleArea(nullptr);
 		GameManager::GetInstance()->GetHud()->SetDialog();
-		//LOG("Sanity");
 	}
 }
 
@@ -203,6 +208,5 @@ void BattleArea::OnCollisionEnter(CollisionData* collisionData)
  		mHasBeenActivated = true;
 		GameManager::GetInstance()->SetActiveBattleArea(this);
 		ActivateArea(true);
-		//LOG("PLAYER COLLISION");
 	}
 }

@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1336649222,
+                "UID": 1494760554,
                 "ParentUID": 1,
                 "Name": "Enemy_Explosive",
                 "Enabled": true,
@@ -92,12 +92,12 @@
                             {
                                 "VariableName": "mExplosionWarningGO",
                                 "MemberType": 3,
-                                "VariableData": 1419915938
+                                "VariableData": 1822745085
                             },
                             {
                                 "VariableName": "mExplosionParticle",
                                 "MemberType": 3,
-                                "VariableData": 1426321070
+                                "VariableData": 2059178001
                             }
                         ]
                     },
@@ -120,8 +120,8 @@
                 ]
             },
             {
-                "UID": 1366238147,
-                "ParentUID": 1336649222,
+                "UID": 1595362899,
+                "ParentUID": 1494760554,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -148,8 +148,8 @@
                 "Components": []
             },
             {
-                "UID": 1373200247,
-                "ParentUID": 1366238147,
+                "UID": 1629546810,
+                "ParentUID": 1595362899,
                 "Name": "OB_exploding_ball_lower_part",
                 "Enabled": true,
                 "Active": true,
@@ -176,8 +176,8 @@
                 "Components": []
             },
             {
-                "UID": 1379744621,
-                "ParentUID": 1373200247,
+                "UID": 1660458534,
+                "ParentUID": 1629546810,
                 "Name": "OB_exploding_ball_lower_part",
                 "Enabled": true,
                 "Active": true,
@@ -211,7 +211,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1398681533,
+                                "GoId": 1736763150,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -232,7 +232,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1404947423,
+                                "GoId": 1760921637,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -253,7 +253,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1411143692,
+                                "GoId": 1788770037,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -278,8 +278,8 @@
                 ]
             },
             {
-                "UID": 1386080132,
-                "ParentUID": 1366238147,
+                "UID": 1687541103,
+                "ParentUID": 1595362899,
                 "Name": "OB_exploding_ball_upper_part",
                 "Enabled": true,
                 "Active": true,
@@ -306,8 +306,8 @@
                 "Components": []
             },
             {
-                "UID": 1392346022,
-                "ParentUID": 1386080132,
+                "UID": 1712743905,
+                "ParentUID": 1687541103,
                 "Name": "OB_exploding_ball_upper_part",
                 "Enabled": true,
                 "Active": true,
@@ -341,7 +341,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 1398681533,
+                                "GoId": 1736763150,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -362,7 +362,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1404947423,
+                                "GoId": 1760921637,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -383,7 +383,7 @@
                                 ]
                             },
                             {
-                                "GoId": 1411143692,
+                                "GoId": 1788770037,
                                 "Matrix": [
                                     100.0,
                                     -0.0,
@@ -408,8 +408,8 @@
                 ]
             },
             {
-                "UID": 1398681533,
-                "ParentUID": 1366238147,
+                "UID": 1736763150,
+                "ParentUID": 1595362899,
                 "Name": "Root",
                 "Enabled": true,
                 "Active": true,
@@ -436,8 +436,8 @@
                 "Components": []
             },
             {
-                "UID": 1404947423,
-                "ParentUID": 1398681533,
+                "UID": 1760921637,
+                "ParentUID": 1736763150,
                 "Name": "UpperPart",
                 "Enabled": true,
                 "Active": true,
@@ -464,8 +464,8 @@
                 "Components": []
             },
             {
-                "UID": 1411143692,
-                "ParentUID": 1398681533,
+                "UID": 1788770037,
+                "ParentUID": 1736763150,
                 "Name": "LowerPart",
                 "Enabled": true,
                 "Active": true,
@@ -492,8 +492,8 @@
                 "Components": []
             },
             {
-                "UID": 1419915938,
-                "ParentUID": 1336649222,
+                "UID": 1822745085,
+                "ParentUID": 1494760554,
                 "Name": "Warining Area",
                 "Enabled": true,
                 "Active": true,
@@ -544,8 +544,8 @@
                 ]
             },
             {
-                "UID": 1426321070,
-                "ParentUID": 1336649222,
+                "UID": 2059178001,
+                "ParentUID": 1494760554,
                 "Name": "VFX_Explotion1",
                 "Enabled": true,
                 "Active": true,
@@ -572,8 +572,8 @@
                 "Components": []
             },
             {
-                "UID": 1432656581,
-                "ParentUID": 1426321070,
+                "UID": 2122185006,
+                "ParentUID": 2059178001,
                 "Name": "Fire",
                 "Enabled": true,
                 "Active": true,
@@ -792,8 +792,8 @@
                 ]
             },
             {
-                "UID": 1438992092,
-                "ParentUID": 1426321070,
+                "UID": 12087836,
+                "ParentUID": 2059178001,
                 "Name": "Fire (1)",
                 "Enabled": true,
                 "Active": true,
@@ -970,8 +970,8 @@
                 ]
             },
             {
-                "UID": 1445257982,
-                "ParentUID": 1426321070,
+                "UID": 53721194,
+                "ParentUID": 2059178001,
                 "Name": "Burst",
                 "Enabled": true,
                 "Active": true,
@@ -1117,8 +1117,8 @@
                 ]
             },
             {
-                "UID": 1451871977,
-                "ParentUID": 1426321070,
+                "UID": 109209131,
+                "ParentUID": 2059178001,
                 "Name": "Sparks",
                 "Enabled": true,
                 "Active": true,
@@ -1301,8 +1301,8 @@
                 ]
             },
             {
-                "UID": 1458207488,
-                "ParentUID": 1426321070,
+                "UID": 164209721,
+                "ParentUID": 2059178001,
                 "Name": "Smoke",
                 "Enabled": true,
                 "Active": true,
@@ -1459,6 +1459,63 @@
                                 "Color Gradient": []
                             }
                         }
+                    }
+                ]
+            },
+            {
+                "UID": 641650990,
+                "ParentUID": 1494760554,
+                "Name": "BillBoard",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.5,
+                    0.5,
+                    -0.5,
+                    0.5
+                ],
+                "Scale": [
+                    2.0,
+                    2.0,
+                    2.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 7,
+                        "IsEnabled": true,
+                        "Size": [
+                            100.0,
+                            100.0
+                        ],
+                        "Render": 0
+                    },
+                    {
+                        "ComponentType": 8,
+                        "IsEnabled": true,
+                        "ImageID": 1149343752,
+                        "Color": [
+                            1.0,
+                            1.0,
+                            1.0
+                        ],
+                        "Alpha": 1.0,
+                        "ShouldDraw": true,
+                        "IsMaskable": false,
+                        "IsSpritesheet": false,
+                        "Columns": 1,
+                        "Rows": 1,
+                        "Speed": 30,
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             }

@@ -59,7 +59,7 @@ GameObject::GameObject(unsigned int uid, const char* name, GameObject* parent)
 	}
 }
 
-GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps)
+GameObject::GameObject(const GameObject& original, GameObject* newParent, std::unordered_map<const GameObject*, GameObject*>* originalToNew, std::vector<MeshRendererComponent*>* meshRendererComps, std::vector<AnimationComponent*>* animationComps)
 	:mUid(LCG().Int()), mName(original.mName), mParent(newParent),
 	mIsRoot(original.mIsRoot), mIsEnabled(original.mIsEnabled), mIsActive(newParent->mIsActive&& original.mIsEnabled),
 	mWorldTransformMatrix(original.GetWorldTransform()), mLocalTransformMatrix(original.mLocalTransformMatrix),
@@ -77,12 +77,16 @@ GameObject::GameObject(const GameObject& original, GameObject* newParent, std::u
 		{
 			meshRendererComps->push_back(static_cast<MeshRendererComponent*>(cloned));
 		}
+		if (animationComps && cloned->GetType() == ComponentType::ANIMATION)
+		{
+			animationComps->push_back(static_cast<AnimationComponent*>(cloned));
+		}
 	}
 
 	App->GetScene()->AddGameObjectToScene(this);
 	for (GameObject* child : original.mChildren)
 	{
-		GameObject* gameObject = new GameObject(*child, this, originalToNew, meshRendererComps);
+		GameObject* gameObject = new GameObject(*child, this, originalToNew, meshRendererComps, animationComps);
 		AddChild(gameObject);
 	}
 

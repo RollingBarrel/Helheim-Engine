@@ -4,12 +4,13 @@
 		"version":"2.0"
 	},
 	"extensionsUsed":[
-		"KHR_materials_specular"
+		"KHR_materials_specular",
+		"KHR_materials_ior"
 	],
 	"scene":0,
 	"scenes":[
 		{
-			"name":"Scene",
+			"name":"Animation",
 			"nodes":[
 				35
 			]
@@ -725,7 +726,7 @@
 		},
 		{
 			"mesh":0,
-			"name":"enemy_creature",
+			"name":"enemy_creature.001",
 			"skin":0
 		},
 		{
@@ -1998,9 +1999,12 @@
 						2.0,
 						2.0
 					]
+				},
+				"KHR_materials_ior":{
+					"ior":1
 				}
 			},
-			"name":"m_creature",
+			"name":"m_creature.001",
 			"normalTexture":{
 				"index":1
 			},
@@ -2053,23 +2057,23 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"T_CreatureMelee_Emissive",
-			"uri":"T_CreatureMelee_Emissive.png"
+			"name":"enemigo_low_m_creature_enemy_Emissive",
+			"uri":"enemigo_low_m_creature_enemy_Emissive.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_CreatureMelee_Normal",
-			"uri":"T_CreatureMelee_Normal.png"
+			"name":"enemigo_low_m_creature_enemy_Normal.png",
+			"uri":"enemigo_low_m_creature_enemy_Normal_png.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_CreatureMelee_BaseColor",
-			"uri":"T_CreatureMelee_BaseColor.png"
+			"name":"enemigo_low_m_creature_enemy_BaseColor",
+			"uri":"enemigo_low_m_creature_enemy_BaseColor.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_CreatureMelee_OcclusionRoughnessMetallic",
-			"uri":"T_CreatureMelee_OcclusionRoughnessMetallic.png"
+			"name":"enemigo_low_m_creature_enemy_OcclusionRoughnessMetallic.png",
+			"uri":"enemigo_low_m_creature_enemy_OcclusionRoughnessMetallic_png.png"
 		}
 	],
 	"skins":[

@@ -103,7 +103,11 @@ void FirstTutorial::Update()
                 doorAnimation1->SendTrigger("tOpen", 0.6f);
 
             }
-
+            if (mBorderEnter && mTopRender)
+            {
+                mTopRender->SetEmissiveColor(float3(0.0f, 255.0f, 0.0f));
+                mBorderEnter->SetEmissiveColor(float3(0.0f, 255.0f, 0.0f));
+            }
             BoxColliderComponent* door1Collider = static_cast<BoxColliderComponent*>(mDoor1->GetComponent(ComponentType::BOXCOLLIDER));
             if (door1Collider)
             {

@@ -80,6 +80,8 @@ private:
 	bool mIsTilled = true;
 	float mTilling = 1.0f;
 
+	bool mWidthUpdated = false;
+
 	unsigned int mVAO = 0;
 	unsigned int mVBO = 0;
 	unsigned int mSSBOColor = 0;
