@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2113944827,
+                "UID": 1145996648,
                 "ParentUID": 1,
                 "Name": "BombingTemplate3",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 98532217,
-                "ParentUID": 2113944827,
+                "UID": 1292200748,
+                "ParentUID": 1145996648,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 224198122,
-                "ParentUID": 98532217,
+                "UID": 1409303270,
+                "ParentUID": 1292200748,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -243,8 +243,8 @@
                 ]
             },
             {
-                "UID": 348053881,
-                "ParentUID": 98532217,
+                "UID": 1525570340,
+                "ParentUID": 1292200748,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -280,6 +280,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -290,7 +298,7 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             }

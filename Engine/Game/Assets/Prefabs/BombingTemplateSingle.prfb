@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 346937975,
+                "UID": 2042366587,
                 "ParentUID": 1,
                 "Name": "BombingTemplateSingle",
                 "Enabled": true,
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 1089499166,
-                "ParentUID": 346937975,
+                "UID": 41504766,
+                "ParentUID": 2042366587,
                 "Name": "BombingArea",
                 "Enabled": true,
                 "Active": true,
@@ -107,8 +107,8 @@
                 ]
             },
             {
-                "UID": 1229646239,
-                "ParentUID": 1089499166,
+                "UID": 164803557,
+                "ParentUID": 41504766,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -314,8 +314,8 @@
                 ]
             },
             {
-                "UID": 1356774185,
-                "ParentUID": 1089499166,
+                "UID": 288450453,
+                "ParentUID": 41504766,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -351,6 +351,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -361,7 +369,7 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             }

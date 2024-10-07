@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 311405660,
+                "UID": 164985961,
                 "ParentUID": 1,
                 "Name": "BombingArea",
                 "Enabled": true,
@@ -79,8 +79,8 @@
                 ]
             },
             {
-                "UID": 452597048,
-                "ParentUID": 311405660,
+                "UID": 295386094,
+                "ParentUID": 164985961,
                 "Name": "Explosion",
                 "Enabled": true,
                 "Active": true,
@@ -286,8 +286,8 @@
                 ]
             },
             {
-                "UID": 1637166768,
-                "ParentUID": 311405660,
+                "UID": 420773515,
+                "ParentUID": 164985961,
                 "Name": "GameObject",
                 "Enabled": true,
                 "Active": true,
@@ -323,6 +323,14 @@
                             1.0,
                             1.0
                         ],
+                        "EmisiveID": 2019644461,
+                        "EmisiveName": "Warning_Icon3Emissive.png",
+                        "EmisiveColor": [
+                            0.7333333492279053,
+                            0.0,
+                            1.0,
+                            1.0
+                        ],
                         "IsSpriteSheet": false,
                         "SpriteSheetSize": [
                             1,
@@ -333,7 +341,7 @@
                             0
                         ],
                         "Speed": 30,
-                        "Fade": 0.5
+                        "Fade": 0.25200000405311587
                     }
                 ]
             }
