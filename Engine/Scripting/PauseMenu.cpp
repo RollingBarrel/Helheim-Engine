@@ -597,7 +597,7 @@ void PauseMenu::Controls()
             else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
-                mOptionsOption = 10;
+                mOptionsOption = 7;
                 mSettingsClicked->SetEnabled(false);
                 OnVideoSettingsButtonHover();
             }

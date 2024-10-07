@@ -123,6 +123,12 @@ CREATE(MainMenu)
     SEPARATOR("OTHERS");
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
 
+    SEPARATOR("Bindings");
+    MEMBER(MemberType::GAMEOBJECT, mAcceptKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mAcceptControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mBackKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mBackControllerGO);
+
     END_CREATE;
 }
 
@@ -310,6 +316,12 @@ void MainMenu::Update()
     }
 
     mTimePassed += App->GetDt();
+
+    if (mController != App->GetInput()->isGamepadAvailable())
+    {
+        mController = App->GetInput()->isGamepadAvailable();
+        ChangeBindings(mController);
+    }
 }
 
 void MainMenu::Controls()
@@ -1356,4 +1368,23 @@ void MainMenu::OnEffectsUp()
 void MainMenu::OnEffectsDown()
 {
     OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(2), DIRECTION::LEFT, 0.1f);
+}
+
+void MainMenu::ChangeBindings(bool value)
+{
+    if (value)
+    {
+        mAcceptKeyboardGO->SetEnabled(false);
+        mBackKeyboardGO->SetEnabled(false);
+        mAcceptControllerGO->SetEnabled(true);
+        mBackControllerGO->SetEnabled(true);
+    }
+    else
+    {
+        mAcceptKeyboardGO->SetEnabled(true);
+        mBackKeyboardGO->SetEnabled(true);
+        mAcceptControllerGO->SetEnabled(false);
+        mBackControllerGO->SetEnabled(false);
+    }
+    
 }

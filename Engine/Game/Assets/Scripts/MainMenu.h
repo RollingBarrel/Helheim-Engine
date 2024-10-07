@@ -112,6 +112,8 @@ private:
     void OnMusicDown();
     void OnEffectsUp();
     void OnEffectsDown();
+
+    void ChangeBindings(bool value);
     
     int mMainOption = 0;
     int mOptionsOption = 7;
@@ -278,5 +280,13 @@ private:
 
     bool mIsScrolling = false;
     bool mIsInitial = true;
+
+    // Bindings
+    GameObject* mAcceptKeyboardGO = nullptr;
+    GameObject* mAcceptControllerGO = nullptr;
+    GameObject* mBackKeyboardGO = nullptr;
+    GameObject* mBackControllerGO = nullptr;
+
+    bool mController = false;
 };
 
