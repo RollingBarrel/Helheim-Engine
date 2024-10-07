@@ -81,11 +81,6 @@ SpotLightComponent::~SpotLightComponent()
 	App->GetOpenGL()->RemoveSpotLight(*this);
 }
 
-const float* SpotLightComponent::GetPosition() const
-{
-	return mOwner->GetWorldPosition().ptr();
-}
-
 void SpotLightComponent::SetColor(float color[3])
 {
 	mData.color[0] = color[0];

@@ -8,6 +8,7 @@ class BattleArea;
 class AnimationComponent;
 class ImageComponent;
 class PlayerController;
+class ButtonComponent;
 
 GENERATE_BODY(CinematicCamera);
 class CinematicCamera :public Script
@@ -28,16 +29,19 @@ private:
     void UpdateCinematic(GameObject* dummy, BattleArea* battleArea);
     void LocateCamera(GameObject* cameraObject);
     bool HandleFadeIn();
-    bool HandleFadeOut(GameObject* dummy);
+    bool HandleFadeOut();
     void HandleCameraMovement();
-    void HandleEscape(GameObject* dummy);
-    void EndCinematic(GameObject* dummy);
+    void HandleEscape();
+    void EndCinematic();
     void InitAnimation(int animState);
     bool Fade(bool fadeOut);
     void ActivateCamera(bool state);
     void ActivateBattleArea(BattleArea* battleArea, bool state);
     void ActivateDummy(GameObject* dummy, bool state);
  
+    void OnSkipClick();
+
+    //GameObject* mPlayerCameraGO = nullptr;
     GameObject* mCinematicCameraGO = nullptr;
 
     GameObject* mCameraObjectGO1 = nullptr;
@@ -98,4 +102,9 @@ private:
     CameraComponent* mCinematicCamera = nullptr;  
     AnimationComponent* mAnimationComponent = nullptr;
     ImageComponent* mImage = nullptr;
+
+    GameObject* mDummy = nullptr;
+
+    GameObject* mSkipGO = nullptr;
+    ButtonComponent* mSkipBtn = nullptr;
 };

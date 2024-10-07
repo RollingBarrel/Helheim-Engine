@@ -47,7 +47,7 @@ void Enemy::Start()
 	
 	mAiAgentComponent = static_cast<AIAgentComponent*>(mGameObject->GetComponent(ComponentType::AIAGENT));
 	
-	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
+	mAnimationComponent = static_cast<AnimationComponent*>(mGameObject->GetComponentInChildren(ComponentType::ANIMATION));
 	if (mAnimationComponent) mAnimationComponent->SetIsPlaying(true);
 	
 	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
