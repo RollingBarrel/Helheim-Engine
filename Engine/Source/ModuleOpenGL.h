@@ -132,7 +132,7 @@ public:
 	void AddDecal(const DecalComponent& decal);
 	void RemoveDecal(const DecalComponent& decal);
 
-	void AddParticleSystem(ParticleSystemComponent* component) { mParticleSystems.push_back(component); }
+	void AddParticleSystem(ParticleSystemComponent* component);
 	void RemoveParticleSystem(const ParticleSystemComponent* component);
 
 	void AddTrail(const Trail* trail) { mTrails.push_back(trail); }
