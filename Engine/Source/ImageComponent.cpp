@@ -62,7 +62,6 @@ ImageComponent:: ~ImageComponent()
 		App->GetResource()->ReleaseResource(mImage->GetUID());
 		mImage = nullptr;
 	}
-
 	mCanvas = nullptr;
 	mTransform = nullptr;
 }
@@ -114,13 +113,14 @@ void ImageComponent::Draw()
 		glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
 	}
 
-	if (mIsSpritesheet)
-	{
-		FillSpriteSheetVBO();
-	}
-
 	if (mImage && mCanvas && mShouldDraw)
 	{
+		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
+		if (mIsSpritesheet)
+		{
+			FillSpriteSheetVBO();
+		}
+
 		glEnable(GL_BLEND);
 		glDepthMask(GL_TRUE);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -214,9 +214,6 @@ void ImageComponent::Draw()
 		}
 		}
 
-
-		glBindVertexArray(App->GetOpenGL()->GetQuadVAO());
-
 		glUniform4fv(glGetUniformLocation(UIImageProgram, "inputColor"), 1, float4(mColor, mAlpha).ptr());
 
 		glActiveTexture(GL_TEXTURE0);
@@ -228,8 +225,22 @@ void ImageComponent::Draw()
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 
-		glBindTexture(GL_TEXTURE_2D, 0);
+		if (mIsSpritesheet)
+		{
+			float vertices[] = {
+				// texture coordinates
+				-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+				-0.5f, -0.5f,  0.0f,  1.0f,   // bottom-left vertex
+				0.5f, -0.5f,  1.0f,  1.0f,   // bottom-right vertex
+				0.5f,  0.5f,  1.0f,  0.0f,   // top-right vertex
+				-0.5f,  0.5f,  0.0f,  0.0f,   // top-left vertex
+				0.5f, -0.5f,  1.0f,  1.0f    // bottom-right vertex
+			};
+			glBindBuffer(GL_ARRAY_BUFFER, App->GetOpenGL()->GetQuadVBO());
+			glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
+		}
 		glBindVertexArray(0);
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		glDisable(GL_BLEND);
 		glEnable(GL_CULL_FACE);
@@ -356,6 +367,18 @@ void ImageComponent::FillSpriteSheetVBO()
 	float vStart = (float)row / mRows;
 	float uEnd = uStart + 1.0f / mColumns;
 	float vEnd = vStart + 1.0f / mRows;
+
+	float vertices[] = {
+	-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
+	-0.5f, -0.5f,  uStart, vEnd,     // bottom-left vertex
+	 0.5f, -0.5f,  uEnd,   vEnd,     // bottom-right vertex
+	 0.5f,  0.5f,  uEnd,   vStart,   // top-right vertex
+	-0.5f,  0.5f,  uStart, vStart,   // top-left vertex
+	 0.5f, -0.5f,  uEnd,   vEnd      // bottom-right vertex
+	};
+
+	glBindBuffer(GL_ARRAY_BUFFER, App->GetOpenGL()->GetQuadVBO());
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices, GL_STATIC_DRAW);
 }
 
 void ImageComponent::ResizeByRatio()

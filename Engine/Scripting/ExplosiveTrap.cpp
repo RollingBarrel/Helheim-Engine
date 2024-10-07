@@ -1,154 +1,131 @@
 #include "ExplosiveTrap.h"
-#include "GameManager.h"
-#include "BoxColliderComponent.h"
-#include "GameObject.h"
-#include "ParticleSystemComponent.h"
-#include "ScriptComponent.h"
-#include "PlayerController.h"
-#include "Enemy.h"
 #include "Application.h"
 #include "ModuleScene.h"
-#include "PlayerController.h"
+
+#include "GameObject.h"
+#include "BoxColliderComponent.h"
+#include "ScriptComponent.h"
+
+#include "GameManager.h"
 #include "AudioManager.h"
+#include "PlayerController.h"
+#include "Enemy.h"
+
 
 CREATE(ExplosiveTrap)
 {
-    CLASS(owner);
-    SEPARATOR("SIZE");
-    MEMBER(MemberType::FLOAT, mTriggerArea);
-    MEMBER(MemberType::FLOAT, mExplosionArea);
+	CLASS(owner);
+	SEPARATOR("SIZE");
+	MEMBER(MemberType::FLOAT, mTriggerArea);
+	MEMBER(MemberType::FLOAT, mExplosionArea);
 
+	SEPARATOR("ACTIVATION PARAMETER");
+	MEMBER(MemberType::FLOAT, mExplosionWait);
+	MEMBER(MemberType::FLOAT, mExplosionDuration);
 
-    SEPARATOR("ACTIVATION PARAMETER");
-    MEMBER(MemberType::FLOAT, mExplosionWait);
-    MEMBER(MemberType::FLOAT, mExplosionDuration);
+	SEPARATOR("SIDE EFFECT");
+	MEMBER(MemberType::FLOAT, mDamageAmount);
 
-    SEPARATOR("SIDE EFFECT");
-    MEMBER(MemberType::FLOAT, mDamageAmount);
-
-    SEPARATOR("GAME OBJECT");
-    MEMBER(MemberType::GAMEOBJECT, mExplosionPrestartVFX);
-    MEMBER(MemberType::GAMEOBJECT, mExplosionVFX);
-
-    END_CREATE;
-}
-
-
-ExplosiveTrap::ExplosiveTrap(GameObject* owner) : Script(owner)
-{
-
-}
-
-ExplosiveTrap::~ExplosiveTrap()
-{
-    mInTrap.clear();
+	SEPARATOR("GAME OBJECT");
+	MEMBER(MemberType::GAMEOBJECT, mExplosionPrestartVFX);
+	MEMBER(MemberType::GAMEOBJECT, mExplosionVFX);
+	MEMBER(MemberType::GAMEOBJECT, mBarrelMesh);
+	END_CREATE;
 }
 
 void ExplosiveTrap::Start()
 {
-    mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
-    if (mCollider)
-    {
-        float3 area(mTriggerArea, 1, mTriggerArea);
-        mCollider->SetSize(area);
-        mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ExplosiveTrap::OnCollisionEnter, this, std::placeholders::_1)));
-    }
+	mCollider = static_cast<BoxColliderComponent*>(mGameObject->GetComponent(ComponentType::BOXCOLLIDER));
+	if (mCollider)
+	{
+		mCollider->SetSize(float3(mTriggerArea));
+		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_ENTER, new std::function<void(CollisionData*)>(std::bind(&ExplosiveTrap::OnCollisionEnter, this, std::placeholders::_1)));
+	}
 
-    if (mExplosionPrestartVFX != nullptr)
-    {
-        float3 area(mExplosionArea + 2, mExplosionArea + 2, mExplosionArea + 2);
-        mExplosionPrestartVFX->SetLocalScale(area);
-    }
-
-    if (mExplosionVFX != nullptr)
-    {
-        float3 area(mExplosionArea, mExplosionArea, mExplosionArea);
-        mExplosionVFX->SetLocalScale(area);
-    }
+	if (mExplosionPrestartVFX) mExplosionPrestartVFX->SetWorldScale(float3(mExplosionArea, mExplosionArea, 1.0f));
+	if (mExplosionVFX) mExplosionVFX->SetWorldScale(float3(mExplosionArea));
 }
 
 void ExplosiveTrap::Update()
 {
-    if (mState == TRAP_STATE::EXPLOSION_PRESTART)
-    {
-        if (mExplosionWaitTimer.Delay(mExplosionWait))
-        {
-            mState = TRAP_STATE::EXPLOSION_START;
-            mExplosionPrestartVFX->SetEnabled(false);
-            mExplosionVFX->SetEnabled(true);
+	switch (mState)
+	{
+	case TRAP_STATE::EXPLOSION_CHARGE:
+		if (mExplosionChargeTimer.Delay(mExplosionWait))
+		{
+			mState = TRAP_STATE::EXPLOSION_START;
+			if (mExplosionPrestartVFX) mExplosionPrestartVFX->SetEnabled(false);
+			if (mExplosionVFX) mExplosionVFX->SetEnabled(true);
+			mBarrelMesh->SetEnabled(false);
 
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mGameObject->GetWorldPosition());
+			GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_EXPLOSION, mGameObject->GetWorldPosition());
+		}
+		break;
 
-            // Change box size to hit farther 
-            float3 area(mExplosionArea, 1, mExplosionArea);
-            mCollider->SetSize(area);
-        }
-    }
+	case TRAP_STATE::EXPLOSION_START:
+		mState = TRAP_STATE::EXPLOSION_END;
+		DoDamage();
+		break;
 
-    if (mState == TRAP_STATE::EXPLOSION_START)
-    {
-        if (mExplosionWaitTimer.Delay(mExplosionDuration))
-        {
-            mGameObject->SetEnabled(false);
-        }
-    }
-}
+	case TRAP_STATE::EXPLOSION_END:
+		if (mExplosionDurationTimer.Delay(mExplosionDuration)) mGameObject->SetEnabled(false);
+		break;
 
-
-bool ExplosiveTrap::IsInTrap(const GameObject* target)
-{
-    for (auto captured : mInTrap)
-    {
-        if (captured->GetID() == target->GetID())
-        {
-            return true;
-        }
-    }
-    return false;
+	default:
+		break;
+	}
 }
 
 void ExplosiveTrap::OnCollisionEnter(CollisionData* collisionData)
 {
-    GameObject* collision = collisionData->collidedWith;
+	GameObject* collision = collisionData->collidedWith;
 
-    if (mState == TRAP_STATE::INACTIVE)
-    {
-        if (collision->GetTag().compare("Player") == 0)
-        {
-            mState = TRAP_STATE::EXPLOSION_PRESTART;
-            GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mGameObject->GetWorldPosition());
+	if (mState == TRAP_STATE::INACTIVE)
+	{
+		if (collision->GetTag().compare("Player") == 0)
+		{
+			mState = TRAP_STATE::EXPLOSION_CHARGE;
+			GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mGameObject->GetWorldPosition());
 
-            mExplosionPrestartVFX->SetEnabled(true);
-        }
-    }
-
-    if (mState == TRAP_STATE::EXPLOSION_START && !IsInTrap(collision))
-    {
-        mInTrap.push_back(collision);
-
-        if (collision->GetTag().compare("Player") == 0)
-        {
-            const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
-            PlayerController* player = static_cast<PlayerController*>(script->GetScriptInstance());
-            player->TakeDamage(mDamageAmount);
-        }
-
-        if (collision->GetTag().compare("Enemy") == 0)
-        {
-            const ScriptComponent* script = static_cast<ScriptComponent*>(collision->GetComponent(ComponentType::SCRIPT));
-            Enemy* enemy = static_cast<Enemy*>(script->GetScriptInstance());
-            enemy->TakeDamage(mDamageAmount);
-        }
-    }
+			mExplosionPrestartVFX->SetEnabled(true);
+		}
+	}
 }
 
 void ExplosiveTrap::InnerTrapTakeDamage()
 {
-    if (mState != TRAP_STATE::EXPLOSION_START)
-    {
-        mState = TRAP_STATE::EXPLOSION_PRESTART;
-        GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mGameObject->GetWorldPosition());
+	if (mState == TRAP_STATE::INACTIVE)
+	{
+		mState = TRAP_STATE::EXPLOSION_CHARGE;
+		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_EXPLOSIVE_PREEXPLOSION, mGameObject->GetWorldPosition());
 
-        mExplosionPrestartVFX->SetEnabled(true);
-    }
+		mExplosionPrestartVFX->SetEnabled(true);
+	}
+}
+
+void ExplosiveTrap::DoDamage()
+{
+	GameObject* playerObject = GameManager::GetInstance()->GetPlayer();
+	PlayerController* player = GameManager::GetInstance()->GetPlayerController();
+	float explosionRadius = mExplosionArea / 2.0f;
+	float explosionRadiusSq = explosionRadius * explosionRadius;
+
+	float distanceSq = mGameObject->GetWorldPosition().DistanceSq(playerObject->GetWorldPosition());
+	if (distanceSq < explosionRadiusSq)
+	{
+		player->TakeDamage(mDamageAmount);
+	}
+
+	const std::vector<GameObject*>& allEnemies = App->GetScene()->FindGameObjectsWithTag("Enemy");
+	for (GameObject* enemy : allEnemies)
+	{
+		if (enemy->IsEnabled())
+		{
+			if (mGameObject->GetWorldPosition().DistanceSq(enemy->GetWorldPosition()) <= explosionRadiusSq)
+			{
+				Enemy* enemyScript = static_cast<Enemy*>(static_cast<ScriptComponent*>(enemy->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+				enemyScript->TakeDamage(mDamageAmount);
+			}
+		}
+	}
 }

@@ -1,9 +1,9 @@
 {
     "Name": "VortexCenter",
     "BaseColorFactor": [
-        0.07450980693101883,
+        0.02102399431169033,
         0.0,
-        0.07450980693101883,
+        0.03600001335144043,
         1.0
     ],
     "MetallicFactor": 0.5,
@@ -18,7 +18,7 @@
     "NormalTex": 0,
     "EmissiveTex": 0,
     "BaseColorEnabled": false,
-    "MetallicRoughnessEnabled": false,
+    "MetallicRoughnessEnabled": true,
     "NormalMapEnabled": false,
     "EmissiveEnabled": false
 }

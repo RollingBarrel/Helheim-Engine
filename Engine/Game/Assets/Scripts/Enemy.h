@@ -6,9 +6,10 @@
 #include "TimerScript.h"
 
 class GameObject;
+class Component;
 class AnimationComponent;
 class AIAgentComponent;
-class Component;
+class BoxColliderComponent;
 
 enum class EnemyState
 {
@@ -54,6 +55,7 @@ protected:
 	virtual void Flee();
 	virtual void PlayStepAudio();
 	virtual void PlayAttackAudio() {};
+	void RotateHorizontally(const float3& target, float speed);
 
 	bool IsPlayerInRange(float range);
 	bool IsPlayerReachable();
@@ -82,6 +84,7 @@ protected:
 	GameObject* mPlayer = nullptr;
 	AnimationComponent* mAnimationComponent = nullptr;
 	AIAgentComponent* mAiAgentComponent = nullptr;
+	BoxColliderComponent* mCollider = nullptr;
 
 	//Timers
 	TimerScript mChargeDurationTimer;
@@ -96,7 +99,7 @@ protected:
 	TimerScript mHitEffectTimer;
 	float mHitEffectTime = 0.15f;
 	TimerScript mFleeToAttackTimer;
-	float mFleeToAttackTime = 0.75f;
+	float mFleeToAttackTime = 1.25f;
 	TimerScript mDeathTimer;
 	float mVanishingTime = 0.0f;
 	float mDeathTime = 1.4f;

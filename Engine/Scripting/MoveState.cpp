@@ -9,7 +9,6 @@
 #include "Weapon.h"
 #include "PlayerController.h"
 #include "GameManager.h"
-#include "AudioManager.h"
 #include "DashState.h"
 #include "MathFunc.h"
 
@@ -113,7 +112,7 @@ void MoveState::DoAnimation()
 	{
 		mMoveDirection.Normalize();
 		float2 mMovingTo = SetMovingDirection();
-		float3 mousePosition = (mPlayerController->GetPlayerAimPosition() - mPlayerController->GetPlayerPosition()).Normalized();
+		float3 mousePosition = GameManager::GetInstance()->GetPlayer()->GetFront();
 		
 		/*OUTDATED
 		//LOG("x:%f , y:%f", mMovingTo.x, mMovingTo.y);
@@ -217,6 +216,7 @@ float MoveState::ComputeMoveAnge(float3 mouseDir)
 	float2 frontProjected(mouseDir.x, mouseDir.z);       // Projected front (XZ plane)
 	float2 directionProjected(mMoveDirection.x, mMoveDirection.z); // Projected direction (XZ plane)
 
+
 	// Step 2: Normalize the projected 2D vectors
 	frontProjected.Normalize();
 	directionProjected.Normalize();
@@ -310,6 +310,6 @@ void MoveState::PlayAudio()
 	if (mStepTimer >= mStepCooldown)
 	{
 		mStepTimer = 0;
-		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_FOOTSTEP, mPlayerController->GetPlayerPosition());
+		GameManager::GetInstance()->PlayPlayerFootStepSound();
 	}
 }

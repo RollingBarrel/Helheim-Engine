@@ -59,6 +59,10 @@ private:
     void OnCard3HoverOn();
     void OnCard3HoverOff();
 
+    void SetSpeedBoxes();
+    void SetHealthBoxes();
+    void SetDamageBoxes();
+
     std::vector<std::vector<Buff>> mBuffSelection;
     std::vector<Buff> mCurrentBuffs;
 
@@ -87,4 +91,36 @@ private:
     bool mTimeout = false;
 
     int mCurrentBuff = 0;
+    float mTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
+
+    // Speed buff
+    int mSpeedLvl = 0;
+    GameObject* mSpeedBox1 = nullptr;
+    GameObject* mSpeedBox2 = nullptr;
+    GameObject* mSpeedBox3 = nullptr;
+    GameObject* mSpeedBox4 = nullptr;
+    GameObject* mSpeedBox5 = nullptr;
+    GameObject* mSpeedBox6 = nullptr;
+    GameObject* mSpeedBox7 = nullptr;
+
+    // Health buff
+    int mHealthLvl = 0;
+    GameObject* mHealthBox1 = nullptr;
+    GameObject* mHealthBox2 = nullptr;
+    GameObject* mHealthBox3 = nullptr;
+    GameObject* mHealthBox4 = nullptr;
+    GameObject* mHealthBox5 = nullptr;
+    GameObject* mHealthBox6 = nullptr;
+    GameObject* mHealthBox7 = nullptr;
+
+    // Dmg buff
+    int mDmgLvl = 0;
+    GameObject* mDmgBox1 = nullptr;
+    GameObject* mDmgBox2 = nullptr;
+    GameObject* mDmgBox3 = nullptr;
+    GameObject* mDmgBox4 = nullptr;
+    GameObject* mDmgBox5 = nullptr;
+    GameObject* mDmgBox6 = nullptr;
+    GameObject* mDmgBox7 = nullptr;
 };

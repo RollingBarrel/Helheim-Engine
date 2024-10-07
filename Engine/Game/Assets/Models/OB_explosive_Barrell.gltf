@@ -16,10 +16,15 @@
 		{
 			"mesh":0,
 			"name":"OB_explosive_barrell",
+			"scale":[
+				0.49275127053260803,
+				0.49275127053260803,
+				0.49275127053260803
+			],
 			"translation":[
-				0.22186996042728424,
-				0.2768791913986206,
-				0.24420814216136932
+				-0.010041117668151855,
+				1.6231112480163574,
+				0.04312974214553833
 			]
 		}
 	],
@@ -53,7 +58,7 @@
 	],
 	"meshes":[
 		{
-			"name":"RetopoFlow",
+			"name":"Cube.001",
 			"primitives":[
 				{
 					"attributes":{
@@ -89,96 +94,96 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"T_explosive_Barrell_Emissive",
-			"uri":"T_explosive_Barrell_Emissive.png"
+			"name":"T_Explosive_Barrell_Emissive",
+			"uri":"T_Explosive_Barrell_Emissive.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_explosive_Barrell_Normal",
-			"uri":"T_explosive_Barrell_Normal.png"
+			"name":"T_Explosive_Barrell_Normal",
+			"uri":"T_Explosive_Barrell_Normal.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_explosive_Barrell_OcclusionRoughnessMetallic",
-			"uri":"T_explosive_Barrell_OcclusionRoughnessMetallic.png"
+			"name":"T_Explosive_Barrell_OcclusionRoughnessMetallic",
+			"uri":"T_Explosive_Barrell_OcclusionRoughnessMetallic.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_explosive_Barrell_BaseColor",
-			"uri":"T_explosive_Barrell_BaseColor.png"
+			"name":"T_Explosive_Barrell_BaseColor",
+			"uri":"T_Explosive_Barrell_BaseColor.png"
 		}
 	],
 	"accessors":[
 		{
 			"bufferView":0,
 			"componentType":5126,
-			"count":1177,
+			"count":1755,
 			"max":[
-				0.9177165031433105,
-				1.1880065202713013,
-				0.8878796696662903
+				1.9951159954071045,
+				0.8779728412628174,
+				1.7882556915283203
 			],
 			"min":[
-				-1.0754220485687256,
-				-1.4023131132125854,
-				-1.0977602005004883
+				-2.118506669998169,
+				-5.5779571533203125,
+				-2.178363561630249
 			],
 			"type":"VEC3"
 		},
 		{
 			"bufferView":1,
 			"componentType":5126,
-			"count":1177,
+			"count":1755,
 			"type":"VEC3"
 		},
 		{
 			"bufferView":2,
 			"componentType":5126,
-			"count":1177,
+			"count":1755,
 			"type":"VEC2"
 		},
 		{
 			"bufferView":3,
 			"componentType":5126,
-			"count":1177,
+			"count":1755,
 			"type":"VEC4"
 		},
 		{
 			"bufferView":4,
 			"componentType":5123,
-			"count":3375,
+			"count":6279,
 			"type":"SCALAR"
 		}
 	],
 	"bufferViews":[
 		{
 			"buffer":0,
-			"byteLength":14124,
+			"byteLength":21060,
 			"byteOffset":0,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":14124,
-			"byteOffset":14124,
+			"byteLength":21060,
+			"byteOffset":21060,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":9416,
-			"byteOffset":28248,
+			"byteLength":14040,
+			"byteOffset":42120,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":18832,
-			"byteOffset":37664,
+			"byteLength":28080,
+			"byteOffset":56160,
 			"target":34962
 		},
 		{
 			"buffer":0,
-			"byteLength":6750,
-			"byteOffset":56496,
+			"byteLength":12558,
+			"byteOffset":84240,
 			"target":34963
 		}
 	],
@@ -190,7 +195,7 @@
 	],
 	"buffers":[
 		{
-			"byteLength":63248,
+			"byteLength":96800,
 			"uri":"OB_explosive_Barrell.bin"
 		}
 	]

@@ -2,6 +2,7 @@
 #define _COMPONENT_SPOTLIGHT_H_
 #include "Component.h"
 #include "Geometry/Frustum.h"
+#include "float3.h"
 
 typedef struct SpotLight {
 
@@ -34,7 +35,6 @@ public:
 	void Disable() override;
 
 	const SpotLight& GetData() const { return mData; }
-	const float* GetPosition() const;
 	const float* GetDirection() const { return mData.aimD; };
 	const float* GetColor() const { return mData.color; }
 	void SetColor(float col[3]);

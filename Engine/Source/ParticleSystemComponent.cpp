@@ -1,5 +1,6 @@
 #include "ParticleSystemComponent.h"
 #include "ParticleSystemComponent.h"
+#include "ParticleSystemComponent.h"
 #include "Particle.h"
 #include "Application.h"
 #include "ModuleOpenGL.h"
@@ -110,10 +111,8 @@ void ParticleSystemComponent::Draw()
     {
         unsigned int programId = App->GetOpenGL()->GetParticleProgramId();
         glDepthMask(GL_FALSE);
-        glEnable(GL_BLEND);									// Enable Blending
+        glEnable(GL_BLEND);
         BlendModeFunction(mBlendMode);                      
-        //glEnable(GL_TEXTURE_2D);
-        //glBlendEquation(GL_FUNC_ADD);
         glUseProgram(programId);
         glBindBuffer(GL_ARRAY_BUFFER, mVBO);
 
@@ -121,10 +120,9 @@ void ParticleSystemComponent::Draw()
         if (cam && mParticles.size()) 
         {
             float4x4 projection = cam->GetViewProjectionMatrix();
-            float3 norm = cam->GetFrustum().front; //(mParticles[i]->GetPosition() - cam->GetFrustum().pos).Normalized();
+            float3 norm = cam->GetFrustum().front;
             float3 up = cam->GetFrustum().up;
             float3 right = up.Cross(norm).Normalized();
-            //up = norm.Cross(right).Normalized();
             glBindBuffer(GL_ARRAY_BUFFER, mInstanceBuffer);
             glBufferData(GL_ARRAY_BUFFER, mParticles.size() * 20 * sizeof(float),
                 nullptr, GL_DYNAMIC_DRAW);
@@ -160,10 +158,6 @@ void ParticleSystemComponent::Draw()
                 transform.Transpose();
                 memcpy(ptr + 20 * i, transform.ptr(), sizeof(float) * 16);
                 memcpy(ptr + 20 * i + 16, mParticles[i]->GetColor().ptr(), sizeof(float) * 4);
-                //if (mHasTrails)
-                //{
-                //    mParticles[i]->DrawTrail();
-                //}
             }
             glUnmapBuffer(GL_ARRAY_BUFFER);
             glBindVertexArray(mVAO);
@@ -231,7 +225,13 @@ void ParticleSystemComponent::Update()
             }
             else
             {
-                mParticles[i]->SetSpeed(mSpeedCurve.CalculateValue(dt, mParticles[i]->GetInitialSpeed()));
+                float speed = mSpeedCurve.CalculateValue(dt, mParticles[i]->GetInitialSpeed());
+                if (mSpeedCenterShape) 
+                {
+                    float distance = DistanceToCenter(mParticles[i]->GetPosition());
+                    speed *= distance;
+                }
+                mParticles[i]->SetSpeed(speed);
                 mParticles[i]->SetSize(mSizeCurve.CalculateValue(dt, mParticles[i]->GetInitialSize()));
                 mParticles[i]->SetColor(mColorGradient.CalculateColor(dt));
             }
@@ -285,15 +285,49 @@ void ParticleSystemComponent::CreateNewParticle()
     float random = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
     float rotation = (random * 3.1415 / 2) - (3.1415 / 4);
 
-    // Create the particle and sets its speed and size considering if they are linear or curve
     float initialSize = mSizeCurve.GetValue().CalculateRandom();
     float initialSpeed = mSpeedCurve.GetValue().CalculateRandom();
+    float speed = mSpeedCurve.CalculateValue(0, initialSpeed);
+    if (mSpeedCenterShape)
+    {
+        float distanceToCenter = DistanceToCenter(emitionPosition);
+        speed *= distanceToCenter;
+    }
     Particle* particle = new Particle(emitionPosition, emitionDirection, 
         mColorGradient.CalculateColor(0.0f), rotation, mLifetime.CalculateRandom(), 
         initialSize, mSizeCurve.CalculateValue(0, initialSize),
-        initialSpeed, mSpeedCurve.CalculateValue(0, initialSpeed),
+        initialSpeed, speed,
         mHasTrails, mTrail, mFollowEmitter);
     mParticles.push_back(particle);
+}
+
+float ParticleSystemComponent::DistanceToCenter(float3 position)
+{
+    float3 center;
+    if (mFollowEmitter) center = float3(0, 0, 0);
+    else center = mOwner->GetWorldPosition();
+    switch (mShapeType)
+    {
+    case EmitterType::CILINDER:
+    {
+        float3 projectedPosition = float3(position.x, position.y, center.z);
+        return std::max(projectedPosition.Distance(center) - mSpeedCenterFactor, 0.0f); 
+    }
+    case EmitterType::DONUT:
+    {
+        float3 projectedPosition = float3(position.x, position.y, center.z);  
+        float distToXYCenter = sqrt(pow(position.x - center.x, 2) + pow(position.y - center.y, 2)); 
+
+        float distanceToTubeCenter = std::abs(distToXYCenter - mShapeRadius);
+
+        float zDistance = std::abs(position.z - center.z);
+        return std::max(sqrt(distanceToTubeCenter * distanceToTubeCenter + zDistance * zDistance) - mSpeedCenterFactor,0.0f);
+    }
+    default:
+    {
+        return std::max(position.Distance(center) - mSpeedCenterFactor, 0.0f);
+    }
+    }
 }
 
 void ParticleSystemComponent::SetImage(unsigned int resourceId)
@@ -332,11 +366,15 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
 
     obj.AddInt("ShapeType", static_cast<int>(mShapeType));
     obj.AddFloat("ShapeRadius", mShapeRadius);
+    obj.AddFloat("ShapeTubeRadius", mShapeTubeRadius);
+    obj.AddFloat("ShapeHeight", mShapeHeight);
     obj.AddFloat("ShapeAngle", mShapeAngle);
     obj.AddFloats("ShapeSize", mShapeSize.ptr(), 3);
     obj.AddFloat("ShapeRandAngle", mShapeRandAngle);
     obj.AddBool("ShapeIsRandAngle", mIsShapeAngleRand);
     obj.AddBool("ShapeInvertedDir", mShapeInverseDir);
+    obj.AddBool("SpeedCenterShape", mSpeedCenterShape);
+    obj.AddFloat("SpeedCenterFactor", mSpeedCenterFactor);
 
     obj.AddInt("BlendMode", mBlendMode);
 
@@ -376,6 +414,8 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     }
     if (data.HasMember("ShapeType")) mShapeType = static_cast<EmitterType>(data.GetInt("ShapeType"));
     if (data.HasMember("ShapeRadius")) mShapeRadius = data.GetFloat("ShapeRadius");
+    if (data.HasMember("ShapeTubeRadius")) mShapeTubeRadius = data.GetFloat("ShapeTubeRadius");
+    if (data.HasMember("ShapeHeight")) mShapeHeight = data.GetFloat("ShapeHeight");
     if (data.HasMember("ShapeAngle")) mShapeAngle = data.GetFloat("ShapeAngle");
     if (data.HasMember("ShapeSize")) 
     {
@@ -387,6 +427,8 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     if (data.HasMember("ShapeIsRandAngle")) mIsShapeAngleRand = data.GetBool("ShapeIsRandAngle");
     if (data.HasMember("ShapeRandAngle")) mShapeRandAngle = data.GetFloat("ShapeRandAngle");
     if (data.HasMember("ShapeInvertedDir")) mShapeInverseDir = data.GetBool("ShapeInvertedDir");
+    if (data.HasMember("SpeedCenterShape")) mSpeedCenterShape = data.GetBool("SpeedCenterShape");
+    if (data.HasMember("SpeedCenterFactor")) mSpeedCenterFactor = data.GetFloat("SpeedCenterFactor");
     if (data.HasMember("BlendMode")) mBlendMode = data.GetInt("BlendMode");
     if (data.HasMember("SizeCurve")) 
     {
@@ -434,7 +476,7 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
     {
     case EmitterType::CONE:
     {
-        float r = sqrt(randFloat());  // Usar la ra�z cuadrada para una distribuci�n uniforme
+        float r = sqrt(randFloat());
         float angle = randFloat() * 2 * math::pi;
         float distance = r * mShapeRadius;
         float x = distance * cos(angle);
@@ -460,6 +502,32 @@ float3 ParticleSystemComponent::ShapeInitPosition() const
         float x = r * sin(phi) * cos(theta);
         float y = r * sin(phi) * sin(theta);
         float z = r * cos(phi);
+
+        return float3(x, y, z);
+    }
+    case EmitterType::CILINDER:
+    {
+        float height = (randFloat() - 0.5f) * mShapeHeight;
+        float angle = randFloat() * 2 * math::pi;
+        float radius = randFloat() * mShapeRadius;
+
+        float x = radius * cos(angle);
+        float y = radius * sin(angle);
+        float z = height;
+
+        return float3(x, y, z);
+    }
+    case EmitterType::DONUT:
+    {
+        float angle1 = randFloat() * 2 * math::pi;
+        float angle2 = randFloat() * 2 * math::pi;
+
+        float majorRadius = mShapeRadius;
+        float minorRadius = mShapeTubeRadius;
+
+        float x = (majorRadius + minorRadius * cos(angle2)) * cos(angle1);
+        float y = (majorRadius + minorRadius * cos(angle2)) * sin(angle1);
+        float z = minorRadius * sin(angle2);
 
         return float3(x, y, z);
     }
@@ -503,16 +571,24 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
     case EmitterType::BOX:
     {
         float3 direction;
-        if (mShapeInverseDir) direction = (-pos).Normalized();
-        else direction = pos.Normalized();
+        if (mShapeFollowZAxis)
+        {
+            direction = float3(0.0f, 0.0f, 1.0f);
+        }
+        else
+        {
+            direction = pos.Normalized();
+        }
+        if (mShapeInverseDir) direction = -direction;
+
         if (mIsShapeAngleRand)
         {
             float theta = randFloat() * math::pi * 2;
             float phi = randFloat() * mShapeRandAngle;
-            // Calculate rotation axis (a vector perpendicular to direction)
+
             float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
             float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
-            // Rotate direction around the rotation axis by phi
+
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
         return direction.Normalized();
@@ -526,14 +602,56 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
         {
             float theta = randFloat() * math::pi * 2;
             float phi = randFloat() * mShapeRandAngle;
-            // Calculate rotation axis (a vector perpendicular to direction)
+
             float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
             float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
-            // Rotate direction around the rotation axis by phi
+
             direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
         }
         return direction.Normalized();
     }
+    case EmitterType::CILINDER:
+    {
+        float3 direction;
+        if (mShapeFollowZAxis)
+        {
+            direction = float3(0.0f, 0.0f, 1.0f);
+        }
+        else
+        {
+            float3 basePos = float3(pos.x, pos.y, 0.0f);
+            if (mShapeInverseDir)
+                direction = (-basePos).Normalized();
+            else
+                direction = basePos.Normalized();
+        }
+        if (mIsShapeAngleRand)
+        {
+            float theta = randFloat() * 2 * math::pi;
+            float phi = randFloat() * mShapeRandAngle;
+            float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
+            float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
+            direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
+        }
+        return direction.Normalized();
+    }
+    case EmitterType::DONUT:
+    {
+        float3 direction = pos - float3(pos.x, pos.y, 0).Normalized() * mShapeRadius;
+        if (mShapeInverseDir) direction = -direction;
+        direction = direction.Normalized();
+
+        if (mIsShapeAngleRand)
+        {
+            float theta = randFloat() * 2 * math::pi;
+            float phi = randFloat() * mShapeRandAngle;
+            float3 arbitraryVec = std::abs(direction.y) > 0.9f ? float3(1, 0, 0) : float3(0, 1, 0);
+            float3 rotationAxis = Cross(direction, arbitraryVec).Normalized();
+            direction = float3x3::RotateAxisAngle(rotationAxis, phi) * direction;
+        }
+        return direction.Normalized();
+    }
+
     default:
         return float3(0, 0, 1).Normalized();
     }

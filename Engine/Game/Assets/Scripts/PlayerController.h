@@ -80,7 +80,6 @@ public:
     void DashLookAtFront();
     std::string GetLowerAnimState() const;
 
-
     void MoveToPosition(float3 position);
     void MoveInDirection(float3 direction);
 
@@ -114,7 +113,6 @@ public:
     State* GetPlayerLowerState() const { return mLowerState; }
     State* GetPlayerUpperState() const { return mUpperState; }
     bool IsPlayerDashing() const;
-    void SetIdleState();
 
     void SetSpecialWeapon(Weapon* weapon) { mSpecialWeapon = weapon; }
     void SetDashCoolDown(float value) { mDashCoolDown = value; }
@@ -285,11 +283,13 @@ private:
     Grenade* mGrenade = nullptr;
     GameObject* mGrenadeGO = nullptr;
     GameObject* mGrenadeExplotionPreviewAreaGO = nullptr;
+    GameObject* mGrenadeThrowOrigin = nullptr;
     TimerScript mGrenadeAimTimer;
 
     //Ultimate
     GameObject* mUltimateGO = nullptr;
     GameObject* mUltimateChargeGO = nullptr;
+    GameObject* mUltiOuterChargeGO = nullptr;
     float mUltimateCooldown = 1.0f;
     float mUltimateChargeDuration = 1.0f;
     float mUltimateDuration = 3.0f;
@@ -336,4 +336,6 @@ private:
     bool mIsInElevator = false;
 
     int mKillCount = 0;
+
+
 };

@@ -2,20 +2,20 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 378818628,
-                "ParentUID": 1,
+                "UID": 675470448,
+                "ParentUID": 1250650903,
                 "Name": "ElectricTrap",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
+                    46.5112419128418,
+                    0.000004071795046911575,
+                    -0.048712313175201419
                 ],
                 "Rotation": [
                     6.181723932741079e-8,
                     -0.7072290182113648,
-                    1.0686562745831907e-11,
+                    1.0688525585444975e-11,
                     0.7069845199584961
                 ],
                 "Scale": [
@@ -23,10 +23,10 @@
                     2.0,
                     2.0
                 ],
-                "Tag": "Untagged",
+                "Tag": "Trap",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 17,
@@ -50,45 +50,22 @@
                         "ScriptName": "ElectricTrapController",
                         "ScriptVariables": [
                             {
-                                "VariableName": "ACTIVATION PARAMETER",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mActivationInterval",
-                                "MemberType": 1,
-                                "VariableData": 8.0
-                            },
-                            {
-                                "VariableName": "mActivationDuration",
-                                "MemberType": 1,
-                                "VariableData": 4.0
+                                "VariableName": "mIsAwake",
+                                "MemberType": 2,
+                                "VariableData": false
                             },
                             {
                                 "VariableName": "mIsActive",
                                 "MemberType": 2,
                                 "VariableData": false
-                            },
-                            {
-                                "VariableName": "SIDE EFFECT",
-                                "MemberType": 5
-                            },
-                            {
-                                "VariableName": "mDamageAmount",
-                                "MemberType": 1,
-                                "VariableData": 5.0
-                            },
-                            {
-                                "VariableName": "mSpeedReduction",
-                                "MemberType": 1,
-                                "VariableData": 0.30000001192092898
                             }
                         ]
                     }
                 ]
             },
             {
-                "UID": 1630395345,
-                "ParentUID": 378818628,
+                "UID": 1692772500,
+                "ParentUID": 675470448,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -111,12 +88,12 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": []
             },
             {
-                "UID": 430383887,
-                "ParentUID": 1630395345,
+                "UID": 497356028,
+                "ParentUID": 1692772500,
                 "Name": "Cube.001",
                 "Enabled": true,
                 "Active": true,
@@ -139,7 +116,7 @@
                 "Tag": "Untagged",
                 "PrefabUid": 0,
                 "OverridePrefab": false,
-                "Dynamic": false,
+                "Dynamic": true,
                 "Components": [
                     {
                         "ComponentType": 0,
