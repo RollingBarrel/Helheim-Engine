@@ -4289,7 +4289,7 @@
 					"index":2
 				},
 				"metallicFactor":0,
-				"roughnessFactor":0.5
+				"roughnessFactor":0.9000000357627869
 			}
 		}
 	],
@@ -4329,18 +4329,18 @@
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"OB_maincharacter_tpose_RiggedCharacter_MainCharacter_Emissive",
-			"uri":"OB_maincharacter_tpose_RiggedCharacter_MainCharacter_Emissive.png"
+			"name":"emission_color_texture2",
+			"uri":"emission_color_texture2.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"OB_maincharacter_tpose_RiggedCharacter_MainCharacter_Normal",
-			"uri":"OB_maincharacter_tpose_RiggedCharacter_MainCharacter_Normal.png"
+			"name":"normalmap_texture2",
+			"uri":"normalmap_texture2.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"OB_maincharacter_tpose_RiggedCharacter_MainCharacter_BaseColor",
-			"uri":"OB_maincharacter_tpose_RiggedCharacter_MainCharacter_BaseColor.png"
+			"name":"base_color_texture2",
+			"uri":"base_color_texture2.png"
 		}
 	],
 	"skins":[

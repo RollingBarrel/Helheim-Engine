@@ -924,9 +924,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -0.5697038173675537,
+                    -0.8500000238418579,
                     0.0,
-                    9.130000114440918
+                    9.199999809265137
                 ],
                 "Rotation": [
                     0.0,
@@ -62380,7 +62380,7 @@
                 ]
             }
         ],
-        "NavMeshResource": 912797924,
+        "NavMeshResource": 1474951031,
         "SkyBoxResource": 1741121676,
         "BloomIntensity": 0.5,
         "DirectionalLight": [

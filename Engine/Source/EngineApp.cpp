@@ -67,8 +67,6 @@ EngineApplication::~EngineApplication()
 
 bool EngineApplication::Init()
 {
-	mEngineTimer = new Timer();
-	mGameTimer = new Timer();
 	mCurrentTimer = mEngineTimer;
 	mEngineTimer->Start();
 	//#else
