@@ -61,10 +61,14 @@ void LoreCollectible::Update()
 		GameManager::GetInstance()->GetHud()->DisableCollectible();
 	}
 
-	if (mUsed|| mInteractTimer.Delay(5.0f))
+	if (mUsed)
 		GameManager::GetInstance()->GetHud()->SetInteract(false);
+	else if (mInteractTimer.Delay(2.5f))
+	{
+		GameManager::GetInstance()->GetHud()->SetInteract(false);
+	}
 
-	if (mInteractTimer.Delay(10.0f))
+	if (mInteractTimer.DelayWithoutReset(2.0f))
 		mUsed = false;
 
 	if (mMesh) ColorChange();
