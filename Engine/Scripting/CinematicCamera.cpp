@@ -407,7 +407,6 @@ void CinematicCamera::HandleEscape()
         if ((App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN) ||
             (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN))
         {
-            mEscape = true;
             mFadeStart = false;
             mTravelling = false;
 
@@ -420,6 +419,7 @@ void CinematicCamera::HandleEscape()
 void CinematicCamera::EndCinematic()
 {
     GameManager::GetInstance()->GetHud()->SetEnemyScreen(false, 0);
+    mEscape = true;
 
     if (mActiveCinematicCamera)
     {
@@ -544,7 +544,6 @@ void CinematicCamera::ActivateDummy(GameObject* dummy, bool state)
 
 void CinematicCamera::OnSkipClick()
 {
-    mEscape = true;
     mFadeStart = false;
     mTravelling = false;
 

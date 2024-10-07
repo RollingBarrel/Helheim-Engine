@@ -61678,7 +61678,7 @@
                 "UID": 1126892248,
                 "ParentUID": 963979108,
                 "Name": "Keyboard",
-                "Enabled": false,
+                "Enabled": true,
                 "Active": false,
                 "Translation": [
                     0.0,
@@ -61833,7 +61833,7 @@
                 "UID": 1452300802,
                 "ParentUID": 963979108,
                 "Name": "Controller",
-                "Enabled": true,
+                "Enabled": false,
                 "Active": false,
                 "Translation": [
                     0.0,
