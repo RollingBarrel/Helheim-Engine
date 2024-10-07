@@ -46,6 +46,7 @@ private:
 	void BulletHellPattern6();
 	void LaserAttack();
 	void BombAttack(const char* pattern);
+	void SetupBomb(GameObject* bombGO, const math::float3& position);
 	void Rotate();
 	void InterruptAttacks();
 

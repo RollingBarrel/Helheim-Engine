@@ -29,10 +29,11 @@ public:
     void OnCollisionEnter(CollisionData* collisionData);
     void OnCollisionExit(CollisionData* collisionData);
     void ColorChange();
+    void CheckDistance();
 
 private:
 
-    bool mUsed = false;
+    bool mColliding = false;
     BoxColliderComponent* mCollider = nullptr;
     std::string* mLoreText = nullptr;
     //In case we want to use image

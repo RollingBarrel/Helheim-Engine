@@ -79,17 +79,6 @@ void EnemyBoss::Start()
 
     for (const char* prefab : mTemplateNames)
     {
-        if (prefab == "BombingTemplateSingle.prfb")
-        {
-            GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject->GetParent());
-            if (bombTemplate)
-            {
-                bombTemplate->SetEnabled(false);
-                mTemplates.push_back(bombTemplate);
-            }
-			break;
-        }
-
 		for (int i = 0; i < 3; i++)
 		{
             GameObject* bombTemplate = App->GetScene()->InstantiatePrefab(prefab, mGameObject->GetParent());
@@ -367,51 +356,43 @@ void EnemyBoss::BombAttack(const char* pattern)
 
         for (int i = 0; i < mAreaPositions.size(); i++)
         {
-            int templateIndex = index * 3 + i;
 			if (i == freeZone) continue;
 
+            int templateIndex = index * 3 + i;
             GameObject* bombGO = mTemplates[templateIndex];
-            bombGO->SetWorldPosition(mAreaPositions[i]);
-            std::vector<Component*> scriptComponents;
-            bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-            bombGO->SetEnabled(true);
-            for (Component* scriptComponent : scriptComponents)
-            {
-                BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-                bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage, mBombsDelay);
-            }
+            SetupBomb(bombGO, mAreaPositions[i]);
         }
 		mPlayerAreaDistances.clear();
     }
     else
     {
-		//Bomb in player position
-        GameObject* playerBombGO = mTemplates[9];
-        playerBombGO->SetWorldPosition(mPlayer->GetWorldPosition());
-        std::vector<Component*> scriptComponents;
-        playerBombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-        playerBombGO->SetEnabled(true);
-        for (Component* scriptComponent : scriptComponents)
+        if (index == 1)
         {
-            BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-            bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage, mBombsDelay);
+            //Spawn 2 single bombs on the area separators
+            SetupBomb(mTemplates[10], mAreaPositions[0] + math::float3(2.45f, 0.0f, -4.55f));
+            SetupBomb(mTemplates[11], mAreaPositions[2] + math::float3(2.45f, 0.0f, 4.55f));
         }
 
-		//Bombs in area positions
+        SetupBomb(mTemplates[9], mPlayer->GetWorldPosition());
+
         for (int i = 0; i < mAreaPositions.size(); i++)
         {
             int templateIndex = index * 3 + i;
-            GameObject* bombGO = mTemplates[templateIndex];
-            bombGO->SetWorldPosition(mAreaPositions[i]);
-            std::vector<Component*> scriptComponents;
-            bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
-            bombGO->SetEnabled(true);
-            for (Component* scriptComponent : scriptComponents)
-            {
-                BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
-                bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage, mBombsDelay);
-            }
+            SetupBomb(mTemplates[templateIndex], mAreaPositions[i]);
         }
+    }
+}
+
+void EnemyBoss::SetupBomb(GameObject* bombGO, const math::float3& position)
+{
+    bombGO->SetWorldPosition(position);
+    bombGO->SetEnabled(true);
+
+    std::vector<Component*> scriptComponents;
+    bombGO->GetComponentsInChildren(ComponentType::SCRIPT, scriptComponents);
+    for (Component* scriptComponent : scriptComponents) {
+        BombBoss* bombScript = static_cast<BombBoss*>(static_cast<ScriptComponent*>(scriptComponent)->GetScriptInstance());
+        bombScript->Init(mGameObject->GetWorldPosition(), mBombDamage, mBombsDelay);
     }
 }
 
