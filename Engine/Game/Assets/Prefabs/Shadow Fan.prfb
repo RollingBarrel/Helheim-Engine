@@ -2,14 +2,14 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 2118691746,
+                "UID": 685590195,
                 "ParentUID": 1,
                 "Name": "Shadow Fan",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
                     -0.6935482025146484,
-                    -4.5973334312438969,
+                    0.38538312911987307,
                     1.7580366134643555
                 ],
                 "Rotation": [
@@ -30,8 +30,8 @@
                 "Components": []
             },
             {
-                "UID": 31987232,
-                "ParentUID": 2118691746,
+                "UID": 786192540,
+                "ParentUID": 685590195,
                 "Name": "OB_Animated_Fan",
                 "Enabled": true,
                 "Active": true,
@@ -65,13 +65,19 @@
                     {
                         "ComponentType": 3,
                         "IsEnabled": true,
-                        "ScriptName": "PlayAnimationScript"
+                        "ScriptName": "PlayAnimationScript",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "PLAYS ANIMATION OF GAMEOBJECT ON START",
+                                "MemberType": 5
+                            }
+                        ]
                     }
                 ]
             },
             {
-                "UID": 40272131,
-                "ParentUID": 31987232,
+                "UID": 799559772,
+                "ParentUID": 786192540,
                 "Name": "Armature",
                 "Enabled": true,
                 "Active": true,
@@ -98,8 +104,8 @@
                 "Components": []
             },
             {
-                "UID": 46816505,
-                "ParentUID": 40272131,
+                "UID": 816825780,
+                "ParentUID": 799559772,
                 "Name": "OB_Animated_Fan",
                 "Enabled": true,
                 "Active": true,
@@ -126,8 +132,8 @@
                 "Components": []
             },
             {
-                "UID": 52664669,
-                "ParentUID": 46816505,
+                "UID": 829009455,
+                "ParentUID": 816825780,
                 "Name": "OB_Animated_Fan",
                 "Enabled": true,
                 "Active": true,
@@ -161,7 +167,7 @@
                         "PaletteOwner": 0,
                         "InverseBindMatrices": [
                             {
-                                "GoId": 58860938,
+                                "GoId": 839800710,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -182,7 +188,7 @@
                                 ]
                             },
                             {
-                                "GoId": 65544554,
+                                "GoId": 849826134,
                                 "Matrix": [
                                     1.0,
                                     -0.0,
@@ -207,8 +213,8 @@
                 ]
             },
             {
-                "UID": 58860938,
-                "ParentUID": 40272131,
+                "UID": 839800710,
+                "ParentUID": 799559772,
                 "Name": "Bone",
                 "Enabled": true,
                 "Active": true,
@@ -235,8 +241,8 @@
                 "Components": []
             },
             {
-                "UID": 65544554,
-                "ParentUID": 40272131,
+                "UID": 849826134,
+                "ParentUID": 799559772,
                 "Name": "Bone.001",
                 "Enabled": true,
                 "Active": true,
@@ -263,8 +269,8 @@
                 "Components": []
             },
             {
-                "UID": 71880065,
-                "ParentUID": 2118691746,
+                "UID": 863959197,
+                "ParentUID": 685590195,
                 "Name": "spotlight",
                 "Enabled": true,
                 "Active": true,
@@ -294,9 +300,9 @@
                         "IsEnabled": true,
                         "Position": [
                             -1.3184645175933838,
-                            47.15651321411133,
+                            52.13922882080078,
                             15.30618667602539,
-                            300.0
+                            40.0
                         ],
                         "Direction": [
                             0.0,
