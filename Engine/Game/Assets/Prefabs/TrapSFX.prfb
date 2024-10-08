@@ -2,7 +2,7 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1981475541,
+                "UID": 13424005,
                 "ParentUID": 1,
                 "Name": "TrapSFX",
                 "Enabled": true,
@@ -34,8 +34,8 @@
                         "Image": 2001471067,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 100.0,
-                        "MaxParticles": 1000,
+                        "EmissionRate": 50.0,
+                        "MaxParticles": 80,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
