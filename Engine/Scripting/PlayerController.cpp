@@ -940,7 +940,6 @@ void PlayerController::RechargeShield(float shield)
         if (mShieldSpriteSheet) 
         {
             mShieldSpriteSheet->SetEnabled(true);
-            reinterpret_cast<ImageComponent*>(mShieldSpriteSheet->GetComponent(ComponentType::IMAGE))->PlayAnimation();
         }
     }
 }
