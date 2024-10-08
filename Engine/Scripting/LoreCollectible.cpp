@@ -38,7 +38,6 @@ void LoreCollectible::Start()
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
 		
-	if (mMeshGO && mMeshGO->GetComponent(ComponentType::MESHRENDERER)) mMesh = static_cast<MeshRendererComponent*>(mMeshGO->GetComponent(ComponentType::MESHRENDERER));
 	mLoreText = &(mTextList[mLoreIndex]);
 	mTitleText = &(mTitleList[mLoreIndex]);
 	mSubtitleText = &(mSubtitleList[mLoreIndex]);
@@ -46,11 +45,6 @@ void LoreCollectible::Start()
 
 void LoreCollectible::Update()
 {
-	/*if (!isColliding)
-	{
-		GameManager::GetInstance()->GetHud()->SetInteract(false);
-	}*/
-
 	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN ||
 		App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
 	{

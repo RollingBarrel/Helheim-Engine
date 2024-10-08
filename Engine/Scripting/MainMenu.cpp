@@ -468,6 +468,11 @@ void MainMenu::Controls()
         App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
     {
+        if (mCurrentMenu == MENU_TYPE::SPLASH)
+        {
+            OpenMenu(MENU_TYPE::MAIN);
+            return;
+        }
 
         if (mCurrentMenu == MENU_TYPE::MAIN)
         {
