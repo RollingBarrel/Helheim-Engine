@@ -1,0 +1,24 @@
+{
+    "Name": "fan",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        0.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "BaseColorTex": 1361013704,
+    "MetallicRoughTex": 1361013705,
+    "NormalTex": 1361013706,
+    "EmissiveTex": 1361013707,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}
