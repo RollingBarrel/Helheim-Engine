@@ -41,9 +41,6 @@ void LoreCollectible::Start()
 	if (mGameObject->GetComponent(ComponentType::TEXT))
 		mLoreText = static_cast<TextComponent*>(mGameObject->GetComponent(ComponentType::TEXT))->GetText();
 
-	if (mMeshGO && mMeshGO->GetComponent(ComponentType::MESHRENDERER)) 
-		mMesh = static_cast<MeshRendererComponent*>(mMeshGO->GetComponent(ComponentType::MESHRENDERER));
-
 	if (mTitleTextGO) mTitleText = static_cast<TextComponent*>(mTitleTextGO->GetComponent(ComponentType::TEXT))->GetText();
 	if (mSubtitleTextGO) mSubtitleText = static_cast<TextComponent*>(mSubtitleTextGO->GetComponent(ComponentType::TEXT))->GetText();
 }
@@ -63,8 +60,6 @@ void LoreCollectible::Update()
 	}
 
 	if (mColliding) CheckDistance();
-
-	if (mMesh) ColorChange();
 }
 
 void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
@@ -97,25 +92,6 @@ void LoreCollectible::OnCollisionExit(CollisionData* collisionData)
 	
 	GameManager::GetInstance()->GetHud()->SetInteract(false);
 	
-}
-
-void LoreCollectible::ColorChange()
-{
-	Clamp01(mColor);
-
-	if (!mChange) 
-	{
-		mColor = Lerp(mColor, 0.0f, App->GetDt()*1.4);
-		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-		if (mColor < 0.1f) mChange = true;
-	}
-	else
-	{
-		mColor = Lerp(mColor, 1.0f, App->GetDt() * 1.4);
-		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-		if (mColor > 0.9f)  mChange = false;
-	}
-
 }
 
 void LoreCollectible::CheckDistance()
