@@ -10,7 +10,6 @@ class BoxColliderComponent;
 class TextComponent;
 class ImageComponent;
 class ResourceTexture;
-class MeshRendererComponent;
 
 struct CollisionData;
 
@@ -28,7 +27,6 @@ public:
     void Update() override;
     void OnCollisionEnter(CollisionData* collisionData);
     void OnCollisionExit(CollisionData* collisionData);
-    void ColorChange();
     void CheckDistance();
 
 private:
@@ -44,7 +42,6 @@ private:
     bool mChange = false;
     float mColor = 255.0f;
     GameObject* mMeshGO = nullptr;
-    MeshRendererComponent* mMesh = nullptr;
 
     GameObject* mTitleTextGO = nullptr;
     std::string* mTitleText = nullptr;
