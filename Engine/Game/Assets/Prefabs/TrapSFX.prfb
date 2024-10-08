@@ -2,26 +2,26 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 13424005,
+                "UID": 1235255628,
                 "ParentUID": 1,
                 "Name": "TrapSFX",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    1.862645149230957e-8,
-                    0.03238708898425102,
-                    0.0
+                    -0.000003298744559288025,
+                    0.15153372287750245,
+                    -0.000030517578125
                 ],
                 "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
+                    -0.6304477453231812,
+                    0.32032063603401186,
+                    0.32032063603401186,
+                    0.6304477453231812
                 ],
                 "Scale": [
                     1.0,
                     1.0,
-                    1.0
+                    0.20000000298023225
                 ],
                 "Tag": "Untagged",
                 "PrefabUid": 0,
@@ -31,11 +31,11 @@
                     {
                         "ComponentType": 15,
                         "IsEnabled": true,
-                        "Image": 2001471067,
+                        "Image": 148626881,
                         "Delay": 0.0,
                         "Duration": 5.0,
-                        "EmissionRate": 50.0,
-                        "MaxParticles": 80,
+                        "EmissionRate": 30.0,
+                        "MaxParticles": 20,
                         "Burst": 0,
                         "Looping": true,
                         "FollowEmitter": false,
@@ -45,21 +45,21 @@
                         "Gravity": 0.0,
                         "Lifetime": {
                             "IsValueRandom": false,
-                            "MinValue": 1.5,
+                            "MinValue": 0.5,
                             "MaxValue": 1.0
                         },
-                        "ShapeType": 2,
-                        "ShapeRadius": 0.009999999776482582,
+                        "ShapeType": 1,
+                        "ShapeRadius": 0.5,
                         "ShapeTubeRadius": 1.0,
                         "ShapeHeight": 1.0,
-                        "ShapeAngle": 0.7853981852531433,
+                        "ShapeAngle": 0.0,
                         "ShapeSize": [
-                            0.800000011920929,
-                            0.20000000298023225,
-                            0.800000011920929
+                            1.0,
+                            1.0,
+                            1.0
                         ],
-                        "ShapeRandAngle": 0.0,
-                        "ShapeIsRandAngle": false,
+                        "ShapeRandAngle": 7.0,
+                        "ShapeIsRandAngle": true,
                         "ShapeInvertedDir": true,
                         "SpeedCenterShape": false,
                         "SpeedCenterFactor": 1.0,
@@ -67,10 +67,10 @@
                         "SizeCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "MinValue": 0.0,
                                 "MaxValue": 1.0
                             },
-                            "IsCurve": true,
+                            "IsCurve": false,
                             "CurvePoints": [
                                 {
                                     "Point": [
@@ -89,7 +89,7 @@
                         "SpeedCurve": {
                             "Value": {
                                 "IsValueRandom": false,
-                                "MinValue": 1.0,
+                                "MinValue": 2.0,
                                 "MaxValue": 2.0
                             },
                             "IsCurve": false,
@@ -99,9 +99,9 @@
                             {
                                 "Time": 0.5,
                                 "Color": [
-                                    0.19199997186660767,
-                                    0.0007680014241486788,
-                                    0.0007680014241486788,
+                                    0.0,
+                                    0.0,
+                                    0.0,
                                     1.0
                                 ]
                             }
@@ -110,11 +110,11 @@
                         "Trail": {
                             "Image": 1970995954,
                             "MaxPoints": 1000,
-                            "MinDistance": 0.10000000149011612,
-                            "MaxLifeTime": 0.0,
-                            "UVScroll": 1.0,
+                            "MinDistance": 0.009999999776482582,
+                            "MaxLifeTime": 0.30000001192092898,
+                            "UVScroll": 0.6000000238418579,
                             "IsFixedDirection": false,
-                            "IsUVScrolling": false,
+                            "IsUVScrolling": true,
                             "Direction": [
                                 0.0,
                                 1.0,
@@ -123,7 +123,7 @@
                             "Width": {
                                 "Value": {
                                     "IsValueRandom": false,
-                                    "MinValue": 1.0,
+                                    "MinValue": 3.0,
                                     "MaxValue": 2.0
                                 },
                                 "IsCurve": false,
@@ -179,6 +179,51 @@
                                 ]
                             }
                         }
+                    }
+                ]
+            },
+            {
+                "UID": 1240755687,
+                "ParentUID": 1235255628,
+                "Name": "PointLight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.4000000059604645
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 1,
+                        "IsEnabled": true,
+                        "Position": [
+                            -0.000003298744559288025,
+                            0.2315448820590973,
+                            -0.0000416660332120955
+                        ],
+                        "Radius": 3.5,
+                        "Color": [
+                            1.0,
+                            0.21599996089935304,
+                            0.0
+                        ],
+                        "Intensity": 30.0
                     }
                 ]
             }
