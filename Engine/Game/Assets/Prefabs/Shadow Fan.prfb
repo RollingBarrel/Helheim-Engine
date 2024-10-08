@@ -1,0 +1,328 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 685590195,
+                "ParentUID": 1,
+                "Name": "Shadow Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.6935482025146484,
+                    0.38538312911987307,
+                    1.7580366134643555
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 786192540,
+                "ParentUID": 685590195,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.45832133293151858,
+                    49.31373977661133,
+                    18.156051635742189
+                ],
+                "Rotation": [
+                    -0.029554767534136773,
+                    0.716614842414856,
+                    -0.6965692043304443,
+                    -0.01952183246612549
+                ],
+                "Scale": [
+                    1.909999966621399,
+                    1.909999966621399,
+                    1.9099998474121094
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1361013709,
+                        "LowerSMUID": 1668306357
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayAnimationScript",
+                        "ScriptVariables": [
+                            {
+                                "VariableName": "PLAYS ANIMATION OF GAMEOBJECT ON START",
+                                "MemberType": 5
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 799559772,
+                "ParentUID": 786192540,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.013330280780792237,
+                    2.5310263633728029,
+                    0.41402143239974978
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 816825780,
+                "ParentUID": 799559772,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 829009455,
+                "ParentUID": 816825780,
+                "Name": "OB_Animated_Fan",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1361013703,
+                        "MaterialID": 1361013708,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 839800710,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.013330280780792237,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 849826134,
+                                "Matrix": [
+                                    1.0,
+                                    -0.0,
+                                    0.0,
+                                    -1.9670801162719727,
+                                    -0.0,
+                                    1.0,
+                                    -0.0,
+                                    -2.5310263633728029,
+                                    0.0,
+                                    -0.0,
+                                    1.0,
+                                    -0.41402143239974978,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 839800710,
+                "ParentUID": 799559772,
+                "Name": "Bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    -0.022617915645241739,
+                    0.9997442364692688
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 849826134,
+                "ParentUID": 799559772,
+                "Name": "Bone.001",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    1.9537497758865357,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 863959197,
+                "ParentUID": 685590195,
+                "Name": "spotlight",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -0.6249163150787354,
+                    51.75384521484375,
+                    13.548150062561036
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071067094802856
+                ],
+                "Scale": [
+                    1.0,
+                    1.0000001192092896,
+                    1.0000001192092896
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -1.3184645175933838,
+                            52.13922882080078,
+                            15.30618667602539,
+                            40.0
+                        ],
+                        "Direction": [
+                            0.0,
+                            -1.0,
+                            -1.1920930376163597e-7,
+                            0.9063077569007874
+                        ],
+                        "Color": [
+                            1.0,
+                            0.5,
+                            0.5,
+                            0.6691305637359619
+                        ],
+                        "Range": 143.5,
+                        "CastShadow": true,
+                        "Bias": 0.000009999999747378752,
+                        "isVolumetric": true
+                    }
+                ]
+            }
+        ]
+    }
+}

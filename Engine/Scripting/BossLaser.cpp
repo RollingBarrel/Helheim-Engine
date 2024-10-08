@@ -65,7 +65,7 @@ void BossLaser::Update()
 void BossLaser::Init(float damage, float duration, float distance, float speed)
 {
     mDamage = damage;
-    mLaserDuration = duration;
+    mLaserDuration = duration - mChargeTime;
     mLaserDistance = distance;
     mLaserSpeed = speed;
     Charge();
@@ -107,5 +107,13 @@ void BossLaser::Cooldown()
         mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
 
         mLaserEyeBall->SetEnabled(false);
+    }
+}
+
+void BossLaser::Interrupt()
+{
+    if (mCurrentState != LaserState::IDLE && mCurrentState != LaserState::COOLDOWN)
+    {
+        Cooldown();
     }
 }

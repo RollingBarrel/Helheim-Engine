@@ -198,6 +198,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\LinearMovement.h" />
     <ClInclude Include="..\Game\Assets\Scripts\LoreCollectible.h" />
     <ClInclude Include="..\Game\Assets\Scripts\PauseMenu.h" />
+    <ClInclude Include="..\Game\Assets\Scripts\PlayAnimationScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\Rat.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RayCastBullet.h" />
     <ClInclude Include="..\Game\Assets\Scripts\RotateObject.h" />
@@ -270,6 +271,7 @@
     <ClCompile Include="LinearMovement.cpp" />
     <ClCompile Include="LoreCollectible.cpp" />
     <ClCompile Include="PauseMenu.cpp" />
+    <ClCompile Include="PlayAnimationScript.cpp" />
     <ClCompile Include="Rat.cpp" />
     <ClCompile Include="RayCastBullet.cpp" />
     <ClCompile Include="RotateObject.cpp" />
