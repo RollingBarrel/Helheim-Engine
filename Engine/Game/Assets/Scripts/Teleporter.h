@@ -59,5 +59,7 @@ private:
 
 	int mElevatorAudio = -1;
 	bool mCloseAudioPlayed = false;
+	float mCooldown = 0.0f;
+	bool mIsCooldown = false;
 };
 
