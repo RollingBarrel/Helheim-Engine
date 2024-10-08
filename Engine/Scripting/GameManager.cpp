@@ -196,7 +196,7 @@ void GameManager::SetPaused(bool value, bool screen)
     if (screen) mHudController->SetScreen(SCREEN::PAUSE, mPaused);
     App->SetPaused(value);
 
-    if (value) App->GetWindow()->SetCursor(0);
+    if (value) App->GetWindow()->SetCursor(152793723);
     else App->GetWindow()->SetCursor(674180654, 46, 46, 23, 23);
 }
 
