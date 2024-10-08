@@ -62382,7 +62382,7 @@
             {
                 "UID": 1377005352,
                 "ParentUID": 1,
-                "Name": "Lights_Alpha3_Level3",
+                "Name": "Lights_Alpha3_Level3_Without_Volumetrics",
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
@@ -62406,6 +62406,61 @@
                 "OverridePrefab": false,
                 "Dynamic": false,
                 "Components": []
+            },
+            {
+                "UID": 21793139,
+                "ParentUID": 1377005352,
+                "Name": "Spotlight (10)",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    -3.415940523147583,
+                    6.776387691497803,
+                    -0.1977308988571167
+                ],
+                "Rotation": [
+                    0.6886232495307922,
+                    -0.16063623130321504,
+                    0.6886149644851685,
+                    0.16063477098941804
+                ],
+                "Scale": [
+                    1.0000001192092896,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 2,
+                        "IsEnabled": true,
+                        "Position": [
+                            -3.415940523147583,
+                            6.776387691497803,
+                            -0.1977308988571167,
+                            200.0
+                        ],
+                        "Direction": [
+                            0.8967850208282471,
+                            -0.44246670603752139,
+                            -0.000011920928955078125,
+                            1.0
+                        ],
+                        "Color": [
+                            1.0,
+                            0.0,
+                            0.9360003471374512,
+                            0.8191520571708679
+                        ],
+                        "Range": 28.5,
+                        "CastShadow": true,
+                        "Bias": 0.000039999998989515009,
+                        "isVolumetric": false
+                    }
+                ]
             },
             {
                 "UID": 1392670077,
@@ -62458,7 +62513,7 @@
                         "Range": 14.0,
                         "CastShadow": true,
                         "Bias": 0.000019999999494757504,
-                        "isVolumetric": true
+                        "isVolumetric": false
                     }
                 ]
             },
@@ -62624,61 +62679,6 @@
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
                         "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 1412651304,
-                "ParentUID": 1377005352,
-                "Name": "Spotlight (5)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -2.6630210876464845,
-                    6.404901027679443,
-                    -0.19774091243743897
-                ],
-                "Rotation": [
-                    0.6886232495307922,
-                    -0.16063623130321504,
-                    0.6886149644851685,
-                    0.16063477098941804
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -2.6630210876464845,
-                            6.404901027679443,
-                            -0.19774091243743897,
-                            5.0
-                        ],
-                        "Direction": [
-                            0.8967850208282471,
-                            -0.44246670603752139,
-                            -0.000011920928955078125,
-                            1.0
-                        ],
-                        "Color": [
-                            1.0,
-                            0.0,
-                            0.9360003471374512,
-                            0.8191520571708679
-                        ],
-                        "Range": 28.5,
-                        "CastShadow": true,
-                        "Bias": 0.000039999998989515009,
-                        "isVolumetric": true
                     }
                 ]
             },
@@ -62923,7 +62923,7 @@
                         "Range": 33.5,
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
-                        "isVolumetric": true
+                        "isVolumetric": false
                     }
                 ]
             },
@@ -62978,7 +62978,7 @@
                         "Range": 35.0,
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
-                        "isVolumetric": true
+                        "isVolumetric": false
                     }
                 ]
             },
@@ -63031,61 +63031,6 @@
                             0.8191520571708679
                         ],
                         "Range": 22.5,
-                        "CastShadow": true,
-                        "Bias": 0.000039999998989515009,
-                        "isVolumetric": false
-                    }
-                ]
-            },
-            {
-                "UID": 1441613640,
-                "ParentUID": 1377005352,
-                "Name": "Spotlight (10)",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    -3.415940523147583,
-                    6.776387691497803,
-                    -0.1977308988571167
-                ],
-                "Rotation": [
-                    0.6886232495307922,
-                    -0.16063623130321504,
-                    0.6886149644851685,
-                    0.16063477098941804
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": [
-                    {
-                        "ComponentType": 2,
-                        "IsEnabled": true,
-                        "Position": [
-                            -3.415940523147583,
-                            6.776387691497803,
-                            -0.1977308988571167,
-                            200.0
-                        ],
-                        "Direction": [
-                            0.8967850208282471,
-                            -0.44246670603752139,
-                            -0.000011920928955078125,
-                            1.0
-                        ],
-                        "Color": [
-                            1.0,
-                            0.0,
-                            0.9360003471374512,
-                            0.8191520571708679
-                        ],
-                        "Range": 28.5,
                         "CastShadow": true,
                         "Bias": 0.000039999998989515009,
                         "isVolumetric": false
