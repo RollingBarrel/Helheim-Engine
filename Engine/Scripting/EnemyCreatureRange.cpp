@@ -80,7 +80,7 @@ void EnemyCreatureRange::Update()
 		mPlayingAttackSound = false;
 		if (mLaserSound != -1)
 		{
-			mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+			GameManager::GetInstance()->GetAudio()->Pause(SFX::BOSS_LASER, mLaserSound, true);
 		}
 		if (mLaserOrigin)	mLaserOrigin->SetEnabled(false);
 		if (mLaserEnd) mLaserEnd->SetEnabled(false);
@@ -127,7 +127,19 @@ void EnemyCreatureRange::Attack()
 
 	if (!mPlayingAttackSound)
 	{
-		mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::BOSS_LASER, mLaserSound, mGameObject->GetWorldPosition());
+		if (mLaserSound != -1)
+		{
+			GameManager::GetInstance()->GetAudio()->Pause(SFX::BOSS_LASER, mLaserSound, false);
+
+			GameManager::GetInstance()->GetAudio()->Restart(SFX::BOSS_LASER, mLaserSound);
+
+			GameManager::GetInstance()->GetAudio()->SetPosition(SFX::BOSS_LASER, mLaserSound, mGameObject->GetWorldPosition());
+		}
+		else
+		{
+			mLaserSound = GameManager::GetInstance()->GetAudio()->Play(SFX::BOSS_LASER, mLaserSound, mGameObject->GetWorldPosition());
+		}
+
 
 		mPlayingAttackSound = true;
 	}
@@ -145,12 +157,20 @@ void EnemyCreatureRange::Attack()
 
 void EnemyCreatureRange::Death()
 {
-	Enemy::Death(); 
+	if (mLaserSound != -1)
+	{
+		GameManager::GetInstance()->GetAudio()->Pause(SFX::BOSS_LASER, mLaserSound, true);
+
+		//mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+	}
+
 	if (!mDeathAudioPlayed)
 	{
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
 		mDeathAudioPlayed = true;
 	}
+
+	Enemy::Death(); 
 }
 
 void EnemyCreatureRange::TakeDamage(float damage)

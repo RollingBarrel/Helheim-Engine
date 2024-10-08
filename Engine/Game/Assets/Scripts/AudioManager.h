@@ -133,6 +133,7 @@ public:
 
 	void Pause(BGM bgm, int id, bool pause);
 	void Pause(SFX sfx, int id, bool pause);
+	void Restart(SFX sfx, int id);
 
 	int Release(BGM bgm, int id);
 	int Release(SFX sfx, int id);
@@ -181,7 +182,8 @@ private:
 	{
 		{BGM::MAINMENU, "event:/MC/main/Theme"},
 		{BGM::LEVEL1, "event:/MC/lvl1/mc_lvl1"},
-		{BGM::LEVEL2, "event:/MC/boss/boss_lvl"},
+		{BGM::LEVEL2, "event:/MC/lvl1/mc_lvl1"},
+		//{BGM::LEVEL2, "event:/MC/lvl2/mc_lvl2"},
 
 		{BGM::BOSS, "event:/MC/boss/boss_lvl"},
 		//{BGM::BOSS, "event:/MC/main/Theme"},

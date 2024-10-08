@@ -137,6 +137,13 @@ void AudioManager::Pause(SFX sfx, int id, bool pause)
     return;
 }
 
+void AudioManager::Restart(SFX sfx, int id)
+{
+    const FMOD::Studio::EventDescription* description = GetEventDescription(sfx);
+
+    App->GetAudio()->Restart(description, id);
+}
+
 // Stop, kill instance
 int AudioManager::Release(BGM bgm, int id)
 {
