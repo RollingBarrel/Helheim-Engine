@@ -637,7 +637,15 @@ float3 ParticleSystemComponent::ShapeInitDirection(const float3& pos) const
     }
     case EmitterType::DONUT:
     {
-        float3 direction = pos - float3(pos.x, pos.y, 0).Normalized() * mShapeRadius;
+        float3 direction;
+        if (mShapeFollowZAxis)
+        {
+            direction = float3(0.0f, 0.0f, 1.0f);
+        }
+        else
+        {
+            direction = pos - float3(pos.x, pos.y, 0).Normalized() * mShapeRadius;
+        }
         if (mShapeInverseDir) direction = -direction;
         direction = direction.Normalized();
 
