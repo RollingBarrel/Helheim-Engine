@@ -218,7 +218,15 @@ void CinematicCamera::StartCinematic(GameObject* cameraObject, GameObject* dummy
             mStartParameters = true;
 
             LocateCamera(cameraObject);
-            mTargetPosition = ((dummy->GetWorldPosition()) - ((mCinematicCameraGO->GetFront()) * mDistanceToEnemy));
+            if (mDummy->GetName() != "FinalBoss")
+            {
+                mTargetPosition = ((dummy->GetWorldPosition() - dummy->GetRight()) - ((mCinematicCameraGO->GetFront()) * mDistanceToEnemy));
+            }
+            else
+            {
+                mTargetPosition = ((dummy->GetWorldPosition()) - ((mCinematicCameraGO->GetFront()) * mDistanceToEnemy));
+            }
+            
             mCinematicCameraGO->Translate(-(mCinematicCameraGO->GetFront()) * mDistanceToEnemy);
 
             mAnimationComponent = static_cast<AnimationComponent*>(mDummy->GetComponent(ComponentType::ANIMATION));
