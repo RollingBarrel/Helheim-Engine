@@ -1952,6 +1952,9 @@ void InspectorPanel::DrawParticleSystemComponent(ParticleSystemComponent* compon
 			ImGui::Text("Tube Radius");
 			ImGui::SameLine();
 			ImGui::DragFloat("##TubeRadius", &component->mShapeTubeRadius, 0.1f, 0.0f);
+			ImGui::Text("Follow Z Axis");
+			ImGui::SameLine();
+			ImGui::Checkbox("##FollowZAxis", &(component->mShapeFollowZAxis));
 			ImGui::Text("InversDir");
 			ImGui::SameLine();
 			ImGui::Checkbox("##InversDir", &(component->mShapeInverseDir));
