@@ -57,6 +57,7 @@ public:
 	// Kill instance
 	void Stop(const FMOD::Studio::EventDescription* eventDescription, const int id);
 	void Release(const FMOD::Studio::EventDescription* eventDescription, const int id);
+	void UpdatePendingReleases();
 
 	void ReleaseAllAudio();
 	
@@ -102,6 +103,7 @@ private:
 
 	FMOD::ChannelGroup* mOneShotChannelGroup = nullptr;
 	FMOD::ChannelGroup* mAudioChannelGroup = nullptr;
+	std::vector<FMOD::Studio::EventInstance*> eventsPendingRelease;
 
 	std::vector<FMOD::Studio::EventDescription*> mActiveEvent;
 };
