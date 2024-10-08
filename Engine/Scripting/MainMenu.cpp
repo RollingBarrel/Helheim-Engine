@@ -16,6 +16,7 @@
 #include "Timer.h"
 #include "ModuleWindow.h"
 #include "AudioManager.h"
+#include "PlayerStats.h"
 
 CREATE(MainMenu)
 {
@@ -122,6 +123,12 @@ CREATE(MainMenu)
 
     SEPARATOR("OTHERS");
     MEMBER(MemberType::GAMEOBJECT, mAudioManagerGO);
+
+    SEPARATOR("Bindings");
+    MEMBER(MemberType::GAMEOBJECT, mAcceptKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mAcceptControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mBackKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mBackControllerGO);
 
     END_CREATE;
 }
@@ -247,7 +254,14 @@ void MainMenu::Start()
     mMusicVolumeFill->SetAlpha(0.8f);
     mEffectsVolumeFill->SetAlpha(0.8f);
 
-    OpenMenu(MENU_TYPE::STUDIO);
+    if (App->GetScene()->GetPlayerStats()->GetGameFinished()) 
+    {
+        OpenMenu(MENU_TYPE::CREDITS);
+        mStudioBool = false;
+        mEngineBool = false;
+        mIsInitial = false;
+    }
+    else OpenMenu(MENU_TYPE::STUDIO);
 }
 
 void MainMenu::Update()
@@ -296,6 +310,12 @@ void MainMenu::Update()
         float3 currentPosition = mTextTransform->GetPosition();
         if (currentPosition.y > 3800.0f) mTextTransform->SetPosition(float3(currentPosition.x, -700.0f, currentPosition.z));
         else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
+    }
+
+    if (mController != App->GetInput()->isGamepadAvailable())
+    {
+        mController = App->GetInput()->isGamepadAvailable();
+        ChangeBindings(mController);
     }
 
     if (mLoadlevel == true && mTimer.Delay(1.25f))
@@ -612,6 +632,12 @@ void MainMenu::Controls()
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
         if (mCurrentMenu == MENU_TYPE::LOADING) return;
+        if (mCurrentMenu == MENU_TYPE::MAIN)
+        {
+            OpenMenu(MENU_TYPE::SPLASH);
+            return;
+        }
+
         mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
         if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD )
         {
@@ -817,7 +843,14 @@ void MainMenu::OnBackButtonClick()
 {
     mOptionsClicked->SetEnabled(false);
     mCreditsClicked->SetEnabled(false);
-    OpenMenu(MENU_TYPE::MAIN);
+    if (App->GetScene()->GetPlayerStats()->GetGameFinished())
+    {
+        mStudioBool = true;
+        mEngineBool = true;
+        mIsInitial = true;
+        OpenMenu(MENU_TYPE::STUDIO);
+    }
+    else OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnPlayButtonClick() 
@@ -1356,4 +1389,22 @@ void MainMenu::OnEffectsUp()
 void MainMenu::OnEffectsDown()
 {
     OnVolumeSlide(static_cast<AUDIO_SETTING_TYPE>(2), DIRECTION::LEFT, 0.1f);
+}
+
+void MainMenu::ChangeBindings(bool value)
+{
+    if (value)
+    {
+        if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(false);
+        if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(false);
+        if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(true);
+        if (mBackControllerGO) mBackControllerGO->SetEnabled(true);
+    }
+    else
+    {
+        if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(true);
+        if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(true);
+        if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(false);
+        if (mBackControllerGO) mBackControllerGO->SetEnabled(false);
+    }
 }
