@@ -1,6 +1,7 @@
 #pragma once
 #include "Script.h"
 #include "Macros.h"
+#include "TimerScript.h"
 
 GENERATE_BODY(SecondTutorial);
 
@@ -27,15 +28,17 @@ private:
 	GameObject* mSecondaryTutorial = nullptr;
 	GameObject* mGrenadeTutorial = nullptr;
 	GameObject* mUltimateTutorial = nullptr;
+	GameObject* mCollectibleTut = nullptr;
 	GameObject* mSkipTutorial = nullptr;
 	//CONTROLLER
 	GameObject* mShootTutorialCon = nullptr;
 	GameObject* mSecondaryTutorialCon = nullptr;
 	GameObject* mGrenadeTutorialCon = nullptr;
 	GameObject* mUltimateTutorialCon = nullptr;
+	GameObject* mCollectibleTutCon = nullptr;
 	GameObject* mSkipTutorialCon = nullptr;
 
-	
+	TimerScript mTutorialTimer;
 
 	GameObject* mTutorialAreaGO = nullptr;
 	BattleArea* mTutorialArea = nullptr;

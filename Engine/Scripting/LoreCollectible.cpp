@@ -38,8 +38,7 @@ void LoreCollectible::Start()
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
 		
-	if (mMeshGO && mMeshGO->GetComponent(ComponentType::MESHRENDERER)) 
-		mMesh = static_cast<MeshRendererComponent*>(mMeshGO->GetComponent(ComponentType::MESHRENDERER));
+	if (mMeshGO && mMeshGO->GetComponent(ComponentType::MESHRENDERER)) mMesh = static_cast<MeshRendererComponent*>(mMeshGO->GetComponent(ComponentType::MESHRENDERER));
 	mLoreText = &(mTextList[mLoreIndex]);
 	mTitleText = &(mTitleList[mLoreIndex]);
 	mSubtitleText = &(mSubtitleList[mLoreIndex]);
@@ -60,8 +59,6 @@ void LoreCollectible::Update()
 	}
 
 	if (mColliding) CheckDistance();
-
-	if (mMesh) ColorChange();
 }
 
 void LoreCollectible::OnCollisionEnter(CollisionData* collisionData)
@@ -96,25 +93,6 @@ void LoreCollectible::OnCollisionExit(CollisionData* collisionData)
 	
 }
 
-void LoreCollectible::ColorChange()
-{
-	Clamp01(mColor);
-
-	if (!mChange) 
-	{
-		mColor = Lerp(mColor, 0.0f, App->GetDt()*1.4);
-		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-		if (mColor < 0.1f) mChange = true;
-	}
-	else
-	{
-		mColor = Lerp(mColor, 1.0f, App->GetDt() * 1.4);
-		mMesh->SetBaseColorFactor(float4(mColor, mColor, mColor, mColor));
-		if (mColor > 0.9f)  mChange = false;
-	}
-
-}
-
 void LoreCollectible::CheckDistance()
 {
 	float3 playerPosition = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
@@ -126,3 +104,5 @@ void LoreCollectible::CheckDistance()
 		mColliding = false;
 	}
 }
+
+

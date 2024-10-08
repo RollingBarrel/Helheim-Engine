@@ -17,6 +17,7 @@
 #include "ModuleWindow.h"
 #include "AudioManager.h"
 #include "PlayerStats.h"
+#include "VideoComponent.h"
 
 CREATE(MainMenu)
 {
@@ -129,6 +130,11 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mAcceptControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mBackKeyboardGO);
     MEMBER(MemberType::GAMEOBJECT, mBackControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipControllerGO);
+
+    SEPARATOR("Video");
+    MEMBER(MemberType::GAMEOBJECT, mVideoGO);
 
     END_CREATE;
 }
@@ -141,6 +147,10 @@ void MainMenu::Start()
 
     mSplashButton = static_cast<ButtonComponent*>(mSplashScreen->GetComponent(ComponentType::BUTTON));
     mSplashButton->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&MainMenu::OnSplashButtonClick, this)));
+
+    // Video
+
+    if (mVideoGO) mVideo = static_cast<VideoComponent*>(mVideoGO->GetComponent(ComponentType::VIDEO));
 
     // Main buttons
 
@@ -745,6 +755,7 @@ void MainMenu::OpenMenu(MENU_TYPE type)
             break;
         case MENU_TYPE::SPLASH:
             mSplashScreen->SetEnabled(true);
+            mVideo->Play();
             break;
         case MENU_TYPE::ENGINE:
             mEngineScreen->SetEnabled(true);
@@ -1397,14 +1408,20 @@ void MainMenu::ChangeBindings(bool value)
     {
         if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(false);
         if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(false);
+        if (mSkipKeyboardGO) mSkipKeyboardGO->SetEnabled(false);
+
         if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(true);
         if (mBackControllerGO) mBackControllerGO->SetEnabled(true);
+        if (mSkipControllerGO) mSkipControllerGO->SetEnabled(true);
     }
     else
     {
         if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(true);
         if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(true);
+        if (mSkipKeyboardGO) mSkipKeyboardGO->SetEnabled(true);
+
         if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(false);
         if (mBackControllerGO) mBackControllerGO->SetEnabled(false);
+        if (mSkipControllerGO) mSkipControllerGO->SetEnabled(false);
     }
 }

@@ -92,7 +92,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                 {
                     GameManager::GetInstance()->GetHud()->SetPickupPrompt(true);
                     if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
+                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
                     {
                         GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());
@@ -115,7 +115,7 @@ void ItemDrop::OnCollisionEnter(CollisionData* collisionData)
                 {
                     GameManager::GetInstance()->GetHud()->SetPickupPrompt(true);
                     if (App->GetInput()->GetKey(Keys::Keys_F) == KeyState::KEY_DOWN ||
-                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_Y) == ButtonState::BUTTON_DOWN)
+                        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
                     {
                         GameManager::GetInstance()->GetHud()->SetPickupPrompt(false);
                         GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::PLAYER_PICK, GameManager::GetInstance()->GetPlayer()->GetWorldPosition());

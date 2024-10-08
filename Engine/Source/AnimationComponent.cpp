@@ -258,7 +258,6 @@ void AnimationComponent::SendTrigger(const std::string& trigger, float transitio
 			ChangeState(mStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
-	//LOG("Current Default Name:%s", currentStateName.c_str());
 }
 
 void AnimationComponent::ChangeState(const std::string& stateName, float transitionTime)
@@ -346,7 +345,6 @@ void AnimationComponent::SendSpineTrigger(const std::string& trigger, float tran
 			ChangeSpineState(mSpineStateMachine->GetTransitionTarget(i), transitionTime);
 		}
 	}
-	LOG("Current Spine Name:%s", currentStateName.c_str());
 }
 
 void AnimationComponent::ChangeSpineState(const std::string& stateName, float transitionTime)
