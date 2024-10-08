@@ -24,7 +24,7 @@ private:
 	float mSpecialAttackTimer = 0.0f;
 
 	TimerScript mPressedSpecialAttackTimer;
-	float mRedSpecialAttackPressedCoolDown = 1.0f;
-	float mBlueSpecialAttackPressedCoolDown = 0.6f;
+	float mRedSpecialAttackPressedCoolDown = 0.6f;
+	float mBlueSpecialAttackPressedCoolDown = 0.45;
 
 };
