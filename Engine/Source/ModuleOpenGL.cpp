@@ -309,18 +309,18 @@ bool ModuleOpenGL::Init()
 	mSelectSkinsProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "TileLightCulling.comp";
 	mTileLightCullingProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	sourcesPaths[0] = "Fog.comp";
-	mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
+	//sourcesPaths[0] = "Fog.comp";
+	//mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Noise.comp";
 	mNoiseProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	sourcesPaths[0] = "Volumetric2.comp";
 	mVolLightProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-	sourcesPaths[0] = "Postpo.comp";
-	mPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
-
-	//sourcesPaths[0] = "GameVertex.glsl";
+	//sourcesPaths[0] = "Postpo.comp";
+	//mPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 	//sourcesPaths[1] = "Fog.glsl";
 	//mFogProgramId = CreateShaderProgramFromPaths(sourcesPaths, sourcesTypes, 2);
+	sourcesPaths[0] = "VolFogPostpo.comp";
+	mVolFogPostpoProgramId = CreateShaderProgramFromPaths(sourcesPaths, &computeType, 1);
 
 	sourcesPaths[0] = "GameVertex.glsl";
 	sourcesPaths[1] = "PBRCT_LightingPass.glsl";
@@ -482,7 +482,7 @@ bool ModuleOpenGL::Init()
 	glUniform1ui(glGetUniformLocation(mPbrLightingPassProgramId, "numLevels"), 0);
 
 	//fog
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform3fv(1, 1, mFogColor);
 	glUniform1f(2, mMaxFog);
 	glUniform1f(3, mFogDensity);
@@ -1065,15 +1065,15 @@ void ModuleOpenGL::SetBloomIntensity(float intensity)
 	else if (intensity > 1.0f)
 		intensity = 1.0f;
 	mBloomIntensity = intensity;
-	glUseProgram(mPostpoProgramId);
-	glUniform1f(glGetUniformLocation(mPostpoProgramId, "bloomIntensity"), mBloomIntensity);
+	glUseProgram(mVolFogPostpoProgramId);
+	glUniform1f(glGetUniformLocation(mVolFogPostpoProgramId, "bloomIntensity"), mBloomIntensity);
 	glUseProgram(0);
 }
 
 void ModuleOpenGL::SetFogColor(float fogColor[3])
 {
 	memcpy(mFogColor, fogColor, sizeof(float) * 3);
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform3fv(1, 1, fogColor);
 	glUseProgram(0);
 }
@@ -1081,7 +1081,7 @@ void ModuleOpenGL::SetFogColor(float fogColor[3])
 void ModuleOpenGL::SetFogDensity(float density)
 {
 	mFogDensity = density;
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform1f(3, density);
 	glUseProgram(0);
 }
@@ -1089,7 +1089,7 @@ void ModuleOpenGL::SetFogDensity(float density)
 void ModuleOpenGL::SetFogHeightFallof(float heightFallof)
 {
 	mHeightFallof = heightFallof;
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform1f(4, heightFallof);
 	glUseProgram(0);
 }
@@ -1097,7 +1097,7 @@ void ModuleOpenGL::SetFogHeightFallof(float heightFallof)
 void ModuleOpenGL::SetMaxFog(float maxFog)
 {
 	mMaxFog = maxFog;
-	glUseProgram(mFogProgramId);
+	glUseProgram(mVolFogPostpoProgramId);
 	glUniform1f(2, maxFog);
 	glUseProgram(0);
 }
@@ -1674,21 +1674,13 @@ void ModuleOpenGL::Draw()
 	//glDepthMask(GL_TRUE);
 	//glPopDebugGroup();
 
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Fog");
-	glUseProgram(mFogProgramId);
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, mGDepth);
-	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	//glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
-	glPopDebugGroup();
-
-	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Postprocessing");
-	glUseProgram(mPostpoProgramId);
+	glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "Vol&Fog&Postpo");
+	glUseProgram(mVolFogPostpoProgramId);
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, blurredTex);
+	glActiveTexture(GL_TEXTURE1);
+	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glBindImageTexture(0, mSceneTexture, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
-	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	glDispatchCompute((mSceneWidth + 8) / 8, (mSceneHeight + 8) / 8, 1);
 	glPopDebugGroup();
 

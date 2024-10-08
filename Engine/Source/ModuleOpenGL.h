@@ -256,11 +256,10 @@ private:
 	unsigned int mUpsampleProgramId = 0;
 	unsigned int mGaussianBlurProgramId = 0;
 	unsigned int mSimpleBlurProgramId = 0;
-	unsigned int mFogProgramId = 0;
 	unsigned int mGameProgramId = 0;
 	unsigned int mNoiseProgramId = 0;
 	unsigned int mVolLightProgramId = 0;
-	unsigned int mPostpoProgramId = 0;
+	unsigned int mVolFogPostpoProgramId = 0;
 
 	unsigned int mParticleProgramId = 0;
 	unsigned int mTrailProgramId = 0;
