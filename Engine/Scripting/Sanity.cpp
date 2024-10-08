@@ -114,6 +114,9 @@ void Sanity::Start()
     mHealthLvl = App->GetScene()->GetPlayerStats()->GetHealthLvl();
     mSpeedLvl = App->GetScene()->GetPlayerStats()->GetSpeedLvl();
     mDmgLvl = App->GetScene()->GetPlayerStats()->GetDamageLvl();
+    SetDamageBoxes();
+    SetHealthBoxes();
+    SetSpeedBoxes();
 }
 
 void Sanity::Update()
@@ -283,6 +286,7 @@ void Sanity::OnCard1Click()
     if (!mCurrentBuffs.empty())
         mCurrentBuffs.at(0).Consume();
 
+    mDmgLvl++;
     SetDamageBoxes();
     App->GetScene()->GetPlayerStats()->SetDamageLvl(mDmgLvl);
     mGameObject->SetEnabled(false);
@@ -318,7 +322,8 @@ void Sanity::OnCard2Click()
 
     if (mCurrentBuffs.size() > 1)
         mCurrentBuffs.at(1).Consume();
-
+    
+    mSpeedLvl++;
     SetSpeedBoxes();
     App->GetScene()->GetPlayerStats()->SetSpeedLvl(mSpeedLvl);
     mGameObject->SetEnabled(false);
@@ -355,6 +360,7 @@ void Sanity::OnCard3Click()
     if (mCurrentBuffs.size() > 2)
         mCurrentBuffs.at(2).Consume();
 
+    mHealthLvl++;
     SetHealthBoxes();
     App->GetScene()->GetPlayerStats()->SetHealthLvl(mHealthLvl);
     mGameObject->SetEnabled(false);
@@ -384,87 +390,90 @@ void Sanity::OnCard3HoverOff()
 
 void Sanity::SetSpeedBoxes()
 {
-    mSpeedLvl++;
     switch (mSpeedLvl)
     {
-        case 1:
-            mSpeedBox1->SetEnabled(true);
-            break;
-        case 2:
-            mSpeedBox2->SetEnabled(true);
-            break;
-        case 3:
-            mSpeedBox3->SetEnabled(true);
-            break;
-        case 4:
-            mSpeedBox4->SetEnabled(true);
-            break;
-        case 5:
-            mSpeedBox5->SetEnabled(true);
-            break;
-        case 6:
-            mSpeedBox6->SetEnabled(true);
-            break;
         case 7:
             mSpeedBox7->SetEnabled(true);
+            [[fallthrough]];
+        case 6:
+            mSpeedBox6->SetEnabled(true);
+            [[fallthrough]];
+        case 5:
+            mSpeedBox5->SetEnabled(true);
+            [[fallthrough]];
+        case 4:
+            mSpeedBox4->SetEnabled(true);
+            [[fallthrough]];
+        case 3:
+            mSpeedBox3->SetEnabled(true);
+            [[fallthrough]];
+        case 2:
+            mSpeedBox2->SetEnabled(true);
+            [[fallthrough]];
+        case 1:
+            mSpeedBox1->SetEnabled(true);
+            [[fallthrough]];
+        default:
             break;
     }
 }
 
 void Sanity::SetHealthBoxes()
 {
-    mHealthLvl++;
     switch (mHealthLvl)
     {
-    case 1:
-        mHealthBox1->SetEnabled(true);
-        break;
-    case 2:
-        mHealthBox2->SetEnabled(true);
-        break;
-    case 3:
-        mHealthBox3->SetEnabled(true);
-        break;
-    case 4:
-        mHealthBox4->SetEnabled(true);
-        break;
-    case 5:
-        mHealthBox5->SetEnabled(true);
-        break;
-    case 6:
-        mHealthBox6->SetEnabled(true);
-        break;
     case 7:
         mHealthBox7->SetEnabled(true);
+        [[fallthrough]];
+    case 6:
+        mHealthBox6->SetEnabled(true);
+        [[fallthrough]];
+    case 5:
+        mHealthBox5->SetEnabled(true);
+        [[fallthrough]];
+    case 4:
+        mHealthBox4->SetEnabled(true);
+        [[fallthrough]];
+    case 3:
+        mHealthBox3->SetEnabled(true);
+        [[fallthrough]];
+    case 2:
+        mHealthBox2->SetEnabled(true);
+        [[fallthrough]];
+    case 1:
+        mHealthBox1->SetEnabled(true);
+        [[fallthrough]];
+    default:
         break;
     }
 }
 
 void Sanity::SetDamageBoxes()
 {
-    mDmgLvl++;
     switch (mDmgLvl)
     {
-    case 1:
-        mDmgBox1->SetEnabled(true);
-        break;
-    case 2:
-        mDmgBox2->SetEnabled(true);
-        break;
-    case 3:
-        mDmgBox3->SetEnabled(true);
-        break;
-    case 4:
-        mDmgBox4->SetEnabled(true);
-        break;
-    case 5:
-        mDmgBox5->SetEnabled(true);
-        break;
-    case 6:
-        mDmgBox6->SetEnabled(true);
-        break;
     case 7:
         mDmgBox7->SetEnabled(true);
+        [[fallthrough]];
+    case 6:
+        mDmgBox6->SetEnabled(true);
+        [[fallthrough]];
+    case 5:
+        mDmgBox5->SetEnabled(true);
+        [[fallthrough]];
+    case 4:
+        mDmgBox4->SetEnabled(true);
+        [[fallthrough]];
+    case 3:
+        mDmgBox3->SetEnabled(true);
+        [[fallthrough]];
+    case 2:
+        mDmgBox2->SetEnabled(true);
+        [[fallthrough]];
+    case 1:
+        mDmgBox1->SetEnabled(true);
+        [[fallthrough]];
+    default:
         break;
     }
 }
