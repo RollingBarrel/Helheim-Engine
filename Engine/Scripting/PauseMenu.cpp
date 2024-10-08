@@ -216,6 +216,9 @@ void PauseMenu::Start()
     mAudioManager = GameManager::GetInstance()->GetAudio();
 
     // Init the volume setting sliders
+    mMasterVolumeValue = App->GetAudio()->GetVolume("bus:/");
+    mMusicVolumeValue = App->GetAudio()->GetVolume("bus:/music");
+    mEffectsVolumeValue = App->GetAudio()->GetVolume("bus:/sfx");
     App->GetAudio()->SetVolume("bus:/", mMasterVolumeValue);
     mGeneralVolumeSlider->SetValue(mMasterVolumeValue);
     App->GetAudio()->SetVolume("bus:/music", mMusicVolumeValue);
@@ -231,6 +234,7 @@ void PauseMenu::Start()
     mGeneralVolumeFill->SetAlpha(0.8f);
     mMusicVolumeFill->SetAlpha(0.8f);
     mEffectsVolumeFill->SetAlpha(0.8f);
+
 }
 
 void PauseMenu::Update()

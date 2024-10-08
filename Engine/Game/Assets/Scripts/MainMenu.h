@@ -287,6 +287,8 @@ private:
     GameObject* mAcceptControllerGO = nullptr;
     GameObject* mBackKeyboardGO = nullptr;
     GameObject* mBackControllerGO = nullptr;
+    GameObject* mSkipKeyboardGO = nullptr;
+    GameObject* mSkipControllerGO = nullptr;
 
     bool mController = false;
 

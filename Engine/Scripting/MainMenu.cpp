@@ -130,6 +130,8 @@ CREATE(MainMenu)
     MEMBER(MemberType::GAMEOBJECT, mAcceptControllerGO);
     MEMBER(MemberType::GAMEOBJECT, mBackKeyboardGO);
     MEMBER(MemberType::GAMEOBJECT, mBackControllerGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipKeyboardGO);
+    MEMBER(MemberType::GAMEOBJECT, mSkipControllerGO);
 
     SEPARATOR("Video");
     MEMBER(MemberType::GAMEOBJECT, mVideoGO);
@@ -1406,14 +1408,20 @@ void MainMenu::ChangeBindings(bool value)
     {
         if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(false);
         if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(false);
+        if (mSkipKeyboardGO) mSkipKeyboardGO->SetEnabled(false);
+
         if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(true);
         if (mBackControllerGO) mBackControllerGO->SetEnabled(true);
+        if (mSkipControllerGO) mSkipControllerGO->SetEnabled(true);
     }
     else
     {
         if (mAcceptKeyboardGO) mAcceptKeyboardGO->SetEnabled(true);
         if (mBackKeyboardGO) mBackKeyboardGO->SetEnabled(true);
+        if (mSkipKeyboardGO) mSkipKeyboardGO->SetEnabled(true);
+
         if (mAcceptControllerGO) mAcceptControllerGO->SetEnabled(false);
         if (mBackControllerGO) mBackControllerGO->SetEnabled(false);
+        if (mSkipControllerGO) mSkipControllerGO->SetEnabled(false);
     }
 }

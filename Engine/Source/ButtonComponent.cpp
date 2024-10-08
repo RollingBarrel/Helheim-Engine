@@ -110,12 +110,12 @@ void ButtonComponent::AddEventHandler(EventType eventType, std::function<void()>
 
 void ButtonComponent::TriggerEvent(EventType eventType) 
 {
-	switch (eventType) {
+	/*switch (eventType) {
 	case EventType::CLICK : LOG("Event: CLICK"); break;
 	case EventType::HOVER: LOG("Event: HOVER"); break;
 	case EventType::PRESS: LOG("Event: PRESS"); break;
 	case EventType::HOVEROFF: LOG("Event: HOVEROFF"); break;
-	}
+	}*/
 
     for (auto& handler : mEventHandlers[static_cast<int>(eventType)]) 
     {
