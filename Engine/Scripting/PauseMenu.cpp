@@ -551,6 +551,12 @@ void PauseMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
+        if (mCurrentMenu == MENU_TYPE::MAIN && GameManager::GetInstance()->IsPaused())
+        {
+            GameManager::GetInstance()->SetPaused(false, true);
+            return;
+        }
+
         mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
         if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
         {
