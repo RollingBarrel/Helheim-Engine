@@ -294,7 +294,7 @@ void GameManager::HandleBossAudio(int stage)
     {
         mBackgroundAudioID = mAudioManager->Play(BGM::BOSS);
     }
-    if (mIsFightingBoss && mBackgroundAudioID == -1 && stage >= 0)
+    if (mIsFightingBoss && mBackgroundAudioID != -1 && stage >= 0)
     {
         if (mLastAudioID != 2 && stage == 2)
         {
