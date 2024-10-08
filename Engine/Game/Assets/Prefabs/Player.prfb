@@ -165,12 +165,12 @@
                             {
                                 "VariableName": "mGrenadeGO",
                                 "MemberType": 3,
-                                "VariableData": 1497964683
+                                "VariableData": 1645769320
                             },
                             {
                                 "VariableName": "mGrenadeExplotionPreviewAreaGO",
                                 "MemberType": 3,
-                                "VariableData": 1546908246
+                                "VariableData": 1705782622
                             },
                             {
                                 "VariableName": "mGrenadeThrowOrigin",
@@ -5351,12 +5351,21 @@
                         "Gradient": {
                             "Color Gradient": [
                                 {
-                                    "Time": 0.24547803401947022,
+                                    "Time": 0.010335917584598065,
                                     "Color": [
                                         1.0,
                                         0.0,
                                         0.0,
-                                        0.29411765933036806
+                                        0.0
+                                    ]
+                                },
+                                {
+                                    "Time": 0.9819123148918152,
+                                    "Color": [
+                                        1.0,
+                                        0.0,
+                                        0.0,
+                                        0.5137255191802979
                                     ]
                                 }
                             ]
@@ -5371,9 +5380,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    -111.50929260253906,
-                    0.00179290771484375,
-                    0.015869140625
+                    -41.80931091308594,
+                    0.00316619873046875,
+                    0.02130126953125
                 ],
                 "Rotation": [
                     0.0,

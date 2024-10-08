@@ -35,8 +35,10 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeHLGO);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeImageGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateHLGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltimateImageGO);
     MEMBER(MemberType::GAMEOBJECT, mGunHLGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoBaseGO);
@@ -250,13 +252,15 @@ void HudController::Start()
     {
         mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
         mGrenadeSlider->SetValue(0.001f);
+        mGrenadeImage = static_cast<ImageComponent*>(mGrenadeImageGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mUltimateSliderGO)
     {
         mUltimateSlider = static_cast<SliderComponent*>(mUltimateSliderGO->GetComponent(ComponentType::SLIDER));
         mUltimateSlider->SetValue(0.001f);
-        mUltimateImage = static_cast<ImageComponent*>(mUltimateHLGO->GetComponent(ComponentType::IMAGE));
+        mUltimateBorder = static_cast<ImageComponent*>(mUltimateHLGO->GetComponent(ComponentType::IMAGE));
+        mUltimateImage = static_cast<ImageComponent*>(mUltimateImageGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
@@ -389,7 +393,8 @@ void HudController::Update()
         else
         {
             mGrenadeHL = true;
-            mGrenadeHLGO->SetEnabled(true);
+            mGrenadeHLGO->SetEnabled(true); 
+            mGrenadeImage->SetAlpha(1.0f);
             mGrenadeHLTimer.Reset();
             mGrenadeCooldown = 0.0f;
         }
@@ -399,7 +404,7 @@ void HudController::Update()
     if (mUltimateHL)
     {
         mAlpha += App->GetDt() * 5.0f;
-        mUltimateImage->SetAlpha(abs(sinf(mAlpha)));
+        mUltimateBorder->SetAlpha(abs(sinf(mAlpha)));
     }
 
     // Weapon highlight
@@ -760,9 +765,9 @@ void HudController::SetMaxHealth(float health)
     }*/
 }
 
-
 void HudController::SetGrenadeCooldown(float cooldown)
 {
+    mGrenadeImage->SetAlpha(0.5f);
     mGrenadeCooldown = cooldown;
     mGrenadeTimer = 0.001f;
 }
@@ -776,12 +781,14 @@ void HudController::SetUltimateCooldown(float cooldown)
         mUltimateHL = true;
         mUltimateHLGO->SetEnabled(true);
         mUltimateSliderGO->SetEnabled(false);
+        mUltimateImage->SetAlpha(1.0f);
     }
     else 
     {
         mUltimateHL = false;
         mUltimateHLGO->SetEnabled(false);
         mUltimateSliderGO->SetEnabled(true);
+        mUltimateImage->SetAlpha(0.5f);
     }
 }
 
@@ -810,6 +817,7 @@ void HudController::SetScreen(SCREEN name, bool active)
             if (mWinScreen) mWinScreen->SetEnabled(active);
             break;
         case SCREEN::PAUSE:
+            if (active) LOG("Pause true") else LOG("Pause false")
             mPauseMenu->Reset();
             if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
@@ -851,6 +859,7 @@ void HudController::OnWinButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
     App->GetScene()->GetPlayerStats()->ResetStats();
+    App->GetScene()->GetPlayerStats()->SetGameFinished(true);
 }
 
 void HudController::OnLoseButtonClick()

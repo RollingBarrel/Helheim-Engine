@@ -361,6 +361,7 @@ void ParticleSystemComponent::Save(JsonObject& obj) const
     obj.AddBool("StretchedBillboard", mStretchedBillboard);
     obj.AddFloat("StretchedRatio", mStretchedRatio);
     obj.AddFloat("Gravity", mGravity);
+    obj.AddBool("ShapeFollowZAxis", mShapeFollowZAxis);
     JsonObject lifetime = obj.AddNewJsonObject("Lifetime");
     mLifetime.Save(lifetime);
 
@@ -407,6 +408,7 @@ void ParticleSystemComponent::Load(const JsonObject& data, const std::unordered_
     if (data.HasMember("StretchedBillboard")) mStretchedBillboard = data.GetBool("StretchedBillboard");
     if (data.HasMember("StretchedRatio")) mStretchedRatio = data.GetFloat("StretchedRatio");
     if (data.HasMember("Gravity")) mGravity = data.GetFloat("Gravity");
+    if (data.HasMember("ShapeFollowZAxis")) mShapeFollowZAxis = data.GetBool("ShapeFollowZAxis");
     if (data.HasMember("Lifetime")) 
     {
         JsonObject lifetime = data.GetJsonObject("Lifetime");

@@ -17,6 +17,7 @@
 #include "ModuleWindow.h"
 #include "AudioManager.h"
 #include "GameManager.h"
+#include "PlayerStats.h"
 
 CREATE(PauseMenu)
 {
@@ -215,6 +216,9 @@ void PauseMenu::Start()
     mAudioManager = GameManager::GetInstance()->GetAudio();
 
     // Init the volume setting sliders
+    mMasterVolumeValue = App->GetAudio()->GetVolume("bus:/");
+    mMusicVolumeValue = App->GetAudio()->GetVolume("bus:/music");
+    mEffectsVolumeValue = App->GetAudio()->GetVolume("bus:/sfx");
     App->GetAudio()->SetVolume("bus:/", mMasterVolumeValue);
     mGeneralVolumeSlider->SetValue(mMasterVolumeValue);
     App->GetAudio()->SetVolume("bus:/music", mMusicVolumeValue);
@@ -230,6 +234,7 @@ void PauseMenu::Start()
     mGeneralVolumeFill->SetAlpha(0.8f);
     mMusicVolumeFill->SetAlpha(0.8f);
     mEffectsVolumeFill->SetAlpha(0.8f);
+
 }
 
 void PauseMenu::Update()
@@ -551,6 +556,12 @@ void PauseMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
+        if (mCurrentMenu == MENU_TYPE::MAIN && GameManager::GetInstance()->IsPaused())
+        {
+            GameManager::GetInstance()->SetPaused(false, true);
+            return;
+        }
+
         mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
         if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
         {
@@ -597,7 +608,7 @@ void PauseMenu::Controls()
             else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
-                mOptionsOption = 10;
+                mOptionsOption = 7;
                 mSettingsClicked->SetEnabled(false);
                 OnVideoSettingsButtonHover();
             }
@@ -715,6 +726,7 @@ void PauseMenu::OnMainButtonClick()
 
 void PauseMenu::OnQuitButtonClick() 
 {
+    App->GetScene()->GetPlayerStats()->ResetStats();
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 

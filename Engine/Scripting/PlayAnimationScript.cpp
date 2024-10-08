@@ -13,5 +13,6 @@ CREATE(PlayAnimationScript)
 void PlayAnimationScript::Start()
 {
 	AnimationComponent* animComp = static_cast<AnimationComponent*>(mGameObject->GetComponent(ComponentType::ANIMATION));
-	animComp->SetIsPlaying(true);
+    animComp->ResetAnimationComponent();
+    animComp->SetIsPlaying(true);
 }
