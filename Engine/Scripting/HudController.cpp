@@ -859,6 +859,7 @@ void HudController::OnWinButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
     App->GetScene()->GetPlayerStats()->ResetStats();
+    App->GetScene()->GetPlayerStats()->SetGameFinished(true);
 }
 
 void HudController::OnLoseButtonClick()

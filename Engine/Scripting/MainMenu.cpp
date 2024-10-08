@@ -16,6 +16,7 @@
 #include "Timer.h"
 #include "ModuleWindow.h"
 #include "AudioManager.h"
+#include "PlayerStats.h"
 
 CREATE(MainMenu)
 {
@@ -253,7 +254,14 @@ void MainMenu::Start()
     mMusicVolumeFill->SetAlpha(0.8f);
     mEffectsVolumeFill->SetAlpha(0.8f);
 
-    OpenMenu(MENU_TYPE::STUDIO);
+    if (App->GetScene()->GetPlayerStats()->GetGameFinished()) 
+    {
+        OpenMenu(MENU_TYPE::CREDITS);
+        mStudioBool = false;
+        mEngineBool = false;
+        mIsInitial = false;
+    }
+    else OpenMenu(MENU_TYPE::STUDIO);
 }
 
 void MainMenu::Update()
@@ -304,6 +312,12 @@ void MainMenu::Update()
         else mTextTransform->SetPosition(float3(currentPosition.x, currentPosition.y + 100 * App->GetDt(), currentPosition.z));
     }
 
+    if (mController != App->GetInput()->isGamepadAvailable())
+    {
+        mController = App->GetInput()->isGamepadAvailable();
+        ChangeBindings(mController);
+    }
+
     if (mLoadlevel == true && mTimer.Delay(1.25f))
     {
         mAudioManager->Release(BGM::MAINMENU, mBGMID);
@@ -316,12 +330,6 @@ void MainMenu::Update()
     }
 
     mTimePassed += App->GetDt();
-
-    if (mController != App->GetInput()->isGamepadAvailable())
-    {
-        mController = App->GetInput()->isGamepadAvailable();
-        ChangeBindings(mController);
-    }
 }
 
 void MainMenu::Controls()
@@ -829,7 +837,14 @@ void MainMenu::OnBackButtonClick()
 {
     mOptionsClicked->SetEnabled(false);
     mCreditsClicked->SetEnabled(false);
-    OpenMenu(MENU_TYPE::MAIN);
+    if (App->GetScene()->GetPlayerStats()->GetGameFinished())
+    {
+        mStudioBool = true;
+        mEngineBool = true;
+        mIsInitial = true;
+        OpenMenu(MENU_TYPE::STUDIO);
+    }
+    else OpenMenu(MENU_TYPE::MAIN);
 }
 
 void MainMenu::OnPlayButtonClick() 

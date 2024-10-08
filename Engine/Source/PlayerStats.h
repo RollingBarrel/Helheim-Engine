@@ -10,6 +10,7 @@ public:
 	float GetDamageModifier() { return mDamageModifier; }
 	bool GetGodMode() { return mGodMode; };
 	int GetDialogIndex() { return mDialogIndex; }
+	bool GetGameFinished() { return mGameFinished; }
 
 	int GetHealthLvl() { return mHealthLvl; }
 	int GetDamageLvl() { return mDamageLvl; }
@@ -21,6 +22,7 @@ public:
 	void SetDialogIndex(int index) { mDialogIndex = index; }
 	void SetGodMode(bool godMode) { mGodMode = godMode; };
 	void SetInitLevelStats();
+	void SetGameFinished(bool value) { mGameFinished = value; }
 
 	void SetHealthLvl(int stat) { mHealthLvl = stat; }
 	void SetDamageLvl(int stat) { mDamageLvl = stat; }
@@ -45,5 +47,7 @@ private:
 	int mHealthLvl = 0;
 	int mSpeedLvl = 0;
 	int mDamageLvl = 0;
+
+	bool mGameFinished = false;
 };
 
