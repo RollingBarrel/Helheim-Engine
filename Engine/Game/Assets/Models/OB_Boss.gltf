@@ -132812,8 +132812,9 @@
 				"baseColorTexture":{
 					"index":2
 				},
-				"metallicFactor":0,
-				"roughnessFactor":0.5
+				"metallicRoughnessTexture":{
+					"index":3
+				}
 			}
 		}
 	],
@@ -132863,23 +132864,32 @@
 		{
 			"sampler":0,
 			"source":2
+		},
+		{
+			"sampler":0,
+			"source":3
 		}
 	],
 	"images":[
 		{
 			"mimeType":"image/png",
-			"name":"T_BOSS_Emissive",
-			"uri":"T_BOSS_Emissive.png"
+			"name":"T_BOSS_Emissive.png",
+			"uri":"T_BOSS_Emissive_png.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_BOSS_Normal",
-			"uri":"T_BOSS_Normal.png"
+			"name":"T_BOSS_Normal.png",
+			"uri":"T_BOSS_Normal_png.png"
 		},
 		{
 			"mimeType":"image/png",
-			"name":"T_BOSS_BaseColor",
-			"uri":"T_BOSS_BaseColor.png"
+			"name":"T_BOSS_BaseColor.png",
+			"uri":"T_BOSS_BaseColor_png.png"
+		},
+		{
+			"mimeType":"image/png",
+			"name":"T_BOSS_OcclusionRoughnessMetallic",
+			"uri":"T_BOSS_OcclusionRoughnessMetallic.png"
 		}
 	],
 	"skins":[

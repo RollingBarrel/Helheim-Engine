@@ -38,15 +38,19 @@ void RayCastBullet::Start()
 
 void RayCastBullet::Update()
 {
-	if (mFirstFrame)
-	{
-		mFirstFrame = false;
-		return;
-	}
-
 	if ((mBulletTrail->GetOwner()->GetWorldPosition() - mHitPoint).Dot(mDirection) < 0.0f)
 	{
-		float3 newPosition = mBulletTrail->GetOwner()->GetWorldPosition() + mDirection * mSpeed * App->GetDt();
+		
+		float3 newPosition;
+		if (mFirstFrame)
+		{
+			mFirstFrame = false;
+			newPosition = mBulletTrail->GetOwner()->GetWorldPosition();
+		}
+		else 
+		{
+			newPosition = mBulletTrail->GetOwner()->GetWorldPosition() + mDirection * mSpeed * App->GetDt();
+		}
 
 		if ((newPosition - mHitPoint).Dot(mDirection) < 0)
 		{
