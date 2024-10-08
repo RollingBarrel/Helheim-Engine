@@ -113,7 +113,7 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	//diractional light
 	//li +=  dirCol.rgb * dirCol.w * MieScattering(vDir, dirDir);
 
-	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy) / tileSize;
+	const uvec2 currTile = uvec2(gl_GlobalInvocationID.xy * 2) / tileSize;
 	const uint tileIdx = currTile.y * numTiles.x + currTile.x;
 	//point lights
 	//int idx = texelFetch(pointLightList, int(tileIdx * lightListSize)).x;
@@ -129,11 +129,11 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 	//}
 
 	//spot lights
-	//uint idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
-	//for (uint i = 0; i < lightListSize && idx != 255; idx = texelFetch(spotLightList, int(tileIdx * lightListSize + i)).x)
-	for (uint i = 0; i < numSLights; ++i)
+	uint idx = texelFetch(spotLightList, int(tileIdx * lightListSize)).x;
+	for (uint i = 0; i < lightListSize && idx != 255; idx = texelFetch(spotLightList, int(tileIdx * lightListSize + i)).x)
+	//for (uint i = 0; i < numSLights; ++i)
 	{
-		SpotLight sLight = sLights[i];
+		SpotLight sLight = sLights[idx];
 		//Shadows
 		bool inShadow = false;
 		if (sLight.shadowIndex >= 0)
@@ -166,6 +166,7 @@ vec3 CalculateInScattering(in vec3 currPos, in vec3 cameraPos)
 			att *= cAtt;
 			li += sLight.col.rgb * sLight.pos.w * att * MieScattering(vDir, sDir);
 		}
+		++i;
 	}
 
 	return li;

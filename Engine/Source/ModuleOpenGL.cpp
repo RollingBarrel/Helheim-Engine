@@ -1645,7 +1645,7 @@ void ModuleOpenGL::Draw()
 	glBindTexture(GL_TEXTURE_2D, mGDepth);
 	glActiveTexture(GL_TEXTURE1);
 	glBindTexture(GL_TEXTURE_2D, mNoiseTexId);
-	glActiveTexture(GL_TEXTURE2);
+	//glActiveTexture(GL_TEXTURE2);
 	//glBindTexture(GL_TEXTURE_BUFFER, mVolPLightListImgTex);
 	glActiveTexture(GL_TEXTURE3);
 	glBindTexture(GL_TEXTURE_BUFFER, mVolSLightListImgTex);
