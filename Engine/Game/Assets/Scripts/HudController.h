@@ -1,8 +1,5 @@
 #pragma once
-// Link to design
-//https://www.figma.com/design/J6S4FzW8Yn38GOiMe7XdYm/GAME_UI?node-id=625-249&t=mL60BsxKQdYvFkMC-0
-
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
 #include "TimerScript.h"
 
@@ -18,7 +15,7 @@ class Transform2DComponent;
 class PauseMenu;
 enum class EnergyType;
 
-enum class SCREEN {
+enum SCREEN {
     LOAD,
     LOSE,
     WIN,
@@ -26,12 +23,13 @@ enum class SCREEN {
     COLLECTIBLE
 };
 
-enum class LOSE_OPTION {
-	TRY_AGAIN,
-	MENU
+enum class LoseOption {
+    LOSE_TRY_AGAIN,
+    LOSE_MENU
 };
 
 GENERATE_BODY(HudController);
+
 class HudController : public Script
 {
     FRIEND(HudController)
@@ -84,7 +82,7 @@ private:
     void OnLoseButtonClick();
     void OnLoseButtonHoverOn();
     void OnLoseButtonHoverOff();
-	void OnSelectLoseOption(LOSE_OPTION option);
+	void OnSelectLoseOption(LoseOption option);
 
     void OnCollectibleContinueBtnClick();
     void OnCollectibleContinueBtnHoverOn();
@@ -204,7 +202,7 @@ private:
     const float mDebounceTime = 0.2f; // 200 ms delay time
 
     // Lose Screen
-	LOSE_OPTION mLoseOption = LOSE_OPTION::TRY_AGAIN;
+	LoseOption mLoseOption = LoseOption::LOSE_TRY_AGAIN;
 
     // Lose Animation
     TimerScript mLoseAnimationTimer;
