@@ -508,30 +508,30 @@ void GameManager::HandleLevel1Audio()
 
 void GameManager::HandleLevel2Audio()
 {
-    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
-    {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 1);
-        mLastAudioID = 1;
-    }
-    else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
-    {
-        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 0);
-        mLastAudioID = 0;
-    }
-    //if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 2)
+    //if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
     //{
-    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 2);
-    //    mLastAudioID = 2;
-    //}
-    //else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
-    //{ 
-    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 1);
+    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 1);
     //    mLastAudioID = 1;
     //}
     //else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
     //{
-    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 0);
+    //    mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "boss_states", 0);
     //    mLastAudioID = 0;
     //}
+    if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() < 60.0 && mLastAudioID != 2)
+    {
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 2);
+        mLastAudioID = 2;
+    }
+    else if (mActiveBattleArea != nullptr && mPlayerController && mPlayerController->GetShieldPercetage() >= 60.0f && mLastAudioID != 1)
+    { 
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 1);
+        mLastAudioID = 1;
+    }
+    else if (mActiveBattleArea == nullptr && mLastAudioID != 0)
+    {
+        mAudioManager->UpdateParameterValueByName(BGM::LEVEL2, mBackgroundAudioID, "States", 0);
+        mLastAudioID = 0;
+    }
 }
 
