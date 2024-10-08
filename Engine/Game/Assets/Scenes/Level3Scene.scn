@@ -49346,7 +49346,7 @@
                             {
                                 "VariableName": "mSecondaryTutorialCon",
                                 "MemberType": 3,
-                                "VariableData": 848947053
+                                "VariableData": 2084232456
                             },
                             {
                                 "VariableName": "mGrenadeTutorialCon",
@@ -53621,7 +53621,7 @@
                     {
                         "ComponentType": 16,
                         "IsEnabled": false,
-                        "Text": "RT",
+                        "Text": "LT",
                         "Color": [
                             0.23137255012989045,
                             0.9960784316062927,

@@ -17,6 +17,7 @@
 #include "ModuleWindow.h"
 #include "AudioManager.h"
 #include "GameManager.h"
+#include "PlayerStats.h"
 
 CREATE(PauseMenu)
 {
@@ -721,6 +722,7 @@ void PauseMenu::OnMainButtonClick()
 
 void PauseMenu::OnQuitButtonClick() 
 {
+    App->GetScene()->GetPlayerStats()->ResetStats();
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
 }
 
