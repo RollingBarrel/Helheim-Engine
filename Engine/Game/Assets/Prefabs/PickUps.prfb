@@ -2,8 +2,8 @@
     "Prefab": {
         "GameObjects": [
             {
-                "UID": 1402739944,
-                "ParentUID": 1,
+                "UID": 259154888,
+                "ParentUID": 929446144,
                 "Name": "PickUps",
                 "Enabled": true,
                 "Active": true,
@@ -62,8 +62,8 @@
                 ]
             },
             {
-                "UID": 461092017,
-                "ParentUID": 1402739944,
+                "UID": 1350324821,
+                "ParentUID": 259154888,
                 "Name": "Controller",
                 "Enabled": false,
                 "Active": false,
@@ -103,8 +103,8 @@
                             1.0
                         ],
                         "Size": [
-                            366.0,
-                            80.0
+                            395.0,
+                            42.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -122,7 +122,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 467979522,
+                        "ImageID": 990815245,
                         "Color": [
                             1.0,
                             1.0,
@@ -135,13 +135,14 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             },
             {
-                "UID": 1361082684,
-                "ParentUID": 1402739944,
+                "UID": 296308600,
+                "ParentUID": 259154888,
                 "Name": "Keyboard",
                 "Enabled": false,
                 "Active": false,
@@ -181,8 +182,8 @@
                             1.0
                         ],
                         "Size": [
-                            366.0,
-                            80.0
+                            395.0,
+                            42.0
                         ],
                         "AnchorMin": [
                             0.5,
@@ -200,7 +201,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1945786808,
+                        "ImageID": 2093319259,
                         "Color": [
                             1.0,
                             1.0,
@@ -213,7 +214,8 @@
                         "Columns": 1,
                         "Rows": 1,
                         "Speed": 30,
-                        "IsPlaying": false
+                        "IsPlaying": false,
+                        "BlurBack": false
                     }
                 ]
             }
