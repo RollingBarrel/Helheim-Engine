@@ -525,8 +525,6 @@ bool HudController::Delay(float delay)
 void HudController::Controls()
 {
     if (!GameManager::GetInstance()->IsPaused()) return;
-
-    GameManager::GetInstance()->GetPlayerController()->SetIdleState();
 }
 
 void HudController::SetSanity()

@@ -144,7 +144,7 @@ void main()
 	V = normalize(cameraPos - pos);
 
 	vec3 baseColor = texture(diffuseTex, uv).rgb;
-	vec2 specColorTex = texture(metalRoughTex, uv).gb;
+	vec2 specColorTex = texture(metalRoughTex, uv).rg;
 	float metal = specColorTex.y;
 	rough = max(specColorTex.x * specColorTex.x, 0.001f);
 	
@@ -177,39 +177,42 @@ void main()
 	{
 		SpotLight sLight = sLights[idx];
 		//Shadows
-		float shadowValue = 1.0;
+		bool inShadow = false;
 		if (sLight.shadowIndex >= 0)
 		{
-			vec4 lightClipSpace = shadows[sLight.shadowIndex].viewProjMatrix * vec4(pos, 1);
+			Shadow shadow = shadows[sLight.shadowIndex];
+			vec4 lightClipSpace = shadow.viewProjMatrix * vec4(pos, 1);
 			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
-			float shadowDepth = texture(shadows[sLight.shadowIndex].shadowMap, lightNDC.xy).r + shadows[sLight.shadowIndex].bias;
+			float shadowDepth = texture(shadow.shadowMap, lightNDC.xy).r + shadow.bias;
 			float fragmentDepth = lightNDC.z;
 
-			if(!(lightNDC.x >= 0.0 && lightNDC.x <= 1.0f &&
-				lightNDC.y >= 0.0 && lightNDC.y <= 1.0f &&
+			if(!(lightNDC.x >= 0.0f && lightNDC.x <= 1.0f &&
+				lightNDC.y >= 0.0f && lightNDC.y <= 1.0f &&
 				fragmentDepth < shadowDepth))
 				{
-					shadowValue = 0.0;
+					inShadow = true;
 				}
 		}
-
-		vec3 mVector = pos - sLight.pos.xyz;
-		vec3 sDir = normalize(mVector);
-		vec3 aimDir = normalize(sLight.aimD.xyz);
-		float dist = dot(mVector, aimDir);
-		//TODO: Check that the radius of spot light is correct
-		float r = sLight.radius;
-		float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
-		float c = dot(sDir, aimDir);
-		float cInner = sLight.aimD.w;
-		float cOuter = sLight.col.w;
-		//float cAtt = 1;
-		//if(cInner > c && c > cOuter)
-			//cAtt = (c - cOuter) / (cInner - cOuter);
-		float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
-		att *= cAtt;
-		pbrCol += GetPBRLightColor(sDir, sLight.col.rgb, sLight.pos.w, att) * shadowValue;
+		if (!inShadow)
+		{
+			vec3 mVector = pos - sLight.pos.xyz;
+			vec3 sDir = normalize(mVector);
+			vec3 aimDir = normalize(sLight.aimD.xyz);
+			float dist = dot(mVector, aimDir);
+			//TODO: Check that the radius of spot light is correct
+			float r = sLight.radius;
+			float att = pow(max(1 - pow(dist / r, 4), 0), 2) / (dist * dist + 1);
+			float c = dot(sDir, aimDir);
+			float cInner = sLight.aimD.w;
+			float cOuter = sLight.col.w;
+			//float cAtt = 1;
+			//if(cInner > c && c > cOuter)
+				//cAtt = (c - cOuter) / (cInner - cOuter);
+			float cAtt = clamp((c - cOuter) / (cInner - cOuter), 0.0, 1.0);
+			att *= cAtt;
+			pbrCol += GetPBRLightColor(sDir, sLight.col.rgb, sLight.pos.w, att);
+		}
 		++i;
 	}
 
