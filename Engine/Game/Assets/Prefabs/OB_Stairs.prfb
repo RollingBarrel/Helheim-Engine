@@ -1,0 +1,337 @@
+{
+    "Prefab": {
+        "GameObjects": [
+            {
+                "UID": 1179176661,
+                "ParentUID": 1,
+                "Name": "OB_Stairs",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 10,
+                        "IsEnabled": true,
+                        "AnimationUID": 1569921907,
+                        "LowerSMUID": 1668306357
+                    },
+                    {
+                        "ComponentType": 3,
+                        "IsEnabled": true,
+                        "ScriptName": "PlayAnimationScript"
+                    }
+                ]
+            },
+            {
+                "UID": 1199714856,
+                "ParentUID": 1179176661,
+                "Name": "Armature",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.7071068286895752,
+                    0.0,
+                    0.0,
+                    0.7071068286895752
+                ],
+                "Scale": [
+                    0.009999999776482582,
+                    0.009999999776482582,
+                    0.009999999776482582
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2028992404,
+                "ParentUID": 1199714856,
+                "Name": "OB_emergency_stairs",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 2048138179,
+                "ParentUID": 2028992404,
+                "Name": "OB_emergency_stairs",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": [
+                    {
+                        "ComponentType": 0,
+                        "IsEnabled": true,
+                        "MeshID": 1569921901,
+                        "MaterialID": 1569921906,
+                        "HasSkinning": true,
+                        "PaletteOwner": 0,
+                        "InverseBindMatrices": [
+                            {
+                                "GoId": 1295640598,
+                                "Matrix": [
+                                    -0.0000059099575082655068,
+                                    94.29910278320313,
+                                    -33.281822204589847,
+                                    -0.0,
+                                    0.000001074550709745381,
+                                    33.281822204589847,
+                                    94.29911804199219,
+                                    -0.0,
+                                    100.00001525878906,
+                                    0.000004121945039514685,
+                                    -0.0000014547948694598745,
+                                    0.0,
+                                    -0.0,
+                                    0.0,
+                                    0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1315830688,
+                                "Matrix": [
+                                    -0.000008793835149845109,
+                                    26.05231475830078,
+                                    96.5467758178711,
+                                    -391.72137451171877,
+                                    -6.4759490214783e-7,
+                                    96.5467758178711,
+                                    -26.052316665649415,
+                                    -3583.00341796875,
+                                    -100.00001525878906,
+                                    -0.000001822767558223859,
+                                    -0.000009846889952314087,
+                                    3065.851318359375,
+                                    -0.0,
+                                    -0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1318267423,
+                                "Matrix": [
+                                    100.00000762939453,
+                                    -0.0000018385202338322416,
+                                    -7.373629387075198e-7,
+                                    -3105.250732421875,
+                                    0.0000024716846382943915,
+                                    100.00001525878906,
+                                    -0.0000045695578592130918,
+                                    -3515.72265625,
+                                    0.000001550564547869726,
+                                    0.000007549791462224675,
+                                    100.00001525878906,
+                                    554.2599487304688,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            },
+                            {
+                                "GoId": 1320147190,
+                                "Matrix": [
+                                    100.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    -0.0,
+                                    100.0,
+                                    -0.000007549789643235272,
+                                    0.0,
+                                    0.0,
+                                    0.000007549789643235272,
+                                    100.0,
+                                    -0.0,
+                                    -0.0,
+                                    0.0,
+                                    -0.0,
+                                    1.0
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "UID": 1295640598,
+                "ParentUID": 1199714856,
+                "Name": "Root",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.11938274651765824,
+                    0.6969560384750366,
+                    -0.11938277631998062,
+                    0.6969560384750366
+                ],
+                "Scale": [
+                    0.9999999403953552,
+                    0.9999998211860657,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1315830688,
+                "ParentUID": 1295640598,
+                "Name": "Even",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3537.20166015625,
+                    659.5874633789063,
+                    3065.8515625
+                ],
+                "Rotation": [
+                    0.6798329949378967,
+                    0.7333670258522034,
+                    -4.817409404722639e-8,
+                    2.5651242907542838e-8
+                ],
+                "Scale": [
+                    1.0,
+                    0.9999998211860657,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1318267423,
+                "ParentUID": 1295640598,
+                "Name": "Odds",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    3499.6083984375,
+                    647.3798217773438,
+                    3105.25146484375
+                ],
+                "Rotation": [
+                    -0.40840601921081545,
+                    -0.5772387385368347,
+                    -0.4084060788154602,
+                    0.5772386789321899
+                ],
+                "Scale": [
+                    1.0,
+                    0.9999998211860657,
+                    0.9999998807907105
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            },
+            {
+                "UID": 1320147190,
+                "ParentUID": 1199714856,
+                "Name": "neutral_bone",
+                "Enabled": true,
+                "Active": true,
+                "Translation": [
+                    0.0,
+                    0.0,
+                    0.0
+                ],
+                "Rotation": [
+                    -0.7071067690849304,
+                    0.0,
+                    0.0,
+                    0.7071067690849304
+                ],
+                "Scale": [
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "Tag": "Untagged",
+                "PrefabUid": 0,
+                "OverridePrefab": false,
+                "Dynamic": false,
+                "Components": []
+            }
+        ]
+    }
+}

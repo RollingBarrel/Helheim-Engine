@@ -551,6 +551,12 @@ void PauseMenu::Controls()
     if (App->GetInput()->GetKey(Keys::Keys_BACKSPACE) == KeyState::KEY_DOWN ||
         App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN)
     {
+        if (mCurrentMenu == MENU_TYPE::MAIN && GameManager::GetInstance()->IsPaused())
+        {
+            GameManager::GetInstance()->SetPaused(false, true);
+            return;
+        }
+
         mAudioManager->PlayOneShot(SFX::MAINMENU_CANCEL);
         if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS || mCurrentMenu == MENU_TYPE::CONTROLS || mCurrentMenu == MENU_TYPE::AUDIO_SETTINGS || mCurrentMenu == MENU_TYPE::KEYBOARD)
         {
@@ -597,7 +603,7 @@ void PauseMenu::Controls()
             else if (mCurrentMenu == MENU_TYPE::VIDEO_SETTINGS)
             {
                 mVideoSettingOption = VIDEO_SETTING_TYPE::VSYNC; // Reset the current setting to the first one
-                mOptionsOption = 10;
+                mOptionsOption = 7;
                 mSettingsClicked->SetEnabled(false);
                 OnVideoSettingsButtonHover();
             }

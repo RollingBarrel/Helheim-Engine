@@ -13,6 +13,8 @@
 #include "ModuleInput.h"
 #include "Keys.h"
 #include "Transform2DComponent.h"
+#include "ModuleScene.h"
+#include "PlayerStats.h"
 
 CREATE(Sanity)
 {
@@ -58,12 +60,8 @@ Sanity::Sanity(GameObject* owner) : Script(owner)
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
-    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.1f), Buff(Buff::StatType::MOVEMENT, 1.10f), Buff(Buff::StatType::HEALTH, 1.10f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
-    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
-    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.15f), Buff(Buff::StatType::MOVEMENT, 1.15f), Buff(Buff::StatType::HEALTH, 1.15f) });
-    mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
     mBuffSelection.push_back({ Buff(Buff::StatType::DAMAGE, 1.20f), Buff(Buff::StatType::MOVEMENT, 1.20f), Buff(Buff::StatType::HEALTH, 1.20f) });
@@ -78,10 +76,10 @@ void Sanity::Start()
     if (mCard1GO)
     {
         const std::vector<GameObject*> children1 = mCard1GO->GetChildren();
-        mCard1Text = static_cast<TextComponent*>(children1[1]->GetComponent(ComponentType::TEXT));
-        mCard1Btn = static_cast<ButtonComponent*>(children1[0]->GetComponent(ComponentType::BUTTON));
-        mCard1Transform = static_cast<Transform2DComponent*>(mCard1GO->GetComponent(ComponentType::TRANSFORM2D));
-        mCard1TextTransform = static_cast<Transform2DComponent*>(mCard1Text->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        mCard1Text = static_cast<TextComponent*>(children1[3]->GetComponent(ComponentType::TEXT));
+        mCard1Btn = static_cast<ButtonComponent*>(children1[2]->GetComponent(ComponentType::BUTTON));
+        mCard1Image = static_cast<ImageComponent*>(children1[2]->GetComponent(ComponentType::IMAGE));
+        mCard1Hover = children1[0];
         mCard1Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard1Click, this)));
         mCard1Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOn, this)));
         mCard1Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard1HoverOff, this)));
@@ -90,28 +88,35 @@ void Sanity::Start()
     if (mCard2GO)
     {
         const std::vector<GameObject*> children2 = mCard2GO->GetChildren();
-        mCard2Text = static_cast<TextComponent*>(children2[1]->GetComponent(ComponentType::TEXT));
-        mCard2Btn = static_cast<ButtonComponent*>(children2[0]->GetComponent(ComponentType::BUTTON));
-        mCard2Transform = static_cast<Transform2DComponent*>(mCard2GO->GetComponent(ComponentType::TRANSFORM2D));
-        mCard2TextTransform = static_cast<Transform2DComponent*>(mCard2Text->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        mCard2Text = static_cast<TextComponent*>(children2[3]->GetComponent(ComponentType::TEXT));
+        mCard2Btn = static_cast<ButtonComponent*>(children2[2]->GetComponent(ComponentType::BUTTON));
+        mCard2Image = static_cast<ImageComponent*>(children2[2]->GetComponent(ComponentType::IMAGE));
+        mCard2Hover = children2[0];
         mCard2Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard2Click, this)));
         mCard2Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOn, this)));
         mCard2Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard2HoverOff, this)));
     }
 
-    if (mCard1GO)
+    if (mCard3GO)
     {
         const std::vector<GameObject*> children3 = mCard3GO->GetChildren();
-        mCard3Text = static_cast<TextComponent*>(children3[1]->GetComponent(ComponentType::TEXT));
-        mCard3Btn = static_cast<ButtonComponent*>(children3[0]->GetComponent(ComponentType::BUTTON));
-        mCard3Transform = static_cast<Transform2DComponent*>(mCard3GO->GetComponent(ComponentType::TRANSFORM2D));
-        mCard3TextTransform = static_cast<Transform2DComponent*>(mCard3Text->GetOwner()->GetComponent(ComponentType::TRANSFORM2D));
+        mCard3Text = static_cast<TextComponent*>(children3[3]->GetComponent(ComponentType::TEXT));
+        mCard3Btn = static_cast<ButtonComponent*>(children3[2]->GetComponent(ComponentType::BUTTON));
+        mCard3Image = static_cast<ImageComponent*>(children3[2]->GetComponent(ComponentType::IMAGE));
+        mCard3Hover = children3[0];
         mCard3Btn->AddEventHandler(EventType::CLICK, new std::function<void()>(std::bind(&Sanity::OnCard3Click, this)));
         mCard3Btn->AddEventHandler(EventType::HOVER, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOn, this)));
         mCard3Btn->AddEventHandler(EventType::HOVEROFF, new std::function<void()>(std::bind(&Sanity::OnCard3HoverOff, this)));
     }
 
     CreateSelection(0);
+
+    mHealthLvl = App->GetScene()->GetPlayerStats()->GetHealthLvl();
+    mSpeedLvl = App->GetScene()->GetPlayerStats()->GetSpeedLvl();
+    mDmgLvl = App->GetScene()->GetPlayerStats()->GetDamageLvl();
+    SetDamageBoxes();
+    SetHealthBoxes();
+    SetSpeedBoxes();
 }
 
 void Sanity::Update()
@@ -208,7 +213,7 @@ std::string Sanity::GetBuffDescription(const Buff& buff)
     switch (buff.getStatType())
     {
         case Buff::StatType::MOVEMENT:
-            return "MOVEMENT SPEED +" + std::to_string(((int)((buff.getValue()-1)*100))) + "%";
+            return "SPEED +" + std::to_string(((int)((buff.getValue()-1)*100))) + "%";
         case Buff::StatType::DAMAGE:
             return "DAMAGE +" + std::to_string(((int)((buff.getValue() - 1) * 100))) + "%";
         case Buff::StatType::HEALTH:
@@ -281,30 +286,32 @@ void Sanity::OnCard1Click()
     if (!mCurrentBuffs.empty())
         mCurrentBuffs.at(0).Consume();
 
-    SetSpeedBoxes();
+    mDmgLvl++;
+    SetDamageBoxes();
+    App->GetScene()->GetPlayerStats()->SetDamageLvl(mDmgLvl);
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard1HoverOn()
 {
+    if (mCard1Hovered) return;
+    mCard1Hovered = true;
+
     OnCard1HoverOff();
     OnCard2HoverOff();
     OnCard3HoverOff();
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
-    if (mCard1Hovered) return;
-    mCard1Hovered = true;
-    if (mCard1Transform) mCard1Transform->SetSize(mCard1Transform->GetSize().Mul(1.2f));
-    mCard1TextTransform->SetPosition(mCard1TextTransform->GetPosition() - float3(0.0f, 20.0f, 0.0f));
+    mCard1Image->SetAlpha(1.0f);
+    mCard1Hover->SetEnabled(true);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
 
 void Sanity::OnCard1HoverOff()
 {
-    if (!mCard1Hovered) return;
     mCard1Hovered = false;
-    if (mCard1Transform) mCard1Transform->SetSize(mCard1Transform->GetSize().Div(1.2f));
-    mCard1TextTransform->SetPosition(mCard1TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
+    mCard1Image->SetAlpha(0.75f);
+    mCard1Hover->SetEnabled(false);
 }
 
 void Sanity::OnCard2Click()
@@ -315,31 +322,33 @@ void Sanity::OnCard2Click()
 
     if (mCurrentBuffs.size() > 1)
         mCurrentBuffs.at(1).Consume();
-
-    SetDamageBoxes();
+    
+    mSpeedLvl++;
+    SetSpeedBoxes();
+    App->GetScene()->GetPlayerStats()->SetSpeedLvl(mSpeedLvl);
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard2HoverOn()
 {
+    if (mCard2Hovered) return;
+    mCard2Hovered = true;
+
     OnCard1HoverOff();
     OnCard2HoverOff();
     OnCard3HoverOff();
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
-    if (mCard2Hovered) return;
-    mCard2Hovered = true;
-    if (mCard2Transform) mCard2Transform->SetSize(mCard2Transform->GetSize().Mul(1.2f));
-    mCard2TextTransform->SetPosition(mCard2TextTransform->GetPosition() - float3(0.0f, 20.0f, 0.0f));
+    mCard2Image->SetAlpha(1.0f);
+    mCard2Hover->SetEnabled(true);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
 
 void Sanity::OnCard2HoverOff()
 {
-    if (!mCard2Hovered) return;
     mCard2Hovered = false;
-    if (mCard2Transform) mCard2Transform->SetSize(mCard2Transform->GetSize().Div(1.2f));
-    mCard2TextTransform->SetPosition(mCard2TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
+    mCard2Image->SetAlpha(0.75f);
+    mCard2Hover->SetEnabled(false);
 }
 
 void Sanity::OnCard3Click()
@@ -351,115 +360,120 @@ void Sanity::OnCard3Click()
     if (mCurrentBuffs.size() > 2)
         mCurrentBuffs.at(2).Consume();
 
+    mHealthLvl++;
     SetHealthBoxes();
+    App->GetScene()->GetPlayerStats()->SetHealthLvl(mHealthLvl);
     mGameObject->SetEnabled(false);
     GameManager::GetInstance()->SetPaused(false, false);
 }
 
 void Sanity::OnCard3HoverOn()
 {
+    if (mCard3Hovered) return;
+    mCard3Hovered = true;
+
     OnCard1HoverOff();
     OnCard2HoverOff();
     OnCard3HoverOff();
-    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 
-    if (mCard3Hovered) return;
-    mCard3Hovered = true;
-    if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Mul(1.2f));
-    mCard3TextTransform->SetPosition(mCard3TextTransform->GetPosition() - float3(0.0f, 20.0f, 0.0f));
+    mCard3Image->SetAlpha(1.0f);
+    mCard3Hover->SetEnabled(true);
+    GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::MAINMENU_SELECT);
 }
 
 void Sanity::OnCard3HoverOff()
 {
-    if (!mCard3Hovered) return;
+    mCard3Image->SetAlpha(0.75f);
     mCard3Hovered = false;
-    if (mCard3Transform) mCard3Transform->SetSize(mCard3Transform->GetSize().Div(1.2f));
-    mCard3TextTransform->SetPosition(mCard3TextTransform->GetPosition() + float3(0.0f, 20.0f, 0.0f));
+    mCard3Hover->SetEnabled(false);
 }
 
 void Sanity::SetSpeedBoxes()
 {
-    mSpeedLvl++;
     switch (mSpeedLvl)
     {
-        case 1:
-            mSpeedBox1->SetEnabled(true);
-            break;
-        case 2:
-            mSpeedBox2->SetEnabled(true);
-            break;
-        case 3:
-            mSpeedBox3->SetEnabled(true);
-            break;
-        case 4:
-            mSpeedBox4->SetEnabled(true);
-            break;
-        case 5:
-            mSpeedBox5->SetEnabled(true);
-            break;
-        case 6:
-            mSpeedBox6->SetEnabled(true);
-            break;
         case 7:
             mSpeedBox7->SetEnabled(true);
+            [[fallthrough]];
+        case 6:
+            mSpeedBox6->SetEnabled(true);
+            [[fallthrough]];
+        case 5:
+            mSpeedBox5->SetEnabled(true);
+            [[fallthrough]];
+        case 4:
+            mSpeedBox4->SetEnabled(true);
+            [[fallthrough]];
+        case 3:
+            mSpeedBox3->SetEnabled(true);
+            [[fallthrough]];
+        case 2:
+            mSpeedBox2->SetEnabled(true);
+            [[fallthrough]];
+        case 1:
+            mSpeedBox1->SetEnabled(true);
+            [[fallthrough]];
+        default:
             break;
     }
 }
 
 void Sanity::SetHealthBoxes()
 {
-    mHealthLvl++;
     switch (mHealthLvl)
     {
-    case 1:
-        mHealthBox1->SetEnabled(true);
-        break;
-    case 2:
-        mHealthBox2->SetEnabled(true);
-        break;
-    case 3:
-        mHealthBox3->SetEnabled(true);
-        break;
-    case 4:
-        mHealthBox4->SetEnabled(true);
-        break;
-    case 5:
-        mHealthBox5->SetEnabled(true);
-        break;
-    case 6:
-        mHealthBox6->SetEnabled(true);
-        break;
     case 7:
         mHealthBox7->SetEnabled(true);
+        [[fallthrough]];
+    case 6:
+        mHealthBox6->SetEnabled(true);
+        [[fallthrough]];
+    case 5:
+        mHealthBox5->SetEnabled(true);
+        [[fallthrough]];
+    case 4:
+        mHealthBox4->SetEnabled(true);
+        [[fallthrough]];
+    case 3:
+        mHealthBox3->SetEnabled(true);
+        [[fallthrough]];
+    case 2:
+        mHealthBox2->SetEnabled(true);
+        [[fallthrough]];
+    case 1:
+        mHealthBox1->SetEnabled(true);
+        [[fallthrough]];
+    default:
         break;
     }
 }
 
 void Sanity::SetDamageBoxes()
 {
-    mDmgLvl++;
     switch (mDmgLvl)
     {
-    case 1:
-        mDmgBox1->SetEnabled(true);
-        break;
-    case 2:
-        mDmgBox2->SetEnabled(true);
-        break;
-    case 3:
-        mDmgBox3->SetEnabled(true);
-        break;
-    case 4:
-        mDmgBox4->SetEnabled(true);
-        break;
-    case 5:
-        mDmgBox5->SetEnabled(true);
-        break;
-    case 6:
-        mDmgBox6->SetEnabled(true);
-        break;
     case 7:
         mDmgBox7->SetEnabled(true);
+        [[fallthrough]];
+    case 6:
+        mDmgBox6->SetEnabled(true);
+        [[fallthrough]];
+    case 5:
+        mDmgBox5->SetEnabled(true);
+        [[fallthrough]];
+    case 4:
+        mDmgBox4->SetEnabled(true);
+        [[fallthrough]];
+    case 3:
+        mDmgBox3->SetEnabled(true);
+        [[fallthrough]];
+    case 2:
+        mDmgBox2->SetEnabled(true);
+        [[fallthrough]];
+    case 1:
+        mDmgBox1->SetEnabled(true);
+        [[fallthrough]];
+    default:
         break;
     }
 }

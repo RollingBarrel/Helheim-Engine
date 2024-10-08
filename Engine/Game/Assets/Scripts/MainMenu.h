@@ -112,6 +112,8 @@ private:
     void OnMusicDown();
     void OnEffectsUp();
     void OnEffectsDown();
+
+    void ChangeBindings(bool value);
     
     int mMainOption = 0;
     int mOptionsOption = 7;
@@ -127,9 +129,9 @@ private:
 	AUDIO_SETTING_TYPE mCurrentAudioSetting;
 	VIDEO_SETTING_TYPE mCurrentVideoSetting;
 
-    float mMasterVolumeValue = .75f;
-    float mMusicVolumeValue = .75f;
-    float mEffectsVolumeValue = .75f;
+    float mMasterVolumeValue = .35f;
+    float mMusicVolumeValue = .35f;
+    float mEffectsVolumeValue = .35f;
 	bool mIsAdjustingAudio = false;
 
     TimerScript mTimer;
@@ -278,5 +280,13 @@ private:
 
     bool mIsScrolling = false;
     bool mIsInitial = true;
+
+    // Bindings
+    GameObject* mAcceptKeyboardGO = nullptr;
+    GameObject* mAcceptControllerGO = nullptr;
+    GameObject* mBackKeyboardGO = nullptr;
+    GameObject* mBackControllerGO = nullptr;
+
+    bool mController = false;
 };
 

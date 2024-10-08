@@ -227,6 +227,7 @@
     <ClInclude Include="..\Game\Assets\Scripts\Rat.h">
       <Filter>Enemies</Filter>
     </ClInclude>
+    <ClInclude Include="..\Game\Assets\Scripts\PlayAnimationScript.h" />
     <ClInclude Include="..\Game\Assets\Scripts\CinematicCamera.h">
       <Filter>Cinematic</Filter>
     </ClInclude>
@@ -405,6 +406,7 @@
     <ClCompile Include="LoreCollectible.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="PlayAnimationScript.cpp" />
     <ClCompile Include="ElectricTrapController.cpp">
       <Filter>Traps</Filter>
     </ClCompile>

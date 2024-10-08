@@ -35,8 +35,10 @@ CREATE(HudController)
     MEMBER(MemberType::GAMEOBJECT, mHealthIconGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mGrenadeHLGO);
+    MEMBER(MemberType::GAMEOBJECT, mGrenadeImageGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateSliderGO);
     MEMBER(MemberType::GAMEOBJECT, mUltimateHLGO);
+    MEMBER(MemberType::GAMEOBJECT, mUltimateImageGO);
     MEMBER(MemberType::GAMEOBJECT, mGunHLGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoGO);
     MEMBER(MemberType::GAMEOBJECT, mAmmoBaseGO);
@@ -250,13 +252,15 @@ void HudController::Start()
     {
         mGrenadeSlider = static_cast<SliderComponent*>(mGrenadeSliderGO->GetComponent(ComponentType::SLIDER));
         mGrenadeSlider->SetValue(0.001f);
+        mGrenadeImage = static_cast<ImageComponent*>(mGrenadeImageGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mUltimateSliderGO)
     {
         mUltimateSlider = static_cast<SliderComponent*>(mUltimateSliderGO->GetComponent(ComponentType::SLIDER));
         mUltimateSlider->SetValue(0.001f);
-        mUltimateImage = static_cast<ImageComponent*>(mUltimateHLGO->GetComponent(ComponentType::IMAGE));
+        mUltimateBorder = static_cast<ImageComponent*>(mUltimateHLGO->GetComponent(ComponentType::IMAGE));
+        mUltimateImage = static_cast<ImageComponent*>(mUltimateImageGO->GetComponent(ComponentType::IMAGE));
     }
 
     if (mAmmoGO) mAmmoText = static_cast<TextComponent*>(mAmmoGO->GetComponent(ComponentType::TEXT));
@@ -300,6 +304,8 @@ void HudController::Start()
 
 void HudController::Update()
 {
+    mDebounceTimePassed += App->GetDt();
+
     if (mIsVideoPlaying && mVideoComponent)
     {
         bool stopVideo = false;
@@ -387,7 +393,8 @@ void HudController::Update()
         else
         {
             mGrenadeHL = true;
-            mGrenadeHLGO->SetEnabled(true);
+            mGrenadeHLGO->SetEnabled(true); 
+            mGrenadeImage->SetAlpha(1.0f);
             mGrenadeHLTimer.Reset();
             mGrenadeCooldown = 0.0f;
         }
@@ -397,7 +404,7 @@ void HudController::Update()
     if (mUltimateHL)
     {
         mAlpha += App->GetDt() * 5.0f;
-        mUltimateImage->SetAlpha(abs(sinf(mAlpha)));
+        mUltimateBorder->SetAlpha(abs(sinf(mAlpha)));
     }
 
     // Weapon highlight
@@ -524,6 +531,47 @@ bool HudController::Delay(float delay)
 
 void HudController::Controls()
 {
+    if (App->GetInput()->GetKey(Keys::Keys_RIGHT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_RIGHT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) > 0.9f && mDebounceTimePassed >= mDebounceTime)))
+    {
+        mTimePassed = 0.0f; // Restart debounce timer
+        if (mLoseScreen && mLoseScreen->IsActive())
+        {
+			OnSelectLoseOption(LoseOption::LOSE_MENU);
+        }
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_LEFT) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_DPAD_LEFT) == ButtonState::BUTTON_DOWN || ((App->GetInput()->GetGameControllerAxisValue(ControllerAxis::SDL_CONTROLLER_AXIS_LEFTX) < -0.9f && mDebounceTimePassed >= mDebounceTime)))
+    {
+        mTimePassed = 0.0f; // Restart debounce timer
+        if (mLoseScreen && mLoseScreen->IsActive())
+        {
+            OnSelectLoseOption(LoseOption::LOSE_TRY_AGAIN);
+        }
+    }
+
+    if (App->GetInput()->GetKey(Keys::Keys_RETURN) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetKey(Keys::Keys_KP_ENTER) == KeyState::KEY_DOWN ||
+        App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_A) == ButtonState::BUTTON_DOWN)
+    {
+		if (mWinScreen && mWinScreen->IsActive())
+		{
+			OnWinButtonClick();
+		}
+        if (mLoseScreen && mLoseScreen->IsActive())
+        {
+            if (mLoseOption == LoseOption::LOSE_TRY_AGAIN)
+            {
+                OnTryAgainButtonClick();
+			}
+			else if (mLoseOption == LoseOption::LOSE_MENU)
+			{
+				OnLoseButtonClick();
+			}
+        }
+    }
+
     if (!GameManager::GetInstance()->IsPaused()) return;
 }
 
@@ -717,9 +765,9 @@ void HudController::SetMaxHealth(float health)
     }*/
 }
 
-
 void HudController::SetGrenadeCooldown(float cooldown)
 {
+    mGrenadeImage->SetAlpha(0.5f);
     mGrenadeCooldown = cooldown;
     mGrenadeTimer = 0.001f;
 }
@@ -733,12 +781,14 @@ void HudController::SetUltimateCooldown(float cooldown)
         mUltimateHL = true;
         mUltimateHLGO->SetEnabled(true);
         mUltimateSliderGO->SetEnabled(false);
+        mUltimateImage->SetAlpha(1.0f);
     }
     else 
     {
         mUltimateHL = false;
         mUltimateHLGO->SetEnabled(false);
         mUltimateSliderGO->SetEnabled(true);
+        mUltimateImage->SetAlpha(0.5f);
     }
 }
 
@@ -767,6 +817,7 @@ void HudController::SetScreen(SCREEN name, bool active)
             if (mWinScreen) mWinScreen->SetEnabled(active);
             break;
         case SCREEN::PAUSE:
+            if (active) LOG("Pause true") else LOG("Pause false")
             mPauseMenu->Reset();
             if (mPauseScreen) mPauseScreen->SetEnabled(active);
             break;
@@ -808,6 +859,7 @@ void HudController::OnWinButtonClick()
 {
     GameManager::GetInstance()->LoadLevel("Assets/Scenes/MainMenu");
     App->GetScene()->GetPlayerStats()->ResetStats();
+    App->GetScene()->GetPlayerStats()->SetGameFinished(true);
 }
 
 void HudController::OnLoseButtonClick()
@@ -845,6 +897,26 @@ void HudController::OnVideoBackClick()
     ReleaseVideoAssociatedAudio();
 
     GameManager::GetInstance()->PauseBackgroundAudio(false);
+}
+
+void HudController::OnSelectLoseOption(LoseOption option)
+{
+	OnTryAgainButtonHoverOff();
+	OnLoseButtonHoverOff();
+
+	switch (option)
+	{
+	case LoseOption::LOSE_TRY_AGAIN:
+        mLoseOption = LoseOption::LOSE_TRY_AGAIN;
+		OnTryAgainButtonHoverOn();
+		break;
+	case LoseOption::LOSE_MENU:
+		mLoseOption = LoseOption::LOSE_MENU;
+		OnLoseButtonHoverOn();
+		break;
+	default:
+		break;
+	}
 }
 
 void HudController::OnTryAgainButtonHoverOn()

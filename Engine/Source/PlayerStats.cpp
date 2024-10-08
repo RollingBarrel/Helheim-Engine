@@ -22,4 +22,10 @@ void PlayerStats::ResetStats()
 	mSpeed = 5.5f;
 	mDamageModifier = 1.0f;
 	mDialogIndex = 0;
+
+	int mHealthLvl = 0;
+	int mSpeedLvl = 0;
+	int mDamageLvl = 0;
+
+	mGameFinished = false;
 }
