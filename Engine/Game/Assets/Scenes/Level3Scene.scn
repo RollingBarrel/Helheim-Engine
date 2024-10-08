@@ -249,7 +249,7 @@
                     {
                         "ComponentType": 6,
                         "IsEnabled": true,
-                        "AspectRatio": 1.8978978395462037,
+                        "AspectRatio": 1.8176528215408326,
                         "FieldOfView": 90.0,
                         "NearPlane": 0.009999999776482582,
                         "FarPlane": 1000.0,
@@ -60514,7 +60514,7 @@
                     {
                         "ComponentType": 8,
                         "IsEnabled": false,
-                        "ImageID": 1281128641,
+                        "ImageID": 1234632287,
                         "Color": [
                             1.0,
                             1.0,
