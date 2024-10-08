@@ -145,12 +145,18 @@ void EnemyCreatureRange::Attack()
 
 void EnemyCreatureRange::Death()
 {
-	Enemy::Death(); 
+	if (mLaserSound != -1)
+	{
+		mLaserSound = GameManager::GetInstance()->GetAudio()->Release(SFX::BOSS_LASER, mLaserSound);
+	}
+
 	if (!mDeathAudioPlayed)
 	{
 		GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::ENEMY_CREATURE_DEATH, mGameObject->GetWorldPosition());
 		mDeathAudioPlayed = true;
 	}
+
+	Enemy::Death(); 
 }
 
 void EnemyCreatureRange::TakeDamage(float damage)
