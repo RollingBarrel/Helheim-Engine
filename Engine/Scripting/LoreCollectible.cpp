@@ -18,8 +18,7 @@ CREATE(LoreCollectible)
 {
 	CLASS(owner);
 	MEMBER(MemberType::GAMEOBJECT, mMeshGO);
-	MEMBER(MemberType::GAMEOBJECT, mTitleTextGO);
-	MEMBER(MemberType::GAMEOBJECT, mSubtitleTextGO);
+	MEMBER(MemberType::INT, mLoreIndex);
 	END_CREATE;
 }
 
@@ -38,20 +37,14 @@ void LoreCollectible::Start()
 		mCollider->AddCollisionEventHandler(CollisionEventType::ON_COLLISION_EXIT, new std::function<void(CollisionData*)>(std::bind(&LoreCollectible::OnCollisionExit, this, std::placeholders::_1)));
 		mCollider->SetColliderType(ColliderType::STATIC);
 	}
-	if (mGameObject->GetComponent(ComponentType::TEXT))
-		mLoreText = static_cast<TextComponent*>(mGameObject->GetComponent(ComponentType::TEXT))->GetText();
-
-	if (mTitleTextGO) mTitleText = static_cast<TextComponent*>(mTitleTextGO->GetComponent(ComponentType::TEXT))->GetText();
-	if (mSubtitleTextGO) mSubtitleText = static_cast<TextComponent*>(mSubtitleTextGO->GetComponent(ComponentType::TEXT))->GetText();
+		
+	mLoreText = &(mTextList[mLoreIndex]);
+	mTitleText = &(mTitleList[mLoreIndex]);
+	mSubtitleText = &(mSubtitleList[mLoreIndex]);
 }
 
 void LoreCollectible::Update()
 {
-	/*if (!isColliding)
-	{
-		GameManager::GetInstance()->GetHud()->SetInteract(false);
-	}*/
-
 	if (App->GetInput()->GetGameControllerButton(ControllerButton::SDL_CONTROLLER_BUTTON_B) == ButtonState::BUTTON_DOWN ||
 		App->GetInput()->GetKey(Keys::Keys_ESCAPE) == KeyState::KEY_DOWN)
 	{

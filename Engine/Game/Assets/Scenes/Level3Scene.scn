@@ -819,7 +819,7 @@
                             {
                                 "VariableName": "mEnemiesPerRound",
                                 "MemberType": 0,
-                                "VariableData": 2
+                                "VariableData": 3
                             }
                         ]
                     }

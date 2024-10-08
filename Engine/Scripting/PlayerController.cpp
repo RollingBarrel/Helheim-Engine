@@ -948,7 +948,7 @@ void PlayerController::RechargeShield(float shield)
 void PlayerController::RechargeBattery(EnergyType batteryType)
 {
     if(mEnergyType!= batteryType) mCurrentEnergy = 0;
-    mCurrentEnergy = Clamp(mCurrentEnergy+50,0,100);
+    mCurrentEnergy = Clamp(mCurrentEnergy+30,0,90);
     mEnergyType = batteryType;
 
     GameManager::GetInstance()->GetHud()->SetEnergy(mCurrentEnergy, mEnergyType, true);
@@ -1037,7 +1037,7 @@ void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100)
     {
-        mUltimateResource += 25;
+        mUltimateResource += 20;
         GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
     }
     else return;

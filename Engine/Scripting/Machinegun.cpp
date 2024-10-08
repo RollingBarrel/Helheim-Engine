@@ -21,7 +21,7 @@
 Machinegun::Machinegun()
 {
 	mDamage = 4.0f;
-    mEnergyCost = 5;
+    mEnergyCost = 3;
 	mAttackDuration = 0.3f;
     mAttackCooldown = 0.35f;
 	mAttackRange = 25.0f;
