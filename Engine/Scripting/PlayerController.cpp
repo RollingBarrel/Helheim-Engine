@@ -356,11 +356,6 @@ bool PlayerController::IsPlayerDashing() const
     return mLowerState->GetType() == StateType::DASH;
 }
 
-void PlayerController::SetIdleState()
-{
-    mLowerState = mIdleState;
-}
-
 void PlayerController::CheckInput()
 {
     // Lowerbody state machine
@@ -1042,7 +1037,7 @@ void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100)
     {
-        mUltimateResource += 20;
+        mUltimateResource += 25;
         GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
     }
     else return;
