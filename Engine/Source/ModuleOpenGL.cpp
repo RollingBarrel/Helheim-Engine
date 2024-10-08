@@ -1591,7 +1591,7 @@ void ModuleOpenGL::Draw()
 	}
 
 	//Bloom
-	unsigned int blurredTex = BlurTexture(mGEmissive, false, 2);
+	unsigned int blurredTex = BlurTexture(mGEmissive, false, 3);
 
 	glBindFramebuffer(GL_FRAMEBUFFER, sFbo);
 	//Lighting Pass
