@@ -1037,7 +1037,7 @@ void PlayerController::AddUltimateResource()
 {
     if (mUltimateResource != 100)
     {
-        mUltimateResource += 20;
+        mUltimateResource += 25;
         GameManager::GetInstance()->GetHud()->SetUltimateCooldown(mUltimateResource);
     }
     else return;

@@ -1,8 +1,5 @@
 #pragma once
-// Link to design
-//https://www.figma.com/design/J6S4FzW8Yn38GOiMe7XdYm/GAME_UI?node-id=625-249&t=mL60BsxKQdYvFkMC-0
-
-#include <Script.h>
+#include "Script.h"
 #include "Macros.h"
 #include "TimerScript.h"
 
@@ -18,7 +15,7 @@ class Transform2DComponent;
 class PauseMenu;
 enum class EnergyType;
 
-enum class SCREEN {
+enum SCREEN {
     LOAD,
     LOSE,
     WIN,
@@ -26,7 +23,13 @@ enum class SCREEN {
     COLLECTIBLE
 };
 
+enum class LoseOption {
+    LOSE_TRY_AGAIN,
+    LOSE_MENU
+};
+
 GENERATE_BODY(HudController);
+
 class HudController : public Script
 {
     FRIEND(HudController)
@@ -79,6 +82,7 @@ private:
     void OnLoseButtonClick();
     void OnLoseButtonHoverOn();
     void OnLoseButtonHoverOff();
+	void OnSelectLoseOption(LoseOption option);
 
     void OnCollectibleContinueBtnClick();
     void OnCollectibleContinueBtnHoverOn();
@@ -192,6 +196,13 @@ private:
     Dialog* mDialog = nullptr;
 
     int mArenaCounter = 0;
+
+    // Debounce gamepad analog input (joystick)
+    float mDebounceTimePassed = 0.0f;
+    const float mDebounceTime = 0.2f; // 200 ms delay time
+
+    // Lose Screen
+	LoseOption mLoseOption = LoseOption::LOSE_TRY_AGAIN;
 
     // Lose Animation
     TimerScript mLoseAnimationTimer;

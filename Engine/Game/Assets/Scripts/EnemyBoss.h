@@ -48,6 +48,7 @@ private:
 	void BombAttack(const char* pattern);
 	void SetupBomb(GameObject* bombGO, const math::float3& position);
 	void Rotate();
+	void InterruptAttacks();
 
 	void  Death() override;
 
@@ -87,11 +88,11 @@ private:
 	float mLaserDamage = 3.0f;
 	float mLaserSpeed = 2.0f;
 	float mLaserDistance = 15.0f;
-	float mBombsDelay = 1.f;
-	float mBombsDuration = 2.0f;
-
+	
 	//Bombs
 	float mBombDamage = 5.0f;
+	float mBombsDelay = 1.f;
+	float mBombsDuration = 2.0f;
 
 	GameObject* mAreas[3] = { nullptr, nullptr, nullptr};
 	std::vector<float3> mAreaPositions;

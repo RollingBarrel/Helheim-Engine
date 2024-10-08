@@ -30,6 +30,7 @@
 #define DEFENSE_END_ANIMATION 1.2f
 #define HIT_ANIMATION 1.25f
 #define BEAT_TIME 0.428571435f
+#define ATTACK_CONE_RADIANTS 4.1f
 
 CREATE(EnemyBoss) {
     CLASS(owner);
@@ -60,6 +61,7 @@ CREATE(EnemyBoss) {
     MEMBER(MemberType::GAMEOBJECT, mLaserGO);
     MEMBER(MemberType::FLOAT, mLaserDamage);
     MEMBER(MemberType::FLOAT, mLaserSpeed);
+    MEMBER(MemberType::FLOAT, mLaserDuration);
 
     END_CREATE;
 }
@@ -125,7 +127,7 @@ void EnemyBoss::Update()
         if (mStage == 1) mHealth = mMaxHealth * mPhase1Hp;
         else if (mStage == 2) mHealth = mMaxHealth * mPhase2Hp;
         mCurrentState = EnemyState::PHASE;
-        mBulletHell = BulletPattern::NONE;
+        InterruptAttacks();
         mInvulnerable = true;
         GameManager::GetInstance()->GetHud()->SetBossInvulnerable(mInvulnerable);
         if (mAnimationComponent) mAnimationComponent->SendTrigger("tHit1", mDeathTransitionDuration);
@@ -238,7 +240,7 @@ void EnemyBoss::Update()
             break;
         case EnemyState::DEATH:
             if (mAnimationComponent) mAnimationComponent->SendTrigger("tDeath", mDeathTransitionDuration);
-            mBulletHell = BulletPattern::NONE;
+            InterruptAttacks();
             Death();
             break;
         case EnemyState::CHARGING_BULLET_HELL:
@@ -253,14 +255,6 @@ void EnemyBoss::Update()
             {
                 mCurrentState = EnemyState::ATTACK;
                 if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaser", mAttackTransitionDuration);
-            }
-            break;
-        case EnemyState::WAKE:
-            if (mPhaseShiftTimer.Delay(WAKEUP_ANIMATION))
-            {
-                GameManager::GetInstance()->GetHud()->SetBossHealthBarEnabled(true);
-                if (mAnimationComponent) mAnimationComponent->SendTrigger("tIdle", mDeathTransitionDuration);
-                mCurrentState = EnemyState::IDLE;
             }
             break;
         case EnemyState::DOWN:
@@ -309,6 +303,7 @@ void EnemyBoss::StartBulletAttack(BulletPattern pattern)
     GameManager::GetInstance()->GetAudio()->PlayOneShot(SFX::BOSS_ROAR_BULLET);
     mCurrentState = EnemyState::CHARGING_LASER;
     if (mAnimationComponent) mAnimationComponent->SendTrigger("tLaserCharge", mAttackTransitionDuration);
+    mBulletHellTimer.Reset();
     mBulletHell = pattern;
     mBulletsWave = 0;
     mAttackDurationTimer.Reset();
@@ -418,8 +413,8 @@ void EnemyBoss::BulletHellPattern1() //Circular
 {
     if (mBulletHellTimer.Delay(2 * BEAT_TIME)) //Each pattern will need different rythm
     {
-        unsigned int nBullets = 10;
-        float alpha = DegToRad(180.0f / (nBullets - 1));
+        unsigned int nBullets = 14;
+        float alpha = ATTACK_CONE_RADIANTS / (nBullets - 1);
         float offset = 0.0f;
         if (mBulletsWave % 2 == 1)
         {
@@ -431,7 +426,7 @@ void EnemyBoss::BulletHellPattern1() //Circular
         float3 rotation = mGameObject->GetWorldEulerAngles();
         for (unsigned int i = 0; i < nBullets; ++i)
         {
-            float angle = (-pi / 2) + offset + i * alpha;
+            float angle = (-ATTACK_CONE_RADIANTS / 2) + offset + i * alpha;
             GameObject* bulletGO = GameManager::GetInstance()->GetPoolManager()->Spawn(PoolType::BOSS_BULLET);
             bulletGO->SetWorldPosition(bulletOriginPosition);
 
@@ -568,13 +563,13 @@ void EnemyBoss::BulletHellPattern4() //Curved Arrows
 void EnemyBoss::BulletHellPattern5() //Stream
 {
 
-    if (mBulletHellTimer.Delay(BEAT_TIME/8)) //Each pattern will need different rythm
+    if (mBulletHellTimer.Delay(BEAT_TIME * 0.25)) //Each pattern will need different rythm
     {
-        const unsigned int nBullets = 16;
-        float alpha = (pi / 2) - pi * (mBulletsWave % nBullets) / (nBullets - 1);
+        const unsigned int nBullets = 20;
+        float alpha = (ATTACK_CONE_RADIANTS / 2) - ATTACK_CONE_RADIANTS * (mBulletsWave % nBullets) / (nBullets - 1);
         if (mBulletsWave % (2*nBullets) >= nBullets)
         {
-            alpha = pi / (nBullets * 2) - alpha;
+            alpha = ATTACK_CONE_RADIANTS / (nBullets * 2) - alpha;
         }
         float3 bulletOriginPosition = mGameObject->GetWorldPosition();
         bulletOriginPosition.y = mPlayer->GetWorldPosition().y + 2.0f;
@@ -660,6 +655,7 @@ void EnemyBoss::UpdatePhase1()
 
 void EnemyBoss::UpdatePhase3()
 {
+    static int test = 1;
     GameManager::GetInstance()->HandleBossAudio(mStage);
     static unsigned int sequence = -1;
     static unsigned int attack = 0;
@@ -674,7 +670,7 @@ void EnemyBoss::UpdatePhase3()
                 BombAttack("BombingTemplate3.prfb");
                 break;
             case 0:
-                BombAttack("BombingTemplate1.prfb");
+                LaserAttack();
                 break;
             case 1:
                 StartBulletAttack(BulletPattern::TARGETED_CIRCLES);
@@ -700,6 +696,12 @@ void EnemyBoss::UpdatePhase3()
             }
             break;
         case 1:
+            if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
+            {
+                BombAttack("BombingTemplate1.prfb"); // Big
+                attack++;
+            }
+            break;
         case 10:
         case 20:
             if (mAttackCoolDownTimer.Delay(mAttackSequenceCooldown))
@@ -742,6 +744,7 @@ void EnemyBoss::UpdatePhase3()
             break;
         }
     }
+    test++;
 }
 
 void EnemyBoss::UpdatePhase2()
@@ -870,5 +873,19 @@ void EnemyBoss::TakeDamage(float damage)
             // Use Hit2 animation before Death??
             mCurrentState = EnemyState::DEATH;
         }
+    }
+}
+
+void EnemyBoss::InterruptAttacks() 
+{
+    mBulletHell = BulletPattern::NONE;
+    BossLaser* laserScript = static_cast<BossLaser*>(static_cast<ScriptComponent*>(mLaserGO->GetComponent(ComponentType::SCRIPT))->GetScriptInstance());
+    if (laserScript)
+    {
+        laserScript->Interrupt();
+    }
+    for (GameObject* bombGO : mTemplates)
+    {
+        bombGO->SetEnabled(false);
     }
 }

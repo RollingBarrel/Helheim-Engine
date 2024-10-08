@@ -8,9 +8,9 @@
                 "Enabled": true,
                 "Active": true,
                 "Translation": [
-                    76.7602310180664,
+                    83.7481918334961,
                     0.7844780683517456,
-                    -0.9981523752212524
+                    4.545426368713379
                 ],
                 "Rotation": [
                     0.0,
@@ -41,12 +41,12 @@
                             {
                                 "VariableName": "mTitleTextGO",
                                 "MemberType": 3,
-                                "VariableData": 536050202
+                                "VariableData": -1
                             },
                             {
                                 "VariableName": "mSubtitleTextGO",
                                 "MemberType": 3,
-                                "VariableData": 1932650912
+                                "VariableData": -1
                             }
                         ]
                     },
@@ -161,62 +161,6 @@
                         "InverseBindMatrices": []
                     }
                 ]
-            },
-            {
-                "UID": 536050202,
-                "ParentUID": 1830926583,
-                "Name": "Title",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
-            },
-            {
-                "UID": 1932650912,
-                "ParentUID": 1830926583,
-                "Name": "Subtext",
-                "Enabled": true,
-                "Active": true,
-                "Translation": [
-                    0.0,
-                    0.0,
-                    0.0
-                ],
-                "Rotation": [
-                    0.0,
-                    0.0,
-                    0.0,
-                    1.0
-                ],
-                "Scale": [
-                    1.0,
-                    1.0,
-                    1.0
-                ],
-                "Tag": "Untagged",
-                "PrefabUid": 0,
-                "OverridePrefab": false,
-                "Dynamic": false,
-                "Components": []
             }
         ]
     }
