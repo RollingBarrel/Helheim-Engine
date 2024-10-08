@@ -79,8 +79,8 @@ void LinearMovement::Movement(float3 target, float speed)
 
 	if (mHoveringMovement)
 	{
-		mHoveringPosition = mCurrentPosition + mGameObject->GetUp().Normalized() * mHoveringHeight * sinf(mHoveringTimer);
-		mHoveringTimer += mHoveringFrequency * App->GetDt() / (2 * pi);
+		mHoveringPosition = mCurrentPosition + mGameObject->GetUp() * mHoveringHeight * sinf(mHoveringTimer);
+		mHoveringTimer += mHoveringFrequency * App->GetDt() / (2.0f * pi);
 
 		mGameObject->SetWorldPosition(mHoveringPosition);
 	}
@@ -95,7 +95,12 @@ void LinearMovement::Movement(float3 target, float speed)
 		mReachedTarget = true;
 		mCurrentPosition = target;
 	}
-	if (!mLocalPosition) mGameObject->SetWorldPosition(mCurrentPosition);
-	else mGameObject->SetLocalPosition(mCurrentPosition);
+	
+	if (!mHoveringMovement)
+	{
+		if (!mLocalPosition) mGameObject->SetWorldPosition(mCurrentPosition);
+		else mGameObject->SetLocalPosition(mCurrentPosition);
+	}
+	
 	
 }

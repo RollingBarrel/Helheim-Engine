@@ -1,0 +1,24 @@
+{
+    "Name": "Pod Material",
+    "BaseColorFactor": [
+        0.0,
+        1.0,
+        0.39999985694885256,
+        1.0
+    ],
+    "MetallicFactor": 0.0,
+    "RoughnessFactor": 0.5,
+    "EmissiveFactor": [
+        1.0,
+        1.0,
+        1.0
+    ],
+    "BaseColorTex": 0,
+    "MetallicRoughTex": 0,
+    "NormalTex": 0,
+    "EmissiveTex": 0,
+    "BaseColorEnabled": false,
+    "MetallicRoughnessEnabled": false,
+    "NormalMapEnabled": false,
+    "EmissiveEnabled": false
+}

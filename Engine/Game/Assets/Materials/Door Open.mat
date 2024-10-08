@@ -1,0 +1,24 @@
+{
+    "Name": "Door Open",
+    "BaseColorFactor": [
+        1.0,
+        1.0,
+        1.0,
+        1.0
+    ],
+    "MetallicFactor": 1.0,
+    "RoughnessFactor": 1.0,
+    "EmissiveFactor": [
+        0.0,
+        1.0,
+        0.06399989128112793
+    ],
+    "BaseColorTex": 80636611,
+    "MetallicRoughTex": 80636612,
+    "NormalTex": 80636613,
+    "EmissiveTex": 80636614,
+    "BaseColorEnabled": true,
+    "MetallicRoughnessEnabled": true,
+    "NormalMapEnabled": true,
+    "EmissiveEnabled": true
+}
