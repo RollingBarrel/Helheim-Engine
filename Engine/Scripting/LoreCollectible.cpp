@@ -106,14 +106,4 @@ void LoreCollectible::CheckDistance()
 	}
 }
 
-void LoreCollectible::CheckDistance()
-{
-	float3 playerPosition = GameManager::GetInstance()->GetPlayer()->GetWorldPosition();
-	float distanceToCollectible = (playerPosition - mGameObject->GetWorldPosition()).Length();
-	//float3 playerToCollectible = (mGameObject->GetWorldPosition() - playerPosition).Normalized();
-	if (distanceToCollectible > 2.0f) 
-	{
-		GameManager::GetInstance()->GetHud()->SetInteract(false);
-		mColliding = false;
-	}
-}
+
