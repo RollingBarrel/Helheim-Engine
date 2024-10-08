@@ -456,9 +456,9 @@ void CinematicCamera::EndCinematic()
         if (mPlayer)
         {
             //Locates the player in a correct position behind the doors
-            float3 position = mPlayer->GetWorldPosition();
-            position.x -= 2.6f;
-            mPlayer->SetWorldPosition(position);
+            //float3 position = mPlayer->GetWorldPosition();
+            //position.x -= 2.6f;
+            //mPlayer->SetWorldPosition(position);
         }
     }
 }
