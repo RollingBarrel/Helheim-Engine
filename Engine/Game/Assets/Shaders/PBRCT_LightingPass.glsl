@@ -185,11 +185,10 @@ void main()
 			vec3 lightNDC = lightClipSpace.xyz / lightClipSpace.w;
 			lightNDC.xyz = lightNDC.xyz * 0.5 + 0.5;
 			float shadowDepth = texture(shadow.shadowMap, lightNDC.xy).r + shadow.bias;
-			float fragmentDepth = lightNDC.z;
 
 			if(!(lightNDC.x >= 0.0f && lightNDC.x <= 1.0f &&
 				lightNDC.y >= 0.0f && lightNDC.y <= 1.0f &&
-				fragmentDepth < shadowDepth))
+				lightNDC.z < shadowDepth))
 				{
 					inShadow = true;
 				}

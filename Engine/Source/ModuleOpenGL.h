@@ -86,6 +86,7 @@ public:
 	unsigned int GetGBufferPos() const { return mGPosition; }
 	unsigned int GetGBufferSSAO() const { return mSSAO; }
 	unsigned int GetBluredTexture() const { return mBlurTex[0]; }
+	unsigned int GetVolumetricTexture() const { return mVolTexId; }
 	void SetOpenGlCameraUniforms() const;
 
 	unsigned int GetDebugDrawProgramId() const { return mDebugDrawProgramId; }
@@ -294,8 +295,8 @@ private:
 	unsigned int mPLightListImgBuffer;
 	unsigned int mSLightListImgTex;
 	unsigned int mSLightListImgBuffer;
-	unsigned int mVolPLightListImgTex;
-	unsigned int mVolPLightListImgBuffer;
+	//unsigned int mVolPLightListImgTex;
+	//unsigned int mVolPLightListImgBuffer;
 	unsigned int mVolSLightListImgTex;
 	unsigned int mVolSLightListImgBuffer;
 	void LightCullingLists(unsigned int screenWidth, unsigned int screeHeight);
@@ -320,6 +321,8 @@ private:
 
 	unsigned int mNoiseTexId = 0;
 
+	unsigned int mVolTexId = 0;
+	unsigned int mVolInvScale = 2;
 	float mBaseExtCoeff = 0.04f;
 	float mNoiseAmount = 1.0f;
 	float mVolIntensity = 1.0f;
