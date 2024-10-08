@@ -23629,12 +23629,12 @@
                             {
                                 "VariableName": "mGrenadeGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1645584503
                             },
                             {
                                 "VariableName": "mGrenadeExplotionPreviewAreaGO",
                                 "MemberType": 3,
-                                "VariableData": -1
+                                "VariableData": 1661040365
                             },
                             {
                                 "VariableName": "mGrenadeThrowOrigin",
